@@ -38,6 +38,7 @@
 | **产品定位** | isui.ren 的真正特色不是粉丝站（建站启蒙），而是**坚不可摧、完全免费的 fallback CDN**：纯寄生架构，跨厂商多活分发，EdgeOne/CF 做入口。 |
 | **读取分线** | 库的读取链按线路分离，例：cn 读取链 = 123云盘 → 夸克 → 阿里云盘 → 文叔叔；global 读取链 = OneDrive → Google Drive。同步链示例：TeleDrive → Google → OneDrive → 123yun → 夸克（fanout：Google 给国际盘排队、OneDrive 给国内盘排队）。 |
 | **失效重生** | 直链有有效期但盘内文件不删；用户调取时最优先源失效 → 经 OpenList 重新生成直链，同时用户可读 fallback 源链接。 |
+| **根域跳转** | isui.ren 根域按线路 301：国内 → `cn.isui.ren/heart`，海外 → `global.isui.ren/heart`。dnspod 分线路解析 + 边缘层重定向规则实现。 |
 | **链接库 (Link Library)** | 卡片背后是动态管理的链接集合：tayori 乐队 3 名成员 × 各平台，至少 9 条链接，未来持续增加。 |
 | **管理工具 (Admin Tool)** | 图形化界面，用于增删改链接库条目，与 /heart 渲染页和边缘层对接。形态待定（见 ADR-0002）。 |
 | **凤凰城 VPS** | Oracle Cloud Phoenix 区域实例，**PAYG 账户**（不会因闲置被回收），2Gbps / 20T 出站，大存储。最终兜底层 + 管理 API 候选宿主。 |
