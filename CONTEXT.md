@@ -34,6 +34,10 @@
 | **OpenList 网关** | 小盒子（hi3798mv300）跑 **OpenList**（Alist 继任 fork，23.8k stars）管理**中国移动云盘（139yun）**：生成 302 直链供大文件分发。盒子只做直链生成（合规：全程国内服务），经 CF Tunnel 保护不公开。 |
 | **302 链路 v2** | 大文件下载：CDN/API `/download/*` → 调盒子 OpenList 获取直链 → **302 中国移动云盘**（国内带宽主通道）→ fallback：Oracle 对象存储 / MEGA/pCloud。 |
 | **A1 已死** | Microsoft 365 Education A1 / SharePoint **确认拿不到**（2026-08-02，中国市场自助注册关闭，学校邮箱验证失败）。SharePoint 从所有链路移除，不再考虑。 |
+| **库 (Library)** | 资源分组单位（isui.ren 核心概念）。**库级 fallback 链**：一个库内所有文件遵循该库的链条，特例开新库。每个库定义：同步链（写入顺序，可 fanout 并发）、cn 读取链、global 读取链、权限（public-read / admin-write / device）。 |
+| **产品定位** | isui.ren 的真正特色不是粉丝站（建站启蒙），而是**坚不可摧、完全免费的 fallback CDN**：纯寄生架构，跨厂商多活分发，EdgeOne/CF 做入口。 |
+| **读取分线** | 库的读取链按线路分离，例：cn 读取链 = 123云盘 → 夸克 → 阿里云盘 → 文叔叔；global 读取链 = OneDrive → Google Drive。同步链示例：TeleDrive → Google → OneDrive → 123yun → 夸克（fanout：Google 给国际盘排队、OneDrive 给国内盘排队）。 |
+| **失效重生** | 直链有有效期但盘内文件不删；用户调取时最优先源失效 → 经 OpenList 重新生成直链，同时用户可读 fallback 源链接。 |
 | **链接库 (Link Library)** | 卡片背后是动态管理的链接集合：tayori 乐队 3 名成员 × 各平台，至少 9 条链接，未来持续增加。 |
 | **管理工具 (Admin Tool)** | 图形化界面，用于增删改链接库条目，与 /heart 渲染页和边缘层对接。形态待定（见 ADR-0002）。 |
 | **凤凰城 VPS** | Oracle Cloud Phoenix 区域实例，**PAYG 账户**（不会因闲置被回收），2Gbps / 20T 出站，大存储。最终兜底层 + 管理 API 候选宿主。 |
