@@ -31,6 +31,9 @@
 | **播放器组件** | React 实现的视频播放器 + 文档播放器（挂在卡片/页面，展示性质「虽然不用但必须有」）。选型走 React 生态现成库（react-player / video.js / docx-preview / pdfjs-dist 等）。 |
 | **302 链路** | 大文件下载统一走 302 重定向：CDN 层 `/download/*` → 302 → SharePoint 分享直链（主）→ 最终 fallback 网盘（MEGA/pCloud 候选）。浏览器直连最终源，CDN 不碰大文件流量。 |
 | **fallback 网盘** | 欧洲良心网盘作为大文件分发最终兜底（候选：MEGA 免费 20GB 端到端加密、德裔创始人；pCloud 免费 10GB、官方承诺不限速）。 |
+| **OpenList 网关** | 小盒子（hi3798mv300）跑 **OpenList**（Alist 继任 fork，23.8k stars）管理**中国移动云盘（139yun）**：生成 302 直链供大文件分发。盒子只做直链生成（合规：全程国内服务），经 CF Tunnel 保护不公开。 |
+| **302 链路 v2** | 大文件下载：CDN/API `/download/*` → 调盒子 OpenList 获取直链 → **302 中国移动云盘**（国内带宽主通道）→ fallback：Oracle 对象存储 / MEGA/pCloud。 |
+| **A1 已死** | Microsoft 365 Education A1 / SharePoint **确认拿不到**（2026-08-02，中国市场自助注册关闭，学校邮箱验证失败）。SharePoint 从所有链路移除，不再考虑。 |
 | **链接库 (Link Library)** | 卡片背后是动态管理的链接集合：tayori 乐队 3 名成员 × 各平台，至少 9 条链接，未来持续增加。 |
 | **管理工具 (Admin Tool)** | 图形化界面，用于增删改链接库条目，与 /heart 渲染页和边缘层对接。形态待定（见 ADR-0002）。 |
 | **凤凰城 VPS** | Oracle Cloud Phoenix 区域实例，**PAYG 账户**（不会因闲置被回收），2Gbps / 20T 出站，大存储。最终兜底层 + 管理 API 候选宿主。 |
