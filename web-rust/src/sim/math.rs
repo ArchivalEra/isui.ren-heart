@@ -51,10 +51,6 @@ pub fn screen_of(p: Vec2, w: f64, h: f64) -> (f64, f64, f64) {
     ((p.x - 0.5) * w * d + w / 2.0, p.y * h, d)
 }
 
-/// 屏幕坐标 → 世界坐标（调试拖拽用，忽略透视深度近似）
-pub fn world_of(sx: f64, sy: f64, w: f64, h: f64) -> Vec2 {
-    Vec2 { x: ((sx - w / 2.0) / w + 0.5).clamp(0.0, 1.0), y: (sy / h).clamp(0.0, 1.0) }
-}
 
 #[cfg(test)]
 mod tests {
@@ -115,11 +111,4 @@ mod tests {
         assert!(d > 0.5 && d <= 1.0);
     }
 
-    #[test]
-    fn world_of_roundtrip_at_center() {
-        let w = screen_of(Vec2 { x: 0.5, y: 0.5 }, 800.0, 600.0);
-        let back = world_of(w.0, w.1, 800.0, 600.0);
-        assert!((back.x - 0.5).abs() < 1e-6);
-        assert!((back.y - 0.5).abs() < 1e-6);
-    }
 }

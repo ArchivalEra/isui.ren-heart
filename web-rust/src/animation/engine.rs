@@ -2,7 +2,7 @@
 // 纯逻辑（规划/执行/几何）在 sim/ 模块 —— 原生 cargo test 可测
 use crate::config::params::*;
 use crate::config::templates::TEMPLATES;
-use crate::sim::math::{quad_bezier, screen_of, smoothstep, world_of, Vec2};
+use crate::sim::math::{screen_of, smoothstep, Vec2};
 use crate::sim::planner::{Phase, Player};
 use crate::sim::target::random_trio_targets;
 use wasm_bindgen::JsCast;
@@ -49,16 +49,6 @@ impl BallsEngine {
         }
     }
 
-    pub fn set_anchor(&mut self, i: usize, v: Vec2) {
-        if i < 3 {
-            self.anchors[i] = v;
-        }
-    }
-
-    pub fn anchor(&self, i: usize) -> Vec2 {
-        self.anchors[i.min(2)]
-    }
-
     pub fn frame(&mut self, dt: f64) {
         self.step(dt);
         self.render();
@@ -87,18 +77,13 @@ impl BallsEngine {
             Phase::Travel { to, t, .. } => {
                 *t += dt;
                 if *t >= TRAVEL_MS {
-                    let leg = crate::sim::planner::Leg {
-                        from: to[0],
-                        ctrl: to[0],
-                        target: crate::sim::target::random_screen_point(),
-                    };
-                    self.phase = Phase::Queue { t: 0.0, leg };
+                    self.phase = Phase::Queue { t: 0.0, spots: *to };
                 }
             }
-            Phase::Queue { t, leg } => {
+            Phase::Queue { t, spots } => {
                 *t += dt;
                 if *t >= QUEUE_MS {
-                    queue_done = Some(*leg);
+                    queue_done = Some(*spots);
                 }
             }
             Phase::Play(player) => {
@@ -110,8 +95,8 @@ impl BallsEngine {
                 player.tick(dt);
             }
         }
-        if let Some(leg) = queue_done {
-            self.phase = Phase::Play(Player::new(leg));
+        if let Some(spots) = queue_done {
+            self.phase = Phase::Play(Player::new(spots));
         }
     }
 
@@ -122,15 +107,7 @@ impl BallsEngine {
                 let k = smoothstep(*t / TRAVEL_MS);
                 crate::sim::math::lerp(from[color_slot], to[color_slot], k)
             }
-            Phase::Queue { leg, .. } => {
-                let ti = color_slot as f64 * WANDER.phase_gap;
-                let te = smoothstep(ti);
-                let p = quad_bezier(leg.from, leg.ctrl, leg.target, te);
-                let tan = crate::sim::math::bezier_tangent(leg.from, leg.ctrl, leg.target, te);
-                let n = crate::sim::math::normal_of(tan);
-                let off = self.balls[color_slot].offset * WANDER.offset_range;
-                Vec2 { x: p.x + n.x * off, y: p.y + n.y * off }
-            }
+            Phase::Queue { spots, .. } => spots[color_slot],
             Phase::Play(player) => player.world_pos(color_slot, self.balls[color_slot].offset),
         }
     }
@@ -250,7 +227,3 @@ fn hex_to_rgb(hex: &str) -> (u8, u8, u8) {
     )
 }
 
-/// 供调试面板使用的反投影（近似）
-pub fn screen_to_world(sx: f64, sy: f64, w: f64, h: f64) -> Vec2 {
-    world_of(sx, sy, w, h)
-}

@@ -1,7 +1,7 @@
 // 规划器 + 执行器（纯 Rust，可单测）
 // 三球独立轨迹：分开算（各自规划队列）、分开商量（目标去重）
 use crate::config::params::*;
-use crate::config::templates::{grid_cell, grid_preferred_template, TEMPLATES};
+use crate::config::templates::TEMPLATES;
 use crate::sim::math::*;
 use crate::sim::target::{random_target_apart};
 use std::collections::VecDeque;
@@ -62,17 +62,8 @@ pub struct Player {
 }
 
 impl Player {
-    /// 从队形出发：每球 from = 排队点，各自随机目标（互相去重）
-    pub fn new(leg: Leg) -> Self {
-        let mut spots = [Vec2 { x: 0.0, y: 0.0 }; 3];
-        let mut dirs = [Vec2 { x: 1.0, y: 0.0 }; 3];
-        for i in 0..3 {
-            let ti = i as f64 * WANDER.phase_gap;
-            spots[i] = quad_bezier(leg.from, leg.ctrl, leg.target, ti);
-            let tan = bezier_tangent(leg.from, leg.ctrl, leg.target, ti);
-            let l = (tan.x * tan.x + tan.y * tan.y).sqrt().max(1e-9);
-            dirs[i] = Vec2 { x: tan.x / l, y: tan.y / l };
-        }
+    /// 从三球到达点出发（与入场阶段完全连续：t=0 时位置 == spots）
+    pub fn new(spots: [Vec2; 3]) -> Self {
         let mut targets = [Vec2 { x: 0.5, y: 0.5 }; 3];
         for i in 0..3 {
             let others = [spots[(i + 1) % 3], spots[(i + 2) % 3]];
@@ -81,7 +72,12 @@ impl Player {
         let mut plans_buf: [Option<BallPlan>; 3] = [None, None, None];
         let mut planned: [f64; 3] = [0.0; 3];
         for i in 0..3 {
-            let leg = make_planned_leg(spots[i], dirs[i], 0, targets[i]);
+            // 起始方向：指向自己的首个目标（直线起步，无跳变）
+            let dx = targets[i].x - spots[i].x;
+            let dy = targets[i].y - spots[i].y;
+            let dist = (dx * dx + dy * dy).sqrt().max(1e-6);
+            let dir = Vec2 { x: dx / dist, y: dy / dist };
+            let leg = make_planned_leg(spots[i], dir, 0, targets[i]);
             plans_buf[i] = Some(BallPlan::new(leg.leg, 0));
             planned[i] = leg.dur_ms;
         }
@@ -120,12 +116,9 @@ impl Player {
         ];
         let target = random_target_apart(&others, MIN_BALL_DIST);
 
-        // 模板（每球独立）：网格偏好 / 随机 / 保留
-        let cell = grid_cell(target);
+        // 模板（每球独立）：随机换 / 保留（网格判断已废弃）
         let roll = rng.gen::<f64>();
         let template_idx = if roll < PROB.switch_template {
-            grid_preferred_template(cell)
-        } else if roll < PROB.switch_template + PROB.random_template {
             rng.gen_range(0..TEMPLATES.len())
         } else {
             cur.template_idx
@@ -198,7 +191,8 @@ pub fn make_planned_leg(
 pub enum Phase {
     AtLogo { t: f64 },
     Travel { from: [Vec2; 3], to: [Vec2; 3], t: f64 },
-    Queue { t: f64, leg: Leg },
+    /// 到达点等待（三球静止在各自到达点，零跳变进入 Play）
+    Queue { t: f64, spots: [Vec2; 3] },
     Play(Player),
 }
 
@@ -232,13 +226,23 @@ mod tests {
     }
 
     #[test]
-    fn player_balls_start_apart() {
-        let leg = Leg {
-            from: Vec2 { x: 0.5, y: 0.5 },
-            ctrl: Vec2 { x: 0.7, y: 0.5 },
-            target: Vec2 { x: 0.9, y: 0.5 },
-        };
-        let p = Player::new(leg);
+    fn player_balls_start_apart_and_continuous() {
+        let spots = [
+            Vec2 { x: 0.2, y: 0.3 },
+            Vec2 { x: 0.5, y: 0.6 },
+            Vec2 { x: 0.8, y: 0.4 },
+        ];
+        let p = Player::new(spots);
+        // t=0 时位置 == 到达点（入场连续，零跳变）
+        for s in 0..3 {
+            let pos = p.world_pos(s, 0.0);
+            assert!(
+                (pos.x - spots[s].x).abs() < 1e-9 && (pos.y - spots[s].y).abs() < 1e-9,
+                "球{s} 入场应连续: 期望 {:?} 实际 {:?}",
+                spots[s],
+                pos
+            );
+        }
         let a = p.world_pos(0, 0.0);
         let b = p.world_pos(1, 0.0);
         let c = p.world_pos(2, 0.0);
@@ -250,12 +254,12 @@ mod tests {
 
     #[test]
     fn world_pos_stays_in_screen_after_horizon() {
-        let leg = Leg {
-            from: Vec2 { x: 0.2, y: 0.2 },
-            ctrl: Vec2 { x: 0.5, y: 0.5 },
-            target: Vec2 { x: 0.8, y: 0.8 },
-        };
-        let mut p = Player::new(leg);
+        let spots = [
+            Vec2 { x: 0.2, y: 0.3 },
+            Vec2 { x: 0.5, y: 0.6 },
+            Vec2 { x: 0.8, y: 0.4 },
+        ];
+        let mut p = Player::new(spots);
         // 推进 90 秒（跨多段 + 触发补规划），球位必须始终在屏内
         for _ in 0..90 * 60 {
             p.tick(16.7);
@@ -272,12 +276,12 @@ mod tests {
 
     #[test]
     fn player_never_stops() {
-        let leg = Leg {
-            from: Vec2 { x: 0.5, y: 0.5 },
-            ctrl: Vec2 { x: 0.6, y: 0.5 },
-            target: Vec2 { x: 0.7, y: 0.5 },
-        };
-        let mut p = Player::new(leg);
+        let spots = [
+            Vec2 { x: 0.3, y: 0.3 },
+            Vec2 { x: 0.5, y: 0.5 },
+            Vec2 { x: 0.7, y: 0.7 },
+        ];
+        let mut p = Player::new(spots);
         let mut last = [Vec2 { x: 0.0, y: 0.0 }; 3];
         for s in 0..3 {
             last[s] = p.world_pos(s, 0.0);

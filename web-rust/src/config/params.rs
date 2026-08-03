@@ -13,25 +13,18 @@ pub const ORDERS: [[usize; 3]; 6] = [
     [2, 1, 0],
 ];
 
-/// 区域内独立概率事件
+/// 规划时独立概率事件（网格判断已废弃——规划/执行架构下为纯负担）
 pub struct Prob {
-    /// 规划时切换到「目标网格偏好模板」的概率
-    pub switch_template: f64,
     /// 规划时完全随机换模板的概率（防单一模板连发绕圈）
-    pub random_template: f64,
+    pub switch_template: f64,
     /// 规划时切换排列（队首）的概率
     pub switch_order: f64,
 }
 
 pub const PROB: Prob = Prob {
-    switch_template: 0.3,
-    random_template: 0.3,
+    switch_template: 0.4,
     switch_order: 0.008,
 };
-
-/// 精细区域网格（满屏游乐场：边边角角也在内）
-pub const GRID_COLS: usize = 8;
-pub const GRID_ROWS: usize = 8;
 
 /// 漫游节奏（Play 阶段）
 pub struct Wander {
