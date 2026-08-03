@@ -176,12 +176,20 @@ fn setup_debug_panel(engine: Rc<RefCell<BallsEngine>>) {
         let pos_label = pos_label.clone();
         let logo = logo.clone();
         let dragging = Rc::clone(&dragging);
+        let engine = Rc::clone(&engine);
         move || {
             let show = style_of(&panel).get_property_value("display").unwrap_or_default() == "none";
             style_of(&panel)
                 .set_property("display", if show { "block" } else { "none" })
                 .unwrap();
             *dragging.borrow_mut() = false; // 关面板时清拖拽状态（防残留）
+            // 调试标志 + 归位（球回锚点，键盘可移动）
+            let e = &engine;
+            if show {
+                e.borrow_mut().enter_debug();
+            } else {
+                e.borrow_mut().exit_debug();
+            }
             let ls = style_of(&logo);
             if show {
                 // 判定块：可交互 + 虚线框 + 移动光标
@@ -291,7 +299,7 @@ fn setup_debug_panel(engine: Rc<RefCell<BallsEngine>>) {
         let sel_label = sel_label.clone();
         move |e: web_sys::KeyboardEvent| {
             if !engine.borrow().debug {
-                return;
+                return; // 面板关闭时键盘不干预
             }
             let step = 0.005;
             let i = *selected.borrow();

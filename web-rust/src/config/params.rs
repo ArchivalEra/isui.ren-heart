@@ -13,6 +13,9 @@ pub const ORDERS: [[usize; 3]; 6] = [
     [2, 1, 0],
 ];
 
+/// 出发错开：球 i 延迟 i×STAGGER_MS（一个接一个出发，无排队仪式）
+pub const STAGGER_MS: f64 = 250.0;
+
 /// 相邻段时长比上限：约束球速差异（「换顺序」过程太快 = dur 差异过大）
 /// 调小 → 换序更慢更平滑；调大 → 允许暴快（拖尾出师后高速韵味）
 pub const MAX_DUR_RATIO: f64 = 2.5;

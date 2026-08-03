@@ -23,15 +23,17 @@ pub struct PlannedLeg {
     pub dur_ms: f64,
 }
 
-/// 每球游标（沿共享链）
-#[derive(Clone, Copy)]
-struct Cursor {
-    idx: usize,
+/// 每球独立链（无共享汇合：三球各自从到达点出发，出发时间错开）
+struct BallPlan {
+    legs: VecDeque<PlannedLeg>,
+    cur_idx: usize,
     t: f64,
+    state: BallState,
+    /// 出发延迟（错开：一个接一个但不排队）
+    delay_ms: f64,
 }
 
-/// 每球物理状态（PD spring 追踪：位置+速度双目标）
-/// 「拟合助手」：目标速率平滑（段间速度连续）→ 到达点前不再「钝一下」
+/// 每球物理状态（PD spring 追踪）
 #[derive(Clone, Copy)]
 struct BallState {
     pos: Vec2,
@@ -40,183 +42,166 @@ struct BallState {
     rate: f64,
 }
 
-/// 执行器：共享链 + 三球独立游标
+/// 执行器：三球独立链 + spring 物理
 pub struct Player {
-    legs: VecDeque<PlannedLeg>,
-    curs: [Cursor; 3],
-    states: [BallState; 3],
+    plans: [BallPlan; 3],
     pub order: [usize; 3],
 }
 
 impl Player {
-    /// 汇合链：spots[2]→spots[1]→spots[0] 排队入场，然后正式链
+    /// 三球各自从到达点出发；出发错开 delay = i × STAGGER_MS（无排队仪式）
     pub fn new(spots: [Vec2; 3]) -> Self {
-        // 汇合段（队尾→队首，直线）
-        let mut legs: VecDeque<PlannedLeg> = VecDeque::new();
-        for i in (1..3).rev() {
-            let dir = dir_of(spots[i], spots[i - 1]);
-            legs.push_back(make_planned_leg(spots[i], dir, 0, spots[i - 1]));
+        let mut plans_buf: [Option<BallPlan>; 3] = [None, None, None];
+        for i in 0..3 {
+            // 目标去重（商量）
+            let others = [spots[(i + 1) % 3], spots[(i + 2) % 3]];
+            let target = random_target_apart(&others, MIN_BALL_DIST);
+            let dir = dir_of(spots[i], target);
+            let mut leg = make_planned_leg(spots[i], dir, 0, target);
+            if !leg_in_bounds(&leg.leg) {
+                let safe = clamp_target_in_bounds(spots[i], dir, 0, target);
+                leg = make_planned_leg(spots[i], dir, 0, safe);
+            }
+            let state = BallState { pos: spots[i], vel: Vec2 { x: 0.0, y: 0.0 }, rate: WORLD_SPEED };
+            plans_buf[i] = Some(BallPlan {
+                legs: {
+                    let mut q = VecDeque::new();
+                    q.push_back(leg);
+                    q
+                },
+                cur_idx: 0,
+                t: 0.0,
+                state,
+                delay_ms: i as f64 * STAGGER_MS,
+            });
         }
-        // 正式首段：从 spots[0] 出发（队首先跑）
-        let others = [spots[1], spots[2]];
-        let target0 = random_target_apart(&others, MIN_BALL_DIST);
-        let dir0 = dir_of(spots[0], target0);
-        let mut leg0 = make_planned_leg(spots[0], dir0, 0, target0);
-        if !leg_in_bounds(&leg0.leg) {
-            let safe = clamp_target_in_bounds(spots[0], dir0, 0, target0);
-            leg0 = make_planned_leg(spots[0], dir0, 0, safe);
-        }
-        legs.push_back(leg0);
-
-        // 游标：球 i 站在汇合链对应位置（球2 最前 idx0，球1 idx1，球0 idx2）
-        let curs = [
-            Cursor { idx: 2, t: 0.0 }, // 球0（队首）在 spots[0]
-            Cursor { idx: 1, t: 0.0 }, // 球1 在 spots[1]
-            Cursor { idx: 0, t: 0.0 }, // 球2 在 spots[2]
-        ];
-
-        // 物理状态：初始 = 到达点（入场连续）
-        let states = [
-            BallState { pos: spots[0], vel: Vec2 { x: 0.0, y: 0.0 }, rate: WORLD_SPEED },
-            BallState { pos: spots[1], vel: Vec2 { x: 0.0, y: 0.0 }, rate: WORLD_SPEED },
-            BallState { pos: spots[2], vel: Vec2 { x: 0.0, y: 0.0 }, rate: WORLD_SPEED },
-        ];
-        let mut p = Player { legs, curs, states, order: ORDERS[0] };
-        p.ensure_chain();
-        p
+        let plans = plans_buf.map(|p| p.expect("plan initialized"));
+        Player { plans, order: ORDERS[0] }
     }
 
     pub fn tick(&mut self, dt: f64) {
-        // 1) 游标推进（线性 t，速度平滑交给 spring）
-        for c in self.curs.iter_mut() {
-            let dur = self
-                .legs
-                .get(c.idx)
-                .map(|pl| pl.dur_ms)
-                .unwrap_or(1000.0);
-            c.t += dt / dur;
-            while c.t >= 1.0 {
-                if c.idx + 1 < self.legs.len() {
-                    c.idx += 1;
-                    c.t = 0.0;
-                } else {
-                    c.t = 1.0;
-                    break;
-                }
-            }
-        }
-        // 2) PD spring 追踪（拟合助手）：
-        //    位置目标 = 链上点；速度目标 = 切线 × 平滑速率（段间速度连续）
         let dt_s = dt / 1000.0;
         let k = SPRING.stiffness;
         let c_damp = SPRING.damping * 2.0 * k.sqrt();
-        // 速率平滑时间常数（段切换时理想速率跳变 → 此处收敛，杜绝「钝一下」）
-        let rate_lerp = (dt_s / 0.15).min(1.0); // 150ms 收敛
+        let rate_lerp = (dt_s / 0.15).min(1.0);
+
         for s in 0..3 {
-            let (target, tan) = self.chain_pos_and_tangent(s);
-            let r_ideal = WORLD_SPEED * TEMPLATES[self.template_idx(s)].speed();
-            let st = &mut self.states[s];
-            st.rate += (r_ideal - st.rate) * rate_lerp;
+            let pl = &mut self.plans[s];
+            // 出发错开：延迟未到 → 静止在起点
+            if pl.delay_ms > 0.0 {
+                pl.delay_ms -= dt;
+                continue;
+            }
+            // 游标推进（线性 t，速度平滑交给 spring）
+            let dur = pl
+                .legs
+                .get(pl.cur_idx)
+                .map(|x| x.dur_ms)
+                .unwrap_or(1000.0);
+            pl.t += dt / dur;
+            while pl.t >= 1.0 {
+                if pl.cur_idx + 1 < pl.legs.len() {
+                    pl.cur_idx += 1;
+                    pl.t = 0.0;
+                } else {
+                    pl.t = 1.0;
+                    break;
+                }
+            }
+            // PD spring：目标 = 自己的链上点；速度目标 = 切线 × 平滑速率
+            let (target, tan) = chain_pos_and_tangent(&pl.legs, pl.cur_idx, pl.t);
+            let r_ideal = WORLD_SPEED
+                * TEMPLATES[pl.legs.get(pl.cur_idx).map(|x| x.template_idx).unwrap_or(0)]
+                    .speed();
+            pl.state.rate += (r_ideal - pl.state.rate) * rate_lerp;
             let tl = (tan.x * tan.x + tan.y * tan.y).sqrt().max(1e-9);
-            let tvel = Vec2 { x: tan.x / tl * st.rate, y: tan.y / tl * st.rate };
-            // PD：a = k*(目标位置-位置) + c*(目标速度-速度)
-            let ax = k * (target.x - st.pos.x) + c_damp * (tvel.x - st.vel.x);
-            let ay = k * (target.y - st.pos.y) + c_damp * (tvel.y - st.vel.y);
-            st.vel.x += ax * dt_s;
-            st.vel.y += ay * dt_s;
-            st.pos.x += st.vel.x * dt_s;
-            st.pos.y += st.vel.y * dt_s;
-            st.pos.x = st.pos.x.clamp(0.0, 1.0);
-            st.pos.y = st.pos.y.clamp(0.0, 1.0);
+            let tvel = Vec2 { x: tan.x / tl * pl.state.rate, y: tan.y / tl * pl.state.rate };
+            let ax = k * (target.x - pl.state.pos.x) + c_damp * (tvel.x - pl.state.vel.x);
+            let ay = k * (target.y - pl.state.pos.y) + c_damp * (tvel.y - pl.state.vel.y);
+            pl.state.vel.x += ax * dt_s;
+            pl.state.vel.y += ay * dt_s;
+            pl.state.pos.x = (pl.state.pos.x + pl.state.vel.x * dt_s).clamp(0.0, 1.0);
+            pl.state.pos.y = (pl.state.pos.y + pl.state.vel.y * dt_s).clamp(0.0, 1.0);
         }
-        self.ensure_chain();
+        self.ensure_chains();
     }
 
-    /// 链上目标位置 + 切线（线性 t；spring 做全部平滑）
-    fn chain_pos_and_tangent(&self, color_slot: usize) -> (Vec2, Vec2) {
-        let c = self.curs[color_slot];
-        let pl = self.legs.get(c.idx).expect("cursor idx in chain");
-        let leg = &pl.leg;
-        let u = c.t.clamp(0.0, 1.0);
-        let p = quad_bezier(leg.from, leg.ctrl, leg.target, u);
-        let tan = bezier_tangent(leg.from, leg.ctrl, leg.target, u);
-        let n = normal_of(tan);
-        // 段内摆动（模板差异化：蛇形/摇摆）——目标自带，物理平滑
-        let wave = TEMPLATES[pl.template_idx].wave;
-        let wobble = wave * (u * std::f64::consts::PI * 2.0).sin();
-        let pos = Vec2 {
-            x: (p.x + n.x * wobble).clamp(0.0, 1.0),
-            y: (p.y + n.y * wobble).clamp(0.0, 1.0),
-        };
-        (pos, tan)
-    }
-
-    /// 链增长：保证每球至少 3 段余量（无限轨迹）
-    fn ensure_chain(&mut self) {
-        let max_idx = self.curs.iter().map(|c| c.idx).max().unwrap_or(0);
-        while self.legs.len() < max_idx + 4 {
-            self.plan_next();
-        }
-    }
-
-    /// 共享链规划下一段（from = 链尾 target，切线继承）
-    fn plan_next(&mut self) {
+    fn ensure_chains(&mut self) {
         use rand::Rng;
         let mut rng = rand::thread_rng();
-
-        let tail = self.legs.back().expect("chain non-empty");
-        let from = tail.leg.target;
-        let dir = if tail.leg.from == tail.leg.target {
-            Vec2 { x: 1.0, y: 0.0 }
-        } else {
-            let tan = bezier_tangent(tail.leg.from, tail.leg.ctrl, tail.leg.target, 1.0);
-            let l = (tan.x * tan.x + tan.y * tan.y).sqrt().max(1e-9);
-            Vec2 { x: tan.x / l, y: tan.y / l }
-        };
-
-        // 商量：与其它球当前目标保持距离
-        let others = [self.curs[1].idx, self.curs[2].idx]
-            .map(|idx| self.legs.get(idx).map(|pl| pl.leg.target).unwrap_or(from));
-
-        // 模板（随机换 / 保留链尾模板）
-        let roll = rng.gen::<f64>();
-        let template_idx = if roll < PROB.switch_template {
-            rng.gen_range(0..TEMPLATES.len())
-        } else {
-            tail.template_idx
-        };
-
-        // 排列（渲染顺序）概率轮换
-        if rng.gen::<f64>() < PROB.switch_order {
-            let next = ORDERS[rng.gen_range(0..ORDERS.len())];
-            if next != self.order {
-                self.order = next;
+        for s in 0..3 {
+            while self.plans[s].legs.len() < self.plans[s].cur_idx + 4 {
+                // 目标去重（商量）：与其他球当前目标保持距离
+                let from = self.plans[s]
+                    .legs
+                    .back()
+                    .map(|x| x.leg.target)
+                    .unwrap_or(Vec2 { x: 0.5, y: 0.5 });
+                let others = [
+                    self.plans[(s + 1) % 3]
+                        .legs
+                        .back()
+                        .map(|x| x.leg.target)
+                        .unwrap_or(from),
+                    self.plans[(s + 2) % 3]
+                        .legs
+                        .back()
+                        .map(|x| x.leg.target)
+                        .unwrap_or(from),
+                ];
+                // 拷贝 tail 关键值（避免借用冲突）
+                let (tail_leg, tail_dur, tail_tpl) = {
+                    let tail = self.plans[s].legs.back().expect("chain non-empty");
+                    (tail.leg, tail.dur_ms, tail.template_idx)
+                };
+                let dir = if tail_leg.from == tail_leg.target {
+                    Vec2 { x: 1.0, y: 0.0 }
+                } else {
+                    let tan = bezier_tangent(tail_leg.from, tail_leg.ctrl, tail_leg.target, 1.0);
+                    let l = (tan.x * tan.x + tan.y * tan.y).sqrt().max(1e-9);
+                    Vec2 { x: tan.x / l, y: tan.y / l }
+                };
+                let roll = rng.gen::<f64>();
+                let template_idx = if roll < PROB.switch_template {
+                    rng.gen_range(0..TEMPLATES.len())
+                } else {
+                    tail_tpl
+                };
+                if rng.gen::<f64>() < PROB.switch_order {
+                    let next = ORDERS[rng.gen_range(0..ORDERS.len())];
+                    if next != self.order {
+                        self.order = next;
+                    }
+                }
+                // 重试生成合法段
+                let mut pushed = false;
+                for _ in 0..8 {
+                    let target = random_target_apart(&others, MIN_BALL_DIST);
+                    let pl = make_planned_leg(from, dir, template_idx, target);
+                    if leg_in_bounds(&pl.leg) {
+                        self.plans[s]
+                            .legs
+                            .push_back(clamp_dur_to_chain(pl, tail_dur));
+                        pushed = true;
+                        break;
+                    }
+                }
+                if !pushed {
+                    let target = random_target_apart(&others, MIN_BALL_DIST);
+                    let safe = clamp_target_in_bounds(from, dir, template_idx, target);
+                    let pl = make_planned_leg(from, dir, template_idx, safe);
+                    self.plans[s].legs.push_back(clamp_dur_to_chain(pl, tail_dur));
+                }
             }
         }
-
-        // 重试生成合法段（控制点屏内保切线连续）
-        for _ in 0..8 {
-            let target = random_target_apart(&others, MIN_BALL_DIST);
-            let pl = make_planned_leg(from, dir, template_idx, target);
-            if leg_in_bounds(&pl.leg) {
-                self.legs.push_back(clamp_dur_to_chain(pl, tail.dur_ms));
-                return;
-            }
-        }
-        let target = random_target_apart(&others, MIN_BALL_DIST);
-        let safe = clamp_target_in_bounds(from, dir, template_idx, target);
-        let pl = make_planned_leg(from, dir, template_idx, safe);
-        self.legs.push_back(clamp_dur_to_chain(pl, tail.dur_ms));
     }
 
-    /// 球位：spring 物理状态（offset 为引擎层缓动的法线分离量，直接叠加）
+    /// 球位：spring 物理状态 + 法线分离量
     pub fn world_pos(&self, color_slot: usize, offset: f64) -> Vec2 {
-        let st = &self.states[color_slot];
-        // 法线分离量（引擎缓动）叠加在状态上
-        let c = self.curs[color_slot];
-        if let Some(pl) = self.legs.get(c.idx) {
-            let leg = &pl.leg;
-            let tan = bezier_tangent(leg.from, leg.ctrl, leg.target, c.t.clamp(0.0, 1.0));
+        let pl = &self.plans[color_slot];
+        let st = &pl.state;
+        if let Some(leg) = pl.legs.get(pl.cur_idx) {
+            let tan = bezier_tangent(leg.leg.from, leg.leg.ctrl, leg.leg.target, pl.t.clamp(0.0, 1.0));
             let n = normal_of(tan);
             Vec2 {
                 x: (st.pos.x + n.x * offset * WANDER.offset_range).clamp(0.0, 1.0),
@@ -228,25 +213,49 @@ impl Player {
     }
 
     pub fn template_idx(&self, color_slot: usize) -> usize {
-        self.legs
-            .get(self.curs[color_slot].idx)
-            .map(|pl| pl.template_idx)
+        self.plans[color_slot]
+            .legs
+            .get(self.plans[color_slot].cur_idx)
+            .map(|x| x.template_idx)
             .unwrap_or(0)
     }
 
     /// 调试：当前目标
     pub fn target_of(&self, color_slot: usize) -> Vec2 {
-        self.legs
-            .get(self.curs[color_slot].idx)
-            .map(|pl| pl.leg.target)
+        self.plans[color_slot]
+            .legs
+            .get(self.plans[color_slot].cur_idx)
+            .map(|x| x.leg.target)
             .unwrap_or(Vec2 { x: 0.5, y: 0.5 })
     }
 
-    /// 游标索引（测试/调试：确认一个接一个）
     #[cfg(test)]
     pub fn cursor_idx(&self, color_slot: usize) -> usize {
-        self.curs[color_slot].idx
+        self.plans[color_slot].cur_idx
     }
+
+    #[cfg(test)]
+    pub fn is_delayed(&self, color_slot: usize) -> bool {
+        self.plans[color_slot].delay_ms > 0.0
+    }
+}
+
+/// 链上目标位置 + 切线（线性 t；spring 做全部平滑）
+fn chain_pos_and_tangent(legs: &VecDeque<PlannedLeg>, idx: usize, t: f64) -> (Vec2, Vec2) {
+    let pl = legs.get(idx).expect("cursor idx in chain");
+    let leg = &pl.leg;
+    let u = t.clamp(0.0, 1.0);
+    let p = quad_bezier(leg.from, leg.ctrl, leg.target, u);
+    let tan = bezier_tangent(leg.from, leg.ctrl, leg.target, u);
+    let n = normal_of(tan);
+    // 段内摆动（模板差异化）
+    let wave = TEMPLATES[pl.template_idx].wave;
+    let wobble = wave * (u * std::f64::consts::PI * 2.0).sin();
+    let pos = Vec2 {
+        x: (p.x + n.x * wobble).clamp(0.0, 1.0),
+        y: (p.y + n.y * wobble).clamp(0.0, 1.0),
+    };
+    (pos, tan)
 }
 
 /// 造段（几何纯函数）：切线连续 + 时长挂钩路径长度（恒定世界速度）
@@ -369,23 +378,27 @@ mod tests {
     }
 
     #[test]
-    fn one_behind_another() {
-        // 三个小孩一个接一个：队首游标 ≥ 队尾（且队首先进入下一段）
+    fn staggered_start() {
+        // 出发错开：球0 先动，球1/球2 依次延迟（无排队仪式）
         let spots = [
             Vec2 { x: 0.2, y: 0.3 },
             Vec2 { x: 0.5, y: 0.6 },
             Vec2 { x: 0.8, y: 0.4 },
         ];
         let mut p = Player::new(spots);
-        for _ in 0..60 * 30 {
+        assert!(p.is_delayed(2) && p.is_delayed(1), "球1/2 初始应延迟");
+        assert!(!p.is_delayed(0), "球0 应立即出发");
+        // 推进 300ms：球0 已动，球1/2 仍延迟
+        for _ in 0..18 {
             p.tick(16.7);
         }
-        let i0 = p.cursor_idx(0);
-        let i1 = p.cursor_idx(1);
-        let i2 = p.cursor_idx(2);
-        assert!(i0 >= i1 && i1 >= i2, "队首应先走: {i0} {i1} {i2}");
-        // 队首领先队尾至少一段（真正的一个接一个）
-        assert!(i0 > i2, "球0 应领先球2 至少一段: {i0} vs {i2}");
+        assert!(!p.is_delayed(0), "球0 应已出发");
+        assert!(p.is_delayed(1) || p.is_delayed(2), "球1/2 应仍在延迟");
+        // 推进 600ms：全部出发
+        for _ in 0..40 {
+            p.tick(16.7);
+        }
+        assert!(!p.is_delayed(0) && !p.is_delayed(1) && !p.is_delayed(2), "全部应已出发");
     }
 
     #[test]
@@ -473,15 +486,15 @@ mod tests {
             Vec2 { x: 0.7, y: 0.7 },
         ];
         let mut p = Player::new(spots);
-        // 跳过初始汇合段（未做 dur 约束），从正式段开始断言
         for _ in 0..60 * 30 {
             p.tick(16.7);
-            if p.legs.len() < 5 {
+            let legs = &p.plans[0].legs;
+            if legs.len() < 5 {
                 continue;
             }
-            let n = p.legs.len();
-            let tail = &p.legs[n - 1];
-            let prev = &p.legs[n - 2];
+            let n = legs.len();
+            let tail = &legs[n - 1];
+            let prev = &legs[n - 2];
             let r = tail.dur_ms / prev.dur_ms.max(1.0);
             assert!(r <= MAX_DUR_RATIO + 1e-6 && r >= 1.0 / MAX_DUR_RATIO - 1e-6,
                 "相邻段时长比越界: {r}");

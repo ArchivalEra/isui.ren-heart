@@ -72,6 +72,20 @@ impl BallsEngine {
         self.anchors[i.min(2)]
     }
 
+    /// 进入调试：三球归位到锚点（键盘移动选中球）
+    pub fn enter_debug(&mut self) {
+        self.phase = Phase::AtLogo { t: 0.0 };
+        self.debug = true;
+    }
+
+    pub fn exit_debug(&mut self) {
+        self.debug = false;
+        if matches!(self.phase, Phase::AtLogo { .. }) {
+            // 重新走入场仪式
+            self.phase = Phase::AtLogo { t: 0.0 };
+        }
+    }
+
     pub fn frame(&mut self, dt: f64) {
         self.step(dt);
         self.render();
@@ -256,7 +270,7 @@ impl BallsEngine {
                         self.ctx.set_line_cap("round");
                         // 等宽实心拖尾（与小球同宽，无感叹号渐细）
                         self.ctx.set_stroke_style(&wasm_bindgen::JsValue::from(color));
-                        self.ctx.set_line_width(radius);
+                        self.ctx.set_line_width(radius * 2.0); // 完整球宽（直径）
                         self.ctx.begin_path();
                         self.ctx.move_to(pts[0].0, pts[0].1);
                         for k in 1..n {
