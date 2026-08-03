@@ -2,7 +2,7 @@
 // - Free 阶段已删除（做不好就去掉）：三球永远成队，链无限延伸
 // - 不依赖 web_sys/wasm
 use crate::config::params::*;
-use crate::sim::math::{lerp, smoothstep, Vec2};
+use crate::sim::math::{smoothstep, Vec2};
 use crate::sim::planner::Player;
 
 /// 动画阶段
@@ -82,10 +82,20 @@ impl State {
     pub fn ball_pos(&self, color_slot: usize, offset: f64) -> Vec2 {
         match &self.phase {
             Phase::Queueing { t, player, from, delays } => {
-                // 思考期（t < delay）：静止构图；思考结束 2s 内自然汇入链上槽位
+                // 思考期（t < delay）：静止构图；思考结束 2s 内**弧线**汇入链上槽位
+                // （贝塞尔侧偏——不是直线 lerp，蓝绿跟进有弧线轨迹）
                 let k = smoothstep(((t - delays[color_slot]) / QUEUE_TRANSIT_MS).clamp(0.0, 1.0));
+                let base = from[color_slot];
                 let slot = player.world_pos(color_slot, offset);
-                lerp(from[color_slot], slot, k)
+                let dx = slot.x - base.x;
+                let dy = slot.y - base.y;
+                let dist = (dx * dx + dy * dy).sqrt().max(1e-9);
+                // 侧偏控制点：垂直方向弧（沿 -x,y 旋转的法线，幅度 0.22×dist）
+                let ctrl = Vec2 {
+                    x: base.x + dx * 0.5 + (-dy / dist) * dist * 0.22,
+                    y: base.y + dy * 0.5 + (dx / dist) * dist * 0.22,
+                };
+                crate::sim::math::quad_bezier(base, ctrl, slot, k)
             }
             Phase::Formation { player } => player.world_pos(color_slot, offset),
         }

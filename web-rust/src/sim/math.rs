@@ -60,10 +60,6 @@ pub fn catmull_rom(p0: Vec2, p1: Vec2, p2: Vec2, p3: Vec2, t: f64) -> Vec2 {
     }
 }
 
-pub fn lerp(a: Vec2, b: Vec2, k: f64) -> Vec2 {
-    Vec2 { x: a.x + (b.x - a.x) * k, y: a.y + (b.y - a.y) * k }
-}
-
 /// 世界坐标 → 屏幕坐标（自然俯视透视）
 pub fn screen_of(p: Vec2, w: f64, h: f64) -> (f64, f64, f64) {
     let d = depth_scale(p.y);

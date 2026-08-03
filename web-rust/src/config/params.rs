@@ -36,6 +36,8 @@ pub const SPEED_APPROVE_PROB: f64 = 0.4;
 // ---- 拖尾 ----
 /// 历史点最大间距（世界坐标）：超过即截断（高速/交叉时不会连成大长条）
 pub const TRAIL_MAX_SEG: f64 = 0.12;
+/// 拖尾按距离采样：相邻历史点最小间距（世界坐标）——高速点距均匀无珠链
+pub const TRAIL_SAMPLE_DIST: f64 = 0.015;
 
 /// 相邻段时长比上限：约束球速差异（「换顺序」过程太快 = dur 差异过大）
 /// 调小 → 换序更慢更平滑；调大 → 允许暴快（拖尾出师后高速韵味）
@@ -94,13 +96,17 @@ pub const SPEED_BANDS: [(f64, f64); 3] = [
 ];
 /// 高速段拖尾历史点上限（跳跃时拖尾拉长更飘逸）
 pub const TRAIL_FRAMES_HIGH: usize = 12;
+/// 小拖尾（TrailMini）历史点上限：短历史 + 渐变 ≈ 动态模糊
+pub const TRAIL_FRAMES_MINI: usize = 6;
 /// 入场预生成：粉球开跑前一次性预生成 N 秒的链（压力前置，运行期零规划）
 pub const PREPLAN_SECONDS: f64 = 300.0;
 /// 小圈圈滤波：段长低于此值时曲率按比例衰减（短段配小弯，防绿球哆嗦）
 pub const MIN_LEG_LEN: f64 = 0.35;
-/// 混合模板段概率（Euler spiral 离散近似）：与自研逻辑分开，默认关闭——
-/// make_blend_leg 保留为独立工具（含测试），需要时调高此概率即可启用
-pub const BLEND_PROB: f64 = 0.0;
+/// 曲线 profile 选择：Native（自研单段贝塞尔）或 EulerBlend（段内曲率渐变）
+/// 以后新增曲线策略：加 CurveProfile 变体 + 这里切换
+pub const CURVE_PROFILE: crate::sim::planner::CurveProfile = crate::sim::planner::CurveProfile::Native;
+/// EulerBlend 下混合段概率（make_blend_leg 保留为独立工具含测试）
+pub const BLEND_PROB: f64 = 0.2;
 /// logo 区域：每隔 LOGO_EVERY_ARC 弧长规划一个「logo 游走段」（区域规划回归）
 pub const LOGO_CENTER: (f64, f64) = (0.52, 0.42);
 pub const LOGO_RADIUS: f64 = 0.13;
@@ -125,27 +131,3 @@ pub const ANCHORS: [(f64, f64); 3] = [
     (0.525, 0.471), // 薄荷绿（右下）
 ];
 
-/// 高速椭圆化：只有非常快才压缩（阈值 + smoothstep 平滑曲线）
-pub struct Ellipse {
-    pub max_ratio: f64,
-    pub speed_base: f64,
-    /// 归一化速度阈值：低于此完全不压缩
-    pub threshold: f64,
-}
-
-pub const ELLIPSE: Ellipse = Ellipse {
-    max_ratio: 2.6,
-    speed_base: 0.008,
-    threshold: 0.45,
-};
-
-/// 动态模糊尾迹
-pub struct MotionBlur {
-    pub trail_len: f64,
-    pub trail_alpha: f64,
-}
-
-pub const MOTION_BLUR: MotionBlur = MotionBlur {
-    trail_len: 3.0,
-    trail_alpha: 0.3,
-};

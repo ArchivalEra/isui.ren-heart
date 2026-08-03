@@ -6,6 +6,14 @@
 // - PD spring 追踪链上目标（丝滑：位置+速度双目标）
 use crate::config::params::*;
 use crate::config::templates::TEMPLATES;
+
+/// 曲线生成 profile：以后新增曲线策略就加一个变体（如 EulerBlend 已备）
+/// 自研 = 单段贝塞尔（默认）；EulerBlend = 段内曲率渐变（make_blend_leg）
+#[derive(Clone, Copy, PartialEq)]
+pub enum CurveProfile {
+    Native,
+    EulerBlend,
+}
 use crate::sim::math::*;
 use std::collections::VecDeque;
 
@@ -25,7 +33,8 @@ pub struct PlannedLeg {
     pub speed: f64,
     /// 段级摆动幅度（独立于曲线，来自 WAVE_BANDS）
     pub wave: f64,
-    /// 有效曲率（小圈滤波后）：曲率感知速度用
+    /// 有效曲率（小圈滤波后）：供未来 profile（如曲率感知速度）使用
+    #[allow(dead_code)]
     pub curv_eff: f64,
     pub dur_ms: f64,
     /// 折线弧长（from→ctrl→target）
@@ -245,8 +254,8 @@ impl Player {
                     y: (from.y + (dir.x * angle.sin() + dir.y * angle.cos()) * d2 * 0.7).clamp(0.1, 0.9),
                 };
             }
-            // 混合模板段（Euler spiral）：20% 概率一整段内曲率 A→B→C 渐变
-            let mut pl = if rng.gen::<f64>() < BLEND_PROB {
+            // 曲线 profile：Native=自研单段；EulerBlend=段内曲率渐变（默认关闭）
+            let mut pl = if CURVE_PROFILE == CurveProfile::EulerBlend && rng.gen::<f64>() < BLEND_PROB {
                 let old_curv2 = TEMPLATES[tail.template_idx].curvature;
                 let pick = |rng: &mut rand::rngs::ThreadRng, prev: f64| {
                     for _ in 0..6 {
@@ -305,7 +314,10 @@ impl Player {
                 let p = quad_bezier(leg.from, leg.ctrl, leg.target, u);
                 let tan = bezier_tangent(leg.from, leg.ctrl, leg.target, u);
                 let n = normal_of(tan);
-                let wobble = pl.wave * (u * std::f64::consts::PI * 2.0).sin();
+                // 慢速摆动衰减：速度 < 0.3/s 时摆动按比例缩小——低速不扭动（蛆虫感）
+                let seg_speed = self.profile_speed(idx, u);
+                let wobble_scale = (seg_speed / 0.3).clamp(0.0, 1.0);
+                let wobble = pl.wave * wobble_scale * (u * std::f64::consts::PI * 2.0).sin();
                 // wobble 硬限制：摆动后位置永不越过 [0.03, 0.97]
                 let wob_x = n.x * wobble;
                 let wob_y = n.y * wobble;
