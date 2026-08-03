@@ -7,7 +7,7 @@ use crate::config::params::*;
 use crate::config::templates::TEMPLATES;
 use crate::sim::math::*;
 
-use crate::sim::target::random_target_apart;
+use crate::sim::target::{random_screen_point, random_target_apart};
 use std::collections::VecDeque;
 
 #[derive(Clone, Copy, Debug)]
@@ -42,20 +42,31 @@ struct BallState {
     rate: f64,
 }
 
-/// 执行器：三球独立链 + spring 物理
+/// 执行器：三球独立链 + spring 物理 + 队伍中心（在一起运动）
 pub struct Player {
     plans: [BallPlan; 3],
+    /// 队伍中心：三球围绕它活动（扇区分配偏移 → 编队感，无排队仪式）
+    center: Vec2,
     pub order: [usize; 3],
 }
 
 impl Player {
     /// 三球各自从到达点出发；出发错开 delay = i × STAGGER_MS（无排队仪式）
     pub fn new(spots: [Vec2; 3]) -> Self {
+        // 队伍中心 = 三球到达点重心（首段目标也围绕它 → 一开始就在一起）
+        let center = Vec2 {
+            x: (spots[0].x + spots[1].x + spots[2].x) / 3.0,
+            y: (spots[0].y + spots[1].y + spots[2].y) / 3.0,
+        };
         let mut plans_buf: [Option<BallPlan>; 3] = [None, None, None];
         for i in 0..3 {
-            // 目标去重（商量）
-            let others = [spots[(i + 1) % 3], spots[(i + 2) % 3]];
-            let target = random_target_apart(&others, MIN_BALL_DIST);
+            // 首段目标 = 中心 + 扇区偏移（球 i 固定 120° 分区）
+            let angle = i as f64 * std::f64::consts::PI * 2.0 / 3.0;
+            let r = 0.12;
+            let target = Vec2 {
+                x: (center.x + angle.cos() * r).clamp(0.0, 1.0),
+                y: (center.y + angle.sin() * r).clamp(0.0, 1.0),
+            };
             let dir = dir_of(spots[i], target);
             let mut leg = make_planned_leg(spots[i], dir, 0, target);
             if !leg_in_bounds(&leg.leg) {
@@ -76,7 +87,7 @@ impl Player {
             });
         }
         let plans = plans_buf.map(|p| p.expect("plan initialized"));
-        Player { plans, order: ORDERS[0] }
+        Player { plans, center, order: ORDERS[0] }
     }
 
     pub fn tick(&mut self, dt: f64) {
@@ -129,26 +140,25 @@ impl Player {
     fn ensure_chains(&mut self) {
         use rand::Rng;
         let mut rng = rand::thread_rng();
+        // 队伍中心缓慢漂移（连续变化 → 任何时刻各球目标同代近邻 = 在一起）
+        self.center.x = (self.center.x + (rng.gen::<f64>() - 0.5) * 0.004).clamp(0.05, 0.95);
+        self.center.y = (self.center.y + (rng.gen::<f64>() - 0.5) * 0.004).clamp(0.05, 0.95);
+        let c = self.center;
         for s in 0..3 {
             while self.plans[s].legs.len() < self.plans[s].cur_idx + 4 {
-                // 目标去重（商量）：与其他球当前目标保持距离
+                // 目标 = 中心 + 扇区偏移（球 i 固定 120° 分区 → 天然去重 + 编队）
+                let angle = s as f64 * std::f64::consts::PI * 2.0 / 3.0
+                    + (rng.gen::<f64>() - 0.5) * 0.5;
+                let r = 0.1 + rng.gen::<f64>() * 0.05;
+                let target = Vec2 {
+                    x: (c.x + angle.cos() * r).clamp(0.0, 1.0),
+                    y: (c.y + angle.sin() * r).clamp(0.0, 1.0),
+                };
                 let from = self.plans[s]
                     .legs
                     .back()
                     .map(|x| x.leg.target)
                     .unwrap_or(Vec2 { x: 0.5, y: 0.5 });
-                let others = [
-                    self.plans[(s + 1) % 3]
-                        .legs
-                        .back()
-                        .map(|x| x.leg.target)
-                        .unwrap_or(from),
-                    self.plans[(s + 2) % 3]
-                        .legs
-                        .back()
-                        .map(|x| x.leg.target)
-                        .unwrap_or(from),
-                ];
                 // 拷贝 tail 关键值（避免借用冲突）
                 let (tail_leg, tail_dur, tail_tpl) = {
                     let tail = self.plans[s].legs.back().expect("chain non-empty");
@@ -173,25 +183,13 @@ impl Player {
                         self.order = next;
                     }
                 }
-                // 重试生成合法段
-                let mut pushed = false;
-                for _ in 0..8 {
-                    let target = random_target_apart(&others, MIN_BALL_DIST);
-                    let pl = make_planned_leg(from, dir, template_idx, target);
-                    if leg_in_bounds(&pl.leg) {
-                        self.plans[s]
-                            .legs
-                            .push_back(clamp_dur_to_chain(pl, tail_dur));
-                        pushed = true;
-                        break;
-                    }
-                }
-                if !pushed {
-                    let target = random_target_apart(&others, MIN_BALL_DIST);
+                // 扇区目标直接生成（已在中心附近，天然屏内）；若出界收缩
+                let mut pl = make_planned_leg(from, dir, template_idx, target);
+                if !leg_in_bounds(&pl.leg) {
                     let safe = clamp_target_in_bounds(from, dir, template_idx, target);
-                    let pl = make_planned_leg(from, dir, template_idx, safe);
-                    self.plans[s].legs.push_back(clamp_dur_to_chain(pl, tail_dur));
+                    pl = make_planned_leg(from, dir, template_idx, safe);
                 }
+                self.plans[s].legs.push_back(clamp_dur_to_chain(pl, tail_dur));
             }
         }
     }
@@ -374,6 +372,38 @@ mod tests {
                 spots[s],
                 pos
             );
+        }
+    }
+
+    #[test]
+    fn balls_stay_together() {
+        // 队伍中心模型：三球目标始终围绕中心（半径 ≤0.18+容差）——「在一起运动」
+        let spots = [
+            Vec2 { x: 0.3, y: 0.3 },
+            Vec2 { x: 0.5, y: 0.5 },
+            Vec2 { x: 0.7, y: 0.7 },
+        ];
+        let mut p = Player::new(spots);
+        for _ in 0..60 * 30 {
+            p.tick(16.7);
+        }
+        // 三球目标两两相聚（编队半径内）——「在一起运动」
+        for s in 0..3 {
+            let tgt = p.target_of(s);
+            for o in (s + 1)..3 {
+                let t2 = p.target_of(o);
+                let d = ((tgt.x - t2.x).powi(2) + (tgt.y - t2.y).powi(2)).sqrt();
+                assert!(d <= 0.42, "球{s} 与球{o} 目标应相聚: {d}");
+            }
+        }
+        // 实际位置也相聚不远
+        for s in 0..3 {
+            let pos = p.world_pos(s, 0.0);
+            for o in (s + 1)..3 {
+                let p2 = p.world_pos(o, 0.0);
+                let d = ((pos.x - p2.x).powi(2) + (pos.y - p2.y).powi(2)).sqrt();
+                assert!(d <= 0.55, "球{s} 与球{o} 应相聚: {d}");
+            }
         }
     }
 

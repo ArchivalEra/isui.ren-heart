@@ -110,6 +110,13 @@ impl BallsEngine {
     }
 
     fn step(&mut self, dt: f64) {
+        // 调试模式：锁定状态机（球停在锚点，键盘方向键可移动）
+        if self.debug {
+            if !matches!(self.phase, Phase::AtLogo { .. }) {
+                self.phase = Phase::AtLogo { t: 0.0 };
+            }
+            return;
+        }
         let mut queue_done = None;
         match &mut self.phase {
             Phase::AtLogo { t } => {
