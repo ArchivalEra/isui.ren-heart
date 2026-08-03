@@ -37,7 +37,8 @@ pub const SPEED_APPROVE_PROB: f64 = 0.4;
 /// 历史点最大间距（世界坐标）：超过即截断（高速/交叉时不会连成大长条）
 pub const TRAIL_MAX_SEG: f64 = 0.12;
 /// 拖尾按距离采样：相邻历史点最小间距（世界坐标）——高速点距均匀无珠链
-pub const TRAIL_SAMPLE_DIST: f64 = 0.015;
+/// 采样距 × 点数 = 拖尾总长：0.01 × 5 ≈ 0.05 世界单位（≈40px@800 宽）——短而利落
+pub const TRAIL_SAMPLE_DIST: f64 = 0.01;
 
 /// 相邻段时长比上限：约束球速差异（「换顺序」过程太快 = dur 差异过大）
 /// 调小 → 换序更慢更平滑；调大 → 允许暴快（拖尾出师后高速韵味）
@@ -94,10 +95,10 @@ pub const SPEED_BANDS: [(f64, f64); 3] = [
     (0.95, 1.1),   // 巡航
     (1.5, 1.8),    // 高速跳跃（需批准，40%）
 ];
-/// 高速段拖尾历史点上限（跳跃时拖尾拉长更飘逸）
-pub const TRAIL_FRAMES_HIGH: usize = 12;
-/// 小拖尾（TrailMini）历史点上限：短历史 + 渐变 ≈ 动态模糊
-pub const TRAIL_FRAMES_MINI: usize = 6;
+/// 小拖尾（TrailMini）历史点上限：短历史 + 渐变 ≈ 动态模糊（尚未开工）
+pub const TRAIL_FRAMES_MINI: usize = 4;
+/// 实心拖尾历史点上限：5 点（短拖尾，pixel 风格干净消除）
+pub const TRAIL_FRAMES_SOLID: usize = 5;
 /// 入场预生成：粉球开跑前一次性预生成 N 秒的链（压力前置，运行期零规划）
 pub const PREPLAN_SECONDS: f64 = 300.0;
 /// 小圈圈滤波：段长低于此值时曲率按比例衰减（短段配小弯，防绿球哆嗦）
@@ -111,12 +112,6 @@ pub const BLEND_PROB: f64 = 0.2;
 pub const LOGO_CENTER: (f64, f64) = (0.52, 0.42);
 pub const LOGO_RADIUS: f64 = 0.13;
 pub const LOGO_EVERY_ARC: f64 = 9.6; // ≈ 60s 巡航弧长
-/// 判定「高速跳跃」的速度阈值（世界单位/秒）
-pub const JUMP_SPEED: f64 = 0.3;
-/// 摆动档位（每段随机选；收窄 + 段间连续性约束 → 无折角）
-pub const WAVE_BANDS: [f64; 3] = [0.0, 0.02, 0.05];
-/// 段间摆动最大变化（wave 连续性，防折角）
-pub const WAVE_CURV_STEP: f64 = 0.03;
 /// 队形常量：三球法线分离量（不再属于模板）
 pub const FORMATION_OFFSETS: [f64; 3] = [0.0, 0.6, -0.6];
 

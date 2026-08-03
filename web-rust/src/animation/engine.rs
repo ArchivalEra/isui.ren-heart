@@ -2,7 +2,7 @@
 // 纯逻辑（规划/执行/几何）在 sim/ 模块 —— 原生 cargo test 可测
 use crate::config::params::*;
 use crate::sim::math::{screen_of, Vec2};
-use crate::sim::state::{trail_cap, should_track, State};
+use crate::sim::state::{should_track, State};
 use std::collections::VecDeque;
 use wasm_bindgen::JsCast;
 use web_sys::{CanvasRenderingContext2d, HtmlCanvasElement};
@@ -113,7 +113,7 @@ impl BallsEngine {
                 }
                 h.push_back((pos.x, pos.y));
                 let cap = match self.mode {
-                    RenderMode::Trail => trail_cap(speed),
+                    RenderMode::Trail => TRAIL_FRAMES_SOLID,
                     RenderMode::TrailMini => TRAIL_FRAMES_MINI,
                 };
                 while h.len() > cap {

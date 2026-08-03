@@ -31,8 +31,6 @@ pub struct PlannedLeg {
     pub template_idx: usize,
     /// 段级速度倍率（独立于曲线，来自 SPEED_BANDS）
     pub speed: f64,
-    /// 段级摆动幅度（独立于曲线，来自 WAVE_BANDS）
-    pub wave: f64,
     /// 有效曲率（小圈滤波后）：供未来 profile（如曲率感知速度）使用
     #[allow(dead_code)]
     pub curv_eff: f64,
@@ -88,11 +86,10 @@ impl Player {
             }
         };
         let speed = roll_speed();
-        let wave = roll_wave(0.0);
-        let mut pl = make_planned_leg(anchor, dir, 0, target, speed, wave);
+        let mut pl = make_planned_leg(anchor, dir, 0, target, speed);
         if !leg_in_bounds(&pl) {
-            let safe = clamp_target_in_bounds(anchor, dir, 0, target, speed, wave);
-            pl = make_planned_leg(anchor, dir, 0, safe, speed, wave);
+            let safe = clamp_target_in_bounds(anchor, dir, 0, target, speed);
+            pl = make_planned_leg(anchor, dir, 0, safe, speed);
         }
         let mut chain = VecDeque::new();
         chain.push_back(pl);
@@ -217,9 +214,8 @@ impl Player {
             } else {
                 tail.template_idx
             };
-            // 段级运动参数：速度档（含高速批准制）+ 摆动档（段间连续）
+            // 段级运动参数：速度档（含高速批准制）
             let speed = roll_speed();
-            let wave = roll_wave(tail.wave);
             if rng.gen::<f64>() < PROB.switch_order {
                 let next = ORDERS[rng.gen_range(0..ORDERS.len())];
                 if next != self.order {
@@ -270,17 +266,17 @@ impl Player {
                 let curv_c = pick(&mut rng, curv_b);
                 make_blend_leg(
                     from, dir, [old_curv2, curv_b, curv_c], target, 0.3,
-                    template_idx, speed, wave,
+                    template_idx, speed,
                 )
             } else {
-                make_planned_leg(from, dir, template_idx, target, speed, wave)
+                make_planned_leg(from, dir, template_idx, target, speed)
             };
             if !leg_in_bounds(&pl) {
-                let safe = clamp_target_in_bounds(from, dir, template_idx, target, speed, wave);
+                let safe = clamp_target_in_bounds(from, dir, template_idx, target, speed);
                 pl = if rng.gen::<f64>() < BLEND_PROB {
-                    make_blend_leg(from, dir, [0.0, 0.0, 0.0], safe, 0.3, template_idx, speed, wave)
+                    make_blend_leg(from, dir, [0.0, 0.0, 0.0], safe, 0.3, template_idx, speed)
                 } else {
-                    make_planned_leg(from, dir, template_idx, safe, speed, wave)
+                    make_planned_leg(from, dir, template_idx, safe, speed)
                 };
             }
             if pl.arc < 0.05 {
@@ -292,7 +288,7 @@ impl Player {
                     x: from.x + dx / dl * 0.3,
                     y: from.y + dy / dl * 0.3,
                 };
-                pl = make_planned_leg(from, dir, template_idx, forced, speed, wave);
+                pl = make_planned_leg(from, dir, template_idx, forced, speed);
                 self.chain.push_back(clamp_dur_to_chain(pl, tail.dur_ms));
                 break; // 本帧补段到此为止（保底段保证链增长）
             }
@@ -313,19 +309,8 @@ impl Player {
                 let leg = &pl.legs[sub_idx];
                 let p = quad_bezier(leg.from, leg.ctrl, leg.target, u);
                 let tan = bezier_tangent(leg.from, leg.ctrl, leg.target, u);
-                let n = normal_of(tan);
-                // 慢速摆动衰减：速度 < 0.3/s 时摆动按比例缩小——低速不扭动（蛆虫感）
-                let seg_speed = self.profile_speed(idx, u);
-                let wobble_scale = (seg_speed / 0.3).clamp(0.0, 1.0);
-                let wobble = pl.wave * wobble_scale * (u * std::f64::consts::PI * 2.0).sin();
-                // wobble 硬限制：摆动后位置永不越过 [0.03, 0.97]
-                let wob_x = n.x * wobble;
-                let wob_y = n.y * wobble;
-                let pos = Vec2 {
-                    x: if wob_x >= 0.0 { (p.x + wob_x).min(0.97) } else { (p.x + wob_x).max(0.03) },
-                    y: if wob_y >= 0.0 { (p.y + wob_y).min(0.97) } else { (p.y + wob_y).max(0.03) },
-                };
-                return (pos, tan, idx, u);
+                // wave 已彻底删除（蛆虫扭动源）；位置 = 贝塞尔点本身（链几何已保证屏内）
+                return (p, tan, idx, u);
             }
             acc += pl.arc;
         }
@@ -387,25 +372,13 @@ fn roll_speed() -> f64 {
     }
 }
 
-/// 段摆动：随机档位（独立于曲线）；段间变化受 WAVE_CURV_STEP 约束（防折角）
-fn roll_wave(prev_wave: f64) -> f64 {
-    for _ in 0..6 {
-        let w = WAVE_BANDS[rand::random::<usize>() % WAVE_BANDS.len()];
-        if (w - prev_wave).abs() <= WAVE_CURV_STEP {
-            return w;
-        }
-    }
-    prev_wave
-}
-
-/// 造段（几何纯函数）：切线连续 + 段级 speed/wave（独立于曲线模板）
+/// 造段（几何纯函数）：切线连续 + 段级 speed（wave 已彻底删除）
 pub fn make_planned_leg(
     from: Vec2,
     dir: Vec2,
     template_idx: usize,
     target: Vec2,
     speed: f64,
-    wave: f64,
 ) -> PlannedLeg {
     let dx = target.x - from.x;
     let dy = target.y - from.y;
@@ -413,7 +386,7 @@ pub fn make_planned_leg(
     let template = &TEMPLATES[template_idx];
     // 小圈圈滤波：段长低于 MIN_LEG_LEN 时曲率按比例衰减（短段配小弯，防哆嗦）
     let curv_eff = template.curvature * (dist / MIN_LEG_LEN).min(1.0);
-    make_blend_leg(from, dir, [curv_eff, curv_eff, curv_eff], target, dist, template_idx, speed, wave)
+    make_blend_leg(from, dir, [curv_eff, curv_eff, curv_eff], target, dist, template_idx, speed)
 }
 
 /// 混合模板段：一整段内曲率从 A 渐变到 B 再到 C（Euler spiral 离散近似）
@@ -427,7 +400,6 @@ pub fn make_blend_leg(
     dist: f64,
     template_idx: usize,
     speed: f64,
-    wave: f64,
 ) -> PlannedLeg {
     let sub_len = dist / 5.0;
     let mut legs = [Leg {
@@ -475,7 +447,6 @@ pub fn make_blend_leg(
         legs,
         template_idx,
         speed,
-        wave,
         curv_eff,
         dur_ms,
         arc,
@@ -516,10 +487,9 @@ fn clamp_target_in_bounds(
     template_idx: usize,
     mut target: Vec2,
     speed: f64,
-    wave: f64,
 ) -> Vec2 {
     for _ in 0..24 {
-        let pl = make_planned_leg(from, dir, template_idx, target, speed, wave);
+        let pl = make_planned_leg(from, dir, template_idx, target, speed);
         if leg_in_bounds(&pl) {
             return target;
         }
@@ -548,7 +518,7 @@ mod tests {
         let from = Vec2 { x: 0.1, y: 0.2 };
         let dir = Vec2 { x: 1.0, y: 0.0 };
         let target = Vec2 { x: 0.9, y: 0.8 };
-        let pl = make_planned_leg(from, dir, 0, target, 1.0, 0.0);
+        let pl = make_planned_leg(from, dir, 0, target, 1.0);
         assert_eq!(pl.legs[0].from, from);
         assert_eq!(pl.legs[4].target, target);
         assert_eq!(pl.legs[0].ctrl.x, pl.legs[0].ctrl.x); // 结构自检
@@ -650,7 +620,7 @@ mod tests {
         let from = Vec2 { x: 0.2, y: 0.5 };
         let dir = Vec2 { x: 1.0, y: 0.0 };
         let target = Vec2 { x: 0.8, y: 0.5 };
-        let pl = make_blend_leg(from, dir, [1.0, 0.5, 0.0], target, 0.6, 0, 1.0, 0.0);
+        let pl = make_blend_leg(from, dir, [1.0, 0.5, 0.0], target, 0.6, 0, 1.0);
         // 终点精确命中
         assert_eq!(pl.legs[4].target, target);
         // 曲率递减验证：各子段相对「自身起点方向」的法线侧偏（cross(dir, ctrl-from)）
@@ -681,8 +651,8 @@ mod tests {
     fn duration_scales_with_path_length() {
         let from = Vec2 { x: 0.1, y: 0.5 };
         let dir = Vec2 { x: 1.0, y: 0.0 };
-        let short = make_planned_leg(from, dir, 0, Vec2 { x: 0.3, y: 0.5 }, 1.0, 0.0);
-        let long = make_planned_leg(from, dir, 0, Vec2 { x: 0.95, y: 0.5 }, 1.0, 0.0);
+        let short = make_planned_leg(from, dir, 0, Vec2 { x: 0.3, y: 0.5 }, 1.0);
+        let long = make_planned_leg(from, dir, 0, Vec2 { x: 0.95, y: 0.5 }, 1.0);
         assert!(long.dur_ms > short.dur_ms * 2.0);
     }
 }
