@@ -105,7 +105,7 @@ pub const PREPLAN_SECONDS: f64 = 300.0;
 pub const MIN_LEG_LEN: f64 = 0.35;
 /// 曲线 profile 选择：Native（自研单段贝塞尔）或 EulerBlend（段内曲率渐变）
 /// 以后新增曲线策略：加 CurveProfile 变体 + 这里切换
-pub const CURVE_PROFILE: crate::sim::planner::CurveProfile = crate::sim::planner::CurveProfile::EulerBlend;
+pub const CURVE_PROFILE: crate::sim::planner::CurveProfile = crate::sim::planner::CurveProfile::Native;
 /// EulerBlend 下混合段概率（make_blend_leg 保留为独立工具含测试）
 pub const BLEND_PROB: f64 = 0.2;
 /// logo 区域：每隔 LOGO_EVERY_ARC 弧长规划一个「logo 游走段」（区域规划回归）
