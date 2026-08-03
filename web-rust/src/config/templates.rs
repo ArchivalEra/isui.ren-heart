@@ -34,11 +34,14 @@
 //   - 想让队伍「大范围巡航」：curvature ≈ 0.0~0.3
 //   - 新增后目测：`./build.sh && python3 serve.py 8080`
 //
-// 【现有曲线一览】（14 个，2026-08-03）
-//   run(直线) sweep(大转弯) wiggle(微弯) glide(滑翔弧) sprint(直线冲刺)
-//   sway(摇摆弧) loop(绕圈) zigzag(锯齿) crawl(缓弧) dash(折返)
-//   drift(漂移) stroll(散步弧) coil(线圈) coil_r(反向线圈)
-//   ※ coil/coil_r 为「待重做」示例：±1.5 偏粗暴，欢迎替换更优美的曲线
+// 【现有曲线一览】（25 个，gemini 师傅 2026-08-04 六主题梯队）
+//   0 轴线基准：run(直线)
+//   1 细微流韵：stroll/stroll_r(闲步±0.10) breeze/breeze_r(拂风±0.20)
+//   2 优雅巡航：ripple/ripple_r(漪涟±0.30) glide/glide_r(滑翔±0.40) sway/sway_r(摇摆±0.52)
+//   3 律动开合：loop/loop_r(绕弧±0.65) sweep/sweep_r(漫游±0.78) surge/surge_r(涌浪±0.90)
+//   4 疾速甩尾：drift/drift_r(漂移±1.05) whirl/whirl_r(柔卷±1.22)
+//   5 极光飞花：coil/coil_r(灵线±1.40) vortex/vortex_r(漩涡±1.55)
+//   ※ 任意相邻档位 |Δcurv| ∈ [0.10, 0.18] << 0.35 连续性约束——衔接天然平滑
 // ═══════════════════════════════════════════════════════════════════
 
 pub struct Template {
@@ -50,22 +53,38 @@ pub struct Template {
     pub curvature: f64,
 }
 
-pub const TEMPLATES: [Template; 14] = [
-    Template { id: "run", name: "直线", curvature: 0.0 },
-    Template { id: "sweep", name: "大转弯", curvature: 0.65 },
-    Template { id: "wiggle", name: "微弯", curvature: 0.22 },
-    Template { id: "glide", name: "滑翔弧", curvature: 0.35 },
-    Template { id: "sprint", name: "直线冲刺", curvature: 0.08 },
-    Template { id: "sway", name: "摇摆弧", curvature: 0.5 },
-    Template { id: "loop", name: "绕圈", curvature: 0.6 },
-    Template { id: "zigzag", name: "锯齿", curvature: -0.4 },
-    Template { id: "crawl", name: "缓弧", curvature: 0.18 },
-    Template { id: "dash", name: "折返", curvature: -0.55 },
-    Template { id: "drift", name: "漂移", curvature: 0.75 },
-    Template { id: "stroll", name: "散步弧", curvature: 0.12 },
-    // 待重做示例：线圈（给 AI 的参考起点，可替换成更优美的曲线）
-    Template { id: "coil", name: "线圈", curvature: 1.5 },
-    Template { id: "coil_r", name: "反向线圈", curvature: -1.5 },
+pub const TEMPLATES: [Template; 25] = [
+    // --- 0. 轴线基准 ---
+    Template { id: "run", name: "直线", curvature: 0.00 },
+    // --- 1. 细微流韵 (±0.10 ~ ±0.20) ---
+    Template { id: "stroll", name: "闲步", curvature: 0.10 },
+    Template { id: "stroll_r", name: "闲步·反", curvature: -0.10 },
+    Template { id: "breeze", name: "拂风", curvature: 0.20 },
+    Template { id: "breeze_r", name: "拂风·反", curvature: -0.20 },
+    // --- 2. 优雅巡航 (±0.30 ~ ±0.52) ---
+    Template { id: "ripple", name: "漪涟", curvature: 0.30 },
+    Template { id: "ripple_r", name: "漪涟·反", curvature: -0.30 },
+    Template { id: "glide", name: "滑翔", curvature: 0.40 },
+    Template { id: "glide_r", name: "滑翔·反", curvature: -0.40 },
+    Template { id: "sway", name: "摇摆", curvature: 0.52 },
+    Template { id: "sway_r", name: "摇摆·反", curvature: -0.52 },
+    // --- 3. 律动开合 (±0.65 ~ ±0.90) ---
+    Template { id: "loop", name: "绕弧", curvature: 0.65 },
+    Template { id: "loop_r", name: "绕弧·反", curvature: -0.65 },
+    Template { id: "sweep", name: "漫游", curvature: 0.78 },
+    Template { id: "sweep_r", name: "漫游·反", curvature: -0.78 },
+    Template { id: "surge", name: "涌浪", curvature: 0.90 },
+    Template { id: "surge_r", name: "涌浪·反", curvature: -0.90 },
+    // --- 4. 疾速甩尾 (±1.05 ~ ±1.22) ---
+    Template { id: "drift", name: "漂移", curvature: 1.05 },
+    Template { id: "drift_r", name: "漂移·反", curvature: -1.05 },
+    Template { id: "whirl", name: "柔卷", curvature: 1.22 },
+    Template { id: "whirl_r", name: "柔卷·反", curvature: -1.22 },
+    // --- 5. 极光飞花 (±1.40 ~ ±1.55) ---
+    Template { id: "coil", name: "灵线", curvature: 1.40 },
+    Template { id: "coil_r", name: "灵线·反", curvature: -1.40 },
+    Template { id: "vortex", name: "漩涡", curvature: 1.55 },
+    Template { id: "vortex_r", name: "漩涡·反", curvature: -1.55 },
 ];
 
 #[cfg(test)]
