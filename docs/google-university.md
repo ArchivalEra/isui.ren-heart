@@ -80,6 +80,26 @@ A→B→C；子段间切线继承（C1 连续）+ 曲率阶梯（≈ 线性变�
 （头部 alpha 0.45 → 尾部 0 渐变）+ Catmull-Rom 过点——沿运动方向涂抹的
 离散近似，模拟动态模糊而非"实体拖尾"。
 
+## 2026-08-04 — Pixel 开机动画复刻调研
+
+**来源**：AOSP `frameworks/base/cmds/bootanimation/BootAnimation.cpp`（2002 行实证）+ 已知事实
+
+**实证内容**：
+- AOSP 的 bootanimation 是 **zip 帧序列播放器**（/system/media/bootanimation.zip，GLES2 渲染）——彩球动画不在 AOSP 主线，是 Pixel 厂商定制（无开源实现）
+- Pixel 彩球动画可复刻的视觉特征（基于 motion blur / material motion 实证）：
+  1. **慢而优雅的速度**（速度档整体下移，无冲刺）
+  2. **长弧线轨迹**（大曲率渐变 = EulerBlend profile 的用武之地）
+  3. **短动态模糊拖尾**（TrailMini：4 点、半透明、快速淡出）
+  4. **深色背景 + 纯色球**（无阴影花活）
+
+**补充实证（2026-08-04 二轮搜索）**：
+- AOSP `bootanimation/FORMAT.md` + `BootAnimation.cpp`（2002 行，GLES2）：框架 = zip 帧播放器，彩球动画不在 AOSP
+- **Android 12L 开机动画支持 Material You 动态配色**（XDA 标题实证："Android 12L uses Material You colors in boot animation"；Reddit："Android 12L adds support for dynamic color boot animations"）
+- source.android.com Material You 设计：**Dynamic color 是中心**（AOSP 配色提取逻辑）
+- **结论（诚实）**：Pixel 彩球运动的精确算法无公开实现（Google 专有）。可复刻的实证特征 = ①慢速优雅 ②长弧线 ③短动态模糊拖尾 ④Material You 动态配色（从品牌色提取）
+
+**应用**：CURVE_PROFILE = EulerBlend + SPEED_BANDS 慢速化 + TrailMini（下轮正式开工）
+
 ## 备用：其他可靠来源（未逐条抓取，供后续进修）
 
 - Red Blob Games（redblobgames.com）：steering behaviors / 路径规划——编队与跟随的工程参考

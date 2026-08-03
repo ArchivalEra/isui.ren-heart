@@ -88,12 +88,12 @@ pub const WANDER: Wander = Wander {
 };
 
 // ---- 段级运动参数（独立于曲线模板，消除组合爆炸）----
-/// 速度档位（每段随机选档；>1.2 为高速，受批准制约束）
-/// 巡航档距小（拖尾均匀），高速档大（跳跃感：快速移动 + 长拖尾）
+/// 速度档位（pixel 开机动画风格：整体慢而优雅，高速档少量保留）
+/// 巡航档距小（拖尾均匀），高速档大（跳跃感）
 pub const SPEED_BANDS: [(f64, f64); 3] = [
-    (0.75, 0.9),   // 慢
-    (0.95, 1.1),   // 巡航
-    (1.5, 1.8),    // 高速跳跃（需批准，40%）
+    (0.5, 0.65),   // 慢（pixel 主基调）
+    (0.72, 0.85),  // 巡航
+    (1.1, 1.3),    // 高速（需批准，40%）
 ];
 /// 小拖尾（TrailMini）历史点上限：短历史 + 渐变 ≈ 动态模糊（尚未开工）
 pub const TRAIL_FRAMES_MINI: usize = 4;
@@ -105,7 +105,7 @@ pub const PREPLAN_SECONDS: f64 = 300.0;
 pub const MIN_LEG_LEN: f64 = 0.35;
 /// 曲线 profile 选择：Native（自研单段贝塞尔）或 EulerBlend（段内曲率渐变）
 /// 以后新增曲线策略：加 CurveProfile 变体 + 这里切换
-pub const CURVE_PROFILE: crate::sim::planner::CurveProfile = crate::sim::planner::CurveProfile::Native;
+pub const CURVE_PROFILE: crate::sim::planner::CurveProfile = crate::sim::planner::CurveProfile::EulerBlend;
 /// EulerBlend 下混合段概率（make_blend_leg 保留为独立工具含测试）
 pub const BLEND_PROB: f64 = 0.2;
 /// logo 区域：每隔 LOGO_EVERY_ARC 弧长规划一个「logo 游走段」（区域规划回归）

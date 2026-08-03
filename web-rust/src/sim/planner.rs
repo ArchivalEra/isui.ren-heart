@@ -11,6 +11,7 @@ use crate::config::templates::TEMPLATES;
 /// 自研 = 单段贝塞尔（默认）；EulerBlend = 段内曲率渐变（make_blend_leg）
 #[derive(Clone, Copy, PartialEq)]
 pub enum CurveProfile {
+    #[allow(dead_code)] // Native 随时可切回（自研单段贝塞尔）
     Native,
     EulerBlend,
 }
