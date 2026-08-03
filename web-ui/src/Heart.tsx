@@ -36,7 +36,7 @@ export default function Heart() {
       <div class="heart-logo" aria-hidden="true">
         <img class="heart-logo-img" src="logo.png" alt="tayori" />
       </div>
-      <main class="heart-main">
+      <main class={`heart-main${wallOpen ? " lifted" : ""}`}>
         <h1 class="heart-title">
           <Typewriter scatter={wallOpen} />
         </h1>

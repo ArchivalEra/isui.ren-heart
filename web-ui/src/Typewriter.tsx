@@ -53,9 +53,11 @@ export default function Typewriter({ scatter }: { scatter: boolean }) {
     if (scatter && !scattered.current) {
       scattered.current = true;
       typedRef.current?.stop();
-      // 文字字符化（粉碎的碎片）
-      const text = el.textContent ?? "";
-      const chars = [...text];
+      // 粉碎用 typed.js 的完整当前字符串（strings[arrayPos]）——
+      // 曾用 el.textContent（打字机瞬时内容，删除中/打字中经常取到空/半句 → 粉碎概率失败）
+      const td = typedRef.current;
+      const full = td ? td.strings[td.arrayPos] ?? "" : el.textContent ?? "";
+      const chars = [...full];
       el.innerHTML = "";
       for (const ch of chars) {
         const s = document.createElement("span");
