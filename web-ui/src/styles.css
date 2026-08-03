@@ -237,42 +237,6 @@ body {
     0 2px 4px rgba(17, 17, 17, 0.1);
 }
 
-/* 卡片墙下拉面板：max-height + opacity 过渡（页面内展开，非跳转） */
-.card-wall {
-  max-height: 0;
-  opacity: 0;
-  overflow: hidden;
-  pointer-events: none;
-  /* translateX(-50%) 是居中定位常量（基础类就含）——动画只发生在 Y 轴，
-     曾只写在 open 类 → 打开时横移 50%、关闭时瞬间跳位（站主实测） */
-  transform: translateX(-50%) translateY(-8px);
-  /* 收起（关闭）：delay 200ms——先让整个文件夹下移归位，卡片再收起（无瞬移无打架） */
-  transition: max-height 0.3s cubic-bezier(0.3, 0, 0.8, 0.15) 200ms,
-    opacity 0.25s ease 200ms, transform 0.3s cubic-bezier(0.3, 0, 0.8, 0.15) 200ms;
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-  min-width: 260px;
-  margin-top: 0;
-}
-
-.card-wall-open {
-  max-height: 420px;
-  opacity: 1;
-  pointer-events: auto;
-  transform: translateX(-50%) translateY(0);
-  margin-top: 0;
-  /* absolute：从按钮正下方展开，不参与布局流（打字文字不会上移） */
-  position: absolute;
-  top: calc(100% + 14px);
-  left: 50%;
-  z-index: 50;
-  box-shadow: 0 12px 32px rgba(17, 17, 17, 0.18);
-  /* 展开：立即动画（无 delay）——站主认可的打开动画 */
-  transition: max-height 0.45s cubic-bezier(0.2, 0, 0, 1),
-    opacity 0.35s ease, transform 0.45s cubic-bezier(0.2, 0, 0, 1);
-}
-
 .wall-card {
   display: flex;
   align-items: center;
@@ -471,6 +435,41 @@ body {
   color: var(--on-surface);
   cursor: pointer;
   font-size: 12px;
+}
+
+/* ---------- 打字机文字淡出（卡片墙展开时，站主钦点不做粉碎） ---------- */
+.scatter-char {
+  display: inline-block;
+  transition: opacity 0.3s ease;
+}
+
+.scatter-char.fading {
+  opacity: 0;
+}
+
+/* 卡片墙面板：只动 opacity/visibility（无 max-height、无 translate 微调、无 delay 堆叠）
+   时序：打开 = wrap 上移 0.3s + 卡片立即淡入 0.25s（同时）
+         关闭 = wrap 下移 0.3s → 卡片延迟 0.3s 淡出 0.2s → 0.5s 隐藏 */
+.card-wall {
+  position: absolute;
+  top: calc(100% + 14px);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  min-width: 260px;
+  z-index: 50;
+  box-shadow: 0 12px 32px rgba(17, 17, 17, 0.18);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease 0.3s, visibility 0s linear 0.5s;
+}
+
+.card-wall-open {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.25s ease, visibility 0s;
 }
 
 /* ---------- 打字机文字淡出（卡片墙展开时，站主钦点不做粉碎） ---------- */
