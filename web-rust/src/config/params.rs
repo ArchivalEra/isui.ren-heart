@@ -52,16 +52,15 @@ pub const WANDER: Wander = Wander {
     offset_range: 0.05,
 };
 
-/// 透视：自然俯视（0=远处地平线，1=近处镜头前）
-pub fn depth_scale(y: f64) -> f64 {
-    0.55 + 0.45 * y.clamp(0.0, 1.0)
-}
+/// 三球「商量」最小间距（世界坐标）
+pub const MIN_BALL_DIST: f64 = 0.3;
 
 /// 帧率自适应：rAF 预算（ms/帧）。实际帧率由 vsync 决定，超预算自动跳帧
 pub const FRAME_BUDGET_MS: f64 = 16.0; // 60fps 预算；慢设备自动降频
 pub const MAX_SKIP: u32 = 4; // 最多每 5 帧渲染 1 次（≈12fps 保底，电视 23fps 之上）
 
 /// 入场仪式
+pub const FADE_IN_MS: f64 = 800.0; // 锚点淡入时长
 pub const AT_LOGO_MS: f64 = 3000.0; // 在 logo 球位停留
 pub const TRAVEL_MS: f64 = 1600.0; // 前往随机区域时长
 pub const QUEUE_MS: f64 = 900.0; // 排队时长

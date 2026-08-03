@@ -14,6 +14,13 @@ pub struct Template {
     pub offsets: [f64; 3],
 }
 
+impl Template {
+    /// 一段路径时长（t 0→1 所需毫秒，60fps 基准）
+    pub fn duration_ms(&self) -> f64 {
+        16.7 / (crate::config::params::WANDER.base_speed * self.speed)
+    }
+}
+
 pub const TEMPLATES: [Template; 12] = [
     Template { id: "run", name: "直线跑", curvature: 0.0, speed: 1.1, offsets: [0.0, 0.6, -0.6] },
     Template { id: "sweep", name: "大转弯", curvature: 0.65, speed: 1.0, offsets: [0.0, 0.5, -0.5] },
@@ -29,8 +36,16 @@ pub const TEMPLATES: [Template; 12] = [
     Template { id: "stroll", name: "散步", curvature: 0.12, speed: 0.7, offsets: [0.0, 0.5, 0.5] },
 ];
 
-/// 网格偏好模板：精细网格（8x8）中每个格决定一种运动模式
-/// 伪随机散列分布（可改为手写映射表）
-pub fn preferred_template(cell: usize) -> usize {
+/// 精细网格 → 模板映射（网格域概念归位：尺寸在 params，cell 计算与映射都在此）
+pub fn grid_cell(p: crate::sim::math::Vec2) -> usize {
+    let cols = crate::config::params::GRID_COLS;
+    let rows = crate::config::params::GRID_ROWS;
+    let gx = ((p.x * cols as f64) as usize).min(cols - 1);
+    let gy = ((p.y * rows as f64) as usize).min(rows - 1);
+    gy * cols + gx
+}
+
+/// 网格偏好模板：每个格决定一种运动模式（伪随机散列分布，可改为手写映射表）
+pub fn grid_preferred_template(cell: usize) -> usize {
     (cell.wrapping_mul(2_654_435_761) >> 20) % TEMPLATES.len()
 }
