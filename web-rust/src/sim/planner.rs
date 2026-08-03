@@ -16,6 +16,7 @@ pub struct Leg {
     pub target: Vec2,
 }
 
+#[derive(Clone)]
 pub struct PlannedLeg {
     pub leg: Leg,
     pub template_idx: usize,
@@ -34,6 +35,7 @@ struct BallState {
 }
 
 /// 执行器：弧长共享链 + 三球 spring 物理
+#[derive(Clone)]
 pub struct Player {
     chain: VecDeque<PlannedLeg>,
     /// 队首（球0）弧长
@@ -96,43 +98,31 @@ impl Player {
 
     pub fn tick(&mut self, dt: f64) {
         let dt_s = dt / 1000.0;
-        // 队首弧长推进（沿当前段速率）
-        let seg = self.chain.front().expect("chain non-empty");
-        self.s_lead += WORLD_SPEED * TEMPLATES[seg.template_idx].speed() * dt_s;
+        // 队首弧长推进：速度 profile（段内温和加速/减速，段间连续——预渲染衔接）
+        let (_, _, seg0, u0) = self.chain_pos_and_tangent(self.s_lead);
+        self.s_lead += self.profile_speed(seg0, u0) * dt_s;
         self.ensure_chain();
 
         let k = SPRING.stiffness;
         let c_damp = SPRING.damping * 2.0 * k.sqrt();
-        let rate_lerp = (dt_s / 0.15).min(1.0);
+        let rate_lerp = (dt_s / 0.12).min(1.0);
 
         for s in 0..3 {
-            // 球 i 弧长 = 队首 - 错开；未上链（<0）→ 目标 = 起点
+            // 球 i 弧长 = 队首 - 错开；未上链（<0）→ 目标 = 起点（链起点后方）
             let s_i = self.s_lead - self.gaps[s];
-            let (target, tan) = if s_i >= 0.0 {
+            let (target, tan, seg_i, u_i) = if s_i >= 0.0 {
                 self.chain_pos_and_tangent(s_i)
             } else {
-                // 链起点后方：沿反向切线延伸（起点 = entry point，静止等待上链）
-                let start = Self::entry_points(
-                    self.chain.front().map(|x| x.leg.from).unwrap_or(Vec2 { x: 0.5, y: 0.5 }),
-                    Vec2 { x: 1.0, y: 0.0 },
-                )[s];
-                // 反推初始方向（近似：链首段切线方向）
                 let leg0 = &self.chain.front().unwrap().leg;
                 let d = dir_of(leg0.from, leg0.target);
                 let pos = Vec2 {
                     x: (leg0.from.x - d.x * self.gaps[s]).clamp(0.05, 0.95),
                     y: (leg0.from.y - d.y * self.gaps[s]).clamp(0.05, 0.95),
                 };
-                let _ = start;
-                (pos, Vec2 { x: -d.y, y: d.x })
+                (pos, Vec2 { x: -d.y, y: d.x }, 0usize, 0.0)
             };
 
-            let seg = self
-                .chain
-                .front()
-                .map(|x| x.template_idx)
-                .unwrap_or(0);
-            let r_ideal = WORLD_SPEED * TEMPLATES[seg].speed();
+            let r_ideal = self.profile_speed(seg_i, u_i);
             let st = &mut self.states[s];
             st.rate += (r_ideal - st.rate) * rate_lerp;
             let tl = (tan.x * tan.x + tan.y * tan.y).sqrt().max(1e-9);
@@ -144,6 +134,18 @@ impl Player {
             st.pos.x = (st.pos.x + st.vel.x * dt_s).clamp(0.0, 1.0);
             st.pos.y = (st.pos.y + st.vel.y * dt_s).clamp(0.0, 1.0);
         }
+    }
+
+    /// 速度 profile：段内从「半速×本段」温和过渡到「半速×下段」，
+    /// smoothstep 保证段内加速/减速平滑；段间速率连续（段尾 = 下段头）
+    fn profile_speed(&self, seg_idx: usize, u: f64) -> f64 {
+        let v_i = TEMPLATES[self.chain[seg_idx].template_idx].speed();
+        let v_next = match self.chain.get(seg_idx + 1) {
+            Some(next) => TEMPLATES[next.template_idx].speed(),
+            None => v_i,
+        };
+        let ramp = smoothstep(u.clamp(0.0, 1.0));
+        WORLD_SPEED * (0.5 * v_i + (0.5 * v_next - 0.5 * v_i) * ramp)
     }
 
     /// 链增长：总弧长保持 ≥ s_lead + 余量（无限轨迹）
@@ -162,9 +164,9 @@ impl Player {
                 Vec2 { x: tan.x / l, y: tan.y / l }
             };
             let roll = rng.gen::<f64>();
-            let template_idx = if roll < PROB.switch_template {
-                // 曲率连续性：新模板曲率与旧模板接近，避免方向突变（微 z 字形）
-                let old_curv = TEMPLATES[tail.template_idx].curvature;
+            let old_curv = TEMPLATES[tail.template_idx].curvature;
+            // 模板选择：曲率连续性 + 高速批准制（高速模板 40% 批准，不批准换新路径）
+            let mut template_idx = if roll < PROB.switch_template {
                 let mut idx = tail.template_idx;
                 for _ in 0..6 {
                     let cand = rng.gen_range(0..TEMPLATES.len());
@@ -177,6 +179,24 @@ impl Player {
             } else {
                 tail.template_idx
             };
+            if TEMPLATES[template_idx].speed() > SPEED_THRESHOLD
+                && rng.gen::<f64>() >= SPEED_APPROVE_PROB
+            {
+                let mut replaced = false;
+                for _ in 0..6 {
+                    let cand = rng.gen_range(0..TEMPLATES.len());
+                    if TEMPLATES[cand].speed() <= SPEED_THRESHOLD
+                        && (TEMPLATES[cand].curvature - old_curv).abs() <= TEMPLATE_CURV_STEP
+                    {
+                        template_idx = cand;
+                        replaced = true;
+                        break;
+                    }
+                }
+                if !replaced {
+                    template_idx = tail.template_idx;
+                }
+            }
             if rng.gen::<f64>() < PROB.switch_order {
                 let next = ORDERS[rng.gen_range(0..ORDERS.len())];
                 if next != self.order {
@@ -207,10 +227,10 @@ impl Player {
         }
     }
 
-    /// 链上弧长 s 处的位置 + 切线
-    fn chain_pos_and_tangent(&self, s: f64) -> (Vec2, Vec2) {
+    /// 链上弧长 s 处：位置 + 切线 + 段索引 + 段内 u（速度 profile 用）
+    fn chain_pos_and_tangent(&self, s: f64) -> (Vec2, Vec2, usize, f64) {
         let mut acc = 0.0;
-        for pl in &self.chain {
+        for (idx, pl) in self.chain.iter().enumerate() {
             if acc + pl.arc >= s {
                 let u = ((s - acc) / pl.arc.max(1e-9)).clamp(0.0, 1.0);
                 let leg = &pl.leg;
@@ -223,13 +243,13 @@ impl Player {
                     x: (p.x + n.x * wobble).clamp(0.0, 1.0),
                     y: (p.y + n.y * wobble).clamp(0.0, 1.0),
                 };
-                return (pos, tan);
+                return (pos, tan, idx, u);
             }
             acc += pl.arc;
         }
         // 超出链尾：用链尾
         let last = self.chain.back().expect("chain non-empty");
-        (last.leg.target, Vec2 { x: 1.0, y: 0.0 })
+        (last.leg.target, Vec2 { x: 1.0, y: 0.0 }, self.chain.len() - 1, 1.0)
     }
 
     /// 球位：spring 物理状态 + 法线分离量
@@ -237,7 +257,7 @@ impl Player {
         let st = &self.states[color_slot];
         let s_i = self.s_lead - self.gaps[color_slot];
         let n = if s_i >= 0.0 {
-            let (_, tan) = self.chain_pos_and_tangent(s_i);
+            let (_, tan, _, _) = self.chain_pos_and_tangent(s_i);
             normal_of(tan)
         } else {
             let leg0 = &self.chain.front().unwrap().leg;
@@ -258,7 +278,7 @@ impl Player {
     pub fn pos_and_dir(&self, color_slot: usize) -> (Vec2, Vec2) {
         let s_i = self.s_lead - self.gaps[color_slot];
         if s_i >= 0.0 {
-            let (pos, tan) = self.chain_pos_and_tangent(s_i);
+            let (pos, tan, _, _) = self.chain_pos_and_tangent(s_i);
             let l = (tan.x * tan.x + tan.y * tan.y).sqrt().max(1e-9);
             (pos, Vec2 { x: tan.x / l, y: tan.y / l })
         } else {
@@ -271,6 +291,17 @@ impl Player {
                 },
                 d,
             )
+        }
+    }
+
+    /// 过渡期克隆（数据快照，供 Queueing blend 用）
+    pub fn clone_for_blend(&self) -> Player {
+        Player {
+            chain: self.chain.clone(),
+            s_lead: self.s_lead,
+            states: self.states,
+            gaps: self.gaps,
+            order: self.order,
         }
     }
 
@@ -377,7 +408,8 @@ pub enum Phase {
     },
     Queueing {
         t: f64,
-        from: [Vec2; 3],
+        /// 过渡期间三球继续自由运动（在各自行程中自然汇入队列，无「定住等」）
+        players: [Player; 3],
         anchor: Vec2,
         dir: Vec2,
         slots: [Vec2; 3],

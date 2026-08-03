@@ -29,6 +29,10 @@ pub const FORMATION_HOLD_MAX_MS: f64 = 18000.0;
 
 /// 模板切换时曲率最大变化量（连续性约束，消除方向突变微抖动）
 pub const TEMPLATE_CURV_STEP: f64 = 0.6;
+/// 高速移动批准制：速度倍率超过此阈值的模板需批准
+pub const SPEED_THRESHOLD: f64 = 1.2;
+/// 高速模板被批准的概率（不批准则重新生成新路径模板）
+pub const SPEED_APPROVE_PROB: f64 = 0.4;
 
 // ---- 拖尾 ----
 /// 历史点最大间距（世界坐标）：超过即截断（高速/交叉时不会连成大长条）

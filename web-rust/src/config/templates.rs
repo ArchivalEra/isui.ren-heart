@@ -23,7 +23,7 @@ impl Template {
     }
 }
 
-pub const TEMPLATES: [Template; 12] = [
+pub const TEMPLATES: [Template; 14] = [
     Template { id: "run", name: "直线跑", curvature: 0.0, speed: 1.1, offsets: [0.0, 0.6, -0.6], wave: 0.0 },
     Template { id: "sweep", name: "大转弯", curvature: 0.65, speed: 1.0, offsets: [0.0, 0.5, -0.5], wave: 0.0 },
     Template { id: "wiggle", name: "小碎步", curvature: 0.22, speed: 1.2, offsets: [0.0, 0.4, 0.4], wave: 0.012 },
@@ -36,5 +36,7 @@ pub const TEMPLATES: [Template; 12] = [
     Template { id: "dash", name: "折返", curvature: -0.55, speed: 1.4, offsets: [0.0, 0.5, -0.5], wave: 0.03 },
     Template { id: "drift", name: "漂移", curvature: 0.75, speed: 1.3, offsets: [0.4, -0.2, 0.2], wave: 0.015 },
     Template { id: "stroll", name: "散步", curvature: 0.12, speed: 0.7, offsets: [0.0, 0.5, 0.5], wave: 0.005 },
+    Template { id: "coil", name: "线圈", curvature: 1.5, speed: 1.05, offsets: [0.0, 0.6, -0.6], wave: 0.20 },
+    Template { id: "coil_r", name: "反向线圈", curvature: -1.5, speed: 0.95, offsets: [0.0, 0.5, 0.5], wave: 0.22 },
 ];
 

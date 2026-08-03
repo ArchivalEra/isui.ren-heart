@@ -56,7 +56,7 @@ impl BallsEngine {
             phase: Phase::AtLogo { t: 0.0 },
             anchors,
             debug: false,
-            mode: RenderMode::Particle,
+            mode: RenderMode::Trail,
             history: [VecDeque::new(), VecDeque::new(), VecDeque::new()],
         }
     }
@@ -158,32 +158,31 @@ impl BallsEngine {
                         let dir = Self::random_dir();
                         let anchor = players[0].ball_center(0);
                         let slots = Player::entry_points(anchor, dir);
-                        let mut from = [Vec2 { x: 0.0, y: 0.0 }; 3];
-                        for (i, p) in players.iter().enumerate() {
-                            from[i] = p.ball_center(i);
-                        }
-                        next = Some(Phase::Queueing { t: 0.0, from, anchor, dir, slots });
+                        let players_arr = [
+                            players[0].clone_for_blend(),
+                            players[1].clone_for_blend(),
+                            players[2].clone_for_blend(),
+                        ];
+                        next = Some(Phase::Queueing { t: 0.0, players: players_arr, anchor, dir, slots });
                     }
                 }
             }
-            Phase::Queueing { t, from, anchor, dir, slots, .. } => {
+            Phase::Queueing { t, players, anchor, dir, slots } => {
                 *t += dt;
+                // 过渡期间三球继续各自的自由运动
+                for p in players.iter_mut() {
+                    p.tick(dt);
+                }
                 if *t >= QUEUE_MS {
-                    // 过渡完成 → 共享链排队跑
+                    // 过渡完成 → 共享链排队跑（槽位 = 链上布局点，无跳变）
                     next = Some(Phase::Formation {
                         player: Player::new(*anchor, *dir),
                         hold_t: 0.0,
                         hold_ms: FORMATION_HOLD_MIN_MS
                             + rng.gen::<f64>() * (FORMATION_HOLD_MAX_MS - FORMATION_HOLD_MIN_MS),
                     });
-                } else {
-                    // 球在各自行程中自然滑向槽位（smoothstep 加速减速，无闪电）
-                    let k = smoothstep(*t / QUEUE_MS);
-                    for i in 0..3 {
-                        let p = crate::sim::math::lerp(from[i], slots[i], k);
-                        let _ = p;
-                    }
                 }
+                let _ = slots;
             }
             Phase::Formation { player, hold_t, hold_ms } => {
                 *hold_t += dt;
@@ -233,9 +232,10 @@ impl BallsEngine {
         match &self.phase {
             Phase::AtLogo { .. } => self.anchors[color_slot],
             Phase::Free { players, .. } => players[color_slot].world_pos(color_slot, self.balls[color_slot].offset),
-            Phase::Queueing { t, from, slots, .. } => {
+            Phase::Queueing { t, players, slots, .. } => {
                 let k = smoothstep(*t / QUEUE_MS);
-                crate::sim::math::lerp(from[color_slot], slots[color_slot], k)
+                let free = players[color_slot].world_pos(color_slot, self.balls[color_slot].offset);
+                crate::sim::math::lerp(free, slots[color_slot], k)
             }
             Phase::Formation { player, .. } => player.world_pos(color_slot, self.balls[color_slot].offset),
         }
