@@ -6,21 +6,6 @@ pub fn random_screen_point() -> Vec2 {
     Vec2 { x: rand::random::<f64>(), y: rand::random::<f64>() }
 }
 
-/// 商量：随机目标但与其它球保持最小距离（尝试 10 次，兜底全屏随机）
-pub fn random_target_apart(others: &[Vec2; 2], min_dist: f64) -> Vec2 {
-    let md2 = min_dist * min_dist;
-    for _ in 0..10 {
-        let p = random_screen_point();
-        let ok = others
-            .iter()
-            .all(|o| (o.x - p.x) * (o.x - p.x) + (o.y - p.y) * (o.y - p.y) >= md2);
-        if ok {
-            return p;
-        }
-    }
-    random_screen_point()
-}
-
 /// 入场三球旅行目标（随机点 + 队列偏移）
 pub fn random_trio_targets() -> [Vec2; 3] {
     let c = random_screen_point();

@@ -7,7 +7,6 @@ use crate::config::params::*;
 use crate::config::templates::TEMPLATES;
 use crate::sim::math::*;
 
-use crate::sim::target::{random_screen_point, random_target_apart};
 use std::collections::VecDeque;
 
 #[derive(Clone, Copy, Debug)]

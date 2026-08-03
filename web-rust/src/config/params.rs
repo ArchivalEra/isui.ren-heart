@@ -64,9 +64,6 @@ pub const WANDER: Wander = Wander {
     offset_range: 0.05,
 };
 
-/// 三球「商量」最小间距（世界坐标）
-pub const MIN_BALL_DIST: f64 = 0.3;
-
 
 /// 入场仪式
 pub const FADE_IN_MS: f64 = 800.0; // 锚点淡入时长
