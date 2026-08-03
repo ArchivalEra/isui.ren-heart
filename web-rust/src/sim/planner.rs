@@ -67,8 +67,8 @@ impl Player {
             let angle = rand::random::<f64>() * std::f64::consts::PI * 2.0;
             let r = 0.25 + rand::random::<f64>() * 0.2;
             Vec2 {
-                x: (anchor.x + angle.cos() * r).clamp(0.1, 0.9),
-                y: (anchor.y + angle.sin() * r).clamp(0.1, 0.9),
+                x: (anchor.x + angle.cos() * r).clamp(0.12, 0.88),
+                y: (anchor.y + angle.sin() * r).clamp(0.12, 0.88),
             }
         };
         let mut pl = make_planned_leg(anchor, dir, 0, target);
@@ -138,8 +138,8 @@ impl Player {
             };
             st.vel.x += ax * dt_s;
             st.vel.y += ay * dt_s;
-            st.pos.x = (st.pos.x + st.vel.x * dt_s).clamp(0.0, 1.0);
-            st.pos.y = (st.pos.y + st.vel.y * dt_s).clamp(0.0, 1.0);
+            st.pos.x = (st.pos.x + st.vel.x * dt_s).clamp(0.03, 0.97);
+            st.pos.y = (st.pos.y + st.vel.y * dt_s).clamp(0.03, 0.97);
         }
     }
 
@@ -218,7 +218,7 @@ impl Player {
                 y: from.y + dir.y * dist,
             };
             // 目标出界则转向（保持链在屏内）
-            if !(0.05..=0.95).contains(&target.x) || !(0.05..=0.95).contains(&target.y) {
+            if !(0.1..=0.9).contains(&target.x) || !(0.1..=0.9).contains(&target.y) {
                 // 反向偏转
                 let angle = rng.gen::<f64>() * std::f64::consts::PI;
                 target = Vec2 {
@@ -247,9 +247,15 @@ impl Player {
                 let n = normal_of(tan);
                 let wave = TEMPLATES[pl.template_idx].wave;
                 let wobble = wave * (u * std::f64::consts::PI * 2.0).sin();
+                // wobble 边缘衰减：距屏边 < |wobble| 时按比例压缩，
+                // 球永不因摆动出屏 → 无「曲线出屏强制闪现」
+                let margin_x = p.x.min(1.0 - p.x);
+                let margin_y = p.y.min(1.0 - p.y);
+                let limit = wobble.abs().max(1e-9);
+                let f = (margin_x / limit).min(margin_y / limit).clamp(0.0, 1.0);
                 let pos = Vec2 {
-                    x: (p.x + n.x * wobble).clamp(0.0, 1.0),
-                    y: (p.y + n.y * wobble).clamp(0.0, 1.0),
+                    x: (p.x + n.x * wobble * f).clamp(0.02, 0.98),
+                    y: (p.y + n.y * wobble * f).clamp(0.02, 0.98),
                 };
                 return (pos, tan, idx, u);
             }
@@ -299,17 +305,6 @@ impl Player {
                 },
                 d,
             )
-        }
-    }
-
-    /// 过渡期克隆（数据快照，供 Queueing blend 用）
-    pub fn clone_for_blend(&self) -> Player {
-        Player {
-            chain: self.chain.clone(),
-            s_lead: self.s_lead,
-            states: self.states,
-            gaps: self.gaps,
-            order: self.order,
         }
     }
 
@@ -418,8 +413,10 @@ pub enum Phase {
         t: f64,
         /// 共享链已创建：粉球立刻开跑（s_lead 推进），蓝绿在槽位等上链
         player: Player,
-        /// 蓝绿球自由运动位置（blend 源：滑向槽位过程用）
-        free_players: [Player; 3],
+        /// 进入排队时三球位置快照（思考期停留点 = 冻结位置）
+        from: [Vec2; 3],
+        /// 每球思考期（粉 0；蓝绿随机 1-3s）——各自决定啥时候跟上粉球
+        delays: [f64; 3],
     },
     Formation {
         player: Player,

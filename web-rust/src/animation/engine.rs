@@ -157,25 +157,28 @@ impl BallsEngine {
                         // 固定粉蓝绿顺序：粉（球0）当队首，蓝、绿依次落后（站主钦定美的顺序）
                         let dir = Self::random_dir();
                         let anchor = players[0].ball_center(0);
-                        // 共享链立刻创建：粉球在链起点（当前位置）→ 开跑；蓝绿在槽位等
+                        // 共享链立刻创建：粉球（队首）在链起点 → 开跑
                         let q_player = Player::new(anchor, dir);
-                        let free_players = [
-                            players[1].clone_for_blend(),
-                            players[1].clone_for_blend(),
-                            players[2].clone_for_blend(),
+                        let mut from = [Vec2 { x: 0.0, y: 0.0 }; 3];
+                        for (i, p) in players.iter().enumerate() {
+                            from[i] = p.ball_center(i);
+                        }
+                        // 蓝绿球思考期：各自随机延迟（充分思考啥时候跟上粉球）
+                        let delays = [
+                            0.0,
+                            QUEUE_DELAY_MIN_MS
+                                + rng.gen::<f64>() * (QUEUE_DELAY_MAX_MS - QUEUE_DELAY_MIN_MS),
+                            QUEUE_DELAY_MIN_MS
+                                + rng.gen::<f64>() * (QUEUE_DELAY_MAX_MS - QUEUE_DELAY_MIN_MS),
                         ];
-                        next = Some(Phase::Queueing { t: 0.0, player: q_player, free_players });
+                        next = Some(Phase::Queueing { t: 0.0, player: q_player, from, delays });
                     }
                 }
             }
-            Phase::Queueing { t, player, free_players } => {
+            Phase::Queueing { t, player, .. } => {
                 *t += dt;
                 // 共享链推进：粉球（队首）立刻开跑；蓝绿 s<0 停在槽位等上链
                 player.tick(dt);
-                // 蓝绿球 blend 源：继续自由运动（视觉上滑向槽位）
-                for p in free_players.iter_mut() {
-                    p.tick(dt);
-                }
                 if *t >= QUEUE_MS {
                     // 过渡完成 → 正式排队跑（player 直接转移，无跳变）
                     next = Some(Phase::Formation {
@@ -234,17 +237,12 @@ impl BallsEngine {
         match &self.phase {
             Phase::AtLogo { .. } => self.anchors[color_slot],
             Phase::Free { players, .. } => players[color_slot].world_pos(color_slot, self.balls[color_slot].offset),
-            Phase::Queueing { t, player, free_players } => {
-                if color_slot == 0 {
-                    // 粉球：直接沿共享链跑（立刻出发）
-                    player.world_pos(0, self.balls[0].offset)
-                } else {
-                    // 蓝绿：自由位置 → 槽位（链上等待点）blend；k=1 后随链
-                    let k = smoothstep(*t / QUEUE_MS);
-                    let slot = player.world_pos(color_slot, self.balls[color_slot].offset);
-                    let free = free_players[color_slot - 1].world_pos(color_slot, self.balls[color_slot].offset);
-                    crate::sim::math::lerp(free, slot, k)
-                }
+            Phase::Queueing { t, player, from, delays } => {
+                // 思考期（t < delay）：冻结在进入时位置，充分思考
+                // 思考结束：2 秒内从冻结位置温和滑向链上槽位（各自出发）
+                let k = smoothstep(((t - delays[color_slot]) / QUEUE_TRANSIT_MS).clamp(0.0, 1.0));
+                let slot = player.world_pos(color_slot, self.balls[color_slot].offset);
+                crate::sim::math::lerp(from[color_slot], slot, k)
             }
             Phase::Formation { player, .. } => player.world_pos(color_slot, self.balls[color_slot].offset),
         }

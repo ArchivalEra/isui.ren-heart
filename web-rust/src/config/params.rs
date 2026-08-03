@@ -21,14 +21,19 @@ pub const CHAIN_GAP: f64 = 0.15;
 pub const FREE_CHECK_MS: f64 = 5000.0;
 /// 判定到排队的概率（30%）
 pub const QUEUE_PROB: f64 = 0.3;
-/// 判定后 5 秒过渡（球在各自行程中自然滑向队列槽位）
-pub const QUEUE_MS: f64 = 5000.0;
+/// 判定后过渡总时长（含思考期 + 滑行期）
+pub const QUEUE_MS: f64 = 6000.0;
+/// 蓝绿球思考期：各自随机延迟出发（充分思考啥时候跟上粉球）
+pub const QUEUE_DELAY_MIN_MS: f64 = 1000.0;
+pub const QUEUE_DELAY_MAX_MS: f64 = 3000.0;
+/// 思考结束后滑向槽位时长
+pub const QUEUE_TRANSIT_MS: f64 = 2000.0;
 /// 排好队后维持时长区间（随机）
 pub const FORMATION_HOLD_MIN_MS: f64 = 8000.0;
 pub const FORMATION_HOLD_MAX_MS: f64 = 18000.0;
 
-/// 模板切换时曲率最大变化量（连续性约束，消除方向突变微抖动）
-pub const TEMPLATE_CURV_STEP: f64 = 0.6;
+/// 模板切换时曲率最大变化量（连续性约束，消除方向突变微抖动/小折角）
+pub const TEMPLATE_CURV_STEP: f64 = 0.35;
 /// 高速移动批准制：速度倍率超过此阈值的模板需批准
 pub const SPEED_THRESHOLD: f64 = 1.2;
 /// 高速模板被批准的概率（不批准则重新生成新路径模板）
