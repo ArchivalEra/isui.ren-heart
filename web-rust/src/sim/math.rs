@@ -164,6 +164,8 @@ mod tests {
 
 /// 三次贝塞尔缓动：解 x(u)=t 求 u，返回 y(u)（Material 3 emphasized 曲线族）
 /// 值来自 google-university.md：emphasized (0.2,0,0,1)、decelerate (0.05,0.7,0.1,1)…
+/// 当前拖尾已回实心（无渐隐），此函数保留为通用缓动工具（含测试覆盖）
+#[allow(dead_code)]
 pub fn cubic_bezier_ease(x1: f64, y1: f64, x2: f64, y2: f64, t: f64) -> f64 {
     let t = t.clamp(0.0, 1.0);
     let mut u = t;

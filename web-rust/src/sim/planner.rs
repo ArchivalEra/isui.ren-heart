@@ -64,18 +64,6 @@ impl Player {
         pts
     }
 
-    /// Free 专用：指定球 color_slot 从 anchor 出发（其他球位置无用——Free 每球独立链）
-    /// 解散/入场时保证球从当前位置无缝续跑（Player::new 会把非队首球放到后方 → 闪现）
-    pub fn new_at(anchor: Vec2, dir: Vec2, color_slot: usize) -> Self {
-        let mut p = Self::new(anchor, dir);
-        p.states[color_slot.min(2)] = BallState {
-            pos: anchor,
-            vel: Vec2 { x: 0.0, y: 0.0 },
-            rate: WORLD_SPEED,
-        };
-        p
-    }
-
     pub fn new(anchor: Vec2, dir: Vec2) -> Self {
         let spots = Self::entry_points(anchor, dir);
         // 首段：链起点 = 球0（anchor），方向 = 入口 dir（与 entry_points 槽位方向一致，
@@ -88,7 +76,7 @@ impl Player {
             }
         };
         let speed = roll_speed();
-        let wave = roll_wave();
+        let wave = roll_wave(0.0);
         let mut pl = make_planned_leg(anchor, dir, 0, target, speed, wave);
         if !leg_in_bounds(&pl.leg) {
             let safe = clamp_target_in_bounds(anchor, dir, 0, target, speed, wave);
@@ -205,9 +193,9 @@ impl Player {
             } else {
                 tail.template_idx
             };
-            // 段级运动参数：速度档（含高速批准制）+ 摆动档（独立于曲线）
+            // 段级运动参数：速度档（含高速批准制）+ 摆动档（段间连续）
             let speed = roll_speed();
-            let wave = roll_wave();
+            let wave = roll_wave(tail.wave);
             if rng.gen::<f64>() < PROB.switch_order {
                 let next = ORDERS[rng.gen_range(0..ORDERS.len())];
                 if next != self.order {
@@ -235,15 +223,17 @@ impl Player {
                 pl = make_planned_leg(from, dir, template_idx, safe, speed, wave);
             }
             if pl.arc < 0.05 {
-                // 死循环防护：零长度段（收缩失败）强制拉一段，仍失败则放弃补段
+                // 死循环防护：零长度段（收缩失败）强制拉一段——朝屏中心方向，必在屏内
+                let dx = 0.5 - from.x;
+                let dy = 0.5 - from.y;
+                let dl = (dx * dx + dy * dy).sqrt().max(1e-9);
                 let forced = Vec2 {
-                    x: (from.x + dir.x * 0.3).clamp(0.10, 0.90),
-                    y: (from.y + dir.y * 0.3).clamp(0.10, 0.90),
+                    x: from.x + dx / dl * 0.3,
+                    y: from.y + dy / dl * 0.3,
                 };
                 pl = make_planned_leg(from, dir, template_idx, forced, speed, wave);
-                if pl.arc < 0.05 || !leg_in_bounds(&pl.leg) {
-                    break;
-                }
+                self.chain.push_back(clamp_dur_to_chain(pl, tail.dur_ms));
+                break; // 本帧补段到此为止（保底段保证链增长）
             }
             self.chain.push_back(clamp_dur_to_chain(pl, tail.dur_ms));
         }
@@ -295,31 +285,6 @@ impl Player {
         }
     }
 
-    /// 球 i 当前位置 + 链切线方向（解散回 Free 时用：独立链起点=位置，方向=切线）
-    pub fn pos_and_dir(&self, color_slot: usize) -> (Vec2, Vec2) {
-        let s_i = self.s_lead - self.gaps[color_slot];
-        if s_i >= 0.0 {
-            let (pos, tan, _, _) = self.chain_pos_and_tangent(s_i);
-            let l = (tan.x * tan.x + tan.y * tan.y).sqrt().max(1e-9);
-            (pos, Vec2 { x: tan.x / l, y: tan.y / l })
-        } else {
-            let leg0 = &self.chain.front().unwrap().leg;
-            let d = dir_of(leg0.from, leg0.target);
-            (
-                Vec2 {
-                    x: (leg0.from.x - d.x * self.gaps[color_slot]).clamp(0.05, 0.95),
-                    y: (leg0.from.y - d.y * self.gaps[color_slot]).clamp(0.05, 0.95),
-                },
-                d,
-            )
-        }
-    }
-
-    /// 球 i 实际中心（spring 物理位置，不含法线偏移）
-    pub fn ball_center(&self, color_slot: usize) -> Vec2 {
-        self.states[color_slot.min(2)].pos
-    }
-
     /// 调试：当前目标（球 i 链上位置）
     pub fn target_of(&self, color_slot: usize) -> Vec2 {
         let s_i = self.s_lead - self.gaps[color_slot];
@@ -354,9 +319,15 @@ fn roll_speed() -> f64 {
     }
 }
 
-/// 段摆动：随机档位（独立于曲线）
-fn roll_wave() -> f64 {
-    WAVE_BANDS[rand::random::<usize>() % WAVE_BANDS.len()]
+/// 段摆动：随机档位（独立于曲线）；段间变化受 WAVE_CURV_STEP 约束（防折角）
+fn roll_wave(prev_wave: f64) -> f64 {
+    for _ in 0..6 {
+        let w = WAVE_BANDS[rand::random::<usize>() % WAVE_BANDS.len()];
+        if (w - prev_wave).abs() <= WAVE_CURV_STEP {
+            return w;
+        }
+    }
+    prev_wave
 }
 
 /// 造段（几何纯函数）：切线连续 + 段级 speed/wave（独立于曲线模板）

@@ -16,21 +16,15 @@ pub const ORDERS: [[usize; 3]; 6] = [
 /// 链上错开弧长：球 i 落后队首 i×CHAIN_GAP（成群结对一个接一个）
 pub const CHAIN_GAP: f64 = 0.15;
 
-// ---- 自由运动 + 偶发自然排队 ----
-/// 自由模式每 5 秒判定一次是否触发排队
-pub const FREE_CHECK_MS: f64 = 5000.0;
-/// 判定到排队的概率（30%）
-pub const QUEUE_PROB: f64 = 0.3;
+// ---- 排队节奏 ----
 /// 蓝绿球思考期：各自随机延迟出发（充分思考啥时候跟上粉球）
 pub const QUEUE_DELAY_MIN_MS: f64 = 1000.0;
 pub const QUEUE_DELAY_MAX_MS: f64 = 3000.0;
 /// 开场粉球先停 5 秒（构图停留），蓝绿在粉球出发后再等 1-3 秒
 pub const ENTRY_DELAY_MS: f64 = 5000.0;
-/// 思考结束后滑向槽位时长
+/// 蓝绿思考结束后滑向槽位时长
 pub const QUEUE_TRANSIT_MS: f64 = 2000.0;
-/// 排好队后维持时长区间（随机）
-pub const FORMATION_HOLD_MIN_MS: f64 = 8000.0;
-pub const FORMATION_HOLD_MAX_MS: f64 = 18000.0;
+/// 思考结束后滑向槽位时长
 
 /// 模板切换时曲率最大变化量（连续性约束，消除方向突变微抖动/小折角）
 pub const TEMPLATE_CURV_STEP: f64 = 0.35;
@@ -92,14 +86,16 @@ pub const WANDER: Wander = Wander {
 
 // ---- 段级运动参数（独立于曲线模板，消除组合爆炸）----
 /// 速度档位（每段随机选档；>1.2 为高速，受批准制约束）
-pub const SPEED_BANDS: [(f64, f64); 4] = [
-    (0.55, 0.8),  // 慢
-    (0.9, 1.1),   // 巡航
-    (1.2, 1.4),   // 高速（需批准）
-    (1.5, 1.7),   // 冲刺（需批准）
+/// 收窄档距：段间速度差小 → 历史点距均匀 → 拖尾连续无珠链
+pub const SPEED_BANDS: [(f64, f64); 3] = [
+    (0.75, 0.9),   // 慢
+    (0.95, 1.1),   // 巡航
+    (1.2, 1.35),   // 高速（需批准）
 ];
-/// 摆动档位（每段随机选；0=无，0.02≈蛇形，0.14≈大摆动）
-pub const WAVE_BANDS: [f64; 4] = [0.0, 0.02, 0.06, 0.14];
+/// 摆动档位（每段随机选；收窄 + 段间连续性约束 → 无折角）
+pub const WAVE_BANDS: [f64; 3] = [0.0, 0.02, 0.05];
+/// 段间摆动最大变化（wave 连续性，防折角）
+pub const WAVE_CURV_STEP: f64 = 0.03;
 /// 队形常量：三球法线分离量（不再属于模板）
 pub const FORMATION_OFFSETS: [f64; 3] = [0.0, 0.6, -0.6];
 
