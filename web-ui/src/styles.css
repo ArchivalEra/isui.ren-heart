@@ -256,7 +256,6 @@ body {
   gap: 0.6rem;
   min-width: 260px;
   z-index: 50;
-  box-shadow: 0 12px 32px rgba(17, 17, 17, 0.18);
   opacity: 0;
   pointer-events: none;
   /* 关闭：加速折叠 0.3s（与 wrap 下移同时） */
