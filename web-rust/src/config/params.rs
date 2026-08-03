@@ -15,14 +15,17 @@ pub const ORDERS: [[usize; 3]; 6] = [
 
 /// 区域内独立概率事件
 pub struct Prob {
-    /// 进入新网格时切换到「该网格偏好模板」的概率
+    /// 规划时切换到「目标网格偏好模板」的概率
     pub switch_template: f64,
-    /// 进入新网格时切换排列（队首）的概率
+    /// 规划时完全随机换模板的概率（防单一模板连发绕圈）
+    pub random_template: f64,
+    /// 规划时切换排列（队首）的概率
     pub switch_order: f64,
 }
 
 pub const PROB: Prob = Prob {
     switch_template: 0.3,
+    random_template: 0.3,
     switch_order: 0.008,
 };
 

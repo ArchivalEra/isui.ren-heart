@@ -178,10 +178,12 @@ impl BallsEngine {
         }
     }
 
-    /// 贝塞尔路径上的球位 + 法线偏移（后球弧度大/小）
+    /// 贝塞尔路径上的球位 + 法线偏移（段内 smoothstep 加减速）
     fn on_leg(&self, leg: &Leg, ti: f64, slot: usize) -> Vec2 {
-        let p = quad_bezier(leg.from, leg.ctrl, leg.target, ti);
-        let tan = bezier_tangent(leg.from, leg.ctrl, leg.target, ti);
+        // 段内缓入缓出（两端慢中间快，pixel 小球式灵动）
+        let te = smoothstep(ti.clamp(0.0, 1.0));
+        let p = quad_bezier(leg.from, leg.ctrl, leg.target, te);
+        let tan = bezier_tangent(leg.from, leg.ctrl, leg.target, te);
         let n = normal_of(tan);
         let off = self.balls[slot].offset * WANDER.offset_range;
         Vec2 { x: p.x + n.x * off, y: p.y + n.y * off }
@@ -296,13 +298,19 @@ impl Player {
         self.now_ms += dt;
         self.t += dt / self.cur.dur_ms;
         while self.t >= 1.0 {
-            if let Some(next) = self.legs.pop_front() {
-                self.cur = next;
-                self.t = 0.0;
-            } else {
-                // 规划断层（不应发生，兜底：原地等）
-                self.t = 1.0;
-                break;
+            // 无限轨迹保证：规划断层立即补（兜底，正常不会触发）
+            if self.legs.is_empty() {
+                self.ensure_horizon();
+            }
+            match self.legs.pop_front() {
+                Some(next) => {
+                    self.cur = next;
+                    self.t = 0.0;
+                }
+                None => {
+                    self.t = 1.0;
+                    break;
+                }
             }
         }
         self.ensure_horizon();
@@ -328,16 +336,20 @@ impl Player {
         let dy = target.y - from.y;
         let dist = (dx * dx + dy * dy).sqrt().max(1e-6);
 
-        // 模板：目标所在精细网格的偏好（概率见 PROB）/ 保留当前
+        // 模板：30% 网格偏好 / 30% 完全随机 / 40% 保留当前（避免单一模板连发绕圈）
         let cell = grid_cell(target);
-        let template_idx = if rng.gen::<f64>() < PROB.switch_template {
+        let roll = rng.gen::<f64>();
+        let template_idx = if roll < PROB.switch_template {
             preferred_template(cell)
+        } else if roll < PROB.switch_template + PROB.random_template {
+            rng.gen_range(0..TEMPLATES.len())
         } else {
             self.cur.template_idx
         };
         let template = &TEMPLATES[template_idx];
 
         // 切线连续：ctrl = from + 上一段终点切线方向 × dist/2 + 法线小弯曲
+        // 控制点 clamp 到屏内（防止弧线甩出屏幕 → 球消失/「停止」）
         let (last_dir, last_norm) = if self.cur.leg.target.x == self.cur.leg.from.x
             && self.cur.leg.target.y == self.cur.leg.from.y
         {
@@ -349,8 +361,10 @@ impl Player {
             (dir, Vec2 { x: -dir.y, y: dir.x })
         };
         let ctrl = Vec2 {
-            x: from.x + last_dir.x * (dist * 0.5) + last_norm.x * dist * template.curvature * 0.6,
-            y: from.y + last_dir.y * (dist * 0.5) + last_norm.y * dist * template.curvature * 0.6,
+            x: (from.x + last_dir.x * (dist * 0.5) + last_norm.x * dist * template.curvature * 0.35)
+                .clamp(0.0, 1.0),
+            y: (from.y + last_dir.y * (dist * 0.5) + last_norm.y * dist * template.curvature * 0.35)
+                .clamp(0.0, 1.0),
         };
 
         // 排列：8% 概率切换（规划时决定，执行时不变 → 无闪现）
