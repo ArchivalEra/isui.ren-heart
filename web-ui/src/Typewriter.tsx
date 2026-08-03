@@ -1,8 +1,10 @@
-// 多语言打字机：typed.js 现成轮子（~5KB gzip，唯一 UI 依赖）
+// 多语言打字机：typed.js 现成轮子（~5KB gzip）
 // 循环：打字 → 保持 → 删除 → 下一条，14 种语言「关注 tayori 谢谢喵」
-// scatter 模式（卡片墙展开）：字符粉化分散；收回时粉末聚合回来
+// 粉碎效果：anime.js 现成轮子（split-text 粉碎标准做法）——
+// 卡片墙展开时文字字符化炸散（stagger 随机飞散），收回时弹性聚合飞回
 import { useEffect, useRef } from "preact/hooks";
 import Typed from "typed.js";
+import anime from "animejs";
 
 const MESSAGES = [
   "关注tayori谢谢喵",
@@ -28,7 +30,7 @@ function newTyped(el: HTMLElement): Typed {
     backSpeed: 40,
     backDelay: 1800,
     loop: true,
-    cursorChar: "", // 光标已隐藏（与字体不对齐，站主钦点）
+    cursorChar: "", // 光标已隐藏（站主钦点）
     smartBackspace: false,
   });
 }
@@ -38,21 +40,20 @@ export default function Typewriter({ scatter }: { scatter: boolean }) {
   const typedRef = useRef<Typed | null>(null);
   const scattered = useRef(false);
 
-  // 初始化 typed.js（一次）
   useEffect(() => {
     if (!elRef.current) return;
     typedRef.current = newTyped(elRef.current);
     return () => typedRef.current?.destroy();
   }, []);
 
-  // 粉化分散 / 聚合
   useEffect(() => {
     const el = elRef.current;
     if (!el) return;
+
     if (scatter && !scattered.current) {
       scattered.current = true;
       typedRef.current?.stop();
-      // 当前文字按字符拆成 span（每字符随机飞散方向，偏上散开）
+      // 文字字符化（粉碎的碎片）
       const text = el.textContent ?? "";
       const chars = [...text];
       el.innerHTML = "";
@@ -60,27 +61,37 @@ export default function Typewriter({ scatter }: { scatter: boolean }) {
         const s = document.createElement("span");
         s.className = "scatter-char";
         s.textContent = ch;
-        const dx = (Math.random() * 2 - 1) * 80;
-        const dy = (Math.random() * 2 - 1) * 40 - 25; // 偏上飘散
-        const rot = (Math.random() * 2 - 1) * 35;
-        s.style.setProperty("--dx", `${dx}px`);
-        s.style.setProperty("--dy", `${dy}px`);
-        s.style.setProperty("--rot", `${rot}deg`);
         el.appendChild(s);
       }
-      // 下一帧触发 transition（否则直接到终态无动画）
-      requestAnimationFrame(() => {
-        el.querySelectorAll(".scatter-char").forEach((s) => s.classList.add("scattering"));
+      // anime.js：stagger 随机炸散（碎片各自飞向随机方向，加速飞出）
+      anime({
+        targets: el.querySelectorAll(".scatter-char"),
+        translateX: () => anime.random(-90, 90),
+        translateY: () => anime.random(-60, 10), // 偏上飞散
+        rotate: () => anime.random(-40, 40),
+        opacity: 0,
+        duration: 600,
+        delay: anime.stagger(12), // 逐字错开 = 粉碎的层次感
+        easing: "easeOutExpo",
       });
     } else if (!scatter && scattered.current) {
       scattered.current = false;
-      // 粉末聚合：移除散射类 → 字符飞回原位
-      el.querySelectorAll(".scatter-char").forEach((s) => s.classList.remove("scattering"));
-      // 聚合完成后重建 typed.js（从第一条重新打字）
-      setTimeout(() => {
-        typedRef.current?.destroy();
-        if (elRef.current) typedRef.current = newTyped(elRef.current);
-      }, 700);
+      // anime.js：弹性聚合（碎片飞回原位，overshoot 弹一下 = M3 的灵动）
+      anime({
+        targets: el.querySelectorAll(".scatter-char"),
+        translateX: 0,
+        translateY: 0,
+        rotate: 0,
+        opacity: 1,
+        duration: 700,
+        delay: anime.stagger(10),
+        easing: "easeOutElastic(1, .6)",
+        complete: () => {
+          // 聚合完成 → 重建 typed.js（从头重新打字）
+          typedRef.current?.destroy();
+          if (elRef.current) typedRef.current = newTyped(elRef.current);
+        },
+      });
     }
   }, [scatter]);
 

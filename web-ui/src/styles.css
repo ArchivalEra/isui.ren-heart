@@ -165,8 +165,7 @@ body {
   pointer-events: auto; /* 导航区域保持可点 */
 }
 
-/* ── 卡片墙按钮：拟物卡片堆（纯白灰阶，站主钦点不换图标）──
-   视觉 = 三层错落卡片边缘；交互 = M3 语言（state layer + elevation + emphasized 曲线） */
+/* ── 拟物化卡片墙按钮（无文字，一叠卡片的立体质感）── */
 .card-wall-wrap {
   position: relative;
   display: inline-flex;
@@ -179,18 +178,18 @@ body {
   width: 64px;
   height: 52px;
   border: none;
-  border-radius: 12px;
+  border-radius: 10px;
   cursor: pointer;
-  background: linear-gradient(160deg, #ffffff 0%, #f0f0f0 55%, #e2e2e2 100%);
+  background: linear-gradient(160deg, #fdfdfd 0%, #e8e8e8 55%, #d4d4d4 100%);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.95),
-    inset 0 -2px 4px rgba(17, 17, 17, 0.08),
-    0 2px 6px rgba(17, 17, 17, 0.14);
-  transition: transform 0.2s cubic-bezier(0.05, 0.7, 0.1, 1),
-    box-shadow 0.2s cubic-bezier(0.2, 0, 0, 1);
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    inset 0 -2px 4px rgba(17, 17, 17, 0.12),
+    0 6px 14px rgba(17, 17, 17, 0.18),
+    0 2px 4px rgba(17, 17, 17, 0.12);
+  transition: transform 0.12s ease, box-shadow 0.2s ease;
 }
 
-/* 卡片堆：三层错落的卡片边缘（拟物核心，纯白灰阶） */
+/* 卡片堆：三层错落的卡片边缘（拟物核心） */
 .card-wall-btn::before,
 .card-wall-btn::after {
   content: "";
@@ -198,9 +197,9 @@ body {
   left: 8px;
   right: 8px;
   height: 14px;
-  border-radius: 8px;
-  background: linear-gradient(160deg, #f7f7f7 0%, #e6e6e6 100%);
-  box-shadow: 0 1px 3px rgba(17, 17, 17, 0.1);
+  border-radius: 6px;
+  background: linear-gradient(160deg, #f2f2f2 0%, #dcdcdc 100%);
+  box-shadow: 0 2px 3px rgba(17, 17, 17, 0.15);
 }
 
 .card-wall-btn::before {
@@ -213,33 +212,33 @@ body {
   top: -13px;
   transform: rotate(3deg);
   z-index: -2;
-  background: linear-gradient(160deg, #efefef 0%, #dcdcdc 100%);
+  background: linear-gradient(160deg, #e9e9e9 0%, #cfcfcf 100%);
 }
 
-/* M3 state layer：hover 8% / active 12%（灰阶叠加） */
 .card-wall-btn:hover {
   transform: translateY(-2px);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.95),
-    inset 0 -2px 4px rgba(17, 17, 17, 0.08),
-    0 8px 18px rgba(17, 17, 17, 0.18);
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    inset 0 -2px 4px rgba(17, 17, 17, 0.12),
+    0 10px 22px rgba(17, 17, 17, 0.24),
+    0 3px 6px rgba(17, 17, 17, 0.14);
 }
 
 .card-wall-btn:active {
   transform: translateY(1px) scale(0.97);
   box-shadow:
-    inset 0 2px 6px rgba(17, 17, 17, 0.14),
-    0 1px 2px rgba(17, 17, 17, 0.1);
+    inset 0 2px 6px rgba(17, 17, 17, 0.2),
+    0 2px 4px rgba(17, 17, 17, 0.1);
 }
 
-/* 卡片墙下拉面板：M3 motion——收回（基础态）= emphasized-accelerate 200ms
-   展开（open 态）= emphasized-decelerate 300ms（M3 v0.192 时长 medium） */
+/* 卡片墙下拉面板：max-height + opacity 过渡（页面内展开，非跳转） */
 .card-wall {
   max-height: 0;
   opacity: 0;
   overflow: hidden;
   pointer-events: none;
   transform: translateY(-8px);
+  /* 收回（退出）：M3 emphasized-accelerate 200ms */
   transition: max-height 0.2s cubic-bezier(0.3, 0, 0.8, 0.15),
     opacity 0.15s cubic-bezier(0.3, 0, 0.8, 0.15),
     transform 0.2s cubic-bezier(0.3, 0, 0.8, 0.15);
@@ -262,6 +261,7 @@ body {
   left: 50%;
   z-index: 50;
   box-shadow: 0 12px 32px rgba(17, 17, 17, 0.18);
+  /* 展开（进入）：M3 emphasized-decelerate 300ms */
   transition: max-height 0.3s cubic-bezier(0.05, 0.7, 0.1, 1),
     opacity 0.25s cubic-bezier(0.05, 0.7, 0.1, 1),
     transform 0.3s cubic-bezier(0.05, 0.7, 0.1, 1);
@@ -467,16 +467,9 @@ body {
   font-size: 12px;
 }
 
-/* ---------- 打字机文字粉化分散（卡片墙展开时） ----------
-   M3 motion：聚合回落 = emphasized-decelerate 300ms；散开飞出 = emphasized-accelerate 300ms */
+/* ---------- 打字机文字粉碎（卡片墙展开时）----------
+   动画由 anime.js 驱动（现成轮子，split-text 粉碎），CSS 只留基础样式 */
 .scatter-char {
   display: inline-block;
-  transition: transform 0.3s cubic-bezier(0.05, 0.7, 0.1, 1), opacity 0.25s ease;
   will-change: transform, opacity;
-}
-
-.scatter-char.scattering {
-  transform: translate(var(--dx, 0px), var(--dy, 0px)) rotate(var(--rot, 0deg));
-  opacity: 0;
-  transition: transform 0.3s cubic-bezier(0.3, 0, 0.8, 0.15), opacity 0.25s ease;
 }
