@@ -139,9 +139,9 @@ body {
   word-break: break-word;
 }
 
-/* typed.js 光标与文本同一行基线 */
+/* 光标隐藏（typed.js 光标与字体不对齐，站主钦点） */
 .typed-cursor {
-  display: inline-block;
+  display: none !important;
 }
 
 .cursor {
@@ -251,8 +251,14 @@ body {
   max-height: 420px;
   opacity: 1;
   pointer-events: auto;
-  transform: translateY(0);
-  margin-top: 1rem;
+  transform: translateX(-50%) translateY(0);
+  margin-top: 0;
+  /* absolute：从按钮正下方展开，不参与布局流（打字文字不会上移） */
+  position: absolute;
+  top: calc(100% + 14px);
+  left: 50%;
+  z-index: 50;
+  box-shadow: 0 12px 32px rgba(17, 17, 17, 0.18);
 }
 
 .wall-card {
@@ -453,4 +459,16 @@ body {
   color: var(--on-surface);
   cursor: pointer;
   font-size: 12px;
+}
+
+/* ---------- 打字机文字粉化分散（卡片墙展开时） ---------- */
+.scatter-char {
+  display: inline-block;
+  transition: transform 0.6s cubic-bezier(0.2, 0, 0, 1), opacity 0.6s ease;
+  will-change: transform, opacity;
+}
+
+.scatter-char.scattering {
+  transform: translate(var(--dx, 0px), var(--dy, 0px)) rotate(var(--rot, 0deg));
+  opacity: 0;
 }

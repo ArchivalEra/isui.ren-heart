@@ -28,6 +28,7 @@ import { toggle_trail_style } from "./wasm/isui_ren_heart.js";
 
 export default function Heart() {
   const emoji = useRotatingEmoji();
+  const [wallOpen, setWallOpen] = useState(false);
   return (
     <div class="heart-page fade-stagger">
       <div class="heart-bg" aria-hidden="true"></div>
@@ -37,13 +38,13 @@ export default function Heart() {
       </div>
       <main class="heart-main">
         <h1 class="heart-title">
-          <Typewriter />
+          <Typewriter scatter={wallOpen} />
         </h1>
         <p class="heart-sub">
           <span class="heart-emoji" aria-hidden="true">{emoji}</span>
         </p>
         <nav class="heart-nav">
-          <CardWall />
+          <CardWall open={wallOpen} onToggle={setWallOpen} />
         </nav>
       </main>
       <TrailToggle />
