@@ -74,7 +74,7 @@ pub fn Heart() -> impl IntoView {
     });
 
     view! {
-        <div class="heart-page">
+        <div class="heart-page fade-stagger">
             <div class="heart-bg" aria-hidden="true"></div>
             <BallsAnimation />
             <div class="heart-logo" aria-hidden="true">tayori</div>

@@ -1,13 +1,28 @@
-/* tayori 灰阶白体系（Rust 版） */
+/* tayori 灰阶 Material You 体系
+   Material You 的质感（tonal 层级 / elevation 阴影 / 状态层 / 形状）用灰阶实现，
+   三色球（粉/水蓝/薄荷绿）是唯一彩色 accent */
+
 :root {
-  --white: #ffffff;
-  --white-1: #fbfbfb;
-  --white-2: #f4f4f4;
-  --white-3: #ebebeb;
-  --white-4: #dedede;
-  --ink: #111111;
-  --shadow-1: rgba(17, 17, 17, 0.05);
-  --shadow-2: rgba(17, 17, 17, 0.09);
+  /* tonal 灰阶层级（Material You surface 系列） */
+  --surface: #ffffff;
+  --surface-dim: #fafafa;
+  --surface-variant: #f2f2f2;
+  --surface-container: #ececec;
+  --outline: #d9d9d9;
+  --outline-variant: #b3b3b3;
+  --on-surface: #111111;
+  --on-surface-variant: #4d4d4d;
+  /* elevation（Material 阴影层级） */
+  --elev-1: 0 1px 3px rgba(17, 17, 17, 0.08), 0 1px 2px rgba(17, 17, 17, 0.04);
+  --elev-2: 0 2px 6px rgba(17, 17, 17, 0.1), 0 1px 3px rgba(17, 17, 17, 0.06);
+  --elev-3: 0 6px 20px rgba(17, 17, 17, 0.12), 0 2px 6px rgba(17, 17, 17, 0.06);
+  /* 状态层（hover/active 黑色 alpha 覆盖） */
+  --state-hover: rgba(17, 17, 17, 0.05);
+  --state-active: rgba(17, 17, 17, 0.1);
+  /* 形状 */
+  --shape-lg: 28px;
+  --shape-md: 16px;
+  --shape-sm: 10px;
   font-family: 'PingFang SC', 'Hiragino Sans GB', 'Noto Sans CJK SC', sans-serif;
 }
 
@@ -17,8 +32,32 @@
 
 body {
   margin: 0;
-  background: var(--white);
-  color: var(--ink);
+  background: var(--surface);
+  color: var(--on-surface);
+}
+
+/* ---------- 阶梯淡入（stagger） ---------- */
+.fade-stagger > * {
+  opacity: 0;
+  animation: fade-up 0.7s ease forwards;
+}
+
+.fade-stagger > *:nth-child(1) { animation-delay: 0.05s; }
+.fade-stagger > *:nth-child(2) { animation-delay: 0.15s; }
+.fade-stagger > *:nth-child(3) { animation-delay: 0.25s; }
+.fade-stagger > *:nth-child(4) { animation-delay: 0.4s; }
+.fade-stagger > *:nth-child(5) { animation-delay: 0.55s; }
+.fade-stagger > *:nth-child(6) { animation-delay: 0.7s; }
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* ---------- /heart ---------- */
@@ -26,18 +65,18 @@ body {
   position: relative;
   min-height: 100vh;
   overflow: hidden;
-  background: var(--white);
+  background: var(--surface);
 }
 
 .heart-bg {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(120% 90% at 15% 10%, var(--white) 0%, var(--white-1) 45%, var(--white-2) 100%),
-    linear-gradient(180deg, var(--white) 0%, var(--white-2) 100%);
+    radial-gradient(120% 90% at 15% 10%, var(--surface) 0%, var(--surface-dim) 45%, var(--surface-variant) 100%),
+    linear-gradient(180deg, var(--surface) 0%, var(--surface-variant) 100%);
   box-shadow:
-    inset 0 0 120px var(--shadow-1),
-    inset 0 0 40px var(--shadow-2);
+    inset 0 0 120px var(--state-hover),
+    inset 0 0 40px rgba(17, 17, 17, 0.06);
 }
 
 .balls-canvas {
@@ -49,18 +88,19 @@ body {
   pointer-events: none;
 }
 
+/* logo：全页唯一黑色（站主替换为去三球版 PNG） */
 .heart-logo {
   position: absolute;
   left: 50%;
-  top: 30%;
+  top: 32%;
   transform: translate(-50%, -50%);
   z-index: 2;
-  color: var(--ink);
-  font-size: clamp(3rem, 12vw, 7rem);
+  color: var(--on-surface);
+  font-size: clamp(2.6rem, 10vw, 6.5rem);
   font-weight: 800;
   letter-spacing: 0.12em;
   user-select: none;
-  text-shadow: 0 8px 30px var(--shadow-2);
+  text-shadow: 0 8px 30px rgba(17, 17, 17, 0.1);
 }
 
 .heart-main {
@@ -71,21 +111,21 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: flex-end;
-  padding-bottom: 9vh;
+  padding-bottom: 8vh;
   text-align: center;
 }
 
 .heart-title {
-  font-size: clamp(1.6rem, 5vw, 2.8rem);
+  font-size: clamp(1.4rem, 4.5vw, 2.6rem);
   letter-spacing: 0.08em;
-  color: var(--ink);
+  color: var(--on-surface);
   margin: 0 0 0.6rem;
   font-weight: 500;
 }
 
 .cursor {
   animation: blink 1s step-end infinite;
-  color: var(--ink);
+  color: var(--on-surface);
 }
 
 @keyframes blink {
@@ -103,21 +143,26 @@ body {
   margin-top: 2.2rem;
 }
 
+/* Material You 按钮：灰阶 tonal + 状态层 + elevation */
 .heart-link {
   display: inline-block;
-  padding: 0.6rem 1.6rem;
-  border: 1px solid var(--white-4);
-  border-radius: 999px;
-  color: var(--ink);
+  padding: 0.7rem 1.8rem;
+  border: 1px solid var(--outline);
+  border-radius: var(--shape-lg);
+  color: var(--on-surface);
   text-decoration: none;
-  background: var(--white-1);
-  box-shadow: 0 4px 16px var(--shadow-1);
-  transition: all 0.2s;
+  background: var(--surface);
+  box-shadow: var(--elev-1);
+  transition: background 0.2s, box-shadow 0.2s, transform 0.15s;
 }
 
 .heart-link:hover {
-  background: var(--white-3);
-  box-shadow: 0 6px 20px var(--shadow-2);
+  background: var(--surface-variant);
+  box-shadow: var(--elev-2);
+}
+
+.heart-link:active {
+  background: var(--state-active);
 }
 
 /* ---------- /home ---------- */
@@ -135,9 +180,13 @@ body {
 }
 
 .home-back {
-  color: var(--ink);
+  color: var(--on-surface-variant);
   text-decoration: none;
   font-size: 0.9rem;
+}
+
+.home-back:hover {
+  text-decoration: underline;
 }
 
 .home-header h2 {
@@ -151,23 +200,30 @@ body {
   gap: 1rem;
 }
 
+/* Material You 卡片：大圆角 + elevation + 状态层 */
 .card {
   display: flex;
   align-items: center;
   gap: 0.9rem;
-  padding: 1.1rem 1.2rem;
-  background: var(--white-1);
-  border: 1px solid var(--white-3);
-  border-radius: 14px;
+  padding: 1.2rem 1.3rem;
+  background: var(--surface);
+  border: 1px solid var(--outline);
+  border-radius: var(--shape-lg);
   text-decoration: none;
   color: inherit;
-  box-shadow: 0 4px 14px var(--shadow-1);
-  transition: transform 0.15s, box-shadow 0.15s;
+  box-shadow: var(--elev-1);
+  transition: background 0.2s, box-shadow 0.15s, transform 0.15s;
 }
 
 .card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 24px var(--shadow-2);
+  background: var(--surface-variant);
+  box-shadow: var(--elev-2);
+  transform: translateY(-2px);
+}
+
+.card:active {
+  background: var(--state-active);
+  box-shadow: var(--elev-1);
 }
 
 .card-icon {
@@ -191,12 +247,54 @@ body {
 
 .card-desc {
   font-size: 0.82rem;
-  color: var(--white-4);
+  color: var(--outline-variant);
 }
 
 .home-footer {
   margin-top: 2.5rem;
   text-align: center;
-  color: var(--white-4);
+  color: var(--outline-variant);
   font-size: 0.8rem;
+}
+
+/* ---------- 响应式：电视 → 手机 ---------- */
+
+/* 电视 / 大屏（≥1920）：更大 logo、更大字、更深氛围 */
+@media (min-width: 1920px) {
+  .heart-logo {
+    font-size: 8rem;
+  }
+  .heart-title {
+    font-size: 3.2rem;
+  }
+  .heart-nav {
+    margin-top: 3rem;
+  }
+}
+
+/* 手机（<600）：紧凑布局，logo 上移避免遮挡 */
+@media (max-width: 600px) {
+  .heart-logo {
+    top: 28%;
+    font-size: 2.4rem;
+  }
+  .heart-main {
+    padding-bottom: 10vh;
+  }
+  .heart-title {
+    font-size: 1.3rem;
+  }
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+  .home-page {
+    padding: 1rem 0.8rem 2.5rem;
+  }
+}
+
+/* 横屏手机/小平板（600-1024） */
+@media (min-width: 601px) and (max-width: 1024px) {
+  .heart-logo {
+    top: 30%;
+  }
 }

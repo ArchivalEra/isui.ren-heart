@@ -3,7 +3,6 @@ use crate::config::params::*;
 use crate::config::templates::{random_template, CurveId, TEMPLATES};
 use crate::animation::curves::{curve_of, normal_at, CurveFn, Vec2};
 use wasm_bindgen::JsCast;
-use wasm_bindgen::JsValue;
 use web_sys::{CanvasRenderingContext2d, HtmlCanvasElement};
 
 pub struct Ball {
@@ -23,6 +22,8 @@ pub struct BallsEngine {
     balls: [Ball; 3],
     t: f64,
     last_grid: String,
+    /// 上一帧世界坐标（动态模糊速度向量用）
+    prev_pos: [Vec2; 3],
 }
 
 impl BallsEngine {
@@ -48,13 +49,25 @@ impl BallsEngine {
             balls,
             t: 0.0,
             last_grid: String::new(),
+            prev_pos: [Vec2 { x: 0.5, y: 0.5 }; 3],
         }
     }
 
-    /// 每帧调用（由组件层 setInterval 驱动，帧率可配）
+    /// 每帧调用（由组件层 rAF 驱动）
     pub fn frame(&mut self) {
         self.step();
         self.render();
+        // 记录本帧位置，供下帧动态模糊速度向量
+        for s in 0..3 {
+            self.prev_pos[s] = self.ball_world_pos(s);
+        }
+    }
+
+    /// 每球速度向量（世界坐标，供动态模糊）
+    fn ball_velocity(&self, slot: usize) -> Vec2 {
+        let cur = self.ball_world_pos(slot);
+        let prev = self.prev_pos[slot];
+        Vec2 { x: cur.x - prev.x, y: cur.y - prev.y }
     }
 
     // ---------- 逻辑 ----------
@@ -110,14 +123,22 @@ impl BallsEngine {
         Vec2 { x: p.x + n.x * off, y: p.y + n.y * off }
     }
 
-    // ---------- 渲染（自然俯视透视） ----------
-
+    // ---------- 渲染（自然俯视透视 + 质量分级 + 动态模糊） ----------
+    // CanvasGradient 无 *_str 版 API，旧 set_*_style 已弃用但为唯一途径
+    #[allow(deprecated)]
     fn render(&mut self) {
         let w = self.canvas.client_width() as f64;
         let h = self.canvas.client_height() as f64;
         if w == 0.0 || h == 0.0 {
             return;
         }
+        // 质量分级（240p→8K）：Low 无尾迹/浅阴影，Ultra 全效果
+        let (shadow_alpha, blur_mul, use_trail) = match quality_of(w, h) {
+            Quality::Low => (0.03, 0.4, false),
+            Quality::Medium => (0.05, 0.7, false),
+            Quality::High => (0.07, 1.0, true),
+            Quality::Ultra => (0.09, 1.2, true),
+        };
         self.ctx.clear_rect(0.0, 0.0, w, h);
 
         // 透视投影
@@ -149,12 +170,34 @@ impl BallsEngine {
             let (px, py, d) = pts[i];
             let radius = BALL_RADIUS * d * (w.min(h) / 700.0).clamp(0.6, 1.0);
 
-            // 地面阴影
+            // 动态模糊：沿速度方向的渐变尾迹（High/Ultra 级）
+            if use_trail {
+                let v = self.ball_velocity(slot);
+                let vx = v.x * w;
+                let vy = v.y * h;
+                let speed = (vx * vx + vy * vy).sqrt();
+                if speed > 1.0 {
+                    let trail = MOTION_BLUR.trail_len * radius;
+                    let (tx, ty) = (px - vx / speed * trail, py - vy / speed * trail);
+                    let (r, g, b) = hex_to_rgb(self.balls[slot].color);
+                    let lg = self.ctx.create_linear_gradient(tx, ty, px, py);
+                    lg.add_color_stop(0.0, &format!("rgba({r},{g},{b},0)")).unwrap();
+                    lg.add_color_stop(1.0, &format!("rgba({r},{g},{b},{})", MOTION_BLUR.trail_alpha)).unwrap();
+                    self.ctx.begin_path();
+                    self.ctx.move_to(tx, ty);
+                    self.ctx.line_to(px, py);
+                    self.ctx.set_stroke_style(&lg.into());
+                    self.ctx.set_line_width(radius * 0.7);
+                    self.ctx.stroke();
+                }
+            }
+
+            // 地面阴影（随深度缩放；低质量级更浅更糊）
             self.ctx.save();
             self.ctx.begin_path();
             self.ctx.ellipse(px, py + radius * 0.85, radius * 1.15, radius * 0.32, 0.0, 0.0, std::f64::consts::PI * 2.0).unwrap();
-            self.ctx.set_fill_style_str(&format!("rgba(17,17,17,{})", 0.07 * d + 0.05));
-            self.ctx.set_filter(&format!("blur({}px)", 2.0 + (1.0 - d) * 3.0));
+            self.ctx.set_fill_style_str(&format!("rgba(17,17,17,{})", shadow_alpha * d + 0.02));
+            self.ctx.set_filter(&format!("blur({}px)", (2.0 + (1.0 - d) * 3.0) * blur_mul));
             self.ctx.fill();
             self.ctx.restore();
 
@@ -173,9 +216,9 @@ impl BallsEngine {
             grad.add_color_stop(1.0, &darken(self.balls[slot].color, 0.35)).unwrap();
             self.ctx.begin_path();
             self.ctx.arc(px, py, radius, 0.0, std::f64::consts::PI * 2.0).unwrap();
-            self.ctx.set_fill_style_str(&JsValue::from(grad).as_string().unwrap_or_default());
+            self.ctx.set_fill_style(&grad.into());
             self.ctx.set_shadow_color(AMBIENT.shadow_color);
-            self.ctx.set_shadow_blur(AMBIENT.shadow_blur * d);
+            self.ctx.set_shadow_blur(AMBIENT.shadow_blur * d * blur_mul);
             self.ctx.set_shadow_offset_y(8.0 * d);
             self.ctx.fill();
             self.ctx.restore();
