@@ -62,7 +62,7 @@ export default function Typewriter({ scatter }: { scatter: boolean }) {
       el.classList.remove("tw-faded");
       resumeTimer.current = window.setTimeout(() => {
         typedRef.current?.start();
-      }, 350);
+      }, 550);
     }
   }, [scatter]);
 
