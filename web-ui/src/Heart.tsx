@@ -1,7 +1,10 @@
 // /heart — 博客主页：tayori 视觉（灰阶白 + 三球队列动画 + 唯一黑色 logo + typed.js 打字机）
+import { useEffect, useRef, useState } from "preact/hooks";
+import Typed from "typed.js";
 import BallsCanvas from "./BallsCanvas";
 import Typewriter from "./Typewriter";
 import CardWall from "./CardWall";
+import { toggle_trail_style } from "./wasm/isui_ren_heart.js";
 
 const EMOJI = [
   "(｡･ω･｡)",
@@ -54,10 +57,6 @@ function EmojiTyper({ scatter }: { scatter: boolean }) {
   return <span class="heart-emoji" ref={elRef} aria-hidden="true"></span>;
 }
 
-import { useEffect, useRef, useState } from "preact/hooks";
-import Typed from "typed.js";
-import { toggle_trail_style } from "./wasm/isui_ren_heart.js";
-
 export default function Heart() {
   const [wallOpen, setWallOpen] = useState(false);
   return (
@@ -72,7 +71,7 @@ export default function Heart() {
           <Typewriter scatter={wallOpen} />
         </h1>
         <p class="heart-sub">
-          <span class="heart-emoji" aria-hidden="true">{emoji}</span>
+          <EmojiTyper scatter={wallOpen} />
         </p>
         <nav class="heart-nav">
           <CardWall open={wallOpen} onToggle={setWallOpen} />
