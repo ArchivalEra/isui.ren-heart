@@ -62,21 +62,27 @@ pub struct Player {
 }
 
 impl Player {
-    /// 上链点：球 i 到达点 = 链起点后方 i×GAP 弧长（沿 -dir）
-    /// 到达即 Play：队首在链起点，其余在后方错开，s_lead 前进自然滑上链
-    pub fn entry_points(anchor: Vec2, dir: Vec2) -> [Vec2; 3] {
+    /// 上链点：球 i 到达点 = 链起点后方 gaps[i] 弧长（沿 -dir）
+    /// 与 Player 内部随机 gaps 同源——槽位与等待点一致，转移无跳变
+    pub fn entry_points(anchor: Vec2, dir: Vec2, gaps: [f64; 3]) -> [Vec2; 3] {
         let mut pts = [anchor; 3];
         for i in 1..3 {
             pts[i] = Vec2 {
-                x: (anchor.x - dir.x * i as f64 * GAP_MAX).clamp(0.10, 0.90),
-                y: (anchor.y - dir.y * i as f64 * GAP_MAX).clamp(0.10, 0.90),
+                x: (anchor.x - dir.x * gaps[i]).clamp(0.10, 0.90),
+                y: (anchor.y - dir.y * gaps[i]).clamp(0.10, 0.90),
             };
         }
         pts
     }
 
     pub fn new(anchor: Vec2, dir: Vec2) -> Self {
-        let spots = Self::entry_points(anchor, dir);
+        // 随机距离贴合：蓝绿落后粉球曲线的随机弧长（每次排队不同）
+        let gaps = [
+            0.0,
+            GAP_MIN + rand::random::<f64>() * (GAP_MAX - GAP_MIN),
+            GAP_MIN + GAP_MAX + rand::random::<f64>() * (GAP_MAX - GAP_MIN),
+        ];
+        let spots = Self::entry_points(anchor, dir, gaps);
         // 首段：链起点 = 球0（anchor），方向 = 入口 dir（与 entry_points 槽位方向一致，
         // 保证等待上链的球在解散/转移时位置连续——曾因随机 target 方向导致蓝绿闪现）
         let target = {
@@ -105,12 +111,7 @@ impl Player {
             chain,
             s_lead: 0.0,
             states,
-            // 随机距离贴合：蓝绿落后粉球曲线的随机弧长（每次排队不同）
-            gaps: [
-                0.0,
-                GAP_MIN + rand::random::<f64>() * (GAP_MAX - GAP_MIN),
-                GAP_MIN + GAP_MAX + rand::random::<f64>() * (GAP_MAX - GAP_MIN),
-            ],
+            gaps,
             order: ORDERS[0],
         };
         p.ensure_chain();
@@ -559,7 +560,7 @@ mod tests {
     fn entry_points_staggered() {
         let anchor = Vec2 { x: 0.5, y: 0.5 };
         let dir = Vec2 { x: 1.0, y: 0.0 };
-        let pts = Player::entry_points(anchor, dir);
+        let pts = Player::entry_points(anchor, dir, [0.0, 0.2, 0.4]);
         assert!(pts[0].x > pts[1].x && pts[1].x > pts[2].x, "沿 -dir 错开");
     }
 
