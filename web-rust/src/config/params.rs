@@ -13,8 +13,8 @@ pub const ORDERS: [[usize; 3]; 6] = [
     [2, 1, 0],
 ];
 
-/// 出发错开：球 i 延迟 i×STAGGER_MS（一个接一个出发，无排队仪式）
-pub const STAGGER_MS: f64 = 250.0;
+/// 链上错开弧长：球 i 落后队首 i×CHAIN_GAP（成群结对一个接一个）
+pub const CHAIN_GAP: f64 = 0.15;
 
 /// 相邻段时长比上限：约束球速差异（「换顺序」过程太快 = dur 差异过大）
 /// 调小 → 换序更慢更平滑；调大 → 允许暴快（拖尾出师后高速韵味）
@@ -50,8 +50,6 @@ pub const SPRING: Spring = Spring { stiffness: 700.0, damping: 0.9 };
 
 /// 漫游节奏（Play 阶段）
 pub struct Wander {
-    /// 球沿路径错开相位
-    pub phase_gap: f64,
     /// 法线偏移缓动
     pub offset_lerp: f64,
     /// 法线偏移幅度（路径法线方向）
@@ -59,7 +57,6 @@ pub struct Wander {
 }
 
 pub const WANDER: Wander = Wander {
-    phase_gap: 0.055,
     offset_lerp: 0.04,
     offset_range: 0.05,
 };

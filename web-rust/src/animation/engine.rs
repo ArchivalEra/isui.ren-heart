@@ -4,7 +4,6 @@ use crate::config::params::*;
 use crate::config::templates::TEMPLATES;
 use crate::sim::math::{screen_of, smoothstep, Vec2};
 use crate::sim::planner::{Phase, Player};
-use crate::sim::target::random_trio_targets;
 use std::collections::VecDeque;
 use wasm_bindgen::JsCast;
 use web_sys::{CanvasRenderingContext2d, HtmlCanvasElement};
@@ -123,14 +122,29 @@ impl BallsEngine {
                 *t += dt;
                 if *t >= AT_LOGO_MS {
                     let from = self.anchors;
-                    let to = random_trio_targets();
+                    // 随机锚点 + 方向 → 上链布局点（三球沿链方向错开）
+                    let anchor = Vec2 {
+                        x: 0.15 + rand::random::<f64>() * 0.7,
+                        y: 0.15 + rand::random::<f64>() * 0.7,
+                    };
+                    let angle = rand::random::<f64>() * std::f64::consts::PI * 2.0;
+                    let dir = Vec2 { x: angle.cos(), y: angle.sin() };
+                    let to = crate::sim::planner::Player::entry_points(anchor, dir);
                     self.phase = Phase::Travel { from, to, t: 0.0 };
                 }
             }
             Phase::Travel { to, t, .. } => {
                 *t += dt;
                 if *t >= TRAVEL_MS {
-                    queue_done = Some(*to); // 直接进入 Play（去掉排队静止等待）
+                    // 进入 Play：队首锚点 = to[0]，方向 = 队首→队尾（上链布局方向）
+                    let anchor = to[0];
+                    let dir = crate::sim::math::normalize(
+                        Vec2 {
+                            x: to[0].x - to[2].x,
+                            y: to[0].y - to[2].y,
+                        },
+                    );
+                    queue_done = Some((anchor, dir));
                 }
             }
             Phase::Play(player) => {
@@ -142,9 +156,14 @@ impl BallsEngine {
                 player.tick(dt);
             }
         }
-        if let Some(spots) = queue_done {
-            self.phase = Phase::Play(Player::new(spots));
+        if let Some((anchor, dir)) = queue_done {
+            self.phase = Phase::Play(Player::new(anchor, dir));
         }
+    }
+
+    /// 调试：三球实际渲染坐标（含偏移）
+    pub fn balls_world_pos(&self) -> [Vec2; 3] {
+        [self.ball_world_pos(0), self.ball_world_pos(1), self.ball_world_pos(2)]
     }
 
     fn ball_world_pos(&self, color_slot: usize) -> Vec2 {

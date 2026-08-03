@@ -130,6 +130,43 @@ fn setup_debug_panel(engine: Rc<RefCell<BallsEngine>>) {
     let sel_label = document.create_element("div").unwrap();
     set_text_of(sel_label.clone(), "选中：球0（粉）· 方向键移动锚点");
     append_node(&panel, sel_label.clone());
+
+    // 坐标区：三球实时坐标 + 复制按钮
+    let coord_box = document.create_element("textarea").unwrap();
+    coord_box
+        .set_attribute("readonly", "true")
+        .unwrap();
+    coord_box.set_attribute("rows", "3").unwrap();
+    coord_box.set_attribute("style", "width:100%;font:11px monospace;background:#fafafa;border:1px solid #ddd;border-radius:4px;")
+        .unwrap();
+    append_node(&panel, coord_box.clone());
+
+    let copy_btn = document.create_element("button").unwrap();
+    set_text_of(copy_btn.clone(), "复制三球坐标");
+    copy_btn.set_attribute("style", "margin-top:4px;width:100%;").unwrap();
+    append_node(&panel, copy_btn.clone());
+
+    let engine2 = Rc::clone(&engine);
+    let coord_box2 = coord_box.clone();
+    let copy_cb = Closure::<dyn FnMut()>::new(move || {
+        let e = engine2.borrow();
+        let p = e.balls_world_pos();
+        let text = format!(
+            "粉  ({:.3}, {:.3})
+水蓝 ({:.3}, {:.3})
+薄荷 ({:.3}, {:.3})",
+            p[0].x, p[0].y, p[1].x, p[1].y, p[2].x, p[2].y
+        );
+        set_text_of(coord_box2.clone(), &text);
+        // 尝试写剪贴板（失败静默——只显示在 textarea 亦可手选复制）
+        if let Some(w) = web_sys::window() {
+            let nav = w.navigator();
+            let c = nav.clipboard();
+            let _ = c.write_text(&text);
+        }
+    });
+    copy_btn.add_event_listener_with_callback("click", copy_cb.as_ref().unchecked_ref()).unwrap();
+    copy_cb.forget();
     append_node(&panel, select_btn.clone());
 
     let mode_btn: web_sys::HtmlButtonElement =

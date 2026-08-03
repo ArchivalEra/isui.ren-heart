@@ -41,6 +41,11 @@ pub fn smoothstep(k: f64) -> f64 {
     k * k * (3.0 - 2.0 * k)
 }
 
+pub fn normalize(v: Vec2) -> Vec2 {
+    let l = (v.x * v.x + v.y * v.y).sqrt().max(1e-9);
+    Vec2 { x: v.x / l, y: v.y / l }
+}
+
 pub fn lerp(a: Vec2, b: Vec2, k: f64) -> Vec2 {
     Vec2 { x: a.x + (b.x - a.x) * k, y: a.y + (b.y - a.y) * k }
 }
