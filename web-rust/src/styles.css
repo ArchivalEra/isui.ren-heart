@@ -108,6 +108,7 @@ body {
 .heart-main {
   position: relative;
   z-index: 4;
+  pointer-events: none; /* 不拦截 logo 拖拽 */
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -147,6 +148,7 @@ body {
 
 /* Material You 按钮：灰阶 tonal + 状态层 + elevation */
 .heart-link {
+  pointer-events: auto; /* 导航按钮保持可点 */
   display: inline-block;
   padding: 0.7rem 1.8rem;
   border: 1px solid var(--outline);

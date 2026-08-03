@@ -5,6 +5,7 @@ use crate::config::templates::TEMPLATES;
 use crate::sim::math::{screen_of, smoothstep, Vec2};
 use crate::sim::planner::{Phase, Player};
 use crate::sim::target::random_trio_targets;
+use std::collections::VecDeque;
 use wasm_bindgen::JsCast;
 use web_sys::{CanvasRenderingContext2d, HtmlCanvasElement};
 
@@ -30,6 +31,8 @@ pub struct BallsEngine {
     pub anchors: [Vec2; 3],
     pub debug: bool,
     pub mode: RenderMode,
+    /// 每球位置历史（实心拖尾用，Trail 模式）
+    history: [VecDeque<(f64, f64)>; 3],
 }
 
 impl BallsEngine {
@@ -55,6 +58,7 @@ impl BallsEngine {
             anchors,
             debug: false,
             mode: RenderMode::Particle,
+            history: [VecDeque::new(), VecDeque::new(), VecDeque::new()],
         }
     }
 
@@ -62,7 +66,16 @@ impl BallsEngine {
         self.step(dt);
         self.render();
         for s in 0..3 {
-            self.prev_pos[s] = self.ball_world_pos(s);
+            let pos = self.ball_world_pos(s);
+            self.prev_pos[s] = pos;
+            // 位置历史（实心拖尾；上限 8）
+            if matches!(self.phase, Phase::Play(_)) {
+                let h = &mut self.history[s];
+                h.push_back((pos.x, pos.y));
+                if h.len() > 8 {
+                    h.pop_front();
+                }
+            }
         }
     }
 
@@ -195,29 +208,53 @@ impl BallsEngine {
             let speed = (vx * vx + vy * vy).sqrt();
 
             // 模式分支：粒子化（椭圆拉伸）vs 拖尾化（纯圆 + 长实体拖尾）
-            let (rx, ry, angle, trail_mul, trail_alpha) = match self.mode {
+            let (rx, ry, angle) = match self.mode {
                 RenderMode::Particle => {
                     let sn = (speed / (ELLIPSE.speed_base * w)).clamp(0.0, 1.5);
                     let k = smoothstep((sn - ELLIPSE.threshold) / (1.5 - ELLIPSE.threshold));
                     let ratio = 1.0 + k * (ELLIPSE.max_ratio - 1.0);
-                    (radius * ratio, radius / ratio, vy.atan2(vx), 1.0, MOTION_BLUR.trail_alpha)
+                    (radius * ratio, radius / ratio, vy.atan2(vx))
                 }
-                RenderMode::Trail => (radius, radius, 0.0, 4.0, 0.45),
+                RenderMode::Trail => (radius, radius, 0.0),
             };
 
-            if speed > 1.0 && fade > 0.9 {
-                let trail = MOTION_BLUR.trail_len * trail_mul * radius;
-                let (tx, ty) = (px - vx / speed * trail, py - vy / speed * trail);
-                let (r, g, b) = hex_to_rgb(self.balls[color_slot].color);
-                let lg = self.ctx.create_linear_gradient(tx, ty, px, py);
-                lg.add_color_stop(0.0, &format!("rgba({r},{g},{b},0)")).unwrap();
-                lg.add_color_stop(1.0, &format!("rgba({r},{g},{b},{})", trail_alpha)).unwrap();
-                self.ctx.begin_path();
-                self.ctx.move_to(tx, ty);
-                self.ctx.line_to(px, py);
-                self.ctx.set_stroke_style(&lg.into());
-                self.ctx.set_line_width(radius * 0.7);
-                self.ctx.stroke();
+            // 尾迹（粒子=短渐变线；拖尾=实心圆序列，Google 风格）
+            match self.mode {
+                RenderMode::Particle => {
+                    if speed > 1.0 && fade > 0.9 {
+                        let trail = MOTION_BLUR.trail_len * radius;
+                        let (tx, ty) = (px - vx / speed * trail, py - vy / speed * trail);
+                        let (r, g, b) = hex_to_rgb(self.balls[color_slot].color);
+                        let lg = self.ctx.create_linear_gradient(tx, ty, px, py);
+                        lg.add_color_stop(0.0, &format!("rgba({r},{g},{b},0)")).unwrap();
+                        lg.add_color_stop(1.0, &format!("rgba({r},{g},{b},{})", MOTION_BLUR.trail_alpha)).unwrap();
+                        self.ctx.begin_path();
+                        self.ctx.move_to(tx, ty);
+                        self.ctx.line_to(px, py);
+                        self.ctx.set_stroke_style(&lg.into());
+                        self.ctx.set_line_width(radius * 0.7);
+                        self.ctx.stroke();
+                    }
+                }
+                RenderMode::Trail => {
+                    // 实心圆序列：纯色不透明，半径递减（无渐变花活）
+                    let hist = &self.history[color_slot];
+                    if hist.len() > 1 {
+                        let n = hist.len();
+                        for (k, (hx, hy)) in hist.iter().enumerate() {
+                            let frac = k as f64 / (n as f64 - 1.0); // 0=最新
+                            if frac > 0.75 {
+                                continue; // 太老的忽略
+                            }
+                            let (sx, sy, _) = screen_of(Vec2 { x: *hx, y: *hy }, w, h);
+                            let r = radius * (1.0 - frac * 0.65);
+                            self.ctx.begin_path();
+                            self.ctx.arc(sx, sy, r, 0.0, std::f64::consts::PI * 2.0).unwrap();
+                            self.ctx.set_fill_style(&wasm_bindgen::JsValue::from(self.balls[color_slot].color));
+                            self.ctx.fill();
+                        }
+                    }
+                }
             }
 
             self.ctx.save();
