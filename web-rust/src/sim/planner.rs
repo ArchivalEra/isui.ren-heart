@@ -7,8 +7,6 @@ use crate::config::params::*;
 use crate::config::templates::TEMPLATES;
 use crate::sim::math::*;
 
-/// 段端点速度（归一化）：非零 → 段间不停顿、不突跳
-const SEG_END_SPEED: f64 = 0.4;
 use crate::sim::target::random_target_apart;
 use std::collections::VecDeque;
 
@@ -32,10 +30,18 @@ struct Cursor {
     t: f64,
 }
 
+/// 每球物理状态（spring 追踪）
+#[derive(Clone, Copy)]
+struct BallState {
+    pos: Vec2,
+    vel: Vec2,
+}
+
 /// 执行器：共享链 + 三球独立游标
 pub struct Player {
     legs: VecDeque<PlannedLeg>,
     curs: [Cursor; 3],
+    states: [BallState; 3],
     pub order: [usize; 3],
 }
 
@@ -66,12 +72,19 @@ impl Player {
             Cursor { idx: 0, t: 0.0 }, // 球2 在 spots[2]
         ];
 
-        let mut p = Player { legs, curs, order: ORDERS[0] };
+        // 物理状态：初始 = 到达点（入场连续）
+        let states = [
+            BallState { pos: spots[0], vel: Vec2 { x: 0.0, y: 0.0 } },
+            BallState { pos: spots[1], vel: Vec2 { x: 0.0, y: 0.0 } },
+            BallState { pos: spots[2], vel: Vec2 { x: 0.0, y: 0.0 } },
+        ];
+        let mut p = Player { legs, curs, states, order: ORDERS[0] };
         p.ensure_chain();
         p
     }
 
     pub fn tick(&mut self, dt: f64) {
+        // 1) 游标推进（线性 t，速度平滑交给 spring）
         for c in self.curs.iter_mut() {
             let dur = self
                 .legs
@@ -89,7 +102,41 @@ impl Player {
                 }
             }
         }
+        // 2) spring 追踪：target = 链上位置（线性），弹簧提供全部平滑
+        let dt_s = dt / 1000.0;
+        let k = SPRING.stiffness;
+        let c_damp = SPRING.damping * 2.0 * k.sqrt(); // 临界阻尼系数 2√k，乘 damping
+        for s in 0..3 {
+            let target = self.chain_pos(s);
+            let st = &mut self.states[s];
+            // 半隐式欧拉（稳定）
+            let ax = -k * (st.pos.x - target.x) - c_damp * st.vel.x;
+            let ay = -k * (st.pos.y - target.y) - c_damp * st.vel.y;
+            st.vel.x += ax * dt_s;
+            st.vel.y += ay * dt_s;
+            st.pos.x += st.vel.x * dt_s;
+            st.pos.y += st.vel.y * dt_s;
+            st.pos.x = st.pos.x.clamp(0.0, 1.0);
+            st.pos.y = st.pos.y.clamp(0.0, 1.0);
+        }
         self.ensure_chain();
+    }
+
+    /// 链上目标位置（线性 t；spring 做平滑）
+    fn chain_pos(&self, color_slot: usize) -> Vec2 {
+        let c = self.curs[color_slot];
+        let pl = self.legs.get(c.idx).expect("cursor idx in chain");
+        let leg = &pl.leg;
+        let p = quad_bezier(leg.from, leg.ctrl, leg.target, c.t.clamp(0.0, 1.0));
+        let tan = bezier_tangent(leg.from, leg.ctrl, leg.target, c.t.clamp(0.0, 1.0));
+        let n = normal_of(tan);
+        // 段内摆动（模板差异化：蛇形/摇摆）——spring 目标自带，物理平滑
+        let wave = TEMPLATES[pl.template_idx].wave;
+        let wobble = wave * (c.t * std::f64::consts::PI * 2.0).sin();
+        Vec2 {
+            x: (p.x + n.x * wobble).clamp(0.0, 1.0),
+            y: (p.y + n.y * wobble).clamp(0.0, 1.0),
+        }
     }
 
     /// 链增长：保证每球至少 3 段余量（无限轨迹）
@@ -140,28 +187,31 @@ impl Player {
             let target = random_target_apart(&others, MIN_BALL_DIST);
             let pl = make_planned_leg(from, dir, template_idx, target);
             if leg_in_bounds(&pl.leg) {
-                self.legs.push_back(pl);
+                self.legs.push_back(clamp_dur_to_chain(pl, tail.dur_ms));
                 return;
             }
         }
         let target = random_target_apart(&others, MIN_BALL_DIST);
         let safe = clamp_target_in_bounds(from, dir, template_idx, target);
-        self.legs.push_back(make_planned_leg(from, dir, template_idx, safe));
+        let pl = make_planned_leg(from, dir, template_idx, safe);
+        self.legs.push_back(clamp_dur_to_chain(pl, tail.dur_ms));
     }
 
-    /// 球位：链上游标位置（t<0 不发生；t 平滑）
+    /// 球位：spring 物理状态（offset 为引擎层缓动的法线分离量，直接叠加）
     pub fn world_pos(&self, color_slot: usize, offset: f64) -> Vec2 {
+        let st = &self.states[color_slot];
+        // 法线分离量（引擎缓动）叠加在状态上
         let c = self.curs[color_slot];
-        let pl = self.legs.get(c.idx).expect("cursor idx in chain");
-        let te = smooth_velocity(c.t, SEG_END_SPEED);
-        let leg = &pl.leg;
-        let p = quad_bezier(leg.from, leg.ctrl, leg.target, te);
-        let tan = bezier_tangent(leg.from, leg.ctrl, leg.target, te);
-        let n = normal_of(tan);
-        let off = offset * WANDER.offset_range;
-        Vec2 {
-            x: (p.x + n.x * off).clamp(0.0, 1.0),
-            y: (p.y + n.y * off).clamp(0.0, 1.0),
+        if let Some(pl) = self.legs.get(c.idx) {
+            let leg = &pl.leg;
+            let tan = bezier_tangent(leg.from, leg.ctrl, leg.target, c.t.clamp(0.0, 1.0));
+            let n = normal_of(tan);
+            Vec2 {
+                x: (st.pos.x + n.x * offset * WANDER.offset_range).clamp(0.0, 1.0),
+                y: (st.pos.y + n.y * offset * WANDER.offset_range).clamp(0.0, 1.0),
+            }
+        } else {
+            st.pos
         }
     }
 
@@ -212,6 +262,18 @@ fn leg_duration_ms(leg: &Leg, template: &crate::config::templates::Template) -> 
     (bend / (WORLD_SPEED * template.speed()) * 1000.0).max(200.0)
 }
 
+/// 时长比约束：新段 dur 与链尾 dur 的比值限制在 MAX_DUR_RATIO 内
+/// （球速差异过大 = 「换顺序」瞬间完成，视觉上太快）
+fn clamp_dur_to_chain(mut pl: PlannedLeg, tail_dur: f64) -> PlannedLeg {
+    let ratio = pl.dur_ms / tail_dur.max(1.0);
+    if ratio > crate::config::params::MAX_DUR_RATIO {
+        pl.dur_ms = tail_dur * crate::config::params::MAX_DUR_RATIO;
+    } else if ratio < 1.0 / crate::config::params::MAX_DUR_RATIO {
+        pl.dur_ms = tail_dur / crate::config::params::MAX_DUR_RATIO;
+    }
+    pl
+}
+
 fn dir_of(from: Vec2, to: Vec2) -> Vec2 {
     let dx = to.x - from.x;
     let dy = to.y - from.y;
@@ -244,8 +306,6 @@ fn clamp_target_in_bounds(from: Vec2, dir: Vec2, template_idx: usize, mut target
 pub enum Phase {
     AtLogo { t: f64 },
     Travel { from: [Vec2; 3], to: [Vec2; 3], t: f64 },
-    /// 到达点等待（三球静止在各自到达点，零跳变进入 Play）
-    Queue { t: f64, spots: [Vec2; 3] },
     Play(Player),
 }
 
@@ -387,6 +447,28 @@ mod tests {
                     "球{s} 出屏: {:?}",
                     pos
                 );
+            }
+        }
+    }
+
+    #[test]
+    fn chain_duration_ratio_bounded() {
+        // 相邻段时长比受 MAX_DUR_RATIO 约束（换序速度可控）
+        use crate::config::params::MAX_DUR_RATIO;
+        let spots = [
+            Vec2 { x: 0.3, y: 0.3 },
+            Vec2 { x: 0.5, y: 0.5 },
+            Vec2 { x: 0.7, y: 0.7 },
+        ];
+        let mut p = Player::new(spots);
+        let mut prev_dur: f64 = 1000.0;
+        for _ in 0..60 * 30 {
+            p.tick(16.7);
+            if let Some(tail) = p.legs.back() {
+                let r = tail.dur_ms / prev_dur.max(1.0);
+                assert!(r <= MAX_DUR_RATIO + 1e-6 && r >= 1.0 / MAX_DUR_RATIO - 1e-6,
+                    "相邻段时长比越界: {r}");
+                prev_dur = tail.dur_ms;
             }
         }
     }

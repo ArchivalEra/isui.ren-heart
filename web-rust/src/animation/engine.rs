@@ -99,13 +99,7 @@ impl BallsEngine {
             Phase::Travel { to, t, .. } => {
                 *t += dt;
                 if *t >= TRAVEL_MS {
-                    self.phase = Phase::Queue { t: 0.0, spots: *to };
-                }
-            }
-            Phase::Queue { t, spots } => {
-                *t += dt;
-                if *t >= QUEUE_MS {
-                    queue_done = Some(*spots);
+                    queue_done = Some(*to); // 直接进入 Play（去掉排队静止等待）
                 }
             }
             Phase::Play(player) => {
@@ -129,7 +123,7 @@ impl BallsEngine {
                 let k = smoothstep(*t / TRAVEL_MS);
                 crate::sim::math::lerp(from[color_slot], to[color_slot], k)
             }
-            Phase::Queue { spots, .. } => spots[color_slot],
+
             Phase::Play(player) => player.world_pos(color_slot, self.balls[color_slot].offset),
         }
     }
@@ -250,22 +244,15 @@ impl BallsEngine {
                             pts.push((sx, sy));
                         }
                         self.ctx.set_line_cap("round");
-                        for k in 0..n - 1 {
-                            let frac = k as f64 / (n as f64 - 1.0); // 0=头部
-                            if frac > 0.72 {
-                                continue; // 尾部太细忽略
-                            }
-                            let lw = radius * (1.0 - frac * 0.72);
-                            if lw < 1.0 {
-                                continue;
-                            }
-                            self.ctx.begin_path();
-                            self.ctx.move_to(pts[k].0, pts[k].1);
-                            self.ctx.line_to(pts[k + 1].0, pts[k + 1].1);
-                            self.ctx.set_stroke_style(&wasm_bindgen::JsValue::from(color));
-                            self.ctx.set_line_width(lw);
-                            self.ctx.stroke();
+                        // 等宽实心拖尾（与小球同宽，无感叹号渐细）
+                        self.ctx.set_stroke_style(&wasm_bindgen::JsValue::from(color));
+                        self.ctx.set_line_width(radius * 0.92);
+                        self.ctx.begin_path();
+                        self.ctx.move_to(pts[0].0, pts[0].1);
+                        for k in 1..n {
+                            self.ctx.line_to(pts[k].0, pts[k].1);
                         }
+                        self.ctx.stroke();
                     }
                 }
             }

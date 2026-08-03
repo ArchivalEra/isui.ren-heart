@@ -12,6 +12,8 @@ pub struct Template {
     pub speed: f64,
     /// 每球法线偏移目标倍率
     pub offsets: [f64; 3],
+    /// 段内法线摆动幅度（蛇形/摇摆差异化；0=无）
+    pub wave: f64,
 }
 
 impl Template {
@@ -22,17 +24,17 @@ impl Template {
 }
 
 pub const TEMPLATES: [Template; 12] = [
-    Template { id: "run", name: "直线跑", curvature: 0.0, speed: 1.1, offsets: [0.0, 0.6, -0.6] },
-    Template { id: "sweep", name: "大转弯", curvature: 0.65, speed: 1.0, offsets: [0.0, 0.5, -0.5] },
-    Template { id: "wiggle", name: "小碎步", curvature: 0.22, speed: 1.2, offsets: [0.0, 0.4, 0.4] },
-    Template { id: "glide", name: "滑翔", curvature: 0.35, speed: 0.85, offsets: [0.0, 0.8, -0.8] },
-    Template { id: "sprint", name: "冲刺", curvature: 0.08, speed: 1.6, offsets: [0.0, 0.3, -0.3] },
-    Template { id: "sway", name: "摇摆", curvature: 0.5, speed: 0.9, offsets: [0.0, 0.5, 0.5] },
-    Template { id: "loop", name: "绕圈", curvature: 0.6, speed: 0.95, offsets: [0.0, 0.6, -0.6] },
-    Template { id: "zigzag", name: "锯齿", curvature: -0.4, speed: 1.15, offsets: [0.3, 0.0, -0.3] },
-    Template { id: "crawl", name: "慢爬", curvature: 0.18, speed: 0.55, offsets: [0.0, 0.4, -0.4] },
-    Template { id: "dash", name: "折返", curvature: -0.55, speed: 1.4, offsets: [0.0, 0.5, -0.5] },
-    Template { id: "drift", name: "漂移", curvature: 0.75, speed: 1.3, offsets: [0.4, -0.2, 0.2] },
-    Template { id: "stroll", name: "散步", curvature: 0.12, speed: 0.7, offsets: [0.0, 0.5, 0.5] },
+    Template { id: "run", name: "直线跑", curvature: 0.0, speed: 1.1, offsets: [0.0, 0.6, -0.6], wave: 0.0 },
+    Template { id: "sweep", name: "大转弯", curvature: 0.65, speed: 1.0, offsets: [0.0, 0.5, -0.5], wave: 0.0 },
+    Template { id: "wiggle", name: "小碎步", curvature: 0.22, speed: 1.2, offsets: [0.0, 0.4, 0.4], wave: 0.012 },
+    Template { id: "glide", name: "滑翔", curvature: 0.35, speed: 0.85, offsets: [0.0, 0.8, -0.8], wave: 0.02 },
+    Template { id: "sprint", name: "冲刺", curvature: 0.08, speed: 1.6, offsets: [0.0, 0.3, -0.3], wave: 0.0 },
+    Template { id: "sway", name: "摇摆", curvature: 0.5, speed: 0.9, offsets: [0.0, 0.5, 0.5], wave: 0.045 },
+    Template { id: "loop", name: "绕圈", curvature: 0.6, speed: 0.95, offsets: [0.0, 0.6, -0.6], wave: 0.0 },
+    Template { id: "zigzag", name: "锯齿", curvature: -0.4, speed: 1.15, offsets: [0.3, 0.0, -0.3], wave: 0.06 },
+    Template { id: "crawl", name: "慢爬", curvature: 0.18, speed: 0.55, offsets: [0.0, 0.4, -0.4], wave: 0.008 },
+    Template { id: "dash", name: "折返", curvature: -0.55, speed: 1.4, offsets: [0.0, 0.5, -0.5], wave: 0.03 },
+    Template { id: "drift", name: "漂移", curvature: 0.75, speed: 1.3, offsets: [0.4, -0.2, 0.2], wave: 0.015 },
+    Template { id: "stroll", name: "散步", curvature: 0.12, speed: 0.7, offsets: [0.0, 0.5, 0.5], wave: 0.005 },
 ];
 

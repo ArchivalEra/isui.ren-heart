@@ -1,7 +1,6 @@
 // 三球队列动画组件：Canvas + rAF 自适应循环 + 图形化调试面板
 // 调试面板：拖拽 logo 位置（left/top 百分比），复制 CSS 参数
 use crate::animation::engine::{BallsEngine, RenderMode};
-use crate::config::params::{FRAME_BUDGET_MS, MAX_SKIP};
 use leptos::prelude::*;
 use std::cell::RefCell;
 use std::rc::Rc;
@@ -25,23 +24,14 @@ pub fn BallsAnimation() -> impl IntoView {
             let perf_loop = performance.clone();
 
             let mut last = 0.0;
-            let mut acc = 0.0;
-            let mut skip = 0u32;
             let window_loop = window.clone();
 
+            // 每帧渲染（rAF vsync 对齐）：跳帧会产生不均匀帧间隔 = 肉眼卡顿
             *holder.borrow_mut() = Some(Closure::wrap(Box::new(move || {
                 let now = perf_loop.now();
-                if last > 0.0 {
-                    acc += now - last;
-                }
+                let dt = if last > 0.0 { now - last } else { 16.7 };
                 last = now;
-                if acc >= FRAME_BUDGET_MS || skip >= MAX_SKIP {
-                    engine_loop.borrow_mut().frame(acc);
-                    acc = 0.0;
-                    skip = 0;
-                } else {
-                    skip += 1;
-                }
+                engine_loop.borrow_mut().frame(dt);
                 let b = holder_loop.borrow();
                 let cb = b.as_ref().unwrap().as_ref().unchecked_ref();
                 let _ = window_loop.request_animation_frame(cb);

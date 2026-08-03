@@ -13,6 +13,10 @@ pub const ORDERS: [[usize; 3]; 6] = [
     [2, 1, 0],
 ];
 
+/// 相邻段时长比上限：约束球速差异（「换顺序」过程太快 = dur 差异过大）
+/// 调小 → 换序更慢更平滑；调大 → 允许暴快（拖尾出师后高速韵味）
+pub const MAX_DUR_RATIO: f64 = 2.5;
+
 /// 规划时独立概率事件（网格判断已废弃——规划/执行架构下为纯负担）
 pub struct Prob {
     /// 规划时完全随机换模板的概率（防单一模板连发绕圈）
@@ -29,6 +33,17 @@ pub const PROB: Prob = Prob {
 /// 世界速度（单位/秒）：恒定速度 → 时长与路径长度挂钩
 /// （固定时长导致长路径飞掠 = 视觉「闪现」的根因）
 pub const WORLD_SPEED: f64 = 0.22;
+
+/// Spring 物理（谷歌大学成果，MDC-Android 官方 MotionTokens）：
+/// motionSpringDefaultSpatial = damping 0.9, stiffness 700
+/// damping < 1 → 轻微过冲（pixel 小球「灵动」的来源）
+/// 取代缓动曲线：任何速度变化都连续（无卡顿感、无停顿、无突跳）
+pub struct Spring {
+    pub stiffness: f64,
+    pub damping: f64,
+}
+
+pub const SPRING: Spring = Spring { stiffness: 700.0, damping: 0.9 };
 
 /// 漫游节奏（Play 阶段）
 pub struct Wander {
@@ -49,15 +64,11 @@ pub const WANDER: Wander = Wander {
 /// 三球「商量」最小间距（世界坐标）
 pub const MIN_BALL_DIST: f64 = 0.3;
 
-/// 帧率自适应：rAF 预算（ms/帧）。实际帧率由 vsync 决定，超预算自动跳帧
-pub const FRAME_BUDGET_MS: f64 = 16.0; // 60fps 预算；慢设备自动降频
-pub const MAX_SKIP: u32 = 4; // 最多每 5 帧渲染 1 次（≈12fps 保底，电视 23fps 之上）
 
 /// 入场仪式
 pub const FADE_IN_MS: f64 = 800.0; // 锚点淡入时长
 pub const AT_LOGO_MS: f64 = 3000.0; // 在 logo 球位停留
 pub const TRAVEL_MS: f64 = 1600.0; // 前往随机区域时长
-pub const QUEUE_MS: f64 = 900.0; // 排队时长
 
 /// logo 三球锚点（世界坐标，从原图提取）
 pub const ANCHORS: [(f64, f64); 3] = [
