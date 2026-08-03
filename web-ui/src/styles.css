@@ -165,9 +165,8 @@ body {
   pointer-events: auto; /* 导航区域保持可点 */
 }
 
-/* ── 卡片墙按钮：Material You tonal icon button（folder 图标）──
-   M3 v0.192：40dp 圆角 20dp、tonal container、state layers（hover 8% / pressed 12%）
-   无拟物阴影堆——M3 是平面 + 状态层 + elevation 语言 */
+/* ── 卡片墙按钮：拟物卡片堆（纯白灰阶，站主钦点不换图标）──
+   视觉 = 三层错落卡片边缘；交互 = M3 语言（state layer + elevation + emphasized 曲线） */
 .card-wall-wrap {
   position: relative;
   display: inline-flex;
@@ -177,49 +176,60 @@ body {
 
 .card-wall-btn {
   position: relative;
-  width: 40px;
-  height: 40px;
+  width: 64px;
+  height: 52px;
   border: none;
-  border-radius: 20px;
+  border-radius: 12px;
   cursor: pointer;
-  background: var(--secondary-container, #e8e8ec);
-  color: var(--on-secondary-container, #1f1f23);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 1px 2px rgba(17, 17, 17, 0.3);
-  transition: box-shadow 0.15s cubic-bezier(0.2, 0, 0, 1), background 0.15s;
+  background: linear-gradient(160deg, #ffffff 0%, #f0f0f0 55%, #e2e2e2 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    inset 0 -2px 4px rgba(17, 17, 17, 0.08),
+    0 2px 6px rgba(17, 17, 17, 0.14);
+  transition: transform 0.2s cubic-bezier(0.05, 0.7, 0.1, 1),
+    box-shadow 0.2s cubic-bezier(0.2, 0, 0, 1);
 }
 
-.card-wall-btn svg {
-  width: 22px;
-  height: 22px;
-  fill: currentColor;
-  pointer-events: none;
-}
-
-/* state layers：hover 8%、active 12%（M3 规范） */
-.card-wall-btn::before {
+/* 卡片堆：三层错落的卡片边缘（拟物核心，纯白灰阶） */
+.card-wall-btn::before,
+.card-wall-btn::after {
   content: "";
   position: absolute;
-  inset: 0;
-  border-radius: 20px;
-  background: rgba(17, 17, 17, 0.08);
-  opacity: 0;
-  transition: opacity 0.15s cubic-bezier(0.2, 0, 0, 1);
+  left: 8px;
+  right: 8px;
+  height: 14px;
+  border-radius: 8px;
+  background: linear-gradient(160deg, #f7f7f7 0%, #e6e6e6 100%);
+  box-shadow: 0 1px 3px rgba(17, 17, 17, 0.1);
 }
 
-.card-wall-btn:hover::before {
-  opacity: 1;
+.card-wall-btn::before {
+  top: -7px;
+  transform: rotate(-2deg);
+  z-index: -1;
 }
 
-.card-wall-btn:active::before {
-  opacity: 1;
-  background: rgba(17, 17, 17, 0.12);
+.card-wall-btn::after {
+  top: -13px;
+  transform: rotate(3deg);
+  z-index: -2;
+  background: linear-gradient(160deg, #efefef 0%, #dcdcdc 100%);
+}
+
+/* M3 state layer：hover 8% / active 12%（灰阶叠加） */
+.card-wall-btn:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    inset 0 -2px 4px rgba(17, 17, 17, 0.08),
+    0 8px 18px rgba(17, 17, 17, 0.18);
 }
 
 .card-wall-btn:active {
-  box-shadow: 0 0 0 rgba(17, 17, 17, 0.3);
+  transform: translateY(1px) scale(0.97);
+  box-shadow:
+    inset 0 2px 6px rgba(17, 17, 17, 0.14),
+    0 1px 2px rgba(17, 17, 17, 0.1);
 }
 
 /* 卡片墙下拉面板：M3 motion——收回（基础态）= emphasized-accelerate 200ms
