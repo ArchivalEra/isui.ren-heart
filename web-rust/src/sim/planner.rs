@@ -279,12 +279,6 @@ impl Player {
         self.states[color_slot.min(2)].pos
     }
 
-    /// 球 i 中心沿 dir 的投影（自然排队排序用）
-    pub fn ball_center_proj(&self, color_slot: usize, dir: Vec2) -> f64 {
-        let p = self.states[color_slot.min(2)].pos;
-        p.x * dir.x + p.y * dir.y
-    }
-
     /// 调试：当前目标（球 i 链上位置）
     pub fn target_of(&self, color_slot: usize) -> Vec2 {
         let s_i = self.s_lead - self.gaps[color_slot];

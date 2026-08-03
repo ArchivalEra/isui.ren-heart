@@ -60,11 +60,6 @@ pub fn catmull_rom(p0: Vec2, p1: Vec2, p2: Vec2, p3: Vec2, t: f64) -> Vec2 {
     }
 }
 
-pub fn normalize(v: Vec2) -> Vec2 {
-    let l = (v.x * v.x + v.y * v.y).sqrt().max(1e-9);
-    Vec2 { x: v.x / l, y: v.y / l }
-}
-
 pub fn lerp(a: Vec2, b: Vec2, k: f64) -> Vec2 {
     Vec2 { x: a.x + (b.x - a.x) * k, y: a.y + (b.y - a.y) * k }
 }

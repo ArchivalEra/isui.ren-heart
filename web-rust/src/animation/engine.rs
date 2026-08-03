@@ -154,27 +154,15 @@ impl BallsEngine {
                 if *check_t >= FREE_CHECK_MS {
                     *check_t = 0.0;
                     if rng.gen::<f64>() < QUEUE_PROB {
-                        // 队首 = 沿随机方向投影最前的球；槽位沿该方向错开
+                        // 固定粉蓝绿顺序：粉（球0）当队首，蓝、绿依次落后（站主钦定美的顺序）
                         let dir = Self::random_dir();
-                        let mut order: Vec<usize> = (0..3).collect();
-                        let proj: Vec<f64> = players
-                            .iter()
-                            .enumerate()
-                            .map(|(i, p)| p.ball_center_proj(i, dir))
-                            .collect();
-                        order.sort_by(|a, b| proj[*b].partial_cmp(&proj[*a]).unwrap());
-                        let anchor = players[order[0]].ball_center(order[0]);
+                        let anchor = players[0].ball_center(0);
                         let slots = Player::entry_points(anchor, dir);
-                        // 槽位按自然排序分配：投影最前的球当队首（不是固定粉蓝绿）
-                        let mut slots_by_ball = [Vec2 { x: 0.0, y: 0.0 }; 3];
-                        for (rank, &ball) in order.iter().enumerate() {
-                            slots_by_ball[ball] = slots[rank];
-                        }
                         let mut from = [Vec2 { x: 0.0, y: 0.0 }; 3];
                         for (i, p) in players.iter().enumerate() {
                             from[i] = p.ball_center(i);
                         }
-                        next = Some(Phase::Queueing { t: 0.0, from, anchor, dir, slots: slots_by_ball });
+                        next = Some(Phase::Queueing { t: 0.0, from, anchor, dir, slots });
                     }
                 }
             }
