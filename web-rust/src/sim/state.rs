@@ -30,7 +30,9 @@ impl State {
     /// 开场：三球静止构图（粉球停 5 秒），粉球先行、蓝绿思考后跟上，然后永久巡航
     pub fn new(anchors: [Vec2; 3]) -> Self {
         let dir = random_dir();
-        let player = Player::new(anchors[0], dir);
+        let mut player = Player::new(anchors[0], dir);
+        // 预生成风暴：入场空闲期一次性生成几分钟的链（运行期 ensure_chain 静默）
+        player.ensure_chain_to(PREPLAN_SECONDS * WORLD_SPEED * 1.1);
         // 开场节奏：粉球先停 5 秒，蓝绿在粉球出发后再等 1-3 秒
         let delays = [
             ENTRY_DELAY_MS,

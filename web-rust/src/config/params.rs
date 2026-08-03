@@ -94,6 +94,8 @@ pub const SPEED_BANDS: [(f64, f64); 3] = [
 ];
 /// 高速段拖尾历史点上限（跳跃时拖尾拉长更飘逸）
 pub const TRAIL_FRAMES_HIGH: usize = 12;
+/// 入场预生成：粉球开跑前一次性预生成 N 秒的链（压力前置，运行期零规划）
+pub const PREPLAN_SECONDS: f64 = 300.0;
 /// 判定「高速跳跃」的速度阈值（世界单位/秒）
 pub const JUMP_SPEED: f64 = 0.3;
 /// 摆动档位（每段随机选；收窄 + 段间连续性约束 → 无折角）

@@ -164,9 +164,15 @@ impl Player {
 
     /// 链增长：总弧长保持 ≥ s_lead + 余量（无限轨迹）
     fn ensure_chain(&mut self) {
+        self.ensure_chain_to(CHAIN_GAP * 3.0 + 0.5);
+    }
+
+    /// 批量补链到「队首前方 ahead 弧长」。入场预生成风暴用：一次性补几分钟的链，
+    /// 运行期 ensure_chain 静默（零规划抖动，帧率确定）
+    pub fn ensure_chain_to(&mut self, ahead: f64) {
         use rand::Rng;
         let mut rng = rand::thread_rng();
-        let need = self.s_lead + CHAIN_GAP * 3.0 + 0.5;
+        let need = self.s_lead + ahead;
         while self.chain.iter().map(|x| x.arc).sum::<f64>() < need {
             let tail = self.chain.back().expect("chain non-empty");
             let from = tail.leg.target;
