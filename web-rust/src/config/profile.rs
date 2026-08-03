@@ -37,7 +37,8 @@ pub struct MotionProfile {
     pub max_accel: f64,
     /// 速率低通时间常数（ms）：速度变化需此量级平滑过渡（慢慢减速/加速）
     pub rate_lerp_tau_ms: f64,
-    /// 链上错开弧长区间（蓝绿随机贴合粉球曲线的距离）
+    /// 链上错开弧长区间：稳定队形（蓝绿各落后约 0.18/0.38，微抖动保自然）
+    /// 曾放大到 0.08-0.7（随机贴合）→ 队形散失「三个孩子一起玩」的快乐感，回滚
     pub gap_min: f64,
     pub gap_max: f64,
     /// 拖尾风格
@@ -61,8 +62,8 @@ pub const NATIVE_PROFILE: MotionProfile = MotionProfile {
     spring: Spring { stiffness: 350.0, damping: 1.0 },
     max_accel: 1.2,
     rate_lerp_tau_ms: 450.0,
-    gap_min: 0.08,
-    gap_max: 0.35,
+    gap_min: 0.16,
+    gap_max: 0.20,
     trail: TrailStyle::Solid { frames: 8 },
     blend_prob: 0.0,
 };
