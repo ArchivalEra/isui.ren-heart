@@ -100,6 +100,8 @@ pub const PREPLAN_SECONDS: f64 = 300.0;
 pub const MIN_LEG_LEN: f64 = 0.35;
 /// 曲率感知速度：弯越急速越慢（v × 1/(1 + K×|curv|)）——温和变速，弯道不甩尾
 pub const CURV_SPEED_FACTOR: f64 = 0.5;
+/// 混合模板段概率：一整段内曲率 A→B→C 渐变（Euler spiral 离散近似）
+pub const BLEND_PROB: f64 = 0.2;
 /// logo 区域：每隔 LOGO_EVERY_ARC 弧长规划一个「logo 游走段」（区域规划回归）
 pub const LOGO_CENTER: (f64, f64) = (0.52, 0.42);
 pub const LOGO_RADIUS: f64 = 0.13;

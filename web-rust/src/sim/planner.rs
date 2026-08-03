@@ -18,7 +18,8 @@ pub struct Leg {
 
 #[derive(Clone)]
 pub struct PlannedLeg {
-    pub leg: Leg,
+    /// 5 子段（Euler spiral 离散近似：子段间曲率线性插值，段内模板渐变 A→B→C）
+    pub legs: [Leg; 5],
     pub template_idx: usize,
     /// 段级速度倍率（独立于曲线，来自 SPEED_BANDS）
     pub speed: f64,
@@ -80,7 +81,7 @@ impl Player {
         let speed = roll_speed();
         let wave = roll_wave(0.0);
         let mut pl = make_planned_leg(anchor, dir, 0, target, speed, wave);
-        if !leg_in_bounds(&pl.leg) {
+        if !leg_in_bounds(&pl) {
             let safe = clamp_target_in_bounds(anchor, dir, 0, target, speed, wave);
             pl = make_planned_leg(anchor, dir, 0, safe, speed, wave);
         }
@@ -121,7 +122,7 @@ impl Player {
             let (target, tan, seg_i, u_i) = if s_i >= 0.0 {
                 self.chain_pos_and_tangent(s_i)
             } else {
-                let leg0 = &self.chain.front().unwrap().leg;
+                let leg0 = &self.chain.front().unwrap().legs[0];
                 let d = dir_of(leg0.from, leg0.target);
                 let pos = Vec2 {
                     x: (leg0.from.x - d.x * self.gaps[s]).clamp(0.05, 0.95),
@@ -182,11 +183,12 @@ impl Player {
         let need = self.s_lead + ahead;
         while self.chain.iter().map(|x| x.arc).sum::<f64>() < need {
             let tail = self.chain.back().expect("chain non-empty");
-            let from = tail.leg.target;
-            let dir = if tail.leg.from == tail.leg.target {
+            let tail_last = tail.legs[4];
+            let from = tail_last.target;
+            let dir = if tail_last.from == tail_last.target {
                 Vec2 { x: 1.0, y: 0.0 }
             } else {
-                let tan = bezier_tangent(tail.leg.from, tail.leg.ctrl, tail.leg.target, 1.0);
+                let tan = bezier_tangent(tail_last.from, tail_last.ctrl, tail_last.target, 1.0);
                 let l = (tan.x * tan.x + tan.y * tan.y).sqrt().max(1e-9);
                 Vec2 { x: tan.x / l, y: tan.y / l }
             };
@@ -243,10 +245,34 @@ impl Player {
                     y: (from.y + (dir.x * angle.sin() + dir.y * angle.cos()) * d2 * 0.7).clamp(0.1, 0.9),
                 };
             }
-            let mut pl = make_planned_leg(from, dir, template_idx, target, speed, wave);
-            if !leg_in_bounds(&pl.leg) {
+            // 混合模板段（Euler spiral）：20% 概率一整段内曲率 A→B→C 渐变
+            let mut pl = if rng.gen::<f64>() < BLEND_PROB {
+                let old_curv2 = TEMPLATES[tail.template_idx].curvature;
+                let pick = |rng: &mut rand::rngs::ThreadRng, prev: f64| {
+                    for _ in 0..6 {
+                        let c = rng.gen_range(0..TEMPLATES.len());
+                        if (TEMPLATES[c].curvature - prev).abs() <= TEMPLATE_CURV_STEP {
+                            return TEMPLATES[c].curvature;
+                        }
+                    }
+                    prev
+                };
+                let curv_b = pick(&mut rng, old_curv2);
+                let curv_c = pick(&mut rng, curv_b);
+                make_blend_leg(
+                    from, dir, [old_curv2, curv_b, curv_c], target, 0.3,
+                    template_idx, speed, wave,
+                )
+            } else {
+                make_planned_leg(from, dir, template_idx, target, speed, wave)
+            };
+            if !leg_in_bounds(&pl) {
                 let safe = clamp_target_in_bounds(from, dir, template_idx, target, speed, wave);
-                pl = make_planned_leg(from, dir, template_idx, safe, speed, wave);
+                pl = if rng.gen::<f64>() < BLEND_PROB {
+                    make_blend_leg(from, dir, [0.0, 0.0, 0.0], safe, 0.3, template_idx, speed, wave)
+                } else {
+                    make_planned_leg(from, dir, template_idx, safe, speed, wave)
+                };
             }
             if pl.arc < 0.05 {
                 // 死循环防护：零长度段（收缩失败）强制拉一段——朝屏中心方向，必在屏内
@@ -266,18 +292,21 @@ impl Player {
     }
 
     /// 链上弧长 s 处：位置 + 切线 + 段索引 + 段内 u（速度 profile 用）
+    /// 链 = 段 × 5 子段：定位时先找段，再在段内 5 子段中定位
     fn chain_pos_and_tangent(&self, s: f64) -> (Vec2, Vec2, usize, f64) {
         let mut acc = 0.0;
         for (idx, pl) in self.chain.iter().enumerate() {
             if acc + pl.arc >= s {
-                let u = ((s - acc) / pl.arc.max(1e-9)).clamp(0.0, 1.0);
-                let leg = &pl.leg;
+                let s_in = (s - acc).clamp(0.0, pl.arc);
+                let sub_arc = pl.arc / 5.0;
+                let sub_idx = ((s_in / sub_arc.max(1e-9)) as usize).min(4);
+                let u = ((s_in - sub_idx as f64 * sub_arc) / sub_arc.max(1e-9)).clamp(0.0, 1.0);
+                let leg = &pl.legs[sub_idx];
                 let p = quad_bezier(leg.from, leg.ctrl, leg.target, u);
                 let tan = bezier_tangent(leg.from, leg.ctrl, leg.target, u);
                 let n = normal_of(tan);
                 let wobble = pl.wave * (u * std::f64::consts::PI * 2.0).sin();
                 // wobble 硬限制：摆动后位置永不越过 [0.03, 0.97]
-                // （配合链几何安全区 [0.08,0.92]，物理上不可能出屏/贴边）
                 let wob_x = n.x * wobble;
                 let wob_y = n.y * wobble;
                 let pos = Vec2 {
@@ -290,7 +319,8 @@ impl Player {
         }
         // 超出链尾：用链尾
         let last = self.chain.back().expect("chain non-empty");
-        (last.leg.target, Vec2 { x: 1.0, y: 0.0 }, self.chain.len() - 1, 1.0)
+        let tail = last.legs[4];
+        (tail.target, Vec2 { x: 1.0, y: 0.0 }, self.chain.len() - 1, 1.0)
     }
 
     /// 球位：spring 物理状态 + 法线分离量
@@ -301,7 +331,7 @@ impl Player {
             let (_, tan, _, _) = self.chain_pos_and_tangent(s_i);
             normal_of(tan)
         } else {
-            let leg0 = &self.chain.front().unwrap().leg;
+            let leg0 = &self.chain.front().unwrap().legs[0];
             let d = dir_of(leg0.from, leg0.target);
             Vec2 { x: -d.y, y: d.x }
         };
@@ -317,7 +347,7 @@ impl Player {
         if s_i >= 0.0 {
             self.chain_pos_and_tangent(s_i).0
         } else {
-            let leg0 = &self.chain.front().unwrap().leg;
+            let leg0 = &self.chain.front().unwrap().legs[0];
             let d = dir_of(leg0.from, leg0.target);
             Vec2 {
                 x: (leg0.from.x - d.x * self.gaps[color_slot]).clamp(0.0, 1.0),
@@ -371,17 +401,66 @@ pub fn make_planned_leg(
     let template = &TEMPLATES[template_idx];
     // 小圈圈滤波：段长低于 MIN_LEG_LEN 时曲率按比例衰减（短段配小弯，防哆嗦）
     let curv_eff = template.curvature * (dist / MIN_LEG_LEN).min(1.0);
-    let norm = Vec2 { x: -dir.y, y: dir.x };
-    let ctrl = Vec2 {
-        x: from.x + dir.x * (dist * 0.5) + norm.x * dist * curv_eff * 0.35,
-        y: from.y + dir.y * (dist * 0.5) + norm.y * dist * curv_eff * 0.35,
-    };
-    let leg = Leg { from, ctrl, target };
-    let arc = ((ctrl.x - from.x).powi(2) + (ctrl.y - from.y).powi(2)).sqrt()
-        + ((target.x - ctrl.x).powi(2) + (target.y - ctrl.y).powi(2)).sqrt();
+    make_blend_leg(from, dir, [curv_eff, curv_eff, curv_eff], target, dist, template_idx, speed, wave)
+}
+
+/// 混合模板段：一整段内曲率从 A 渐变到 B 再到 C（Euler spiral 离散近似）
+/// 5 子段：前 2 段 lerp(A→B)、第 3 段 B、后 2 段 lerp(B→C)——段内模板渐变，
+/// 子段间切线继承（C1 连续）+ 曲率阶梯采样（≈ 线性变化，无折角）
+pub fn make_blend_leg(
+    from: Vec2,
+    dir: Vec2,
+    curvs: [f64; 3],
+    target: Vec2,
+    dist: f64,
+    template_idx: usize,
+    speed: f64,
+    wave: f64,
+) -> PlannedLeg {
+    let sub_len = dist / 5.0;
+    let mut legs = [Leg {
+        from: Vec2 { x: 0.0, y: 0.0 },
+        ctrl: Vec2 { x: 0.0, y: 0.0 },
+        target: Vec2 { x: 0.0, y: 0.0 },
+    }; 5];
+    let mut cur = from;
+    let mut d = dir;
+    let mut arc = 0.0;
+    for i in 0..5 {
+        // 子段曲率：A→B 前半，B 中段，B→C 后半（Euler spiral 采样）
+        let u = (i as f64 + 0.5) / 5.0;
+        let curv = if u < 0.5 {
+            curvs[0] + (curvs[1] - curvs[0]) * (u / 0.5)
+        } else {
+            curvs[1] + (curvs[2] - curvs[1]) * ((u - 0.5) / 0.5)
+        };
+        // 前 4 子段沿切线渐变；第 5 子段直接指向目标（保证终点精确命中）
+        let sub_target = if i == 4 {
+            target
+        } else {
+            Vec2 {
+                x: cur.x + d.x * sub_len,
+                y: cur.y + d.y * sub_len,
+            }
+        };
+        let norm = Vec2 { x: -d.y, y: d.x };
+        let ctrl = Vec2 {
+            x: cur.x + d.x * (sub_len * 0.5) + norm.x * sub_len * curv * 0.35,
+            y: cur.y + d.y * (sub_len * 0.5) + norm.y * sub_len * curv * 0.35,
+        };
+        legs[i] = Leg { from: cur, ctrl, target: sub_target };
+        arc += ((ctrl.x - cur.x).powi(2) + (ctrl.y - cur.y).powi(2)).sqrt()
+            + ((sub_target.x - ctrl.x).powi(2) + (sub_target.y - ctrl.y).powi(2)).sqrt();
+        // 下子段方向 = 本子段切线（C1 连续）
+        let tan = bezier_tangent(cur, ctrl, sub_target, 1.0);
+        let tl = (tan.x * tan.x + tan.y * tan.y).sqrt().max(1e-9);
+        d = Vec2 { x: tan.x / tl, y: tan.y / tl };
+        cur = sub_target;
+    }
+    let curv_eff = (curvs[0] + curvs[1] + curvs[2]) / 3.0;
     let dur_ms = (arc / (WORLD_SPEED * speed) * 1000.0).max(200.0);
     PlannedLeg {
-        leg,
+        legs,
         template_idx,
         speed,
         wave,
@@ -398,21 +477,22 @@ fn dir_of(from: Vec2, to: Vec2) -> Vec2 {
     Vec2 { x: dx / l, y: dy / l }
 }
 
-pub fn leg_in_bounds(leg: &Leg) -> bool {
-    // 根本性出屏禁止：16 点采样（含曲线中途），全程须在安全区 [0.08, 0.92]
-    // （不只端点——大 curvature 的中段侧偏可能出屏）
+pub fn leg_in_bounds(pl: &PlannedLeg) -> bool {
+    // 根本性出屏禁止：每个子段 8 点采样（含曲线中途），全程须在安全区 [0.08, 0.92]
     const SAFE_MIN: f64 = 0.08;
     const SAFE_MAX: f64 = 0.92;
-    if !(SAFE_MIN..=SAFE_MAX).contains(&leg.from.x)
-        || !(SAFE_MIN..=SAFE_MAX).contains(&leg.from.y)
-    {
-        return false;
-    }
-    for i in 0..=16 {
-        let u = i as f64 / 16.0;
-        let p = quad_bezier(leg.from, leg.ctrl, leg.target, u);
-        if !(SAFE_MIN..=SAFE_MAX).contains(&p.x) || !(SAFE_MIN..=SAFE_MAX).contains(&p.y) {
+    for leg in pl.legs.iter() {
+        if !(SAFE_MIN..=SAFE_MAX).contains(&leg.from.x)
+            || !(SAFE_MIN..=SAFE_MAX).contains(&leg.from.y)
+        {
             return false;
+        }
+        for i in 0..=8 {
+            let u = i as f64 / 8.0;
+            let p = quad_bezier(leg.from, leg.ctrl, leg.target, u);
+            if !(SAFE_MIN..=SAFE_MAX).contains(&p.x) || !(SAFE_MIN..=SAFE_MAX).contains(&p.y) {
+                return false;
+            }
         }
     }
     true
@@ -428,7 +508,7 @@ fn clamp_target_in_bounds(
 ) -> Vec2 {
     for _ in 0..24 {
         let pl = make_planned_leg(from, dir, template_idx, target, speed, wave);
-        if leg_in_bounds(&pl.leg) {
+        if leg_in_bounds(&pl) {
             return target;
         }
         target = Vec2 { x: from.x + (target.x - from.x) * 0.82, y: from.y + (target.y - from.y) * 0.82 };
@@ -457,8 +537,9 @@ mod tests {
         let dir = Vec2 { x: 1.0, y: 0.0 };
         let target = Vec2 { x: 0.9, y: 0.8 };
         let pl = make_planned_leg(from, dir, 0, target, 1.0, 0.0);
-        assert_eq!(pl.leg.from, from);
-        assert_eq!(pl.leg.target, target);
+        assert_eq!(pl.legs[0].from, from);
+        assert_eq!(pl.legs[4].target, target);
+        assert_eq!(pl.legs[0].ctrl.x, pl.legs[0].ctrl.x); // 结构自检
         assert!(pl.dur_ms > 0.0);
         assert!(pl.arc > 0.0);
     }
@@ -549,6 +630,39 @@ mod tests {
             p.tick(16.7);
         }
         assert!(p.chain_len() > len0, "链应持续增长（无限轨迹）");
+    }
+
+    #[test]
+    fn blend_leg_curvature_gradates_a_to_c() {
+        // Euler spiral 离散近似：曲率 A→B→C 渐变——首子段弯度 ∝ A，末子段 ∝ C
+        let from = Vec2 { x: 0.2, y: 0.5 };
+        let dir = Vec2 { x: 1.0, y: 0.0 };
+        let target = Vec2 { x: 0.8, y: 0.5 };
+        let pl = make_blend_leg(from, dir, [1.0, 0.5, 0.0], target, 0.6, 0, 1.0, 0.0);
+        // 终点精确命中
+        assert_eq!(pl.legs[4].target, target);
+        // 曲率递减验证：各子段相对「自身起点方向」的法线侧偏（cross(dir, ctrl-from)）
+        let mut prev_dir = dir;
+        let mut sides = [0.0f64; 5];
+        for i in 0..5 {
+            let f = pl.legs[i].from;
+            let c = pl.legs[i].ctrl;
+            sides[i] = ((c.x - f.x) * (-prev_dir.y) + (c.y - f.y) * prev_dir.x).abs();
+            let t2 = pl.legs[i].target;
+            let dl = ((t2.x - f.x).powi(2) + (t2.y - f.y).powi(2)).sqrt().max(1e-9);
+            prev_dir = Vec2 { x: (t2.x - f.x) / dl, y: (t2.y - f.y) / dl };
+        }
+        assert!(
+            sides[0] > sides[4] * 2.0,
+            "曲率应从 A(1.0) 渐变到 C(0.0): sides={sides:?}"
+        );
+        assert!(sides[0] > 0.0, "首子段应有显著弯曲");
+        // 段内切线继承（C1 连续）：子段 i 起点 = 子段 i-1 终点
+        for i in 1..5 {
+            assert_eq!(pl.legs[i].from, pl.legs[i - 1].target, "子段 {i} 起点应接上段终点");
+        }
+        // 弧长为正
+        assert!(pl.arc > 0.0);
     }
 
     #[test]

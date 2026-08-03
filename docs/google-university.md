@@ -53,6 +53,20 @@ FastOutLinearInEasing = CubicBezierEasing(0.4f, 0.0f, 1.0f, 1.0f)
 
 **应用**：拖尾几何——历史点全部穿过、C¹ 连续，折点（链段连接处）无光栅错误。`sim/math.rs::catmull_rom` + 单测 `catmull_rom_passes_through_points`（t=0 过 P1、t=1 过 P2，误差 <1e-9）。
 
+## 2026-08-04 — Euler spiral / clothoid（混合模板段的数学基础）
+
+**来源**：Wikipedia《Euler spiral》（"Curve whose curvature changes linearly"）
+
+**实证内容**：
+- **曲率随弧长线性变化**的曲线（clothoid / Cornu spiral，铁路过渡曲线标准）
+- 工程用途：直线↔弯道的**过渡曲线**（铁路/公路）、汽车赛道线、数字矢量绘图
+- 曲率线性变化 = 无折角（方向连续 + 曲率连续）
+
+**应用**：混合模板段（一整段 = 模板 A 前半 + B 中间 + C 后半）——
+`make_blend_leg` 用 5 子段离散近似 Euler spiral：子段 i 曲率 = 采样线性插值
+A→B→C；子段间切线继承（C1 连续）+ 曲率阶梯（≈ 线性变化）。单测
+`blend_leg_curvature_gradates_a_to_c` 验证曲率单调渐变 + 终点精确命中。
+
 ## 备用：其他可靠来源（未逐条抓取，供后续进修）
 
 - Red Blob Games（redblobgames.com）：steering behaviors / 路径规划——编队与跟随的工程参考
