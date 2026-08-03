@@ -26,10 +26,12 @@ pub const PROB: Prob = Prob {
     switch_order: 0.008,
 };
 
+/// 世界速度（单位/秒）：恒定速度 → 时长与路径长度挂钩
+/// （固定时长导致长路径飞掠 = 视觉「闪现」的根因）
+pub const WORLD_SPEED: f64 = 0.22;
+
 /// 漫游节奏（Play 阶段）
 pub struct Wander {
-    /// 基准进度（t/帧，60fps 基准；t 走完 1.0 = 一段路径）
-    pub base_speed: f64,
     /// 球沿路径错开相位
     pub phase_gap: f64,
     /// 法线偏移缓动
@@ -39,7 +41,6 @@ pub struct Wander {
 }
 
 pub const WANDER: Wander = Wander {
-    base_speed: 0.007,
     phase_gap: 0.055,
     offset_lerp: 0.04,
     offset_range: 0.05,

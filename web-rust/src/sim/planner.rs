@@ -28,7 +28,7 @@ pub struct BallPlan {
 
 impl BallPlan {
     fn new(leg: Leg, template_idx: usize) -> Self {
-        let dur = TEMPLATES[template_idx].duration_ms();
+        let dur = leg_duration_ms(&leg, &TEMPLATES[template_idx]);
         BallPlan { legs: VecDeque::new(), cur: PlannedLeg { leg, template_idx, dur_ms: dur }, t: 0.0 }
     }
 
@@ -188,7 +188,8 @@ pub fn leg_in_bounds(leg: &Leg) -> bool {
 }
 
 fn in_unit(p: Vec2) -> bool {
-    (0.0..=1.0).contains(&p.x) && (0.0..=1.0).contains(&p.y)
+    // 容差 1e-6：dist 保底 1e-6 会产生 1e-7 量级的微小出界（浮点，视觉无感）
+    p.x >= -1e-6 && p.x <= 1.0 + 1e-6 && p.y >= -1e-6 && p.y <= 1.0 + 1e-6
 }
 
 /// 目标收缩：朝起点方向拉回，直到「控制点与目标」都在屏内
@@ -217,16 +218,27 @@ pub fn make_planned_leg(
     let template = &TEMPLATES[template_idx];
     let norm = Vec2 { x: -dir.y, y: dir.x };
     let ctrl = Vec2 {
-        x: (from.x + dir.x * (dist * 0.5) + norm.x * dist * template.curvature * 0.35)
-            .clamp(0.0, 1.0),
-        y: (from.y + dir.y * (dist * 0.5) + norm.y * dist * template.curvature * 0.35)
-            .clamp(0.0, 1.0),
+        x: from.x + dir.x * (dist * 0.5) + norm.x * dist * template.curvature * 0.35,
+        y: from.y + dir.y * (dist * 0.5) + norm.y * dist * template.curvature * 0.35,
     };
     PlannedLeg {
         leg: Leg { from, ctrl, target },
         template_idx,
-        dur_ms: template.duration_ms(),
+        dur_ms: leg_duration_ms(&Leg { from, ctrl, target }, template),
     }
+}
+
+/// 路径时长：世界速度恒定 → 时长 = 长度 / (WORLD_SPEED × 模板速度)
+/// （固定时长会让长路径飞掠 = 视觉闪现的根因）
+fn leg_duration_ms(leg: &Leg, template: &crate::config::templates::Template) -> f64 {
+    let dx = leg.target.x - leg.from.x;
+    let dy = leg.target.y - leg.from.y;
+    let dist = (dx * dx + dy * dy).sqrt();
+    // 用 from→ctrl + ctrl→target 折线近似路径长（弯曲段更准）
+    let bend = ((leg.ctrl.x - leg.from.x).powi(2) + (leg.ctrl.y - leg.from.y).powi(2)).sqrt()
+        + ((leg.target.x - leg.ctrl.x).powi(2) + (leg.target.y - leg.ctrl.y).powi(2)).sqrt();
+    let path = dist.max(bend);
+    (path / (WORLD_SPEED * template.speed()) * 1000.0).max(200.0)
 }
 
 /// 入场状态机（数据；转移由引擎层驱动）
@@ -255,15 +267,16 @@ mod tests {
     }
 
     #[test]
-    fn ctrl_clamped_in_screen() {
-        // 极端：起点在角上、方向朝外、目标在对角 —— 控制点必须仍在屏内
+    fn clamp_target_keeps_leg_in_screen() {
+        // 几何层不 clamp（纯函数）；屏内保证由收缩逻辑负责
+        // 极端：起点在角上、方向朝外、目标在对角 —— 收缩后整段必须屏内
         let from = Vec2 { x: 0.0, y: 0.0 };
         let dir = Vec2 { x: 1.0, y: 0.0 };
         let target = Vec2 { x: 1.0, y: 1.0 };
         for tpl in 0..TEMPLATES.len() {
-            let pl = make_planned_leg(from, dir, tpl, target);
-            assert!((0.0..=1.0).contains(&pl.leg.ctrl.x));
-            assert!((0.0..=1.0).contains(&pl.leg.ctrl.y));
+            let safe = clamp_target_in_bounds(from, dir, tpl, target);
+            let pl = make_planned_leg(from, dir, tpl, safe);
+            assert!(leg_in_bounds(&pl.leg), "收缩后应屏内: {:?}", pl.leg);
         }
     }
 
@@ -314,6 +327,16 @@ mod tests {
                 pos
             );
         }
+    }
+
+    #[test]
+    fn duration_scales_with_path_length() {
+        // 恒定世界速度：长路径时长 > 短路径时长（防飞掠闪现）
+        let from = Vec2 { x: 0.1, y: 0.5 };
+        let dir = Vec2 { x: 1.0, y: 0.0 };
+        let short = make_planned_leg(from, dir, 0, Vec2 { x: 0.3, y: 0.5 });
+        let long = make_planned_leg(from, dir, 0, Vec2 { x: 0.95, y: 0.5 });
+        assert!(long.dur_ms > short.dur_ms * 2.0, "长路径应显著更久: short={} long={}", short.dur_ms, long.dur_ms);
     }
 
     #[test]

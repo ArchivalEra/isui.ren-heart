@@ -15,9 +15,9 @@ pub struct Template {
 }
 
 impl Template {
-    /// 一段路径时长（t 0→1 所需毫秒，60fps 基准）
-    pub fn duration_ms(&self) -> f64 {
-        16.7 / (crate::config::params::WANDER.base_speed * self.speed)
+    /// 速度倍率（路径时长 = 路径长度 / (WORLD_SPEED × speed)）
+    pub fn speed(&self) -> f64 {
+        self.speed
     }
 }
 
