@@ -127,15 +127,21 @@ body {
   width: 100%;
 }
 
-/* 打字机文字真正居中：flex 容器 + 保底高度（长短句切换不跳动） */
+/* 打字机文字居中：text-align 方案（typed.js 接管后不依赖 flex）+
+   保底高度（长短句切换不跳动） */
 .typewriter-box {
-  display: inline-flex;
-  justify-content: center;
-  align-items: baseline;
+  display: block;
+  text-align: center;
   min-height: 1.4em;
   max-width: 92vw;
+  margin: 0 auto;
   white-space: pre-wrap;
   word-break: break-word;
+}
+
+/* typed.js 光标与文本同一行基线 */
+.typed-cursor {
+  display: inline-block;
 }
 
 .cursor {

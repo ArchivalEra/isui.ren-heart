@@ -24,6 +24,7 @@ function useRotatingEmoji() {
 }
 
 import { useEffect, useState } from "preact/hooks";
+import { toggle_trail_style } from "./wasm/isui_ren_heart.js";
 
 export default function Heart() {
   const emoji = useRotatingEmoji();
@@ -57,7 +58,7 @@ function TrailToggle() {
     <button
       class="trail-toggle"
       onClick={() => {
-        import("./wasm/isui_ren_heart.js").then((m) => m.toggle_trail_style());
+        toggle_trail_style();
         setMini(!mini);
       }}
     >
