@@ -13,6 +13,13 @@ pub struct Ball {
     pub color: &'static str,
 }
 
+/// 渲染模式：粒子化（椭圆拉伸）vs 拖尾化（纯圆 + 长实体拖尾，Google pixel 风格）
+#[derive(Clone, Copy, PartialEq)]
+pub enum RenderMode {
+    Particle,
+    Trail,
+}
+
 pub struct BallsEngine {
     canvas: HtmlCanvasElement,
     ctx: CanvasRenderingContext2d,
@@ -22,6 +29,7 @@ pub struct BallsEngine {
     /// 锚点（可被调试面板拖拽，初始 = ANCHORS 契约）
     pub anchors: [Vec2; 3],
     pub debug: bool,
+    pub mode: RenderMode,
 }
 
 impl BallsEngine {
@@ -46,6 +54,7 @@ impl BallsEngine {
             phase: Phase::AtLogo { t: 0.0 },
             anchors,
             debug: false,
+            mode: RenderMode::Particle,
         }
     }
 
@@ -185,20 +194,24 @@ impl BallsEngine {
             let vy = v.y * h;
             let speed = (vx * vx + vy * vy).sqrt();
 
-            let sn = (speed / (ELLIPSE.speed_base * w)).clamp(0.0, 1.5);
-            let k = smoothstep((sn - ELLIPSE.threshold) / (1.5 - ELLIPSE.threshold));
-            let ratio = 1.0 + k * (ELLIPSE.max_ratio - 1.0);
-            let angle = vy.atan2(vx);
-            let rx = radius * ratio;
-            let ry = radius / ratio;
+            // 模式分支：粒子化（椭圆拉伸）vs 拖尾化（纯圆 + 长实体拖尾）
+            let (rx, ry, angle, trail_mul, trail_alpha) = match self.mode {
+                RenderMode::Particle => {
+                    let sn = (speed / (ELLIPSE.speed_base * w)).clamp(0.0, 1.5);
+                    let k = smoothstep((sn - ELLIPSE.threshold) / (1.5 - ELLIPSE.threshold));
+                    let ratio = 1.0 + k * (ELLIPSE.max_ratio - 1.0);
+                    (radius * ratio, radius / ratio, vy.atan2(vx), 1.0, MOTION_BLUR.trail_alpha)
+                }
+                RenderMode::Trail => (radius, radius, 0.0, 4.0, 0.45),
+            };
 
             if speed > 1.0 && fade > 0.9 {
-                let trail = MOTION_BLUR.trail_len * radius;
+                let trail = MOTION_BLUR.trail_len * trail_mul * radius;
                 let (tx, ty) = (px - vx / speed * trail, py - vy / speed * trail);
                 let (r, g, b) = hex_to_rgb(self.balls[color_slot].color);
                 let lg = self.ctx.create_linear_gradient(tx, ty, px, py);
                 lg.add_color_stop(0.0, &format!("rgba({r},{g},{b},0)")).unwrap();
-                lg.add_color_stop(1.0, &format!("rgba({r},{g},{b},{})", MOTION_BLUR.trail_alpha)).unwrap();
+                lg.add_color_stop(1.0, &format!("rgba({r},{g},{b},{})", trail_alpha)).unwrap();
                 self.ctx.begin_path();
                 self.ctx.move_to(tx, ty);
                 self.ctx.line_to(px, py);

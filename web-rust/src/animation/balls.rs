@@ -1,6 +1,6 @@
 // 三球队列动画组件：Canvas + rAF 自适应循环 + 图形化调试面板
 // 调试面板：拖拽 logo 位置（left/top 百分比），复制 CSS 参数
-use crate::animation::engine::BallsEngine;
+use crate::animation::engine::{BallsEngine, RenderMode};
 use crate::config::params::{FRAME_BUDGET_MS, MAX_SKIP};
 use leptos::prelude::*;
 use std::cell::RefCell;
@@ -53,7 +53,7 @@ pub fn BallsAnimation() -> impl IntoView {
                 let _ = window.request_animation_frame(cb);
             }
 
-            setup_debug_panel();
+            setup_debug_panel(Rc::clone(&engine));
         }
     });
 
@@ -80,7 +80,7 @@ fn append_node<E: Into<web_sys::Node>>(parent: &web_sys::Node, child: E) {
 
 // ---------- 图形化调试面板（拖 logo 定位） ----------
 
-fn setup_debug_panel() {
+fn setup_debug_panel(engine: Rc<RefCell<BallsEngine>>) {
     let document = web_sys::window().unwrap().document().unwrap();
     let body = document.body().unwrap();
 
@@ -133,6 +133,11 @@ fn setup_debug_panel() {
     let pos_label = document.create_element("div").unwrap();
     append_node(&panel, pos_label.clone());
 
+    let mode_btn: web_sys::HtmlButtonElement =
+        document.create_element("button").unwrap().dyn_into().unwrap();
+    set_text_of(mode_btn.clone(), "模式：粒子");
+    append_node(&panel, mode_btn.clone());
+
     let copy_btn: web_sys::HtmlButtonElement =
         document.create_element("button").unwrap().dyn_into().unwrap();
     set_text_of(copy_btn.clone(), "复制参数");
@@ -171,11 +176,13 @@ fn setup_debug_panel() {
         let panel = panel.clone();
         let pos_label = pos_label.clone();
         let logo = logo.clone();
+        let dragging = Rc::clone(&dragging);
         move || {
             let show = style_of(&panel).get_property_value("display").unwrap_or_default() == "none";
             style_of(&panel)
                 .set_property("display", if show { "block" } else { "none" })
                 .unwrap();
+            *dragging.borrow_mut() = false; // 关面板时清拖拽状态（防残留）
             let ls = style_of(&logo);
             if show {
                 // 判定块：可交互 + 虚线框 + 移动光标
@@ -261,6 +268,29 @@ fn setup_debug_panel() {
         .add_event_listener_with_callback("pointerup", up_cb.as_ref().unchecked_ref())
         .unwrap();
     up_cb.forget();
+
+    // 粒子化 / 拖尾化开关
+    let mode_cb = Closure::<dyn FnMut()>::new({
+        let engine = Rc::clone(&engine);
+        let mode_btn = mode_btn.clone();
+        move || {
+            let next = match engine.borrow().mode {
+                RenderMode::Particle => {
+                    set_text_of(mode_btn.clone(), "模式：拖尾");
+                    RenderMode::Trail
+                }
+                RenderMode::Trail => {
+                    set_text_of(mode_btn.clone(), "模式：粒子");
+                    RenderMode::Particle
+                }
+            };
+            engine.borrow_mut().mode = next;
+        }
+    });
+    mode_btn
+        .add_event_listener_with_callback("click", mode_cb.as_ref().unchecked_ref())
+        .unwrap();
+    mode_cb.forget();
 
     // 复制参数：CSS 定位（覆盖 styles.css 默认 50%/50%）
     let copy_cb = Closure::<dyn FnMut()>::new({

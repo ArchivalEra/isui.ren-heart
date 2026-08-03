@@ -77,11 +77,14 @@ impl Player {
             let dy = targets[i].y - spots[i].y;
             let dist = (dx * dx + dy * dy).sqrt().max(1e-6);
             let dir = Vec2 { x: dx / dist, y: dy / dist };
-            let mut leg = make_planned_leg(spots[i], dir, 0, targets[i]);
-            // 可行性校验：首个目标出界则收缩目标（朝起点拉回屏内）
-            if !leg_in_bounds(&leg.leg, 16) {
-                let safe = clamp_target_in_bounds(spots[i], targets[i]);
-                leg = make_planned_leg(spots[i], dir, 0, safe);
+            let leg = make_planned_leg(spots[i], dir, 0, targets[i]);
+            // 可行性校验：首个目标出界则收缩目标（保切线连续）
+            if !leg_in_bounds(&leg.leg) {
+                let safe = clamp_target_in_bounds(spots[i], dir, 0, targets[i]);
+                let leg = make_planned_leg(spots[i], dir, 0, safe);
+                plans_buf[i] = Some(BallPlan::new(leg.leg, 0));
+                planned[i] = leg.dur_ms;
+                continue;
             }
             plans_buf[i] = Some(BallPlan::new(leg.leg, 0));
             planned[i] = leg.dur_ms;
@@ -126,7 +129,7 @@ impl Player {
         let tl = (tan.x * tan.x + tan.y * tan.y).sqrt().max(1e-9);
         let dir = Vec2 { x: tan.x / tl, y: tan.y / tl };
 
-        // 重试生成合法段（最多 8 次；目标去重 + 路径屏内）
+        // 重试生成合法段（最多 8 次；目标去重 + 控制点屏内保切线连续）
         for _ in 0..8 {
             let target = random_target_apart(&others, MIN_BALL_DIST);
             let roll = rng.gen::<f64>();
@@ -136,7 +139,7 @@ impl Player {
                 cur.template_idx
             };
             let pl = make_planned_leg(from, dir, template_idx, target);
-            if leg_in_bounds(&pl.leg, 16) {
+            if leg_in_bounds(&pl.leg) {
                 // 排列（渲染顺序）概率轮换
                 if rng.gen::<f64>() < PROB.switch_order {
                     let next = ORDERS[rng.gen_range(0..ORDERS.len())];
@@ -147,9 +150,10 @@ impl Player {
                 return pl;
             }
         }
-        // 兜底：直飞（曲率 0 直线，几乎必在屏内）
+        // 兜底：目标朝起点收缩到控制点屏内（保持切线连续）
         let target = random_target_apart(&others, MIN_BALL_DIST);
-        make_planned_leg(from, dir, 0, target)
+        let safe = clamp_target_in_bounds(from, dir, cur.template_idx, target);
+        make_planned_leg(from, dir, cur.template_idx, safe)
     }
 
     /// 球位：bezier 点 + 法线偏移（法线偏移概念单一化入口）
@@ -161,7 +165,10 @@ impl Player {
         let tan = bezier_tangent(leg.from, leg.ctrl, leg.target, te);
         let n = normal_of(tan);
         let off = offset * WANDER.offset_range;
-        Vec2 { x: p.x + n.x * off, y: p.y + n.y * off }
+        Vec2 {
+            x: (p.x + n.x * off).clamp(0.0, 1.0),
+            y: (p.y + n.y * off).clamp(0.0, 1.0),
+        }
     }
 
     pub fn template_idx(&self, color_slot: usize) -> usize {
@@ -174,32 +181,27 @@ impl Player {
     }
 }
 
-/// 目标收缩：朝起点方向拉回，直到直线路径全程在屏内
-/// （对直线段：from→target 线段在屏内 ⟺ 收缩到屏内点即可）
-fn clamp_target_in_bounds(from: Vec2, target: Vec2) -> Vec2 {
-    let mut t = target;
-    for _ in 0..16 {
-        let leg = Leg { from, ctrl: from, target: t };
-        if leg_in_bounds(&leg, 8) {
-            return t;
-        }
-        // 朝 from 收缩 15%
-        t = Vec2 { x: from.x + (t.x - from.x) * 0.85, y: from.y + (t.y - from.y) * 0.85 };
-    }
-    from
+/// 路径可行性（基于二次贝塞尔凸包性质：from/ctrl/target 三点在屏内 ⟺ 全程在屏内）
+/// 真正的出界源是 ctrl 沿切线方向甩出屏（clamp 会破坏段间切线连续 → 视觉跳变）
+pub fn leg_in_bounds(leg: &Leg) -> bool {
+    in_unit(leg.from) && in_unit(leg.ctrl) && in_unit(leg.target)
 }
 
-/// 路径可行性：采样整段路径（含控制点弯曲），全部落在 [0,1]² 屏内
-/// 长段路径可能甩出屏幕（即使 ctrl 已 clamp）→ 出界 = 球消失 = 视觉闪现
-pub fn leg_in_bounds(leg: &Leg, samples: usize) -> bool {
-    for i in 0..=samples {
-        let t = i as f64 / samples as f64;
-        let p = quad_bezier(leg.from, leg.ctrl, leg.target, t);
-        if !(0.0..=1.0).contains(&p.x) || !(0.0..=1.0).contains(&p.y) {
-            return false;
+fn in_unit(p: Vec2) -> bool {
+    (0.0..=1.0).contains(&p.x) && (0.0..=1.0).contains(&p.y)
+}
+
+/// 目标收缩：朝起点方向拉回，直到「控制点与目标」都在屏内
+/// （保持切线方向不变 → 段间 C1 连续不被 clamp 破坏）
+fn clamp_target_in_bounds(from: Vec2, dir: Vec2, template_idx: usize, mut target: Vec2) -> Vec2 {
+    for _ in 0..20 {
+        let pl = make_planned_leg(from, dir, template_idx, target);
+        if in_unit(pl.leg.ctrl) && in_unit(pl.leg.target) {
+            return target;
         }
+        target = Vec2 { x: from.x + (target.x - from.x) * 0.85, y: from.y + (target.y - from.y) * 0.85 };
     }
-    true
+    from
 }
 
 /// 造段（Player::new 与 plan_next 共用）：切线连续 + 屏内控制点 + 时长派生
