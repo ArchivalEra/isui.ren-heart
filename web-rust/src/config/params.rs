@@ -70,15 +70,31 @@ pub const ANCHORS: [(f64, f64); 3] = [
     (0.555, 0.486), // 薄荷绿（右下）
 ];
 
-/// 高速椭圆化
+/// 高速椭圆化：只有非常快才压缩（阈值 + smoothstep 平滑曲线）
 pub struct Ellipse {
     pub max_ratio: f64,
     pub speed_base: f64,
+    /// 归一化速度阈值：低于此完全不压缩
+    pub threshold: f64,
 }
 
 pub const ELLIPSE: Ellipse = Ellipse {
     max_ratio: 2.6,
     speed_base: 0.008,
+    threshold: 0.45,
+};
+
+/// 规划/执行解耦：规划窗口参数
+pub struct Plan {
+    /// 规划总窗口（预计算时间上限 1 分钟）
+    pub horizon_ms: f64,
+    /// 补规划步长（每 15s 补足未来曲线，即多规划 15s）
+    pub step_ms: f64,
+}
+
+pub const PLAN: Plan = Plan {
+    horizon_ms: 60_000.0,
+    step_ms: 15_000.0,
 };
 
 /// 动态模糊尾迹

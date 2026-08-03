@@ -1,8 +1,10 @@
-// 动画引擎：入场仪式（AtLogo→Travel→Queue→Play）+ 目标点漫游
-// （贝塞尔弧线路径，无循环曲线）+ 精细网格模板偏好 + 排列 + 透视
-// + 高速椭圆化 + 动态模糊（无球体阴影）
+// 动画引擎 v3：规划/执行双进程解耦
+// 规划器：每 15s 预计算未来 60s 的运动曲线（目标/模板/排列，段间切线连续）
+// 执行器：只沿预计算曲线采样（零决策 → 无闪现、轨迹连贯）
+// 入场仪式保留：AtLogo → Travel → Queue → Play(规划-执行)
 use crate::config::params::*;
 use crate::config::templates::{preferred_template, TEMPLATES};
+use std::collections::VecDeque;
 use wasm_bindgen::JsCast;
 use web_sys::{CanvasRenderingContext2d, HtmlCanvasElement};
 
@@ -15,21 +17,8 @@ pub struct Vec2 {
 pub struct Ball {
     #[allow(dead_code)] // 配置契约：排列槽位
     pub slot: usize,
-    pub target_offset: f64,
     pub offset: f64,
     pub color: &'static str,
-}
-
-/// 入场状态机
-enum Phase {
-    /// 三球停在 logo 锚点（淡入）
-    AtLogo { t: f64 },
-    /// 飞往随机目标（smoothstep 直线缓动）
-    Travel { from: [Vec2; 3], to: [Vec2; 3], t: f64 },
-    /// 沿路径中段排队
-    Queue { t: f64, leg: Leg },
-    /// 漫游玩耍（目标点 → 贝塞尔弧线 → 新目标）
-    Play { t: f64, leg: Leg, template_idx: usize },
 }
 
 /// 一段漫游路径（from → ctrl → target 二次贝塞尔）
@@ -40,14 +29,37 @@ struct Leg {
     target: Vec2,
 }
 
+/// 规划段（执行器的最小消费单位）
+struct PlannedLeg {
+    leg: Leg,
+    template_idx: usize,
+    dur_ms: f64,
+}
+
+/// 执行器（播放器）：只消费预规划曲线
+struct Player {
+    legs: VecDeque<PlannedLeg>,
+    cur: PlannedLeg,
+    t: f64,
+    now_ms: f64,
+    planned_ms: f64,
+    order: [usize; 3],
+}
+
+enum Phase {
+    AtLogo { t: f64 },
+    Travel { from: [Vec2; 3], to: [Vec2; 3], t: f64 },
+    Queue { t: f64, leg: Leg },
+    Play(Player),
+}
+
 pub struct BallsEngine {
     canvas: HtmlCanvasElement,
     ctx: CanvasRenderingContext2d,
-    order: [usize; 3],
     balls: [Ball; 3],
     prev_pos: [Vec2; 3],
     phase: Phase,
-    last_cell: usize,
+    inited: bool,
 }
 
 impl BallsEngine {
@@ -59,25 +71,30 @@ impl BallsEngine {
             .dyn_into::<CanvasRenderingContext2d>()
             .unwrap();
         let balls = [
-            Ball { slot: 0, target_offset: TEMPLATES[0].offsets[0], offset: 0.0, color: BALL_COLORS[0] },
-            Ball { slot: 1, target_offset: TEMPLATES[0].offsets[1], offset: 0.0, color: BALL_COLORS[1] },
-            Ball { slot: 2, target_offset: TEMPLATES[0].offsets[2], offset: 0.0, color: BALL_COLORS[2] },
+            Ball { slot: 0, offset: 0.0, color: BALL_COLORS[0] },
+            Ball { slot: 1, offset: 0.0, color: BALL_COLORS[1] },
+            Ball { slot: 2, offset: 0.0, color: BALL_COLORS[2] },
         ];
         Self {
             canvas,
             ctx,
-            order: ORDERS[0],
             balls,
             prev_pos: [Vec2 { x: 0.5, y: 0.5 }; 3],
             phase: Phase::AtLogo { t: 0.0 },
-            last_cell: usize::MAX,
+            inited: false,
         }
     }
 
-    /// 每帧（dt: 距上帧真实毫秒）
     pub fn frame(&mut self, dt: f64) {
         self.step(dt);
         self.render();
+        // prev_pos 首帧初始化（避免第一帧假速度导致椭圆/尾迹闪现）
+        if !self.inited {
+            for s in 0..3 {
+                self.prev_pos[s] = self.ball_world_pos(s);
+            }
+            self.inited = true;
+        }
         for s in 0..3 {
             self.prev_pos[s] = self.ball_world_pos(s);
         }
@@ -89,18 +106,16 @@ impl BallsEngine {
         Vec2 { x: cur.x - prev.x, y: cur.y - prev.y }
     }
 
-    // ---------- 逻辑 ----------
+    // ---------- 状态机 ----------
 
     fn step(&mut self, dt: f64) {
-        let dt_norm = dt / 16.7;
         let mut queue_done: Option<Leg> = None;
-        let mut region_event: Option<(usize, usize, Leg, f64)> = None;
 
         match &mut self.phase {
             Phase::AtLogo { t } => {
                 *t += dt;
                 if *t >= AT_LOGO_MS {
-                    let from = anchors_for(self.order);
+                    let from = anchors_for(self.order_of_phase());
                     let to = random_trio_targets();
                     self.phase = Phase::Travel { from, to, t: 0.0 };
                 }
@@ -108,10 +123,7 @@ impl BallsEngine {
             Phase::Travel { to, t, .. } => {
                 *t += dt;
                 if *t >= TRAVEL_MS {
-                    let leg = bend_leg(
-                        Leg { from: to[0], ctrl: to[0], target: random_screen_point() },
-                        0.0,
-                    );
+                    let leg = Leg { from: to[0], ctrl: to[0], target: random_screen_point() };
                     self.phase = Phase::Queue { t: 0.0, leg };
                 }
             }
@@ -121,83 +133,46 @@ impl BallsEngine {
                     queue_done = Some(*leg);
                 }
             }
-            Phase::Play { t, leg, template_idx } => {
-                let template = &TEMPLATES[*template_idx];
-                *t += WANDER.base_speed * template.speed * dt_norm;
-                if *t >= 1.0 {
-                    let new_leg = bend_leg(
-                        Leg { from: leg.target, ctrl: leg.target, target: random_screen_point() },
-                        template.curvature,
-                    );
-                    *t = 0.0;
-                    *leg = new_leg;
-                } else {
-                    for (i, b) in self.balls.iter_mut().enumerate() {
-                        b.offset += (template.offsets[i] - b.offset) * WANDER.offset_lerp;
-                    }
+            Phase::Play(player) => {
+                // 法线偏移缓动（引擎层持有球状态，按当前规划段模板）
+                let tpl = &TEMPLATES[player.cur.template_idx];
+                for (i, b) in self.balls.iter_mut().enumerate() {
+                    b.offset += (tpl.offsets[i] - b.offset) * WANDER.offset_lerp;
                 }
-                let center = quad_bezier(leg.from, leg.ctrl, leg.target, *t);
-                let gx = ((center.x * GRID_COLS as f64) as usize).min(GRID_COLS - 1);
-                let gy = ((center.y * GRID_ROWS as f64) as usize).min(GRID_ROWS - 1);
-                let cell = gy * GRID_COLS + gx;
-                if self.last_cell != cell {
-                    self.last_cell = cell;
-                    region_event = Some((cell, *template_idx, *leg, *t));
-                }
+                player.tick(dt);
             }
         }
 
-        // 阶段转换（match 外，避免借用冲突）
         if let Some(leg) = queue_done {
-            self.phase = Phase::Play { t: 0.5, leg, template_idx: 0 };
-        }
-        if let Some((cell, template_idx, leg, t)) = region_event {
-            self.on_region_enter(cell, template_idx, leg, t);
-        }
-    }
-
-    fn on_region_enter(&mut self, cell: usize, template_idx: usize, leg: Leg, t: f64) {
-        use rand::Rng;
-        let mut rng = rand::thread_rng();
-        // 精细网格决定运动模式：进格以概率切到该格偏好模板
-        if rng.gen::<f64>() < PROB.switch_template {
-            let idx = preferred_template(cell);
-            if idx != template_idx {
-                let curved = bend_leg(leg, TEMPLATES[idx].curvature);
-                self.set_template_offsets(idx);
-                self.phase = Phase::Play { t, leg: curved, template_idx: idx };
-                return;
-            }
-        }
-        if rng.gen::<f64>() < PROB.switch_order {
-            let next = ORDERS[rng.gen_range(0..ORDERS.len())];
-            if next != self.order {
-                self.order = next;
-            }
+            // 进入规划-执行模式：首段从排队位置出发
+            let mut player = Player::new(leg);
+            player.ensure_horizon();
+            self.phase = Phase::Play(player);
         }
     }
 
-    fn set_template_offsets(&mut self, idx: usize) {
-        let tpl = &TEMPLATES[idx];
-        for (i, b) in self.balls.iter_mut().enumerate() {
-            b.target_offset = tpl.offsets[i];
+    fn order_of_phase(&self) -> [usize; 3] {
+        match &self.phase {
+            Phase::Play(p) => p.order,
+            _ => ORDERS[0],
         }
     }
 
     /// 球位置（按阶段）
     fn ball_world_pos(&self, slot: usize) -> Vec2 {
         match &self.phase {
-            Phase::AtLogo { .. } => anchors_for(self.order)[slot],
+            Phase::AtLogo { .. } => anchors_for(self.order_of_phase())[slot],
             Phase::Travel { from, to, t } => {
                 let k = smoothstep((t / TRAVEL_MS).min(1.0));
                 lerp(from[slot], to[slot], k)
             }
             Phase::Queue { leg, .. } => {
-                let ti = (0.5 + slot as f64 * WANDER.phase_gap).min(1.0);
+                let ti = (slot as f64 * WANDER.phase_gap).min(1.0);
                 self.on_leg(leg, ti, slot)
             }
-            Phase::Play { t, leg, .. } => {
-                let ti = (*t + slot as f64 * WANDER.phase_gap).min(1.0);
+            Phase::Play(player) => {
+                let ti = (player.t + slot as f64 * WANDER.phase_gap).min(1.0);
+                let leg = &player.cur.leg;
                 self.on_leg(leg, ti, slot)
             }
         }
@@ -219,16 +194,15 @@ impl BallsEngine {
         }
     }
 
-    // ---------- 渲染（透视 + 椭圆化 + 尾迹，无阴影） ----------
+    // ---------- 渲染（纯色球 + 椭圆化阈值 + 尾迹） ----------
 
-    #[allow(deprecated)] // CanvasGradient 无 *_str 版 API
+    #[allow(deprecated)] // set_fill_style(&JsValue) 旧 API
     fn render(&mut self) {
         let cw = self.canvas.client_width() as f64;
         let ch = self.canvas.client_height() as f64;
         if cw == 0.0 || ch == 0.0 {
             return;
         }
-        // 分辨率自适应（resize/旋转/缩放）
         let dpr = web_sys::window()
             .map(|w| w.device_pixel_ratio())
             .unwrap_or(1.0)
@@ -251,14 +225,13 @@ impl BallsEngine {
             ((p.x - 0.5) * w * d + w / 2.0, p.y * h, d)
         };
         let pts: Vec<(f64, f64, f64)> =
-            (0..3).map(|s| to_screen(self.ball_world_pos(self.order[s]))).collect();
+            (0..3).map(|s| to_screen(self.ball_world_pos(self.order_of_phase()[s]))).collect();
 
-        // 按深度排序（远的先画）
         let mut order: Vec<usize> = (0..3).collect();
         order.sort_by(|a, b| pts[*a].1.partial_cmp(&pts[*b].1).unwrap());
 
         for i in order {
-            let slot = self.order[i];
+            let slot = self.order_of_phase()[i];
             let (px, py, d) = pts[i];
             let radius = BALL_RADIUS * d * (w.min(h) / 700.0).clamp(0.6, 1.0);
             let v = self.ball_velocity(slot);
@@ -266,8 +239,10 @@ impl BallsEngine {
             let vy = v.y * h;
             let speed = (vx * vx + vy * vy).sqrt();
 
-            // 高速椭圆化
-            let ratio = 1.0 + (speed / (ELLIPSE.speed_base * w)).min(ELLIPSE.max_ratio - 1.0);
+            // 高速椭圆化：阈值 + 平滑压缩曲线（只有非常快才压扁）
+            let sn = (speed / (ELLIPSE.speed_base * w)).clamp(0.0, 1.5);
+            let k = smoothstep(((sn - ELLIPSE.threshold) / (1.5 - ELLIPSE.threshold)).clamp(0.0, 1.0));
+            let ratio = 1.0 + k * (ELLIPSE.max_ratio - 1.0);
             let angle = vy.atan2(vx);
             let rx = radius * ratio;
             let ry = radius / ratio;
@@ -288,7 +263,7 @@ impl BallsEngine {
                 self.ctx.stroke();
             }
 
-            // 纯色球体（无渐变无阴影）
+            // 纯色球
             self.ctx.save();
             self.ctx.set_global_alpha(fade);
             self.ctx.begin_path();
@@ -300,7 +275,112 @@ impl BallsEngine {
     }
 }
 
-// ---------- 几何工具 ----------
+// ---------- 执行器（Player） ----------
+
+impl Player {
+    fn new(leg: Leg) -> Self {
+        let dur = leg_duration_ms(&TEMPLATES[0]);
+        let cur = PlannedLeg { leg, template_idx: 0, dur_ms: dur };
+        let p = Player {
+            legs: VecDeque::new(),
+            cur,
+            t: 0.0,
+            now_ms: 0.0,
+            planned_ms: dur,
+            order: ORDERS[0],
+        };
+        p
+    }
+
+    fn tick(&mut self, dt: f64) {
+        self.now_ms += dt;
+        self.t += dt / self.cur.dur_ms;
+        while self.t >= 1.0 {
+            if let Some(next) = self.legs.pop_front() {
+                self.cur = next;
+                self.t = 0.0;
+            } else {
+                // 规划断层（不应发生，兜底：原地等）
+                self.t = 1.0;
+                break;
+            }
+        }
+        self.ensure_horizon();
+    }
+
+    /// 保证规划窗口：提前 15s 补足到 60s（预计算时间上限 1 分钟）
+    fn ensure_horizon(&mut self) {
+        while self.planned_ms < self.now_ms + PLAN.horizon_ms - PLAN.step_ms {
+            let next = self.plan_next();
+            self.planned_ms += next.dur_ms;
+            self.legs.push_back(next);
+        }
+    }
+
+    /// 规划下一段：切线连续（ctrl 沿上一段终点切线方向）+ 网格偏好模板 + 概率换排列
+    fn plan_next(&mut self) -> PlannedLeg {
+        use rand::Rng;
+        let mut rng = rand::thread_rng();
+
+        let from = self.cur.leg.target;
+        let target = random_screen_point();
+        let dx = target.x - from.x;
+        let dy = target.y - from.y;
+        let dist = (dx * dx + dy * dy).sqrt().max(1e-6);
+
+        // 模板：目标所在精细网格的偏好（概率见 PROB）/ 保留当前
+        let cell = grid_cell(target);
+        let template_idx = if rng.gen::<f64>() < PROB.switch_template {
+            preferred_template(cell)
+        } else {
+            self.cur.template_idx
+        };
+        let template = &TEMPLATES[template_idx];
+
+        // 切线连续：ctrl = from + 上一段终点切线方向 × dist/2 + 法线小弯曲
+        let (last_dir, last_norm) = if self.cur.leg.target.x == self.cur.leg.from.x
+            && self.cur.leg.target.y == self.cur.leg.from.y
+        {
+            (Vec2 { x: dx / dist, y: dy / dist }, Vec2 { x: -dy / dist, y: dx / dist })
+        } else {
+            let tan = bezier_tangent(self.cur.leg.from, self.cur.leg.ctrl, self.cur.leg.target, 1.0);
+            let tl = (tan.x * tan.x + tan.y * tan.y).sqrt().max(1e-9);
+            let dir = Vec2 { x: tan.x / tl, y: tan.y / tl };
+            (dir, Vec2 { x: -dir.y, y: dir.x })
+        };
+        let ctrl = Vec2 {
+            x: from.x + last_dir.x * (dist * 0.5) + last_norm.x * dist * template.curvature * 0.6,
+            y: from.y + last_dir.y * (dist * 0.5) + last_norm.y * dist * template.curvature * 0.6,
+        };
+
+        // 排列：8% 概率切换（规划时决定，执行时不变 → 无闪现）
+        if rng.gen::<f64>() < PROB.switch_order {
+            let next = ORDERS[rng.gen_range(0..ORDERS.len())];
+            if next != self.order {
+                self.order = next;
+            }
+        }
+
+        PlannedLeg {
+            leg: Leg { from, ctrl, target },
+            template_idx,
+            dur_ms: leg_duration_ms(template),
+        }
+    }
+}
+
+// ---------- 工具 ----------
+
+fn leg_duration_ms(template: &crate::config::templates::Template) -> f64 {
+    // t 从 0→1 所需毫秒：1 / (base_speed * speed) 帧 × 16.7ms
+    16.7 / (WANDER.base_speed * template.speed)
+}
+
+fn grid_cell(p: Vec2) -> usize {
+    let gx = ((p.x * GRID_COLS as f64) as usize).min(GRID_COLS - 1);
+    let gy = ((p.y * GRID_ROWS as f64) as usize).min(GRID_ROWS - 1);
+    gy * GRID_COLS + gx
+}
 
 fn quad_bezier(a: Vec2, c: Vec2, b: Vec2, t: f64) -> Vec2 {
     let u = 1.0 - t;
@@ -323,25 +403,10 @@ fn normal_of(tan: Vec2) -> Vec2 {
     Vec2 { x: tan.y / len, y: -tan.x / len }
 }
 
-/// 按曲率弯曲一段路径（控制点 = 中点 + 法线偏移 × 距离 × 曲率）
-fn bend_leg(leg: Leg, curvature: f64) -> Leg {
-    let dx = leg.target.x - leg.from.x;
-    let dy = leg.target.y - leg.from.y;
-    let dist = (dx * dx + dy * dy).sqrt().max(1e-9);
-    let mid = Vec2 { x: (leg.from.x + leg.target.x) / 2.0, y: (leg.from.y + leg.target.y) / 2.0 };
-    // 法线方向（左侧）
-    let nx = -dy / dist;
-    let ny = dx / dist;
-    let ctrl = Vec2 { x: mid.x + nx * dist * curvature, y: mid.y + ny * dist * curvature };
-    Leg { from: leg.from, ctrl, target: leg.target }
-}
-
-/// 全屏随机点（含边边角角，0..1 全域）
 fn random_screen_point() -> Vec2 {
     Vec2 { x: rand::random::<f64>(), y: rand::random::<f64>() }
 }
 
-/// 三球旅行目标（随机点 + 队列偏移）
 fn random_trio_targets() -> [Vec2; 3] {
     let c = random_screen_point();
     let mut tos = [c; 3];

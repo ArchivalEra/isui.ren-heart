@@ -19,6 +19,14 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         self.send_header('Cache-Control', 'no-store')
         super().end_headers()
 
+    # SPA fallback：未命中路径回退 index.html（/heart、/home 等路由）
+    def do_GET(self):
+        try:
+            super().do_GET()
+        except FileNotFoundError:
+            self.path = '/index.html'
+            super().do_GET()
+
 
 port = int(sys.argv[1]) if len(sys.argv) > 1 else 8080
 with socketserver.TCPServer(('', port), Handler) as httpd:
