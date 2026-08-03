@@ -40,11 +40,14 @@ impl State {
     pub fn new(anchors: [Vec2; 3]) -> Self {
         let dir = random_dir();
         let player = Player::new(anchors[0], dir);
+        // 开场节奏：粉球先停 5 秒，蓝绿在粉球出发后再等 1-3 秒
         let delays = [
-            0.0,
-            QUEUE_DELAY_MIN_MS
+            ENTRY_DELAY_MS,
+            ENTRY_DELAY_MS
+                + QUEUE_DELAY_MIN_MS
                 + rand::random::<f64>() * (QUEUE_DELAY_MAX_MS - QUEUE_DELAY_MIN_MS),
-            QUEUE_DELAY_MIN_MS
+            ENTRY_DELAY_MS
+                + QUEUE_DELAY_MIN_MS
                 + rand::random::<f64>() * (QUEUE_DELAY_MAX_MS - QUEUE_DELAY_MIN_MS),
         ];
         State {
@@ -58,10 +61,12 @@ impl State {
         self.age += dt;
         let mut next: Option<Phase> = None;
         match &mut self.phase {
-            Phase::Queueing { t, player, .. } => {
+            Phase::Queueing { t, player, delays, .. } => {
                 *t += dt;
                 player.tick(dt);
-                if *t >= QUEUE_MS {
+                // 完成条件 = 最晚思考期 + 滑行期 + 余量（入场节奏 5+3s 超过固定 QUEUE_MS → 动态）
+                let max_delay = delays.iter().cloned().fold(0.0, f64::max);
+                if *t >= max_delay + QUEUE_TRANSIT_MS + 200.0 {
                     // 过渡完成 → 正式排队跑（player 直接转移，无跳变）
                     let player = std::mem::replace(
                         player,
@@ -83,15 +88,15 @@ impl State {
                     let players = [
                         {
                             let (pos, dir) = player.pos_and_dir(0);
-                            Player::new(pos, dir)
+                            Player::new_at(pos, dir, 0)
                         },
                         {
                             let (pos, dir) = player.pos_and_dir(1);
-                            Player::new(pos, dir)
+                            Player::new_at(pos, dir, 1)
                         },
                         {
                             let (pos, dir) = player.pos_and_dir(2);
-                            Player::new(pos, dir)
+                            Player::new_at(pos, dir, 2)
                         },
                     ];
                     next = Some(Phase::Free { players, check_t: 0.0 });
@@ -215,21 +220,31 @@ mod tests {
     fn queueing_advances_to_formation() {
         let anchors = [Vec2 { x: 0.2, y: 0.2 }, Vec2 { x: 0.4, y: 0.4 }, Vec2 { x: 0.6, y: 0.6 }];
         let mut s = State::new(anchors);
-        // 粉球先跑：t=0 起粉球就在动（s_lead 推进）
+        // 开场节奏：粉球先停 ENTRY_DELAY_MS（5s），期间不动
         let p0_first = s.ball_pos(0, 0.0);
-        let mut moved = false;
+        let mut moved_early = false;
+        let mut moved_later = false;
         let mut decisions = vec![0.5]; // hold_ms 用
         let mut decide = decide_seq(&mut decisions);
-        for _ in 0..50 {
+        for _ in 0..(ENTRY_DELAY_MS / 16.7) as usize - 5 {
             s.step(16.7, &mut decide);
             let p = s.ball_pos(0, 0.0);
             if (p.x - p0_first.x).abs() > 1e-6 || (p.y - p0_first.y).abs() > 1e-6 {
-                moved = true;
+                moved_early = true;
             }
         }
-        assert!(moved, "粉球开场立刻开跑（不等蓝绿）");
-        // 模拟到过渡完成 → Formation
-        for _ in 0..(QUEUE_MS / 16.7) as usize + 10 {
+        assert!(!moved_early, "粉球开场应先停 5 秒（构图停留）");
+        for _ in 0..60 {
+            s.step(16.7, &mut decide);
+            let p = s.ball_pos(0, 0.0);
+            if (p.x - p0_first.x).abs() > 1e-6 || (p.y - p0_first.y).abs() > 1e-6 {
+                moved_later = true;
+            }
+        }
+        assert!(moved_later, "5 秒后粉球开跑（蓝绿之后再跟上）");
+        // 模拟到过渡完成 → Formation（动态完成条件 = 最晚思考期+滑行+余量）
+        let total = (ENTRY_DELAY_MS + QUEUE_DELAY_MAX_MS + QUEUE_TRANSIT_MS + 500.0) / 16.7;
+        for _ in 0..total as usize + 10 {
             s.step(16.7, &mut decide);
         }
         assert!(
@@ -244,8 +259,9 @@ mod tests {
         let mut s = State::new(anchors);
         let mut decisions = vec![0.5]; // hold_ms = 8s + 0.5×10s = 13s
         let mut decide = decide_seq(&mut decisions);
-        // 走完 Queueing
-        for _ in 0..(QUEUE_MS / 16.7) as usize + 10 {
+        // 走完 Queueing（动态完成条件）
+        let total = (ENTRY_DELAY_MS + QUEUE_DELAY_MAX_MS + QUEUE_TRANSIT_MS + 500.0) / 16.7;
+        for _ in 0..total as usize + 10 {
             s.step(16.7, &mut decide);
         }
         // hold 期间是 Formation；超过 hold_ms（13s）后解散
@@ -270,8 +286,9 @@ mod tests {
         let mut s = State::new(anchors);
         let mut decisions = vec![0.5]; // hold_ms
         let mut decide = decide_seq(&mut decisions);
-        // 到 Free
-        for _ in 0..(QUEUE_MS / 16.7) as usize + (16.0 * 1000.0 / 16.7) as usize + 10 {
+        // 到 Free（入场 Queueing 动态时长 + hold 16s）
+        let total = (ENTRY_DELAY_MS + QUEUE_DELAY_MAX_MS + QUEUE_TRANSIT_MS + 500.0) / 16.7;
+        for _ in 0..total as usize + (16.0 * 1000.0 / 16.7) as usize + 10 {
             s.step(16.7, &mut decide);
         }
         assert!(matches!(s.phase, Phase::Free { .. }), "应已解散到 Free");
@@ -290,6 +307,36 @@ mod tests {
     }
 
     #[test]
+    fn lifecycle_90s_no_teleport() {
+        // 完整生命周期排查：任何球任何时刻帧间跳变 > 0.08 即报（蓝绿闪现排查）
+        let anchors = [Vec2 { x: 0.555, y: 0.355 }, Vec2 { x: 0.473, y: 0.379 }, Vec2 { x: 0.525, y: 0.471 }];
+        let mut s = State::new(anchors);
+        let mut last = [Vec2 { x: 0.0, y: 0.0 }; 3];
+        for slot in 0..3 {
+            last[slot] = s.ball_pos(slot, 0.0);
+        }
+        let mut worst = (0.0f64, 0usize, 0usize, 0.0); // (跳变, 球, 帧, 时间)
+        let mut phase_seen: Vec<String> = Vec::new();
+        for i in 0..(90.0 * 1000.0 / 16.7) as usize {
+            // 决策：0.5（不触发排队，纯看解散后的自由运动）
+            s.step(16.7, &mut || 0.5);
+            for slot in 0..3 {
+                let p = s.ball_pos(slot, 0.0);
+                let d = ((p.x - last[slot].x).powi(2) + (p.y - last[slot].y).powi(2)).sqrt();
+                if d > worst.0 {
+                    worst = (d, slot, i, i as f64 * 16.7 / 1000.0);
+                }
+                last[slot] = p;
+            }
+        }
+        assert!(
+            worst.0 < 0.08,
+            "90s 生命周期出现跳变: 球{} 第{}帧({:.1}s) 跳变 {:.4}",
+            worst.1, worst.2, worst.3, worst.0
+        );
+    }
+
+    #[test]
     fn no_teleport_at_phase_boundaries() {
         // 转移瞬间球位置连续（无跳变）：Queueing 结束 → Formation 开始
         let anchors = [Vec2 { x: 0.2, y: 0.2 }, Vec2 { x: 0.4, y: 0.4 }, Vec2 { x: 0.6, y: 0.6 }];
@@ -301,7 +348,8 @@ mod tests {
             last[slot] = s.ball_pos(slot, 0.0);
         }
         let mut max_jump = 0.0;
-        for _ in 0..(QUEUE_MS / 16.7) as usize + 5 {
+        let total = (ENTRY_DELAY_MS + QUEUE_DELAY_MAX_MS + QUEUE_TRANSIT_MS + 500.0) / 16.7;
+        for _ in 0..total as usize + 5 {
             s.step(16.7, &mut decide);
             for slot in 0..3 {
                 let p = s.ball_pos(slot, 0.0);

@@ -60,21 +60,39 @@ impl Player {
         pts
     }
 
+    /// Free 专用：指定球 color_slot 从 anchor 出发（其他球位置无用——Free 每球独立链）
+    /// 解散/入场时保证球从当前位置无缝续跑（Player::new 会把非队首球放到后方 → 闪现）
+    pub fn new_at(anchor: Vec2, dir: Vec2, color_slot: usize) -> Self {
+        let mut p = Self::new(anchor, dir);
+        p.states[color_slot.min(2)] = BallState {
+            pos: anchor,
+            vel: Vec2 { x: 0.0, y: 0.0 },
+            rate: WORLD_SPEED,
+        };
+        p
+    }
+
     pub fn new(anchor: Vec2, dir: Vec2) -> Self {
         let spots = Self::entry_points(anchor, dir);
-        // 首段：链起点 = 球0（anchor），方向 dir，目标 = 扇区/随机（屏内）
+        // 首段：链起点 = 球0（anchor），方向 = 入口 dir（与 entry_points 槽位方向一致，
+        // 保证等待上链的球在解散/转移时位置连续——曾因随机 target 方向导致蓝绿闪现）
         let target = {
-            let angle = rand::random::<f64>() * std::f64::consts::PI * 2.0;
-            let r = 0.25 + rand::random::<f64>() * 0.2;
+            let r = 0.3 + rand::random::<f64>() * 0.3;
             Vec2 {
-                x: (anchor.x + angle.cos() * r).clamp(0.12, 0.88),
-                y: (anchor.y + angle.sin() * r).clamp(0.12, 0.88),
+                x: (anchor.x + dir.x * r).clamp(0.12, 0.88),
+                y: (anchor.y + dir.y * r).clamp(0.12, 0.88),
             }
         };
-        let mut pl = make_planned_leg(anchor, dir, 0, target);
+        // 编队特技：25% 概率首段用 coil（并排高速画线圈）
+        let first_tpl = if rand::random::<f64>() < 0.25 {
+            TEMPLATES.iter().position(|t| t.id == "coil").unwrap_or(0)
+        } else {
+            0
+        };
+        let mut pl = make_planned_leg(anchor, dir, first_tpl, target);
         if !leg_in_bounds(&pl.leg) {
-            let safe = clamp_target_in_bounds(anchor, dir, 0, target);
-            pl = make_planned_leg(anchor, dir, 0, safe);
+            let safe = clamp_target_in_bounds(anchor, dir, first_tpl, target);
+            pl = make_planned_leg(anchor, dir, first_tpl, safe);
         }
         let mut chain = VecDeque::new();
         chain.push_back(pl);
@@ -300,8 +318,8 @@ impl Player {
             let d = dir_of(leg0.from, leg0.target);
             (
                 Vec2 {
-                    x: (leg0.from.x - d.x * self.gaps[color_slot]).clamp(0.0, 1.0),
-                    y: (leg0.from.y - d.y * self.gaps[color_slot]).clamp(0.0, 1.0),
+                    x: (leg0.from.x - d.x * self.gaps[color_slot]).clamp(0.05, 0.95),
+                    y: (leg0.from.y - d.y * self.gaps[color_slot]).clamp(0.05, 0.95),
                 },
                 d,
             )

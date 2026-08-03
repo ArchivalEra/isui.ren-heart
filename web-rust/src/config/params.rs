@@ -21,11 +21,11 @@ pub const CHAIN_GAP: f64 = 0.15;
 pub const FREE_CHECK_MS: f64 = 5000.0;
 /// 判定到排队的概率（30%）
 pub const QUEUE_PROB: f64 = 0.3;
-/// 判定后过渡总时长（含思考期 + 滑行期）
-pub const QUEUE_MS: f64 = 6000.0;
 /// 蓝绿球思考期：各自随机延迟出发（充分思考啥时候跟上粉球）
 pub const QUEUE_DELAY_MIN_MS: f64 = 1000.0;
 pub const QUEUE_DELAY_MAX_MS: f64 = 3000.0;
+/// 开场粉球先停 5 秒（构图停留），蓝绿在粉球出发后再等 1-3 秒
+pub const ENTRY_DELAY_MS: f64 = 5000.0;
 /// 思考结束后滑向槽位时长
 pub const QUEUE_TRANSIT_MS: f64 = 2000.0;
 /// 排好队后维持时长区间（随机）

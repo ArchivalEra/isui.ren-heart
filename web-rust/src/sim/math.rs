@@ -113,6 +113,27 @@ mod tests {
     }
 
     #[test]
+    fn bezier_ease_bounds_and_shape() {
+        // 端点固定：ease(0)=0, ease(1)=1
+        let e = |t: f64| cubic_bezier_ease(0.05, 0.7, 0.1, 1.0, t);
+        assert!((e(0.0) - 0.0).abs() < 1e-9);
+        assert!((e(1.0) - 1.0).abs() < 1e-9);
+        // 单调递增
+        let mut prev = 0.0;
+        for i in 1..=20 {
+            let v = e(i as f64 / 20.0);
+            assert!(v >= prev - 1e-9, "emphasized-decelerate 应单调");
+            prev = v;
+        }
+        // linear 退化为恒等
+        let lin = |t: f64| cubic_bezier_ease(0.0, 0.0, 1.0, 1.0, t);
+        for i in 0..=10 {
+            let t = i as f64 / 10.0;
+            assert!((lin(t) - t).abs() < 1e-6);
+        }
+    }
+
+    #[test]
     fn catmull_rom_passes_through_points() {
         let p1 = Vec2 { x: 0.2, y: 0.3 };
         let p2 = Vec2 { x: 0.5, y: 0.7 };
@@ -139,5 +160,21 @@ mod tests {
         assert!((sy - 300.0).abs() < 1e-9);
         assert!(d > 0.5 && d <= 1.0);
     }
+}
 
+/// 三次贝塞尔缓动：解 x(u)=t 求 u，返回 y(u)（Material 3 emphasized 曲线族）
+/// 值来自 google-university.md：emphasized (0.2,0,0,1)、decelerate (0.05,0.7,0.1,1)…
+pub fn cubic_bezier_ease(x1: f64, y1: f64, x2: f64, y2: f64, t: f64) -> f64 {
+    let t = t.clamp(0.0, 1.0);
+    let mut u = t;
+    for _ in 0..8 {
+        let x = 3.0 * (1.0 - u) * (1.0 - u) * u * x1 + 3.0 * (1.0 - u) * u * u * x2 + u * u * u;
+        let dx = 3.0 * (1.0 - u) * (1.0 - u) * x1 + 6.0 * (1.0 - u) * u * (x2 - x1)
+            + 3.0 * u * u * (1.0 - x2);
+        if dx.abs() < 1e-9 {
+            break;
+        }
+        u = (u - (x - t) / dx).clamp(0.0, 1.0);
+    }
+    3.0 * (1.0 - u) * (1.0 - u) * u * y1 + 3.0 * (1.0 - u) * u * u * y2 + u * u * u
 }

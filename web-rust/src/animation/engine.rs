@@ -247,32 +247,46 @@ impl BallsEngine {
                         }
                         self.ctx.set_line_cap("round");
                         self.ctx.set_line_join("round");
-                        self.ctx.set_stroke_style(&wasm_bindgen::JsValue::from(color));
                         self.ctx.set_line_width(radius * 2.0); // 完整球宽（直径）
-                        self.ctx.begin_path();
-                        if n == 2 {
-                            self.ctx.move_to(pts[0].x, pts[0].y);
-                            self.ctx.line_to(pts[1].x, pts[1].y);
-                        } else {
-                            // 相邻点对间细分 4 段（Catmull-Rom 需要前后邻居）
-                            let sub = 4;
-                            for k in 0..n - 1 {
-                                let p0 = if k == 0 { pts[0] } else { pts[k - 1] };
-                                let p1 = pts[k];
-                                let p2 = pts[k + 1];
-                                let p3 = if k + 2 < n { pts[k + 2] } else { pts[n - 1] };
-                                for s in 0..sub {
-                                    let t = s as f64 / sub as f64;
-                                    let q = crate::sim::math::catmull_rom(p0, p1, p2, p3, t);
-                                    if k == 0 && s == 0 {
-                                        self.ctx.move_to(q.x, q.y);
-                                    } else {
-                                        self.ctx.line_to(q.x, q.y);
-                                    }
+                        // 尾部渐隐（Material 3 emphasized-decelerate）：主体前 60% 纯实心，
+                        // 尾部 40% 快速平滑淡出——「消失速度与特效」（google-university.md）
+                        let (r, g, b) = hex_to_rgb(color);
+                        let mut prev_alpha = 1.0f64;
+                        for k in 0..n - 1 {
+                            let frac = k as f64 / (n as f64 - 1.0); // 0=最新（头部）
+                            let alpha = if frac < 0.6 {
+                                1.0
+                            } else {
+                                1.0 - crate::sim::math::cubic_bezier_ease(
+                                    0.05, 0.7, 0.1, 1.0,
+                                    (frac - 0.6) / 0.4,
+                                )
+                            };
+                            if alpha < 0.02 {
+                                break; // 尾端已透明，省绘制
+                            }
+                            if (alpha - prev_alpha).abs() > 1e-6 {
+                                self.ctx.set_stroke_style(&wasm_bindgen::JsValue::from(format!(
+                                    "rgba({r},{g},{b},{alpha:.3})"
+                                )));
+                                prev_alpha = alpha;
+                            }
+                            let p0 = if k == 0 { pts[0] } else { pts[k - 1] };
+                            let p1 = pts[k];
+                            let p2 = pts[k + 1];
+                            let p3 = if k + 2 < n { pts[k + 2] } else { pts[n - 1] };
+                            self.ctx.begin_path();
+                            for s in 0..4 {
+                                let t = s as f64 / 4.0;
+                                let q = crate::sim::math::catmull_rom(p0, p1, p2, p3, t);
+                                if s == 0 {
+                                    self.ctx.move_to(q.x, q.y);
+                                } else {
+                                    self.ctx.line_to(q.x, q.y);
                                 }
                             }
+                            self.ctx.stroke();
                         }
-                        self.ctx.stroke();
                     }
                 }
             }
