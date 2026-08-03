@@ -1,9 +1,8 @@
 // 引擎：渲染胶水层（Canvas/状态机驱动）
 // 纯逻辑（规划/执行/几何）在 sim/ 模块 —— 原生 cargo test 可测
 use crate::config::params::*;
-use crate::config::templates::TEMPLATES;
 use crate::sim::math::{screen_of, smoothstep, Vec2};
-use crate::sim::planner::{Phase, Player};
+use crate::sim::state::State;
 use std::collections::VecDeque;
 use wasm_bindgen::JsCast;
 use web_sys::{CanvasRenderingContext2d, HtmlCanvasElement};
@@ -25,7 +24,7 @@ pub struct BallsEngine {
     ctx: CanvasRenderingContext2d,
     balls: [Ball; 3],
     prev_pos: [Vec2; 3],
-    phase: Phase,
+    state: State,
     /// 锚点（可被调试面板拖拽，初始 = ANCHORS 契约）
     pub anchors: [Vec2; 3],
     pub debug: bool,
@@ -53,7 +52,7 @@ impl BallsEngine {
             ctx,
             balls,
             prev_pos: [Vec2 { x: 0.5, y: 0.5 }; 3],
-            phase: Phase::AtLogo { t: 0.0 },
+            state: State::new(anchors),
             anchors,
             debug: false,
             mode: RenderMode::Trail,
@@ -73,16 +72,11 @@ impl BallsEngine {
 
     /// 进入调试：三球归位到锚点（键盘移动选中球）
     pub fn enter_debug(&mut self) {
-        self.phase = Phase::AtLogo { t: 0.0 };
         self.debug = true;
     }
 
     pub fn exit_debug(&mut self) {
         self.debug = false;
-        if matches!(self.phase, Phase::AtLogo { .. }) {
-            // 重新走入场仪式
-            self.phase = Phase::AtLogo { t: 0.0 };
-        }
     }
 
     pub fn frame(&mut self, dt: f64) {
@@ -92,11 +86,7 @@ impl BallsEngine {
             let pos = self.ball_world_pos(s);
             self.prev_pos[s] = pos;
             // 位置历史（实心拖尾；上限 8）
-            let playing = matches!(
-                self.phase,
-                Phase::Free { .. } | Phase::Queueing { .. } | Phase::Formation { .. }
-            );
-            if playing {
+            if self.state.is_playing() {
                 let h = &mut self.history[s];
                 // 间距截断：与最新点距离过大（高速/交叉）→ 重建，防大长条/五角星复杂
                 if let Some(&(lx, ly)) = h.back() {
@@ -122,110 +112,17 @@ impl BallsEngine {
     }
 
     fn step(&mut self, dt: f64) {
-        // 调试模式：锁定状态机（球停在锚点，键盘方向键可移动）
+        // 调试模式：状态机冻结（球停在锚点，键盘方向键可移动）
         if self.debug {
-            if !matches!(self.phase, Phase::AtLogo { .. }) {
-                self.phase = Phase::AtLogo { t: 0.0 };
-            }
             return;
         }
-        use rand::Rng;
-        let mut rng = rand::thread_rng();
-        let mut next: Option<Phase> = None;
-        match &mut self.phase {
-            Phase::AtLogo { t } => {
-                *t += dt;
-                if *t >= AT_LOGO_MS {
-                    // 入场：三球各自独立链，起点 = 锚点（无排队仪式、无闪电）
-                    let players = [
-                        Player::new(self.anchors[0], Self::random_dir()),
-                        Player::new(self.anchors[1], Self::random_dir()),
-                        Player::new(self.anchors[2], Self::random_dir()),
-                    ];
-                    next = Some(Phase::Free { players, check_t: 0.0 });
-                }
-            }
-            Phase::Free { players, check_t } => {
-                *check_t += dt;
-                for p in players.iter_mut() {
-                    p.tick(dt);
-                }
-                // 每 5 秒判定：30% 概率触发自然排队
-                if *check_t >= FREE_CHECK_MS {
-                    *check_t = 0.0;
-                    if rng.gen::<f64>() < QUEUE_PROB {
-                        // 固定粉蓝绿顺序：粉（球0）当队首，蓝、绿依次落后（站主钦定美的顺序）
-                        let dir = Self::random_dir();
-                        let anchor = players[0].ball_center(0);
-                        // 共享链立刻创建：粉球（队首）在链起点 → 开跑
-                        let q_player = Player::new(anchor, dir);
-                        let mut from = [Vec2 { x: 0.0, y: 0.0 }; 3];
-                        for (i, p) in players.iter().enumerate() {
-                            from[i] = p.ball_center(i);
-                        }
-                        // 蓝绿球思考期：各自随机延迟（充分思考啥时候跟上粉球）
-                        let delays = [
-                            0.0,
-                            QUEUE_DELAY_MIN_MS
-                                + rng.gen::<f64>() * (QUEUE_DELAY_MAX_MS - QUEUE_DELAY_MIN_MS),
-                            QUEUE_DELAY_MIN_MS
-                                + rng.gen::<f64>() * (QUEUE_DELAY_MAX_MS - QUEUE_DELAY_MIN_MS),
-                        ];
-                        next = Some(Phase::Queueing { t: 0.0, player: q_player, from, delays });
-                    }
-                }
-            }
-            Phase::Queueing { t, player, .. } => {
-                *t += dt;
-                // 共享链推进：粉球（队首）立刻开跑；蓝绿 s<0 停在槽位等上链
-                player.tick(dt);
-                if *t >= QUEUE_MS {
-                    // 过渡完成 → 正式排队跑（player 直接转移，无跳变）
-                    next = Some(Phase::Formation {
-                        player: std::mem::replace(player, Player::new(Vec2 { x: 0.5, y: 0.5 }, Vec2 { x: 1.0, y: 0.0 })),
-                        hold_t: 0.0,
-                        hold_ms: FORMATION_HOLD_MIN_MS
-                            + rng.gen::<f64>() * (FORMATION_HOLD_MAX_MS - FORMATION_HOLD_MIN_MS),
-                    });
-                }
-            }
-            Phase::Formation { player, hold_t, hold_ms } => {
-                *hold_t += dt;
-                // 法线偏移缓动
-                for (i, b) in self.balls.iter_mut().enumerate() {
-                    let tpl = &TEMPLATES[player.template_idx(i)];
-                    b.offset += (tpl.offsets[i] - b.offset) * WANDER.offset_lerp;
-                }
-                player.tick(dt);
-                if *hold_t >= *hold_ms {
-                    // 自然解散：三球各自独立链（起点=当前位置，方向=链切线）
-                    let players = [
-                        {
-                            let (pos, dir) = player.pos_and_dir(0);
-                            Player::new(pos, dir)
-                        },
-                        {
-                            let (pos, dir) = player.pos_and_dir(1);
-                            Player::new(pos, dir)
-                        },
-                        {
-                            let (pos, dir) = player.pos_and_dir(2);
-                            Player::new(pos, dir)
-                        },
-                    ];
-                    next = Some(Phase::Free { players, check_t: 0.0 });
-                }
+        // 法线偏移缓动（共享链阶段按链头模板 offsets 收敛）
+        if let Some(offsets) = self.state.template_offsets() {
+            for (i, b) in self.balls.iter_mut().enumerate() {
+                b.offset += (offsets[i] - b.offset) * WANDER.offset_lerp;
             }
         }
-        if let Some(p) = next {
-            self.phase = p;
-        }
-    }
-
-    /// 随机单位方向
-    fn random_dir() -> Vec2 {
-        let angle = rand::random::<f64>() * std::f64::consts::PI * 2.0;
-        Vec2 { x: angle.cos(), y: angle.sin() }
+        self.state.step(dt, &mut || rand::random::<f64>());
     }
 
     /// 调试：三球实际渲染坐标（含偏移）
@@ -234,25 +131,15 @@ impl BallsEngine {
     }
 
     fn ball_world_pos(&self, color_slot: usize) -> Vec2 {
-        match &self.phase {
-            Phase::AtLogo { .. } => self.anchors[color_slot],
-            Phase::Free { players, .. } => players[color_slot].world_pos(color_slot, self.balls[color_slot].offset),
-            Phase::Queueing { t, player, from, delays } => {
-                // 思考期（t < delay）：冻结在进入时位置，充分思考
-                // 思考结束：2 秒内从冻结位置温和滑向链上槽位（各自出发）
-                let k = smoothstep(((t - delays[color_slot]) / QUEUE_TRANSIT_MS).clamp(0.0, 1.0));
-                let slot = player.world_pos(color_slot, self.balls[color_slot].offset);
-                crate::sim::math::lerp(from[color_slot], slot, k)
-            }
-            Phase::Formation { player, .. } => player.world_pos(color_slot, self.balls[color_slot].offset),
+        if self.debug {
+            self.anchors[color_slot]
+        } else {
+            self.state.ball_pos(color_slot, self.balls[color_slot].offset)
         }
     }
 
     fn fade_alpha(&self) -> f64 {
-        match &self.phase {
-            Phase::AtLogo { t } => smoothstep(*t / FADE_IN_MS),
-            _ => 1.0,
-        }
+        self.state.fade()
     }
 
     #[allow(deprecated)] // set_fill_style(&JsValue) 旧 API
@@ -288,11 +175,11 @@ impl BallsEngine {
                 self.ctx.arc(sx, sy, 5.0 * d, 0.0, std::f64::consts::PI * 2.0).unwrap();
                 self.ctx.fill();
             }
-            if let Phase::Formation { player, .. } = &self.phase {
-                // 目标点
+            if let Some(targets) = self.state.formation_targets() {
+                // 目标点（Formation 调试）
                 self.ctx.set_fill_style_str("rgba(17,17,17,0.4)");
                 for s in 0..3 {
-                    let (sx, sy, d) = screen_of(player.target_of(s), w, h);
+                    let (sx, sy, d) = screen_of(targets[s], w, h);
                     self.ctx.begin_path();
                     self.ctx.arc(sx, sy, 3.0 * d, 0.0, std::f64::consts::PI * 2.0).unwrap();
                     self.ctx.fill();
@@ -301,12 +188,7 @@ impl BallsEngine {
         }
 
         let to_screen = |p: Vec2| screen_of(p, w, h);
-        let order = match &self.phase {
-            Phase::Free { .. } => [0, 1, 2],
-            Phase::Queueing { .. } => [0, 1, 2],
-            Phase::Formation { player, .. } => player.order,
-            _ => ORDERS[0],
-        };
+        let order = self.state.order();
         let pts: Vec<(f64, f64, f64)> =
             (0..3).map(|s| to_screen(self.ball_world_pos(order[s]))).collect();
 

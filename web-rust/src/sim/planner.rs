@@ -398,32 +398,6 @@ fn clamp_dur_to_chain(mut pl: PlannedLeg, tail_dur: f64) -> PlannedLeg {
     pl
 }
 
-/// 状态机（数据；转移由引擎层驱动）
-/// - AtLogo：三球停锚点（入场）
-/// - Free：三球各自独立链自由运动（常态）；每 5s 判定 30% 概率触发排队
-/// - Queueing：判定后 5 秒过渡——球在各自行程中自然滑向队列槽位
-/// - Formation：共享链排队跑（维持随机时长后自然解散回 Free）
-pub enum Phase {
-    AtLogo { t: f64 },
-    Free {
-        players: [Player; 3],
-        check_t: f64,
-    },
-    Queueing {
-        t: f64,
-        /// 共享链已创建：粉球立刻开跑（s_lead 推进），蓝绿在槽位等上链
-        player: Player,
-        /// 进入排队时三球位置快照（思考期停留点 = 冻结位置）
-        from: [Vec2; 3],
-        /// 每球思考期（粉 0；蓝绿随机 1-3s）——各自决定啥时候跟上粉球
-        delays: [f64; 3],
-    },
-    Formation {
-        player: Player,
-        hold_t: f64,
-        hold_ms: f64,
-    },
-}
 
 #[cfg(test)]
 mod tests {

@@ -93,7 +93,6 @@ pub const WANDER: Wander = Wander {
 
 /// 入场仪式
 pub const FADE_IN_MS: f64 = 800.0; // 锚点淡入时长
-pub const AT_LOGO_MS: f64 = 3000.0; // 在 logo 球位停留
 
 /// logo 三球锚点（世界坐标，站主实测给点）
 pub const ANCHORS: [(f64, f64); 3] = [
