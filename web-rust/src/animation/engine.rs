@@ -2,7 +2,7 @@
 // 纯逻辑（规划/执行/几何）在 sim/ 模块 —— 原生 cargo test 可测
 use crate::config::params::*;
 use crate::sim::math::{screen_of, smoothstep, Vec2};
-use crate::sim::state::State;
+use crate::sim::state::{trail_cap, should_track, State};
 use std::collections::VecDeque;
 use wasm_bindgen::JsCast;
 use web_sys::{CanvasRenderingContext2d, HtmlCanvasElement};
@@ -84,27 +84,19 @@ impl BallsEngine {
         self.render();
         for s in 0..3 {
             let pos = self.ball_world_pos(s);
+            // ⚠️ 先算速度（基于上帧 prev_pos）再更新 prev_pos——
+            // 曾先更新后计算 → 差分恒 0 → 拖尾永远消失（真凶）
+            let v = self.ball_velocity(s);
             self.prev_pos[s] = pos;
-            // 位置历史（实心拖尾；上限 8）
             if self.state.is_playing() {
-                // 速度换算成「每秒」（ball_velocity 是帧位移，阈值单位必须一致——
-                // 曾用每秒阈值比帧位移 → 巡航永远被判静止 → 拖尾消失）
-                let v = self.ball_velocity(s);
                 let dt_s = (dt / 1000.0).max(1e-9);
                 let speed = (v.x * v.x + v.y * v.y).sqrt() / dt_s;
-                // 高速跳跃段：拖尾历史点上限 12（拉长飘逸）；常规 8
-                let cap = if speed > JUMP_SPEED {
-                    TRAIL_FRAMES_HIGH
-                } else {
-                    8
-                };
                 let h = &mut self.history[s];
-                // 静止/思考期（速度≈0）不记录历史：拖尾消失，省渲染
-                if speed < 0.02 {
+                if !should_track(speed) {
                     h.clear();
                     continue;
                 }
-                // 间距截断：与最新点距离过大（高速/交叉）→ 重建，防大长条/五角星复杂
+                // 间距截断：与最新点距离过大（高速/交叉）→ 重建
                 if let Some(&(lx, ly)) = h.back() {
                     let d = ((pos.x - lx).powi(2) + (pos.y - ly).powi(2)).sqrt();
                     if d > TRAIL_MAX_SEG {
@@ -112,7 +104,7 @@ impl BallsEngine {
                     }
                 }
                 h.push_back((pos.x, pos.y));
-                while h.len() > cap {
+                while h.len() > trail_cap(speed) {
                     h.pop_front();
                 }
             } else {

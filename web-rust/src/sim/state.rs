@@ -125,6 +125,20 @@ impl State {
     }
 }
 
+/// 拖尾是否记录：速度（世界单位/秒）低于阈值视为静止（思考期/入场构图）不记录
+pub fn should_track(speed_per_sec: f64) -> bool {
+    speed_per_sec >= 0.02
+}
+
+/// 拖尾历史点上限：高速跳跃段拉长（12），常规 8
+pub fn trail_cap(speed_per_sec: f64) -> usize {
+    if speed_per_sec > JUMP_SPEED {
+        TRAIL_FRAMES_HIGH
+    } else {
+        8
+    }
+}
+
 pub fn random_dir() -> Vec2 {
     let angle = rand::random::<f64>() * std::f64::consts::PI * 2.0;
     Vec2 { x: angle.cos(), y: angle.sin() }
@@ -133,6 +147,17 @@ pub fn random_dir() -> Vec2 {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn trail_tracking_decisions() {
+        // 巡航（0.22/s）→ 记录 + 常规 8 点；静止（0.01）→ 不记录；跳跃（0.5）→ 12 点
+        assert!(should_track(0.22), "巡航应记录拖尾");
+        assert!(should_track(0.05));
+        assert!(!should_track(0.01), "静止不记录（思考期无拖尾）");
+        assert_eq!(trail_cap(0.22), 8, "巡航常规上限");
+        assert_eq!(trail_cap(0.5), TRAIL_FRAMES_HIGH, "高速跳跃拉长");
+        assert_eq!(trail_cap(0.1), 8);
+    }
 
     #[test]
     fn opens_directly_in_queueing() {

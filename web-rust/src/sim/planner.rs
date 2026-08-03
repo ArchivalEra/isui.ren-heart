@@ -163,9 +163,9 @@ impl Player {
             None => v_i,
         };
         let ramp = smoothstep(u.clamp(0.0, 1.0));
-        // 曲率感知：弯越急速越慢（温和变速的核心——弯道减速，绿球跟得上不哆嗦）
-        let curv_factor = 1.0 / (1.0 + CURV_SPEED_FACTOR * seg.curv_eff.abs());
-        WORLD_SPEED * (v_i + (v_next - v_i) * ramp) * curv_factor
+        // 温和变速 = 段内 smoothstep 过渡 + 段间速率连续（回滚曲率感知因子——
+        // 段级因子跳变导致球速段间突变，跳跳球抖动）
+        WORLD_SPEED * (v_i + (v_next - v_i) * ramp)
     }
 
     /// 链增长：总弧长保持 ≥ s_lead + 余量（无限轨迹）

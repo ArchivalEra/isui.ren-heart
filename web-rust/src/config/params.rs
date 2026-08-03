@@ -98,10 +98,9 @@ pub const TRAIL_FRAMES_HIGH: usize = 12;
 pub const PREPLAN_SECONDS: f64 = 300.0;
 /// 小圈圈滤波：段长低于此值时曲率按比例衰减（短段配小弯，防绿球哆嗦）
 pub const MIN_LEG_LEN: f64 = 0.35;
-/// 曲率感知速度：弯越急速越慢（v × 1/(1 + K×|curv|)）——温和变速，弯道不甩尾
-pub const CURV_SPEED_FACTOR: f64 = 0.5;
-/// 混合模板段概率：一整段内曲率 A→B→C 渐变（Euler spiral 离散近似）
-pub const BLEND_PROB: f64 = 0.2;
+/// 混合模板段概率（Euler spiral 离散近似）：与自研逻辑分开，默认关闭——
+/// make_blend_leg 保留为独立工具（含测试），需要时调高此概率即可启用
+pub const BLEND_PROB: f64 = 0.0;
 /// logo 区域：每隔 LOGO_EVERY_ARC 弧长规划一个「logo 游走段」（区域规划回归）
 pub const LOGO_CENTER: (f64, f64) = (0.52, 0.42);
 pub const LOGO_RADIUS: f64 = 0.13;
