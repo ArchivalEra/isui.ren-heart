@@ -171,6 +171,12 @@ body {
   display: inline-flex;
   flex-direction: column;
   align-items: center;
+  /* 抽屉：整个文件夹（按钮+卡片一体）上移展开 / 下移回位——M3 decelerate */
+  transition: transform 0.3s cubic-bezier(0.05, 0.7, 0.1, 1);
+}
+
+.card-wall-wrap.open {
+  transform: translateY(-220px);
 }
 
 .card-wall-btn {

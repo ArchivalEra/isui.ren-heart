@@ -16,7 +16,7 @@ export default function CardWall({
   onToggle: (v: boolean) => void;
 }): JSX.Element {
   return (
-    <div class="card-wall-wrap">
+    <div class={`card-wall-wrap${open ? " open" : ""}`}>
       <button
         class="card-wall-btn"
         aria-label="卡片墙"
