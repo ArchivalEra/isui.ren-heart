@@ -1,9 +1,17 @@
 :root {
-  --bg: #faf7f2;
-  --fg: #3a3530;
-  --accent: #d97757;
-  --card-bg: #ffffff;
-  --card-border: #e8e0d6;
+  /* tayori 灰阶白体系：白色 + 多色号白 */
+  --white: #ffffff;
+  --white-1: #fbfbfb;
+  --white-2: #f4f4f4;
+  --white-3: #ebebeb;
+  --white-4: #dedede;
+  --ink: #111111; /* 唯一黑色：logo/文字 */
+  --shadow-1: rgba(17, 17, 17, 0.05);
+  --shadow-2: rgba(17, 17, 17, 0.09);
+  /* 三色球（唯一彩色） */
+  --ball-pink: #f09abd;
+  --ball-aqua: #6ec6e6;
+  --ball-mint: #7fc39f;
   font-family: 'PingFang SC', 'Hiragino Sans GB', 'Noto Sans CJK SC', sans-serif;
 }
 
@@ -13,35 +21,80 @@
 
 body {
   margin: 0;
-  background: var(--bg);
-  color: var(--fg);
+  background: var(--white);
+  color: var(--ink);
 }
 
 /* ---------- /heart ---------- */
 .heart-page {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   position: relative;
+  min-height: 100vh;
   overflow: hidden;
+  background: var(--white);
 }
 
+/* 灰阶氛围背景：多色号白渐变 + 光影 */
+.heart-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(120% 90% at 15% 10%, var(--white) 0%, var(--white-1) 45%, var(--white-2) 100%),
+    linear-gradient(180deg, var(--white) 0%, var(--white-2) 100%);
+  box-shadow:
+    inset 0 0 120px var(--shadow-1),
+    inset 0 0 40px var(--shadow-2);
+}
+
+/* 三球动画层：全屏，位于 logo 之上 */
+.balls-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* tayori logo：全页唯一黑色，三球背景板（占位，站主替换为 PNG） */
+.heart-logo {
+  position: absolute;
+  left: 50%;
+  top: 30%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  color: var(--ink);
+  font-size: clamp(3rem, 12vw, 7rem);
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  user-select: none;
+  /* 阴影让 logo 有浮在灰阶氛围上的感觉 */
+  text-shadow: 0 8px 30px var(--shadow-2);
+}
+
+/* 文字层 */
 .heart-main {
+  position: relative;
+  z-index: 4;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding-bottom: 9vh;
   text-align: center;
-  padding: 2rem;
 }
 
 .heart-title {
-  font-size: clamp(1.8rem, 6vw, 3.4rem);
+  font-size: clamp(1.6rem, 5vw, 2.8rem);
   letter-spacing: 0.08em;
-  color: var(--fg);
-  margin: 0 0 0.8rem;
+  color: var(--ink);
+  margin: 0 0 0.6rem;
+  font-weight: 500;
 }
 
 .cursor {
   animation: blink 1s step-end infinite;
-  color: var(--accent);
+  color: var(--ink);
 }
 
 @keyframes blink {
@@ -51,8 +104,12 @@ body {
 }
 
 .heart-sub {
-  color: #8a8178;
-  font-size: 0.95rem;
+  min-height: 1.6em;
+  font-size: 1.1rem;
+}
+
+.heart-emoji {
+  color: var(--ink);
 }
 
 .heart-nav {
@@ -62,37 +119,21 @@ body {
 .heart-link {
   display: inline-block;
   padding: 0.6rem 1.6rem;
-  border: 1px solid var(--accent);
+  border: 1px solid var(--white-4);
   border-radius: 999px;
-  color: var(--accent);
+  color: var(--ink);
   text-decoration: none;
+  background: var(--white-1);
+  box-shadow: 0 4px 16px var(--shadow-1);
   transition: all 0.2s;
 }
 
 .heart-link:hover {
-  background: var(--accent);
-  color: #fff;
+  background: var(--white-3);
+  box-shadow: 0 6px 20px var(--shadow-2);
 }
 
-.float-emoji {
-  position: absolute;
-  font-size: 1.4rem;
-  animation: bob 3s ease-in-out infinite;
-  transition: opacity 0.6s;
-  user-select: none;
-}
-
-@keyframes bob {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-14px);
-  }
-}
-
-/* ---------- /home ---------- */
+/* ---------- /home（暂沿用，后续 grill） ---------- */
 .home-page {
   max-width: 880px;
   margin: 0 auto;
@@ -107,7 +148,7 @@ body {
 }
 
 .home-back {
-  color: var(--accent);
+  color: var(--ink);
   text-decoration: none;
   font-size: 0.9rem;
 }
@@ -132,17 +173,18 @@ body {
   align-items: center;
   gap: 0.9rem;
   padding: 1.1rem 1.2rem;
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
+  background: var(--white-1);
+  border: 1px solid var(--white-3);
   border-radius: 14px;
   text-decoration: none;
   color: inherit;
+  box-shadow: 0 4px 14px var(--shadow-1);
   transition: transform 0.15s, box-shadow 0.15s;
 }
 
 .card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 8px 24px var(--shadow-2);
 }
 
 .card-icon {
@@ -166,12 +208,12 @@ body {
 
 .card-desc {
   font-size: 0.82rem;
-  color: #8a8178;
+  color: var(--white-4);
 }
 
 .home-footer {
   margin-top: 2.5rem;
   text-align: center;
-  color: #a89f94;
+  color: var(--white-4);
   font-size: 0.8rem;
 }

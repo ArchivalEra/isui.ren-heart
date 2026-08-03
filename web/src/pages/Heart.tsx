@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import BallsAnimation from '../animation/BallsAnimation'
 
-// /heart — 博客主页：动态颜文字「关注isui谢谢喵」
-const EMOJI = ['(｡･ω･｡)', 'ฅ^•ﻌ•^ฅ', '(*´∀`)~♥', '(๑•̀ㅂ•́)و✧', 'ﾟ+*:;;:*+ﾟ', '♪(´▽｀)', '(´｡• ᵕ •｡`)', '♡(◕‿◕)♡']
+// /heart — 博客主页：tayori 视觉（灰阶白 + 三球队列动画 + 唯一黑色 logo）
+
+const EMOJI = ['(｡･ω･｡)', 'ฅ^•ﻌ•^ฅ', '(*´∀`)~♥', '(๑•̀ㅂ•́)و✧', '♪(´▽｀)', '(´｡• ᵕ •｡`)', '♡(◕‿◕)♡']
 const TARGET = '关注isui谢谢喵'
 
 function Typewriter({ text, speed = 180 }: { text: string; speed?: number }) {
@@ -36,27 +38,27 @@ export default function Heart() {
 
   return (
     <div className="heart-page">
-      <div className="heart-emoji" aria-hidden>
-        {EMOJI.map((e, i) => (
-          <span
-            key={i}
-            className="float-emoji"
-            style={{
-              left: `${(i * 13 + 4) % 92}%`,
-              animationDelay: `${i * 0.7}s`,
-              opacity: i === idx ? 1 : 0.25,
-            }}
-          >
-            {e}
-          </span>
-        ))}
+      {/* 灰阶氛围背景 */}
+      <div className="heart-bg" aria-hidden />
+
+      {/* 三球动画（前景，z-index 高于 logo） */}
+      <BallsAnimation />
+
+      {/* tayori logo —— 全页唯一黑色（站主用管理工具替换为去三球版 PNG） */}
+      <div className="heart-logo" aria-hidden>
+        tayori
       </div>
 
+      {/* 文字层 */}
       <main className="heart-main">
         <h1 className="heart-title">
           <Typewriter text={TARGET} />
         </h1>
-        <p className="heart-sub">isui.ren · 这里收藏着喜欢的歌声</p>
+        <p className="heart-sub">
+          <span className="heart-emoji" aria-hidden>
+            {EMOJI[idx]}
+          </span>
+        </p>
         <nav className="heart-nav">
           <Link to="/home" className="heart-link">
             ✦ 卡片墙 ✦
