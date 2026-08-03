@@ -129,6 +129,13 @@ impl Player {
             let tvel = Vec2 { x: tan.x / tl * st.rate, y: tan.y / tl * st.rate };
             let ax = k * (target.x - st.pos.x) + c_damp * (tvel.x - st.vel.x);
             let ay = k * (target.y - st.pos.y) + c_damp * (tvel.y - st.vel.y);
+            // 加速度钳制：spring 误差大时力无上限 → 高速冲点；clamp 后温和冲刺
+            let a_mag = (ax * ax + ay * ay).sqrt();
+            let (ax, ay) = if a_mag > MAX_ACCEL {
+                (ax / a_mag * MAX_ACCEL, ay / a_mag * MAX_ACCEL)
+            } else {
+                (ax, ay)
+            };
             st.vel.x += ax * dt_s;
             st.vel.y += ay * dt_s;
             st.pos.x = (st.pos.x + st.vel.x * dt_s).clamp(0.0, 1.0);
@@ -136,8 +143,9 @@ impl Player {
         }
     }
 
-    /// 速度 profile：段内从「半速×本段」温和过渡到「半速×下段」，
-    /// smoothstep 保证段内加速/减速平滑；段间速率连续（段尾 = 下段头）
+    /// 速度 profile：段内从「本段全速」温和过渡到「下段全速」，
+    /// smoothstep 保证段内加速/减速平滑；段间速率连续（段尾速 = 下段头速）
+    /// 巡航 = 模板全速（不再减半，去蠕动感）
     fn profile_speed(&self, seg_idx: usize, u: f64) -> f64 {
         let v_i = TEMPLATES[self.chain[seg_idx].template_idx].speed();
         let v_next = match self.chain.get(seg_idx + 1) {
@@ -145,7 +153,7 @@ impl Player {
             None => v_i,
         };
         let ramp = smoothstep(u.clamp(0.0, 1.0));
-        WORLD_SPEED * (0.5 * v_i + (0.5 * v_next - 0.5 * v_i) * ramp)
+        WORLD_SPEED * (v_i + (v_next - v_i) * ramp)
     }
 
     /// 链增长：总弧长保持 ≥ s_lead + 余量（无限轨迹）
@@ -408,11 +416,10 @@ pub enum Phase {
     },
     Queueing {
         t: f64,
-        /// 过渡期间三球继续自由运动（在各自行程中自然汇入队列，无「定住等」）
-        players: [Player; 3],
-        anchor: Vec2,
-        dir: Vec2,
-        slots: [Vec2; 3],
+        /// 共享链已创建：粉球立刻开跑（s_lead 推进），蓝绿在槽位等上链
+        player: Player,
+        /// 蓝绿球自由运动位置（blend 源：滑向槽位过程用）
+        free_players: [Player; 3],
     },
     Formation {
         player: Player,

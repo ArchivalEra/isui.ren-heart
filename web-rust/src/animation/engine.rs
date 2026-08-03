@@ -157,32 +157,34 @@ impl BallsEngine {
                         // 固定粉蓝绿顺序：粉（球0）当队首，蓝、绿依次落后（站主钦定美的顺序）
                         let dir = Self::random_dir();
                         let anchor = players[0].ball_center(0);
-                        let slots = Player::entry_points(anchor, dir);
-                        let players_arr = [
-                            players[0].clone_for_blend(),
+                        // 共享链立刻创建：粉球在链起点（当前位置）→ 开跑；蓝绿在槽位等
+                        let q_player = Player::new(anchor, dir);
+                        let free_players = [
+                            players[1].clone_for_blend(),
                             players[1].clone_for_blend(),
                             players[2].clone_for_blend(),
                         ];
-                        next = Some(Phase::Queueing { t: 0.0, players: players_arr, anchor, dir, slots });
+                        next = Some(Phase::Queueing { t: 0.0, player: q_player, free_players });
                     }
                 }
             }
-            Phase::Queueing { t, players, anchor, dir, slots } => {
+            Phase::Queueing { t, player, free_players } => {
                 *t += dt;
-                // 过渡期间三球继续各自的自由运动
-                for p in players.iter_mut() {
+                // 共享链推进：粉球（队首）立刻开跑；蓝绿 s<0 停在槽位等上链
+                player.tick(dt);
+                // 蓝绿球 blend 源：继续自由运动（视觉上滑向槽位）
+                for p in free_players.iter_mut() {
                     p.tick(dt);
                 }
                 if *t >= QUEUE_MS {
-                    // 过渡完成 → 共享链排队跑（槽位 = 链上布局点，无跳变）
+                    // 过渡完成 → 正式排队跑（player 直接转移，无跳变）
                     next = Some(Phase::Formation {
-                        player: Player::new(*anchor, *dir),
+                        player: std::mem::replace(player, Player::new(Vec2 { x: 0.5, y: 0.5 }, Vec2 { x: 1.0, y: 0.0 })),
                         hold_t: 0.0,
                         hold_ms: FORMATION_HOLD_MIN_MS
                             + rng.gen::<f64>() * (FORMATION_HOLD_MAX_MS - FORMATION_HOLD_MIN_MS),
                     });
                 }
-                let _ = slots;
             }
             Phase::Formation { player, hold_t, hold_ms } => {
                 *hold_t += dt;
@@ -232,10 +234,17 @@ impl BallsEngine {
         match &self.phase {
             Phase::AtLogo { .. } => self.anchors[color_slot],
             Phase::Free { players, .. } => players[color_slot].world_pos(color_slot, self.balls[color_slot].offset),
-            Phase::Queueing { t, players, slots, .. } => {
-                let k = smoothstep(*t / QUEUE_MS);
-                let free = players[color_slot].world_pos(color_slot, self.balls[color_slot].offset);
-                crate::sim::math::lerp(free, slots[color_slot], k)
+            Phase::Queueing { t, player, free_players } => {
+                if color_slot == 0 {
+                    // 粉球：直接沿共享链跑（立刻出发）
+                    player.world_pos(0, self.balls[0].offset)
+                } else {
+                    // 蓝绿：自由位置 → 槽位（链上等待点）blend；k=1 后随链
+                    let k = smoothstep(*t / QUEUE_MS);
+                    let slot = player.world_pos(color_slot, self.balls[color_slot].offset);
+                    let free = free_players[color_slot - 1].world_pos(color_slot, self.balls[color_slot].offset);
+                    crate::sim::math::lerp(free, slot, k)
+                }
             }
             Phase::Formation { player, .. } => player.world_pos(color_slot, self.balls[color_slot].offset),
         }
