@@ -97,12 +97,7 @@ impl BallsEngine {
     }
 
     fn step(&mut self, dt: f64) {
-        // 法线偏移缓动（共享链阶段按链头模板 offsets 收敛）
-        if let Some(offsets) = self.state.template_offsets() {
-            for (i, b) in self.balls.iter_mut().enumerate() {
-                b.offset += (offsets[i] - b.offset) * WANDER.offset_lerp;
-            }
-        }
+        // 云中心 Frenet 偏移已在 Player tick 中完成（渲染层不再叠加偏移）
         self.state.step(dt, &mut || rand::random::<f64>());
     }
 

@@ -119,10 +119,6 @@ impl State {
         }
     }
 
-    /// 共享链阶段使用固定队形常量
-    pub fn template_offsets(&self) -> Option<[f64; 3]> {
-        Some(FORMATION_OFFSETS)
-    }
 }
 
 /// 拖尾是否记录：速度（世界单位/秒）低于阈值视为静止（思考期/入场构图）不记录

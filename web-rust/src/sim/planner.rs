@@ -115,7 +115,7 @@ impl Player {
     pub fn tick(&mut self, dt: f64) {
         let dt_s = dt / 1000.0;
         // 队首弧长推进：速度 profile（段内温和加速/减速，段间连续——预渲染衔接）
-        let (_, _, seg0, u0) = self.chain_pos_and_tangent(self.s_lead);
+        let (_, _, seg0, u0) = chain_pos_and_tangent(&self.chain, self.s_lead);
         self.s_lead += self.profile_speed(seg0, u0) * dt_s;
         self.ensure_chain();
 
@@ -127,7 +127,13 @@ impl Player {
             // 球 i 弧长 = 队首 - 错开；未上链（<0）→ 目标 = 起点（链起点后方）
             let s_i = self.s_lead - self.gaps[s];
             let (target, tan, seg_i, u_i) = if s_i >= 0.0 {
-                self.chain_pos_and_tangent(s_i)
+                // 云中心：平滑中心点 + Frenet 法线偏移（FORMATION_OFFSETS[s]×0.05）
+                // 转弯时三球走同一条曲线的偏移轨迹 → 同弧、无多段线
+                let d = FORMATION_OFFSETS[s] * 0.05;
+                let tgt = crate::sim::cloud::follower_target_smooth(&self.chain, s_i, d, 0.08);
+                let (_, tan, _, _) = chain_pos_and_tangent(&self.chain, s_i);
+                let (_, _, seg, u) = chain_pos_and_tangent(&self.chain, s_i);
+                (tgt, tan, seg, u)
             } else {
                 let leg0 = &self.chain.front().unwrap().legs[0];
                 let d = dir_of(leg0.from, leg0.target);
@@ -295,54 +301,66 @@ impl Player {
             }
             self.chain.push_back(clamp_dur_to_chain(pl, tail.dur_ms));
         }
+        // 调速师傅：补链后审核尾部段的速度序列（savgol 平滑 + 加速度钳制）
+        self.tune_tail(9);
+    }
+
+    /// 调速器：对链尾部 n 段做速度审核——消除速度钝点（非常大加速/减速）
+    /// savgol5 平滑 + 相邻段加速度钳制 → 重写 speed/dur_ms
+    fn tune_tail(&mut self, n: usize) {
+        let len = self.chain.len();
+        let start = len.saturating_sub(n);
+        if len - start < 3 {
+            return;
+        }
+        let tail: Vec<PlannedLeg> = self.chain.iter().skip(start).cloned().collect();
+        let (speeds, durs) = crate::sim::velo::tune(&tail, MAX_ACCEL, WORLD_SPEED, true);
+        for (i, pl) in self.chain.iter_mut().skip(start).enumerate() {
+            pl.speed = speeds[i];
+            pl.dur_ms = durs[i];
+        }
     }
 
     /// 链上弧长 s 处：位置 + 切线 + 段索引 + 段内 u（速度 profile 用）
     /// 链 = 段 × 5 子段：定位时先找段，再在段内 5 子段中定位
-    fn chain_pos_and_tangent(&self, s: f64) -> (Vec2, Vec2, usize, f64) {
-        let mut acc = 0.0;
-        for (idx, pl) in self.chain.iter().enumerate() {
-            if acc + pl.arc >= s {
-                let s_in = (s - acc).clamp(0.0, pl.arc);
-                let sub_arc = pl.arc / 5.0;
-                let sub_idx = ((s_in / sub_arc.max(1e-9)) as usize).min(4);
-                let u = ((s_in - sub_idx as f64 * sub_arc) / sub_arc.max(1e-9)).clamp(0.0, 1.0);
-                let leg = &pl.legs[sub_idx];
-                let p = quad_bezier(leg.from, leg.ctrl, leg.target, u);
-                let tan = bezier_tangent(leg.from, leg.ctrl, leg.target, u);
-                // wave 已彻底删除（蛆虫扭动源）；位置 = 贝塞尔点本身（链几何已保证屏内）
-                return (p, tan, idx, u);
-            }
-            acc += pl.arc;
-        }
-        // 超出链尾：用链尾
-        let last = self.chain.back().expect("chain non-empty");
-        let tail = last.legs[4];
-        (tail.target, Vec2 { x: 1.0, y: 0.0 }, self.chain.len() - 1, 1.0)
-    }
 
-    /// 球位：spring 物理状态 + 法线分离量
-    pub fn world_pos(&self, color_slot: usize, offset: f64) -> Vec2 {
+
+    /// 球位：spring 物理状态（云中心 Frenet 偏移已在 tick 目标中完成）
+    pub fn world_pos(&self, color_slot: usize, _offset: f64) -> Vec2 {
         let st = &self.states[color_slot];
-        let s_i = self.s_lead - self.gaps[color_slot];
-        let n = if s_i >= 0.0 {
-            let (_, tan, _, _) = self.chain_pos_and_tangent(s_i);
-            normal_of(tan)
-        } else {
-            let leg0 = &self.chain.front().unwrap().legs[0];
-            let d = dir_of(leg0.from, leg0.target);
-            Vec2 { x: -d.y, y: d.x }
-        };
-        Vec2 {
-            x: (st.pos.x + n.x * offset * WANDER.offset_range).clamp(0.0, 1.0),
-            y: (st.pos.y + n.y * offset * WANDER.offset_range).clamp(0.0, 1.0),
-        }
+        st.pos
     }
 
     #[allow(dead_code)] // 测试用
     pub fn chain_len(&self) -> usize {
         self.chain.len()
     }
+}
+
+/// 链上弧长 s 处的点与切线（自由函数：Player 与 cloud 模块共用）
+/// 返回 (pos, tangent, seg_idx, seg_u)
+pub fn chain_pos_and_tangent(
+    chain: &VecDeque<PlannedLeg>,
+    s: f64,
+) -> (Vec2, Vec2, usize, f64) {
+    let mut acc = 0.0;
+    for (idx, pl) in chain.iter().enumerate() {
+        if acc + pl.arc >= s {
+            let s_in = (s - acc).clamp(0.0, pl.arc);
+            let sub_arc = pl.arc / 5.0;
+            let sub_idx = ((s_in / sub_arc.max(1e-9)) as usize).min(4);
+            let u = ((s_in - sub_idx as f64 * sub_arc) / sub_arc.max(1e-9)).clamp(0.0, 1.0);
+            let leg = &pl.legs[sub_idx];
+            let p = quad_bezier(leg.from, leg.ctrl, leg.target, u);
+            let tan = bezier_tangent(leg.from, leg.ctrl, leg.target, u);
+            return (p, tan, idx, u);
+        }
+        acc += pl.arc;
+    }
+    // 超出链尾：用链尾
+    let last = chain.back().expect("chain non-empty");
+    let tail = last.legs[4];
+    (tail.target, Vec2 { x: 1.0, y: 0.0 }, chain.len() - 1, 1.0)
 }
 
 /// 段速度：随机档位；高速档（>1.2）40% 批准，不批准回落巡航档（重新生成新路径）

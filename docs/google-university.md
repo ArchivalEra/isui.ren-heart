@@ -105,3 +105,15 @@ A→B→C；子段间切线继承（C1 连续）+ 曲率阶梯（≈ 线性变�
 - Red Blob Games（redblobgames.com）：steering behaviors / 路径规划——编队与跟随的工程参考
 - MDC（material.io/develop）：Material Design Components 各平台实现
 - material.io 主站为 JS 渲染，curl 抓不到——用 GitHub 仓库 raw 文件替代（本次经验）
+
+## 博士课：云中心 + 调速器（2026-08-04）
+
+### Frenet 编队跟随（Werling ICRA2010 / 2012.14617）
+- follower 目标 = r(s*) + d·n(s*)，s* 为弧长投影；投影稳定条件 κ·d < 1
+- 实现：sim/cloud.rs——center_smooth（滑动窗口加权平均磨折角）+ follower_target_smooth（Frenet 偏移）
+- 蓝绿转弯同弧：三球走同一条中心线的偏移轨迹 → 无多段线
+
+### 调速器（TOTG-lite：Savitzky–Golay + 加速度钳制）
+- savgol 5 点 2 阶核：[-3,12,17,12,-3]/35（Wikipedia）；端部二次近似
+- 加速度钳制：|Δv| ≤ max_accel × 过渡半程（TOTG 约束思想，MoveIt2 TOTG 头文件）
+- 实现：sim/velo.rs——tune() 审核→平滑→钳制→重写段时长；Player.tune_tail(9) 每补链后执行

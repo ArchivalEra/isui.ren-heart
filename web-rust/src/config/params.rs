@@ -71,19 +71,6 @@ pub const SPRING: Spring = Spring { stiffness: 700.0, damping: 1.0 };
 /// spring 加速度上限（世界单位/s²）：防「高速冲到一个点定住」
 pub const MAX_ACCEL: f64 = 2.5;
 
-/// 漫游节奏（Play 阶段）
-pub struct Wander {
-    /// 法线偏移缓动
-    pub offset_lerp: f64,
-    /// 法线偏移幅度（路径法线方向）
-    pub offset_range: f64,
-}
-
-pub const WANDER: Wander = Wander {
-    offset_lerp: 0.04,
-    offset_range: 0.05,
-};
-
 // ---- 段级运动参数（独立于曲线模板，消除组合爆炸）----
 /// 速度档位（pixel 开机动画风格：整体慢而优雅，高速档少量保留）
 /// 巡航档距小（拖尾均匀），高速档大（跳跃感）
