@@ -237,21 +237,34 @@ impl BallsEngine {
                     }
                 }
                 RenderMode::Trail => {
-                    // 实心圆序列：纯色不透明，半径递减（无渐变花活）
+                    // 实心拖尾：相邻历史点连线段，线宽从头到尾递减（纯色不透明）
+                    // 圆点序列会产生「感叹号」断点感；连续线段才是 Google 式实心条
                     let hist = &self.history[color_slot];
-                    if hist.len() > 1 {
+                    if hist.len() >= 2 {
                         let n = hist.len();
-                        for (k, (hx, hy)) in hist.iter().enumerate() {
-                            let frac = k as f64 / (n as f64 - 1.0); // 0=最新
-                            if frac > 0.75 {
-                                continue; // 太老的忽略
-                            }
+                        let color = self.balls[color_slot].color;
+                        // 头到尾：最新 → 最旧（屏幕坐标）
+                        let mut pts: Vec<(f64, f64)> = Vec::with_capacity(n);
+                        for (hx, hy) in hist.iter() {
                             let (sx, sy, _) = screen_of(Vec2 { x: *hx, y: *hy }, w, h);
-                            let r = radius * (1.0 - frac * 0.65);
+                            pts.push((sx, sy));
+                        }
+                        self.ctx.set_line_cap("round");
+                        for k in 0..n - 1 {
+                            let frac = k as f64 / (n as f64 - 1.0); // 0=头部
+                            if frac > 0.72 {
+                                continue; // 尾部太细忽略
+                            }
+                            let lw = radius * (1.0 - frac * 0.72);
+                            if lw < 1.0 {
+                                continue;
+                            }
                             self.ctx.begin_path();
-                            self.ctx.arc(sx, sy, r, 0.0, std::f64::consts::PI * 2.0).unwrap();
-                            self.ctx.set_fill_style(&wasm_bindgen::JsValue::from(self.balls[color_slot].color));
-                            self.ctx.fill();
+                            self.ctx.move_to(pts[k].0, pts[k].1);
+                            self.ctx.line_to(pts[k + 1].0, pts[k + 1].1);
+                            self.ctx.set_stroke_style(&wasm_bindgen::JsValue::from(color));
+                            self.ctx.set_line_width(lw);
+                            self.ctx.stroke();
                         }
                     }
                 }

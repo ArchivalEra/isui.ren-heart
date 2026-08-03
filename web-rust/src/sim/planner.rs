@@ -6,6 +6,9 @@
 use crate::config::params::*;
 use crate::config::templates::TEMPLATES;
 use crate::sim::math::*;
+
+/// 段端点速度（归一化）：非零 → 段间不停顿、不突跳
+const SEG_END_SPEED: f64 = 0.4;
 use crate::sim::target::random_target_apart;
 use std::collections::VecDeque;
 
@@ -150,7 +153,7 @@ impl Player {
     pub fn world_pos(&self, color_slot: usize, offset: f64) -> Vec2 {
         let c = self.curs[color_slot];
         let pl = self.legs.get(c.idx).expect("cursor idx in chain");
-        let te = smoothstep(c.t);
+        let te = smooth_velocity(c.t, SEG_END_SPEED);
         let leg = &pl.leg;
         let p = quad_bezier(leg.from, leg.ctrl, leg.target, te);
         let tan = bezier_tangent(leg.from, leg.ctrl, leg.target, te);
