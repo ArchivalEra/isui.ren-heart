@@ -77,7 +77,12 @@ impl Player {
             let dy = targets[i].y - spots[i].y;
             let dist = (dx * dx + dy * dy).sqrt().max(1e-6);
             let dir = Vec2 { x: dx / dist, y: dy / dist };
-            let leg = make_planned_leg(spots[i], dir, 0, targets[i]);
+            let mut leg = make_planned_leg(spots[i], dir, 0, targets[i]);
+            // 可行性校验：首个目标出界则收缩目标（朝起点拉回屏内）
+            if !leg_in_bounds(&leg.leg, 16) {
+                let safe = clamp_target_in_bounds(spots[i], targets[i]);
+                leg = make_planned_leg(spots[i], dir, 0, safe);
+            }
             plans_buf[i] = Some(BallPlan::new(leg.leg, 0));
             planned[i] = leg.dur_ms;
         }
@@ -104,6 +109,7 @@ impl Player {
     }
 
     /// 单球规划下一段：from=自己的终点（段间连续），目标与其它球商量（去重）
+    /// 可行性校验：路径全程屏内才采纳（防止长段出界 → 球消失/闪现）
     fn plan_next(&mut self, i: usize) -> PlannedLeg {
         use rand::Rng;
         let mut rng = rand::thread_rng();
@@ -114,30 +120,36 @@ impl Player {
             self.plans[(i + 1) % 3].cur.leg.target,
             self.plans[(i + 2) % 3].cur.leg.target,
         ];
-        let target = random_target_apart(&others, MIN_BALL_DIST);
-
-        // 模板（每球独立）：随机换 / 保留（网格判断已废弃）
-        let roll = rng.gen::<f64>();
-        let template_idx = if roll < PROB.switch_template {
-            rng.gen_range(0..TEMPLATES.len())
-        } else {
-            cur.template_idx
-        };
 
         // 切线继承（段间 C1 连续）
         let tan = bezier_tangent(cur.leg.from, cur.leg.ctrl, cur.leg.target, 1.0);
         let tl = (tan.x * tan.x + tan.y * tan.y).sqrt().max(1e-9);
         let dir = Vec2 { x: tan.x / tl, y: tan.y / tl };
 
-        // 排列（渲染顺序）概率轮换
-        if rng.gen::<f64>() < PROB.switch_order {
-            let next = ORDERS[rng.gen_range(0..ORDERS.len())];
-            if next != self.order {
-                self.order = next;
+        // 重试生成合法段（最多 8 次；目标去重 + 路径屏内）
+        for _ in 0..8 {
+            let target = random_target_apart(&others, MIN_BALL_DIST);
+            let roll = rng.gen::<f64>();
+            let template_idx = if roll < PROB.switch_template {
+                rng.gen_range(0..TEMPLATES.len())
+            } else {
+                cur.template_idx
+            };
+            let pl = make_planned_leg(from, dir, template_idx, target);
+            if leg_in_bounds(&pl.leg, 16) {
+                // 排列（渲染顺序）概率轮换
+                if rng.gen::<f64>() < PROB.switch_order {
+                    let next = ORDERS[rng.gen_range(0..ORDERS.len())];
+                    if next != self.order {
+                        self.order = next;
+                    }
+                }
+                return pl;
             }
         }
-
-        make_planned_leg(from, dir, template_idx, target)
+        // 兜底：直飞（曲率 0 直线，几乎必在屏内）
+        let target = random_target_apart(&others, MIN_BALL_DIST);
+        make_planned_leg(from, dir, 0, target)
     }
 
     /// 球位：bezier 点 + 法线偏移（法线偏移概念单一化入口）
@@ -160,6 +172,34 @@ impl Player {
     pub fn target_of(&self, color_slot: usize) -> Vec2 {
         self.plans[color_slot].cur.leg.target
     }
+}
+
+/// 目标收缩：朝起点方向拉回，直到直线路径全程在屏内
+/// （对直线段：from→target 线段在屏内 ⟺ 收缩到屏内点即可）
+fn clamp_target_in_bounds(from: Vec2, target: Vec2) -> Vec2 {
+    let mut t = target;
+    for _ in 0..16 {
+        let leg = Leg { from, ctrl: from, target: t };
+        if leg_in_bounds(&leg, 8) {
+            return t;
+        }
+        // 朝 from 收缩 15%
+        t = Vec2 { x: from.x + (t.x - from.x) * 0.85, y: from.y + (t.y - from.y) * 0.85 };
+    }
+    from
+}
+
+/// 路径可行性：采样整段路径（含控制点弯曲），全部落在 [0,1]² 屏内
+/// 长段路径可能甩出屏幕（即使 ctrl 已 clamp）→ 出界 = 球消失 = 视觉闪现
+pub fn leg_in_bounds(leg: &Leg, samples: usize) -> bool {
+    for i in 0..=samples {
+        let t = i as f64 / samples as f64;
+        let p = quad_bezier(leg.from, leg.ctrl, leg.target, t);
+        if !(0.0..=1.0).contains(&p.x) || !(0.0..=1.0).contains(&p.y) {
+            return false;
+        }
+    }
+    true
 }
 
 /// 造段（Player::new 与 plan_next 共用）：切线连续 + 屏内控制点 + 时长派生
@@ -271,6 +311,32 @@ mod tests {
                 "球{s} 出屏: {:?}",
                 pos
             );
+        }
+    }
+
+    #[test]
+    fn all_planned_legs_stay_in_screen() {
+        // 属性测试：随机 spots 大量生成 Player，推进 5 分钟，所有球全程屏内
+        use rand::Rng;
+        let mut rng = rand::thread_rng();
+        for _ in 0..50 {
+            let spots = [
+                Vec2 { x: rng.gen(), y: rng.gen() },
+                Vec2 { x: rng.gen(), y: rng.gen() },
+                Vec2 { x: rng.gen(), y: rng.gen() },
+            ];
+            let mut p = Player::new(spots);
+            for _ in 0..60 * 30 {
+                p.tick(16.7);
+            }
+            for s in 0..3 {
+                let pos = p.world_pos(s, 0.0);
+                assert!(
+                    (0.0..=1.0).contains(&pos.x) && (0.0..=1.0).contains(&pos.y),
+                    "球{s} 出屏: {:?}",
+                    pos
+                );
+            }
         }
     }
 

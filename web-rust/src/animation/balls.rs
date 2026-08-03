@@ -166,7 +166,7 @@ fn setup_debug_panel() {
     let dragging: Rc<RefCell<bool>> = Rc::new(RefCell::new(false));
     let offset: Rc<RefCell<(f64, f64)>> = Rc::new(RefCell::new((0.0, 0.0)));
 
-    // toggle 按钮
+    // toggle 按钮：激活时给 logo 加可见判定块（否则 pointer-events:none 无法选中）
     let btn_cb = Closure::<dyn FnMut()>::new({
         let panel = panel.clone();
         let pos_label = pos_label.clone();
@@ -176,12 +176,19 @@ fn setup_debug_panel() {
             style_of(&panel)
                 .set_property("display", if show { "block" } else { "none" })
                 .unwrap();
+            let ls = style_of(&logo);
             if show {
+                // 判定块：可交互 + 虚线框 + 移动光标
+                ls.set_property("pointer-events", "auto").unwrap();
+                ls.set_property("outline", "2px dashed rgba(17,17,17,0.35)").unwrap();
+                ls.set_property("outline-offset", "8px").unwrap();
+                ls.set_property("cursor", "move").unwrap();
                 let (l, t) = read_pos(&logo);
-                set_text_of(
-                    pos_label.clone(),
-                    &format!("left: {l:.2}%  top: {t:.2}%"),
-                );
+                set_text_of(pos_label.clone(), &format!("left: {l:.2}%  top: {t:.2}%"));
+            } else {
+                ls.set_property("pointer-events", "none").unwrap();
+                ls.set_property("outline", "none").unwrap();
+                ls.set_property("cursor", "default").unwrap();
             }
         }
     });
@@ -197,7 +204,6 @@ fn setup_debug_panel() {
             *dragging.borrow_mut() = true;
             let rect = logo.get_bounding_client_rect();
             let (l, t) = read_pos(&logo);
-            // 鼠标相对 logo 原点的偏移（百分比的近似：按视口换算）
             let vw = web_sys::window()
                 .unwrap()
                 .inner_width()
@@ -214,7 +220,6 @@ fn setup_debug_panel() {
             let off_y = e.client_y() as f64 - rect.top() - t / 100.0 * vh;
             *offset.borrow_mut() = (off_x, off_y);
             let _ = logo.set_attribute("data-dragging", "1");
-            style_of(&logo).set_property("pointer-events", "auto").unwrap();
         }
     });
     logo.add_event_listener_with_callback("pointerdown", down_cb.as_ref().unchecked_ref())
