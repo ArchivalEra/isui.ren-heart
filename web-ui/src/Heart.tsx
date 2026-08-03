@@ -14,20 +14,51 @@ const EMOJI = [
   "ﾟ+*:;;:*+ﾟ",
 ];
 
-function useRotatingEmoji() {
-  const [idx, setIdx] = useState(0);
+/** emoji 打字切换（typed.js，与上方打字机同款）：逐字符打出 → 保持 → 删除 → 下一个；
+ *  光标隐藏；卡片墙展开时与文字同步淡出/淡入（stop/start 保留进度） */
+function EmojiTyper({ scatter }: { scatter: boolean }) {
+  const elRef = useRef<HTMLSpanElement>(null);
+  const typedRef = useRef<Typed | null>(null);
+  const timer = useRef(0);
+
   useEffect(() => {
-    const id = setInterval(() => setIdx((i) => (i + 1) % EMOJI.length), 2000);
-    return () => clearInterval(id);
+    if (!elRef.current) return;
+    typedRef.current = new Typed(elRef.current, {
+      strings: EMOJI,
+      typeSpeed: 60,
+      backSpeed: 40,
+      backDelay: 1500,
+      loop: true,
+      cursorChar: "",
+      smartBackspace: false,
+    });
+    return () => {
+      window.clearTimeout(timer.current);
+      typedRef.current?.destroy();
+    };
   }, []);
-  return EMOJI[idx];
+
+  useEffect(() => {
+    const el = elRef.current;
+    if (!el) return;
+    window.clearTimeout(timer.current);
+    if (scatter) {
+      typedRef.current?.stop();
+      el.classList.add("tw-faded");
+    } else {
+      el.classList.remove("tw-faded");
+      timer.current = window.setTimeout(() => typedRef.current?.start(), 550);
+    }
+  }, [scatter]);
+
+  return <span class="heart-emoji" ref={elRef} aria-hidden="true"></span>;
 }
 
-import { useEffect, useState } from "preact/hooks";
+import { useEffect, useRef, useState } from "preact/hooks";
+import Typed from "typed.js";
 import { toggle_trail_style } from "./wasm/isui_ren_heart.js";
 
 export default function Heart() {
-  const emoji = useRotatingEmoji();
   const [wallOpen, setWallOpen] = useState(false);
   return (
     <div class="heart-page fade-stagger">
