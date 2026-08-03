@@ -108,8 +108,6 @@ body {
 .heart-main {
   position: relative;
   z-index: 4;
-  /* 卡片墙展开时整体上移（不挡 logo：受控 56px），收回时滚回原位——M3 decelerate */
-  transition: transform 0.3s cubic-bezier(0.05, 0.7, 0.1, 1);
   pointer-events: none; /* 不拦截 logo 拖拽 */
   min-height: 100vh;
   display: flex;
@@ -118,10 +116,6 @@ body {
   justify-content: flex-end;
   padding-bottom: 8vh;
   text-align: center;
-}
-
-.heart-main.lifted {
-  transform: translateY(-56px);
 }
 
 .heart-title {
@@ -244,10 +238,8 @@ body {
   overflow: hidden;
   pointer-events: none;
   transform: translateY(-8px);
-  /* 收回（退出）：M3 emphasized-accelerate 200ms */
-  transition: max-height 0.2s cubic-bezier(0.3, 0, 0.8, 0.15),
-    opacity 0.15s cubic-bezier(0.3, 0, 0.8, 0.15),
-    transform 0.2s cubic-bezier(0.3, 0, 0.8, 0.15);
+  transition: max-height 0.45s cubic-bezier(0.2, 0, 0, 1),
+    opacity 0.35s ease, transform 0.45s cubic-bezier(0.2, 0, 0, 1);
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
@@ -267,10 +259,6 @@ body {
   left: 50%;
   z-index: 50;
   box-shadow: 0 12px 32px rgba(17, 17, 17, 0.18);
-  /* 展开（进入）：M3 emphasized-decelerate 300ms */
-  transition: max-height 0.3s cubic-bezier(0.05, 0.7, 0.1, 1),
-    opacity 0.25s cubic-bezier(0.05, 0.7, 0.1, 1),
-    transform 0.3s cubic-bezier(0.05, 0.7, 0.1, 1);
 }
 
 .wall-card {
@@ -473,9 +461,12 @@ body {
   font-size: 12px;
 }
 
-/* ---------- 打字机文字粉碎（卡片墙展开时）----------
-   动画由 anime.js 驱动（现成轮子，split-text 粉碎），CSS 只留基础样式 */
+/* ---------- 打字机文字淡出（卡片墙展开时，站主钦点不做粉碎） ---------- */
 .scatter-char {
   display: inline-block;
-  will-change: transform, opacity;
+  transition: opacity 0.3s ease;
+}
+
+.scatter-char.fading {
+  opacity: 0;
 }
