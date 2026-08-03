@@ -207,6 +207,10 @@ impl Player {
                 let mut total_w = 0.0;
                 let mut cands: Vec<(usize, f64)> = Vec::new();
                 for (i, tpl) in TEMPLATES.iter().enumerate() {
+                    // 排除大弯模板（|curv| > 1.1）：小圈导致 spring 抖动与出屏收缩（闪现源）
+                    if tpl.curvature.abs() > 1.1 {
+                        continue;
+                    }
                     if (tpl.curvature - old_curv).abs() <= TEMPLATE_CURV_STEP {
                         let w = 0.4 + tpl.curvature.abs();
                         total_w += w;
@@ -250,8 +254,8 @@ impl Player {
                         .clamp(0.1, 0.9),
                 }
             } else {
-                // 段长缩短：弯道更密集（0.22-0.42）
-                let dist = 0.22 + rng.gen::<f64>() * 0.2;
+                // 段长 0.32-0.6：一条段 = 一条完整弧线（单弧线感，无短段拼接折）
+                let dist = 0.32 + rng.gen::<f64>() * 0.28;
                 Vec2 {
                     x: from.x + dir.x * dist,
                     y: from.y + dir.y * dist,
