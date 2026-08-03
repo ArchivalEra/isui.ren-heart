@@ -1,0 +1,31 @@
+[package]
+name = "isui-ren-heart"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+leptos = { version = "0.7", features = ["csr"] }
+leptos_router = { version = "0.7" }
+wasm-bindgen = "0.2"
+web-sys = { version = "0.3", features = [
+    "CanvasRenderingContext2d",
+    "CanvasGradient",
+    "Document",
+    "Element",
+    "HtmlCanvasElement",
+    "Window",
+    "Performance",
+    "CssStyleDeclaration",
+] }
+js-sys = "0.3"
+rand = "0.8"
+getrandom = { version = "0.2", features = ["js"] }
+console_error_panic_hook = "0.1"
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
