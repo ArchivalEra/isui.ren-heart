@@ -1,61 +1,36 @@
-// 模板定义：曲线 + 法线偏移（配置化，增删改即变种类）
+// 模板定义：运动模式（漫游路径形态），配置化——增删改即变种类
+// 循环曲线已废弃；运动 = 目标点漫游（贝塞尔弧线），curvature 决定弯度
+
 pub struct Template {
     #[allow(dead_code)] // 配置契约：模板标识，管理工具/调试用
     pub id: &'static str,
     #[allow(dead_code)] // 配置契约：中文名，管理工具展示用
     pub name: &'static str,
-    pub curve: CurveId,
-    /// 每球法线偏移目标倍率（相对 offset_range）
+    /// 路径弯曲度 -1..1：0=直线，正=左弯，负=右弯
+    pub curvature: f64,
+    /// 速度倍率（相对基准速度）
+    pub speed: f64,
+    /// 每球法线偏移目标倍率
     pub offsets: [f64; 3],
 }
 
-#[derive(Clone, Copy, PartialEq)]
-pub enum CurveId {
-    Run,
-    Circle,
-    Wave,
-    Hop,
-    Spiral,
-    Eight,
-    Chase,
-    Sway,
-    Scatter,
-    Bounce,
-    Orbit,
-    Slide,
-    SwingPendulum,
-    HideSeek,
-    HandCircle,
-    Idle,
-}
-
-pub const TEMPLATES: [Template; 16] = [
-    Template { id: "run", name: "直线跑", curve: CurveId::Run, offsets: [0.0, 0.6, -0.6] },
-    Template { id: "circle", name: "绕圈", curve: CurveId::Circle, offsets: [0.0, 0.5, -0.5] },
-    Template { id: "wave", name: "波浪滑行", curve: CurveId::Wave, offsets: [0.0, 0.8, -0.8] },
-    Template { id: "hop", name: "跳格子", curve: CurveId::Hop, offsets: [0.0, 0.4, 0.4] },
-    Template { id: "spiral", name: "螺旋", curve: CurveId::Spiral, offsets: [0.0, -0.5, 0.5] },
-    Template { id: "eight", name: "8字回旋", curve: CurveId::Eight, offsets: [0.0, 0.7, -0.7] },
-    Template { id: "chase", name: "追逐", curve: CurveId::Chase, offsets: [0.3, 0.0, -0.3] },
-    Template { id: "sway", name: "并肩摇", curve: CurveId::Sway, offsets: [0.0, 0.5, 0.5] },
-    Template { id: "scatter", name: "散开再聚", curve: CurveId::Scatter, offsets: [0.0, -0.6, 0.6] },
-    Template { id: "bounce", name: "地面弹跳", curve: CurveId::Bounce, offsets: [0.0, 0.5, -0.5] },
-    Template { id: "orbit", name: "绕点转", curve: CurveId::Orbit, offsets: [0.0, 0.6, -0.6] },
-    Template { id: "slide", name: "滑梯下", curve: CurveId::Slide, offsets: [0.0, 0.3, -0.3] },
-    Template { id: "swingPendulum", name: "荡秋千", curve: CurveId::SwingPendulum, offsets: [0.0, 0.6, -0.6] },
-    Template { id: "hideSeek", name: "捉迷藏", curve: CurveId::HideSeek, offsets: [0.4, -0.2, 0.2] },
-    Template { id: "handCircle", name: "手拉手转圈", curve: CurveId::HandCircle, offsets: [0.0, 0.3, -0.3] },
-    Template { id: "idle", name: "发呆", curve: CurveId::Idle, offsets: [0.0, 0.5, 0.5] },
+pub const TEMPLATES: [Template; 12] = [
+    Template { id: "run", name: "直线跑", curvature: 0.0, speed: 1.1, offsets: [0.0, 0.6, -0.6] },
+    Template { id: "sweep", name: "大转弯", curvature: 0.65, speed: 1.0, offsets: [0.0, 0.5, -0.5] },
+    Template { id: "wiggle", name: "小碎步", curvature: 0.22, speed: 1.2, offsets: [0.0, 0.4, 0.4] },
+    Template { id: "glide", name: "滑翔", curvature: 0.35, speed: 0.85, offsets: [0.0, 0.8, -0.8] },
+    Template { id: "sprint", name: "冲刺", curvature: 0.08, speed: 1.6, offsets: [0.0, 0.3, -0.3] },
+    Template { id: "sway", name: "摇摆", curvature: 0.5, speed: 0.9, offsets: [0.0, 0.5, 0.5] },
+    Template { id: "loop", name: "绕圈", curvature: 0.95, speed: 0.95, offsets: [0.0, 0.6, -0.6] },
+    Template { id: "zigzag", name: "锯齿", curvature: -0.55, speed: 1.15, offsets: [0.3, 0.0, -0.3] },
+    Template { id: "crawl", name: "慢爬", curvature: 0.18, speed: 0.55, offsets: [0.0, 0.4, -0.4] },
+    Template { id: "dash", name: "折返", curvature: -0.85, speed: 1.4, offsets: [0.0, 0.5, -0.5] },
+    Template { id: "drift", name: "漂移", curvature: 0.75, speed: 1.3, offsets: [0.4, -0.2, 0.2] },
+    Template { id: "stroll", name: "散步", curvature: 0.12, speed: 0.7, offsets: [0.0, 0.5, 0.5] },
 ];
 
-pub fn random_template(exclude: CurveId) -> (usize, &'static Template) {
-    use rand::Rng;
-    let mut rng = rand::thread_rng();
-    loop {
-        let i = rng.gen_range(0..TEMPLATES.len());
-        let t = &TEMPLATES[i];
-        if t.curve != exclude {
-            return (i, t);
-        }
-    }
+/// 网格偏好模板：精细网格（8x8）中每个格决定一种运动模式
+/// 伪随机散列分布（可改为手写映射表）
+pub fn preferred_template(cell: usize) -> usize {
+    (cell.wrapping_mul(2_654_435_761) >> 20) % TEMPLATES.len()
 }
