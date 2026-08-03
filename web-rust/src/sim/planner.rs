@@ -201,17 +201,32 @@ impl Player {
             };
             let roll = rng.gen::<f64>();
             let old_curv = TEMPLATES[tail.template_idx].curvature;
-            // 曲线选择：曲率连续性（形状只管几何）
+            // 曲线选择：曲率连续性 + 弯道加权（精髓：不容易出直线）
+            // 权重 w = 0.4 + |curvature|——直线模板权重最低，弯道模板优先
             let template_idx = if roll < PROB.switch_template {
-                let mut idx = tail.template_idx;
-                for _ in 0..6 {
-                    let cand = rng.gen_range(0..TEMPLATES.len());
-                    if (TEMPLATES[cand].curvature - old_curv).abs() <= TEMPLATE_CURV_STEP {
-                        idx = cand;
-                        break;
+                let mut total_w = 0.0;
+                let mut cands: Vec<(usize, f64)> = Vec::new();
+                for (i, tpl) in TEMPLATES.iter().enumerate() {
+                    if (tpl.curvature - old_curv).abs() <= TEMPLATE_CURV_STEP {
+                        let w = 0.4 + tpl.curvature.abs();
+                        total_w += w;
+                        cands.push((i, w));
                     }
                 }
-                idx
+                if cands.is_empty() {
+                    tail.template_idx
+                } else {
+                    let mut pick = rng.gen::<f64>() * total_w;
+                    let mut idx = tail.template_idx;
+                    for (i, w) in cands {
+                        pick -= w;
+                        if pick <= 0.0 {
+                            idx = i;
+                            break;
+                        }
+                    }
+                    idx
+                }
             } else {
                 tail.template_idx
             };
@@ -235,7 +250,8 @@ impl Player {
                         .clamp(0.1, 0.9),
                 }
             } else {
-                let dist = 0.3 + rng.gen::<f64>() * 0.3;
+                // 段长缩短：弯道更密集（0.22-0.42）
+                let dist = 0.22 + rng.gen::<f64>() * 0.2;
                 Vec2 {
                     x: from.x + dir.x * dist,
                     y: from.y + dir.y * dist,
