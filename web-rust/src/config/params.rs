@@ -63,32 +63,6 @@ pub fn depth_scale(y: f64) -> f64 {
     0.55 + 0.45 * y.clamp(0.0, 1.0)
 }
 
-/// 质量分级（240p → 8K 无缝适配，按视口面积定级）
-#[derive(Clone, Copy, PartialEq, PartialOrd)]
-pub enum Quality {
-    /// 240p 级：最小渲染（无模糊尾迹，浅阴影）
-    Low,
-    /// 480p 级：基础阴影
-    Medium,
-    /// 720p/1080p：完整阴影 + 尾迹
-    High,
-    /// 4K/8K：全效果（深阴影 + 尾迹 + 高渐变精度）
-    Ultra,
-}
-
-pub fn quality_of(w: f64, h: f64) -> Quality {
-    let area = w * h;
-    if area < 300_000.0 {
-        Quality::Low // ≈ 240p-360p
-    } else if area < 1_000_000.0 {
-        Quality::Medium // ≈ 480p-720p
-    } else if area < 4_000_000.0 {
-        Quality::High // ≈ 1080p-2K
-    } else {
-        Quality::Ultra // 4K/8K
-    }
-}
-
 /// 帧率自适应：rAF 预算（ms/帧）。实际帧率由 vsync 决定，超预算自动跳帧
 pub const FRAME_BUDGET_MS: f64 = 16.0; // 60fps 预算；慢设备自动降频
 pub const MAX_SKIP: u32 = 4; // 最多每 5 帧渲染 1 次（≈12fps 保底，电视 23fps 之上）

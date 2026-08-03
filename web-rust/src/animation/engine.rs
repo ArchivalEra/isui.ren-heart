@@ -123,7 +123,7 @@ impl BallsEngine {
         Vec2 { x: p.x + n.x * off, y: p.y + n.y * off }
     }
 
-    // ---------- 渲染（自然俯视透视 + 质量分级 + 动态模糊） ----------
+    // ---------- 渲染（自然俯视透视 + 动态模糊） ----------
     // CanvasGradient 无 *_str 版 API，旧 set_*_style 已弃用但为唯一途径
     #[allow(deprecated)]
     fn render(&mut self) {
@@ -132,13 +132,7 @@ impl BallsEngine {
         if w == 0.0 || h == 0.0 {
             return;
         }
-        // 质量分级（240p→8K）：Low 无尾迹/浅阴影，Ultra 全效果
-        let (shadow_alpha, blur_mul, use_trail) = match quality_of(w, h) {
-            Quality::Low => (0.03, 0.4, false),
-            Quality::Medium => (0.05, 0.7, false),
-            Quality::High => (0.07, 1.0, true),
-            Quality::Ultra => (0.09, 1.2, true),
-        };
+        // 统一全效果：算法足够轻（3 球 ≈10 绘制调用），任何分辨率/设备直接跑
         self.ctx.clear_rect(0.0, 0.0, w, h);
 
         // 透视投影
@@ -171,7 +165,7 @@ impl BallsEngine {
             let radius = BALL_RADIUS * d * (w.min(h) / 700.0).clamp(0.6, 1.0);
 
             // 动态模糊：沿速度方向的渐变尾迹（High/Ultra 级）
-            if use_trail {
+            {
                 let v = self.ball_velocity(slot);
                 let vx = v.x * w;
                 let vy = v.y * h;
@@ -196,8 +190,8 @@ impl BallsEngine {
             self.ctx.save();
             self.ctx.begin_path();
             self.ctx.ellipse(px, py + radius * 0.85, radius * 1.15, radius * 0.32, 0.0, 0.0, std::f64::consts::PI * 2.0).unwrap();
-            self.ctx.set_fill_style_str(&format!("rgba(17,17,17,{})", shadow_alpha * d + 0.02));
-            self.ctx.set_filter(&format!("blur({}px)", (2.0 + (1.0 - d) * 3.0) * blur_mul));
+            self.ctx.set_fill_style_str(&format!("rgba(17,17,17,{})", 0.07 * d + 0.02));
+            self.ctx.set_filter(&format!("blur({}px)", 2.0 + (1.0 - d) * 3.0));
             self.ctx.fill();
             self.ctx.restore();
 
@@ -218,7 +212,7 @@ impl BallsEngine {
             self.ctx.arc(px, py, radius, 0.0, std::f64::consts::PI * 2.0).unwrap();
             self.ctx.set_fill_style(&grad.into());
             self.ctx.set_shadow_color(AMBIENT.shadow_color);
-            self.ctx.set_shadow_blur(AMBIENT.shadow_blur * d * blur_mul);
+            self.ctx.set_shadow_blur(AMBIENT.shadow_blur * d);
             self.ctx.set_shadow_offset_y(8.0 * d);
             self.ctx.fill();
             self.ctx.restore();
