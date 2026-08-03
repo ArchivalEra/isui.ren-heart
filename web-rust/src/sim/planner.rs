@@ -24,6 +24,8 @@ pub struct PlannedLeg {
     pub speed: f64,
     /// 段级摆动幅度（独立于曲线，来自 WAVE_BANDS）
     pub wave: f64,
+    /// 有效曲率（小圈滤波后）：曲率感知速度用
+    pub curv_eff: f64,
     pub dur_ms: f64,
     /// 折线弧长（from→ctrl→target）
     pub arc: f64,
@@ -153,13 +155,16 @@ impl Player {
     /// smoothstep 保证段内加速/减速平滑；段间速率连续（段尾速 = 下段头速）
     /// 巡航 = 模板全速（不再减半，去蠕动感）
     fn profile_speed(&self, seg_idx: usize, u: f64) -> f64 {
-        let v_i = self.chain[seg_idx].speed;
+        let seg = &self.chain[seg_idx];
+        let v_i = seg.speed;
         let v_next = match self.chain.get(seg_idx + 1) {
             Some(next) => next.speed,
             None => v_i,
         };
         let ramp = smoothstep(u.clamp(0.0, 1.0));
-        WORLD_SPEED * (v_i + (v_next - v_i) * ramp)
+        // 曲率感知：弯越急速越慢（温和变速的核心——弯道减速，绿球跟得上不哆嗦）
+        let curv_factor = 1.0 / (1.0 + CURV_SPEED_FACTOR * seg.curv_eff.abs());
+        WORLD_SPEED * (v_i + (v_next - v_i) * ramp) * curv_factor
     }
 
     /// 链增长：总弧长保持 ≥ s_lead + 余量（无限轨迹）
@@ -169,9 +174,11 @@ impl Player {
 
     /// 批量补链到「队首前方 ahead 弧长」。入场预生成风暴用：一次性补几分钟的链，
     /// 运行期 ensure_chain 静默（零规划抖动，帧率确定）
+    /// 区域规划：每隔 LOGO_EVERY_ARC 弧长插一个「logo 游走段」（三球回 logo 附近）
     pub fn ensure_chain_to(&mut self, ahead: f64) {
         use rand::Rng;
         let mut rng = rand::thread_rng();
+        let mut next_logo_arc = self.chain.iter().map(|x| x.arc).sum::<f64>() + LOGO_EVERY_ARC;
         let need = self.s_lead + ahead;
         while self.chain.iter().map(|x| x.arc).sum::<f64>() < need {
             let tail = self.chain.back().expect("chain non-empty");
@@ -209,18 +216,31 @@ impl Player {
                 }
             }
             // 目标：沿链继续（保持前进方向为主 + 模板曲率）
-            let dist = 0.3 + rng.gen::<f64>() * 0.3;
-            let mut target = Vec2 {
-                x: from.x + dir.x * dist,
-                y: from.y + dir.y * dist,
+            // 区域规划：到达 logo 弧长点 → 该段目标指向 logo 附近（三球回 logo 游走）
+            let chain_arc_now = self.chain.iter().map(|x| x.arc).sum::<f64>();
+            let mut target = if chain_arc_now >= next_logo_arc {
+                next_logo_arc += LOGO_EVERY_ARC;
+                Vec2 {
+                    x: (LOGO_CENTER.0 + (rng.gen::<f64>() * 2.0 - 1.0) * LOGO_RADIUS)
+                        .clamp(0.1, 0.9),
+                    y: (LOGO_CENTER.1 + (rng.gen::<f64>() * 2.0 - 1.0) * LOGO_RADIUS)
+                        .clamp(0.1, 0.9),
+                }
+            } else {
+                let dist = 0.3 + rng.gen::<f64>() * 0.3;
+                Vec2 {
+                    x: from.x + dir.x * dist,
+                    y: from.y + dir.y * dist,
+                }
             };
             // 目标出界则转向（保持链在屏内）
             if !(0.1..=0.9).contains(&target.x) || !(0.1..=0.9).contains(&target.y) {
                 // 反向偏转
                 let angle = rng.gen::<f64>() * std::f64::consts::PI;
+                let d2 = 0.3;
                 target = Vec2 {
-                    x: (from.x + (dir.x * angle.cos() - dir.y * angle.sin()) * dist * 0.7).clamp(0.05, 0.95),
-                    y: (from.y + (dir.x * angle.sin() + dir.y * angle.cos()) * dist * 0.7).clamp(0.05, 0.95),
+                    x: (from.x + (dir.x * angle.cos() - dir.y * angle.sin()) * d2 * 0.7).clamp(0.1, 0.9),
+                    y: (from.y + (dir.x * angle.sin() + dir.y * angle.cos()) * d2 * 0.7).clamp(0.1, 0.9),
                 };
             }
             let mut pl = make_planned_leg(from, dir, template_idx, target, speed, wave);
@@ -349,10 +369,12 @@ pub fn make_planned_leg(
     let dy = target.y - from.y;
     let dist = (dx * dx + dy * dy).sqrt().max(1e-6);
     let template = &TEMPLATES[template_idx];
+    // 小圈圈滤波：段长低于 MIN_LEG_LEN 时曲率按比例衰减（短段配小弯，防哆嗦）
+    let curv_eff = template.curvature * (dist / MIN_LEG_LEN).min(1.0);
     let norm = Vec2 { x: -dir.y, y: dir.x };
     let ctrl = Vec2 {
-        x: from.x + dir.x * (dist * 0.5) + norm.x * dist * template.curvature * 0.35,
-        y: from.y + dir.y * (dist * 0.5) + norm.y * dist * template.curvature * 0.35,
+        x: from.x + dir.x * (dist * 0.5) + norm.x * dist * curv_eff * 0.35,
+        y: from.y + dir.y * (dist * 0.5) + norm.y * dist * curv_eff * 0.35,
     };
     let leg = Leg { from, ctrl, target };
     let arc = ((ctrl.x - from.x).powi(2) + (ctrl.y - from.y).powi(2)).sqrt()
@@ -363,6 +385,7 @@ pub fn make_planned_leg(
         template_idx,
         speed,
         wave,
+        curv_eff,
         dur_ms,
         arc,
     }

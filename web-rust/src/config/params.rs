@@ -96,6 +96,14 @@ pub const SPEED_BANDS: [(f64, f64); 3] = [
 pub const TRAIL_FRAMES_HIGH: usize = 12;
 /// 入场预生成：粉球开跑前一次性预生成 N 秒的链（压力前置，运行期零规划）
 pub const PREPLAN_SECONDS: f64 = 300.0;
+/// 小圈圈滤波：段长低于此值时曲率按比例衰减（短段配小弯，防绿球哆嗦）
+pub const MIN_LEG_LEN: f64 = 0.35;
+/// 曲率感知速度：弯越急速越慢（v × 1/(1 + K×|curv|)）——温和变速，弯道不甩尾
+pub const CURV_SPEED_FACTOR: f64 = 0.5;
+/// logo 区域：每隔 LOGO_EVERY_ARC 弧长规划一个「logo 游走段」（区域规划回归）
+pub const LOGO_CENTER: (f64, f64) = (0.52, 0.42);
+pub const LOGO_RADIUS: f64 = 0.13;
+pub const LOGO_EVERY_ARC: f64 = 9.6; // ≈ 60s 巡航弧长
 /// 判定「高速跳跃」的速度阈值（世界单位/秒）
 pub const JUMP_SPEED: f64 = 0.3;
 /// 摆动档位（每段随机选；收窄 + 段间连续性约束 → 无折角）

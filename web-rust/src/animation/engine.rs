@@ -87,9 +87,12 @@ impl BallsEngine {
             self.prev_pos[s] = pos;
             // 位置历史（实心拖尾；上限 8）
             if self.state.is_playing() {
-                // 高速跳跃段：拖尾历史点上限 12（拉长飘逸）；常规 8
+                // 速度换算成「每秒」（ball_velocity 是帧位移，阈值单位必须一致——
+                // 曾用每秒阈值比帧位移 → 巡航永远被判静止 → 拖尾消失）
                 let v = self.ball_velocity(s);
-                let speed = (v.x * v.x + v.y * v.y).sqrt();
+                let dt_s = (dt / 1000.0).max(1e-9);
+                let speed = (v.x * v.x + v.y * v.y).sqrt() / dt_s;
+                // 高速跳跃段：拖尾历史点上限 12（拉长飘逸）；常规 8
                 let cap = if speed > JUMP_SPEED {
                     TRAIL_FRAMES_HIGH
                 } else {
@@ -97,7 +100,7 @@ impl BallsEngine {
                 };
                 let h = &mut self.history[s];
                 // 静止/思考期（速度≈0）不记录历史：拖尾消失，省渲染
-                if speed < 0.005 {
+                if speed < 0.02 {
                     h.clear();
                     continue;
                 }
