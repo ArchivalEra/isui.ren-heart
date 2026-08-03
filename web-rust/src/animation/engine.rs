@@ -62,6 +62,16 @@ impl BallsEngine {
         }
     }
 
+    pub fn set_anchor(&mut self, i: usize, v: Vec2) {
+        if i < 3 {
+            self.anchors[i] = v;
+        }
+    }
+
+    pub fn anchor(&self, i: usize) -> Vec2 {
+        self.anchors[i.min(2)]
+    }
+
     pub fn frame(&mut self, dt: f64) {
         self.step(dt);
         self.render();
@@ -246,7 +256,7 @@ impl BallsEngine {
                         self.ctx.set_line_cap("round");
                         // 等宽实心拖尾（与小球同宽，无感叹号渐细）
                         self.ctx.set_stroke_style(&wasm_bindgen::JsValue::from(color));
-                        self.ctx.set_line_width(radius * 0.92);
+                        self.ctx.set_line_width(radius);
                         self.ctx.begin_path();
                         self.ctx.move_to(pts[0].0, pts[0].1);
                         for k in 1..n {

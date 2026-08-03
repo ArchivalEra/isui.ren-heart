@@ -123,6 +123,15 @@ fn setup_debug_panel(engine: Rc<RefCell<BallsEngine>>) {
     let pos_label = document.create_element("div").unwrap();
     append_node(&panel, pos_label.clone());
 
+    // 选中球（键盘移动锚点目标）
+    let select_btn: web_sys::HtmlButtonElement =
+        document.create_element("button").unwrap().dyn_into().unwrap();
+    let selected: Rc<RefCell<usize>> = Rc::new(RefCell::new(0));
+    let sel_label = document.create_element("div").unwrap();
+    set_text_of(sel_label.clone(), "选中：球0（粉）· 方向键移动锚点");
+    append_node(&panel, sel_label.clone());
+    append_node(&panel, select_btn.clone());
+
     let mode_btn: web_sys::HtmlButtonElement =
         document.create_element("button").unwrap().dyn_into().unwrap();
     set_text_of(mode_btn.clone(), "模式：粒子");
@@ -258,6 +267,56 @@ fn setup_debug_panel(engine: Rc<RefCell<BallsEngine>>) {
         .add_event_listener_with_callback("pointerup", up_cb.as_ref().unchecked_ref())
         .unwrap();
     up_cb.forget();
+
+    // 选中球切换（0/1/2 循环）
+    let select_cb = Closure::<dyn FnMut()>::new({
+        let selected = Rc::clone(&selected);
+        let sel_label = sel_label.clone();
+        move || {
+            let next = (*selected.borrow() + 1) % 3;
+            *selected.borrow_mut() = next;
+            let names = ["球0（粉）", "球1（水蓝）", "球2（薄荷绿）"];
+            set_text_of(sel_label.clone(), &format!("选中：{}· 方向键移动锚点", names[next]));
+        }
+    });
+    select_btn
+        .add_event_listener_with_callback("click", select_cb.as_ref().unchecked_ref())
+        .unwrap();
+    select_cb.forget();
+
+    // 键盘方向键：微调选中球锚点（每按 0.5%）
+    let key_cb = Closure::<dyn FnMut(web_sys::KeyboardEvent)>::new({
+        let engine = Rc::clone(&engine);
+        let selected = Rc::clone(&selected);
+        let sel_label = sel_label.clone();
+        move |e: web_sys::KeyboardEvent| {
+            if !engine.borrow().debug {
+                return;
+            }
+            let step = 0.005;
+            let i = *selected.borrow();
+            let mut a = engine.borrow().anchor(i);
+            match e.key().as_str() {
+                "ArrowUp" => a.y = (a.y - step).clamp(0.0, 1.0),
+                "ArrowDown" => a.y = (a.y + step).clamp(0.0, 1.0),
+                "ArrowLeft" => a.x = (a.x - step).clamp(0.0, 1.0),
+                "ArrowRight" => a.x = (a.x + step).clamp(0.0, 1.0),
+                _ => return,
+            }
+            engine.borrow_mut().set_anchor(i, a);
+            e.prevent_default();
+            let a = engine.borrow().anchor(i);
+            set_text_of(
+                sel_label.clone(),
+                &format!("选中：球{i}· ({:.3}, {:.3})", a.x, a.y),
+            );
+        }
+    });
+    let window2 = web_sys::window().unwrap();
+    window2
+        .add_event_listener_with_callback("keydown", key_cb.as_ref().unchecked_ref())
+        .unwrap();
+    key_cb.forget();
 
     // 粒子化 / 拖尾化开关
     let mode_cb = Closure::<dyn FnMut()>::new({

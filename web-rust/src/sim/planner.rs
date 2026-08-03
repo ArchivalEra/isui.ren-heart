@@ -30,11 +30,14 @@ struct Cursor {
     t: f64,
 }
 
-/// 每球物理状态（spring 追踪）
+/// 每球物理状态（PD spring 追踪：位置+速度双目标）
+/// 「拟合助手」：目标速率平滑（段间速度连续）→ 到达点前不再「钝一下」
 #[derive(Clone, Copy)]
 struct BallState {
     pos: Vec2,
     vel: Vec2,
+    /// 沿链速率（平滑中，向段理想速率收敛）
+    rate: f64,
 }
 
 /// 执行器：共享链 + 三球独立游标
@@ -74,9 +77,9 @@ impl Player {
 
         // 物理状态：初始 = 到达点（入场连续）
         let states = [
-            BallState { pos: spots[0], vel: Vec2 { x: 0.0, y: 0.0 } },
-            BallState { pos: spots[1], vel: Vec2 { x: 0.0, y: 0.0 } },
-            BallState { pos: spots[2], vel: Vec2 { x: 0.0, y: 0.0 } },
+            BallState { pos: spots[0], vel: Vec2 { x: 0.0, y: 0.0 }, rate: WORLD_SPEED },
+            BallState { pos: spots[1], vel: Vec2 { x: 0.0, y: 0.0 }, rate: WORLD_SPEED },
+            BallState { pos: spots[2], vel: Vec2 { x: 0.0, y: 0.0 }, rate: WORLD_SPEED },
         ];
         let mut p = Player { legs, curs, states, order: ORDERS[0] };
         p.ensure_chain();
@@ -102,16 +105,23 @@ impl Player {
                 }
             }
         }
-        // 2) spring 追踪：target = 链上位置（线性），弹簧提供全部平滑
+        // 2) PD spring 追踪（拟合助手）：
+        //    位置目标 = 链上点；速度目标 = 切线 × 平滑速率（段间速度连续）
         let dt_s = dt / 1000.0;
         let k = SPRING.stiffness;
-        let c_damp = SPRING.damping * 2.0 * k.sqrt(); // 临界阻尼系数 2√k，乘 damping
+        let c_damp = SPRING.damping * 2.0 * k.sqrt();
+        // 速率平滑时间常数（段切换时理想速率跳变 → 此处收敛，杜绝「钝一下」）
+        let rate_lerp = (dt_s / 0.15).min(1.0); // 150ms 收敛
         for s in 0..3 {
-            let target = self.chain_pos(s);
+            let (target, tan) = self.chain_pos_and_tangent(s);
+            let r_ideal = WORLD_SPEED * TEMPLATES[self.template_idx(s)].speed();
             let st = &mut self.states[s];
-            // 半隐式欧拉（稳定）
-            let ax = -k * (st.pos.x - target.x) - c_damp * st.vel.x;
-            let ay = -k * (st.pos.y - target.y) - c_damp * st.vel.y;
+            st.rate += (r_ideal - st.rate) * rate_lerp;
+            let tl = (tan.x * tan.x + tan.y * tan.y).sqrt().max(1e-9);
+            let tvel = Vec2 { x: tan.x / tl * st.rate, y: tan.y / tl * st.rate };
+            // PD：a = k*(目标位置-位置) + c*(目标速度-速度)
+            let ax = k * (target.x - st.pos.x) + c_damp * (tvel.x - st.vel.x);
+            let ay = k * (target.y - st.pos.y) + c_damp * (tvel.y - st.vel.y);
             st.vel.x += ax * dt_s;
             st.vel.y += ay * dt_s;
             st.pos.x += st.vel.x * dt_s;
@@ -122,21 +132,23 @@ impl Player {
         self.ensure_chain();
     }
 
-    /// 链上目标位置（线性 t；spring 做平滑）
-    fn chain_pos(&self, color_slot: usize) -> Vec2 {
+    /// 链上目标位置 + 切线（线性 t；spring 做全部平滑）
+    fn chain_pos_and_tangent(&self, color_slot: usize) -> (Vec2, Vec2) {
         let c = self.curs[color_slot];
         let pl = self.legs.get(c.idx).expect("cursor idx in chain");
         let leg = &pl.leg;
-        let p = quad_bezier(leg.from, leg.ctrl, leg.target, c.t.clamp(0.0, 1.0));
-        let tan = bezier_tangent(leg.from, leg.ctrl, leg.target, c.t.clamp(0.0, 1.0));
+        let u = c.t.clamp(0.0, 1.0);
+        let p = quad_bezier(leg.from, leg.ctrl, leg.target, u);
+        let tan = bezier_tangent(leg.from, leg.ctrl, leg.target, u);
         let n = normal_of(tan);
-        // 段内摆动（模板差异化：蛇形/摇摆）——spring 目标自带，物理平滑
+        // 段内摆动（模板差异化：蛇形/摇摆）——目标自带，物理平滑
         let wave = TEMPLATES[pl.template_idx].wave;
-        let wobble = wave * (c.t * std::f64::consts::PI * 2.0).sin();
-        Vec2 {
+        let wobble = wave * (u * std::f64::consts::PI * 2.0).sin();
+        let pos = Vec2 {
             x: (p.x + n.x * wobble).clamp(0.0, 1.0),
             y: (p.y + n.y * wobble).clamp(0.0, 1.0),
-        }
+        };
+        (pos, tan)
     }
 
     /// 链增长：保证每球至少 3 段余量（无限轨迹）
@@ -461,15 +473,18 @@ mod tests {
             Vec2 { x: 0.7, y: 0.7 },
         ];
         let mut p = Player::new(spots);
-        let mut prev_dur: f64 = 1000.0;
+        // 跳过初始汇合段（未做 dur 约束），从正式段开始断言
         for _ in 0..60 * 30 {
             p.tick(16.7);
-            if let Some(tail) = p.legs.back() {
-                let r = tail.dur_ms / prev_dur.max(1.0);
-                assert!(r <= MAX_DUR_RATIO + 1e-6 && r >= 1.0 / MAX_DUR_RATIO - 1e-6,
-                    "相邻段时长比越界: {r}");
-                prev_dur = tail.dur_ms;
+            if p.legs.len() < 5 {
+                continue;
             }
+            let n = p.legs.len();
+            let tail = &p.legs[n - 1];
+            let prev = &p.legs[n - 2];
+            let r = tail.dur_ms / prev.dur_ms.max(1.0);
+            assert!(r <= MAX_DUR_RATIO + 1e-6 && r >= 1.0 / MAX_DUR_RATIO - 1e-6,
+                "相邻段时长比越界: {r}");
         }
     }
 
