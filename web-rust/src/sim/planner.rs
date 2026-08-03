@@ -60,6 +60,14 @@ pub struct Player {
     gaps: [f64; 3],
     /// 云中心跟随目标的 EMA 状态（时序滤波，套在云中心输出后面）
     ema_targets: [Vec2; 3],
+    /// 跟随风格（来自 ACTIVE_PROFILE：Chain 自研 / CloudEma 云中心）
+    follow: crate::config::profile::FollowStyle,
+    /// 云中心偏移幅度（FORMATION_OFFSETS[s] × offset_scale）
+    offset_scale: f64,
+    /// EMA 系数（1.0 = 无滤波）
+    ema_alpha: f64,
+    /// 调速器开关
+    tune_speeds: bool,
     pub order: [usize; 3],
 }
 
@@ -103,12 +111,17 @@ impl Player {
             BallState { pos: spots[2], vel: Vec2 { x: 0.0, y: 0.0 }, rate: WORLD_SPEED },
         ];
 
+        let pr = crate::config::profile::ACTIVE_PROFILE;
         let mut p = Player {
             chain,
             s_lead: 0.0,
             states,
             gaps: [0.0, CHAIN_GAP, 2.0 * CHAIN_GAP],
             ema_targets: spots,
+            follow: pr.follow,
+            offset_scale: pr.offset_scale,
+            ema_alpha: pr.ema_alpha,
+            tune_speeds: pr.tune_speeds,
             order: ORDERS[0],
         };
         p.ensure_chain();
@@ -130,15 +143,24 @@ impl Player {
             // 球 i 弧长 = 队首 - 错开；未上链（<0）→ 目标 = 起点（链起点后方）
             let s_i = self.s_lead - self.gaps[s];
             let (target, tan, seg_i, u_i) = if s_i >= 0.0 {
-                // 云中心：Frenet 法线偏移（FORMATION_OFFSETS[s]×0.05）——
-                // 转弯时三球走同一条曲线的偏移轨迹 → 同弧、无多段线
-                let d = FORMATION_OFFSETS[s] * 0.05;
-                let (raw, tan) = crate::sim::cloud::follower_target(&self.chain, s_i, d);
-                let (_, _, seg, u) = chain_pos_and_tangent(&self.chain, s_i);
-                // EMA 套在云中心后面：时序低通目标（无窗口边界、天然连续）
-                let ema = crate::sim::cloud::ema_step(self.ema_targets[s], raw, CLOUD_EMA_ALPHA);
-                self.ema_targets[s] = ema;
-                (ema, tan, seg, u)
+                match self.follow {
+                    crate::config::profile::FollowStyle::Chain => {
+                        // 自研：直接追链上弧长点（spring 物理）
+                        let (p, tan, seg, u) = chain_pos_and_tangent(&self.chain, s_i);
+                        (p, tan, seg, u)
+                    }
+                    crate::config::profile::FollowStyle::CloudEma => {
+                        // 云中心：Frenet 法线偏移 + EMA 时序滤波——
+                        // 转弯三球走同一条曲线的偏移轨迹 → 同弧、无多段线
+                        let d = FORMATION_OFFSETS[s] * self.offset_scale;
+                        let (raw, tan) = crate::sim::cloud::follower_target(&self.chain, s_i, d);
+                        let (_, _, seg, u) = chain_pos_and_tangent(&self.chain, s_i);
+                        let ema =
+                            crate::sim::cloud::ema_step(self.ema_targets[s], raw, self.ema_alpha);
+                        self.ema_targets[s] = ema;
+                        (ema, tan, seg, u)
+                    }
+                }
             } else {
                 let leg0 = &self.chain.front().unwrap().legs[0];
                 let d = dir_of(leg0.from, leg0.target);
@@ -146,10 +168,14 @@ impl Player {
                     x: (leg0.from.x - d.x * self.gaps[s]).clamp(0.05, 0.95),
                     y: (leg0.from.y - d.y * self.gaps[s]).clamp(0.05, 0.95),
                 };
-                let raw = (pos, Vec2 { x: -d.y, y: d.x }, 0usize, 0.0);
-                let ema = crate::sim::cloud::ema_step(self.ema_targets[s], pos, CLOUD_EMA_ALPHA);
-                self.ema_targets[s] = ema;
-                (ema, raw.1, 0usize, 0.0)
+                match self.follow {
+                    crate::config::profile::FollowStyle::Chain => (pos, Vec2 { x: -d.y, y: d.x }, 0usize, 0.0),
+                    crate::config::profile::FollowStyle::CloudEma => {
+                        let ema = crate::sim::cloud::ema_step(self.ema_targets[s], pos, self.ema_alpha);
+                        self.ema_targets[s] = ema;
+                        (ema, Vec2 { x: -d.y, y: d.x }, 0usize, 0.0)
+                    }
+                }
             };
 
             let r_ideal = self.profile_speed(seg_i, u_i);
@@ -310,7 +336,9 @@ impl Player {
             self.chain.push_back(clamp_dur_to_chain(pl, tail.dur_ms));
         }
         // 调速师傅：补链后审核尾部段的速度序列（savgol 平滑 + 加速度钳制）
-        self.tune_tail(9);
+        if self.tune_speeds {
+            self.tune_tail(9);
+        }
     }
 
     /// 调速器：对链尾部 n 段做速度审核——消除速度钝点（非常大加速/减速）

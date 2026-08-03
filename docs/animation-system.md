@@ -171,3 +171,12 @@ balls.rs rAF(dt≈16.7ms)
 - planner.rs 7 个：段端点保持、entry_points 错开、**永不出屏（120s 模拟）**、**永不停（无限轨迹）**、**成群结对（弧长错开+距离<0.6）**、链无限增长、时长随路径缩放
 
 **无测试**：engine.rs 状态机转移（Free→Queueing→Formation→Free）、渲染、调试面板——状态机是唯一无覆盖的核心路径（依赖 web_sys，未抽纯逻辑）。
+
+## Profile 架构（2026-08-04 狠活定型）
+
+config/profile.rs——一种运动风格 = 一个 MotionProfile 实例：
+- `NATIVE_PROFILE`：自研跟随（蓝绿直接追链上点 + spring，回滚版手感）
+- `CLOUD_PROFILE`：云中心狠活（Frenet 偏移 ×0.05 + EMA 时序滤波 α=0.35 + 调速器）——**当前 ACTIVE_PROFILE**
+- 切换风格 = 改 ACTIVE_PROFILE 一行
+
+Player 按 follow 分支：Chain = chain_pos_and_tangent 直追；CloudEma = cloud::follower_target（Frenet 偏移）+ ema_step 低通 → spring 目标。调速器 tune_tail(9) 仅 CLOUD 开启。

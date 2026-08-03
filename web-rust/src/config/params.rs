@@ -94,8 +94,6 @@ pub const LOGO_RADIUS: f64 = 0.13;
 pub const LOGO_EVERY_ARC: f64 = 9.6; // ≈ 60s 巡航弧长
 /// 队形常量：三球法线分离量（不再属于模板）
 pub const FORMATION_OFFSETS: [f64; 3] = [0.0, 0.6, -0.6];
-/// 云中心 EMA 跟随系数：蓝绿目标 = 云中心输出经 EMA 时序滤波（0.35 跟手适中）
-pub const CLOUD_EMA_ALPHA: f64 = 0.35;
 
 
 /// 入场仪式
