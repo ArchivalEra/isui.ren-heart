@@ -130,7 +130,7 @@ impl Player {
                 // 云中心：平滑中心点 + Frenet 法线偏移（FORMATION_OFFSETS[s]×0.05）
                 // 转弯时三球走同一条曲线的偏移轨迹 → 同弧、无多段线
                 let d = FORMATION_OFFSETS[s] * 0.05;
-                let tgt = crate::sim::cloud::follower_target_smooth(&self.chain, s_i, d, 0.08);
+                let tgt = crate::sim::cloud::follower_target_smooth(&self.chain, s_i, d, 0.35);
                 let (_, tan, _, _) = chain_pos_and_tangent(&self.chain, s_i);
                 let (_, _, seg, u) = chain_pos_and_tangent(&self.chain, s_i);
                 (tgt, tan, seg, u)

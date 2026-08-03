@@ -6,7 +6,8 @@
 // 依据（docs/google-university.md）：
 // - x(s, d) = r(s*) + d·n(s*)，s* = 弧长投影（Werling Frenet 系）
 // - 最近点投影成立条件 κ·d < 1；超出则偏移衰减（防跳变）
-// - 云中心平滑 = 滑动窗口加权平均（formation centroid 的离散版）
+// - 云中心平滑 = EMA（Exponential Moving Average 指数移动平均）：
+//   权重指数衰减、最新点权重最大——无窗口边界、天然连续
 use crate::sim::math::{normal_of, Vec2};
 use crate::sim::planner::{chain_pos_and_tangent, Leg};
 use std::collections::VecDeque;
@@ -41,18 +42,19 @@ pub fn follower_target(chain: &VecDeque<Leg5>, s: f64, d: f64) -> (Vec2, Vec2) {
     )
 }
 
-/// 云中心平滑：在弧长 s 前后窗口 [s-w, s+w] 采样 5 点，加权平均（中间权重高）
-/// 磨掉拼接段的微折角——中心线更顺，跟随更顺。
-pub fn center_smooth(chain: &VecDeque<Leg5>, s: f64, w: f64) -> Vec2 {
-    let weights = [1.0, 2.0, 3.0, 2.0, 1.0];
+/// 云中心 EMA：指数移动平均——向后采样 n 点，权重 w_i = α(1-α)^i（最新点权重最大）
+/// 磨掉拼接段的微折角——中心线更顺，跟随更顺；α 大 = 跟手（响应快），α 小 = 更柔
+pub fn center_ema(chain: &VecDeque<Leg5>, s: f64, alpha: f64, n: usize) -> Vec2 {
     let mut acc = Vec2 { x: 0.0, y: 0.0 };
     let mut tw = 0.0;
-    for (i, wt) in weights.iter().enumerate() {
-        let sp = s + (i as f64 - 2.0) * w / 2.0;
-        let (p, _, _, _) = chain_pos_and_tangent(chain, sp.max(0.0));
-        acc.x += p.x * wt;
-        acc.y += p.y * wt;
-        tw += wt;
+    let mut w = alpha;
+    for i in 0..n {
+        let sp = (s - i as f64 * 0.04).max(0.0);
+        let (p, _, _, _) = chain_pos_and_tangent(chain, sp);
+        acc.x += p.x * w;
+        acc.y += p.y * w;
+        tw += w;
+        w *= 1.0 - alpha;
     }
     Vec2 { x: acc.x / tw, y: acc.y / tw }
 }
@@ -60,9 +62,9 @@ pub fn center_smooth(chain: &VecDeque<Leg5>, s: f64, w: f64) -> Vec2 {
 // 类型别名（避免循环依赖：cloud 只关心链的弧长采样接口）
 pub type Leg5 = crate::sim::planner::PlannedLeg;
 
-/// 云中心跟随目标（推荐入口）：平滑中心点 + Frenet 偏移
-pub fn follower_target_smooth(chain: &VecDeque<Leg5>, s: f64, d: f64, w: f64) -> Vec2 {
-    let c = center_smooth(chain, s, w);
+/// 云中心跟随目标（推荐入口）：EMA 中心点 + Frenet 偏移
+pub fn follower_target_smooth(chain: &VecDeque<Leg5>, s: f64, d: f64, alpha: f64) -> Vec2 {
+    let c = center_ema(chain, s, alpha, 6);
     let (_, tan, _, _) = chain_pos_and_tangent(chain, s);
     let n = normal_of(tan);
     Vec2 { x: c.x + n.x * d, y: c.y + n.y * d }
@@ -115,17 +117,28 @@ mod tests {
     }
 
     #[test]
-    fn center_smooth_matches_line() {
+    fn center_ema_matches_line() {
         let chain = straight_chain();
-        let c = center_smooth(&chain, 0.3, 0.1);
-        assert!((c.y - 0.5).abs() < 1e-6, "直线上中心 y=0.5: {}", c.y);
+        let c = center_ema(&chain, 0.3, 0.35, 6);
+        assert!((c.y - 0.5).abs() < 1e-6, "直线上 EMA 中心 y=0.5: {}", c.y);
         assert!((c.x - 0.5).abs() < 0.05, "x 居中: {}", c.x);
+    }
+
+    #[test]
+    fn ema_weights_latest_most() {
+        // 指数衰减：α(1-α)^i——最新点（i=0）权重最大
+        let alpha = 0.35;
+        let w0 = alpha;
+        let w1 = alpha * (1.0 - alpha);
+        assert!(w0 > w1, "最新点权重应最大");
+        let total: f64 = (0..6).map(|i| alpha * (1.0 - alpha).powi(i as i32)).sum();
+        assert!(total > 0.9 && total < 1.0, "权重和归一化: {total}");
     }
 
     #[test]
     fn follower_target_smooth_works() {
         let chain = straight_chain();
-        let p = follower_target_smooth(&chain, 0.3, 0.04, 0.1);
-        assert!((p.y - 0.46).abs() < 1e-6, "平滑中心 + 偏移: {}", p.y);
+        let p = follower_target_smooth(&chain, 0.3, 0.04, 0.35);
+        assert!((p.y - 0.46).abs() < 1e-6, "EMA 中心 + 偏移: {}", p.y);
     }
 }
