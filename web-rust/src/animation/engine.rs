@@ -87,6 +87,13 @@ impl BallsEngine {
             self.prev_pos[s] = pos;
             // 位置历史（实心拖尾；上限 8）
             if self.state.is_playing() {
+                // 高速跳跃段：拖尾历史点上限 12（拉长飘逸）；常规 8
+                let v = self.ball_velocity(s);
+                let cap = if (v.x * v.x + v.y * v.y).sqrt() > JUMP_SPEED {
+                    TRAIL_FRAMES_HIGH
+                } else {
+                    8
+                };
                 let h = &mut self.history[s];
                 // 间距截断：与最新点距离过大（高速/交叉）→ 重建，防大长条/五角星复杂
                 if let Some(&(lx, ly)) = h.back() {
@@ -96,7 +103,7 @@ impl BallsEngine {
                     }
                 }
                 h.push_back((pos.x, pos.y));
-                if h.len() > 8 {
+                while h.len() > cap {
                     h.pop_front();
                 }
             } else {
