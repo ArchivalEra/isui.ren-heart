@@ -163,7 +163,17 @@ impl Player {
             };
             let roll = rng.gen::<f64>();
             let template_idx = if roll < PROB.switch_template {
-                rng.gen_range(0..TEMPLATES.len())
+                // 曲率连续性：新模板曲率与旧模板接近，避免方向突变（微 z 字形）
+                let old_curv = TEMPLATES[tail.template_idx].curvature;
+                let mut idx = tail.template_idx;
+                for _ in 0..6 {
+                    let cand = rng.gen_range(0..TEMPLATES.len());
+                    if (TEMPLATES[cand].curvature - old_curv).abs() <= TEMPLATE_CURV_STEP {
+                        idx = cand;
+                        break;
+                    }
+                }
+                idx
             } else {
                 tail.template_idx
             };
@@ -242,6 +252,37 @@ impl Player {
 
     pub fn template_idx(&self, _color_slot: usize) -> usize {
         self.chain.front().map(|x| x.template_idx).unwrap_or(0)
+    }
+
+    /// 球 i 当前位置 + 链切线方向（解散回 Free 时用：独立链起点=位置，方向=切线）
+    pub fn pos_and_dir(&self, color_slot: usize) -> (Vec2, Vec2) {
+        let s_i = self.s_lead - self.gaps[color_slot];
+        if s_i >= 0.0 {
+            let (pos, tan) = self.chain_pos_and_tangent(s_i);
+            let l = (tan.x * tan.x + tan.y * tan.y).sqrt().max(1e-9);
+            (pos, Vec2 { x: tan.x / l, y: tan.y / l })
+        } else {
+            let leg0 = &self.chain.front().unwrap().leg;
+            let d = dir_of(leg0.from, leg0.target);
+            (
+                Vec2 {
+                    x: (leg0.from.x - d.x * self.gaps[color_slot]).clamp(0.0, 1.0),
+                    y: (leg0.from.y - d.y * self.gaps[color_slot]).clamp(0.0, 1.0),
+                },
+                d,
+            )
+        }
+    }
+
+    /// 球 i 实际中心（spring 物理位置，不含法线偏移）
+    pub fn ball_center(&self, color_slot: usize) -> Vec2 {
+        self.states[color_slot.min(2)].pos
+    }
+
+    /// 球 i 中心沿 dir 的投影（自然排队排序用）
+    pub fn ball_center_proj(&self, color_slot: usize, dir: Vec2) -> f64 {
+        let p = self.states[color_slot.min(2)].pos;
+        p.x * dir.x + p.y * dir.y
     }
 
     /// 调试：当前目标（球 i 链上位置）
@@ -329,11 +370,29 @@ fn clamp_dur_to_chain(mut pl: PlannedLeg, tail_dur: f64) -> PlannedLeg {
     pl
 }
 
-/// 入场状态机（数据；转移由引擎层驱动）
+/// 状态机（数据；转移由引擎层驱动）
+/// - AtLogo：三球停锚点（入场）
+/// - Free：三球各自独立链自由运动（常态）；每 5s 判定 30% 概率触发排队
+/// - Queueing：判定后 5 秒过渡——球在各自行程中自然滑向队列槽位
+/// - Formation：共享链排队跑（维持随机时长后自然解散回 Free）
 pub enum Phase {
     AtLogo { t: f64 },
-    Travel { from: [Vec2; 3], to: [Vec2; 3], t: f64 },
-    Play(Player),
+    Free {
+        players: [Player; 3],
+        check_t: f64,
+    },
+    Queueing {
+        t: f64,
+        from: [Vec2; 3],
+        anchor: Vec2,
+        dir: Vec2,
+        slots: [Vec2; 3],
+    },
+    Formation {
+        player: Player,
+        hold_t: f64,
+        hold_ms: f64,
+    },
 }
 
 #[cfg(test)]

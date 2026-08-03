@@ -16,6 +16,24 @@ pub const ORDERS: [[usize; 3]; 6] = [
 /// 链上错开弧长：球 i 落后队首 i×CHAIN_GAP（成群结对一个接一个）
 pub const CHAIN_GAP: f64 = 0.15;
 
+// ---- 自由运动 + 偶发自然排队 ----
+/// 自由模式每 5 秒判定一次是否触发排队
+pub const FREE_CHECK_MS: f64 = 5000.0;
+/// 判定到排队的概率（30%）
+pub const QUEUE_PROB: f64 = 0.3;
+/// 判定后 5 秒过渡（球在各自行程中自然滑向队列槽位）
+pub const QUEUE_MS: f64 = 5000.0;
+/// 排好队后维持时长区间（随机）
+pub const FORMATION_HOLD_MIN_MS: f64 = 8000.0;
+pub const FORMATION_HOLD_MAX_MS: f64 = 18000.0;
+
+/// 模板切换时曲率最大变化量（连续性约束，消除方向突变微抖动）
+pub const TEMPLATE_CURV_STEP: f64 = 0.6;
+
+// ---- 拖尾 ----
+/// 历史点最大间距（世界坐标）：超过即截断（高速/交叉时不会连成大长条）
+pub const TRAIL_MAX_SEG: f64 = 0.12;
+
 /// 相邻段时长比上限：约束球速差异（「换顺序」过程太快 = dur 差异过大）
 /// 调小 → 换序更慢更平滑；调大 → 允许暴快（拖尾出师后高速韵味）
 pub const MAX_DUR_RATIO: f64 = 2.5;

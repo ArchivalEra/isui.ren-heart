@@ -92,12 +92,25 @@ impl BallsEngine {
             let pos = self.ball_world_pos(s);
             self.prev_pos[s] = pos;
             // 位置历史（实心拖尾；上限 8）
-            if matches!(self.phase, Phase::Play(_)) {
+            let playing = matches!(
+                self.phase,
+                Phase::Free { .. } | Phase::Queueing { .. } | Phase::Formation { .. }
+            );
+            if playing {
                 let h = &mut self.history[s];
+                // 间距截断：与最新点距离过大（高速/交叉）→ 重建，防大长条/五角星复杂
+                if let Some(&(lx, ly)) = h.back() {
+                    let d = ((pos.x - lx).powi(2) + (pos.y - ly).powi(2)).sqrt();
+                    if d > TRAIL_MAX_SEG {
+                        h.clear();
+                    }
+                }
                 h.push_back((pos.x, pos.y));
                 if h.len() > 8 {
                     h.pop_front();
                 }
+            } else {
+                self.history[s].clear();
             }
         }
     }
@@ -116,49 +129,111 @@ impl BallsEngine {
             }
             return;
         }
-        let mut queue_done = None;
+        use rand::Rng;
+        let mut rng = rand::thread_rng();
+        let mut next: Option<Phase> = None;
         match &mut self.phase {
             Phase::AtLogo { t } => {
                 *t += dt;
                 if *t >= AT_LOGO_MS {
-                    let from = self.anchors;
-                    // 随机锚点 + 方向 → 上链布局点（三球沿链方向错开）
-                    let anchor = Vec2 {
-                        x: 0.15 + rand::random::<f64>() * 0.7,
-                        y: 0.15 + rand::random::<f64>() * 0.7,
-                    };
-                    let angle = rand::random::<f64>() * std::f64::consts::PI * 2.0;
-                    let dir = Vec2 { x: angle.cos(), y: angle.sin() };
-                    let to = crate::sim::planner::Player::entry_points(anchor, dir);
-                    self.phase = Phase::Travel { from, to, t: 0.0 };
+                    // 入场：三球各自独立链，起点 = 锚点（无排队仪式、无闪电）
+                    let players = [
+                        Player::new(self.anchors[0], Self::random_dir()),
+                        Player::new(self.anchors[1], Self::random_dir()),
+                        Player::new(self.anchors[2], Self::random_dir()),
+                    ];
+                    next = Some(Phase::Free { players, check_t: 0.0 });
                 }
             }
-            Phase::Travel { to, t, .. } => {
+            Phase::Free { players, check_t } => {
+                *check_t += dt;
+                for p in players.iter_mut() {
+                    p.tick(dt);
+                }
+                // 每 5 秒判定：30% 概率触发自然排队
+                if *check_t >= FREE_CHECK_MS {
+                    *check_t = 0.0;
+                    if rng.gen::<f64>() < QUEUE_PROB {
+                        // 队首 = 沿随机方向投影最前的球；槽位沿该方向错开
+                        let dir = Self::random_dir();
+                        let mut order: Vec<usize> = (0..3).collect();
+                        let proj: Vec<f64> = players
+                            .iter()
+                            .enumerate()
+                            .map(|(i, p)| p.ball_center_proj(i, dir))
+                            .collect();
+                        order.sort_by(|a, b| proj[*b].partial_cmp(&proj[*a]).unwrap());
+                        let anchor = players[order[0]].ball_center(order[0]);
+                        let slots = Player::entry_points(anchor, dir);
+                        // 槽位按自然排序分配：投影最前的球当队首（不是固定粉蓝绿）
+                        let mut slots_by_ball = [Vec2 { x: 0.0, y: 0.0 }; 3];
+                        for (rank, &ball) in order.iter().enumerate() {
+                            slots_by_ball[ball] = slots[rank];
+                        }
+                        let mut from = [Vec2 { x: 0.0, y: 0.0 }; 3];
+                        for (i, p) in players.iter().enumerate() {
+                            from[i] = p.ball_center(i);
+                        }
+                        next = Some(Phase::Queueing { t: 0.0, from, anchor, dir, slots: slots_by_ball });
+                    }
+                }
+            }
+            Phase::Queueing { t, from, anchor, dir, slots, .. } => {
                 *t += dt;
-                if *t >= TRAVEL_MS {
-                    // 进入 Play：队首锚点 = to[0]，方向 = 队首→队尾（上链布局方向）
-                    let anchor = to[0];
-                    let dir = crate::sim::math::normalize(
-                        Vec2 {
-                            x: to[0].x - to[2].x,
-                            y: to[0].y - to[2].y,
-                        },
-                    );
-                    queue_done = Some((anchor, dir));
+                if *t >= QUEUE_MS {
+                    // 过渡完成 → 共享链排队跑
+                    next = Some(Phase::Formation {
+                        player: Player::new(*anchor, *dir),
+                        hold_t: 0.0,
+                        hold_ms: FORMATION_HOLD_MIN_MS
+                            + rng.gen::<f64>() * (FORMATION_HOLD_MAX_MS - FORMATION_HOLD_MIN_MS),
+                    });
+                } else {
+                    // 球在各自行程中自然滑向槽位（smoothstep 加速减速，无闪电）
+                    let k = smoothstep(*t / QUEUE_MS);
+                    for i in 0..3 {
+                        let p = crate::sim::math::lerp(from[i], slots[i], k);
+                        let _ = p;
+                    }
                 }
             }
-            Phase::Play(player) => {
-                // 法线偏移缓动（每球按自己当前段模板）
+            Phase::Formation { player, hold_t, hold_ms } => {
+                *hold_t += dt;
+                // 法线偏移缓动
                 for (i, b) in self.balls.iter_mut().enumerate() {
                     let tpl = &TEMPLATES[player.template_idx(i)];
                     b.offset += (tpl.offsets[i] - b.offset) * WANDER.offset_lerp;
                 }
                 player.tick(dt);
+                if *hold_t >= *hold_ms {
+                    // 自然解散：三球各自独立链（起点=当前位置，方向=链切线）
+                    let players = [
+                        {
+                            let (pos, dir) = player.pos_and_dir(0);
+                            Player::new(pos, dir)
+                        },
+                        {
+                            let (pos, dir) = player.pos_and_dir(1);
+                            Player::new(pos, dir)
+                        },
+                        {
+                            let (pos, dir) = player.pos_and_dir(2);
+                            Player::new(pos, dir)
+                        },
+                    ];
+                    next = Some(Phase::Free { players, check_t: 0.0 });
+                }
             }
         }
-        if let Some((anchor, dir)) = queue_done {
-            self.phase = Phase::Play(Player::new(anchor, dir));
+        if let Some(p) = next {
+            self.phase = p;
         }
+    }
+
+    /// 随机单位方向
+    fn random_dir() -> Vec2 {
+        let angle = rand::random::<f64>() * std::f64::consts::PI * 2.0;
+        Vec2 { x: angle.cos(), y: angle.sin() }
     }
 
     /// 调试：三球实际渲染坐标（含偏移）
@@ -169,12 +244,12 @@ impl BallsEngine {
     fn ball_world_pos(&self, color_slot: usize) -> Vec2 {
         match &self.phase {
             Phase::AtLogo { .. } => self.anchors[color_slot],
-            Phase::Travel { from, to, t } => {
-                let k = smoothstep(*t / TRAVEL_MS);
-                crate::sim::math::lerp(from[color_slot], to[color_slot], k)
+            Phase::Free { players, .. } => players[color_slot].world_pos(color_slot, self.balls[color_slot].offset),
+            Phase::Queueing { t, from, slots, .. } => {
+                let k = smoothstep(*t / QUEUE_MS);
+                crate::sim::math::lerp(from[color_slot], slots[color_slot], k)
             }
-
-            Phase::Play(player) => player.world_pos(color_slot, self.balls[color_slot].offset),
+            Phase::Formation { player, .. } => player.world_pos(color_slot, self.balls[color_slot].offset),
         }
     }
 
@@ -218,7 +293,7 @@ impl BallsEngine {
                 self.ctx.arc(sx, sy, 5.0 * d, 0.0, std::f64::consts::PI * 2.0).unwrap();
                 self.ctx.fill();
             }
-            if let Phase::Play(player) = &self.phase {
+            if let Phase::Formation { player, .. } = &self.phase {
                 // 目标点
                 self.ctx.set_fill_style_str("rgba(17,17,17,0.4)");
                 for s in 0..3 {
@@ -227,13 +302,14 @@ impl BallsEngine {
                     self.ctx.arc(sx, sy, 3.0 * d, 0.0, std::f64::consts::PI * 2.0).unwrap();
                     self.ctx.fill();
                 }
-
             }
         }
 
         let to_screen = |p: Vec2| screen_of(p, w, h);
         let order = match &self.phase {
-            Phase::Play(p) => p.order,
+            Phase::Free { .. } => [0, 1, 2],
+            Phase::Queueing { .. } => [0, 1, 2],
+            Phase::Formation { player, .. } => player.order,
             _ => ORDERS[0],
         };
         let pts: Vec<(f64, f64, f64)> =
