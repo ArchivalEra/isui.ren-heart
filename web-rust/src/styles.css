@@ -84,7 +84,7 @@ body {
   inset: 0;
   width: 100%;
   height: 100%;
-  z-index: 3;
+  z-index: 999; /* 三球图层高于所有东西（站主钦点） */
   pointer-events: none;
 }
 
@@ -124,6 +124,18 @@ body {
   color: var(--on-surface);
   margin: 0 0 0.6rem;
   font-weight: 500;
+  width: 100%;
+}
+
+/* 打字机文字真正居中：flex 容器 + 保底高度（长短句切换不跳动） */
+.typewriter-box {
+  display: inline-flex;
+  justify-content: center;
+  align-items: baseline;
+  min-height: 1.4em;
+  max-width: 92vw;
+  white-space: pre-wrap;
+  word-break: break-word;
 }
 
 .cursor {
@@ -144,29 +156,146 @@ body {
 
 .heart-nav {
   margin-top: 2.2rem;
+  pointer-events: auto; /* 导航区域保持可点 */
 }
 
-/* Material You 按钮：灰阶 tonal + 状态层 + elevation */
-.heart-link {
-  pointer-events: auto; /* 导航按钮保持可点 */
-  display: inline-block;
-  padding: 0.7rem 1.8rem;
+/* ── 拟物化卡片墙按钮（无文字，一叠卡片的立体质感）── */
+.card-wall-wrap {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.card-wall-btn {
+  position: relative;
+  width: 64px;
+  height: 52px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  background: linear-gradient(160deg, #fdfdfd 0%, #e8e8e8 55%, #d4d4d4 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    inset 0 -2px 4px rgba(17, 17, 17, 0.12),
+    0 6px 14px rgba(17, 17, 17, 0.18),
+    0 2px 4px rgba(17, 17, 17, 0.12);
+  transition: transform 0.12s ease, box-shadow 0.2s ease;
+}
+
+/* 卡片堆：三层错落的卡片边缘（拟物核心） */
+.card-wall-btn::before,
+.card-wall-btn::after {
+  content: "";
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  height: 14px;
+  border-radius: 6px;
+  background: linear-gradient(160deg, #f2f2f2 0%, #dcdcdc 100%);
+  box-shadow: 0 2px 3px rgba(17, 17, 17, 0.15);
+}
+
+.card-wall-btn::before {
+  top: -7px;
+  transform: rotate(-2deg);
+  z-index: -1;
+}
+
+.card-wall-btn::after {
+  top: -13px;
+  transform: rotate(3deg);
+  z-index: -2;
+  background: linear-gradient(160deg, #e9e9e9 0%, #cfcfcf 100%);
+}
+
+.card-wall-btn:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    inset 0 -2px 4px rgba(17, 17, 17, 0.12),
+    0 10px 22px rgba(17, 17, 17, 0.24),
+    0 3px 6px rgba(17, 17, 17, 0.14);
+}
+
+.card-wall-btn:active {
+  transform: translateY(1px) scale(0.97);
+  box-shadow:
+    inset 0 2px 6px rgba(17, 17, 17, 0.2),
+    0 2px 4px rgba(17, 17, 17, 0.1);
+}
+
+/* 卡片墙下拉面板：max-height + opacity 过渡（页面内展开，非跳转） */
+.card-wall {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  pointer-events: none;
+  transform: translateY(-8px);
+  transition: max-height 0.45s cubic-bezier(0.2, 0, 0, 1),
+    opacity 0.35s ease, transform 0.45s cubic-bezier(0.2, 0, 0, 1);
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  min-width: 260px;
+  margin-top: 0;
+}
+
+.card-wall-open {
+  max-height: 420px;
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+  margin-top: 1rem;
+}
+
+.wall-card {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.8rem 1.1rem;
+  border-radius: 14px;
+  background: var(--surface);
   border: 1px solid var(--outline);
-  border-radius: var(--shape-lg);
+  box-shadow: var(--elev-1);
   color: var(--on-surface);
   text-decoration: none;
-  background: var(--surface);
-  box-shadow: var(--elev-1);
   transition: background 0.2s, box-shadow 0.2s, transform 0.15s;
 }
 
-.heart-link:hover {
+.wall-card:hover {
   background: var(--surface-variant);
   box-shadow: var(--elev-2);
+  transform: translateY(-1px);
 }
 
-.heart-link:active {
+.wall-card:active {
   background: var(--state-active);
+  transform: scale(0.98);
+}
+
+.wall-card-icon {
+  font-size: 1.4rem;
+  width: 2rem;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.wall-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  text-align: left;
+}
+
+.wall-card-title {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.wall-card-desc {
+  font-size: 0.78rem;
+  color: var(--on-surface-variant);
 }
 
 /* ---------- /home ---------- */
