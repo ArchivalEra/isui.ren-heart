@@ -20,6 +20,10 @@ pub struct Leg {
 pub struct PlannedLeg {
     pub leg: Leg,
     pub template_idx: usize,
+    /// 段级速度倍率（独立于曲线，来自 SPEED_BANDS）
+    pub speed: f64,
+    /// 段级摆动幅度（独立于曲线，来自 WAVE_BANDS）
+    pub wave: f64,
     pub dur_ms: f64,
     /// 折线弧长（from→ctrl→target）
     pub arc: f64,
@@ -83,10 +87,12 @@ impl Player {
                 y: (anchor.y + dir.y * r).clamp(0.12, 0.88),
             }
         };
-        let mut pl = make_planned_leg(anchor, dir, 0, target);
+        let speed = roll_speed();
+        let wave = roll_wave();
+        let mut pl = make_planned_leg(anchor, dir, 0, target, speed, wave);
         if !leg_in_bounds(&pl.leg) {
-            let safe = clamp_target_in_bounds(anchor, dir, 0, target);
-            pl = make_planned_leg(anchor, dir, 0, safe);
+            let safe = clamp_target_in_bounds(anchor, dir, 0, target, speed, wave);
+            pl = make_planned_leg(anchor, dir, 0, safe, speed, wave);
         }
         let mut chain = VecDeque::new();
         chain.push_back(pl);
@@ -159,9 +165,9 @@ impl Player {
     /// smoothstep 保证段内加速/减速平滑；段间速率连续（段尾速 = 下段头速）
     /// 巡航 = 模板全速（不再减半，去蠕动感）
     fn profile_speed(&self, seg_idx: usize, u: f64) -> f64 {
-        let v_i = TEMPLATES[self.chain[seg_idx].template_idx].speed();
+        let v_i = self.chain[seg_idx].speed;
         let v_next = match self.chain.get(seg_idx + 1) {
-            Some(next) => TEMPLATES[next.template_idx].speed(),
+            Some(next) => next.speed,
             None => v_i,
         };
         let ramp = smoothstep(u.clamp(0.0, 1.0));
@@ -185,8 +191,8 @@ impl Player {
             };
             let roll = rng.gen::<f64>();
             let old_curv = TEMPLATES[tail.template_idx].curvature;
-            // 模板选择：曲率连续性 + 高速批准制（高速模板 40% 批准，不批准换新路径）
-            let mut template_idx = if roll < PROB.switch_template {
+            // 曲线选择：曲率连续性（形状只管几何）
+            let template_idx = if roll < PROB.switch_template {
                 let mut idx = tail.template_idx;
                 for _ in 0..6 {
                     let cand = rng.gen_range(0..TEMPLATES.len());
@@ -199,24 +205,9 @@ impl Player {
             } else {
                 tail.template_idx
             };
-            if TEMPLATES[template_idx].speed() > SPEED_THRESHOLD
-                && rng.gen::<f64>() >= SPEED_APPROVE_PROB
-            {
-                let mut replaced = false;
-                for _ in 0..6 {
-                    let cand = rng.gen_range(0..TEMPLATES.len());
-                    if TEMPLATES[cand].speed() <= SPEED_THRESHOLD
-                        && (TEMPLATES[cand].curvature - old_curv).abs() <= TEMPLATE_CURV_STEP
-                    {
-                        template_idx = cand;
-                        replaced = true;
-                        break;
-                    }
-                }
-                if !replaced {
-                    template_idx = tail.template_idx;
-                }
-            }
+            // 段级运动参数：速度档（含高速批准制）+ 摆动档（独立于曲线）
+            let speed = roll_speed();
+            let wave = roll_wave();
             if rng.gen::<f64>() < PROB.switch_order {
                 let next = ORDERS[rng.gen_range(0..ORDERS.len())];
                 if next != self.order {
@@ -238,10 +229,10 @@ impl Player {
                     y: (from.y + (dir.x * angle.sin() + dir.y * angle.cos()) * dist * 0.7).clamp(0.05, 0.95),
                 };
             }
-            let mut pl = make_planned_leg(from, dir, template_idx, target);
+            let mut pl = make_planned_leg(from, dir, template_idx, target, speed, wave);
             if !leg_in_bounds(&pl.leg) {
-                let safe = clamp_target_in_bounds(from, dir, template_idx, target);
-                pl = make_planned_leg(from, dir, template_idx, safe);
+                let safe = clamp_target_in_bounds(from, dir, template_idx, target, speed, wave);
+                pl = make_planned_leg(from, dir, template_idx, safe, speed, wave);
             }
             if pl.arc < 0.05 {
                 // 死循环防护：零长度段（收缩失败）强制拉一段，仍失败则放弃补段
@@ -249,7 +240,7 @@ impl Player {
                     x: (from.x + dir.x * 0.3).clamp(0.10, 0.90),
                     y: (from.y + dir.y * 0.3).clamp(0.10, 0.90),
                 };
-                pl = make_planned_leg(from, dir, template_idx, forced);
+                pl = make_planned_leg(from, dir, template_idx, forced, speed, wave);
                 if pl.arc < 0.05 || !leg_in_bounds(&pl.leg) {
                     break;
                 }
@@ -268,8 +259,7 @@ impl Player {
                 let p = quad_bezier(leg.from, leg.ctrl, leg.target, u);
                 let tan = bezier_tangent(leg.from, leg.ctrl, leg.target, u);
                 let n = normal_of(tan);
-                let wave = TEMPLATES[pl.template_idx].wave;
-                let wobble = wave * (u * std::f64::consts::PI * 2.0).sin();
+                let wobble = pl.wave * (u * std::f64::consts::PI * 2.0).sin();
                 // wobble 硬限制：摆动后位置永不越过 [0.03, 0.97]
                 // （配合链几何安全区 [0.08,0.92]，物理上不可能出屏/贴边）
                 let wob_x = n.x * wobble;
@@ -303,10 +293,6 @@ impl Player {
             x: (st.pos.x + n.x * offset * WANDER.offset_range).clamp(0.0, 1.0),
             y: (st.pos.y + n.y * offset * WANDER.offset_range).clamp(0.0, 1.0),
         }
-    }
-
-    pub fn template_idx(&self, _color_slot: usize) -> usize {
-        self.chain.front().map(|x| x.template_idx).unwrap_or(0)
     }
 
     /// 球 i 当前位置 + 链切线方向（解散回 Free 时用：独立链起点=位置，方向=切线）
@@ -355,8 +341,33 @@ impl Player {
     }
 }
 
-/// 造段（几何纯函数）：切线连续 + 时长挂钩路径长度
-pub fn make_planned_leg(from: Vec2, dir: Vec2, template_idx: usize, target: Vec2) -> PlannedLeg {
+/// 段速度：随机档位；高速档（>1.2）40% 批准，不批准回落巡航档（重新生成新路径）
+fn roll_speed() -> f64 {
+    let idx = rand::random::<usize>() % SPEED_BANDS.len();
+    let (lo, hi) = SPEED_BANDS[idx];
+    let v = lo + rand::random::<f64>() * (hi - lo);
+    if v > SPEED_THRESHOLD && rand::random::<f64>() >= SPEED_APPROVE_PROB {
+        let (lo, hi) = SPEED_BANDS[1];
+        lo + rand::random::<f64>() * (hi - lo)
+    } else {
+        v
+    }
+}
+
+/// 段摆动：随机档位（独立于曲线）
+fn roll_wave() -> f64 {
+    WAVE_BANDS[rand::random::<usize>() % WAVE_BANDS.len()]
+}
+
+/// 造段（几何纯函数）：切线连续 + 段级 speed/wave（独立于曲线模板）
+pub fn make_planned_leg(
+    from: Vec2,
+    dir: Vec2,
+    template_idx: usize,
+    target: Vec2,
+    speed: f64,
+    wave: f64,
+) -> PlannedLeg {
     let dx = target.x - from.x;
     let dy = target.y - from.y;
     let dist = (dx * dx + dy * dy).sqrt().max(1e-6);
@@ -369,18 +380,15 @@ pub fn make_planned_leg(from: Vec2, dir: Vec2, template_idx: usize, target: Vec2
     let leg = Leg { from, ctrl, target };
     let arc = ((ctrl.x - from.x).powi(2) + (ctrl.y - from.y).powi(2)).sqrt()
         + ((target.x - ctrl.x).powi(2) + (target.y - ctrl.y).powi(2)).sqrt();
+    let dur_ms = (arc / (WORLD_SPEED * speed) * 1000.0).max(200.0);
     PlannedLeg {
         leg,
         template_idx,
-        dur_ms: leg_duration_ms(&leg, template),
+        speed,
+        wave,
+        dur_ms,
         arc,
     }
-}
-
-fn leg_duration_ms(leg: &Leg, template: &crate::config::templates::Template) -> f64 {
-    let bend = ((leg.ctrl.x - leg.from.x).powi(2) + (leg.ctrl.y - leg.from.y).powi(2)).sqrt()
-        + ((leg.target.x - leg.ctrl.x).powi(2) + (leg.target.y - leg.ctrl.y).powi(2)).sqrt();
-    (bend / (WORLD_SPEED * template.speed()) * 1000.0).max(200.0)
 }
 
 fn dir_of(from: Vec2, to: Vec2) -> Vec2 {
@@ -410,9 +418,16 @@ pub fn leg_in_bounds(leg: &Leg) -> bool {
     true
 }
 
-fn clamp_target_in_bounds(from: Vec2, dir: Vec2, template_idx: usize, mut target: Vec2) -> Vec2 {
+fn clamp_target_in_bounds(
+    from: Vec2,
+    dir: Vec2,
+    template_idx: usize,
+    mut target: Vec2,
+    speed: f64,
+    wave: f64,
+) -> Vec2 {
     for _ in 0..24 {
-        let pl = make_planned_leg(from, dir, template_idx, target);
+        let pl = make_planned_leg(from, dir, template_idx, target, speed, wave);
         if leg_in_bounds(&pl.leg) {
             return target;
         }
@@ -441,7 +456,7 @@ mod tests {
         let from = Vec2 { x: 0.1, y: 0.2 };
         let dir = Vec2 { x: 1.0, y: 0.0 };
         let target = Vec2 { x: 0.9, y: 0.8 };
-        let pl = make_planned_leg(from, dir, 0, target);
+        let pl = make_planned_leg(from, dir, 0, target, 1.0, 0.0);
         assert_eq!(pl.leg.from, from);
         assert_eq!(pl.leg.target, target);
         assert!(pl.dur_ms > 0.0);
@@ -540,8 +555,8 @@ mod tests {
     fn duration_scales_with_path_length() {
         let from = Vec2 { x: 0.1, y: 0.5 };
         let dir = Vec2 { x: 1.0, y: 0.0 };
-        let short = make_planned_leg(from, dir, 0, Vec2 { x: 0.3, y: 0.5 });
-        let long = make_planned_leg(from, dir, 0, Vec2 { x: 0.95, y: 0.5 });
+        let short = make_planned_leg(from, dir, 0, Vec2 { x: 0.3, y: 0.5 }, 1.0, 0.0);
+        let long = make_planned_leg(from, dir, 0, Vec2 { x: 0.95, y: 0.5 }, 1.0, 0.0);
         assert!(long.dur_ms > short.dur_ms * 2.0);
     }
 }

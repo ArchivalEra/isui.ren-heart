@@ -101,8 +101,11 @@ pub struct Player {
 | QUEUE_DELAY_MIN/MAX_MS | 1000/3000 | 蓝绿思考期 | engine.rs:169-172 |
 | QUEUE_TRANSIT_MS | 2000 | 思考后滑向槽位时长 | engine.rs:243 |
 | FORMATION_HOLD_MIN/MAX_MS | 8000/18000 | 排队维持时长 | engine.rs:187-188 |
-| TEMPLATE_CURV_STEP | 0.35 | 模板切换曲率最大变化 | planner.rs:181,197 |
-| SPEED_THRESHOLD / SPEED_APPROVE_PROB | 1.2 / 0.4 | 高速模板批准制 | planner.rs:190-196 |
+| TEMPLATE_CURV_STEP | 0.35 | 曲线切换曲率最大变化 | planner.rs:181,197 |
+| SPEED_THRESHOLD / SPEED_APPROVE_PROB | 1.2 / 0.4 | 高速档批准制 | planner.rs:202-213 |
+| SPEED_BANDS | 4 档 | 段速度随机档 | planner.rs roll_speed |
+| WAVE_BANDS | [0,0.02,0.06,0.14] | 段摆动随机档 | planner.rs roll_wave |
+| FORMATION_OFFSETS | [0,0.6,-0.6] | 固定队形 | state.rs:205 |
 | TRAIL_MAX_SEG | 0.12 | 拖尾历史点最大间距（超则清空重建） | engine.rs:104 |
 | MAX_DUR_RATIO | 2.5 | 相邻段时长比上限 | planner.rs:393 |
 | PROB | {switch_template:0.4, switch_order:0.008} | 模板切换/换序概率 | planner.rs:177,208 |
@@ -138,26 +141,16 @@ balls.rs rAF(dt≈16.7ms)
 
 **渲染顺序**：深度排序（屏幕 y）→ 地面线 → 每球：拖尾（Catmull-Rom 过点样条，宽 2×radius×depth）/ 椭圆拉伸（Particle）→ 阴影 → 径向渐变球体。logo 层在 canvas 之上（CSS）。
 
-## 6. 14 个运动模板（templates.rs:27）
+## 6. 曲线模板（templates.rs，纯几何）+ 段级运动参数
 
-| id | curvature | speed | offsets[粉,蓝,绿] | wave |
-|----|-----------|-------|-------------------|------|
-| run 直线跑 | 0.0 | 1.1 | [0, 0.6, -0.6] | 0 |
-| sweep 大转弯 | 0.65 | 1.0 | [0, 0.5, -0.5] | 0 |
-| wiggle 小碎步 | 0.22 | 1.2 | [0, 0.4, 0.4] | 0.012 |
-| glide 滑翔 | 0.35 | 0.85 | [0, 0.8, -0.8] | 0.02 |
-| sprint 冲刺 | 0.08 | 1.6 | [0, 0.3, -0.3] | 0 |
-| sway 摇摆 | 0.5 | 0.9 | [0, 0.5, 0.5] | 0.045 |
-| loop 绕圈 | 0.6 | 0.95 | [0, 0.6, -0.6] | 0 |
-| zigzag 锯齿 | -0.4 | 1.15 | [0.3, 0, -0.3] | 0.06 |
-| crawl 慢爬 | 0.18 | 0.55 | [0, 0.4, -0.4] | 0.008 |
-| dash 折返 | -0.55 | 1.4 | [0, 0.5, -0.5] | 0.03 |
-| drift 漂移 | 0.75 | 1.3 | [0.4, -0.2, 0.2] | 0.015 |
-| stroll 散步 | 0.12 | 0.7 | [0, 0.5, 0.5] | 0.005 |
-| coil 线圈 | 1.5 | 1.05 | [0, 0.6, -0.6] | 0.20 |
-| coil_r 反向线圈 | -1.5 | 0.95 | [0, 0.5, 0.5] | 0.22 |
+**解耦原则（2026-08-03）**：曲线模板只描述【形状】（curvature）；速度/摆动/队形是独立的段级参数——消除组合爆炸（想「慢速绕圈」不必建新模板）。
 
-curvature >1 会显著弯折（coil）；wave 是段内法线摆动（有边缘衰减保护）。
+14 个曲线模板（id / curvature）：run 0、sweep 0.65、wiggle 0.22、glide 0.35、sprint 0.08、sway 0.5、loop 0.6、zigzag -0.4、crawl 0.18、dash -0.55、drift 0.75、stroll 0.12、coil 1.5、coil_r -1.5。curvature ∈ [-1.6, 1.6]，校验测试 `template_spec_validates_all` 强制。
+
+段级参数（params.rs）：
+- `SPEED_BANDS`：4 档 (0.55-0.8 / 0.9-1.1 / 1.2-1.4 / 1.5-1.7)，每段随机；>1.2 受批准制（40%）
+- `WAVE_BANDS`：4 档 [0, 0.02, 0.06, 0.14]，每段随机（蛇形/摆动感）
+- `FORMATION_OFFSETS`：固定队形 [0, 0.6, -0.6]（法线分离）
 
 ## 7. 已知坑（踩过的雷，改代码前必读）
 

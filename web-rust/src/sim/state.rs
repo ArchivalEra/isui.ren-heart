@@ -198,12 +198,10 @@ impl State {
         }
     }
 
-    /// 共享链阶段（Queueing/Formation）的链头模板 offsets；Free 阶段 None
+    /// 共享链阶段（Queueing/Formation）使用固定队形常量；Free 阶段 None
     pub fn template_offsets(&self) -> Option<[f64; 3]> {
         match &self.phase {
-            Phase::Queueing { player, .. } | Phase::Formation { player, .. } => {
-                Some(crate::config::templates::TEMPLATES[player.template_idx(0)].offsets)
-            }
+            Phase::Queueing { .. } | Phase::Formation { .. } => Some(FORMATION_OFFSETS),
             Phase::Free { .. } => None,
         }
     }
