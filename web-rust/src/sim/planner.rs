@@ -18,6 +18,49 @@ pub enum CurveProfile {
 use crate::sim::math::*;
 use std::collections::VecDeque;
 
+/// 活动圈边界（大事情定稿）：以 tayori 标志为中心的最大内切圆——
+/// 圆心 = logo 实时采样位置，半径 = 圆心到四边（横/竖）最窄距离。
+/// 三球所有轨迹点都必须在这个圆内。
+#[derive(Clone, Copy, Debug)]
+pub struct CircleBounds {
+    pub cx: f64,
+    pub cy: f64,
+    pub r: f64,
+}
+
+impl CircleBounds {
+    /// 无 logo 时的兜底（屏幕中央偏上）
+    pub fn fallback() -> Self {
+        CircleBounds { cx: 0.5, cy: 0.42, r: 0.35 }
+    }
+
+    /// 点是否在圆内（含小余量——球半径视觉缓冲）
+    pub fn contains(&self, p: Vec2) -> bool {
+        let dx = p.x - self.cx;
+        let dy = p.y - self.cy;
+        (dx * dx + dy * dy).sqrt() <= self.r * 0.92
+    }
+
+    /// 圆内随机点（极坐标均匀分布，半径 ≤ 0.75r 留转弯余地）
+    pub fn random_point(&self, rng: &mut rand::rngs::ThreadRng) -> Vec2 {
+        use rand::Rng;
+        let ang = rng.gen::<f64>() * std::f64::consts::PI * 2.0;
+        let rr = rng.gen::<f64>().sqrt() * self.r * 0.75;
+        Vec2 {
+            x: self.cx + ang.cos() * rr,
+            y: self.cy + ang.sin() * rr,
+        }
+    }
+
+    /// 朝圆心收缩（clamp 用）
+    pub fn toward_center(&self, from: Vec2, target: Vec2, k: f64) -> Vec2 {
+        Vec2 {
+            x: from.x + (target.x - from.x) * k,
+            y: from.y + (target.y - from.y) * k,
+        }
+    }
+}
+
 #[derive(Clone, Copy, Debug)]
 pub struct Leg {
     pub from: Vec2,
@@ -60,6 +103,8 @@ pub struct Player {
     gaps: [f64; 3],
     /// 云中心跟随目标的 EMA 状态（时序滤波，套在云中心输出后面）
     ema_targets: [Vec2; 3],
+    /// 活动圈边界（tayori 标志中心圆——实时采样更新）
+    bounds: CircleBounds,
     /// 跟随风格（来自 ACTIVE_PROFILE：Chain 自研 / CloudEma 云中心）
     follow: crate::config::profile::FollowStyle,
     /// 云中心偏移幅度（FORMATION_OFFSETS[s] × offset_scale）
@@ -69,6 +114,13 @@ pub struct Player {
     /// 调速器开关
     tune_speeds: bool,
     pub order: [usize; 3],
+}
+
+impl Player {
+    /// 更新活动圈（engine 实时采样 logo 后调用）
+    pub fn set_bounds(&mut self, b: CircleBounds) {
+        self.bounds = b;
+    }
 }
 
 impl Player {
@@ -97,9 +149,10 @@ impl Player {
             }
         };
         let speed = roll_speed();
+        let fb = CircleBounds::fallback();
         let mut pl = make_planned_leg(anchor, dir, 0, target, speed);
-        if !leg_in_bounds(&pl) {
-            let safe = clamp_target_in_bounds(anchor, dir, 0, target, speed);
+        if !leg_in_bounds(&pl, &fb) {
+            let safe = clamp_target_in_bounds(anchor, dir, 0, target, speed, &fb);
             pl = make_planned_leg(anchor, dir, 0, safe, speed);
         }
         let mut chain = VecDeque::new();
@@ -118,6 +171,7 @@ impl Player {
             states,
             gaps: [0.0, CHAIN_GAP, 2.0 * CHAIN_GAP],
             ema_targets: spots,
+            bounds: CircleBounds::fallback(),
             follow: pr.follow,
             offset_scale: pr.offset_scale,
             ema_alpha: pr.ema_alpha,
@@ -263,34 +317,25 @@ impl Player {
                     self.order = next;
                 }
             }
-            // 目标：沿链继续（保持前进方向为主 + 模板曲率）
-            // 区域规划：到达 logo 弧长点 → 该段目标指向 logo 附近（三球回 logo 游走）
+            // 目标生成（大事情定稿）：全部在活动圈内随机——
+            // 普通段 = 圆内随机点（极坐标均匀，0.75r 留转弯余地）；
+            // logo 游走段 = 圆心附近小范围（LOGO_RADIUS×0.4，三球回标志旁）
             let chain_arc_now = self.chain.iter().map(|x| x.arc).sum::<f64>();
-            let mut target = if chain_arc_now >= next_logo_arc {
+            let b = self.bounds;
+            let target = if chain_arc_now >= next_logo_arc {
                 next_logo_arc += LOGO_EVERY_ARC;
-                Vec2 {
-                    x: (LOGO_CENTER.0 + (rng.gen::<f64>() * 2.0 - 1.0) * LOGO_RADIUS)
-                        .clamp(0.1, 0.9),
-                    y: (LOGO_CENTER.1 + (rng.gen::<f64>() * 2.0 - 1.0) * LOGO_RADIUS)
-                        .clamp(0.1, 0.9),
-                }
+                let ang = rng.gen::<f64>() * std::f64::consts::PI * 2.0;
+                let rr = rng.gen::<f64>().sqrt() * b.r * 0.18;
+                Vec2 { x: b.cx + ang.cos() * rr, y: b.cy + ang.sin() * rr }
             } else {
+                // 保持前进方向为主（段长随机），但目标必须落在圆内——越界则随机转向圆内
                 let dist = 0.3 + rng.gen::<f64>() * 0.3;
-                Vec2 {
-                    x: from.x + dir.x * dist,
-                    y: from.y + dir.y * dist,
+                let mut tg = Vec2 { x: from.x + dir.x * dist, y: from.y + dir.y * dist };
+                if !b.contains(tg) {
+                    tg = b.random_point(&mut rng);
                 }
+                tg
             };
-            // 目标出界则转向（保持链在屏内）
-            if !(0.1..=0.9).contains(&target.x) || !(0.1..=0.9).contains(&target.y) {
-                // 反向偏转
-                let angle = rng.gen::<f64>() * std::f64::consts::PI;
-                let d2 = 0.3;
-                target = Vec2 {
-                    x: (from.x + (dir.x * angle.cos() - dir.y * angle.sin()) * d2 * 0.7).clamp(0.1, 0.9),
-                    y: (from.y + (dir.x * angle.sin() + dir.y * angle.cos()) * d2 * 0.7).clamp(0.1, 0.9),
-                };
-            }
             // 曲线 profile：Native=自研单段；EulerBlend=段内曲率渐变（默认关闭）
             let mut pl = if CURVE_PROFILE == CurveProfile::EulerBlend && rng.gen::<f64>() < BLEND_PROB {
                 let old_curv2 = TEMPLATES[tail.template_idx].curvature;
@@ -312,8 +357,8 @@ impl Player {
             } else {
                 make_planned_leg(from, dir, template_idx, target, speed)
             };
-            if !leg_in_bounds(&pl) {
-                let safe = clamp_target_in_bounds(from, dir, template_idx, target, speed);
+            if !leg_in_bounds(&pl, &self.bounds) {
+                let safe = clamp_target_in_bounds(from, dir, template_idx, target, speed, &self.bounds);
                 pl = if rng.gen::<f64>() < BLEND_PROB {
                     make_blend_leg(from, dir, [0.0, 0.0, 0.0], safe, 0.3, template_idx, speed)
                 } else {
@@ -500,20 +545,16 @@ fn dir_of(from: Vec2, to: Vec2) -> Vec2 {
     Vec2 { x: dx / l, y: dy / l }
 }
 
-pub fn leg_in_bounds(pl: &PlannedLeg) -> bool {
-    // 根本性出屏禁止：每个子段 8 点采样（含曲线中途），全程须在安全区 [0.08, 0.92]
-    const SAFE_MIN: f64 = 0.08;
-    const SAFE_MAX: f64 = 0.92;
+pub fn leg_in_bounds(pl: &PlannedLeg, bounds: &CircleBounds) -> bool {
+    // 大事情定稿：段全程须在活动圈内（每个子段 8 点采样，含曲线中途）
     for leg in pl.legs.iter() {
-        if !(SAFE_MIN..=SAFE_MAX).contains(&leg.from.x)
-            || !(SAFE_MIN..=SAFE_MAX).contains(&leg.from.y)
-        {
+        if !bounds.contains(leg.from) {
             return false;
         }
         for i in 0..=8 {
             let u = i as f64 / 8.0;
             let p = quad_bezier(leg.from, leg.ctrl, leg.target, u);
-            if !(SAFE_MIN..=SAFE_MAX).contains(&p.x) || !(SAFE_MIN..=SAFE_MAX).contains(&p.y) {
+            if !bounds.contains(p) {
                 return false;
             }
         }
@@ -527,13 +568,15 @@ fn clamp_target_in_bounds(
     template_idx: usize,
     mut target: Vec2,
     speed: f64,
+    bounds: &CircleBounds,
 ) -> Vec2 {
     for _ in 0..24 {
         let pl = make_planned_leg(from, dir, template_idx, target, speed);
-        if leg_in_bounds(&pl) {
+        if leg_in_bounds(&pl, bounds) {
             return target;
         }
-        target = Vec2 { x: from.x + (target.x - from.x) * 0.82, y: from.y + (target.y - from.y) * 0.82 };
+        // 朝圆心收缩（活动圈内）
+        target = bounds.toward_center(from, target, 0.82);
     }
     from
 }
@@ -552,6 +595,25 @@ fn clamp_dur_to_chain(mut pl: PlannedLeg, tail_dur: f64) -> PlannedLeg {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn circle_bounds_contains_and_random() {
+        let b = CircleBounds { cx: 0.5, cy: 0.4, r: 0.3 };
+        assert!(b.contains(Vec2 { x: 0.5, y: 0.4 }), "圆心在圈内");
+        assert!(b.contains(Vec2 { x: 0.5, y: 0.65 }), "下缘在圈内");
+        assert!(!b.contains(Vec2 { x: 0.5, y: 0.75 }), "超出半径在圈外");
+        assert!(!b.contains(Vec2 { x: 0.9, y: 0.4 }), "横向超界在圈外");
+        // 随机点 200 次全在圈内
+        use rand::Rng;
+        let mut rng = rand::thread_rng();
+        for _ in 0..200 {
+            let p = b.random_point(&mut rng);
+            assert!(b.contains(p), "随机点应在圈内: {p:?}");
+        }
+        // 收缩：朝圆心方向目标必收敛
+        let t2 = b.toward_center(Vec2 { x: 0.1, y: 0.9 }, Vec2 { x: 0.9, y: 0.0 }, 0.5);
+        assert!(b.contains(t2));
+    }
 
     #[test]
     fn make_leg_keeps_endpoints() {

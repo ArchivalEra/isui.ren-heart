@@ -50,6 +50,16 @@ impl State {
     }
 
     /// 推进一帧。`decide` 保留签名（历史测试兼容；当前状态机无随机决策点）
+    /// 更新活动圈边界（engine 实时采样 logo 位置后调用）
+    pub fn set_bounds(&mut self, b: crate::sim::planner::CircleBounds) {
+        match &mut self.phase {
+            Phase::Queueing { player, .. } | Phase::Formation { player } => {
+                player.set_bounds(b);
+            }
+            _ => {}
+        }
+    }
+
     pub fn step(&mut self, dt: f64, _decide: &mut dyn FnMut() -> f64) {
         self.age += dt;
         let mut next: Option<Phase> = None;

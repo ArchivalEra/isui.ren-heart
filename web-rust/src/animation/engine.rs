@@ -29,6 +29,10 @@ pub struct BallsEngine {
     pub mode: RenderMode,
     /// 每球位置历史（实心拖尾用，Trail 模式）
     history: [VecDeque<(f64, f64)>; 3],
+    /// 活动圈边界（tayori 标志中心圆，实时采样）
+    logo_bounds: crate::sim::planner::CircleBounds,
+    /// 采样计数（每 30 帧采样一次 logo 位置——getBoundingClientRect 有 layout 成本）
+    logo_tick: u32,
 }
 
 impl BallsEngine {
@@ -53,6 +57,8 @@ impl BallsEngine {
             state: State::new(anchors),
             mode: RenderMode::Trail,
             history: [VecDeque::new(), VecDeque::new(), VecDeque::new()],
+            logo_bounds: crate::sim::planner::CircleBounds::fallback(),
+            logo_tick: 0,
         }
     }
 
@@ -65,6 +71,13 @@ impl BallsEngine {
     }
 
     pub fn frame(&mut self, dt: f64) {
+        // 大事情定稿：实时采样 tayori 标志位置（不同设备排版差异——
+        // getBoundingClientRect 每 30 帧一次，活动圈随 logo 实际位置更新）
+        self.logo_tick += 1;
+        if self.logo_tick % 30 == 0 {
+            self.logo_bounds = self.sample_logo_bounds();
+        }
+        self.state.set_bounds(self.logo_bounds);
         self.step(dt);
         self.render();
         for s in 0..3 {
@@ -102,6 +115,28 @@ impl BallsEngine {
         let cur = self.ball_world_pos(slot);
         let prev = self.prev_pos[slot];
         Vec2 { x: cur.x - prev.x, y: cur.y - prev.y }
+    }
+
+    /// 采样 .heart-logo 的实际位置 → 活动圈（圆心 = logo 中心，
+    /// 半径 = 圆心到四边最窄距离——横竖边取最小，圆永不越界）
+    fn sample_logo_bounds(&self) -> crate::sim::planner::CircleBounds {
+        use crate::sim::planner::CircleBounds;
+        let el = web_sys::window()
+            .and_then(|w| w.document())
+            .and_then(|d| d.query_selector(".heart-logo").ok().flatten())
+            .and_then(|e| e.dyn_into::<web_sys::HtmlElement>().ok());
+        if let Some(el) = el {
+            let rect = el.get_bounding_client_rect();
+            let cw = self.canvas.client_width() as f64;
+            let ch = self.canvas.client_height() as f64;
+            if cw > 0.0 && ch > 0.0 {
+                let cx = (rect.left() + rect.width() / 2.0) / cw;
+                let cy = (rect.top() + rect.height() / 2.0) / ch;
+                let r = cx.min(1.0 - cx).min(cy).min(1.0 - cy);
+                return CircleBounds { cx, cy, r: r.max(0.08) };
+            }
+        }
+        CircleBounds::fallback()
     }
 
     fn step(&mut self, dt: f64) {
