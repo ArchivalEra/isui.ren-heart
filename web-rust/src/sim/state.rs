@@ -13,9 +13,13 @@ pub enum Phase {
     Queueing {
         t: f64,
         player: Player,
-        /// 进入排队时三球位置快照（思考期冻结点）
+        /// 思考期内三球继续自由运动（不突然定住；思考结束自然汇入队列）
+        free_players: [Player; 3],
+        /// 入场模式：三球静止构图（粉球停 5 秒），非入场模式：思考期继续跑
+        entry: bool,
+        /// 入场静止位置（entry=true 时 blend 起点 = 锚点）
         from: [Vec2; 3],
-        /// 每球思考期（粉 0；蓝绿随机 1-3s）
+        /// 每球思考期（粉 0；蓝绿随机 1-3s）——各自决定啥时候跟上粉球
         delays: [f64; 3],
     },
     Formation {
@@ -50,8 +54,14 @@ impl State {
                 + QUEUE_DELAY_MIN_MS
                 + rand::random::<f64>() * (QUEUE_DELAY_MAX_MS - QUEUE_DELAY_MIN_MS),
         ];
+        // 思考期自由链：三球各自独立 Player（继续跑，不冻结）
+        let free_players = [
+            Player::new(anchors[0], random_dir()),
+            Player::new(anchors[1], random_dir()),
+            Player::new(anchors[2], random_dir()),
+        ];
         State {
-            phase: Phase::Queueing { t: 0.0, player, from: anchors, delays },
+            phase: Phase::Queueing { t: 0.0, player, free_players, entry: true, from: anchors, delays },
             age: 0.0,
         }
     }
@@ -61,9 +71,16 @@ impl State {
         self.age += dt;
         let mut next: Option<Phase> = None;
         match &mut self.phase {
-            Phase::Queueing { t, player, delays, .. } => {
+            Phase::Queueing { t, player, free_players, entry, delays, .. } => {
                 *t += dt;
                 player.tick(dt);
+                // 非入场模式：思考期内蓝绿继续各自的自由运动（渐次汇入，无「突然定住」）
+                // 入场模式：三球静止构图（粉球停 5 秒再出发）
+                if !*entry {
+                    for p in free_players.iter_mut() {
+                        p.tick(dt);
+                    }
+                }
                 // 完成条件 = 最晚思考期 + 滑行期 + 余量（入场节奏 5+3s 超过固定 QUEUE_MS → 动态）
                 let max_delay = delays.iter().cloned().fold(0.0, f64::max);
                 if *t >= max_delay + QUEUE_TRANSIT_MS + 200.0 {
@@ -114,10 +131,6 @@ impl State {
                         let dir = random_dir();
                         let anchor = players[0].ball_center(0);
                         let player = Player::new(anchor, dir);
-                        let mut from = [Vec2 { x: 0.0, y: 0.0 }; 3];
-                        for (i, p) in players.iter().enumerate() {
-                            from[i] = p.ball_center(i);
-                        }
                         let delays = [
                             0.0,
                             QUEUE_DELAY_MIN_MS
@@ -125,7 +138,19 @@ impl State {
                             QUEUE_DELAY_MIN_MS
                                 + decide() * (QUEUE_DELAY_MAX_MS - QUEUE_DELAY_MIN_MS),
                         ];
-                        next = Some(Phase::Queueing { t: 0.0, player, from, delays });
+                        let free_players = [
+                            players[0].clone(),
+                            players[1].clone(),
+                            players[2].clone(),
+                        ];
+                        next = Some(Phase::Queueing {
+                            t: 0.0,
+                            player,
+                            free_players,
+                            entry: false,
+                            from: [Vec2 { x: 0.0, y: 0.0 }; 3],
+                            delays,
+                        });
                     }
                 }
             }
@@ -138,11 +163,17 @@ impl State {
     /// 球 i 渲染位置（含法线偏移）
     pub fn ball_pos(&self, color_slot: usize, offset: f64) -> Vec2 {
         match &self.phase {
-            Phase::Queueing { t, player, from, delays } => {
-                // 思考期（t < delay）：冻结在进入时位置；思考结束 2s 内滑向链上槽位
+            Phase::Queueing { t, player, free_players, entry, from, delays } => {
+                // 思考期（t < delay）：入场模式静止构图 / 非入场模式继续自由运动；
+                // 思考结束 2s 内自然汇入链上槽位
                 let k = smoothstep(((t - delays[color_slot]) / QUEUE_TRANSIT_MS).clamp(0.0, 1.0));
+                let base = if *entry {
+                    from[color_slot]
+                } else {
+                    free_players[color_slot].world_pos(color_slot, offset)
+                };
                 let slot = player.world_pos(color_slot, offset);
-                lerp(from[color_slot], slot, k)
+                lerp(base, slot, k)
             }
             Phase::Formation { player, .. } => player.world_pos(color_slot, offset),
             Phase::Free { players, .. } => players[color_slot].world_pos(color_slot, offset),

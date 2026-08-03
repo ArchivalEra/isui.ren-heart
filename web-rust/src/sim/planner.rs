@@ -53,8 +53,8 @@ impl Player {
         let mut pts = [anchor; 3];
         for i in 1..3 {
             pts[i] = Vec2 {
-                x: (anchor.x - dir.x * i as f64 * CHAIN_GAP).clamp(0.05, 0.95),
-                y: (anchor.y - dir.y * i as f64 * CHAIN_GAP).clamp(0.05, 0.95),
+                x: (anchor.x - dir.x * i as f64 * CHAIN_GAP).clamp(0.10, 0.90),
+                y: (anchor.y - dir.y * i as f64 * CHAIN_GAP).clamp(0.10, 0.90),
             };
         }
         pts
@@ -83,16 +83,10 @@ impl Player {
                 y: (anchor.y + dir.y * r).clamp(0.12, 0.88),
             }
         };
-        // 编队特技：25% 概率首段用 coil（并排高速画线圈）
-        let first_tpl = if rand::random::<f64>() < 0.25 {
-            TEMPLATES.iter().position(|t| t.id == "coil").unwrap_or(0)
-        } else {
-            0
-        };
-        let mut pl = make_planned_leg(anchor, dir, first_tpl, target);
+        let mut pl = make_planned_leg(anchor, dir, 0, target);
         if !leg_in_bounds(&pl.leg) {
-            let safe = clamp_target_in_bounds(anchor, dir, first_tpl, target);
-            pl = make_planned_leg(anchor, dir, first_tpl, safe);
+            let safe = clamp_target_in_bounds(anchor, dir, 0, target);
+            pl = make_planned_leg(anchor, dir, 0, safe);
         }
         let mut chain = VecDeque::new();
         chain.push_back(pl);
@@ -249,6 +243,17 @@ impl Player {
                 let safe = clamp_target_in_bounds(from, dir, template_idx, target);
                 pl = make_planned_leg(from, dir, template_idx, safe);
             }
+            if pl.arc < 0.05 {
+                // 死循环防护：零长度段（收缩失败）强制拉一段，仍失败则放弃补段
+                let forced = Vec2 {
+                    x: (from.x + dir.x * 0.3).clamp(0.10, 0.90),
+                    y: (from.y + dir.y * 0.3).clamp(0.10, 0.90),
+                };
+                pl = make_planned_leg(from, dir, template_idx, forced);
+                if pl.arc < 0.05 || !leg_in_bounds(&pl.leg) {
+                    break;
+                }
+            }
             self.chain.push_back(clamp_dur_to_chain(pl, tail.dur_ms));
         }
     }
@@ -265,15 +270,13 @@ impl Player {
                 let n = normal_of(tan);
                 let wave = TEMPLATES[pl.template_idx].wave;
                 let wobble = wave * (u * std::f64::consts::PI * 2.0).sin();
-                // wobble 边缘衰减：距屏边 < |wobble| 时按比例压缩，
-                // 球永不因摆动出屏 → 无「曲线出屏强制闪现」
-                let margin_x = p.x.min(1.0 - p.x);
-                let margin_y = p.y.min(1.0 - p.y);
-                let limit = wobble.abs().max(1e-9);
-                let f = (margin_x / limit).min(margin_y / limit).clamp(0.0, 1.0);
+                // wobble 硬限制：摆动后位置永不越过 [0.03, 0.97]
+                // （配合链几何安全区 [0.08,0.92]，物理上不可能出屏/贴边）
+                let wob_x = n.x * wobble;
+                let wob_y = n.y * wobble;
                 let pos = Vec2 {
-                    x: (p.x + n.x * wobble * f).clamp(0.02, 0.98),
-                    y: (p.y + n.y * wobble * f).clamp(0.02, 0.98),
+                    x: if wob_x >= 0.0 { (p.x + wob_x).min(0.97) } else { (p.x + wob_x).max(0.03) },
+                    y: if wob_y >= 0.0 { (p.y + wob_y).min(0.97) } else { (p.y + wob_y).max(0.03) },
                 };
                 return (pos, tan, idx, u);
             }
@@ -388,20 +391,32 @@ fn dir_of(from: Vec2, to: Vec2) -> Vec2 {
 }
 
 pub fn leg_in_bounds(leg: &Leg) -> bool {
-    in_unit(leg.from) && in_unit(leg.ctrl) && in_unit(leg.target)
-}
-
-fn in_unit(p: Vec2) -> bool {
-    p.x >= -1e-6 && p.x <= 1.0 + 1e-6 && p.y >= -1e-6 && p.y <= 1.0 + 1e-6
+    // 根本性出屏禁止：16 点采样（含曲线中途），全程须在安全区 [0.08, 0.92]
+    // （不只端点——大 curvature 的中段侧偏可能出屏）
+    const SAFE_MIN: f64 = 0.08;
+    const SAFE_MAX: f64 = 0.92;
+    if !(SAFE_MIN..=SAFE_MAX).contains(&leg.from.x)
+        || !(SAFE_MIN..=SAFE_MAX).contains(&leg.from.y)
+    {
+        return false;
+    }
+    for i in 0..=16 {
+        let u = i as f64 / 16.0;
+        let p = quad_bezier(leg.from, leg.ctrl, leg.target, u);
+        if !(SAFE_MIN..=SAFE_MAX).contains(&p.x) || !(SAFE_MIN..=SAFE_MAX).contains(&p.y) {
+            return false;
+        }
+    }
+    true
 }
 
 fn clamp_target_in_bounds(from: Vec2, dir: Vec2, template_idx: usize, mut target: Vec2) -> Vec2 {
-    for _ in 0..20 {
+    for _ in 0..24 {
         let pl = make_planned_leg(from, dir, template_idx, target);
-        if in_unit(pl.leg.ctrl) && in_unit(pl.leg.target) {
+        if leg_in_bounds(&pl.leg) {
             return target;
         }
-        target = Vec2 { x: from.x + (target.x - from.x) * 0.85, y: from.y + (target.y - from.y) * 0.85 };
+        target = Vec2 { x: from.x + (target.x - from.x) * 0.82, y: from.y + (target.y - from.y) * 0.82 };
     }
     from
 }

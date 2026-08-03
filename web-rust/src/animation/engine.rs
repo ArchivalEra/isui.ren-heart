@@ -247,29 +247,32 @@ impl BallsEngine {
                         }
                         self.ctx.set_line_cap("round");
                         self.ctx.set_line_join("round");
-                        self.ctx.set_line_width(radius * 2.0); // 完整球宽（直径）
-                        // 尾部渐隐（Material 3 emphasized-decelerate）：主体前 60% 纯实心，
-                        // 尾部 40% 快速平滑淡出——「消失速度与特效」（google-university.md）
+                        // 拖尾与球成比例：头部 = 完整球径（2×radius），尾部宽度+透明度
+                        // 同步收窄（Material 3 emphasized-decelerate 消失曲线，google-university.md）
                         let (r, g, b) = hex_to_rgb(color);
-                        let mut prev_alpha = 1.0f64;
+                        let mut prev_key = (-1.0f64, -1.0f64); // (alpha, width) 缓存
                         for k in 0..n - 1 {
                             let frac = k as f64 / (n as f64 - 1.0); // 0=最新（头部）
-                            let alpha = if frac < 0.6 {
-                                1.0
+                            let fade = if frac < 0.6 {
+                                0.0
                             } else {
-                                1.0 - crate::sim::math::cubic_bezier_ease(
+                                crate::sim::math::cubic_bezier_ease(
                                     0.05, 0.7, 0.1, 1.0,
                                     (frac - 0.6) / 0.4,
                                 )
                             };
+                            let alpha = 1.0 - fade;
                             if alpha < 0.02 {
                                 break; // 尾端已透明，省绘制
                             }
-                            if (alpha - prev_alpha).abs() > 1e-6 {
+                            // 宽度随消失同步收窄（0.6 后从全宽平滑收到 15%）
+                            let lw = radius * 2.0 * (1.0 - 0.85 * fade);
+                            if (alpha - prev_key.0).abs() > 0.01 || (lw - prev_key.1).abs() > 0.3 {
                                 self.ctx.set_stroke_style(&wasm_bindgen::JsValue::from(format!(
                                     "rgba({r},{g},{b},{alpha:.3})"
                                 )));
-                                prev_alpha = alpha;
+                                self.ctx.set_line_width(lw);
+                                prev_key = (alpha, lw);
                             }
                             let p0 = if k == 0 { pts[0] } else { pts[k - 1] };
                             let p1 = pts[k];

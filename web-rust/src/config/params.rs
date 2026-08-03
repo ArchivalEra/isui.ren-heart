@@ -73,7 +73,7 @@ pub struct Spring {
     pub damping: f64,
 }
 
-pub const SPRING: Spring = Spring { stiffness: 700.0, damping: 0.9 };
+pub const SPRING: Spring = Spring { stiffness: 700.0, damping: 1.0 };
 /// spring 加速度上限（世界单位/s²）：防「高速冲到一个点定住」
 pub const MAX_ACCEL: f64 = 2.5;
 
