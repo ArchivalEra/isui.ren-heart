@@ -67,6 +67,19 @@ FastOutLinearInEasing = CubicBezierEasing(0.4f, 0.0f, 1.0f, 1.0f)
 A→B→C；子段间切线继承（C1 连续）+ 曲率阶梯（≈ 线性变化）。单测
 `blend_leg_curvature_gradates_a_to_c` 验证曲率单调渐变 + 终点精确命中。
 
+## 2026-08-04 — Motion blur（小拖尾/动态模糊的设计依据）
+
+**来源**：Wikipedia《Motion blur (media)》
+
+**实证内容**：
+- 运动模糊 = 物体**沿相对运动方向涂抹**（smeared along the direction of relative motion）
+- 人眼本身有此行为——所以运动模糊观感"自然"（动画/电影/游戏的标准手法）
+- 涂抹的形态：沿速度方向、透明度渐变（中心实、边缘虚）
+
+**应用**：TrailMini（小拖尾）——短历史（6 点）+ 宽度 0.6r（小于球）+ 半透明
+（头部 alpha 0.45 → 尾部 0 渐变）+ Catmull-Rom 过点——沿运动方向涂抹的
+离散近似，模拟动态模糊而非"实体拖尾"。
+
 ## 备用：其他可靠来源（未逐条抓取，供后续进修）
 
 - Red Blob Games（redblobgames.com）：steering behaviors / 路径规划——编队与跟随的工程参考
