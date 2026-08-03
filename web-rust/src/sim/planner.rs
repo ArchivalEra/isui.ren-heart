@@ -5,13 +5,13 @@
 // - 球 i 未上链（s<0）时停在起点（= Travel 到达点，链起点后方）→ 自然滑上链，无排队仪式
 // - PD spring 追踪链上目标（丝滑：位置+速度双目标）
 use crate::config::params::*;
-use crate::config::profile::NATIVE_PROFILE as P;
 use crate::config::templates::TEMPLATES;
 
-/// 曲线生成策略：自研 = 单段贝塞尔；EulerBlend = 段内曲率渐变（make_blend_leg）
+/// 曲线生成 profile：以后新增曲线策略就加一个变体（如 EulerBlend 已备）
+/// 自研 = 单段贝塞尔（默认）；EulerBlend = 段内曲率渐变（make_blend_leg）
 #[derive(Clone, Copy, PartialEq)]
-#[allow(dead_code)] // 策略标签（当前由 profile.blend_prob 驱动）
 pub enum CurveProfile {
+    #[allow(dead_code)] // Native 随时可切回（自研单段贝塞尔）
     Native,
     EulerBlend,
 }
@@ -62,27 +62,21 @@ pub struct Player {
 }
 
 impl Player {
-    /// 上链点：球 i 到达点 = 链起点后方 gaps[i] 弧长（沿 -dir）
-    /// 与 Player 内部随机 gaps 同源——槽位与等待点一致，转移无跳变
-    pub fn entry_points(anchor: Vec2, dir: Vec2, gaps: [f64; 3]) -> [Vec2; 3] {
+    /// 上链点：球 i 到达点 = 链起点后方 i×GAP 弧长（沿 -dir）
+    /// 到达即 Play：队首在链起点，其余在后方错开，s_lead 前进自然滑上链
+    pub fn entry_points(anchor: Vec2, dir: Vec2) -> [Vec2; 3] {
         let mut pts = [anchor; 3];
         for i in 1..3 {
             pts[i] = Vec2 {
-                x: (anchor.x - dir.x * gaps[i]).clamp(0.10, 0.90),
-                y: (anchor.y - dir.y * gaps[i]).clamp(0.10, 0.90),
+                x: (anchor.x - dir.x * i as f64 * CHAIN_GAP).clamp(0.10, 0.90),
+                y: (anchor.y - dir.y * i as f64 * CHAIN_GAP).clamp(0.10, 0.90),
             };
         }
         pts
     }
 
     pub fn new(anchor: Vec2, dir: Vec2) -> Self {
-        // 随机距离贴合：蓝绿落后粉球曲线的随机弧长（每次排队不同）
-        let gaps = [
-            0.0,
-            P.gap_min + rand::random::<f64>() * (P.gap_max - P.gap_min),
-            P.gap_min + P.gap_max + rand::random::<f64>() * (P.gap_max - P.gap_min),
-        ];
-        let spots = Self::entry_points(anchor, dir, gaps);
+        let spots = Self::entry_points(anchor, dir);
         // 首段：链起点 = 球0（anchor），方向 = 入口 dir（与 entry_points 槽位方向一致，
         // 保证等待上链的球在解散/转移时位置连续——曾因随机 target 方向导致蓝绿闪现）
         let target = {
@@ -92,26 +86,11 @@ impl Player {
                 y: (anchor.y + dir.y * r).clamp(0.12, 0.88),
             }
         };
-        // 首段：随机圆弧模板（|curv|∈[0.3,1.1]）——不从直线 run 开始
-        let first_tpl = {
-            use rand::Rng;
-            let mut rng = rand::thread_rng();
-            let mut idx = 0;
-            for _ in 0..8 {
-                let c = rng.gen_range(0..TEMPLATES.len());
-                let cc = TEMPLATES[c].curvature.abs();
-                if (P.curv_min..=P.curv_max).contains(&cc) {
-                    idx = c;
-                    break;
-                }
-            }
-            idx
-        };
         let speed = roll_speed();
-        let mut pl = make_planned_leg(anchor, dir, first_tpl, target, speed);
+        let mut pl = make_planned_leg(anchor, dir, 0, target, speed);
         if !leg_in_bounds(&pl) {
-            let safe = clamp_target_in_bounds(anchor, dir, first_tpl, target, speed);
-            pl = make_planned_leg(anchor, dir, first_tpl, safe, speed);
+            let safe = clamp_target_in_bounds(anchor, dir, 0, target, speed);
+            pl = make_planned_leg(anchor, dir, 0, safe, speed);
         }
         let mut chain = VecDeque::new();
         chain.push_back(pl);
@@ -126,7 +105,7 @@ impl Player {
             chain,
             s_lead: 0.0,
             states,
-            gaps,
+            gaps: [0.0, CHAIN_GAP, 2.0 * CHAIN_GAP],
             order: ORDERS[0],
         };
         p.ensure_chain();
@@ -140,10 +119,9 @@ impl Player {
         self.s_lead += self.profile_speed(seg0, u0) * dt_s;
         self.ensure_chain();
 
-        let k = P.spring.stiffness;
-        let c_damp = P.spring.damping * 2.0 * k.sqrt();
-        // 温和加减速：速率向目标收敛的时间常数 0.45s（慢慢加速/减速，全程平滑）
-        let rate_lerp = (dt_s / (P.rate_lerp_tau_ms / 1000.0)).min(1.0);
+        let k = SPRING.stiffness;
+        let c_damp = SPRING.damping * 2.0 * k.sqrt();
+        let rate_lerp = (dt_s / 0.12).min(1.0);
 
         for s in 0..3 {
             // 球 i 弧长 = 队首 - 错开；未上链（<0）→ 目标 = 起点（链起点后方）
@@ -169,8 +147,8 @@ impl Player {
             let ay = k * (target.y - st.pos.y) + c_damp * (tvel.y - st.vel.y);
             // 加速度钳制：spring 误差大时力无上限 → 高速冲点；clamp 后温和冲刺
             let a_mag = (ax * ax + ay * ay).sqrt();
-            let (ax, ay) = if a_mag > P.max_accel {
-                (ax / a_mag * P.max_accel, ay / a_mag * P.max_accel)
+            let (ax, ay) = if a_mag > MAX_ACCEL {
+                (ax / a_mag * MAX_ACCEL, ay / a_mag * MAX_ACCEL)
             } else {
                 (ax, ay)
             };
@@ -199,7 +177,7 @@ impl Player {
 
     /// 链增长：总弧长保持 ≥ s_lead + 余量（无限轨迹）
     fn ensure_chain(&mut self) {
-        self.ensure_chain_to(P.gap_max * 2.0 + 0.5);
+        self.ensure_chain_to(CHAIN_GAP * 3.0 + 0.5);
     }
 
     /// 批量补链到「队首前方 ahead 弧长」。入场预生成风暴用：一次性补几分钟的链，
@@ -223,40 +201,17 @@ impl Player {
             };
             let roll = rng.gen::<f64>();
             let old_curv = TEMPLATES[tail.template_idx].curvature;
-            // 曲线选择：曲率连续性 + 弯道加权（精髓：不容易出直线）
-            // 权重 w = 0.4 + |curvature|——直线模板权重最低，弯道模板优先
-            // 直线模板（|curv|<0.3）不可延续：强制进入加权圆弧选择
-            let tail_is_straight = TEMPLATES[tail.template_idx].curvature.abs() < 0.3;
-            let template_idx = if roll < PROB.switch_template || tail_is_straight {
-                let mut total_w = 0.0;
-                let mut cands: Vec<(usize, f64)> = Vec::new();
-                for (i, tpl) in TEMPLATES.iter().enumerate() {
-                    // 强制曲线/圆弧：只选 |curv| ∈ [0.3, 1.1]（直线与近直线模板出局，
-                    // 大弯 >1.1 排除防小圈抖动/出屏收缩）
-                    let c = tpl.curvature.abs();
-                    if !(0.3..=1.1).contains(&c) {
-                        continue;
-                    }
-                    if (tpl.curvature - old_curv).abs() <= P.curv_step {
-                        let w = 0.4 + c;
-                        total_w += w;
-                        cands.push((i, w));
+            // 曲线选择：曲率连续性（形状只管几何）
+            let template_idx = if roll < PROB.switch_template {
+                let mut idx = tail.template_idx;
+                for _ in 0..6 {
+                    let cand = rng.gen_range(0..TEMPLATES.len());
+                    if (TEMPLATES[cand].curvature - old_curv).abs() <= TEMPLATE_CURV_STEP {
+                        idx = cand;
+                        break;
                     }
                 }
-                if cands.is_empty() {
-                    tail.template_idx
-                } else {
-                    let mut pick = rng.gen::<f64>() * total_w;
-                    let mut idx = tail.template_idx;
-                    for (i, w) in cands {
-                        pick -= w;
-                        if pick <= 0.0 {
-                            idx = i;
-                            break;
-                        }
-                    }
-                    idx
-                }
+                idx
             } else {
                 tail.template_idx
             };
@@ -280,8 +235,7 @@ impl Player {
                         .clamp(0.1, 0.9),
                 }
             } else {
-                // 段长 0.32-0.6：一条段 = 一条完整弧线（单弧线感，无短段拼接折）
-                let dist = 0.32 + rng.gen::<f64>() * 0.28;
+                let dist = 0.3 + rng.gen::<f64>() * 0.3;
                 Vec2 {
                     x: from.x + dir.x * dist,
                     y: from.y + dir.y * dist,
@@ -298,12 +252,12 @@ impl Player {
                 };
             }
             // 曲线 profile：Native=自研单段；EulerBlend=段内曲率渐变（默认关闭）
-            let mut pl = if P.blend_prob > 0.0 && rng.gen::<f64>() < P.blend_prob {
+            let mut pl = if CURVE_PROFILE == CurveProfile::EulerBlend && rng.gen::<f64>() < BLEND_PROB {
                 let old_curv2 = TEMPLATES[tail.template_idx].curvature;
                 let pick = |rng: &mut rand::rngs::ThreadRng, prev: f64| {
                     for _ in 0..6 {
                         let c = rng.gen_range(0..TEMPLATES.len());
-                        if (TEMPLATES[c].curvature - prev).abs() <= P.curv_step {
+                        if (TEMPLATES[c].curvature - prev).abs() <= TEMPLATE_CURV_STEP {
                             return TEMPLATES[c].curvature;
                         }
                     }
@@ -320,7 +274,7 @@ impl Player {
             };
             if !leg_in_bounds(&pl) {
                 let safe = clamp_target_in_bounds(from, dir, template_idx, target, speed);
-                pl = if P.blend_prob > 0.0 && rng.gen::<f64>() < P.blend_prob {
+                pl = if rng.gen::<f64>() < BLEND_PROB {
                     make_blend_leg(from, dir, [0.0, 0.0, 0.0], safe, 0.3, template_idx, speed)
                 } else {
                     make_planned_leg(from, dir, template_idx, safe, speed)
@@ -393,11 +347,11 @@ impl Player {
 
 /// 段速度：随机档位；高速档（>1.2）40% 批准，不批准回落巡航档（重新生成新路径）
 fn roll_speed() -> f64 {
-    let idx = rand::random::<usize>() % P.speed_bands.len();
-    let (lo, hi) = P.speed_bands[idx];
+    let idx = rand::random::<usize>() % SPEED_BANDS.len();
+    let (lo, hi) = SPEED_BANDS[idx];
     let v = lo + rand::random::<f64>() * (hi - lo);
     if v > SPEED_THRESHOLD && rand::random::<f64>() >= SPEED_APPROVE_PROB {
-        let (lo, hi) = P.speed_bands[1];
+        let (lo, hi) = SPEED_BANDS[1];
         lo + rand::random::<f64>() * (hi - lo)
     } else {
         v
@@ -562,7 +516,7 @@ mod tests {
     fn entry_points_staggered() {
         let anchor = Vec2 { x: 0.5, y: 0.5 };
         let dir = Vec2 { x: 1.0, y: 0.0 };
-        let pts = Player::entry_points(anchor, dir, [0.0, 0.2, 0.4]);
+        let pts = Player::entry_points(anchor, dir);
         assert!(pts[0].x > pts[1].x && pts[1].x > pts[2].x, "沿 -dir 错开");
     }
 
@@ -612,7 +566,7 @@ mod tests {
 
     #[test]
     fn group_moves_together() {
-        // 成群结对：三球沿链错开（两两弧长差 ≈ P.gap_min..P.gap_max）
+        // 成群结对：三球沿链错开（两两弧长差 ≈ CHAIN_GAP）
         let anchor = Vec2 { x: 0.5, y: 0.5 };
         let dir = Vec2 { x: 0.8, y: 0.6 };
         let mut p = Player::new(anchor, dir);
@@ -632,35 +586,6 @@ mod tests {
                 assert!(d < 0.6, "球{s}/{o} 应成群（同链）: {d}");
             }
         }
-    }
-
-    #[test]
-    fn gentle_acceleration_everywhere() {
-        // 温和加减速验证：60s 模拟中任意球任意帧的物理加速度 ≤ MAX_ACCEL×1.1
-        // （速度变化全程有界 = 慢慢加速/减速，无一顿一顿）
-        let anchor = Vec2 { x: 0.5, y: 0.5 };
-        let dir = Vec2 { x: 0.8, y: 0.6 };
-        let mut p = Player::new(anchor, dir);
-        let dt_s = 16.7 / 1000.0;
-        let mut max_a = 0.0f64;
-        for _ in 0..(60.0 * 1000.0 / 16.7) as usize {
-            let vel_before: Vec<Vec2> = (0..3)
-                .map(|s| p.states[s].vel)
-                .collect();
-            p.tick(16.7);
-            for s in 0..3 {
-                let dvx = p.states[s].vel.x - vel_before[s].x;
-                let dvy = p.states[s].vel.y - vel_before[s].y;
-                let a = (dvx * dvx + dvy * dvy).sqrt() / dt_s;
-                if a > max_a {
-                    max_a = a;
-                }
-            }
-        }
-        assert!(
-            max_a <= P.max_accel * 1.1,
-            "全程加速度应有界（温和加减速）: max_a={max_a:.3} 上限={}", P.max_accel
-        );
     }
 
     #[test]

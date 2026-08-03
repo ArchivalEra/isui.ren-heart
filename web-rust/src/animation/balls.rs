@@ -1,5 +1,5 @@
 // 三球队列动画组件：Canvas + rAF 自适应循环 + 拖尾风格切换按钮
-use crate::animation::engine::BallsEngine;
+use crate::animation::engine::{BallsEngine, RenderMode};
 use leptos::prelude::*;
 use std::cell::RefCell;
 use std::rc::Rc;
@@ -67,7 +67,7 @@ fn append_node<E: Into<web_sys::Node>>(parent: &web_sys::Node, child: E) {
     let _ = parent.append_child(&c);
 }
 
-// ---------- 拖尾风格切换（小拖尾/大拖尾，绑定 profile 的 trail_style） ----------
+// ---------- 拖尾风格切换（粒子化已删：拖尾 / 小拖尾） ----------
 
 fn setup_style_toggle(engine: Rc<RefCell<BallsEngine>>) {
     let document = web_sys::window().unwrap().document().unwrap();
@@ -75,7 +75,7 @@ fn setup_style_toggle(engine: Rc<RefCell<BallsEngine>>) {
 
     let btn: web_sys::HtmlButtonElement =
         document.create_element("button").unwrap().dyn_into().unwrap();
-    set_text_of(btn.clone(), "拖尾：大");
+    set_text_of(btn.clone(), "模式：粒子");
     let s = style_of(&btn);
     s.set_property("position", "fixed").unwrap();
     s.set_property("right", "16px").unwrap();
@@ -92,12 +92,17 @@ fn setup_style_toggle(engine: Rc<RefCell<BallsEngine>>) {
         let engine = Rc::clone(&engine);
         let btn = btn.clone();
         move || {
-            engine.borrow_mut().toggle_trail_style();
-            let mini = matches!(
-                engine.borrow().trail_style,
-                crate::config::profile::TrailStyle::Mini { .. }
-            );
-            set_text_of(btn.clone(), if mini { "拖尾：小" } else { "拖尾：大" });
+            let next = match engine.borrow().mode {
+                RenderMode::Trail => {
+                    set_text_of(btn.clone(), "模式：小拖尾");
+                    RenderMode::TrailMini
+                }
+                RenderMode::TrailMini => {
+                    set_text_of(btn.clone(), "模式：实心拖尾");
+                    RenderMode::Trail
+                }
+            };
+            engine.borrow_mut().mode = next;
         }
     });
     btn.add_event_listener_with_callback("click", cb.as_ref().unchecked_ref()).unwrap();
