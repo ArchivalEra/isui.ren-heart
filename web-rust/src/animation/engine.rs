@@ -281,26 +281,43 @@ impl BallsEngine {
                     }
                 }
                 RenderMode::Trail => {
-                    // 实心拖尾：相邻历史点连线段，线宽从头到尾递减（纯色不透明）
-                    // 圆点序列会产生「感叹号」断点感；连续线段才是 Google 式实心条
+                    // 实心拖尾：向心 Catmull–Rom 过点样条（无折点光栅错误）
+                    // 历史点全部穿过，曲线 C1 连续；宽度恒 2r（完整球宽）
                     let hist = &self.history[color_slot];
                     if hist.len() >= 2 {
                         let n = hist.len();
                         let color = self.balls[color_slot].color;
-                        // 头到尾：最新 → 最旧（屏幕坐标）
-                        let mut pts: Vec<(f64, f64)> = Vec::with_capacity(n);
+                        let mut pts: Vec<Vec2> = Vec::with_capacity(n);
                         for (hx, hy) in hist.iter() {
                             let (sx, sy, _) = screen_of(Vec2 { x: *hx, y: *hy }, w, h);
-                            pts.push((sx, sy));
+                            pts.push(Vec2 { x: sx, y: sy });
                         }
                         self.ctx.set_line_cap("round");
-                        // 等宽实心拖尾（与小球同宽，无感叹号渐细）
+                        self.ctx.set_line_join("round");
                         self.ctx.set_stroke_style(&wasm_bindgen::JsValue::from(color));
                         self.ctx.set_line_width(radius * 2.0); // 完整球宽（直径）
                         self.ctx.begin_path();
-                        self.ctx.move_to(pts[0].0, pts[0].1);
-                        for k in 1..n {
-                            self.ctx.line_to(pts[k].0, pts[k].1);
+                        if n == 2 {
+                            self.ctx.move_to(pts[0].x, pts[0].y);
+                            self.ctx.line_to(pts[1].x, pts[1].y);
+                        } else {
+                            // 相邻点对间细分 4 段（Catmull-Rom 需要前后邻居）
+                            let sub = 4;
+                            for k in 0..n - 1 {
+                                let p0 = if k == 0 { pts[0] } else { pts[k - 1] };
+                                let p1 = pts[k];
+                                let p2 = pts[k + 1];
+                                let p3 = if k + 2 < n { pts[k + 2] } else { pts[n - 1] };
+                                for s in 0..sub {
+                                    let t = s as f64 / sub as f64;
+                                    let q = crate::sim::math::catmull_rom(p0, p1, p2, p3, t);
+                                    if k == 0 && s == 0 {
+                                        self.ctx.move_to(q.x, q.y);
+                                    } else {
+                                        self.ctx.line_to(q.x, q.y);
+                                    }
+                                }
+                            }
                         }
                         self.ctx.stroke();
                     }

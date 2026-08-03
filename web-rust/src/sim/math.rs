@@ -41,6 +41,25 @@ pub fn smoothstep(k: f64) -> f64 {
     k * k * (3.0 - 2.0 * k)
 }
 
+/// 向心 Catmull–Rom：过点插值（穿过所有控制点，无尖角回环）
+/// 标准公式：P(t)=0.5*(2P1 + (-P0+P2)t + (2P0-5P1+4P2-P3)t² + (-P0+3P1-3P2+P3)t³)
+pub fn catmull_rom(p0: Vec2, p1: Vec2, p2: Vec2, p3: Vec2, t: f64) -> Vec2 {
+    let t2 = t * t;
+    let t3 = t2 * t;
+    Vec2 {
+        x: 0.5
+            * ((2.0 * p1.x)
+                + (-p0.x + p2.x) * t
+                + (2.0 * p0.x - 5.0 * p1.x + 4.0 * p2.x - p3.x) * t2
+                + (-p0.x + 3.0 * p1.x - 3.0 * p2.x + p3.x) * t3),
+        y: 0.5
+            * ((2.0 * p1.y)
+                + (-p0.y + p2.y) * t
+                + (2.0 * p0.y - 5.0 * p1.y + 4.0 * p2.y - p3.y) * t2
+                + (-p0.y + 3.0 * p1.y - 3.0 * p2.y + p3.y) * t3),
+    }
+}
+
 pub fn normalize(v: Vec2) -> Vec2 {
     let l = (v.x * v.x + v.y * v.y).sqrt().max(1e-9);
     Vec2 { x: v.x / l, y: v.y / l }
@@ -96,6 +115,16 @@ mod tests {
         let n = normal_of(tan);
         assert!((n.x * n.x + n.y * n.y - 1.0).abs() < 1e-9);
         assert!((n.x * tan.x + n.y * tan.y).abs() < 1e-9);
+    }
+
+    #[test]
+    fn catmull_rom_passes_through_points() {
+        let p1 = Vec2 { x: 0.2, y: 0.3 };
+        let p2 = Vec2 { x: 0.5, y: 0.7 };
+        let a = catmull_rom(Vec2 { x: 0.1, y: 0.1 }, p1, p2, Vec2 { x: 0.9, y: 0.4 }, 0.0);
+        let b = catmull_rom(Vec2 { x: 0.1, y: 0.1 }, p1, p2, Vec2 { x: 0.9, y: 0.4 }, 1.0);
+        assert!((a.x - p1.x).abs() < 1e-9 && (a.y - p1.y).abs() < 1e-9, "t=0 过 P1");
+        assert!((b.x - p2.x).abs() < 1e-9 && (b.y - p2.y).abs() < 1e-9, "t=1 过 P2");
     }
 
     #[test]
