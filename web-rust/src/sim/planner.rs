@@ -58,6 +58,8 @@ pub struct Player {
     states: [BallState; 3],
     /// 每球沿链错开弧长（0, GAP, 2×GAP）
     gaps: [f64; 3],
+    /// 云中心跟随目标的 EMA 状态（时序滤波，套在云中心输出后面）
+    ema_targets: [Vec2; 3],
     pub order: [usize; 3],
 }
 
@@ -106,6 +108,7 @@ impl Player {
             s_lead: 0.0,
             states,
             gaps: [0.0, CHAIN_GAP, 2.0 * CHAIN_GAP],
+            ema_targets: spots,
             order: ORDERS[0],
         };
         p.ensure_chain();
@@ -127,13 +130,15 @@ impl Player {
             // 球 i 弧长 = 队首 - 错开；未上链（<0）→ 目标 = 起点（链起点后方）
             let s_i = self.s_lead - self.gaps[s];
             let (target, tan, seg_i, u_i) = if s_i >= 0.0 {
-                // 云中心：平滑中心点 + Frenet 法线偏移（FORMATION_OFFSETS[s]×0.05）
+                // 云中心：Frenet 法线偏移（FORMATION_OFFSETS[s]×0.05）——
                 // 转弯时三球走同一条曲线的偏移轨迹 → 同弧、无多段线
                 let d = FORMATION_OFFSETS[s] * 0.05;
-                let tgt = crate::sim::cloud::follower_target_smooth(&self.chain, s_i, d, 0.35);
-                let (_, tan, _, _) = chain_pos_and_tangent(&self.chain, s_i);
+                let (raw, tan) = crate::sim::cloud::follower_target(&self.chain, s_i, d);
                 let (_, _, seg, u) = chain_pos_and_tangent(&self.chain, s_i);
-                (tgt, tan, seg, u)
+                // EMA 套在云中心后面：时序低通目标（无窗口边界、天然连续）
+                let ema = crate::sim::cloud::ema_step(self.ema_targets[s], raw, CLOUD_EMA_ALPHA);
+                self.ema_targets[s] = ema;
+                (ema, tan, seg, u)
             } else {
                 let leg0 = &self.chain.front().unwrap().legs[0];
                 let d = dir_of(leg0.from, leg0.target);
@@ -141,7 +146,10 @@ impl Player {
                     x: (leg0.from.x - d.x * self.gaps[s]).clamp(0.05, 0.95),
                     y: (leg0.from.y - d.y * self.gaps[s]).clamp(0.05, 0.95),
                 };
-                (pos, Vec2 { x: -d.y, y: d.x }, 0usize, 0.0)
+                let raw = (pos, Vec2 { x: -d.y, y: d.x }, 0usize, 0.0);
+                let ema = crate::sim::cloud::ema_step(self.ema_targets[s], pos, CLOUD_EMA_ALPHA);
+                self.ema_targets[s] = ema;
+                (ema, raw.1, 0usize, 0.0)
             };
 
             let r_ideal = self.profile_speed(seg_i, u_i);

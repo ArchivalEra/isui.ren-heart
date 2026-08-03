@@ -42,33 +42,20 @@ pub fn follower_target(chain: &VecDeque<Leg5>, s: f64, d: f64) -> (Vec2, Vec2) {
     )
 }
 
-/// 云中心 EMA：指数移动平均——向后采样 n 点，权重 w_i = α(1-α)^i（最新点权重最大）
-/// 磨掉拼接段的微折角——中心线更顺，跟随更顺；α 大 = 跟手（响应快），α 小 = 更柔
-pub fn center_ema(chain: &VecDeque<Leg5>, s: f64, alpha: f64, n: usize) -> Vec2 {
-    let mut acc = Vec2 { x: 0.0, y: 0.0 };
-    let mut tw = 0.0;
-    let mut w = alpha;
-    for i in 0..n {
-        let sp = (s - i as f64 * 0.04).max(0.0);
-        let (p, _, _, _) = chain_pos_and_tangent(chain, sp);
-        acc.x += p.x * w;
-        acc.y += p.y * w;
-        tw += w;
-        w *= 1.0 - alpha;
+/// EMA 一步（指数移动平均，时序滤波——套在云中心输出后面）：
+/// ema = α·target + (1-α)·ema。α 大 = 跟手（响应快），α 小 = 更柔（滞后大）。
+/// 无窗口边界、天然连续——跟随目标平滑化的标准手段。
+pub fn ema_step(prev: Vec2, target: Vec2, alpha: f64) -> Vec2 {
+    Vec2 {
+        x: prev.x + (target.x - prev.x) * alpha,
+        y: prev.y + (target.y - prev.y) * alpha,
     }
-    Vec2 { x: acc.x / tw, y: acc.y / tw }
 }
 
 // 类型别名（避免循环依赖：cloud 只关心链的弧长采样接口）
 pub type Leg5 = crate::sim::planner::PlannedLeg;
 
-/// 云中心跟随目标（推荐入口）：EMA 中心点 + Frenet 偏移
-pub fn follower_target_smooth(chain: &VecDeque<Leg5>, s: f64, d: f64, alpha: f64) -> Vec2 {
-    let c = center_ema(chain, s, alpha, 6);
-    let (_, tan, _, _) = chain_pos_and_tangent(chain, s);
-    let n = normal_of(tan);
-    Vec2 { x: c.x + n.x * d, y: c.y + n.y * d }
-}
+
 
 #[allow(dead_code)]
 fn _legs_ref(pl: &Leg5) -> &[Leg; 5] {
@@ -117,28 +104,16 @@ mod tests {
     }
 
     #[test]
-    fn center_ema_matches_line() {
-        let chain = straight_chain();
-        let c = center_ema(&chain, 0.3, 0.35, 6);
-        assert!((c.y - 0.5).abs() < 1e-6, "直线上 EMA 中心 y=0.5: {}", c.y);
-        assert!((c.x - 0.5).abs() < 0.05, "x 居中: {}", c.x);
-    }
-
-    #[test]
-    fn ema_weights_latest_most() {
-        // 指数衰减：α(1-α)^i——最新点（i=0）权重最大
-        let alpha = 0.35;
-        let w0 = alpha;
-        let w1 = alpha * (1.0 - alpha);
-        assert!(w0 > w1, "最新点权重应最大");
-        let total: f64 = (0..6).map(|i| alpha * (1.0 - alpha).powi(i as i32)).sum();
-        assert!(total > 0.9 && total < 1.0, "权重和归一化: {total}");
-    }
-
-    #[test]
-    fn follower_target_smooth_works() {
-        let chain = straight_chain();
-        let p = follower_target_smooth(&chain, 0.3, 0.04, 0.35);
-        assert!((p.y - 0.46).abs() < 1e-6, "EMA 中心 + 偏移: {}", p.y);
+    fn ema_step_converges_and_filters() {
+        // 收敛：恒定目标 → ema 指数逼近
+        let mut e = Vec2 { x: 0.0, y: 0.0 };
+        let tgt = Vec2 { x: 1.0, y: 0.0 };
+        for _ in 0..40 {
+            e = ema_step(e, tgt, 0.35);
+        }
+        assert!((e.x - 1.0).abs() < 1e-3, "收敛到目标: {}", e.x);
+        // 滤波：目标跳变 1.0 → ema 只移动 α 比例（钝点被低通）
+        let after_jump = ema_step(e, Vec2 { x: 2.0, y: 0.0 }, 0.35);
+        assert!((after_jump.x - 1.35).abs() < 1e-6, "一步只移 α: {}", after_jump.x);
     }
 }
