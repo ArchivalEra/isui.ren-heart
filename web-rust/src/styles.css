@@ -88,19 +88,21 @@ body {
   pointer-events: none;
 }
 
-/* logo：全页唯一黑色（站主替换为去三球版 PNG） */
+/* logo：全页唯一黑色（站主把去三球版 PNG 放 assets/logo.png 即可） */
 .heart-logo {
   position: absolute;
   left: 50%;
   top: 32%;
   transform: translate(-50%, -50%);
   z-index: 2;
-  color: var(--on-surface);
-  font-size: clamp(2.6rem, 10vw, 6.5rem);
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  user-select: none;
-  text-shadow: 0 8px 30px rgba(17, 17, 17, 0.1);
+  pointer-events: none;
+}
+
+.heart-logo-img {
+  display: block;
+  width: min(70vw, 460px);
+  height: auto;
+  filter: drop-shadow(0 8px 30px rgba(17, 17, 17, 0.1));
 }
 
 .heart-main {

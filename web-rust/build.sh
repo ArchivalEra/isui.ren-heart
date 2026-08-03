@@ -13,6 +13,7 @@ wasm-bindgen --target web --out-dir dist target/wasm32-unknown-unknown/release/i
 echo "==> 静态资源"
 cp index.html dist/index.html
 cp src/styles.css dist/styles.css
+cp -r assets/. dist/
 
 if command -v wasm-opt >/dev/null 2>&1; then
   echo "==> wasm-opt -Oz"
