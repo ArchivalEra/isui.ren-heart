@@ -56,6 +56,14 @@ impl BallsEngine {
         }
     }
 
+    /// 切换拖尾风格（大拖尾 ↔ 小拖尾）——wasm 导出，前端按钮调用
+    pub fn toggle_trail_style(&mut self) {
+        self.mode = match self.mode {
+            RenderMode::Trail => RenderMode::TrailMini,
+            RenderMode::TrailMini => RenderMode::Trail,
+        };
+    }
+
     pub fn frame(&mut self, dt: f64) {
         self.step(dt);
         self.render();

@@ -1,2 +1,6 @@
 .reasonix/
 *.log
+web-ui/node_modules/
+web-ui/dist/
+web-ui/src/wasm/
+web-rust/dist/

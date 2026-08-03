@@ -7,33 +7,15 @@ edition = "2021"
 crate-type = ["cdylib", "rlib"]
 
 [dependencies]
-leptos = { version = "0.7", features = ["csr"] }
-leptos_router = { version = "0.7" }
 wasm-bindgen = "0.2"
 web-sys = { version = "0.3", features = [
     "CanvasRenderingContext2d",
-    "CanvasGradient",
     "Document",
-    "Element",
     "HtmlCanvasElement",
-    "HtmlDivElement",
-    "HtmlButtonElement",
-    "HtmlInputElement",
-    "HtmlTextAreaElement",
-    "Navigator",
-    "Clipboard",
     "HtmlElement",
     "Node",
-    "Text",
     "Window",
     "Performance",
-    "CssStyleDeclaration",
-    "PointerEvent",
-    "KeyboardEvent",
-    "MouseEvent",
-    "Event",
-    "EventTarget",
-    "DomRect",
 ] }
 js-sys = "0.3"
 rand = "0.8"
