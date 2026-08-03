@@ -2,4 +2,3 @@
 // 不依赖 web_sys/wasm —— 原生 cargo test 可测
 pub mod math;
 pub mod planner;
-pub mod state;

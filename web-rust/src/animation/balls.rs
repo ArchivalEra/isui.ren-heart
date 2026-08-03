@@ -369,13 +369,13 @@ fn setup_debug_panel(engine: Rc<RefCell<BallsEngine>>) {
         let mode_btn = mode_btn.clone();
         move || {
             let next = match engine.borrow().mode {
-                RenderMode::Trail => {
-                    set_text_of(mode_btn.clone(), "模式：小拖尾");
-                    RenderMode::TrailMini
-                }
-                RenderMode::TrailMini => {
-                    set_text_of(mode_btn.clone(), "模式：实心拖尾");
+                RenderMode::Particle => {
+                    set_text_of(mode_btn.clone(), "模式：拖尾");
                     RenderMode::Trail
+                }
+                RenderMode::Trail => {
+                    set_text_of(mode_btn.clone(), "模式：粒子");
+                    RenderMode::Particle
                 }
             };
             engine.borrow_mut().mode = next;

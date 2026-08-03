@@ -1,8 +1,9 @@
 // 引擎：渲染胶水层（Canvas/状态机驱动）
 // 纯逻辑（规划/执行/几何）在 sim/ 模块 —— 原生 cargo test 可测
 use crate::config::params::*;
-use crate::sim::math::{screen_of, Vec2};
-use crate::sim::state::{should_track, State};
+use crate::config::templates::TEMPLATES;
+use crate::sim::math::{screen_of, smoothstep, Vec2};
+use crate::sim::planner::{Phase, Player};
 use std::collections::VecDeque;
 use wasm_bindgen::JsCast;
 use web_sys::{CanvasRenderingContext2d, HtmlCanvasElement};
@@ -12,11 +13,11 @@ pub struct Ball {
     pub color: &'static str,
 }
 
-/// 拖尾风格：Solid（连续实心，全宽 2r）vs Mini（小拖尾，半透明渐变≈动态模糊）
+/// 渲染模式：粒子化（椭圆拉伸）vs 拖尾化（纯圆 + 长实体拖尾，Google pixel 风格）
 #[derive(Clone, Copy, PartialEq)]
 pub enum RenderMode {
+    Particle,
     Trail,
-    TrailMini,
 }
 
 pub struct BallsEngine {
@@ -24,7 +25,7 @@ pub struct BallsEngine {
     ctx: CanvasRenderingContext2d,
     balls: [Ball; 3],
     prev_pos: [Vec2; 3],
-    state: State,
+    phase: Phase,
     /// 锚点（可被调试面板拖拽，初始 = ANCHORS 契约）
     pub anchors: [Vec2; 3],
     pub debug: bool,
@@ -52,7 +53,7 @@ impl BallsEngine {
             ctx,
             balls,
             prev_pos: [Vec2 { x: 0.5, y: 0.5 }; 3],
-            state: State::new(anchors),
+            phase: Phase::AtLogo { t: 0.0 },
             anchors,
             debug: false,
             mode: RenderMode::Trail,
@@ -72,11 +73,16 @@ impl BallsEngine {
 
     /// 进入调试：三球归位到锚点（键盘移动选中球）
     pub fn enter_debug(&mut self) {
+        self.phase = Phase::AtLogo { t: 0.0 };
         self.debug = true;
     }
 
     pub fn exit_debug(&mut self) {
         self.debug = false;
+        if matches!(self.phase, Phase::AtLogo { .. }) {
+            // 重新走入场仪式
+            self.phase = Phase::AtLogo { t: 0.0 };
+        }
     }
 
     pub fn frame(&mut self, dt: f64) {
@@ -84,39 +90,23 @@ impl BallsEngine {
         self.render();
         for s in 0..3 {
             let pos = self.ball_world_pos(s);
-            // ⚠️ 先算速度（基于上帧 prev_pos）再更新 prev_pos——
-            // 曾先更新后计算 → 差分恒 0 → 拖尾永远消失（真凶）
-            let v = self.ball_velocity(s);
             self.prev_pos[s] = pos;
-            if self.state.is_playing() {
-                let dt_s = (dt / 1000.0).max(1e-9);
-                let speed = (v.x * v.x + v.y * v.y).sqrt() / dt_s;
+            // 位置历史（实心拖尾；上限 8）
+            let playing = matches!(
+                self.phase,
+                Phase::Free { .. } | Phase::Queueing { .. } | Phase::Formation { .. }
+            );
+            if playing {
                 let h = &mut self.history[s];
-                if !should_track(speed) {
-                    h.clear();
-                    continue;
-                }
-                // 间距截断：与最新点距离过大（高速/交叉）→ 重建
+                // 间距截断：与最新点距离过大（高速/交叉）→ 重建，防大长条/五角星复杂
                 if let Some(&(lx, ly)) = h.back() {
                     let d = ((pos.x - lx).powi(2) + (pos.y - ly).powi(2)).sqrt();
                     if d > TRAIL_MAX_SEG {
                         h.clear();
                     }
                 }
-                // 按距离采样：与上一点距离 ≥ TRAIL_SAMPLE_DIST 才记录——
-                // 高速点距均匀（无珠链/感叹号），低速不堆积
-                if let Some(&(lx, ly)) = h.back() {
-                    let d = ((pos.x - lx).powi(2) + (pos.y - ly).powi(2)).sqrt();
-                    if d < TRAIL_SAMPLE_DIST {
-                        continue;
-                    }
-                }
                 h.push_back((pos.x, pos.y));
-                let cap = match self.mode {
-                    RenderMode::Trail => TRAIL_FRAMES_SOLID,
-                    RenderMode::TrailMini => TRAIL_FRAMES_MINI,
-                };
-                while h.len() > cap {
+                if h.len() > 8 {
                     h.pop_front();
                 }
             } else {
@@ -132,17 +122,116 @@ impl BallsEngine {
     }
 
     fn step(&mut self, dt: f64) {
-        // 调试模式：状态机冻结（球停在锚点，键盘方向键可移动）
+        // 调试模式：锁定状态机（球停在锚点，键盘方向键可移动）
         if self.debug {
+            if !matches!(self.phase, Phase::AtLogo { .. }) {
+                self.phase = Phase::AtLogo { t: 0.0 };
+            }
             return;
         }
-        // 法线偏移缓动（共享链阶段按链头模板 offsets 收敛）
-        if let Some(offsets) = self.state.template_offsets() {
-            for (i, b) in self.balls.iter_mut().enumerate() {
-                b.offset += (offsets[i] - b.offset) * WANDER.offset_lerp;
+        use rand::Rng;
+        let mut rng = rand::thread_rng();
+        let mut next: Option<Phase> = None;
+        match &mut self.phase {
+            Phase::AtLogo { t } => {
+                *t += dt;
+                if *t >= AT_LOGO_MS {
+                    // 入场：三球各自独立链，起点 = 锚点（无排队仪式、无闪电）
+                    // 预渲染：入场静止期一次性预生成几分钟的链（运行期规划静默）
+                    let mut players = [
+                        Player::new(self.anchors[0], Self::random_dir()),
+                        Player::new(self.anchors[1], Self::random_dir()),
+                        Player::new(self.anchors[2], Self::random_dir()),
+                    ];
+                    for p in players.iter_mut() {
+                        p.ensure_chain_to(PREPLAN_SECONDS * WORLD_SPEED * 1.1);
+                    }
+                    next = Some(Phase::Free { players, check_t: 0.0 });
+                }
+            }
+            Phase::Free { players, check_t } => {
+                *check_t += dt;
+                for p in players.iter_mut() {
+                    p.tick(dt);
+                }
+                // 每 5 秒判定：30% 概率触发自然排队
+                if *check_t >= FREE_CHECK_MS {
+                    *check_t = 0.0;
+                    if rng.gen::<f64>() < QUEUE_PROB {
+                        // 固定粉蓝绿顺序：粉（球0）当队首，蓝、绿依次落后（站主钦定美的顺序）
+                        let dir = Self::random_dir();
+                        let anchor = players[0].ball_center(0);
+                        // 共享链立刻创建：粉球（队首）在链起点 → 开跑
+                        let mut q_player = Player::new(anchor, dir);
+                        // 预渲染：排队链一次性预生成（运行期静默）
+                        q_player.ensure_chain_to(PREPLAN_SECONDS * WORLD_SPEED * 1.1);
+                        let mut from = [Vec2 { x: 0.0, y: 0.0 }; 3];
+                        for (i, p) in players.iter().enumerate() {
+                            from[i] = p.ball_center(i);
+                        }
+                        // 蓝绿球思考期：各自随机延迟（充分思考啥时候跟上粉球）
+                        let delays = [
+                            0.0,
+                            QUEUE_DELAY_MIN_MS
+                                + rng.gen::<f64>() * (QUEUE_DELAY_MAX_MS - QUEUE_DELAY_MIN_MS),
+                            QUEUE_DELAY_MIN_MS
+                                + rng.gen::<f64>() * (QUEUE_DELAY_MAX_MS - QUEUE_DELAY_MIN_MS),
+                        ];
+                        next = Some(Phase::Queueing { t: 0.0, player: q_player, from, delays });
+                    }
+                }
+            }
+            Phase::Queueing { t, player, .. } => {
+                *t += dt;
+                // 共享链推进：粉球（队首）立刻开跑；蓝绿 s<0 停在槽位等上链
+                player.tick(dt);
+                if *t >= QUEUE_MS {
+                    // 过渡完成 → 正式排队跑（player 直接转移，无跳变）
+                    next = Some(Phase::Formation {
+                        player: std::mem::replace(player, Player::new(Vec2 { x: 0.5, y: 0.5 }, Vec2 { x: 1.0, y: 0.0 })),
+                        hold_t: 0.0,
+                        hold_ms: FORMATION_HOLD_MIN_MS
+                            + rng.gen::<f64>() * (FORMATION_HOLD_MAX_MS - FORMATION_HOLD_MIN_MS),
+                    });
+                }
+            }
+            Phase::Formation { player, hold_t, hold_ms } => {
+                *hold_t += dt;
+                // 法线偏移缓动
+                for (i, b) in self.balls.iter_mut().enumerate() {
+                    let tpl = &TEMPLATES[player.template_idx(i)];
+                    b.offset += (tpl.offsets[i] - b.offset) * WANDER.offset_lerp;
+                }
+                player.tick(dt);
+                if *hold_t >= *hold_ms {
+                    // 自然解散：三球各自独立链（起点=当前位置，方向=链切线）
+                    let players = [
+                        {
+                            let (pos, dir) = player.pos_and_dir(0);
+                            Player::new(pos, dir)
+                        },
+                        {
+                            let (pos, dir) = player.pos_and_dir(1);
+                            Player::new(pos, dir)
+                        },
+                        {
+                            let (pos, dir) = player.pos_and_dir(2);
+                            Player::new(pos, dir)
+                        },
+                    ];
+                    next = Some(Phase::Free { players, check_t: 0.0 });
+                }
             }
         }
-        self.state.step(dt, &mut || rand::random::<f64>());
+        if let Some(p) = next {
+            self.phase = p;
+        }
+    }
+
+    /// 随机单位方向
+    fn random_dir() -> Vec2 {
+        let angle = rand::random::<f64>() * std::f64::consts::PI * 2.0;
+        Vec2 { x: angle.cos(), y: angle.sin() }
     }
 
     /// 调试：三球实际渲染坐标（含偏移）
@@ -151,15 +240,25 @@ impl BallsEngine {
     }
 
     fn ball_world_pos(&self, color_slot: usize) -> Vec2 {
-        if self.debug {
-            self.anchors[color_slot]
-        } else {
-            self.state.ball_pos(color_slot, self.balls[color_slot].offset)
+        match &self.phase {
+            Phase::AtLogo { .. } => self.anchors[color_slot],
+            Phase::Free { players, .. } => players[color_slot].world_pos(color_slot, self.balls[color_slot].offset),
+            Phase::Queueing { t, player, from, delays } => {
+                // 思考期（t < delay）：冻结在进入时位置，充分思考
+                // 思考结束：2 秒内从冻结位置温和滑向链上槽位（各自出发）
+                let k = smoothstep(((t - delays[color_slot]) / QUEUE_TRANSIT_MS).clamp(0.0, 1.0));
+                let slot = player.world_pos(color_slot, self.balls[color_slot].offset);
+                crate::sim::math::lerp(from[color_slot], slot, k)
+            }
+            Phase::Formation { player, .. } => player.world_pos(color_slot, self.balls[color_slot].offset),
         }
     }
 
     fn fade_alpha(&self) -> f64 {
-        self.state.fade()
+        match &self.phase {
+            Phase::AtLogo { t } => smoothstep(*t / FADE_IN_MS),
+            _ => 1.0,
+        }
     }
 
     #[allow(deprecated)] // set_fill_style(&JsValue) 旧 API
@@ -195,11 +294,11 @@ impl BallsEngine {
                 self.ctx.arc(sx, sy, 5.0 * d, 0.0, std::f64::consts::PI * 2.0).unwrap();
                 self.ctx.fill();
             }
-            if let Some(targets) = self.state.formation_targets() {
-                // 目标点（Formation 调试）
+            if let Phase::Formation { player, .. } = &self.phase {
+                // 目标点
                 self.ctx.set_fill_style_str("rgba(17,17,17,0.4)");
                 for s in 0..3 {
-                    let (sx, sy, d) = screen_of(targets[s], w, h);
+                    let (sx, sy, d) = screen_of(player.target_of(s), w, h);
                     self.ctx.begin_path();
                     self.ctx.arc(sx, sy, 3.0 * d, 0.0, std::f64::consts::PI * 2.0).unwrap();
                     self.ctx.fill();
@@ -208,7 +307,12 @@ impl BallsEngine {
         }
 
         let to_screen = |p: Vec2| screen_of(p, w, h);
-        let order = self.state.order();
+        let order = match &self.phase {
+            Phase::Free { .. } => [0, 1, 2],
+            Phase::Queueing { .. } => [0, 1, 2],
+            Phase::Formation { player, .. } => player.order,
+            _ => ORDERS[0],
+        };
         let pts: Vec<(f64, f64, f64)> =
             (0..3).map(|s| to_screen(self.ball_world_pos(order[s]))).collect();
 
@@ -219,100 +323,80 @@ impl BallsEngine {
             let color_slot = order[i];
             let (px, py, d) = pts[i];
             let radius = BALL_RADIUS * d * (w.min(h) / 700.0).clamp(0.6, 1.0);
-            // 拖尾风格（Particle 已删除）
+            let v = self.ball_velocity(color_slot);
+            let vx = v.x * w;
+            let vy = v.y * h;
+            let speed = (vx * vx + vy * vy).sqrt();
+
+            // 模式分支：粒子化（椭圆拉伸）vs 拖尾化（纯圆 + 长实体拖尾）
+            let (rx, ry, angle) = match self.mode {
+                RenderMode::Particle => {
+                    let sn = (speed / (ELLIPSE.speed_base * w)).clamp(0.0, 1.5);
+                    let k = smoothstep((sn - ELLIPSE.threshold) / (1.5 - ELLIPSE.threshold));
+                    let ratio = 1.0 + k * (ELLIPSE.max_ratio - 1.0);
+                    (radius * ratio, radius / ratio, vy.atan2(vx))
+                }
+                RenderMode::Trail => (radius, radius, 0.0),
+            };
+
+            // 尾迹（粒子=短渐变线；拖尾=实心圆序列，Google 风格）
             match self.mode {
-                RenderMode::Trail => {
-                    // 连续实心拖尾：头部从球身延伸（消除间隙），历史点按距离采样，
-                    // Catmull-Rom 过点样条（无折角/珠链），全宽 2r
-                    let hist = &self.history[color_slot];
-                    if !hist.is_empty() {
-                        let color = self.balls[color_slot].color;
-                        // pts[0] = 球当前位置（头部延伸），历史点最新→最旧
-                        let mut pts: Vec<Vec2> = Vec::with_capacity(hist.len() + 1);
-                        pts.push(Vec2 { x: px, y: py });
-                        for (hx, hy) in hist.iter().rev() {
-                            let (sx, sy, _) = screen_of(Vec2 { x: *hx, y: *hy }, w, h);
-                            pts.push(Vec2 { x: sx, y: sy });
-                        }
-                        self.ctx.set_line_cap("round");
-                        self.ctx.set_line_join("round");
-                        self.ctx.set_line_width(radius * 2.0);
-                        // 拖尾消减：前 80% 纯实心，尾部 20% alpha 快速衰减——
-                        // 短促利落的「消减」（不粘滞、不感叹号）
-                        let (r, g, b) = hex_to_rgb(color);
-                        for k in 0..pts.len() - 1 {
-                            let frac = k as f64 / (pts.len() - 1) as f64; // 0=球身
-                            let alpha = if frac < 0.8 {
-                                1.0
-                            } else {
-                                ((1.0 - frac) / 0.2).clamp(0.0, 1.0)
-                            };
-                            if alpha < 0.05 {
-                                break; // 尾端已透明，省绘制
-                            }
-                            if alpha < 0.999 {
-                                self.ctx.set_stroke_style(&wasm_bindgen::JsValue::from(format!(
-                                    "rgba({r},{g},{b},{alpha:.3})"
-                                )));
-                            } else {
-                                self.ctx.set_stroke_style(&wasm_bindgen::JsValue::from(color));
-                            }
-                            let p0 = if k == 0 { pts[0] } else { pts[k - 1] };
-                            let p1 = pts[k];
-                            let p2 = pts[k + 1];
-                            let p3 = if k + 2 < pts.len() { pts[k + 2] } else { pts[pts.len() - 1] };
-                            self.ctx.begin_path();
-                            for s in 0..4 {
-                                let t = s as f64 / 4.0;
-                                let q = crate::sim::math::catmull_rom(p0, p1, p2, p3, t);
-                                if k == 0 && s == 0 {
-                                    self.ctx.move_to(q.x, q.y);
-                                } else {
-                                    self.ctx.line_to(q.x, q.y);
-                                }
-                            }
-                            self.ctx.stroke();
-                        }
+                RenderMode::Particle => {
+                    if speed > 1.0 && fade > 0.9 {
+                        let trail = MOTION_BLUR.trail_len * radius;
+                        let (tx, ty) = (px - vx / speed * trail, py - vy / speed * trail);
+                        let (r, g, b) = hex_to_rgb(self.balls[color_slot].color);
+                        let lg = self.ctx.create_linear_gradient(tx, ty, px, py);
+                        lg.add_color_stop(0.0, &format!("rgba({r},{g},{b},0)")).unwrap();
+                        lg.add_color_stop(1.0, &format!("rgba({r},{g},{b},{})", MOTION_BLUR.trail_alpha)).unwrap();
+                        self.ctx.begin_path();
+                        self.ctx.move_to(tx, ty);
+                        self.ctx.line_to(px, py);
+                        self.ctx.set_stroke_style(&lg.into());
+                        self.ctx.set_line_width(radius * 0.7);
+                        self.ctx.stroke();
                     }
                 }
-                RenderMode::TrailMini => {
-                    // 小拖尾（动态模糊风）：短历史、宽度 0.6r、半透明渐变
-                    // 头 alpha 0.45 → 尾 0（emphasized-decelerate 渐隐）
+                RenderMode::Trail => {
+                    // 实心拖尾：向心 Catmull–Rom 过点样条（无折点光栅错误）
+                    // 历史点全部穿过，曲线 C1 连续；宽度恒 2r（完整球宽）
                     let hist = &self.history[color_slot];
-                    if !hist.is_empty() {
-                        let (r, g, b) = hex_to_rgb(self.balls[color_slot].color);
-                        let mut pts: Vec<Vec2> = Vec::with_capacity(hist.len() + 1);
-                        pts.push(Vec2 { x: px, y: py });
-                        for (hx, hy) in hist.iter().rev() {
+                    if hist.len() >= 2 {
+                        let n = hist.len();
+                        let color = self.balls[color_slot].color;
+                        let mut pts: Vec<Vec2> = Vec::with_capacity(n);
+                        for (hx, hy) in hist.iter() {
                             let (sx, sy, _) = screen_of(Vec2 { x: *hx, y: *hy }, w, h);
                             pts.push(Vec2 { x: sx, y: sy });
                         }
                         self.ctx.set_line_cap("round");
                         self.ctx.set_line_join("round");
-                        for k in 0..pts.len() - 1 {
-                            let frac = k as f64 / (pts.len() - 1) as f64; // 0=球身
-                            let alpha = 0.45 * (1.0 - frac);
-                            let lw = radius * 2.0 * (0.6 - 0.4 * frac);
-                            self.ctx.set_stroke_style(&wasm_bindgen::JsValue::from(format!(
-                                "rgba({r},{g},{b},{alpha:.3})"
-                            )));
-                            self.ctx.set_line_width(lw.max(0.5));
-                            let p0 = if k == 0 { pts[0] } else { pts[k - 1] };
-                            let p1 = pts[k];
-                            let p2 = pts[k + 1];
-                            let p3 = if k + 2 < pts.len() { pts[k + 2] } else { pts[pts.len() - 1] };
-                            self.ctx.begin_path();
-                            for s in 0..4 {
-                                let t = s as f64 / 4.0;
-                                let q = crate::sim::math::catmull_rom(p0, p1, p2, p3, t);
-                                if s == 0 {
-                                    self.ctx.move_to(q.x, q.y);
-                                } else {
-                                    self.ctx.line_to(q.x, q.y);
+                        self.ctx.set_stroke_style(&wasm_bindgen::JsValue::from(color));
+                        self.ctx.set_line_width(radius * 2.0); // 完整球宽（直径）
+                        self.ctx.begin_path();
+                        if n == 2 {
+                            self.ctx.move_to(pts[0].x, pts[0].y);
+                            self.ctx.line_to(pts[1].x, pts[1].y);
+                        } else {
+                            // 相邻点对间细分 4 段（Catmull-Rom 需要前后邻居）
+                            let sub = 4;
+                            for k in 0..n - 1 {
+                                let p0 = if k == 0 { pts[0] } else { pts[k - 1] };
+                                let p1 = pts[k];
+                                let p2 = pts[k + 1];
+                                let p3 = if k + 2 < n { pts[k + 2] } else { pts[n - 1] };
+                                for s in 0..sub {
+                                    let t = s as f64 / sub as f64;
+                                    let q = crate::sim::math::catmull_rom(p0, p1, p2, p3, t);
+                                    if k == 0 && s == 0 {
+                                        self.ctx.move_to(q.x, q.y);
+                                    } else {
+                                        self.ctx.line_to(q.x, q.y);
+                                    }
                                 }
                             }
-                            self.ctx.stroke();
                         }
+                        self.ctx.stroke();
                     }
                 }
             }
@@ -320,7 +404,7 @@ impl BallsEngine {
             self.ctx.save();
             self.ctx.set_global_alpha(fade);
             self.ctx.begin_path();
-            self.ctx.arc(px, py, radius, 0.0, std::f64::consts::PI * 2.0).unwrap();
+            self.ctx.ellipse(px, py, rx, ry, angle, 0.0, std::f64::consts::PI * 2.0).unwrap();
             self.ctx.set_fill_style(&wasm_bindgen::JsValue::from(self.balls[color_slot].color));
             self.ctx.fill();
             self.ctx.restore();
