@@ -92,11 +92,26 @@ impl Player {
                 y: (anchor.y + dir.y * r).clamp(0.12, 0.88),
             }
         };
+        // 首段：随机圆弧模板（|curv|∈[0.3,1.1]）——不从直线 run 开始
+        let first_tpl = {
+            use rand::Rng;
+            let mut rng = rand::thread_rng();
+            let mut idx = 0;
+            for _ in 0..8 {
+                let c = rng.gen_range(0..TEMPLATES.len());
+                let cc = TEMPLATES[c].curvature.abs();
+                if (0.3..=1.1).contains(&cc) {
+                    idx = c;
+                    break;
+                }
+            }
+            idx
+        };
         let speed = roll_speed();
-        let mut pl = make_planned_leg(anchor, dir, 0, target, speed);
+        let mut pl = make_planned_leg(anchor, dir, first_tpl, target, speed);
         if !leg_in_bounds(&pl) {
-            let safe = clamp_target_in_bounds(anchor, dir, 0, target, speed);
-            pl = make_planned_leg(anchor, dir, 0, safe, speed);
+            let safe = clamp_target_in_bounds(anchor, dir, first_tpl, target, speed);
+            pl = make_planned_leg(anchor, dir, first_tpl, safe, speed);
         }
         let mut chain = VecDeque::new();
         chain.push_back(pl);
@@ -210,7 +225,9 @@ impl Player {
             let old_curv = TEMPLATES[tail.template_idx].curvature;
             // 曲线选择：曲率连续性 + 弯道加权（精髓：不容易出直线）
             // 权重 w = 0.4 + |curvature|——直线模板权重最低，弯道模板优先
-            let template_idx = if roll < PROB.switch_template {
+            // 直线模板（|curv|<0.3）不可延续：强制进入加权圆弧选择
+            let tail_is_straight = TEMPLATES[tail.template_idx].curvature.abs() < 0.3;
+            let template_idx = if roll < PROB.switch_template || tail_is_straight {
                 let mut total_w = 0.0;
                 let mut cands: Vec<(usize, f64)> = Vec::new();
                 for (i, tpl) in TEMPLATES.iter().enumerate() {
