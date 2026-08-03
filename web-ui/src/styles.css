@@ -246,8 +246,9 @@ body {
   /* translateX(-50%) 是居中定位常量（基础类就含）——动画只发生在 Y 轴，
      曾只写在 open 类 → 打开时横移 50%、关闭时瞬间跳位（站主实测） */
   transform: translateX(-50%) translateY(-8px);
-  transition: max-height 0.45s cubic-bezier(0.2, 0, 0, 1),
-    opacity 0.35s ease, transform 0.45s cubic-bezier(0.2, 0, 0, 1);
+  /* 收起（关闭）：delay 200ms——先让整个文件夹下移归位，卡片再收起（无瞬移无打架） */
+  transition: max-height 0.3s cubic-bezier(0.3, 0, 0.8, 0.15) 200ms,
+    opacity 0.25s ease 200ms, transform 0.3s cubic-bezier(0.3, 0, 0.8, 0.15) 200ms;
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
@@ -267,6 +268,9 @@ body {
   left: 50%;
   z-index: 50;
   box-shadow: 0 12px 32px rgba(17, 17, 17, 0.18);
+  /* 展开：立即动画（无 delay）——站主认可的打开动画 */
+  transition: max-height 0.45s cubic-bezier(0.2, 0, 0, 1),
+    opacity 0.35s ease, transform 0.45s cubic-bezier(0.2, 0, 0, 1);
 }
 
 .wall-card {
