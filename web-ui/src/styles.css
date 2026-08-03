@@ -165,6 +165,17 @@ body {
   font-size: 1.1rem;
 }
 
+/* emoji 打字机：与上方文字一致的淡入淡出（tw-faded 由 EmojiTyper 切换） */
+.heart-emoji {
+  display: inline-block;
+  min-height: 1.4em;
+  transition: opacity 0.3s ease;
+}
+
+.heart-emoji.tw-faded {
+  opacity: 0;
+}
+
 .heart-nav {
   margin-top: 2.2rem;
   pointer-events: auto; /* 导航区域保持可点 */
