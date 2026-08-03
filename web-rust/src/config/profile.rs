@@ -7,6 +7,7 @@
 
 /// 跟随策略：蓝绿目标怎么算
 #[derive(Clone, Copy, PartialEq, Debug)]
+#[allow(dead_code)] // NATIVE 备用（一行切回）
 pub enum FollowStyle {
     /// 自研：直接追链上弧长点（spring 物理）
     Chain,
@@ -15,6 +16,7 @@ pub enum FollowStyle {
 }
 
 pub struct MotionProfile {
+    #[allow(dead_code)] // 风格名（文档价值）
     pub name: &'static str,
     /// 跟随策略
     pub follow: FollowStyle,
@@ -26,7 +28,8 @@ pub struct MotionProfile {
     pub tune_speeds: bool,
 }
 
-/// 自研 profile（回滚版手感：纯链跟随，无 EMA、无调速器）
+/// 自研 profile（回滚版手感：纯链跟随，无 EMA、无调速器）——备用，一行切回
+#[allow(dead_code)]
 pub const NATIVE_PROFILE: MotionProfile = MotionProfile {
     name: "native",
     follow: FollowStyle::Chain,
