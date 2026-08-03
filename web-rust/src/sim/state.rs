@@ -124,20 +124,6 @@ impl State {
         Some(FORMATION_OFFSETS)
     }
 
-    /// 调试：Formation 阶段的目标点（其他阶段 None）
-    pub fn formation_targets(&self) -> Option<[Vec2; 3]> {
-        match &self.phase {
-            Phase::Formation { player } => {
-                Some([player.target_of(0), player.target_of(1), player.target_of(2)])
-            }
-            _ => None,
-        }
-    }
-}
-
-/// 拖尾是否记录：速度（世界单位/秒）低于阈值视为静止（思考期/入场构图）不记录
-pub fn should_track(speed_per_sec: f64) -> bool {
-    speed_per_sec >= 0.02
 }
 
 pub fn random_dir() -> Vec2 {
@@ -148,14 +134,6 @@ pub fn random_dir() -> Vec2 {
 #[cfg(test)]
 mod tests {
     use super::*;
-
-    #[test]
-    fn trail_tracking_decisions() {
-        // 巡航（0.22/s）→ 记录 + 常规 8 点；静止（0.01）→ 不记录；跳跃（0.5）→ 12 点
-        assert!(should_track(0.22), "巡航应记录拖尾");
-        assert!(should_track(0.05));
-        assert!(!should_track(0.01), "静止不记录（思考期无拖尾）");
-    }
 
     #[test]
     fn opens_directly_in_queueing() {

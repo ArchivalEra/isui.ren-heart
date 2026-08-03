@@ -5,13 +5,13 @@
 // - 球 i 未上链（s<0）时停在起点（= Travel 到达点，链起点后方）→ 自然滑上链，无排队仪式
 // - PD spring 追踪链上目标（丝滑：位置+速度双目标）
 use crate::config::params::*;
+use crate::config::profile::NATIVE_PROFILE as P;
 use crate::config::templates::TEMPLATES;
 
-/// 曲线生成 profile：以后新增曲线策略就加一个变体（如 EulerBlend 已备）
-/// 自研 = 单段贝塞尔（默认）；EulerBlend = 段内曲率渐变（make_blend_leg）
+/// 曲线生成策略：自研 = 单段贝塞尔；EulerBlend = 段内曲率渐变（make_blend_leg）
 #[derive(Clone, Copy, PartialEq)]
+#[allow(dead_code)] // 策略标签（当前由 profile.blend_prob 驱动）
 pub enum CurveProfile {
-    #[allow(dead_code)] // Native 随时可切回（自研单段贝塞尔）
     Native,
     EulerBlend,
 }
@@ -79,8 +79,8 @@ impl Player {
         // 随机距离贴合：蓝绿落后粉球曲线的随机弧长（每次排队不同）
         let gaps = [
             0.0,
-            GAP_MIN + rand::random::<f64>() * (GAP_MAX - GAP_MIN),
-            GAP_MIN + GAP_MAX + rand::random::<f64>() * (GAP_MAX - GAP_MIN),
+            P.gap_min + rand::random::<f64>() * (P.gap_max - P.gap_min),
+            P.gap_min + P.gap_max + rand::random::<f64>() * (P.gap_max - P.gap_min),
         ];
         let spots = Self::entry_points(anchor, dir, gaps);
         // 首段：链起点 = 球0（anchor），方向 = 入口 dir（与 entry_points 槽位方向一致，
@@ -100,7 +100,7 @@ impl Player {
             for _ in 0..8 {
                 let c = rng.gen_range(0..TEMPLATES.len());
                 let cc = TEMPLATES[c].curvature.abs();
-                if (0.3..=1.1).contains(&cc) {
+                if (P.curv_min..=P.curv_max).contains(&cc) {
                     idx = c;
                     break;
                 }
@@ -140,10 +140,10 @@ impl Player {
         self.s_lead += self.profile_speed(seg0, u0) * dt_s;
         self.ensure_chain();
 
-        let k = SPRING.stiffness;
-        let c_damp = SPRING.damping * 2.0 * k.sqrt();
+        let k = P.spring.stiffness;
+        let c_damp = P.spring.damping * 2.0 * k.sqrt();
         // 温和加减速：速率向目标收敛的时间常数 0.45s（慢慢加速/减速，全程平滑）
-        let rate_lerp = (dt_s / (RATE_LERP_TAU_MS / 1000.0)).min(1.0);
+        let rate_lerp = (dt_s / (P.rate_lerp_tau_ms / 1000.0)).min(1.0);
 
         for s in 0..3 {
             // 球 i 弧长 = 队首 - 错开；未上链（<0）→ 目标 = 起点（链起点后方）
@@ -169,8 +169,8 @@ impl Player {
             let ay = k * (target.y - st.pos.y) + c_damp * (tvel.y - st.vel.y);
             // 加速度钳制：spring 误差大时力无上限 → 高速冲点；clamp 后温和冲刺
             let a_mag = (ax * ax + ay * ay).sqrt();
-            let (ax, ay) = if a_mag > MAX_ACCEL {
-                (ax / a_mag * MAX_ACCEL, ay / a_mag * MAX_ACCEL)
+            let (ax, ay) = if a_mag > P.max_accel {
+                (ax / a_mag * P.max_accel, ay / a_mag * P.max_accel)
             } else {
                 (ax, ay)
             };
@@ -199,7 +199,7 @@ impl Player {
 
     /// 链增长：总弧长保持 ≥ s_lead + 余量（无限轨迹）
     fn ensure_chain(&mut self) {
-        self.ensure_chain_to(GAP_MAX * 2.0 + 0.5);
+        self.ensure_chain_to(P.gap_max * 2.0 + 0.5);
     }
 
     /// 批量补链到「队首前方 ahead 弧长」。入场预生成风暴用：一次性补几分钟的链，
@@ -237,7 +237,7 @@ impl Player {
                     if !(0.3..=1.1).contains(&c) {
                         continue;
                     }
-                    if (tpl.curvature - old_curv).abs() <= TEMPLATE_CURV_STEP {
+                    if (tpl.curvature - old_curv).abs() <= P.curv_step {
                         let w = 0.4 + c;
                         total_w += w;
                         cands.push((i, w));
@@ -298,12 +298,12 @@ impl Player {
                 };
             }
             // 曲线 profile：Native=自研单段；EulerBlend=段内曲率渐变（默认关闭）
-            let mut pl = if CURVE_PROFILE == CurveProfile::EulerBlend && rng.gen::<f64>() < BLEND_PROB {
+            let mut pl = if P.blend_prob > 0.0 && rng.gen::<f64>() < P.blend_prob {
                 let old_curv2 = TEMPLATES[tail.template_idx].curvature;
                 let pick = |rng: &mut rand::rngs::ThreadRng, prev: f64| {
                     for _ in 0..6 {
                         let c = rng.gen_range(0..TEMPLATES.len());
-                        if (TEMPLATES[c].curvature - prev).abs() <= TEMPLATE_CURV_STEP {
+                        if (TEMPLATES[c].curvature - prev).abs() <= P.curv_step {
                             return TEMPLATES[c].curvature;
                         }
                     }
@@ -320,7 +320,7 @@ impl Player {
             };
             if !leg_in_bounds(&pl) {
                 let safe = clamp_target_in_bounds(from, dir, template_idx, target, speed);
-                pl = if rng.gen::<f64>() < BLEND_PROB {
+                pl = if P.blend_prob > 0.0 && rng.gen::<f64>() < P.blend_prob {
                     make_blend_leg(from, dir, [0.0, 0.0, 0.0], safe, 0.3, template_idx, speed)
                 } else {
                     make_planned_leg(from, dir, template_idx, safe, speed)
@@ -385,22 +385,7 @@ impl Player {
         }
     }
 
-    /// 调试：当前目标（球 i 链上位置）
-    pub fn target_of(&self, color_slot: usize) -> Vec2 {
-        let s_i = self.s_lead - self.gaps[color_slot];
-        if s_i >= 0.0 {
-            self.chain_pos_and_tangent(s_i).0
-        } else {
-            let leg0 = &self.chain.front().unwrap().legs[0];
-            let d = dir_of(leg0.from, leg0.target);
-            Vec2 {
-                x: (leg0.from.x - d.x * self.gaps[color_slot]).clamp(0.0, 1.0),
-                y: (leg0.from.y - d.y * self.gaps[color_slot]).clamp(0.0, 1.0),
-            }
-        }
-    }
-
-    #[cfg(test)]
+    #[allow(dead_code)] // 测试用
     pub fn chain_len(&self) -> usize {
         self.chain.len()
     }
@@ -408,11 +393,11 @@ impl Player {
 
 /// 段速度：随机档位；高速档（>1.2）40% 批准，不批准回落巡航档（重新生成新路径）
 fn roll_speed() -> f64 {
-    let idx = rand::random::<usize>() % SPEED_BANDS.len();
-    let (lo, hi) = SPEED_BANDS[idx];
+    let idx = rand::random::<usize>() % P.speed_bands.len();
+    let (lo, hi) = P.speed_bands[idx];
     let v = lo + rand::random::<f64>() * (hi - lo);
     if v > SPEED_THRESHOLD && rand::random::<f64>() >= SPEED_APPROVE_PROB {
-        let (lo, hi) = SPEED_BANDS[1];
+        let (lo, hi) = P.speed_bands[1];
         lo + rand::random::<f64>() * (hi - lo)
     } else {
         v
@@ -627,7 +612,7 @@ mod tests {
 
     #[test]
     fn group_moves_together() {
-        // 成群结对：三球沿链错开（两两弧长差 ≈ GAP_MIN..GAP_MAX）
+        // 成群结对：三球沿链错开（两两弧长差 ≈ P.gap_min..P.gap_max）
         let anchor = Vec2 { x: 0.5, y: 0.5 };
         let dir = Vec2 { x: 0.8, y: 0.6 };
         let mut p = Player::new(anchor, dir);
@@ -673,8 +658,8 @@ mod tests {
             }
         }
         assert!(
-            max_a <= MAX_ACCEL * 1.1,
-            "全程加速度应有界（温和加减速）: max_a={max_a:.3} 上限={MAX_ACCEL}"
+            max_a <= P.max_accel * 1.1,
+            "全程加速度应有界（温和加减速）: max_a={max_a:.3} 上限={}", P.max_accel
         );
     }
 
