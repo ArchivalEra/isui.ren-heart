@@ -68,8 +68,8 @@ impl Player {
         let mut pts = [anchor; 3];
         for i in 1..3 {
             pts[i] = Vec2 {
-                x: (anchor.x - dir.x * i as f64 * CHAIN_GAP).clamp(0.10, 0.90),
-                y: (anchor.y - dir.y * i as f64 * CHAIN_GAP).clamp(0.10, 0.90),
+                x: (anchor.x - dir.x * i as f64 * GAP_MAX).clamp(0.10, 0.90),
+                y: (anchor.y - dir.y * i as f64 * GAP_MAX).clamp(0.10, 0.90),
             };
         }
         pts
@@ -105,7 +105,12 @@ impl Player {
             chain,
             s_lead: 0.0,
             states,
-            gaps: [0.0, CHAIN_GAP, 2.0 * CHAIN_GAP],
+            // 随机距离贴合：蓝绿落后粉球曲线的随机弧长（每次排队不同）
+            gaps: [
+                0.0,
+                GAP_MIN + rand::random::<f64>() * (GAP_MAX - GAP_MIN),
+                GAP_MIN + GAP_MAX + rand::random::<f64>() * (GAP_MAX - GAP_MIN),
+            ],
             order: ORDERS[0],
         };
         p.ensure_chain();
@@ -121,7 +126,8 @@ impl Player {
 
         let k = SPRING.stiffness;
         let c_damp = SPRING.damping * 2.0 * k.sqrt();
-        let rate_lerp = (dt_s / 0.12).min(1.0);
+        // 温和加减速：速率向目标收敛的时间常数 0.45s（慢慢加速/减速，全程平滑）
+        let rate_lerp = (dt_s / (RATE_LERP_TAU_MS / 1000.0)).min(1.0);
 
         for s in 0..3 {
             // 球 i 弧长 = 队首 - 错开；未上链（<0）→ 目标 = 起点（链起点后方）
@@ -177,7 +183,7 @@ impl Player {
 
     /// 链增长：总弧长保持 ≥ s_lead + 余量（无限轨迹）
     fn ensure_chain(&mut self) {
-        self.ensure_chain_to(CHAIN_GAP * 3.0 + 0.5);
+        self.ensure_chain_to(GAP_MAX * 2.0 + 0.5);
     }
 
     /// 批量补链到「队首前方 ahead 弧长」。入场预生成风暴用：一次性补几分钟的链，
@@ -207,12 +213,14 @@ impl Player {
                 let mut total_w = 0.0;
                 let mut cands: Vec<(usize, f64)> = Vec::new();
                 for (i, tpl) in TEMPLATES.iter().enumerate() {
-                    // 排除大弯模板（|curv| > 1.1）：小圈导致 spring 抖动与出屏收缩（闪现源）
-                    if tpl.curvature.abs() > 1.1 {
+                    // 强制曲线/圆弧：只选 |curv| ∈ [0.3, 1.1]（直线与近直线模板出局，
+                    // 大弯 >1.1 排除防小圈抖动/出屏收缩）
+                    let c = tpl.curvature.abs();
+                    if !(0.3..=1.1).contains(&c) {
                         continue;
                     }
                     if (tpl.curvature - old_curv).abs() <= TEMPLATE_CURV_STEP {
-                        let w = 0.4 + tpl.curvature.abs();
+                        let w = 0.4 + c;
                         total_w += w;
                         cands.push((i, w));
                     }
@@ -601,7 +609,7 @@ mod tests {
 
     #[test]
     fn group_moves_together() {
-        // 成群结对：三球沿链错开（两两弧长差 ≈ CHAIN_GAP）
+        // 成群结对：三球沿链错开（两两弧长差 ≈ GAP_MIN..GAP_MAX）
         let anchor = Vec2 { x: 0.5, y: 0.5 };
         let dir = Vec2 { x: 0.8, y: 0.6 };
         let mut p = Player::new(anchor, dir);
@@ -621,6 +629,35 @@ mod tests {
                 assert!(d < 0.6, "球{s}/{o} 应成群（同链）: {d}");
             }
         }
+    }
+
+    #[test]
+    fn gentle_acceleration_everywhere() {
+        // 温和加减速验证：60s 模拟中任意球任意帧的物理加速度 ≤ MAX_ACCEL×1.1
+        // （速度变化全程有界 = 慢慢加速/减速，无一顿一顿）
+        let anchor = Vec2 { x: 0.5, y: 0.5 };
+        let dir = Vec2 { x: 0.8, y: 0.6 };
+        let mut p = Player::new(anchor, dir);
+        let dt_s = 16.7 / 1000.0;
+        let mut max_a = 0.0f64;
+        for _ in 0..(60.0 * 1000.0 / 16.7) as usize {
+            let vel_before: Vec<Vec2> = (0..3)
+                .map(|s| p.states[s].vel)
+                .collect();
+            p.tick(16.7);
+            for s in 0..3 {
+                let dvx = p.states[s].vel.x - vel_before[s].x;
+                let dvy = p.states[s].vel.y - vel_before[s].y;
+                let a = (dvx * dvx + dvy * dvy).sqrt() / dt_s;
+                if a > max_a {
+                    max_a = a;
+                }
+            }
+        }
+        assert!(
+            max_a <= MAX_ACCEL * 1.1,
+            "全程加速度应有界（温和加减速）: max_a={max_a:.3} 上限={MAX_ACCEL}"
+        );
     }
 
     #[test]

@@ -13,9 +13,6 @@ pub const ORDERS: [[usize; 3]; 6] = [
     [2, 1, 0],
 ];
 
-/// 链上错开弧长：球 i 落后队首 i×CHAIN_GAP（成群结对一个接一个）
-pub const CHAIN_GAP: f64 = 0.15;
-
 // ---- 排队节奏 ----
 /// 蓝绿球思考期：各自随机延迟出发（充分思考啥时候跟上粉球）
 pub const QUEUE_DELAY_MIN_MS: f64 = 1000.0;
@@ -67,9 +64,15 @@ pub struct Spring {
     pub damping: f64,
 }
 
-pub const SPRING: Spring = Spring { stiffness: 700.0, damping: 1.0 };
-/// spring 加速度上限（世界单位/s²）：防「高速冲到一个点定住」
-pub const MAX_ACCEL: f64 = 2.5;
+/// 温和加减速（全程）：软化 spring（k 350，追踪更柔）+ 速率低通拉长
+pub const SPRING: Spring = Spring { stiffness: 350.0, damping: 1.0 };
+/// spring 加速度上限（世界单位/s²）：任何时刻加速度有界 = 全程温和加减速
+pub const MAX_ACCEL: f64 = 1.2;
+/// 速率低通时间常数：0.45s——任何速度变化需半秒平滑过渡（慢慢减速/加速）
+pub const RATE_LERP_TAU_MS: f64 = 450.0;
+/// 链上错开弧长（随机贴合）：蓝绿落后粉球的随机距离区间
+pub const GAP_MIN: f64 = 0.08;
+pub const GAP_MAX: f64 = 0.35;
 
 /// 漫游节奏（Play 阶段）
 pub struct Wander {
