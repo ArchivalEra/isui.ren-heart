@@ -38,7 +38,7 @@ pub fn BallsAnimation() -> impl IntoView {
                 last = now;
                 // 帧耗时预算：超预算跳帧；MAX_SKIP 保底（低端/电视场景仍渲染）
                 if acc >= FRAME_BUDGET_MS || skip >= MAX_SKIP {
-                    engine_loop.borrow_mut().frame();
+                    engine_loop.borrow_mut().frame(acc);
                     acc = 0.0;
                     skip = 0;
                 } else {

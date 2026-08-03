@@ -79,3 +79,29 @@ pub const MOTION_BLUR: MotionBlur = MotionBlur {
     trail_len: 3.0,
     trail_alpha: 0.35,
 };
+
+/// 入场仪式（logo 锚点 → 随机区域 → 排队 → 玩耍）
+pub const AT_LOGO_MS: f64 = 3000.0; // 在 logo 球位停留
+pub const TRAVEL_MS: f64 = 1600.0; // 前往随机区域时长
+pub const QUEUE_MS: f64 = 900.0; // 排队时长
+
+/// logo 三球锚点（世界坐标，从原图 517x408 提取：球心 (336,88)(231,110)(299,194)
+/// 映射 x=0.5+(nx-0.5)*0.7, y=0.32+ny*0.35；顺序 = BALL_COLORS 顺序）
+pub const ANCHORS: [(f64, f64); 3] = [
+    (0.605, 0.395), // 粉（上）
+    (0.463, 0.414), // 水蓝（左）
+    (0.555, 0.486), // 薄荷绿（右下）
+];
+
+/// 高速椭圆化：速度 → 长短轴比
+pub struct Ellipse {
+    /// 最大长短轴比（高速时）
+    pub max_ratio: f64,
+    /// 速度基准（世界坐标/帧，达到此速度即接近最大比）
+    pub speed_base: f64,
+}
+
+pub const ELLIPSE: Ellipse = Ellipse {
+    max_ratio: 2.6,
+    speed_base: 0.012,
+};
