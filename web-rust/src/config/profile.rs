@@ -1,14 +1,18 @@
 // 运动风格 Profile（架构候选 B 落地——完整风格对象，深模块）
 // 一种风格 = 一个 MotionProfile 实例。当前两个：
-// - NATIVE_PROFILE：自研跟随（蓝绿直接追链上点 + spring）——回滚版手感
+// - NATIVE_PROFILE：简易去 EMA 版（Chain 跟随 + 无 EMA + 无偏移）——断尾求生对比用
 // - CLOUD_PROFILE：云中心狠活（Frenet 偏移 + EMA 时序滤波 + 调速器）
-// 切换风格 = 改 ACTIVE_PROFILE。
+// 编译期默认 ACTIVE_PROFILE = CLOUD_PROFILE（params.rs 手感参数别名继续用它）；
+// 运行时热切换：P 键 / toggle_active() 翻转 ACTIVE_IDX（0=native、1=cloud）——
+// Player 每帧从 active() 读风格，切换即时生效、无需重建 Player。
 //
 // 手感参数（速度档/spring/加速度/拖尾/前瞻/切向力/转向低通）从 params.rs
 // 全局常量迁入 profile——一个实例 = 一套完整手感：换手感 = 换一个实例，
 // 不再全局改 5-9 处。params.rs 中这些常量改为 ACTIVE_PROFILE 字段的别名。
 // 几何/节奏参数（CHAIN_GAP/LOGO_*/PROB/ORDERS/TEMPLATES/HOME_*/QUEUE_* 等）
 // 不属于风格，留在 params.rs。
+
+use std::sync::atomic::{AtomicUsize, Ordering};
 
 /// 跟随策略：蓝绿目标怎么算
 #[derive(Clone, Copy, PartialEq, Debug)]
@@ -20,6 +24,7 @@ pub enum FollowStyle {
     CloudEma,
 }
 
+#[derive(Clone, Copy, PartialEq, Debug)]
 pub struct MotionProfile {
     #[allow(dead_code)] // 风格名（文档价值）
     pub name: &'static str,
@@ -52,7 +57,8 @@ pub struct MotionProfile {
     pub max_turn_rate: f64,
 }
 
-/// 自研 profile（回滚版手感：纯链跟随，无 EMA、无调速器）——备用，一行切回
+/// 简易去 EMA 版：Chain 跟随（直接贴链上点）+ 无 EMA（α=1.0）+ 无偏移
+/// （offset_scale=0）+ 无调速器（tune_speeds=false）——断尾求生对比用
 /// 手感参数与 CLOUD_PROFILE 相同（当前只有一套手感；引入第二套手感时从这里分化）
 #[allow(dead_code)]
 pub const NATIVE_PROFILE: MotionProfile = MotionProfile {
@@ -90,8 +96,27 @@ pub const CLOUD_PROFILE: MotionProfile = MotionProfile {
     max_turn_rate: 5.0,
 };
 
-/// 当前启用的 profile（切换风格 = 改这里）
+/// 当前启用的 profile（编译期默认 CLOUD——params.rs 手感参数别名继续用它；
+/// 运行时热切换走 ACTIVE_IDX + active()，与它无冲突）
 pub const ACTIVE_PROFILE: MotionProfile = CLOUD_PROFILE;
+
+/// 运行时活动风格索引：0 = NATIVE_PROFILE、1 = CLOUD_PROFILE。
+/// 调试热切换（P 键 / toggle_active）翻转此值；Player 每帧 active() 读取——
+/// 切换即时生效，无需重建 Player。
+pub static ACTIVE_IDX: AtomicUsize = AtomicUsize::new(1);
+
+/// 全部风格（索引 = ACTIVE_IDX 语义）
+pub const PROFILES: [MotionProfile; 2] = [NATIVE_PROFILE, CLOUD_PROFILE];
+
+/// 当前活动风格（每帧读一次 atomic，Relaxed 足够——仅做 0/1 翻转一致）
+pub fn active() -> MotionProfile {
+    PROFILES[ACTIVE_IDX.load(Ordering::Relaxed)].clone()
+}
+
+/// 运行时热切换：0↔1（native ↔ cloud）——P 键调试用
+pub fn toggle_active() {
+    ACTIVE_IDX.store(1 - ACTIVE_IDX.load(Ordering::Relaxed), Ordering::Relaxed);
+}
 
 #[cfg(test)]
 mod tests {
@@ -189,5 +214,28 @@ mod tests {
             assert_eq!(p.tangential_gain, 0.2);
             assert_eq!(p.max_turn_rate, 5.0);
         }
+    }
+
+    #[test]
+    fn profile_hot_switch_flips_style() {
+        // 运行时热切换：ACTIVE_IDX 0↔1 → active() 在 NATIVE/CLOUD 间翻转（原子读写）
+        // 测试末尾必须复位 1（RAII）——否则污染并行运行的其他测试
+        struct ResetIdx;
+        impl Drop for ResetIdx {
+            fn drop(&mut self) {
+                ACTIVE_IDX.store(1, Ordering::Relaxed);
+            }
+        }
+        let _reset = ResetIdx;
+
+        ACTIVE_IDX.store(0, Ordering::Relaxed);
+        assert_eq!(active(), NATIVE_PROFILE, "idx=0 → native（去 EMA 简易版）");
+        ACTIVE_IDX.store(1, Ordering::Relaxed);
+        assert_eq!(active(), CLOUD_PROFILE, "idx=1 → cloud（EMA 版）");
+        // toggle_active 双向翻转（P 键行为）
+        toggle_active(); // 1→0
+        assert_eq!(active(), NATIVE_PROFILE, "toggle 1→0");
+        toggle_active(); // 0→1
+        assert_eq!(active(), CLOUD_PROFILE, "toggle 0→1");
     }
 }

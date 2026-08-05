@@ -13,7 +13,6 @@
 // 规则冲突必须在单测层显形——见 builder_rules_conflict_audit。
 
 use crate::config::params::*;
-use crate::config::templates::TEMPLATES;
 use crate::sim::math::*;
 use super::planner::{CircleBounds, CurveProfile, Leg, PlannedLeg};
 

@@ -3,7 +3,8 @@
 // - 蓝绿（ball[1]/ball[2]）：自由巡航（各自独立的链）+ FollowPink（低优先级任务：
 //   每 FOLLOW_CHECK_MS 判定 FOLLOW_PROB 概率进入，跟 FOLLOW_DUR 时长，粉球回家时松开）
 //   + 周期回家（cycle_t ≥ HOME_EVERY_MS → Homeward→Resting→Queueing→Free——
-//   与粉球同参数不同相位：初始 cycle_t 随机 0-3s，不与粉球精确同步）
+//   与粉球同步：相位 0 + launch 期间 cycle_t 照常累计——与粉球 phase t 同一
+//   HOME_EVERY_MS 边界同帧触发回家，三球同时到家、同时 Resting、同时出发）
 // - 契约：docs/independent-balls-design.md（并发重构的唯一契约）；
 //   蓝绿回家为本轮新增需求（以 prompt 为准，契约文档尚未收录）
 // - 不依赖 web_sys/wasm
@@ -12,7 +13,8 @@ use crate::sim::math::{normal_of, smoothstep, Vec2};
 use crate::sim::planner::{CircleBounds, ExtTarget, Player};
 
 /// 蓝绿任务模式：Free = 自由巡航；FollowPink = 低优先级跟随粉球；
-/// Homeward/Resting/Queueing = 蓝绿自己的回家仪式（周期回家——与粉球同参数不同相位）
+/// Homeward/Resting/Queueing = 蓝绿自己的回家仪式（周期回家——与粉球同步：
+/// 相位 0，cycle_t 从创建时刻起算，与粉球 phase t 同帧触发）
 #[derive(Clone, Copy, PartialEq, Debug)]
 pub enum BallMode {
     Free,
@@ -54,7 +56,8 @@ pub struct Ball {
     /// 法线方向 EMA（Gemini 真经二版：段边界 Frenet 标架跳变 → 跟随目标
     /// raw 阶跃 → EMA 下冲/回弹 = 跟随球二次顿感——法线向量低通平滑）
     pub n_ema: Option<Vec2>,
-    /// 周期回家计时（ms）：Free/FollowPink 中累计，≥ HOME_EVERY_MS 触发回家
+    /// 周期回家计时（ms）：自 State::new 起算（launch 静立期也累计——与粉球
+    /// phase t 无条件累计对齐），Free/FollowPink 中继续累计，≥ HOME_EVERY_MS 触发回家
     pub cycle_t: f64,
     /// 回家仪式计时（ms）：Homeward/Resting/Queueing 各自阶段的推进时间
     pub phase_t: f64,
@@ -99,7 +102,7 @@ impl State {
                 ENTRY_DELAY_MS
                     + QUEUE_DELAY_MIN_MS
                     + rand::random::<f64>() * (QUEUE_DELAY_MAX_MS - QUEUE_DELAY_MIN_MS),
-                rand::random::<f64>() * 3000.0, // 蓝绿随机相位 0-3s（不与粉球同步回家）
+                0.0, // 相位 0：与粉球同步回家（同一 HOME_EVERY_MS 边界触发）
             ),
             Ball::new(
                 anchors[2],
@@ -107,7 +110,7 @@ impl State {
                 ENTRY_DELAY_MS
                     + QUEUE_DELAY_MIN_MS
                     + rand::random::<f64>() * (QUEUE_DELAY_MAX_MS - QUEUE_DELAY_MIN_MS),
-                rand::random::<f64>() * 3000.0,
+                0.0,
             ),
         ];
         // 入场空闲期一次性生成几分钟的链（运行期 ensure_chain 静默）——三球各自
@@ -208,6 +211,12 @@ impl State {
             // 入场静立
             if self.balls[s].launch_t > 0.0 {
                 self.balls[s].launch_t -= dt;
+                // 相位 0 同步：蓝绿 launch 期间 cycle_t 照常累计——与粉球 phase t
+                // 一样从 State::new 起算（step 顶部无条件累计）→ 同一 HOME_EVERY_MS
+                // 边界同帧触发回家（launch 最长 8s << 30s，不会在静立中触发）
+                if s != 0 {
+                    self.balls[s].cycle_t += dt;
+                }
                 continue;
             }
             if s == 0 {
@@ -246,9 +255,11 @@ impl State {
     }
 
     /// 蓝绿：Free（自由巡航）/ FollowPink（跟随粉球——低优先级任务）/ 回家仪式
-    /// 周期回家：Free/FollowPink 中 cycle_t 累计，≥ HOME_EVERY_MS 触发 Homeward——
-    /// 弧线回家（HOME_DURATION_MS）→ 锚点定住（HOME_REST_MS）→ 停顿（QUEUE_DELAY_MIN_MS）
-    /// → 重启自由巡航。回家期间不跟随、不判定（check_t/cycle_t 不累计）。
+    /// 周期回家：cycle_t 自 State::new 累计（含 launch 静立期——与粉球 phase t
+    /// 无条件累计对齐，同一 HOME_EVERY_MS 边界同帧触发），Free/FollowPink 中继续
+    /// 累计，≥ HOME_EVERY_MS 触发 Homeward——弧线回家（HOME_DURATION_MS）→
+    /// 锚点定住（HOME_REST_MS）→ 停顿（QUEUE_DELAY_MIN_MS）→ 重启自由巡航。
+    /// 回家期间不跟随、不判定（check_t/cycle_t 不累计）。
     fn tick_blue_green(&mut self, s: usize, dt: f64, decide: &mut dyn FnMut() -> f64) {
         let pink_home_phase = matches!(
             self.phase,
@@ -446,8 +457,9 @@ impl State {
 }
 
 impl Ball {
-    /// `cycle_t` = 周期回家相位（ms）：粉球 0；蓝绿随机 0-3000ms——
-    /// 蓝绿不与粉球精确同步回家。入场 launch 结束后才开始累计（tick_blue_green 中）。
+    /// `cycle_t` = 周期回家相位（ms）：粉球 0；蓝绿 0——与粉球同步回家
+    /// （同一 HOME_EVERY_MS 边界同帧触发）。入场 launch 静立期也累计
+    /// （step 的 launch 分支），与粉球 phase t 无条件累计对齐。
     fn new(anchor: Vec2, dir: Vec2, launch_t: f64, cycle_t: f64) -> Self {
         Ball {
             player: Player::new(anchor, dir),
@@ -532,8 +544,8 @@ mod tests {
     }
 
     /// 跳过入场静立（launch 清零——判定周期确定，不撞粉球 30s 回家相位）。
-    /// 蓝绿 cycle_t 一并清零（State::new 里是随机相位——测试需确定性；
-    /// 回家相关测试随后手动设置 cycle_t）。
+    /// 蓝绿 cycle_t 一并清零（State::new 已是相位 0——测试需从 0 起算的确定性；
+    /// 个别测试随后手动设置 cycle_t 避免/错开触发）。
     fn skip_launch(st: &mut State) {
         for s in 0..3 {
             st.balls[s].launch_t = 0.0;
@@ -688,9 +700,12 @@ mod tests {
     #[test]
     fn blue_green_release_on_pink_home() {
         // 粉球回家期间蓝绿不跟随（已跟随的松开回 Free）。
-        // 蓝绿自己也周期回家（30s 时 cycle_t 到点直接切 Homeward 打断跟随）——
-        // 两条路径的终点都是：粉球回家期间蓝绿不处于 FollowPink。
+        // 本测试专测「粉球松开跟随」路径：蓝绿 cycle_t 设大不触发自己的回家
+        // （同步回家下蓝绿 30s 自己也回家——那条路径由 home_sync_with_pink 覆盖）
         let mut st = state();
+        skip_launch(&mut st);
+        st.balls[1].cycle_t = 1e9;
+        st.balls[2].cycle_t = 1e9;
         let mut dec = seq_decide(5);
         fast_forward(&mut st, 30000.0, &mut dec);
         for s in 1..3 {
@@ -704,27 +719,31 @@ mod tests {
 
     #[test]
     fn blue_green_homecoming() {
-        // 蓝绿周期到家：随机相位（0-3s）下首次回家在 27-30s——
-        // 快进 30s+ 后位置 = 锚点附近（< 0.05）；重启后 Free 且位置离开锚点
+        // 蓝绿周期到家（相位 0 同步粉球）：30s 同帧触发 Homeward，粉球 Resting
+        // 期间蓝绿也 Resting——三球同一时刻都在各自锚点附近；重启后 Free + 链推进
         let mut st = state();
         skip_launch(&mut st);
-        // 固定相位：蓝 ball[1] 初始 1000ms（29s 触发），绿 ball[2] 初始 2500ms（27.5s 触发）
-        st.balls[1].cycle_t = 1000.0;
-        st.balls[2].cycle_t = 2500.0;
+        // 相位 0（默认）：蓝绿与粉球 30s 同帧触发（同一 HOME_EVERY_MS 边界）
         let a1 = st.anchors[1];
         let a2 = st.anchors[2];
         let mut dec = seq_decide(usize::MAX);
-        fast_forward(&mut st, 32000.0, &mut dec);
-        // 已进入回家仪式（Homeward 或 Resting/Queueing——位置都在锚点附近）
+        fast_forward(&mut st, 30000.0, &mut dec);
+        // 同帧进入 Homeward（粉球 phase 与蓝绿 cycle_t 同刻 ≥ HOME_EVERY_MS）
+        assert!(matches!(st.phase, Phase::Homeward { .. }), "粉球应 Homeward");
         for s in 1..3 {
-            assert!(
-                matches!(
-                    st.balls[s].mode,
-                    BallMode::Homeward | BallMode::Resting | BallMode::Queueing
-                ),
-                "ball[{s}] 应在回家仪式: {:?}",
+            assert_eq!(
+                st.balls[s].mode,
+                BallMode::Homeward,
+                "ball[{s}] 应与粉球同帧回家: {:?}",
                 st.balls[s].mode
             );
+        }
+        // 回家完成 + 粉球 Resting 期间（31.5s-38.5s）：蓝绿也 Resting——三球都在
+        // 锚点附近（同一时刻都「在家」）
+        fast_forward(&mut st, 2500.0, &mut dec); // 33s：三球都在 Resting
+        assert!(matches!(st.phase, Phase::Resting { .. }), "粉球应 Resting");
+        for s in 1..3 {
+            assert_eq!(st.balls[s].mode, BallMode::Resting, "蓝绿也应 Resting");
         }
         let d1 = {
             let p = st.ball_pos(1, 0.0);
@@ -749,19 +768,55 @@ mod tests {
     #[test]
     fn follow_interrupted_by_home() {
         // 跟随中周期到点：回家优先——直接打断 FollowPink 切 Homeward（弧线连续）
+        // 相位 0：ball[1] 30s 与粉球同步触发（25s 已在 FollowPink）；
+        // ball[2] cycle_t 设大不触发——纯背景
         let mut st = state();
         skip_launch(&mut st);
-        // ball[1] 初始相位 2000ms → 28s 触发回家；25s 已进入 FollowPink（seq_decide）
-        st.balls[1].cycle_t = 2000.0;
-        st.balls[2].cycle_t = 0.0; // ball[2] 全 0.9 判定——不跟随，纯背景
+        st.balls[1].cycle_t = 0.0; // 相位 0——30s 触发
+        st.balls[2].cycle_t = 1e9; // 永不触发
         let mut dec = seq_decide(4);
-        fast_forward(&mut st, 29000.0, &mut dec);
+        fast_forward(&mut st, 31000.0, &mut dec);
         assert_eq!(
             st.balls[1].mode,
             BallMode::Homeward,
             "跟随中到点应直接切 Homeward（回家优先）"
         );
         assert_eq!(st.balls[2].mode, BallMode::Free, "ball[2] 应一直 Free");
+    }
+
+    #[test]
+    fn home_sync_with_pink() {
+        // 相位 0 同步回家（真实入场时序——不跳过 launch）：蓝绿 launch 期间
+        // cycle_t 照常累计（与粉球 phase 无条件累计对齐）→ 30s 同一 HOME_EVERY_MS
+        // 边界三球同帧触发 Homeward；回家完成后三球同时段在锚点 Resting，
+        // 粉球 Resting 期间蓝绿也在 Resting（不再出现"蓝绿刚到家粉球已出发"）
+        let mut st = state();
+        let mut dec = seq_decide(usize::MAX);
+        let anchors: Vec<Vec2> = (0..3).map(|s| st.anchors[s]).collect();
+        fast_forward(&mut st, 30000.0, &mut dec);
+        // 同帧触发：粉球 phase 与蓝绿 cycle_t 同刻 ≥ HOME_EVERY_MS
+        assert!(matches!(st.phase, Phase::Homeward { .. }), "粉球应 Homeward");
+        for s in 1..3 {
+            assert_eq!(
+                st.balls[s].mode,
+                BallMode::Homeward,
+                "ball[{s}] 应与粉球同帧回家: {:?}",
+                st.balls[s].mode
+            );
+        }
+        // 回家完成（HOME_DURATION_MS 后）：三球都在各自锚点附近（Resting 中）
+        fast_forward(&mut st, HOME_DURATION_MS + 1000.0, &mut dec);
+        assert!(matches!(st.phase, Phase::Resting { .. }), "粉球应 Resting");
+        // 粉球状态看 State.phase（无 BallMode）；蓝绿断言 BallMode
+        let p0 = st.ball_pos(0, 0.0);
+        let d0 = ((p0.x - anchors[0].x).powi(2) + (p0.y - anchors[0].y).powi(2)).sqrt();
+        assert!(d0 < 0.05, "ball[0] 应在锚点附近: {d0:.4}");
+        for s in 1..3 {
+            assert_eq!(st.balls[s].mode, BallMode::Resting, "ball[{s}] 应 Resting");
+            let p = st.ball_pos(s, 0.0);
+            let d = ((p.x - anchors[s].x).powi(2) + (p.y - anchors[s].y).powi(2)).sqrt();
+            assert!(d < 0.05, "ball[{s}] 应在锚点附近: {d:.4}");
+        }
     }
 
     #[test]

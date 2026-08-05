@@ -49,7 +49,7 @@ impl BallsEngine {
             Ball { offset: 0.0, color: BALL_COLORS[2] },
         ];
         let anchors = ANCHORS.map(|(x, y)| Vec2 { x, y });
-        Self {
+        let engine = Self {
             canvas,
             ctx,
             balls,
@@ -59,7 +59,9 @@ impl BallsEngine {
             history: [VecDeque::new(), VecDeque::new(), VecDeque::new()],
             logo_bounds: crate::sim::planner::CircleBounds::fallback(),
             logo_tick: 0,
-        }
+        };
+        engine.install_keyboard_shortcuts();
+        engine
     }
 
     /// 切换拖尾风格（大拖尾 ↔ 小拖尾）——wasm 导出，前端按钮调用
@@ -68,6 +70,33 @@ impl BallsEngine {
             RenderMode::Trail => RenderMode::TrailMini,
             RenderMode::TrailMini => RenderMode::Trail,
         };
+    }
+
+    /// 调试热切换快捷键：P = 切换运动风格（native 去 EMA ↔ cloud EMA）。
+    /// 只翻转 profile::ACTIVE_IDX（toggle_active），Player 每帧 active() 读——
+    /// 切换即时生效，无需重建 Player。
+    /// 用 js_sys::Reflect 直接调 addEventListener（避免新增 web-sys
+    /// KeyboardEvent/EventTarget features）——js-sys 默认启用 Reflect。
+    fn install_keyboard_shortcuts(&self) {
+        use wasm_bindgen::closure::Closure;
+        let window = web_sys::window().expect("window");
+        let cb = Closure::<dyn FnMut(wasm_bindgen::JsValue)>::wrap(Box::new(move |ev| {
+            // event.key 字符串判断（物理键值，不随输入法/布局翻译）
+            let key = js_sys::Reflect::get(&ev, &wasm_bindgen::JsValue::from_str("key"))
+                .ok()
+                .and_then(|k| k.as_string());
+            if key.as_deref() == Some("p") || key.as_deref() == Some("P") {
+                crate::config::profile::toggle_active();
+            }
+        }));
+        let this = wasm_bindgen::JsValue::from(window);
+        let add = js_sys::Reflect::get(&this, &wasm_bindgen::JsValue::from_str("addEventListener"))
+            .expect("window.addEventListener 不存在");
+        let add_fn: js_sys::Function = add
+            .dyn_into()
+            .expect("window.addEventListener 不是函数");
+        let _ = add_fn.call2(&this, &wasm_bindgen::JsValue::from_str("keydown"), cb.as_ref());
+        cb.forget(); // 防闭包被 drop（否则监听失效）
     }
 
     pub fn frame(&mut self, dt: f64) {

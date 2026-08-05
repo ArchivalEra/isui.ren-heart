@@ -5,7 +5,7 @@
 // - 跟随模式（tick(dt, Some(ext))）：链冻结（s_lead 不推进），位置/速度 =
 //   外部注入目标（ExtTarget 由 state.rs 用粉球链计算，本球不持有其他球链引用）
 use crate::config::params::*;
-use crate::config::templates::TEMPLATES;
+use crate::config::params::TEMPLATES;
 use crate::sim::chain::{
     clamp_target_in_bounds, leg_in_bounds, make_planned_leg, roll_speed, ChainBuilder, LegContext,
 };
@@ -117,12 +117,6 @@ pub struct Player {
     ema_target: Vec2,
     /// 活动圈边界（tayori 标志中心圆——实时采样更新）
     bounds: CircleBounds,
-    /// 跟随风格（来自 ACTIVE_PROFILE：Chain 自研 / CloudEma 云中心）
-    follow: crate::config::profile::FollowStyle,
-    /// EMA 系数（1.0 = 无滤波）
-    ema_alpha: f64,
-    /// 调速器开关
-    tune_speeds: bool,
 }
 
 impl Player {
@@ -154,7 +148,6 @@ impl Player {
         let mut chain = VecDeque::new();
         chain.push_back(pl);
 
-        let pr = crate::config::profile::ACTIVE_PROFILE;
         let mut p = Player {
             chain,
             s_lead: 0.0,
@@ -163,11 +156,9 @@ impl Player {
                 vel: Vec2 { x: 0.0, y: 0.0 },
                 rate: WORLD_SPEED,
             },
+            // EMA 状态保留：切回 CloudEma 时重新收敛（可接受）
             ema_target: anchor,
             bounds: CircleBounds::fallback(),
-            follow: pr.follow,
-            ema_alpha: pr.ema_alpha,
-            tune_speeds: pr.tune_speeds,
         };
         p.ensure_chain();
         p
@@ -180,6 +171,8 @@ impl Player {
     ///   两种模式切换时的位置连续性由 state.rs 保证，Player 不做额外过渡。
     pub fn tick(&mut self, dt: f64, ext: Option<ExtTarget>) {
         let dt_s = dt / 1000.0;
+        // 运行时风格（每帧读一次 atomic，cheap）：热切换即时生效，无需重建 Player
+        let pr = crate::config::profile::active();
         // 低通：球速紧贴链速（阻尼项全功率制动，见下方力模型）——
         // 低通过大 → 链速已降球速仍高 → 冲过头被 spring 拉回 = 冲刺回弹
         let rate_lerp = (dt_s / 0.12).min(1.0);
@@ -187,11 +180,11 @@ impl Player {
         match ext {
             Some(ext) => {
                 // 跟随模式：目标 = ext.pos（云中心：直接进 EMA；native：直接取）
-                let target = match self.follow {
+                let target = match pr.follow {
                     crate::config::profile::FollowStyle::Chain => ext.pos,
                     crate::config::profile::FollowStyle::CloudEma => {
                         let ema =
-                            crate::sim::cloud::ema_step(self.ema_target, ext.pos, self.ema_alpha);
+                            crate::sim::cloud::ema_step(self.ema_target, ext.pos, pr.ema_alpha);
                         self.ema_target = ema;
                         ema
                     }
@@ -210,7 +203,7 @@ impl Player {
                 let s_i = self.s_lead;
                 // 本球目标：云中心 = 链上点 + Frenet 偏移 + EMA（单球走链中心线，
                 // 原队首 FORMATION_OFFSETS[0]=0；跟随偏移由 state.rs 注入 ext）
-                let (target, seg_i, u_i) = match self.follow {
+                let (target, seg_i, u_i) = match pr.follow {
                     crate::config::profile::FollowStyle::Chain => {
                         // 自研：直接追链上弧长点
                         let (p, _, seg, u) = chain_pos_and_tangent(&self.chain, s_i);
@@ -220,7 +213,7 @@ impl Player {
                         // 云中心：Frenet 法线偏移 + EMA 时序滤波
                         let (raw, _) = crate::sim::cloud::follower_target(&self.chain, s_i, 0.0);
                         let (_, _, seg, u) = chain_pos_and_tangent(&self.chain, s_i);
-                        let ema = crate::sim::cloud::ema_step(self.ema_target, raw, self.ema_alpha);
+                        let ema = crate::sim::cloud::ema_step(self.ema_target, raw, pr.ema_alpha);
                         self.ema_target = ema;
                         (ema, seg, u)
                     }
@@ -385,7 +378,7 @@ impl Player {
             self.chain.push_back(clamp_dur_to_chain(pl, tail.dur_ms));
         }
         // 调速师傅：补链后审核尾部段的速度序列（savgol 平滑 + 加速度钳制）
-        if self.tune_speeds {
+        if crate::config::profile::active().tune_speeds {
             self.tune_tail(9);
         }
     }
@@ -600,6 +593,55 @@ mod tests {
     }
 
     #[test]
+    fn tick_uses_runtime_active_profile() {
+        // 运行时热切换：tick 每帧从 active() 读风格——
+        // ACTIVE_IDX=0 → Chain（直接贴 ext.pos，单帧收敛 50%）；
+        // ACTIVE_IDX=1 → CloudEma（EMA α=0.28，单帧只走 14%）
+        // 测试末尾必须复位 1（RAII）——否则污染并行运行的其他测试
+        struct ResetIdx;
+        impl Drop for ResetIdx {
+            fn drop(&mut self) {
+                crate::config::profile::ACTIVE_IDX.store(
+                    1,
+                    std::sync::atomic::Ordering::Relaxed,
+                );
+            }
+        }
+        let _reset = ResetIdx;
+
+        let anchor = Vec2 { x: 0.5, y: 0.5 };
+        let dir = Vec2 { x: 0.8, y: 0.6 };
+        let ext = ExtTarget {
+            pos: Vec2 { x: 0.9, y: 0.9 },
+            tvel: Vec2 { x: 0.1, y: -0.05 },
+        };
+        let dist0 = ((anchor.x - ext.pos.x).powi(2) + (anchor.y - ext.pos.y).powi(2)).sqrt();
+
+        // Chain（native）：无 EMA——位置直接收敛到 ext.pos（单帧走 50%）
+        crate::config::profile::ACTIVE_IDX.store(0, std::sync::atomic::Ordering::Relaxed);
+        let mut p_nat = Player::new(anchor, dir);
+        p_nat.tick(16.7, Some(ext));
+        let d_nat = ((p_nat.pos().x - ext.pos.x).powi(2) + (p_nat.pos().y - ext.pos.y).powi(2)).sqrt();
+        assert!(
+            (d_nat / dist0 - 0.5).abs() < 0.01,
+            "Chain 应直接贴 ext.pos（50%/帧）: ratio={:.3}",
+            d_nat / dist0
+        );
+
+        // CloudEma（cloud）：EMA α=0.28 滞后——单帧只走 α×50% = 14%
+        crate::config::profile::ACTIVE_IDX.store(1, std::sync::atomic::Ordering::Relaxed);
+        let mut p_ema = Player::new(anchor, dir);
+        p_ema.tick(16.7, Some(ext));
+        let d_ema = ((p_ema.pos().x - ext.pos.x).powi(2) + (p_ema.pos().y - ext.pos.y).powi(2)).sqrt();
+        assert!(
+            (d_ema / dist0 - 0.86).abs() < 0.01,
+            "CloudEma 单帧只走 EMA 步（14%）: ratio={:.3}",
+            d_ema / dist0
+        );
+        assert!(d_ema > d_nat, "EMA 滤波应滞后于直接贴链");
+    }
+
+    #[test]
     fn nearest_arc_located() {
         // 随机链上点 + 小扰动 → nearest_arc 定位的链上点与点距离 < 0.1
         let anchor = Vec2 { x: 0.5, y: 0.5 };
@@ -802,10 +844,10 @@ fn sprint_recoil_audit() {
                     "RECOIL s_i={:.3} v=({:.3},{:.3}) ahead={:.3} retreat={:.3} | at tpl={} curv={:.2} from=({:.2},{:.2})->({:.2},{:.2}) | fut tpl={} curv={:.2} from=({:.2},{:.2})->({:.2},{:.2})",
                     s_i, v.x, v.y, ahead, retreat,
                     seg.template_idx,
-                    crate::config::templates::TEMPLATES[seg.template_idx].curvature,
+                    crate::config::params::TEMPLATES[seg.template_idx].curvature,
                     f.x, f.y, tg.x, tg.y,
                     segf.template_idx,
-                    crate::config::templates::TEMPLATES[segf.template_idx].curvature,
+                    crate::config::params::TEMPLATES[segf.template_idx].curvature,
                     ff.x, ff.y, tf.x, tf.y,
                 );
             }
