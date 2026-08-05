@@ -77,16 +77,11 @@ pub struct State {
     anchors: [Vec2; 3],
     /// 粉球上一帧位置（跟随 tvel 的差分速度用）
     pink_prev: Vec2,
-    /// 首帧校准的 logo 中心（归一化基准——锚点平移/缩放都相对它）
-    calib_center: Vec2,
-    /// 首帧校准标志：第一次有效采样作为基准（锚点零平移——用户实测
-    /// ANCHORS 即默认比例下的正确开场位置）；之后 logo 变化才跟随平移。
-    /// 曾用 CSS 推导 LOGO_REF 作基准——与实际采样中心有偏差 →
-    /// 首帧注入即平移错位（用户：默认比例开场位置不对）
-    calibrated: bool,
-    /// 首帧校准的 logo 缩放因子（基准——锚点偏移缩放比 = 当前/基准）——
-    /// 真经精髓：logo 大球散开、logo 小球收拢——构图恒定
-    calib_scale: f64,
+    /// 无状态归一化向量法（Gemini 真经五版）：锚点 = C_curr + V_i×W_curr——
+    /// V_i = (ANCHORS_i − LOGO_DESIGN_CENTER) / LOGO_DESIGN_W 为设计基准下的
+    /// 常数向量（State::new 算好）。彻底放弃校准状态（calib_center/
+    /// calib_scale/calibrated 已删——曾首帧校准 + 缩放比恢复，rebuild 后错位）
+    anchor_vecs: [Vec2; 3],
 }
 
 impl State {
@@ -114,46 +109,33 @@ impl State {
         for ball in balls.iter_mut() {
             ball.player.ensure_chain_to(PREPLAN_SECONDS * WORLD_SPEED * 1.1);
         }
+        // 无状态归一化向量法（Gemini 真经五版）：V_i = (ANCHORS_i −
+        // LOGO_DESIGN_CENTER) / LOGO_DESIGN_W——设计基准下锚点相对 logo 的
+        // 常数向量（与传入 anchors 同一来源；运行时 set_logo_transform 直接
+        // c + V_i×w 重算——零校准状态、零首帧特殊、零幂等）
+        let anchor_vecs = crate::config::params::ANCHORS.map(|(x, y)| Vec2 {
+            x: (x - LOGO_DESIGN_CENTER.0) / LOGO_DESIGN_W,
+            y: (y - LOGO_DESIGN_CENTER.1) / LOGO_DESIGN_W,
+        });
         State {
             balls,
             phase: Phase::Cruise { t: 0.0 },
             age: 0.0,
             anchors,
             pink_prev: anchors[0],
-            calib_center: Vec2 { x: crate::config::params::LOGO_REF.0, y: crate::config::params::LOGO_REF.1 },
-            calibrated: false,
-            calib_scale: 1.0,
+            anchor_vecs,
         }
     }
 
-    /// 锚点跟随 logo 实际中心 + 缩放（用户钦定：球按 logo 计算初始位置；
-    /// 真经精髓：锚点 = LOGO_REF + 偏移×缩放 + 中心平移——logo 大球散开、
-    /// 小球收拢，围绕 logo 的构图恒定）。首帧校准：第一次有效采样作为
-    /// 基准零平移（锚点 = 用户实测 ANCHORS——默认比例开场位置正确）
-    pub fn set_logo_transform(&mut self, c: Vec2, scale: f64) {
-        let scale = scale.clamp(0.5, 1.5); // 防御：极端缩放不出圆
-        if !self.calibrated {
-            // 首帧校准：锚点不动（ANCHORS 原样）——基准 = 当前 logo 位置/尺寸
-            self.calib_center = c;
-            self.calib_scale = scale;
-            self.calibrated = true;
-            return;
-        }
-        // 绝对语义（相对首帧基准）：锚点 = 校准中心 + 偏移×缩放比 + (c - 基准中心)
-        // ——偏移基准 = 实际首帧采样中心（曾用 CSS 推导 LOGO_REF——与图形中心
-        // 有偏差——缩放时偏移基准错；trim + 补偿后图形中心 = 采样中心——用
-        // calib_center 精确）
-        let ds = scale / self.calib_scale; // 缩放比（相对首帧）
-        let dx = c.x - self.calib_center.x;
-        let dy = c.y - self.calib_center.y;
-        // 无幂等短路：曾 dx=0/ds=1 时 return——但输入=基准 ≠ 当前锚点=基准
-        // （连续变换后回到基准值会误跳）——绝对公式每 30 帧重算开销可忽略
-        let (ref_x, ref_y) = (self.calib_center.x, self.calib_center.y);
+    /// 锚点跟随 logo 实际中心 + 当前宽度（无状态归一化向量法——Gemini
+    /// 真经五版）：anchors[s] = c + V_i × w（V_i = State::new 算好的常数向量）。
+    /// 无首帧校准、无幂等短路——每帧注入即重算（绝对公式，开销可忽略）：
+    /// logo 平移锚点跟走、logo 大球散开/小球收拢——围绕 logo 的构图恒焊死
+    pub fn set_logo_transform(&mut self, c: Vec2, w: f64) {
         for s in 0..3 {
-            let (ax, ay) = crate::config::params::ANCHORS[s];
             self.anchors[s] = Vec2 {
-                x: ref_x + (ax - ref_x) * ds + dx,
-                y: ref_y + (ay - ref_y) * ds + dy,
+                x: c.x + self.anchor_vecs[s].x * w,
+                y: c.y + self.anchor_vecs[s].y * w,
             };
         }
     }
@@ -179,16 +161,8 @@ impl State {
         self.anchors
     }
 
-    /// 重建后恢复校准基准（engine rebuild_on_resize 创建全新 State 后调用——
-    /// 曾校准重置 → 小屏切换后锚点回到全屏 ANCHORS 不缩放 → 球与 logo
-    /// 分离（用户：小球没跟 logo 焊死））
-    pub fn set_calib(&mut self, center: Vec2, scale: f64) {
-        self.calib_center = center;
-        self.calib_scale = scale;
-        self.calibrated = true;
-    }
-
     /// 调试拖拽更新单个锚点（世界坐标——clamp 屏内；用户拖球到理想位置）
+    /// （set_calib 已删——无状态归一化向量法零校准状态，无需跨 rebuild 保留）
     pub fn set_anchor(&mut self, s: usize, x: f64, y: f64) {
         if s < 3 {
             self.anchors[s] = Vec2 {
@@ -1073,95 +1047,64 @@ mod tests {
 
     #[test]
     fn anchors_follow_logo_center() {
-        // 用户钦定：球按 logo 计算初始位置——set_logo_center 平移锚点。
-        // 首帧校准：第一次注入零平移（锚点 = 用户实测 ANCHORS——默认比例
-        // 开场位置正确）；之后 logo 变化才等量平移（相对形状恒定）
+        // 无状态归一化向量法（Gemini 真经五版）：锚点 = 当前 logo 中心 + V_i×当前宽
+        // ——V_i = (ANCHORS_i − LOGO_DESIGN_CENTER) / LOGO_DESIGN_W 为设计基准下
+        // 常数向量（State::new 算好）。任意注入 (c,w) 直接重算——无首帧特殊、
+        // 无校准状态、无幂等短路
         let mut st = state();
-        let orig: [Vec2; 3] = [st.anchors[0], st.anchors[1], st.anchors[2]];
-        // 首帧校准：注入任意中心/缩放 → 锚点零平移（基准 = 当前 logo 位置）
-        st.set_logo_transform(v(0.36, 0.30), 1.0);
-        let after_cal: [Vec2; 3] = [st.anchors[0], st.anchors[1], st.anchors[2]];
-        for s in 0..3 {
-            assert!(
-                (after_cal[s].x - orig[s].x).abs() < 1e-12
-                    && (after_cal[s].y - orig[s].y).abs() < 1e-12,
-                "首帧校准应零平移（ANCHORS 原样）"
-            );
-        }
-        // logo 中心变化（如切小屏）→ 锚点等量平移（基准 = 校准值 0.36,0.30）
-        st.set_logo_transform(v(0.40, 0.26), 1.0);
-        let moved: [Vec2; 3] = [st.anchors[0], st.anchors[1], st.anchors[2]];
-        let dx = 0.04;
-        let dy = -0.04;
-        for s in 0..3 {
-            let d = ((moved[s].x - (after_cal[s].x + dx)).powi(2)
-                + (moved[s].y - (after_cal[s].y + dy)).powi(2))
-            .sqrt();
-            assert!(d < 1e-9, "ball[{s}] 锚点应等量平移: {d:.6}");
-            // 相对形状恒定（三球相对位置不变）
-            let r01 = ((moved[0].x - moved[1].x).powi(2) + (moved[0].y - moved[1].y).powi(2)).sqrt();
-            let r01o = ((orig[0].x - orig[1].x).powi(2) + (orig[0].y - orig[1].y).powi(2)).sqrt();
-            assert!((r01 - r01o).abs() < 1e-9, "相对形状应恒定");
-        }
-        // logo 缩放（真经精髓）→ 锚点偏移随缩放成比例（相对首帧校准中心构图）
-        // 基准 scale=1.0；缩到 0.6 → 偏移 ×0.6（logo 小球收拢）
-        st.set_logo_transform(v(0.40, 0.26), 0.6);
-        let scaled: [Vec2; 3] = [st.anchors[0], st.anchors[1], st.anchors[2]];
+        // 注入设计基准 (c,w) = (LOGO_DESIGN_CENTER, LOGO_DESIGN_W) → 锚点还原
+        // ANCHORS 原样（自洽：设计基准下 V_i×w = ANCHORS_i − 设计中心）
+        st.set_logo_transform(
+            v(crate::config::params::LOGO_DESIGN_CENTER.0, crate::config::params::LOGO_DESIGN_CENTER.1),
+            crate::config::params::LOGO_DESIGN_W,
+        );
+        let at_design = st.anchor_positions();
         for s in 0..3 {
             let (ax, ay) = crate::config::params::ANCHORS[s];
-            let expect = v(
-                0.36 + (ax - 0.36) * 0.6 + dx,
-                0.30 + (ay - 0.30) * 0.6 + dy,
+            assert!(
+                (at_design[s].x - ax).abs() < 1e-12 && (at_design[s].y - ay).abs() < 1e-12,
+                "ball[{s}] 注入设计基准应还原 ANCHORS 原样: {:?} vs {ax},{ay}",
+                at_design[s]
             );
-            let d = ((scaled[s].x - expect.x).powi(2) + (scaled[s].y - expect.y).powi(2)).sqrt();
-            assert!(d < 1e-9, "ball[{s}] 锚点偏移应随 logo 缩放: {d:.6}");
         }
-        // 回到校准基准（中心+缩放）→ 锚点回到初始（切回默认比例恢复）
-        st.set_logo_transform(v(0.36, 0.30), 1.0);
-        let back: [Vec2; 3] = [st.anchors[0], st.anchors[1], st.anchors[2]];
+        // 任意注入 (c,w)：锚点 = c + V_i×w——与手算公式一致
+        let c = v(0.30, 0.42);
+        let w = 0.08; // w 从设计宽 0.103 变小 → logo 小球 → 锚点收拢
+        st.set_logo_transform(c, w);
+        let moved = st.anchor_positions();
+        for s in 0..3 {
+            let (ax, ay) = crate::config::params::ANCHORS[s];
+            let v_i = v(
+                (ax - crate::config::params::LOGO_DESIGN_CENTER.0)
+                    / crate::config::params::LOGO_DESIGN_W,
+                (ay - crate::config::params::LOGO_DESIGN_CENTER.1)
+                    / crate::config::params::LOGO_DESIGN_W,
+            );
+            let expect = v(c.x + v_i.x * w, c.y + v_i.y * w);
+            let d = ((moved[s].x - expect.x).powi(2) + (moved[s].y - expect.y).powi(2)).sqrt();
+            assert!(d < 1e-9, "ball[{s}] 锚点应 = c + V_i×w: {d:.6}");
+            // 焊死：锚点相对 logo 的比例恒定——w 变化 → 偏移 = V_i×w（线性缩放）
+            let norm = v((moved[s].x - c.x) / w, (moved[s].y - c.y) / w);
+            assert!(
+                (norm.x - v_i.x).abs() < 1e-9 && (norm.y - v_i.y).abs() < 1e-9,
+                "ball[{s}] 锚点相对 logo 比例应恒定（焊死）"
+            );
+        }
+        // 重复注入同一 (c,w)：结果不变——无状态每帧重算正确（无漂移/无幂等陷阱）
+        st.set_logo_transform(c, w);
+        let again = st.anchor_positions();
         for s in 0..3 {
             assert!(
-                (back[s].x - orig[s].x).abs() < 1e-12
-                    && (back[s].y - orig[s].y).abs() < 1e-12,
-                "回到基准应恢复初始锚点: back={:?} orig={:?}",
-                back[s], orig[s]
+                (again[s].x - moved[s].x).abs() < 1e-12
+                    && (again[s].y - moved[s].y).abs() < 1e-12,
+                "ball[{s}] 重复注入应结果不变（无状态）"
             );
         }
     }
 
-    #[test]
-    fn calib_survives_rebuild() {
-        // 重建场景（小屏切换）：set_calib 恢复旧基准后，新的 set_logo_transform
-        // 仍按「相对全屏基准」缩放——锚点不回到全屏值（球跟 logo 焊死）
-        let mut st = state();
-        // 全屏校准（首帧：注入零平移——基准 = 全屏状态）
-        st.set_logo_transform(v(0.393, 0.274), 1.0);
-        let orig: [Vec2; 3] = [st.anchors[0], st.anchors[1], st.anchors[2]];
-        // 模拟 rebuild：新 State + 恢复旧校准基准
-        let mut st2 = state();
-        st2.set_calib(v(0.393, 0.274), 1.0);
-        // 小屏：中心平移 + 缩放 0.77 → 锚点应 = 旧锚点收拢平移（不是全屏值）
-        st2.set_logo_transform(v(0.30, 0.30), 0.77);
-        let s2: [Vec2; 3] = [st2.anchors[0], st2.anchors[1], st2.anchors[2]];
-        let (rx, ry) = (0.393, 0.274);
-        let (dx, dy) = (0.30 - rx, 0.30 - ry);
-        for s in 0..3 {
-            let (ax, ay) = crate::config::params::ANCHORS[s];
-            let expect = v(rx + (ax - rx) * 0.77 + dx, ry + (ay - ry) * 0.77 + dy);
-            let d = ((s2[s].x - expect.x).powi(2) + (s2[s].y - expect.y).powi(2)).sqrt();
-            assert!(d < 1e-9, "ball[{s}] 重建后缩放应保留（相对全屏基准）: {d:.6}");
-        }
-        // 与未重建的 State 行为一致（st 同样注入小屏值）
-        st.set_logo_transform(v(0.30, 0.30), 0.77);
-        let orig2: [Vec2; 3] = [st.anchors[0], st.anchors[1], st.anchors[2]];
-        for s in 0..3 {
-            assert!(
-                (s2[s].x - orig2[s].x).abs() < 1e-9 && (s2[s].y - orig2[s].y).abs() < 1e-9,
-                "重建前后锚点应一致（焊死）"
-            );
-        }
-        let _ = orig;
-    }
+    // calib_survives_rebuild 已删：无状态归一化向量法零校准状态——
+    // rebuild 后 State::new 重算 V_i（常数），engine 立即采样注入即生效，
+    // 「重建后锚点缩放保留」由公式恒成立（无状态），无需专项测试
 
     #[test]
     fn rebuild_chains_recovers() {

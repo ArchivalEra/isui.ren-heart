@@ -95,10 +95,9 @@ body {
      以其为参考——logo 横坐标 = 中轴 - 12.07% 固定偏移——增宽/减宽不偏） */
   left: 44.65%; /* 人眼校准 2026-08-06（调试器拖拽值） */
   top: 37.86%;
-  /* 透明边已裁切（logo.png 为 trimmed 版）——补偿图形中心偏移：
-     图形原偏左 5px/偏下 9px（相对原画布 433x372）——transform % 相对
-     新画布（236x261）→ 补偿 2.119% / 3.448%——平移回原位置 */
-  transform: translate(calc(-50% - 2.119%), calc(-50% + 3.448%));
+  /* 位置锚定层：只锁中心点（left/top + translate(-50%,-50%)）——
+     与 logo 宽度完全解耦；图形偏心修正由内层 .heart-logo-img 单独承担 */
+  transform: translate(-50%, -50%);
   z-index: 2;
   pointer-events: none;
 }
@@ -108,6 +107,11 @@ body {
   /* 连续缩放（任意窗口平滑——vw/vh 连续函数；去掉断点覆盖后全档统一） */
   width: min(70vw, 70vh, 196px); /* 上限 196px——人眼校准（调试器 L/M） */
   height: auto;
+  /* 图形偏心修正层：透明边已裁切（logo.png 为 trimmed 版）——
+     图形原偏左 5px/偏下 9px（相对原画布 433x372）——transform % 相对
+     新画布（236x261）→ 补偿 2.119% / 3.448%——平移回原位置；
+     % 相对自身宽高——尺寸调整时图形中心不漂移 */
+  transform: translate(-2.119%, 3.448%);
   filter: drop-shadow(0 8px 30px rgba(17, 17, 17, 0.1));
 }
 

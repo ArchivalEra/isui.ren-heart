@@ -176,13 +176,25 @@ pub const FOLLOW_DUR_MIN_MS: f64 = 5000.0;
 /// 跟随最长时长（ms）
 pub const FOLLOW_DUR_MAX_MS: f64 = 20000.0;
 
-/// 基准 logo 归一化中心（CSS 定位推导：left calc(50%-12.07%) → 反透视
-/// cx=(0.3793-0.5)/0.6733+0.5=0.3207，top 27.40% → cy=0.274）。
-/// 锚点 = logo 实际中心 + (ANCHORS - LOGO_REF)——球始终围绕 logo（视觉焊死）
-pub const LOGO_REF: (f64, f64) = (0.3207, 0.2740);
+// ── 无状态归一化向量法（Gemini 真经五版）──
+// 锚点跟随 logo 的公式：anchors[s] = C_curr + V_i × W_curr，其中
+// V_i = (ANCHORS_i − LOGO_DESIGN_CENTER) / LOGO_DESIGN_W 为常数向量
+// （State::new 算好——运行时注入当前采样的「中心 + 归一化宽」即生效，
+// 零校准状态、零首帧特殊、零幂等——每帧重算开销可忽略）。
+// 以下两常量 = 「推导值」：用户在【全屏】布局下实测校准时的 logo 状态。
 
-/// logo 三球锚点（世界坐标，站主实测给点；相对 LOGO_REF 偏移恒定——
-/// set_logo_center 平移锚点跟 logo 走）
+/// 设计基准 logo 归一化中心（推导值——全屏校准时的 logo 状态）：
+/// 44.65% 定位 + translate 补偿 → 容器比例 39.29% → 反透视
+/// cx = (0.3929−0.5)/(0.55+0.45×0.3864)+0.5 ≈ 0.352；
+/// cy = 37.86% + 3.448%×217/956 ≈ 0.386
+pub const LOGO_DESIGN_CENTER: (f64, f64) = (0.352, 0.386);
+
+/// 设计基准 logo 归一化宽度（推导值——全屏校准时的 logo 状态）：
+/// 全屏 logo 宽 196px ÷ 容器宽 1904px ≈ 0.103
+pub const LOGO_DESIGN_W: f64 = 0.103;
+
+/// logo 三球锚点（世界坐标，站主实测给点；相对 LOGO_DESIGN_CENTER 的
+/// 偏移 = V_i×LOGO_DESIGN_W——set_logo_transform 让锚点跟 logo 走）
 pub const ANCHORS: [(f64, f64); 3] = [
     (0.542, 0.382), // 粉（上）——人眼校准 2026-08-06 二次
     (0.480, 0.400), // 水蓝（左）

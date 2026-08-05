@@ -37,14 +37,10 @@ pub struct BallsEngine {
     last_cw: f64,
     last_ch: f64,
     last_dpr: f64,
-    /// 首帧校准的 logo 宽度（CSS px）——缩放基准（scale = 当前宽/基准宽）
-    calib_w: f64,
     /// 调试涂层：灰色锚点标记（用户钦定——调试时看小球起始位置，最上层）
     anchor_overlay: bool,
     /// 小球调试模式：暂停 logo 采样注入（拖球不被 set_logo_transform 覆盖）
     ball_mode: bool,
-    /// 最近一次注入的校准基准（rebuild 后恢复——锚点缩放跨 resize 保留）
-    last_calib: (f64, f64, f64), // center.x, center.y, scale
     last_bounds: crate::sim::planner::CircleBounds,
 }
 
@@ -75,10 +71,8 @@ impl BallsEngine {
             last_cw: 0.0,
             last_ch: 0.0,
             last_dpr: 0.0,
-            calib_w: 0.0,
             anchor_overlay: false,
             ball_mode: false,
-            last_calib: (0.5, 0.42, 1.0),
             last_bounds: crate::sim::planner::CircleBounds::fallback(),
         };
         engine.install_keyboard_shortcuts();
@@ -197,19 +191,14 @@ impl BallsEngine {
             if (new_b.cx - 0.5).abs() > 1e-9 || (new_b.cy - 0.42).abs() > 1e-9 {
                 // 小球调试模式：暂停注入（拖球不被 set_logo_transform 覆盖）
                 if !self.ball_mode {
-                    if self.calib_w <= 0.0 {
-                        self.calib_w = logo_w; // 首帧校准基准宽度
-                    }
-                    let scale = if self.calib_w > 0.0 && logo_w > 0.0 {
-                        logo_w / self.calib_w
-                    } else {
-                        1.0
-                    };
+                    // 无状态归一化向量法（Gemini 真经五版）：w = logo 归一化宽
+                    // = rect.width ÷ canvas 宽——State 内 anchors = c + V_i×w
+                    // （无校准状态——每帧注入即重算）
+                    let w = logo_w / cw;
                     self.state.set_logo_transform(
                         crate::sim::math::Vec2 { x: new_b.cx, y: new_b.cy },
-                        scale,
+                        w,
                     );
-                    self.last_calib = (new_b.cx, new_b.cy, scale);
                 }
             }
             self.logo_bounds = new_b;
@@ -270,18 +259,27 @@ impl BallsEngine {
     fn rebuild_on_resize(&mut self) {
         let anchors = ANCHORS.map(|(x, y)| Vec2 { x, y });
         self.state = State::new(anchors);
-        // 立即重采样（不等 30 帧节流）——新尺寸下活动圆立刻生效
-        let (b, _) = self.sample_logo_bounds();
+        // 立即重采样 + set_logo_transform（不等 30 帧节流——Gemini 真经五版：
+        // resize 显式触发 logo 跟随；State::new 已算好 V_i 常数——注入即生效，
+        // 无校准状态可恢复（calib 体系已删））
+        let cw = self.canvas.client_width() as f64;
+        let (b, logo_w) = self.sample_logo_bounds();
         self.logo_bounds = b;
+        // 非 fallback 才注入（fallback (0.5,0.42) 是防御值——注入会扰动
+        // 用户实测锚点）；小球调试模式暂停注入（拖球不被覆盖）
+        if (b.cx - 0.5).abs() > 1e-9 || (b.cy - 0.42).abs() > 1e-9 {
+            if !self.ball_mode {
+                let w = logo_w / cw; // logo 归一化宽 = rect.width ÷ canvas 宽
+                self.state.set_logo_transform(
+                    crate::sim::math::Vec2 { x: b.cx, y: b.cy },
+                    w,
+                );
+            }
+        }
         self.state.set_bounds(self.logo_bounds);
         // 真圆注入后重建三球链（State::new 预生成用 fallback 圆——
         // 与真圆错位——起始位置不对真凶）
         self.state.rebuild_chains(self.logo_bounds);
-        // 恢复校准基准（曾重置 → 小屏切换后锚点不缩放——球与 logo 分离）
-        self.state.set_calib(
-            crate::sim::math::Vec2 { x: self.last_calib.0, y: self.last_calib.1 },
-            self.last_calib.2,
-        );
         self.last_bounds = self.logo_bounds;
         // 重置差分速度基准 + 拖尾历史——防重建后首帧「旧位置→新位置」大尾迹
         for s in 0..3 {
