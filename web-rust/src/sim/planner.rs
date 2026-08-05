@@ -117,10 +117,7 @@ pub struct Player {
     ema_target: Vec2,
     /// 性格索引（params::PERSONALITIES——curv_bias/speed_band/follow_prob）
     personality: usize,
-    /// 回家模式：extend_home_chain 后置位——tick 不再补巡航链
-    /// （曾继续补链：链尾被推远 → at_chain_end 永不触发 → 超时兜底先到
-    /// → 球在回家半路被 snap 锚点 = 0.13-0.23 跳变）
-    home_mode: bool,
+
     /// 活动圈边界（tayori 标志中心圆——实时采样更新）
     bounds: CircleBounds,
 }
@@ -163,7 +160,6 @@ impl Player {
                 rate: WORLD_SPEED,
             },
             personality: 0,
-            home_mode: false,
             // EMA 状态保留：切回 CloudEma 时重新收敛（可接受）
             ema_target: anchor,
             bounds: CircleBounds::fallback(),
@@ -200,9 +196,7 @@ impl Player {
                 // 自由模式：本球链推进（队首语义——单球弧长 = s_lead）
                 let (_, _, seg0, u0) = chain_pos_and_tangent(&self.chain, self.s_lead);
                 self.s_lead += self.profile_speed(seg0, u0) * dt_s;
-                if !self.home_mode {
-                    self.ensure_chain();
-                }
+                self.ensure_chain();
 
                 let s_i = self.s_lead;
                 // 本球目标：云中心 = 链上点 + Frenet 偏移 + EMA（单球走链中心线，
@@ -461,60 +455,6 @@ impl Player {
         self.chain.len()
     }
 
-    /// 回家链段化（/heart 收尾）：把当前位置→锚点的回家弧线作为链的延伸段
-    /// push 进 chain——球继续 tick(None) 贴链（位置/速度连续——回家动作
-    /// 不可被认出）。段 1 沿巡航切线（C1 连续——拟合助手精神）弯出到中途点，
-    /// 段 2 精确命中 anchor（curv_c 反推）；回家段钦定慢速档（tune 平滑衔接
-    /// 巡航速度——高速猛冲 → 自然减速回家，不再"顿住划弧线"）。
-    /// 返回回家段总弧长（Phase 到家判定的超时兜底用）。
-    pub fn extend_home_chain(&mut self, anchor: Vec2) -> f64 {
-        // 截断链：只保留球前方 ~0.5 弧长（曾接在预生成链尾——链尾距球 50+
-        // 弧长，球永远走不到 → at_chain_end 永不触发 → 超时兜底 snap 跳）
-        let target_s = self.s_lead + 0.5;
-        while self.chain_arc() > target_s + 0.01 && self.chain.len() > 1 {
-            self.chain.pop_back();
-        }
-        // 回家段从「截断后的链尾」接入（球几秒内走完剩余 → 自然进入回家段——
-        // 位置连续；曾 from=球当前位置：链尾在球前方，球到链尾时跳回 pos
-        // = 0.15-0.5 的闪现——回家动作可被认出的真凶）
-        let tail_last = self.chain.back().unwrap().legs[4];
-        let from = tail_last.target;
-        let dx = anchor.x - from.x;
-        let dy = anchor.y - from.y;
-        let dist = (dx * dx + dy * dy).sqrt();
-        if dist < 0.03 {
-            return 0.0; // 链尾已近锚点——球走完剩余即到家（Resting snap 兜底）
-        }
-        let tan = bezier_tangent(tail_last.from, tail_last.ctrl, tail_last.target, 1.0);
-        let l = (tan.x * tan.x + tan.y * tan.y).sqrt().max(1e-9);
-        let dir = Vec2 { x: tan.x / l, y: tan.y / l }; // 链尾切线——C1 连续
-        // 回家段生成已分离到 sim/home.rs（Gemini 可操作模块——只改 home.rs）
-        let legs = crate::sim::home::plan_home_legs(&crate::sim::home::HomeCtx {
-            from,
-            dir,
-            anchor,
-        });
-        let mut a = 0.0;
-        for pl in legs {
-            a += pl.arc;
-            self.chain.push_back(clamp_dur_to_chain(pl, self.chain.back().unwrap().dur_ms));
-        }
-        self.home_mode = true; // 链尾已固定 = anchor——不再补链
-        a
-    }
-
-    /// 是否已到家。home_mode 下用位置判据（球实际到链尾附近——s_lead 判据
-    /// 在链尾被补段推远/弧长估计偏差时失效——曾超时兜底先触发 → 半路 snap 跳）
-    pub fn at_chain_end(&self) -> bool {
-        if self.home_mode {
-            let (tail_p, _, _, _) = chain_pos_and_tangent(&self.chain, self.chain_arc());
-            let dx = self.state.pos.x - tail_p.x;
-            let dy = self.state.pos.y - tail_p.y;
-            (dx * dx + dy * dy).sqrt() < 0.03
-        } else {
-            self.s_lead >= self.chain_arc() - 1e-6
-        }
-    }
 }
 
 /// 链上弧长 s 处的点与切线（自由函数：Player 与 cloud 模块共用）

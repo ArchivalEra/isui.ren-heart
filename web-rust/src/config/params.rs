@@ -138,11 +138,16 @@ pub const FORMATION_OFFSETS: [f64; 3] = [0.0, 0.6, -0.6];
 pub const FADE_IN_MS: f64 = 800.0; // 锚点淡入时长
 
 // ── 回家程序（checkpoint 仪式）──
-// 巡航 HOME_EVERY_MS 后三球回家：粉先回（0ms）→ 蓝绿错开 HOME_STAGGER_MS 依次回
-// （弧线回家 HOME_DURATION_MS）→ 全部到家定住 HOME_REST_MS → 粉球启动重启巡航
+// 巡航 HOME_EVERY_MS 后三球同时回家：预渲染动画（plan_home_anim）——
+// 三球共享同一 HomeAnim（时间对齐——同时到家）→ 全部到家定住 HOME_REST_MS
+// → 三球同时重启巡航。不再错开（三球同步）。
 pub const HOME_EVERY_MS: f64 = 30000.0;
-pub const HOME_STAGGER_MS: f64 = 150.0;
-pub const HOME_DURATION_MS: f64 = 1500.0;
+/// 回家动画时长（ms）——预渲染 HomeAnim 的 dur_ms（三球相同——同时到家）。
+/// Gemini 可调：调大 = 回家弧线更从容；调小 = 更快归位。
+pub const HOME_ANIM_MS: f64 = 2500.0;
+// 已删除：HOME_STAGGER_MS（不再错开——三球同步回家）、
+// HOME_DURATION_MS（被 HOME_ANIM_MS 取代——不再按链段化超时兜底）。
+// 引用处由集成时清理（state.rs 等）。
 pub const HOME_REST_MS: f64 = 7000.0;
 
 // ── 蓝绿跟随粉球（独立球模式）──

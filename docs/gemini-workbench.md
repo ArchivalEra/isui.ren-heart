@@ -4,19 +4,32 @@
 > 以下战场全部可独立操作，互不干扰。改完跑 `cd web-rust && cargo test`
 > + `cd web-ui && ./build.sh` 强刷目测即可；父代理负责验收集成。
 
-## 战场 1：🏠 回家弧线（感叹号——最高优先）
+## 战场 1：🏠 回家动画预渲染（感叹号——最高优先）
 
-- **文件**：`web-rust/src/sim/home.rs`（唯一战场——planner 只调用）
-- **现象**：回家触发时若在高速冲刺（1.1-1.3 档），出现"感叹号"（拖尾与小球分离）
-- **已试无效**（排查史见 home.rs 头部）：单段 0.40 曲率（当前基线）、三段渐进
-  0.12→0.28→0.20 + 显式 tune（95196ef 已回滚）
-- **数学线索**：链尾段（截断后）profile_speed 的 v_next=v_i → 段边界速度跳
-  0.58（拖尾点间距突变）——v_next 问题在 planner.rs（改它有风险——优先
-  从拖尾预备/回家段形状入手）
-- **契约**（home_plan_contract 测试焊死）：段尾精确命中 anchor / 第一段 C1
-  出发（沿链尾切线）/ 段间曲率差 ≤0.2 / ctrl 屏内 / 速度巡航档
-- **自由发挥**：段数、曲率序列、速度序列、多段形状——只要守契约
-- **验证**：`cargo test home_plan` + 强刷看回家冲刺瞬间
+> **状态**：预渲染契约已定稿（docs/home-anim-design.md——并发子代理唯一契约）。
+> ⚠️ 当前代码仍为链段化基线（`sim/home.rs` 的 `plan_home_legs/HomeCtx` +
+> `planner.rs` 的 `extend_home_chain`）；契约 B/C/D 实施 + 父代理集成
+> （契约 §7）落地后，以下描述生效——生效前别在 home.rs 找 `HomeAnim`。
+
+- **文件**：`web-rust/src/sim/home.rs`（`plan_home_anim` + `HomeAnim`——唯一战场）
+  + `web-rust/src/config/params.rs` 的 `HOME_ANIM_MS`（时长——Gemini 可调）
+- **机制**（回家 = 预渲染动画——取代链段化）：三球触发回家时一次性生成
+  `home::plan_home_anim(starts, anchors)`（纯函数）——每球一条 Bézier 路径
+  `HomePath { from, ctrl, anchor }`，ctrl = 中点 + 法线偏移 × 性格弧度
+  `PERSONALITIES[s].curv_bias`（爱大弯的球弧度大——个性保留）；统一时长
+  `HOME_ANIM_MS`（三球相同——**时间对齐同时到家**）；播放期每帧
+  `anim.sample(t)`（O(1)/帧——只查表，无链扫描），缓动 ease-in-out
+  （起止速度 0）；播完三球同时 Resting → 同时重启
+- **现象背景**：链段化时代回家触发时若在高速冲刺（1.1-1.3 档）会出现
+  "感叹号"（拖尾与小球分离——已试无效史见 home.rs 头部）；预渲染按路径
+  播放，无截断、无段边界速度跳（0.58）——根治方向
+- **契约**（home_plan_contract 升级焊死）：① `sample(dur_ms)` = anchors
+  （同时到家——精确）② 路径采样切线连续（无折角——拖尾无感叹号）
+  ③ 起止速度 ≈ 0（ease-in-out——温和）
+- **自由发挥**：弧线形状（ctrl 法线偏移 / curv_bias 权重）、时长
+  （HOME_ANIM_MS）、缓动（ease_in_out）——只要守契约
+- **验证**：`cargo test home_plan` + 强刷看回家冲刺瞬间（当前全量测试约
+  57——契约实施后 home.rs 契约测试升级、总数再增）
 
 ## 战场 2：⚡ 渲染性能（压力大——你判断的主要战场）
 
