@@ -101,9 +101,9 @@ pub const PREPLAN_SECONDS: f64 = 300.0;
 pub const MIN_LEG_LEN: f64 = 0.35;
 /// 曲线 profile 选择：Native（自研单段贝塞尔）或 EulerBlend（段内曲率渐变）
 /// 以后新增曲线策略：加 CurveProfile 变体 + 这里切换
-pub const CURVE_PROFILE: crate::sim::planner::CurveProfile = crate::sim::planner::CurveProfile::Native;
+pub const CURVE_PROFILE: crate::sim::planner::CurveProfile = crate::sim::planner::CurveProfile::EulerBlend;
 /// EulerBlend 下混合段概率（make_blend_leg 保留为独立工具含测试）
-pub const BLEND_PROB: f64 = 0.2;
+pub const BLEND_PROB: f64 = 1.0; // 全量 EulerBlend：段内曲率渐变——段间无曲率跳变（折角）
 /// logo 区域：每隔 LOGO_EVERY_ARC 弧长规划一个「logo 游走段」（区域规划回归）
 pub const LOGO_RADIUS: f64 = 0.13;
 pub const LOGO_EVERY_ARC: f64 = 9.6; // ≈ 60s 巡航弧长
@@ -118,7 +118,6 @@ pub const FADE_IN_MS: f64 = 800.0; // 锚点淡入时长
 // 巡航 HOME_EVERY_MS 后三球回家：粉先回（0ms）→ 蓝绿错开 HOME_STAGGER_MS 依次回
 // （弧线回家 HOME_DURATION_MS）→ 全部到家定住 HOME_REST_MS → 粉球启动重启巡航
 pub const HOME_EVERY_MS: f64 = 30000.0;
-pub const HOME_STAGGER_MS: f64 = 150.0;
 pub const HOME_DURATION_MS: f64 = 1500.0;
 pub const HOME_REST_MS: f64 = 7000.0;
 

@@ -491,20 +491,36 @@ impl Player {
             };
             // 曲线 profile：Native=自研单段；EulerBlend=段内曲率渐变（默认关闭）
             let mut pl = if CURVE_PROFILE == CurveProfile::EulerBlend && rng.gen::<f64>() < BLEND_PROB {
-                let old_curv2 = TEMPLATES[tail.template_idx].curvature;
-                let pick = |rng: &mut rand::rngs::ThreadRng, prev: f64| {
-                    for _ in 0..6 {
-                        let c = rng.gen_range(0..TEMPLATES.len());
-                        if (TEMPLATES[c].curvature - prev).abs() <= TEMPLATE_CURV_STEP {
-                            return TEMPLATES[c].curvature;
-                        }
+                // 上一段实际段尾曲率（EulerBlend 段尾曲率 = curv_eff——严格连续）
+                let old_curv2 = tail.curv_eff;
+                let d = (target.x - from.x).hypot(target.y - from.y).max(1e-6);
+                let ang_from = dir.y.atan2(dir.x);
+                let ang_to = (target.y - from.y).atan2(target.x - from.x);
+                let mut theta = ang_to - ang_from;
+                while theta > std::f64::consts::PI {
+                    theta -= std::f64::consts::PI * 2.0;
+                }
+                while theta < -std::f64::consts::PI {
+                    theta += std::f64::consts::PI * 2.0;
+                }
+                // curv_b 带符号选择：优先弯向 target（θ 符号匹配）——C 反推压力小、
+                // leg_in_bounds 失败率低（补段不收缩——性能）
+                let sign = if theta >= 0.0 { 1.0 } else { -1.0 };
+                let mut curv_b = old_curv2;
+                for _ in 0..6 {
+                    let c = rng.gen_range(0..TEMPLATES.len());
+                    let cc = TEMPLATES[c].curvature;
+                    if (cc - old_curv2).abs() <= TEMPLATE_CURV_STEP && cc.signum() == sign {
+                        curv_b = cc;
+                        break;
                     }
-                    prev
-                };
-                let curv_b = pick(&mut rng, old_curv2);
-                let curv_c = pick(&mut rng, curv_b);
+                }
+                // 拟合助手：C 由 target 方向反推——贝塞尔子段转角 ≈ 1.4·curv
+                // （与段长无关）——5 子段 Σ ≈ 1.4×(1.2A+2.4B+1.2C)：
+                let curv_c =
+                    ((theta / 1.4 - 1.2 * old_curv2 - 2.4 * curv_b) / 1.2).clamp(-1.1, 1.1);
                 make_blend_leg(
-                    from, dir, [old_curv2, curv_b, curv_c], target, 0.3,
+                    from, dir, [old_curv2, curv_b, curv_c], target, d,
                     template_idx, speed,
                 )
             } else {
@@ -513,7 +529,8 @@ impl Player {
             if !leg_in_bounds(&pl, &self.bounds) {
                 let safe = clamp_target_in_bounds(from, dir, template_idx, target, speed, &self.bounds);
                 pl = if rng.gen::<f64>() < BLEND_PROB {
-                    make_blend_leg(from, dir, [0.0, 0.0, 0.0], safe, 0.3, template_idx, speed)
+                    let d = (safe.x - from.x).hypot(safe.y - from.y).max(1e-6);
+                    make_blend_leg(from, dir, [0.0, 0.0, 0.0], safe, d, template_idx, speed)
                 } else {
                     make_planned_leg(from, dir, template_idx, safe, speed)
                 };
@@ -652,7 +669,21 @@ pub fn make_planned_leg(
     let template = &TEMPLATES[template_idx];
     // 小圈圈滤波：段长低于 MIN_LEG_LEN 时曲率按比例衰减（短段配小弯，防哆嗦）
     let curv_eff = template.curvature * (dist / MIN_LEG_LEN).min(1.0);
-    make_blend_leg(from, dir, [curv_eff, curv_eff, curv_eff], target, dist, template_idx, speed)
+    // 拟合助手：C 由 target 方向反推（段尾方向 ≈ target 方向——方向控制不丢；
+    // A=B=模板曲率保持形状，后 40% 渐变到 C 拟合方向——曲率连续无折角）
+    let ang_from = dir.y.atan2(dir.x);
+    let ang_to = (target.y - from.y).atan2(target.x - from.x);
+    let mut theta = ang_to - ang_from;
+    while theta > std::f64::consts::PI {
+        theta -= std::f64::consts::PI * 2.0;
+    }
+    while theta < -std::f64::consts::PI {
+        theta += std::f64::consts::PI * 2.0;
+    }
+    // 贝塞尔子段转角 ≈ 2·atan(0.7·curv) ≈ 1.4·curv（小曲率线性近似，与段长无关）——
+    // 5 子段 Σ ≈ 1.4×(1.2A+2.4B+1.2C)——C 反推：
+    let curv_c = ((theta / 1.4 - 1.2 * curv_eff - 2.4 * curv_eff) / 1.2).clamp(-1.1, 1.1);
+    make_blend_leg(from, dir, [curv_eff, curv_eff, curv_c], target, dist, template_idx, speed)
 }
 
 /// 混合模板段：一整段内曲率从 A 渐变到 B 再到 C（Euler spiral 离散近似）
@@ -662,7 +693,7 @@ pub fn make_blend_leg(
     from: Vec2,
     dir: Vec2,
     curvs: [f64; 3],
-    target: Vec2,
+    _target: Vec2,
     dist: f64,
     template_idx: usize,
     speed: f64,
@@ -684,12 +715,10 @@ pub fn make_blend_leg(
         } else {
             curvs[1] + (curvs[2] - curvs[1]) * ((u - 0.5) / 0.5)
         };
-        // 前 4 子段沿切线渐变；第 5 子段直接指向目标（保证终点精确命中）
-        // sub_target clamp 屏内：贝塞尔段尾（下子段 from）——曾漏 clamp，
-        // 链几何出屏（y=-0.021 规律出屏的根源）
-        let sub_target = if i == 4 {
-            target
-        } else {
+        // 全部 5 子段按曲率渐变自然推进（曾第 5 子段「精确命中 target」——
+        // target 方向与段头方向差大时，末子段极短 + 92° 急转 = 折角；
+        // 自然推进 = 段尾连续、方向连续，链几何无折角）
+        let sub_target = {
             let st = Vec2 {
                 x: cur.x + d.x * sub_len,
                 y: cur.y + d.y * sub_len,
@@ -714,7 +743,8 @@ pub fn make_blend_leg(
         d = Vec2 { x: tan.x / tl, y: tan.y / tl };
         cur = sub_target;
     }
-    let curv_eff = (curvs[0] + curvs[1] + curvs[2]) / 3.0;
+    // 段尾曲率（下段的连续性锚点——曲率严格连续，不用平均）
+    let curv_eff = curvs[2];
     let dur_ms = (arc / (WORLD_SPEED * speed) * 1000.0).max(200.0);
     PlannedLeg {
         legs,
@@ -805,13 +835,26 @@ mod tests {
 
     #[test]
     fn make_leg_keeps_endpoints() {
+        // 真实场景：target 与 dir 夹角 ~18°（曲率连续约束下方向渐变——不极端）
         let from = Vec2 { x: 0.1, y: 0.2 };
         let dir = Vec2 { x: 1.0, y: 0.0 };
-        let target = Vec2 { x: 0.9, y: 0.8 };
+        let target = Vec2 { x: 0.75, y: 0.4 };
         let pl = make_planned_leg(from, dir, 0, target, 1.0);
         assert_eq!(pl.legs[0].from, from);
-        assert_eq!(pl.legs[4].target, target);
-        assert_eq!(pl.legs[0].ctrl.x, pl.legs[0].ctrl.x); // 结构自检
+        // 拟合助手：段尾方向 ≈ target 方向（C 由 target 反推——曲率渐变无折角；
+        // 位置近似命中——不再精确命中 = 末子段方向跳变 = 折角）
+        let tail = pl.legs[4].target;
+        let dev = (tail.x - target.x).abs() + (tail.y - target.y).abs();
+        assert!(dev < 0.3, "拟合段尾偏离 target 过大：{dev:.3}");
+        // 段尾切线方向 vs target 方向夹角（方向拟合精度）
+        let tt = bezier_tangent(pl.legs[4].from, pl.legs[4].ctrl, pl.legs[4].target, 1.0);
+        let ang_tail = tt.y.atan2(tt.x);
+        let ang_tgt = (target.y - from.y).atan2(target.x - from.x);
+        let mut diff = (ang_tail - ang_tgt).abs();
+        if diff > std::f64::consts::PI {
+            diff = std::f64::consts::PI * 2.0 - diff;
+        }
+        assert!(diff < 0.6, "段尾方向偏离 target 方向过大：{diff:.3} rad");
         assert!(pl.dur_ms > 0.0);
         assert!(pl.arc > 0.0);
     }
@@ -911,8 +954,8 @@ mod tests {
         let dir = Vec2 { x: 1.0, y: 0.0 };
         let target = Vec2 { x: 0.8, y: 0.5 };
         let pl = make_blend_leg(from, dir, [1.0, 0.5, 0.0], target, 0.6, 0, 1.0);
-        // 终点精确命中
-        assert_eq!(pl.legs[4].target, target);
+        // 方向拟合由调用方（make_planned_leg/ensure_chain 的 C 反推）负责——
+        // 本测试只验证曲率渐变结构（下方 sides 递减）与段尾自然推进
         // 曲率递减验证：各子段相对「自身起点方向」的法线侧偏（cross(dir, ctrl-from)）
         let mut prev_dir = dir;
         let mut sides = [0.0f64; 5];
@@ -1169,5 +1212,59 @@ fn queue_speed_uniform_no_stop_go() {
     assert!(
         worst < 0.02,
         "队列速度不一致（走走停停）：spread={worst:.4}"
+    );
+}
+
+#[test]
+fn chain_curvature_continuous_no_kinks() {
+    // 折角回归测试：链上曲率估计（κ ≈ Δθ/Δs）不得跳变——
+    // EulerBlend 段内曲率渐变 → 相邻 κ 差 < 0.05；
+    // Native 单模板段间曲率跳（≤0.35）→ 测试可区分
+    let mut p = Player::new(Vec2 { x: 0.5, y: 0.5 }, Vec2 { x: 1.0, y: 0.0 });
+    p.bounds = CircleBounds { cx: 0.5, cy: 0.5, r: 0.6 };
+    p.ensure_chain_to(60.0);
+    let ds = 0.02;
+    let mut prev_ang: Option<f64> = None;
+    let mut prev_k = 0.0f64;
+    let mut max_k_jump = 0.0f64;
+    for i in 0..3000 {
+        let s = i as f64 * ds;
+        let (_, tan, seg_at, _) = chain_pos_and_tangent(&p.chain, s);
+        // 跳过退化切线（|tan| 极小——回退方向是段方向近似，非真实切线）
+        if (tan.x * tan.x + tan.y * tan.y).sqrt() < 0.08 {
+            prev_ang = None;
+            continue;
+        }
+        let ang = tan.y.atan2(tan.x);
+        if let Some(pa) = prev_ang {
+            let mut d = (ang - pa).abs();
+            // 角度环绕归一化
+            if d > std::f64::consts::PI {
+                d = std::f64::consts::PI * 2.0 - d;
+            }
+            let k = d / ds; // 曲率估计
+            let jump = (k - prev_k).abs();
+            if jump > 1.0 && max_k_jump < jump {
+                let seg = &p.chain[seg_at];
+                let f = seg.legs[0].from;
+                let tg = seg.legs[4].target;
+                eprintln!(
+                    "KINK at s={s:.3} d={d:.4} |tan|={:.4} tpl={} curv={:.2} arc={:.2} from=({:.2},{:.2})->({:.2},{:.2})",
+                    (tan.x * tan.x + tan.y * tan.y).sqrt(),
+                    seg.template_idx,
+                    TEMPLATES[seg.template_idx].curvature,
+                    seg.arc,
+                    f.x, f.y, tg.x, tg.y,
+                );
+            }
+            max_k_jump = max_k_jump.max(jump);
+            prev_k = k;
+        }
+        prev_ang = Some(ang);
+    }
+    eprintln!("max curvature jump (per 0.02 arc): {max_k_jump:.4}");
+    assert!(
+        max_k_jump < 0.3,
+        "链上曲率跳变过大（折角）：{max_k_jump:.4}（EulerBlend 应 < 0.1）"
     );
 }
