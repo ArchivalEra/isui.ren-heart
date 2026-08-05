@@ -93,8 +93,8 @@ body {
   position: absolute;
   /* 焊死到卡片墙按钮中轴（用户钦定：文件夹图标任何宽度不偏离中轴——
      以其为参考——logo 横坐标 = 中轴 - 12.07% 固定偏移——增宽/减宽不偏） */
-  left: calc(50% - 12.07%);
-  top: 27.40%;
+  left: 44.65%; /* 人眼校准 2026-08-06（调试器拖拽值） */
+  top: 37.86%;
   /* 透明边已裁切（logo.png 为 trimmed 版）——补偿图形中心偏移：
      图形原偏左 5px/偏下 9px（相对原画布 433x372）——transform % 相对
      新画布（236x261）→ 补偿 2.119% / 3.448%——平移回原位置 */
@@ -106,7 +106,7 @@ body {
 .heart-logo-img {
   display: block;
   /* 连续缩放（任意窗口平滑——vw/vh 连续函数；去掉断点覆盖后全档统一） */
-  width: min(70vw, 70vh, 460px); /* 高度约束——小窗（矮）时 logo 不溢出 */
+  width: min(70vw, 70vh, 196px); /* 上限 196px——人眼校准（调试器 L/M） */
   height: auto;
   filter: drop-shadow(0 8px 30px rgba(17, 17, 17, 0.1));
 }
