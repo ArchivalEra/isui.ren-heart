@@ -21,11 +21,13 @@ pub fn kappa_d_safe(kappa: f64, d: f64) -> bool {
 /// 链上弧长 s 处的曲率（|curv| 估计：切线转角 / 弧长增量）
 #[allow(dead_code)] // 工具：follower_target 内部使用 + 测试覆盖
 pub fn curvature_at(chain: &VecDeque<Leg5>, s: f64) -> f64 {
+    // 差分窗口 0.06（曾 0.02）：跨段边界的平均曲率——κ·d 安全衰减的
+    // d_eff 跳变（减半）被平滑化 → raw 不跳 → 蓝绿顿顿的根源之一
     let (_, tan0, _, _) = chain_pos_and_tangent(chain, s);
-    let (_, tan1, _, _) = chain_pos_and_tangent(chain, s + 0.02);
+    let (_, tan1, _, _) = chain_pos_and_tangent(chain, s + 0.06);
     let cross = tan0.x * tan1.y - tan0.y * tan1.x;
     let dot = (tan0.x * tan1.x + tan0.y * tan1.y).clamp(-1.0, 1.0);
-    (cross.abs() / (0.02 * (dot).max(1e-6))).min(10.0)
+    (cross.abs() / (0.06 * (dot).max(1e-6))).min(10.0)
 }
 
 /// 云中心目标：中心线弧长 s 处点 + 法线偏移 d（Frenet 偏移，κ·d<1 校验）

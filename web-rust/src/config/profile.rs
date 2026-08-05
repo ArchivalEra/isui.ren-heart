@@ -43,7 +43,7 @@ pub const CLOUD_PROFILE: MotionProfile = MotionProfile {
     name: "cloud-ema",
     follow: FollowStyle::CloudEma,
     offset_scale: 0.05,
-    ema_alpha: 0.35,
+    ema_alpha: 0.28, // 更柔：段边界 raw 跳（κ·d 衰减）被消化更多——蓝绿顿顿
     tune_speeds: true,
 };
 
