@@ -36,7 +36,7 @@ impl Player {
     /// 单球 Player：一条自己的链。anchor = 起点锚点（蓝绿用自己锚点）
     pub fn new(anchor: Vec2, dir: Vec2) -> Player;
 
-    /// 每帧步进。ext = Some 时：位置 = EMA(ext.pos)（云中心模式）或直接 ext.pos（native），
+    /// 每帧步进。ext = Some 时：位置 = EMA(ext.pos)（云中心——EMA 唯一，native/Chain 已删），
     /// 速度 = ext.tvel——本球链冻结（s_lead 不推进）；ext = None 时：自由模式——
     /// 本球链推进 + 贴链（现有逻辑搬入，s_lead += profile_speed × dt）
     pub fn tick(&mut self, dt: f64, ext: Option<ExtTarget>);
@@ -66,8 +66,7 @@ impl Player {
 ```
 
 实现要点：
-- 云中心模式（CLOUD_PROFILE）：自由模式的目标 = 本球链上点 + Frenet 偏移 + EMA（现有逻辑搬入，`ema_target` 单份）；跟随模式（ext=Some）的目标 = ext.pos 直接进 EMA。
-- native 模式：自由 = 链上点；跟随 = ext.pos。
+- 云中心模式（CLOUD_PROFILE，EMA 唯一——NATIVE/Chain 已删）：自由模式的目标 = 本球链上点 + Frenet 偏移 + EMA（现有逻辑搬入，`ema_target` 单份）；跟随模式（ext=Some）的目标 = ext.pos 直接进 EMA。
 - `tick(dt, Some(ext))` 与 `tick(dt, None)` 切换时位置连续性由 state.rs 保证（§5 退出平滑），Player 不做额外过渡。
 - **现有 `Player` 的测试**（gaps/队形相关）删除；链生成规则测试（ChainBuilder 相关）保留并迁移到单球语义。
 

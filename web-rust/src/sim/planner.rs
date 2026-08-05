@@ -115,6 +115,10 @@ pub struct Player {
     state: BallState,
     /// 云中心跟随目标的 EMA 状态（时序滤波，套在目标输出后面）
     ema_target: Vec2,
+    /// 回家模式：extend_home_chain 后置位——tick 不再补巡航链
+    /// （曾继续补链：链尾被推远 → at_chain_end 永不触发 → 超时兜底先到
+    /// → 球在回家半路被 snap 锚点 = 0.13-0.23 跳变）
+    home_mode: bool,
     /// 活动圈边界（tayori 标志中心圆——实时采样更新）
     bounds: CircleBounds,
 }
@@ -156,6 +160,7 @@ impl Player {
                 vel: Vec2 { x: 0.0, y: 0.0 },
                 rate: WORLD_SPEED,
             },
+            home_mode: false,
             // EMA 状态保留：切回 CloudEma 时重新收敛（可接受）
             ema_target: anchor,
             bounds: CircleBounds::fallback(),
@@ -171,24 +176,18 @@ impl Player {
     ///   两种模式切换时的位置连续性由 state.rs 保证，Player 不做额外过渡。
     pub fn tick(&mut self, dt: f64, ext: Option<ExtTarget>) {
         let dt_s = dt / 1000.0;
-        // 运行时风格（每帧读一次 atomic，cheap）：热切换即时生效，无需重建 Player
-        let pr = crate::config::profile::active();
+        // EMA 唯一风格（NATIVE/热切换已删——/heart 收尾）
+        let pr = crate::config::profile::ACTIVE_PROFILE;
         // 低通：球速紧贴链速（阻尼项全功率制动，见下方力模型）——
         // 低通过大 → 链速已降球速仍高 → 冲过头被 spring 拉回 = 冲刺回弹
         let rate_lerp = (dt_s / 0.12).min(1.0);
 
         match ext {
             Some(ext) => {
-                // 跟随模式：目标 = ext.pos（云中心：直接进 EMA；native：直接取）
-                let target = match pr.follow {
-                    crate::config::profile::FollowStyle::Chain => ext.pos,
-                    crate::config::profile::FollowStyle::CloudEma => {
-                        let ema =
-                            crate::sim::cloud::ema_step(self.ema_target, ext.pos, pr.ema_alpha);
-                        self.ema_target = ema;
-                        ema
-                    }
-                };
+                // 跟随模式：目标 = ext.pos 进 EMA（云中心——唯一风格）
+                let target =
+                    crate::sim::cloud::ema_step(self.ema_target, ext.pos, pr.ema_alpha);
+                self.ema_target = target;
                 let st = &mut self.state;
                 st.pos.x += (target.x - st.pos.x) * 0.5;
                 st.pos.y += (target.y - st.pos.y) * 0.5;
@@ -198,25 +197,20 @@ impl Player {
                 // 自由模式：本球链推进（队首语义——单球弧长 = s_lead）
                 let (_, _, seg0, u0) = chain_pos_and_tangent(&self.chain, self.s_lead);
                 self.s_lead += self.profile_speed(seg0, u0) * dt_s;
-                self.ensure_chain();
+                if !self.home_mode {
+                    self.ensure_chain();
+                }
 
                 let s_i = self.s_lead;
                 // 本球目标：云中心 = 链上点 + Frenet 偏移 + EMA（单球走链中心线，
                 // 原队首 FORMATION_OFFSETS[0]=0；跟随偏移由 state.rs 注入 ext）
-                let (target, seg_i, u_i) = match pr.follow {
-                    crate::config::profile::FollowStyle::Chain => {
-                        // 自研：直接追链上弧长点
-                        let (p, _, seg, u) = chain_pos_and_tangent(&self.chain, s_i);
-                        (p, seg, u)
-                    }
-                    crate::config::profile::FollowStyle::CloudEma => {
-                        // 云中心：Frenet 法线偏移 + EMA 时序滤波
-                        let (raw, _) = crate::sim::cloud::follower_target(&self.chain, s_i, 0.0);
-                        let (_, _, seg, u) = chain_pos_and_tangent(&self.chain, s_i);
-                        let ema = crate::sim::cloud::ema_step(self.ema_target, raw, pr.ema_alpha);
-                        self.ema_target = ema;
-                        (ema, seg, u)
-                    }
+                let (target, seg_i, u_i) = {
+                    // 云中心：Frenet 法线偏移 + EMA 时序滤波
+                    let (raw, _) = crate::sim::cloud::follower_target(&self.chain, s_i, 0.0);
+                    let (_, _, seg, u) = chain_pos_and_tangent(&self.chain, s_i);
+                    let ema = crate::sim::cloud::ema_step(self.ema_target, raw, pr.ema_alpha);
+                    self.ema_target = ema;
+                    (ema, seg, u)
                 };
 
                 let r_ideal = self.profile_speed(seg_i, u_i);
@@ -378,7 +372,7 @@ impl Player {
             self.chain.push_back(clamp_dur_to_chain(pl, tail.dur_ms));
         }
         // 调速师傅：补链后审核尾部段的速度序列（savgol 平滑 + 加速度钳制）
-        if crate::config::profile::active().tune_speeds {
+        if crate::config::profile::ACTIVE_PROFILE.tune_speeds {
             // 预生成（大 ahead：重启/入场一次性补几分钟链）→ 全链 tune——
             // 曾只 tune 尾部 9 段：第一个循环的链是运行期逐段补链（每段都被
             // tune 过）所以平滑；重启后预生成 300s 链中部未 tune → 第二循环
@@ -451,6 +445,63 @@ impl Player {
     #[allow(dead_code)] // 测试用
     pub fn chain_len(&self) -> usize {
         self.chain.len()
+    }
+
+    /// 回家链段化（/heart 收尾）：把当前位置→锚点的回家弧线作为链的延伸段
+    /// push 进 chain——球继续 tick(None) 贴链（位置/速度连续——回家动作
+    /// 不可被认出）。段 1 沿巡航切线（C1 连续——拟合助手精神）弯出到中途点，
+    /// 段 2 精确命中 anchor（curv_c 反推）；回家段钦定慢速档（tune 平滑衔接
+    /// 巡航速度——高速猛冲 → 自然减速回家，不再"顿住划弧线"）。
+    /// 返回回家段总弧长（Phase 到家判定的超时兜底用）。
+    pub fn extend_home_chain(&mut self, anchor: Vec2) -> f64 {
+        // 截断链：只保留球前方 ~0.5 弧长（曾接在预生成链尾——链尾距球 50+
+        // 弧长，球永远走不到 → at_chain_end 永不触发 → 超时兜底 snap 跳）
+        let target_s = self.s_lead + 0.5;
+        while self.chain_arc() > target_s + 0.01 && self.chain.len() > 1 {
+            self.chain.pop_back();
+        }
+        // 回家段从「截断后的链尾」接入（球几秒内走完剩余 → 自然进入回家段——
+        // 位置连续；曾 from=球当前位置：链尾在球前方，球到链尾时跳回 pos
+        // = 0.15-0.5 的闪现——回家动作可被认出的真凶）
+        let tail_last = self.chain.back().unwrap().legs[4];
+        let from = tail_last.target;
+        let dx = anchor.x - from.x;
+        let dy = anchor.y - from.y;
+        let dist = (dx * dx + dy * dy).sqrt();
+        if dist < 0.03 {
+            return 0.0; // 链尾已近锚点——球走完剩余即到家（Resting snap 兜底）
+        }
+        let tan = bezier_tangent(tail_last.from, tail_last.ctrl, tail_last.target, 1.0);
+        let l = (tan.x * tan.x + tan.y * tan.y).sqrt().max(1e-9);
+        let dir = Vec2 { x: tan.x / l, y: tan.y / l }; // 链尾切线——C1 连续
+        // 单段回家弧（曾双段：1.5-2.5 弧长 → 8-15s——超时兜底擦边触发 →
+        // 半路 snap 跳；单段弧长 ≈ dist×1.1 → 3-6s——快且连续）
+        let tpl = TEMPLATES
+            .iter()
+            .position(|x| (x.curvature - 0.40).abs() < 1e-9)
+            .unwrap_or(8);
+        let speed = roll_speed(Some(1)); // 巡航档回家——tune 平滑衔接当前速度（不顿不拖）
+        let mut pl = make_planned_leg(from, dir, tpl, anchor, speed);
+        // ctrl clamp 屏内（dir 朝屏外时防段中出屏——段尾 target 不受影响）
+        pl.legs[0].ctrl.x = pl.legs[0].ctrl.x.clamp(0.04, 0.96);
+        pl.legs[0].ctrl.y = pl.legs[0].ctrl.y.clamp(0.04, 0.96);
+        let a = pl.arc;
+        self.chain.push_back(clamp_dur_to_chain(pl, self.chain.back().unwrap().dur_ms));
+        self.home_mode = true; // 链尾已固定 = anchor——不再补链
+        a
+    }
+
+    /// 是否已到家。home_mode 下用位置判据（球实际到链尾附近——s_lead 判据
+    /// 在链尾被补段推远/弧长估计偏差时失效——曾超时兜底先触发 → 半路 snap 跳）
+    pub fn at_chain_end(&self) -> bool {
+        if self.home_mode {
+            let (tail_p, _, _, _) = chain_pos_and_tangent(&self.chain, self.chain_arc());
+            let dx = self.state.pos.x - tail_p.x;
+            let dy = self.state.pos.y - tail_p.y;
+            (dx * dx + dy * dy).sqrt() < 0.03
+        } else {
+            self.s_lead >= self.chain_arc() - 1e-6
+        }
     }
 }
 
@@ -601,55 +652,6 @@ mod tests {
         let arc0 = p.chain_arc();
         p.tick(16.7, Some(ext));
         assert!((p.chain_arc() - arc0).abs() < 1e-12, "跟随期间链应冻结");
-    }
-
-    #[test]
-    fn tick_uses_runtime_active_profile() {
-        // 运行时热切换：tick 每帧从 active() 读风格——
-        // ACTIVE_IDX=0 → Chain（直接贴 ext.pos，单帧收敛 50%）；
-        // ACTIVE_IDX=1 → CloudEma（EMA α=0.28，单帧只走 14%）
-        // 测试末尾必须复位 1（RAII）——否则污染并行运行的其他测试
-        struct ResetIdx;
-        impl Drop for ResetIdx {
-            fn drop(&mut self) {
-                crate::config::profile::ACTIVE_IDX.store(
-                    1,
-                    std::sync::atomic::Ordering::Relaxed,
-                );
-            }
-        }
-        let _reset = ResetIdx;
-
-        let anchor = Vec2 { x: 0.5, y: 0.5 };
-        let dir = Vec2 { x: 0.8, y: 0.6 };
-        let ext = ExtTarget {
-            pos: Vec2 { x: 0.9, y: 0.9 },
-            tvel: Vec2 { x: 0.1, y: -0.05 },
-        };
-        let dist0 = ((anchor.x - ext.pos.x).powi(2) + (anchor.y - ext.pos.y).powi(2)).sqrt();
-
-        // Chain（native）：无 EMA——位置直接收敛到 ext.pos（单帧走 50%）
-        crate::config::profile::ACTIVE_IDX.store(0, std::sync::atomic::Ordering::Relaxed);
-        let mut p_nat = Player::new(anchor, dir);
-        p_nat.tick(16.7, Some(ext));
-        let d_nat = ((p_nat.pos().x - ext.pos.x).powi(2) + (p_nat.pos().y - ext.pos.y).powi(2)).sqrt();
-        assert!(
-            (d_nat / dist0 - 0.5).abs() < 0.01,
-            "Chain 应直接贴 ext.pos（50%/帧）: ratio={:.3}",
-            d_nat / dist0
-        );
-
-        // CloudEma（cloud）：EMA α=0.28 滞后——单帧只走 α×50% = 14%
-        crate::config::profile::ACTIVE_IDX.store(1, std::sync::atomic::Ordering::Relaxed);
-        let mut p_ema = Player::new(anchor, dir);
-        p_ema.tick(16.7, Some(ext));
-        let d_ema = ((p_ema.pos().x - ext.pos.x).powi(2) + (p_ema.pos().y - ext.pos.y).powi(2)).sqrt();
-        assert!(
-            (d_ema / dist0 - 0.86).abs() < 0.01,
-            "CloudEma 单帧只走 EMA 步（14%）: ratio={:.3}",
-            d_ema / dist0
-        );
-        assert!(d_ema > d_nat, "EMA 滤波应滞后于直接贴链");
     }
 
     #[test]

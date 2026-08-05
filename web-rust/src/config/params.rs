@@ -252,6 +252,88 @@ pub const TEMPLATES: [Template; 25] = [
     Template { id: "coil_r", name: "灵线·反", curvature: -1.38, speed: Some(0) },
 ];
 
+// ═══════════════════════════════════════════════════════════════════
+// 【Gemini 可操作区·渲染】—— 渲染性能参数集中于此
+// 本区 = engine.rs / trail.rs 的硬编码渲染字面量**纯搬家**（数值零改动）。
+// 想调渲染开销/视觉精度（DPR、拖尾点数/线宽/透明度、logo 采样……）只改这里。
+// 每个参数标注「Gemini 可操作」+ 现状值 + 来源文件；改前必读
+// docs/render-performance.md（热点分析 + 验证方法）。
+// ⚠️ 接线状态：本区常量数值 = engine.rs/trail.rs 现状字面量，一一对应；
+// engine.rs/trail.rs 的引用替换在渲染模块集成时接入（机械替换，数值不变）。
+// ═══════════════════════════════════════════════════════════════════
+
+// ---- canvas / DPR（全屏填充率 = 逻辑像素 × DPR²）----
+/// 【Gemini 可操作】设备像素比上限。canvas 物理像素 = clientW×dpr × clientH×dpr，
+/// 每帧全量重绘的填充率随 DPR² 增长：2.0 上限下 1920×1080 屏 = 3840×2160 ≈ 830 万
+/// 像素/帧。改小 → 明显降填充率（画面略糊）；改大 → 3x/4x 屏更清晰但更重。
+/// 现状值 2.0（engine.rs `device_pixel_ratio().min(2.0)`）
+pub const RENDER_MAX_DPR: f64 = 2.0;
+/// 【Gemini 可操作】canvas 物理尺寸变更容差（px）。|物理宽/高 − 目标| ≤ 0.5 才
+/// 重设 canvas 尺寸 + set_transform（防每帧 resize 抖动；也减少 set_transform 次数）。
+/// 现状值 0.5（engine.rs `.abs() > 0.5`）
+pub const RENDER_CANVAS_RESIZE_EPSILON: f64 = 0.5;
+
+// ---- 球半径缩放（BALL_RADIUS 相关：radius = BALL_RADIUS×depth×(scale)）----
+/// 【Gemini 可操作】窗口参考短边（px）。球半径缩放系数 = (min(w,h)/REF).clamp(MIN,MAX)：
+/// 短边 700px = 原始比例，>700 放大、<700 缩小。与拖尾线宽（=2r×系数）联动。
+/// 现状值 700.0（engine.rs `w.min(h) / 700.0`）
+pub const RENDER_RADIUS_REF_SIZE: f64 = 700.0;
+/// 【Gemini 可操作】球半径缩放下限（小屏不缩到不可见）。
+/// 现状值 0.6（engine.rs `clamp(0.6, ...)`）
+pub const RENDER_RADIUS_MIN_SCALE: f64 = 0.6;
+/// 【Gemini 可操作】球半径缩放上限（大屏不无限放大——球/拖尾线宽受控）。
+/// 现状值 1.0（engine.rs `clamp(..., 1.0)`）
+pub const RENDER_RADIUS_MAX_SCALE: f64 = 1.0;
+
+// ---- 拖尾采样（Trail / TrailMini 共用）----
+/// 【Gemini 可操作】拖尾历史点上限（帧数）。超过则 pop_front 淘汰最旧点：
+/// 8 点 = f525e40 手感。这是拖尾路径顶点数的直接决定项——
+/// 减半（4）≈ 拖尾路径点减半（拖尾变短 + 每帧 catmull 采样减半）；
+/// 注意这是渲染压力与拖尾长度的核心权衡点。
+/// 现状值 8（engine.rs `h.len() > 8`；trail.rs sample_history frames 参数同样 8）
+pub const TRAIL_MAX_POINTS: usize = 8;
+/// 【Gemini 可操作】拖尾采样速度阈值（世界单位/秒）。速度低于此值清空拖尾
+/// （静止/思考期不渲染——省绘制）。也是「速度过高时截断重建」判定的伴生阈值。
+/// 现状值 0.02（trail.rs `speed_per_sec < 0.02`；engine.rs 经 sim::state.rs
+/// `should_track` 的 `speed_per_sec > 0.02` 使用同一数值）
+pub const TRAIL_SPEED_THRESHOLD: f64 = 0.02;
+/// 【Gemini 可操作】Catmull-Rom 每段子采样数。每段历史间隔内插值点数：
+/// 4 = 每历史段 4 个路径点（拖尾平滑度）；路径顶点数 ≈ TRAIL_MAX_POINTS×本值。
+/// 减到 3/2 → 拖尾更「折角」但路径点更少；这是平滑度 vs 顶点数的权衡点。
+/// 现状值 4（engine.rs `for s in 0..4`；trail.rs 同）
+pub const TRAIL_CATMULL_SEGMENTS: usize = 4;
+
+// ---- 拖尾 Trail（实心大拖尾：一次 stroke 一条路径）----
+/// 【Gemini 可操作】实心拖尾线宽 = 球半径 × 本系数（全宽 2r）。
+/// 现状值 2.0（engine.rs `set_line_width(radius * 2.0)`；trail.rs 同）
+pub const TRAIL_WIDTH_FACTOR: f64 = 2.0;
+
+// ---- 拖尾 TrailMini（动态模糊小拖尾：每段一次 stroke，8 段 = 8 次 stroke/球）----
+/// 【Gemini 可操作】头部透明度：alpha = HEAD_ALPHA × (1 − frac)，尾端渐隐到 0。
+/// 现状值 0.45（engine.rs `0.45 * (1.0 - frac)`；trail.rs 同）
+pub const TRAIL_MINI_HEAD_ALPHA: f64 = 0.45;
+/// 【Gemini 可操作】线宽头系数：lw = 2r × (HEAD − FADE×frac)（球身处最宽）。
+/// 现状值 0.6（engine.rs `0.6 - 0.4 * frac`；trail.rs 同）
+pub const TRAIL_MINI_WIDTH_HEAD: f64 = 0.6;
+/// 【Gemini 可操作】线宽收窄系数：沿拖尾递减（尾端收细 → 动态模糊感）。
+/// 现状值 0.4（engine.rs `0.6 - 0.4 * frac`；trail.rs 同）
+pub const TRAIL_MINI_WIDTH_FADE: f64 = 0.4;
+/// 【Gemini 可操作】线宽下限（px）：尾端线宽不低于此（防拖尾消失）。
+/// 现状值 0.5（engine.rs `lw.max(0.5)`；trail.rs 同）
+pub const TRAIL_MINI_MIN_WIDTH: f64 = 0.5;
+
+// ---- logo 活动圈采样（getBoundingClientRect 有 layout 成本，需节流）----
+/// 【Gemini 可操作】每 N 帧采样一次 .heart-logo 位置。30 ≈ 0.5s 一次：
+/// 采样越频繁活动圈越贴 logo（但 getBoundingClientRect 触发 layout 越频繁）。
+/// 现状值 30（engine.rs `self.logo_tick % 30 == 0`）
+pub const LOGO_SAMPLE_EVERY_FRAMES: u32 = 30;
+/// 【Gemini 可操作】活动圆放大系数（1.25 = 满屏跑但 clamp 屏内，见 engine.rs）。
+/// 现状值 1.25（engine.rs `* 1.25`）
+pub const LOGO_BOUNDS_SCALE: f64 = 1.25;
+/// 【Gemini 可操作】活动圆最小半径（世界坐标，防退化）。
+/// 现状值 0.08（engine.rs `r.max(0.08)`）
+pub const LOGO_BOUNDS_MIN_RADIUS: f64 = 0.08;
+
 #[cfg(test)]
 mod tests {
     use super::*;

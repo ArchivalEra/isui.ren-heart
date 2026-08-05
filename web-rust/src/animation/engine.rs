@@ -64,7 +64,8 @@ impl BallsEngine {
         engine
     }
 
-    /// 切换拖尾风格（大拖尾 ↔ 小拖尾）——wasm 导出，前端按钮调用
+    /// 切换拖尾风格（大拖尾 ↔ 小拖尾）——纯渲染层 mode 翻转，零逻辑副作用。
+    /// wasm 导出（前端按钮）+ P 键热切换均复用本方法。
     pub fn toggle_trail_style(&mut self) {
         self.mode = match self.mode {
             RenderMode::Trail => RenderMode::TrailMini,
@@ -72,9 +73,9 @@ impl BallsEngine {
         };
     }
 
-    /// 调试热切换快捷键：P = 切换运动风格（native 去 EMA ↔ cloud EMA）。
-    /// 只翻转 profile::ACTIVE_IDX（toggle_active），Player 每帧 active() 读——
-    /// 切换即时生效，无需重建 Player。
+    /// 调试热切换快捷键：P = 小拖尾热切换（RenderMode: Trail ↔ TrailMini）。
+    /// 复用 crate::toggle_trail_style → toggle_trail_style()，只翻转渲染层 mode 字段，
+    /// 不触任何 sim/state/player 逻辑；切换即时生效，无需重建引擎。
     /// 用 js_sys::Reflect 直接调 addEventListener（避免新增 web-sys
     /// KeyboardEvent/EventTarget features）——js-sys 默认启用 Reflect。
     fn install_keyboard_shortcuts(&self) {
@@ -86,7 +87,8 @@ impl BallsEngine {
                 .ok()
                 .and_then(|k| k.as_string());
             if key.as_deref() == Some("p") || key.as_deref() == Some("P") {
-                crate::config::profile::toggle_active();
+                // P = 拖尾 RenderMode 热切换（大拖尾 ↔ 小拖尾）——纯渲染层
+                crate::toggle_trail_style();
             }
         }));
         let this = wasm_bindgen::JsValue::from(window);
