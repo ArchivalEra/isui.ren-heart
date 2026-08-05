@@ -81,3 +81,14 @@ pub fn toggle_trail_style() {
         }
     });
 }
+
+/// 调试涂层开关（灰色锚点标记——JS 调试模式激活/退出时调用）
+#[cfg(target_arch = "wasm32")]
+#[wasm_bindgen::prelude::wasm_bindgen]
+pub fn set_anchor_overlay(on: bool) {
+    ENGINE.with(|e| {
+        if let Some(eng) = e.borrow_mut().as_mut() {
+            eng.set_anchor_overlay(on);
+        }
+    });
+}

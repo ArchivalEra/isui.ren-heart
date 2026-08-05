@@ -1,6 +1,7 @@
 // logo 调试器：拖拽移动 + 滚轮缩放 + 复制参数（人眼校准后把参数给站主 →
 // 站主写回 styles.css）。调试改动是运行时 inline style——刷新即恢复。
 import { useEffect, useState } from "preact/hooks";
+import { set_anchor_overlay } from "./wasm/isui_ren_heart.js";
 
 export default function LogoDebug() {
   const [debug, setDebug] = useState(false);
@@ -12,6 +13,7 @@ export default function LogoDebug() {
     const logo = document.querySelector<HTMLElement>(".heart-logo");
     if (!logo) return;
     logo.classList.add("debug-grab");
+    set_anchor_overlay(true); // 调试涂层：灰色锚点标记（最上层）
 
     // 初始参数：left/top = 计算样式（拖拽后为 inline 百分比）；width = 渲染像素
     const cs = getComputedStyle(logo);
@@ -74,6 +76,7 @@ export default function LogoDebug() {
     window.addEventListener("pointerup", onUp);
     window.addEventListener("keydown", onKey);
     return () => {
+      set_anchor_overlay(false);
       logo.classList.remove("debug-grab");
       logo.removeEventListener("pointerdown", onDown);
       window.removeEventListener("pointermove", onMove);

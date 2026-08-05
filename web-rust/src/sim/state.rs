@@ -174,6 +174,11 @@ impl State {
         }
     }
 
+    /// 三球锚点（调试涂层用——灰色标记显示小球起始/回家位置）
+    pub fn anchor_positions(&self) -> [Vec2; 3] {
+        self.anchors
+    }
+
     /// 更新活动圈边界（engine 实时采样 logo 位置后调用——转发三球）
     pub fn set_bounds(&mut self, b: CircleBounds) {
         for ball in self.balls.iter_mut() {

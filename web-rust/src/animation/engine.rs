@@ -39,6 +39,8 @@ pub struct BallsEngine {
     last_dpr: f64,
     /// 首帧校准的 logo 宽度（CSS px）——缩放基准（scale = 当前宽/基准宽）
     calib_w: f64,
+    /// 调试涂层：灰色锚点标记（用户钦定——调试时看小球起始位置，最上层）
+    anchor_overlay: bool,
     last_bounds: crate::sim::planner::CircleBounds,
 }
 
@@ -70,6 +72,7 @@ impl BallsEngine {
             last_ch: 0.0,
             last_dpr: 0.0,
             calib_w: 0.0,
+            anchor_overlay: false,
             last_bounds: crate::sim::planner::CircleBounds::fallback(),
         };
         engine.install_keyboard_shortcuts();
@@ -78,6 +81,11 @@ impl BallsEngine {
 
     /// 切换拖尾风格（大拖尾 ↔ 小拖尾）——纯渲染层 mode 翻转，零逻辑副作用。
     /// wasm 导出（前端按钮）+ P 键热切换均复用本方法。
+    /// 调试涂层开关（JS 在调试模式激活/退出时调用）
+    pub fn set_anchor_overlay(&mut self, on: bool) {
+        self.anchor_overlay = on;
+    }
+
     pub fn toggle_trail_style(&mut self) {
         self.mode = match self.mode {
             RenderMode::Trail => RenderMode::TrailMini,
@@ -414,6 +422,26 @@ impl BallsEngine {
             self.ctx.set_fill_style(&wasm_bindgen::JsValue::from(self.balls[color_slot].color));
             self.ctx.fill();
             self.ctx.restore();
+        }
+
+        // ── 调试涂层：灰色锚点标记（最上层——render 最后画，覆盖球；
+        //   用户钦定：调试时看小球起始/回家位置）──
+        if self.anchor_overlay {
+            for a in self.state.anchor_positions() {
+                let (sx, sy, _) = screen_of(a, w, h);
+                self.ctx.set_stroke_style_str("rgba(110,110,110,0.8)");
+                self.ctx.set_line_width(1.5);
+                self.ctx.begin_path();
+                self.ctx.move_to(sx - 16.0, sy);
+                self.ctx.line_to(sx + 16.0, sy);
+                self.ctx.move_to(sx, sy - 16.0);
+                self.ctx.line_to(sx, sy + 16.0);
+                self.ctx.stroke();
+                self.ctx.begin_path();
+                self.ctx.set_fill_style_str("rgba(128,128,128,0.6)");
+                self.ctx.arc(sx, sy, 7.0, 0.0, std::f64::consts::PI * 2.0).unwrap();
+                self.ctx.fill();
+            }
         }
     }
 }
