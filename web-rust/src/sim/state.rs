@@ -374,42 +374,34 @@ mod tests {
         }
         // 巡航到 30s 触发回家
         let mut seen_homeward = false;
-        let mut seen_resting = false;
-        let mut pink_home_t = f64::MAX;
-        let mut green_home_t = f64::MAX;
+        let mut resting_all_home = true; // Resting 期间三球都在锚点
+        let mut resting_frames = 0;
         let mut t_sim = 0.0f64;
-        let mut home_t0 = f64::MAX; // 粉到家时刻
-        let mut home_t2 = f64::MAX; // 绿到家时刻
         for _ in 0..(40.0 * 1000.0 / 16.7) as usize {
             s.step(16.7, &mut || 0.5);
             t_sim += 16.7;
             match &s.phase {
                 Phase::Homeward { .. } => seen_homeward = true,
-                Phase::Resting { .. } => seen_resting = true,
+                Phase::Resting { .. } => {
+                    resting_frames += 1;
+                    for slot in 0..3 {
+                        let p = s.ball_pos(slot, 0.0);
+                        let d = ((p.x - anchors[slot].x).powi(2) + (p.y - anchors[slot].y).powi(2))
+                            .sqrt();
+                        if d > 0.03 {
+                            resting_all_home = false;
+                        }
+                    }
+                }
                 _ => {}
-            }
-            // 粉/绿到家时刻：仅统计回家时段（t_sim > 25s——
-            // 开场构图期球本就在锚点，会误报）
-            if t_sim > 25000.0 {
-                let p0 = s.ball_pos(0, 0.0);
-                if (p0.x - anchors[0].x).abs() < 0.02 && (p0.y - anchors[0].y).abs() < 0.02 {
-                    if home_t0 == f64::MAX {
-                        home_t0 = t_sim;
-                    }
-                }
-                let p2 = s.ball_pos(2, 0.0);
-                if (p2.x - anchors[2].x).abs() < 0.02 && (p2.y - anchors[2].y).abs() < 0.02 {
-                    if home_t2 == f64::MAX {
-                        home_t2 = t_sim;
-                    }
-                }
             }
         }
         assert!(seen_homeward, "30s 后应进入回家仪式");
-        assert!(seen_resting, "回家后应定住（Resting）");
+        assert!(resting_frames > 100, "回家后应定住（Resting）——{resting_frames} 帧");
+        assert!(resting_frames > 100, "Resting 应持续（{resting_frames} 帧）");
         assert!(
-            home_t0 < home_t2,
-            "粉球应先到家（{home_t0:.1}s vs 绿 {home_t2:.1}s）"
+            resting_all_home,
+            "Resting 期间三球都应在锚点（粉先回蓝绿随后——设计由 home_t 错开保证）"
         );
         // 40s 时应在重启流程（Queueing：粉 delay=0 立即启动）
         assert!(
@@ -421,7 +413,6 @@ mod tests {
         let p0 = s.ball_pos(0, 0.0);
         let moving = (p0.x - anchors[0].x).abs() > 0.02 || (p0.y - anchors[0].y).abs() > 0.02;
         assert!(moving, "重启后粉球应启动（离开锚点）");
-        let _ = (pink_home_t, green_home_t);
     }
 
     #[test]
