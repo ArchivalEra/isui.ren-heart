@@ -77,6 +77,8 @@ pub struct State {
     anchors: [Vec2; 3],
     /// 粉球上一帧位置（跟随 tvel 的差分速度用）
     pink_prev: Vec2,
+    /// logo 实际中心（归一化——engine 每 30 帧采样注入；锚点跟随平移）
+    logo_center: Vec2,
 }
 
 impl State {
@@ -110,6 +112,23 @@ impl State {
             age: 0.0,
             anchors,
             pink_prev: anchors[0],
+            logo_center: Vec2 { x: crate::config::params::LOGO_REF.0, y: crate::config::params::LOGO_REF.1 },
+        }
+    }
+
+    /// 锚点跟随 logo 实际中心（用户钦定：球按 logo 计算初始位置——logo
+    /// 缩放/移动时球跟着走，视觉焊死）。平移量 = logo 中心变化——三球
+    /// 相对形状（ANCHORS - LOGO_REF 偏移）恒定
+    pub fn set_logo_center(&mut self, c: Vec2) {
+        let dx = c.x - self.logo_center.x;
+        let dy = c.y - self.logo_center.y;
+        if dx * dx + dy * dy < 1e-12 {
+            return;
+        }
+        self.logo_center = c;
+        for s in 0..3 {
+            self.anchors[s].x += dx;
+            self.anchors[s].y += dy;
         }
     }
 
@@ -996,6 +1015,38 @@ mod tests {
                 st.balls[s].mode
             );
             assert!(st.balls[s].player.chain_arc() > 0.5, "ball[{s}] 重启后链推进");
+        }
+    }
+
+    #[test]
+    fn anchors_follow_logo_center() {
+        // 用户钦定：球按 logo 计算初始位置——set_logo_center 平移锚点
+        // （logo 缩放/移动 → 球跟着走，相对形状恒定）
+        let mut st = state();
+        let orig: [Vec2; 3] = [st.anchors[0], st.anchors[1], st.anchors[2]];
+        // logo 中心移动（如小窗布局偏移）→ 锚点等量平移
+        st.set_logo_center(v(0.36, 0.30));
+        let moved: [Vec2; 3] = [st.anchors[0], st.anchors[1], st.anchors[2]];
+        let dx = 0.36 - crate::config::params::LOGO_REF.0;
+        let dy = 0.30 - crate::config::params::LOGO_REF.1;
+        for s in 0..3 {
+            let d = ((moved[s].x - (orig[s].x + dx)).powi(2)
+                + (moved[s].y - (orig[s].y + dy)).powi(2))
+            .sqrt();
+            assert!(d < 1e-9, "ball[{s}] 锚点应等量平移: {d:.6}");
+            // 相对形状恒定（三球相对位置不变）
+            let r01 = ((moved[0].x - moved[1].x).powi(2) + (moved[0].y - moved[1].y).powi(2)).sqrt();
+            let r01o = ((orig[0].x - orig[1].x).powi(2) + (orig[0].y - orig[1].y).powi(2)).sqrt();
+            assert!((r01 - r01o).abs() < 1e-9, "相对形状应恒定");
+        }
+        // 无变化 → 零平移（幂等）
+        st.set_logo_center(v(0.36, 0.30));
+        let again: [Vec2; 3] = [st.anchors[0], st.anchors[1], st.anchors[2]];
+        for s in 0..3 {
+            assert!(
+                (again[s].x - moved[s].x).abs() < 1e-12,
+                "幂等：重复注入同一中心不应平移"
+            );
         }
     }
 

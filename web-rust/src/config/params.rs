@@ -176,7 +176,13 @@ pub const FOLLOW_DUR_MIN_MS: f64 = 5000.0;
 /// 跟随最长时长（ms）
 pub const FOLLOW_DUR_MAX_MS: f64 = 20000.0;
 
-/// logo 三球锚点（世界坐标，站主实测给点）
+/// 基准 logo 归一化中心（CSS 定位推导：left calc(50%-12.07%) → 反透视
+/// cx=(0.3793-0.5)/0.6733+0.5=0.3207，top 27.40% → cy=0.274）。
+/// 锚点 = logo 实际中心 + (ANCHORS - LOGO_REF)——球始终围绕 logo（视觉焊死）
+pub const LOGO_REF: (f64, f64) = (0.3207, 0.2740);
+
+/// logo 三球锚点（世界坐标，站主实测给点；相对 LOGO_REF 偏移恒定——
+/// set_logo_center 平移锚点跟 logo 走）
 pub const ANCHORS: [(f64, f64); 3] = [
     (0.555, 0.355), // 粉（上）
     (0.473, 0.379), // 水蓝（左）

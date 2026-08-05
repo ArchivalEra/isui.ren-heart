@@ -133,7 +133,15 @@ impl BallsEngine {
         // getBoundingClientRect 每 30 帧一次，活动圈随 logo 实际位置更新）
         self.logo_tick += 1;
         if self.logo_tick % 30 == 0 {
-            self.logo_bounds = self.sample_logo_bounds();
+            let new_b = self.sample_logo_bounds();
+            // 锚点跟随 logo（非 fallback 时——fallback (0.5,0.42) 是防御值，
+            // 注入会扰动用户实测的锚点）
+            if (new_b.cx - 0.5).abs() > 1e-9 || (new_b.cy - 0.42).abs() > 1e-9 {
+                self.state.set_logo_center(
+                    crate::sim::math::Vec2 { x: new_b.cx, y: new_b.cy },
+                );
+            }
+            self.logo_bounds = new_b;
         }
         self.state.set_bounds(self.logo_bounds);
         // 圆中心显著变化（首帧 fallback → 布局完成后的真圆）→ 重建链——
