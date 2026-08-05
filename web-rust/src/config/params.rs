@@ -22,7 +22,7 @@ pub const QUEUE_TRANSIT_MS: f64 = 2000.0;
 /// 思考结束后滑向槽位时长
 
 /// 模板切换时曲率最大变化量：0.35 = 灵动转弯（移植自 f525e40 的手感）
-pub const TEMPLATE_CURV_STEP: f64 = 0.35;
+pub const TEMPLATE_CURV_STEP: f64 = 0.2; // Gemini 真经二版：段间 |Δκ| ≤ 0.2——法向加速度冲量最小化（0.35 曾单段暴跳）
 /// 高速移动批准制：速度倍率超过此阈值的模板需批准
 pub const SPEED_THRESHOLD: f64 = 1.2;
 /// 高速模板被批准的概率（不批准则重新生成新路径模板）

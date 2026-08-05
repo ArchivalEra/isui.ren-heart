@@ -235,8 +235,19 @@ impl Player {
                 // 前瞻：tvel 方向用「未来弧长处」切线——链要转向时球提前反应；
                 // 速度大小统一 lead_speed（温和加减速由队首 profile 的 smoothstep 保证）
                 let lookahead_arc = rate_now * WORLD_SPEED * LOOKAHEAD_SECONDS;
-                let (_, tan_f, _, _) =
-                    chain_pos_and_tangent(&self.chain, (s_i + lookahead_arc).max(0.0));
+                // Gemini 真经二版：Simpson 3 点切线平均（s、s+Δ/2、s+Δ，1:4:1）——
+                // 单点前瞻跨段边界时切线角速度离散跃迁（顿顿来源之一），
+                // 窗口平均方向平滑消化
+                let s0 = s_i.max(0.0);
+                let s1 = (s_i + lookahead_arc * 0.5).max(0.0);
+                let s2 = (s_i + lookahead_arc).max(0.0);
+                let (_, ta, _, _) = chain_pos_and_tangent(&self.chain, s0);
+                let (_, tb, _, _) = chain_pos_and_tangent(&self.chain, s1);
+                let (_, tc, _, _) = chain_pos_and_tangent(&self.chain, s2);
+                let tan_f = Vec2 {
+                    x: ta.x + 4.0 * tb.x + tc.x,
+                    y: ta.y + 4.0 * tb.y + tc.y,
+                };
                 let tl_f = (tan_f.x * tan_f.x + tan_f.y * tan_f.y).sqrt().max(1e-9);
                 let tvel = Vec2 {
                     x: tan_f.x / tl_f * lead_speed,

@@ -51,6 +51,9 @@ pub struct Ball {
     pub follow_dur: f64,
     /// 进入跟随时的起始位置（前 500ms 渐变——避免进入瞬间跳变）
     pub follow_enter: Vec2,
+    /// 法线方向 EMA（Gemini 真经二版：段边界 Frenet 标架跳变 → 跟随目标
+    /// raw 阶跃 → EMA 下冲/回弹 = 跟随球二次顿感——法线向量低通平滑）
+    pub n_ema: Option<Vec2>,
     /// 周期回家计时（ms）：Free/FollowPink 中累计，≥ HOME_EVERY_MS 触发回家
     pub cycle_t: f64,
     /// 回家仪式计时（ms）：Homeward/Resting/Queueing 各自阶段的推进时间
@@ -349,7 +352,20 @@ impl State {
                                 self.balls[0].player.chain_point((s_p - gap).max(0.0));
                             let d = FORMATION_OFFSETS[s]
                                 * crate::config::profile::ACTIVE_PROFILE.offset_scale;
-                            let n = normal_of(tan_p);
+                            // 法线 EMA（α=0.3——弯道偏移方向平滑转，段边界跳变被消化）
+                            let n_raw = normal_of(tan_p);
+                            let n = match self.balls[s].n_ema {
+                                Some(prev) => {
+                                    let e = Vec2 {
+                                        x: prev.x + 0.3 * (n_raw.x - prev.x),
+                                        y: prev.y + 0.3 * (n_raw.y - prev.y),
+                                    };
+                                    let l = (e.x * e.x + e.y * e.y).sqrt().max(1e-9);
+                                    Vec2 { x: e.x / l, y: e.y / l }
+                                }
+                                None => n_raw,
+                            };
+                            self.balls[s].n_ema = Some(n);
                             let mut tgt =
                                 Vec2 { x: pp.x + n.x * d, y: pp.y + n.y * d };
                             // 平滑进入：前 500ms 从起始位置渐变到目标（跟随接入不突兀）
@@ -445,6 +461,7 @@ impl Ball {
             cycle_t,
             phase_t: 0.0,
             home_leg: None,
+            n_ema: None,
         }
     }
 }
