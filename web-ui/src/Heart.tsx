@@ -1,6 +1,7 @@
 // /heart — 博客主页：tayori 视觉（灰阶白 + 三球队列动画 + 唯一黑色 logo + 轻量自研打字机）
 import { useEffect, useRef, useState } from "preact/hooks";
 import BallsCanvas from "./BallsCanvas";
+import LogoDebug from "./LogoDebug";
 import Typewriter from "./Typewriter";
 import CardWall from "./CardWall";
 import { toggle_trail_style } from "./wasm/isui_ren_heart.js";
@@ -116,6 +117,7 @@ export default function Heart() {
         </nav>
       </main>
       <TrailToggle />
+      <LogoDebug />
     </div>
   );
 }
