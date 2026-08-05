@@ -4,5 +4,6 @@ pub mod math;
 pub mod chain;
 pub mod planner;
 pub mod cloud;
+pub mod home;
 pub mod velo;
 pub mod state;

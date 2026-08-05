@@ -474,19 +474,17 @@ impl Player {
         let tan = bezier_tangent(tail_last.from, tail_last.ctrl, tail_last.target, 1.0);
         let l = (tan.x * tan.x + tan.y * tan.y).sqrt().max(1e-9);
         let dir = Vec2 { x: tan.x / l, y: tan.y / l }; // 链尾切线——C1 连续
-        // 单段回家弧（曾双段：1.5-2.5 弧长 → 8-15s——超时兜底擦边触发 →
-        // 半路 snap 跳；单段弧长 ≈ dist×1.1 → 3-6s——快且连续）
-        let tpl = TEMPLATES
-            .iter()
-            .position(|x| (x.curvature - 0.40).abs() < 1e-9)
-            .unwrap_or(8);
-        let speed = roll_speed(Some(1)); // 巡航档回家——tune 平滑衔接当前速度（不顿不拖）
-        let mut pl = make_planned_leg(from, dir, tpl, anchor, speed);
-        // ctrl clamp 屏内（dir 朝屏外时防段中出屏——段尾 target 不受影响）
-        pl.legs[0].ctrl.x = pl.legs[0].ctrl.x.clamp(0.04, 0.96);
-        pl.legs[0].ctrl.y = pl.legs[0].ctrl.y.clamp(0.04, 0.96);
-        let a = pl.arc;
-        self.chain.push_back(clamp_dur_to_chain(pl, self.chain.back().unwrap().dur_ms));
+        // 回家段生成已分离到 sim/home.rs（Gemini 可操作模块——只改 home.rs）
+        let legs = crate::sim::home::plan_home_legs(&crate::sim::home::HomeCtx {
+            from,
+            dir,
+            anchor,
+        });
+        let mut a = 0.0;
+        for pl in legs {
+            a += pl.arc;
+            self.chain.push_back(clamp_dur_to_chain(pl, self.chain.back().unwrap().dur_ms));
+        }
         self.home_mode = true; // 链尾已固定 = anchor——不再补链
         a
     }
