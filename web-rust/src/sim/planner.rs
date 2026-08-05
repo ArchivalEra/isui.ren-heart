@@ -237,16 +237,21 @@ impl Player {
             let r_ideal = self.profile_speed(seg_i, u_i);
             let stv = self.states[s];
             let rate_now = stv.rate;
-            // 前瞻：tvel 用「未来弧长处」的速度/切线——链要减速/转向时球提前反应，
-            // 不冲过头（惯性超前 → spring 拉回 = 冲刺回弹的物理根源）
+            // 智能匀速：队列速度统一 = 队首速度——跟随者不再有自己的速度
+            // profile 波动（慢速段走走停停 = 蓝绿按自己链上位置的段级速度
+            // 忽快忽慢；统一后像火车——相对位置恒定、无走走停停）
+            let (_, _, seg_lead, u_lead) =
+                chain_pos_and_tangent(&self.chain, self.s_lead);
+            let lead_speed = self.profile_speed(seg_lead, u_lead) * WORLD_SPEED;
+            // 前瞻：tvel 方向用「未来弧长处」切线——链要转向时球提前反应；
+            // 速度大小统一 lead_speed（温和加减速由队首 profile 的 smoothstep 保证）
             let lookahead_arc = rate_now * WORLD_SPEED * LOOKAHEAD_SECONDS;
-            let (_, tan_f, seg_f, u_f) =
+            let (_, tan_f, _, _) =
                 chain_pos_and_tangent(&self.chain, (s_i + lookahead_arc).max(0.0));
-            let r_future = self.profile_speed(seg_f, u_f);
             let tl_f = (tan_f.x * tan_f.x + tan_f.y * tan_f.y).sqrt().max(1e-9);
             let tvel = Vec2 {
-                x: tan_f.x / tl_f * r_future,
-                y: tan_f.y / tl_f * r_future,
+                x: tan_f.x / tl_f * lead_speed,
+                y: tan_f.y / tl_f * lead_speed,
             };
             // 方向低通：tvel 方向每秒最多转 MAX_TURN_RATE——防链几何切线
             // 退化/跳变导致的瞬间掉头（球沿旧方向平滑弧线转向新方向）
@@ -1107,4 +1112,62 @@ fn chain_direction_jumps_audit() {
     }
     eprintln!("CHAIN AUDIT: jumps={jumps}/300 段");
     assert!(jumps <= 6, "段间方向跳变过多：{jumps}");
+}
+
+#[test]
+fn queue_speed_uniform_no_stop_go() {
+    // 走走停停回归测试：交替高速/低速段链——三球速度大小必须一致
+    // （智能匀速 = 队列同速；曾按各自链上位置的 profile 速度 → 蓝绿忽快忽慢）
+    let mk_leg = |x0: f64, x1: f64, speed: f64| -> PlannedLeg {
+        let from = Vec2 { x: x0, y: 0.5 };
+        let target = Vec2 { x: x1, y: 0.5 };
+        let sub = (x1 - x0) / 5.0;
+        let mut legs = [Leg { from, ctrl: target, target }; 5];
+        for (i, leg) in legs.iter_mut().enumerate() {
+            let f = x0 + sub * i as f64;
+            leg.from = Vec2 { x: f, y: 0.5 };
+            leg.target = Vec2 { x: f + sub, y: 0.5 };
+            leg.ctrl = Vec2 { x: f + sub / 2.0, y: 0.5 };
+        }
+        PlannedLeg {
+            legs,
+            template_idx: 0,
+            speed,
+            curv_eff: 0.0,
+            dur_ms: (x1 - x0) / (WORLD_SPEED * speed) * 1000.0,
+            arc: x1 - x0,
+        }
+    };
+    let mut p = Player::new(Vec2 { x: 0.5, y: 0.5 }, Vec2 { x: 1.0, y: 0.0 });
+    p.bounds = CircleBounds { cx: 0.5, cy: 0.5, r: 0.6 };
+    // 交替：高速(1.6) 低速(0.55) 高速 低速——共 8 段覆盖三球错开范围
+    let mut chain = VecDeque::new();
+    let mut x = 0.1;
+    for i in 0..8 {
+        let sp = if i % 2 == 0 { 1.6 } else { 0.55 };
+        chain.push_back(mk_leg(x, x + 0.15, sp));
+        x += 0.15;
+    }
+    p.chain = chain;
+    p.s_lead = 0.08;
+    // 热身 100 帧（上链+贴链）
+    for _ in 0..100 {
+        p.tick(16.0);
+    }
+    // 监测 200 帧：三球速度大小必须一致（相对差 < 2%）
+    let mut worst = 0.0f64;
+    for _ in 0..200 {
+        p.tick(16.0);
+        let v0 = (p.states[0].vel.x.powi(2) + p.states[0].vel.y.powi(2)).sqrt();
+        let v1 = (p.states[1].vel.x.powi(2) + p.states[1].vel.y.powi(2)).sqrt();
+        let v2 = (p.states[2].vel.x.powi(2) + p.states[2].vel.y.powi(2)).sqrt();
+        let max = v0.max(v1).max(v2).max(1e-9);
+        let spread = (max - v0.min(v1).min(v2)) / max;
+        worst = worst.max(spread);
+    }
+    eprintln!("queue speed spread: {worst:.4}");
+    assert!(
+        worst < 0.02,
+        "队列速度不一致（走走停停）：spread={worst:.4}"
+    );
 }
