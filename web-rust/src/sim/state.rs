@@ -77,11 +77,6 @@ pub struct State {
     anchors: [Vec2; 3],
     /// 粉球上一帧位置（跟随 tvel 的差分速度用）
     pink_prev: Vec2,
-    /// 无状态归一化向量法（Gemini 真经五版）：锚点 = C_curr + V_i×W_curr——
-    /// V_i = (ANCHORS_i − LOGO_DESIGN_CENTER) / LOGO_DESIGN_W 为设计基准下的
-    /// 常数向量（State::new 算好）。彻底放弃校准状态（calib_center/
-    /// calib_scale/calibrated 已删——曾首帧校准 + 缩放比恢复，rebuild 后错位）
-    anchor_vecs: [Vec2; 3],
 }
 
 impl State {
@@ -109,34 +104,12 @@ impl State {
         for ball in balls.iter_mut() {
             ball.player.ensure_chain_to(PREPLAN_SECONDS * WORLD_SPEED * 1.1);
         }
-        // 无状态归一化向量法（Gemini 真经五版）：V_i = (ANCHORS_i −
-        // LOGO_DESIGN_CENTER) / LOGO_DESIGN_W——设计基准下锚点相对 logo 的
-        // 常数向量（与传入 anchors 同一来源；运行时 set_logo_transform 直接
-        // c + V_i×w 重算——零校准状态、零首帧特殊、零幂等）
-        let anchor_vecs = crate::config::params::ANCHORS.map(|(x, y)| Vec2 {
-            x: (x - LOGO_DESIGN_CENTER.0) / LOGO_DESIGN_W,
-            y: (y - LOGO_DESIGN_CENTER.1) / LOGO_DESIGN_W,
-        });
         State {
             balls,
             phase: Phase::Cruise { t: 0.0 },
             age: 0.0,
             anchors,
             pink_prev: anchors[0],
-            anchor_vecs,
-        }
-    }
-
-    /// 锚点跟随 logo 实际中心 + 当前宽度（无状态归一化向量法——Gemini
-    /// 真经五版）：anchors[s] = c + V_i × w（V_i = State::new 算好的常数向量）。
-    /// 无首帧校准、无幂等短路——每帧注入即重算（绝对公式，开销可忽略）：
-    /// logo 平移锚点跟走、logo 大球散开/小球收拢——围绕 logo 的构图恒焊死
-    pub fn set_logo_transform(&mut self, c: Vec2, w: f64) {
-        for s in 0..3 {
-            self.anchors[s] = Vec2 {
-                x: c.x + self.anchor_vecs[s].x * w,
-                y: c.y + self.anchor_vecs[s].y * w,
-            };
         }
     }
 
@@ -161,8 +134,8 @@ impl State {
         self.anchors
     }
 
-    /// 调试拖拽更新单个锚点（世界坐标——clamp 屏内；用户拖球到理想位置）
-    /// （set_calib 已删——无状态归一化向量法零校准状态，无需跨 rebuild 保留）
+    /// 调试拖拽更新单个锚点（世界坐标——clamp 屏内；用户拖球到理想位置。
+    /// 锚点恒 = ANCHORS——拖球是临时调试改，无校准/缩放跟随概念保留）
     pub fn set_anchor(&mut self, s: usize, x: f64, y: f64) {
         if s < 3 {
             self.anchors[s] = Vec2 {
@@ -534,8 +507,8 @@ mod tests {
     }
 
     fn state() -> State {
-        // 动态读 params ANCHORS（人眼校准值会更新——硬编码旧值导致
-        // set_logo_transform 期望错位）
+        // 动态读 params ANCHORS（人眼校准值会更新——硬编码旧值导致期望错位；
+        // 锚点恒 = ANCHORS——不再跟 logo 变换）
         let a = crate::config::params::ANCHORS;
         State::new([v(a[0].0, a[0].1), v(a[1].0, a[1].1), v(a[2].0, a[2].1)])
     }
@@ -1046,65 +1019,45 @@ mod tests {
     }
 
     #[test]
-    fn anchors_follow_logo_center() {
-        // 无状态归一化向量法（Gemini 真经五版）：锚点 = 当前 logo 中心 + V_i×当前宽
-        // ——V_i = (ANCHORS_i − LOGO_DESIGN_CENTER) / LOGO_DESIGN_W 为设计基准下
-        // 常数向量（State::new 算好）。任意注入 (c,w) 直接重算——无首帧特殊、
-        // 无校准状态、无幂等短路
+    fn anchors_fixed_at_params() {
+        // 锚点恒 = params::ANCHORS（固定世界坐标——坐标注入退役：
+        // set_logo_transform/LOGO_DESIGN_* 已删——锚点不再跟 logo 变换）。
+        // 构造即等于 ANCHORS；经历完整回家仪式后仍不变（无注入/无重算）
         let mut st = state();
-        // 注入设计基准 (c,w) = (LOGO_DESIGN_CENTER, LOGO_DESIGN_W) → 锚点还原
-        // ANCHORS 原样（自洽：设计基准下 V_i×w = ANCHORS_i − 设计中心）
-        st.set_logo_transform(
-            v(crate::config::params::LOGO_DESIGN_CENTER.0, crate::config::params::LOGO_DESIGN_CENTER.1),
-            crate::config::params::LOGO_DESIGN_W,
+        for s in 0..3 {
+            let (ax, ay) = crate::config::params::ANCHORS[s];
+            let p = st.anchors[s];
+            assert!(
+                (p.x - ax).abs() < 1e-12 && (p.y - ay).abs() < 1e-12,
+                "ball[{s}] 锚点应恒等于 ANCHORS: {:?} vs {ax},{ay}",
+                p
+            );
+        }
+        // 完整生命周期（30s 回家 + Homeward + Resting + Queueing 重启）后
+        // 锚点仍 = ANCHORS——锚点固定语义不被任何流程改动
+        let mut dec = seq_decide(usize::MAX);
+        skip_launch(&mut st);
+        fast_forward(&mut st, 30000.0 + 3000.0 + HOME_REST_MS + 2000.0, &mut dec);
+        for s in 0..3 {
+            let (ax, ay) = crate::config::params::ANCHORS[s];
+            let p = st.anchors[s];
+            assert!(
+                (p.x - ax).abs() < 1e-12 && (p.y - ay).abs() < 1e-12,
+                "ball[{s}] 完整回家仪式后锚点仍应 = ANCHORS: {:?} vs {ax},{ay}",
+                p
+            );
+        }
+        // 调试拖球保留（set_anchor 改锚点——不再被任何 logo 注入覆盖）
+        st.set_anchor(0, 0.5, 0.5);
+        assert!(
+            (st.anchors[0].x - 0.5).abs() < 1e-12 && (st.anchors[0].y - 0.5).abs() < 1e-12,
+            "set_anchor 应生效（调试拖球）"
         );
-        let at_design = st.anchor_positions();
-        for s in 0..3 {
-            let (ax, ay) = crate::config::params::ANCHORS[s];
-            assert!(
-                (at_design[s].x - ax).abs() < 1e-12 && (at_design[s].y - ay).abs() < 1e-12,
-                "ball[{s}] 注入设计基准应还原 ANCHORS 原样: {:?} vs {ax},{ay}",
-                at_design[s]
-            );
-        }
-        // 任意注入 (c,w)：锚点 = c + V_i×w——与手算公式一致
-        let c = v(0.30, 0.42);
-        let w = 0.08; // w 从设计宽 0.103 变小 → logo 小球 → 锚点收拢
-        st.set_logo_transform(c, w);
-        let moved = st.anchor_positions();
-        for s in 0..3 {
-            let (ax, ay) = crate::config::params::ANCHORS[s];
-            let v_i = v(
-                (ax - crate::config::params::LOGO_DESIGN_CENTER.0)
-                    / crate::config::params::LOGO_DESIGN_W,
-                (ay - crate::config::params::LOGO_DESIGN_CENTER.1)
-                    / crate::config::params::LOGO_DESIGN_W,
-            );
-            let expect = v(c.x + v_i.x * w, c.y + v_i.y * w);
-            let d = ((moved[s].x - expect.x).powi(2) + (moved[s].y - expect.y).powi(2)).sqrt();
-            assert!(d < 1e-9, "ball[{s}] 锚点应 = c + V_i×w: {d:.6}");
-            // 焊死：锚点相对 logo 的比例恒定——w 变化 → 偏移 = V_i×w（线性缩放）
-            let norm = v((moved[s].x - c.x) / w, (moved[s].y - c.y) / w);
-            assert!(
-                (norm.x - v_i.x).abs() < 1e-9 && (norm.y - v_i.y).abs() < 1e-9,
-                "ball[{s}] 锚点相对 logo 比例应恒定（焊死）"
-            );
-        }
-        // 重复注入同一 (c,w)：结果不变——无状态每帧重算正确（无漂移/无幂等陷阱）
-        st.set_logo_transform(c, w);
-        let again = st.anchor_positions();
-        for s in 0..3 {
-            assert!(
-                (again[s].x - moved[s].x).abs() < 1e-12
-                    && (again[s].y - moved[s].y).abs() < 1e-12,
-                "ball[{s}] 重复注入应结果不变（无状态）"
-            );
-        }
     }
 
-    // calib_survives_rebuild 已删：无状态归一化向量法零校准状态——
-    // rebuild 后 State::new 重算 V_i（常数），engine 立即采样注入即生效，
-    // 「重建后锚点缩放保留」由公式恒成立（无状态），无需专项测试
+    // calib_survives_rebuild 已删：曾为「锚点缩放保留」的校准状态测试——
+    // 坐标注入退役后锚点恒 = ANCHORS（anchors_fixed_at_params 覆盖固定语义），
+    // 校准/缩放跟随逻辑已整体删除，无需专项测试
 
     #[test]
     fn rebuild_chains_recovers() {

@@ -7,6 +7,14 @@ use std::collections::VecDeque;
 use wasm_bindgen::JsCast;
 use web_sys::{CanvasRenderingContext2d, HtmlCanvasElement};
 
+/// 窗口固定坐标系下的活动圆（tayori logo 中心 + 半径）——窗口内 logo 中心
+/// + 半径（固定常量，替代原 DOM 实时采样 sample_logo_bounds）
+const WINDOW_BOUNDS: crate::sim::planner::CircleBounds = crate::sim::planner::CircleBounds {
+    cx: 0.4257,
+    cy: 0.3786,
+    r: 0.35,
+};
+
 pub struct Ball {
     pub offset: f64,
     pub color: &'static str,
@@ -29,19 +37,12 @@ pub struct BallsEngine {
     pub mode: RenderMode,
     /// 每球位置历史（实心拖尾用，Trail 模式）
     history: [VecDeque<(f64, f64)>; 3],
-    /// 活动圈边界（tayori 标志中心圆，实时采样）
-    logo_bounds: crate::sim::planner::CircleBounds,
-    /// 采样计数（每 30 帧采样一次 logo 位置——getBoundingClientRect 有 layout 成本）
-    logo_tick: u32,
     /// 上次检测的 canvas CSS 尺寸（px，0 = 尚未检测）——resize 检测基准
     last_cw: f64,
     last_ch: f64,
     last_dpr: f64,
     /// 调试涂层：灰色锚点标记（用户钦定——调试时看小球起始位置，最上层）
     anchor_overlay: bool,
-    /// 小球调试模式：暂停 logo 采样注入（拖球不被 set_logo_transform 覆盖）
-    ball_mode: bool,
-    last_bounds: crate::sim::planner::CircleBounds,
 }
 
 impl BallsEngine {
@@ -58,7 +59,7 @@ impl BallsEngine {
             Ball { offset: 0.0, color: BALL_COLORS[2] },
         ];
         let anchors = ANCHORS.map(|(x, y)| Vec2 { x, y });
-        let engine = Self {
+        let mut engine = Self {
             canvas,
             ctx,
             balls,
@@ -66,15 +67,15 @@ impl BallsEngine {
             state: State::new(anchors),
             mode: RenderMode::Trail,
             history: [VecDeque::new(), VecDeque::new(), VecDeque::new()],
-            logo_bounds: crate::sim::planner::CircleBounds::fallback(),
-            logo_tick: 0,
             last_cw: 0.0,
             last_ch: 0.0,
             last_dpr: 0.0,
             anchor_overlay: false,
-            ball_mode: false,
-            last_bounds: crate::sim::planner::CircleBounds::fallback(),
         };
+        // 固定窗口坐标系：活动圆 = WINDOW_BOUNDS 常量——初始化即注入并重建链
+        // （State::new 预生成用 fallback 圆，需覆盖为真圆，否则链围绕错圆心）
+        engine.state.set_bounds(WINDOW_BOUNDS);
+        engine.state.rebuild_chains(WINDOW_BOUNDS);
         engine.install_keyboard_shortcuts();
         engine
     }
@@ -89,11 +90,6 @@ impl BallsEngine {
     /// 调试涂层开关（JS 在调试模式激活/退出时调用）
     pub fn set_anchor_overlay(&mut self, on: bool) {
         self.anchor_overlay = on;
-    }
-
-    /// 小球调试模式：暂停 logo 采样注入（拖球不被 set_logo_transform 覆盖）
-    pub fn set_ball_mode(&mut self, on: bool) {
-        self.ball_mode = on;
     }
 
     /// 锚点世界坐标（JS 复制参数用）
@@ -164,8 +160,7 @@ impl BallsEngine {
 
     pub fn frame(&mut self, dt: f64) {
         // ① resize 检测：canvas CSS 尺寸变化 >1%（或 0→非 0——首帧亦算）→
-        //    重建 State + 立即重采样活动圆。曾：resize 后旧链/旧圆混合 →
-        //    小球起始位置错乱（旧链按旧归一化活动圆规划，新尺寸下已失效）。
+        //    重建 State（防御保留——窗口固定坐标系下活动圆是常量，无采样）。
         //    last_cw/last_ch 每帧更新——重建只触发一次，不会每帧重复重建
         let cw = self.canvas.client_width() as f64;
         let ch = self.canvas.client_height() as f64;
@@ -181,29 +176,8 @@ impl BallsEngine {
         if resized {
             self.rebuild_on_resize();
         }
-        // 大事情定稿：实时采样 tayori 标志位置（不同设备排版差异——
-        // getBoundingClientRect 每 30 帧一次，活动圈随 logo 实际位置更新）
-        self.logo_tick += 1;
-        // 首帧快速收敛：前 90 帧（1.5s）每帧采样——svg 加载/布局完成后
-        // 立即注入（曾 30 帧节流：首帧 fallback 不注入 → 锚点停在全屏
-        // ANCHORS——小屏加载首帧错位）；之后恢复 30 帧节流
-        if self.logo_tick % 30 == 0 || self.logo_tick < 90 {
-            // 锚点注入已删（用户钦定 2026-08-06：小窗不做了——锚点固定
-            // 大屏 ANCHORS；活动圆采样保留——球巡航仍围绕 logo）
-            self.logo_bounds = self.sample_logo_bounds().0;
-        }
-        self.state.set_bounds(self.logo_bounds);
-        // 圆中心显著变化（首帧 fallback → 布局完成后的真圆）→ 重建链——
-        // ⚠️ 阈值 0.1 曾放过 fallback→真圆（差 0.074 < 0.1）：首帧链按
-        // fallback 圆规划（围绕 (0.5,0.42)——logo 实际 0.4257）→ 球沿
-        // 错位链跑——用户"首帧闪过正确然后位置不对"（锚点对、链错）。
-        // 收紧到 0.02：fallback→真圆必 rebuild（球围绕真 logo 巡航）
-        if (self.logo_bounds.cx - self.last_bounds.cx).abs() > 0.02
-            || (self.logo_bounds.cy - self.last_bounds.cy).abs() > 0.02
-        {
-            self.state.rebuild_chains(self.logo_bounds);
-            self.last_bounds = self.logo_bounds;
-        }
+        // 固定窗口坐标系：无 DOM 采样（活动圆 = WINDOW_BOUNDS 常量）——
+        // 链在初始化/rebuild 时已按 WINDOW_BOUNDS 预生成，运行期零注入
         self.step(dt);
         self.render();
         for s in 0..3 {
@@ -243,74 +217,19 @@ impl BallsEngine {
         Vec2 { x: cur.x - prev.x, y: cur.y - prev.y }
     }
 
-    /// resize 重建：全新 State（State::new = 入场静立 + 链预生成 preplan——
-    /// 新 State 自带入场预生成 ensure_chain_to，无需额外标志）+
-    /// 立即重采样 logo 活动圈 + set_bounds——新链基于新尺寸的归一化活动圆规划。
-    /// 曾：resize 后旧链/旧圆混合 → 小球起始位置错乱
+    /// resize 重建：全新 State + 固定窗口坐标系活动圆注入（防御性保留——
+    /// 窗口固定坐标系下活动圆是常量，无采样、无阈值判断；检测到 resize
+    /// 仍重建 State 保证自洽）
     fn rebuild_on_resize(&mut self) {
         let anchors = ANCHORS.map(|(x, y)| Vec2 { x, y });
         self.state = State::new(anchors);
-        // 立即重采样活动圆（resize 显式触发——不等 30 帧节流）
-        self.logo_bounds = self.sample_logo_bounds().0;
-        // 锚点注入已删（小窗不做了——锚点固定大屏 ANCHORS）；活动圆保留
-        self.state.set_bounds(self.logo_bounds);
-        // 真圆注入后重建三球链（State::new 预生成用 fallback 圆——
-        // 与真圆错位——起始位置不对真凶）
-        self.state.rebuild_chains(self.logo_bounds);
-        self.last_bounds = self.logo_bounds;
+        self.state.set_bounds(WINDOW_BOUNDS);
+        self.state.rebuild_chains(WINDOW_BOUNDS);
         // 重置差分速度基准 + 拖尾历史——防重建后首帧「旧位置→新位置」大尾迹
         for s in 0..3 {
             self.prev_pos[s] = self.state.ball_pos(s, self.balls[s].offset);
             self.history[s].clear();
         }
-    }
-
-    /// 采样 .heart-logo 的实际位置 → 活动圈（圆心 = logo 中心，
-    /// 半径 = logo 中心到最近屏幕边缘——用户钦定；clamp 屏内仅防御
-    /// 历史 scale>1 放大用法，scale=1.0 时圆天然内切屏、不越界）
-    fn sample_logo_bounds(&self) -> (crate::sim::planner::CircleBounds, f64) {
-        use crate::sim::planner::CircleBounds;
-        let el = web_sys::window()
-            .and_then(|w| w.document())
-            .and_then(|d| d.query_selector(".heart-logo").ok().flatten())
-            .and_then(|e| e.dyn_into::<web_sys::HtmlElement>().ok());
-        if let Some(el) = el {
-            let rect = el.get_bounding_client_rect();
-            let cw = self.canvas.client_width() as f64;
-            let ch = self.canvas.client_height() as f64;
-            if cw > 0.0 && ch > 0.0 {
-                // 防御：logo 未布局（rect 全 0）或中心出界 → fallback——
-                // 曾 rect 全 0 → cx_ratio=0 → 反透视 cx 负（~-0.4）→
-                // 活动圆异常 → 链异常 → 球不见（用户反馈"球没回来"）
-                let cxr = (rect.left() + rect.width() / 2.0) / cw;
-                let cyr = (rect.top() + rect.height() / 2.0) / ch;
-                if !(0.0..=1.0).contains(&cxr) || !(0.0..=1.0).contains(&cyr) {
-                    return (CircleBounds::fallback(), 0.0);
-                }
-                let cx_ratio = (rect.left() + rect.width() / 2.0) / cw;
-                let cy = (rect.top() + rect.height() / 2.0) / ch;
-                // 反透视（嫌疑②修复）：screen_of 的 x 被 depth 压缩——
-                // 曾纯比例 cx 被当世界坐标 → 球渲染偏 logo 右 ~4% 视口宽
-                // （resize 拉宽更明显）。反透视：world_x = (ratio-0.5)/depth+0.5
-                let depth = 0.55 + 0.45 * cy; // depth_scale(cy)——y 线性
-                let cx = (cx_ratio - 0.5) / depth + 0.5;
-                // "最近屏幕边缘"（世界坐标）：x 边缘 = 反透视(0/1)；
-                // y 边缘 = 0/1（线性）
-                let x_l = 0.5 - 0.5 / depth;
-                let x_r = 0.5 + 0.5 / depth;
-                let edge_min = (cx - x_l).min(x_r - cx).min(cy).min(1.0 - cy);
-                let r = (edge_min * LOGO_BOUNDS_SCALE)
-                    .min(cx - x_l)
-                    .min(x_r - cx)
-                    .min(cy)
-                    .min(1.0 - cy);
-                return (
-                    CircleBounds { cx, cy, r: r.max(LOGO_BOUNDS_MIN_RADIUS) },
-                    rect.width(),
-                );
-            }
-        }
-        (CircleBounds::fallback(), 0.0)
     }
 
     fn step(&mut self, dt: f64) {

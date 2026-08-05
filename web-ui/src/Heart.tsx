@@ -101,9 +101,14 @@ export default function Heart() {
   return (
     <div class="heart-page fade-stagger">
       <div class="heart-bg" aria-hidden="true"></div>
-      <BallsCanvas />
-      <div class="heart-logo" aria-hidden="true">
-        <img class="heart-logo-img" src="logo.svg" alt="tayori" />
+      {/* 窗口舞台：logo + 三球 canvas 固定在同一容器（无边框窗口——设计尺寸 1280×720）——
+          容器整体由 JS transform 缩放（fit scale）/ 拖拽；顺序 logo 在下、canvas 在上
+          （canvas z-index 更高——球盖 logo）；LogoDebug 调试器拖整个窗口（类名契约） */}
+      <div class="stage-window">
+        <div class="heart-logo" aria-hidden="true">
+          <img class="heart-logo-img" src="logo.svg" alt="tayori" />
+        </div>
+        <BallsCanvas />
       </div>
       <main class="heart-main">
         <h1 class="heart-title">

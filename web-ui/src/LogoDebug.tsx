@@ -1,108 +1,117 @@
-// 调试中心（用户钦定：logo 与小球位置调整分开——双模式 + 独立复制）
-// - logo 模式：拖拽 logo + L 放大 / M 缩小 → 复制 left/top/width
+// 调试中心（用户钦定：窗口与小球位置调整分开——双模式 + 独立复制）
+// - 窗口模式：拖 .stage-window 的 translate + L 放大 / M 缩小 → 复制
+//   `window: translate(Xpx, Ypx) scale(S)`（元素 left:50% top:50% 居中定位——
+//   translate 是相对中心点的偏移，初始 0px 0px；.stage-window 不存在时 fallback .heart-logo）
 // - 小球模式：鼠标分别拖动三个灰色锚点标记到理想位置 → 复制 ANCHORS
-// 调试改动是运行时 inline / wasm 内存——刷新即恢复（参数复制给站主写死）
+// 调试改动是运行时 inline —— 刷新即恢复（参数复制给站主写死）
 import { useEffect, useState } from "preact/hooks";
 import {
   set_anchor_overlay,
-  set_ball_mode,
   get_anchors,
   anchor_screens,
   screen_to_world,
   set_anchor,
 } from "./wasm/isui_ren_heart.js";
 
-type Mode = "logo" | "balls";
+type Mode = "window" | "balls";
+
+// 解析元素当前 transform → { x, y, s }（px 平移 + 缩放；兼容 matrix / 函数列表）
+function readWinTransform(el: HTMLElement): { x: number; y: number; s: number } {
+  const raw = (el.style.transform || getComputedStyle(el).transform || "none").trim();
+  if (!raw || raw === "none") return { x: 0, y: 0, s: 1 };
+  const m = raw.match(/^matrix\(([^)]+)\)$/);
+  if (m) {
+    const p = m[1].split(",").map((v) => parseFloat(v));
+    return { x: p[4] || 0, y: p[5] || 0, s: Math.hypot(p[0], p[1]) || 1 };
+  }
+  let x = 0;
+  let y = 0;
+  let s = 1;
+  for (const f of raw.matchAll(/([a-z]+)\(([^)]*)\)/g)) {
+    const args = f[2].split(",").map((a) => a.trim());
+    const v0 = parseFloat(args[0]) || 0;
+    const v1 = parseFloat(args[1]) || 0;
+    if (f[1] === "translate") {
+      x += v0;
+      y += v1;
+    } else if (f[1] === "translateX") {
+      x += v0;
+    } else if (f[1] === "translateY") {
+      y += v0;
+    } else if (f[1] === "scale") {
+      s *= v0 || 1;
+    }
+  }
+  return { x, y, s };
+}
 
 export default function LogoDebug() {
   const [mode, setMode] = useState<Mode | null>(null); // null = 未调试
-  const [logoParams, setLogoParams] = useState({
-    left: "",
-    top: "",
-    width: "",
-    leftPx: "",
-    topPx: "",
-  });
+  const [winTrans, setWinTrans] = useState("translate(0px, 0px)");
+  const [winScale, setWinScale] = useState("scale(1.00)");
   const [ballText, setBallText] = useState("");
   const [copied, setCopied] = useState(false);
 
-  // ── logo 模式：拖拽 + L/M 缩放 ──
+  // ── 窗口模式：拖 .stage-window 的 translate + L/M 缩放（与 translate 合并写 transform）──
   useEffect(() => {
-    if (mode !== "logo") return;
-    const logo = document.querySelector<HTMLElement>(".heart-logo");
-    const logoImg = document.querySelector<HTMLElement>(".heart-logo-img");
-    if (!logo || !logoImg) return;
-    logo.classList.add("debug-grab");
-    set_anchor_overlay(true); // 涂层：灰色锚点标记
-    set_ball_mode(true); // 暂停锚点跟随——拖 logo 时小球不被拽着走（分离）
+    if (mode !== "window") return;
+    // 契约：目标 .stage-window；不存在（过渡期）则 fallback .heart-logo
+    const el =
+      document.querySelector<HTMLElement>(".stage-window") ??
+      document.querySelector<HTMLElement>(".heart-logo");
+    if (!el) return;
+    el.classList.add("debug-grab");
+    set_anchor_overlay(true); // 涂层：灰色锚点标记（调试时显示）
 
-    const cs = getComputedStyle(logo);
-    const imgRect = logoImg.getBoundingClientRect();
-    // left/top 双格式：百分比（写回 CSS 用）+ 像素（当前窗口参考）
-    const parent = logo.parentElement!;
-    const pctL =
-      logo.style.left ||
-      ((parseFloat(cs.left) / parent.clientWidth) * 100).toFixed(2) + "%";
-    const pctT =
-      logo.style.top ||
-      ((parseFloat(cs.top) / parent.clientHeight) * 100).toFixed(2) + "%";
-    setLogoParams({
-      left: pctL,
-      top: pctT,
-      width: Math.round(imgRect.width) + "px",
-      leftPx: Math.round(parseFloat(cs.left)) + "px",
-      topPx: Math.round(parseFloat(cs.top)) + "px",
-    });
+    const st = readWinTransform(el);
+    const apply = () => {
+      el.style.transform = `translate(${st.x.toFixed(0)}px, ${st.y.toFixed(0)}px) scale(${st.s.toFixed(2)})`;
+      setWinTrans(`translate(${st.x.toFixed(0)}px, ${st.y.toFixed(0)}px)`);
+      setWinScale(`scale(${st.s.toFixed(2)})`);
+    };
+    apply();
 
     let dragging = false;
     let sx = 0;
     let sy = 0;
-    let ol = 0;
-    let ot = 0;
+    let ox = 0;
+    let oy = 0;
     const onDown = (e: PointerEvent) => {
       dragging = true;
       sx = e.clientX;
       sy = e.clientY;
-      const r = logo.getBoundingClientRect();
-      ol = r.left;
-      ot = r.top;
-      logo.setPointerCapture?.(e.pointerId);
+      ox = st.x;
+      oy = st.y;
+      el.setPointerCapture?.(e.pointerId);
     };
     const onMove = (e: PointerEvent) => {
       if (!dragging) return;
-      const parent = logo.parentElement!;
-      const pw = parent.clientWidth;
-      const ph = parent.clientHeight;
-      const pctL = (((ol + (e.clientX - sx)) / pw) * 100).toFixed(2) + "%";
-      const pctT = (((ot + (e.clientY - sy)) / ph) * 100).toFixed(2) + "%";
-      logo.style.left = pctL;
-      logo.style.top = pctT;
-      setLogoParams((p) => ({ ...p, left: pctL, top: pctT }));
+      st.x = ox + (e.clientX - sx);
+      st.y = oy + (e.clientY - sy);
+      apply();
     };
     const onUp = () => {
       dragging = false;
     };
-    const resizeBy = (delta: number) => {
-      const cur = logoImg.getBoundingClientRect().width;
-      const next = Math.round(Math.max(60, Math.min(1200, cur + delta)));
-      logoImg.style.width = next + "px";
-      setLogoParams((p) => ({ ...p, width: next + "px" }));
-    };
     const onKey = (e: KeyboardEvent) => {
       const k = e.key.toLowerCase();
-      if (k === "l") resizeBy(24);
-      else if (k === "m") resizeBy(-24);
+      if (k === "l") {
+        st.s = Math.min(2.0, Math.max(0.3, st.s + 0.05)); // L 放大
+        apply();
+      } else if (k === "m") {
+        st.s = Math.min(2.0, Math.max(0.3, st.s - 0.05)); // M 缩小
+        apply();
+      }
     };
 
-    logo.addEventListener("pointerdown", onDown);
+    el.addEventListener("pointerdown", onDown);
     window.addEventListener("pointermove", onMove);
     window.addEventListener("pointerup", onUp);
     window.addEventListener("keydown", onKey);
     return () => {
       set_anchor_overlay(false);
-      set_ball_mode(false);
-      logo.classList.remove("debug-grab");
-      logo.removeEventListener("pointerdown", onDown);
+      el.classList.remove("debug-grab");
+      el.removeEventListener("pointerdown", onDown);
       window.removeEventListener("pointermove", onMove);
       window.removeEventListener("pointerup", onUp);
       window.removeEventListener("keydown", onKey);
@@ -115,7 +124,6 @@ export default function LogoDebug() {
     const canvas = document.querySelector<HTMLElement>("#balls-canvas");
     const host = canvas?.parentElement ?? document.body;
     if (!canvas) return;
-    set_ball_mode(true);
     set_anchor_overlay(false); // 标记用 DOM div（wasm 涂层关——避免双份）
 
     const cw = canvas.clientWidth;
@@ -170,7 +178,6 @@ export default function LogoDebug() {
     refreshText();
     return () => {
       marks.forEach((m) => m.remove());
-      set_ball_mode(false);
     };
   }, [mode]);
 
@@ -186,20 +193,24 @@ export default function LogoDebug() {
 
   if (mode === null) {
     return (
-      <button class="logo-debug-btn" onClick={() => setMode("logo")} title="调试 logo / 小球位置">
+      <button
+        class="logo-debug-btn"
+        onClick={() => setMode("window")}
+        title="调试窗口 / 小球位置"
+      >
         🔧 调试
       </button>
     );
   }
-  const logoText = `left: ${logoParams.left} (${logoParams.leftPx})\ntop: ${logoParams.top} (${logoParams.topPx})\nwidth: ${logoParams.width}`;
+  const winText = `window: ${winTrans} ${winScale}`;
   return (
     <div class="logo-debug-panel">
       <div class="logo-debug-modes">
         <button
-          class={"logo-debug-mode" + (mode === "logo" ? " active" : "")}
-          onClick={() => setMode("logo")}
+          class={"logo-debug-mode" + (mode === "window" ? " active" : "")}
+          onClick={() => setMode("window")}
         >
-          调 logo
+          调窗口
         </button>
         <button
           class={"logo-debug-mode" + (mode === "balls" ? " active" : "")}
@@ -208,16 +219,15 @@ export default function LogoDebug() {
           调小球
         </button>
       </div>
-      {mode === "logo" ? (
+      {mode === "window" ? (
         <>
-          <div class="logo-debug-hint">拖拽移动 · L 放大 / M 缩小</div>
+          <div class="logo-debug-hint">拖拽移动窗口 · L 放大 / M 缩小</div>
           <div class="logo-debug-params">
-            <span>L {logoParams.left} ({logoParams.leftPx})</span>
-            <span>T {logoParams.top} ({logoParams.topPx})</span>
-            <span>W {logoParams.width}</span>
+            <span>{winTrans}</span>
+            <span>{winScale}</span>
           </div>
-          <button class="logo-debug-copy" onClick={() => copy(logoText)}>
-            {copied ? "已复制 ✓" : "复制 logo 参数"}
+          <button class="logo-debug-copy" onClick={() => copy(winText)}>
+            {copied ? "已复制 ✓" : "复制窗口参数"}
           </button>
         </>
       ) : (

@@ -62,10 +62,40 @@ body {
 
 /* ---------- /heart ---------- */
 .heart-page {
-  position: relative;
+  position: relative; /* 窗口 absolute 居中的定位上下文 */
   min-height: 100vh;
   overflow: hidden;
   background: var(--surface);
+}
+
+/* ── 窗口舞台：logo + 三球 canvas 固定在同一容器（无边框窗口——设计尺寸 1280×720）──
+   fit 说明：JS 算 scale = min(视口宽/1280, 视口高/720)（fit 缩放）+ 拖拽偏移，
+   统一写 inline transform——CSS 只留居中锚点 + transform-origin + 层级；
+   居中：margin 负半宽/半高把窗口中心对准 left/top(50% = 屏幕中心)，
+   transform 不再需要 translate(-50%,-50%)，全部让给 scale/拖拽（transform-origin:center
+   → scale 以窗口中心缩放）。
+   animation:none：排除 fade-stagger 的 fade-up——其 transform 动画 fill 会覆盖 JS
+   的 inline transform（动画优先级高于普通声明）——同时补回 opacity:1 保持可见 */
+.stage-window {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 1280px;
+  height: 720px;
+  margin: -360px 0 0 -640px; /* 中心对齐 left/top（屏幕中心） */
+  transform-origin: center;
+  z-index: 2; /* 页面内容（.heart-main z4）之上、调试按钮（z9999）之下 */
+  animation: none !important;
+  opacity: 1;
+}
+
+/* 调试器拖窗口用（LogoDebug 类名契约——.stage-window.debug-grab） */
+.stage-window.debug-grab {
+  cursor: grab;
+}
+
+.stage-window.debug-grab:active {
+  cursor: grabbing;
 }
 
 .heart-bg {
@@ -81,31 +111,33 @@ body {
 
 .balls-canvas {
   position: absolute;
-  inset: 0;
+  inset: 0; /* 相对 .stage-window 窗口（1280×720）——clientWidth/Height 固定舞台尺寸 */
   width: 100%;
   height: 100%;
-  z-index: 9999; /* 三球图层高于所有东西（站主钦点）——与 trail-toggle 同级最高 */
+  z-index: 3; /* 窗口内最高——球盖 logo（.heart-logo z2）；窗口整体层级由 .stage-window 承担 */
   pointer-events: none;
 }
 
 /* logo：全页唯一黑色（站主把去三球版 PNG 放 assets/logo.png 即可） */
 .heart-logo {
   position: absolute;
-  /* 焊死到卡片墙按钮中轴（用户钦定：文件夹图标任何宽度不偏离中轴——
-     以其为参考——logo 横坐标 = 中轴 - 12.07% 固定偏移——增宽/减宽不偏） */
+  /* 相对 .stage-window 窗口（1280×720 设计尺寸）——left/top 百分比以窗口为基准
+     （窗口舞台方案：锚点焊死在舞台坐标——随窗口整体缩放/拖拽，不随视口漂移）
+     焊死到卡片墙按钮中轴（用户钦定：文件夹图标任何宽度不偏离中轴） */
   left: 44.65%; /* 人眼校准 2026-08-06（调试器拖拽值） */
   top: 37.86%;
   /* 位置锚定层：只锁中心点（left/top + translate(-50%,-50%)）——
      与 logo 宽度完全解耦；图形偏心修正由内层 .heart-logo-img 单独承担 */
   transform: translate(-50%, -50%);
-  z-index: 2;
+  z-index: 2; /* 窗口内 logo 层——低于 canvas(z3)——球盖 logo */
   pointer-events: none;
 }
 
 .heart-logo-img {
   display: block;
-  /* 连续缩放（任意窗口平滑——vw/vh 连续函数；去掉断点覆盖后全档统一） */
-  width: min(70vw, 70vh, 196px); /* 上限 196px——人眼校准（调试器 L/M） */
+  /* 窗口舞台：窗口固定 1280 宽——logo 不再跟视口缩放，196px 直接定死
+     （人眼校准上限——调试器 L/M 调宽） */
+  width: 196px;
   height: auto;
   /* 图形偏心修正层：透明边已裁切（logo.png 为 trimmed 版）——
      图形原偏左 5px/偏下 9px（相对原画布 433x372）——transform % 相对

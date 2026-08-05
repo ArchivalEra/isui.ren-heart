@@ -176,27 +176,8 @@ pub const FOLLOW_DUR_MIN_MS: f64 = 5000.0;
 /// 跟随最长时长（ms）
 pub const FOLLOW_DUR_MAX_MS: f64 = 20000.0;
 
-// ── 无状态归一化向量法（Gemini 真经五版）──
-// 锚点跟随 logo 的公式：anchors[s] = C_curr + V_i × W_curr，其中
-// V_i = (ANCHORS_i − LOGO_DESIGN_CENTER) / LOGO_DESIGN_W 为常数向量
-// （State::new 算好——运行时注入当前采样的「中心 + 归一化宽」即生效，
-// 零校准状态、零首帧特殊、零幂等——每帧重算开销可忽略）。
-// 以下两常量 = 「推导值」：用户在【全屏】布局下实测校准时的 logo 状态。
-
-/// 设计基准 logo 归一化中心（推导值——全屏校准时的 logo 状态）：
-/// ⚠️ 采样的是 .heart-logo 层（translate(-50%,-50%) 后中心 = left/top
-/// 定位点 44.65%/37.86%——【不含】img 的偏心补偿 transform（父元素
-/// getBoundingClientRect 不含子 transform）——曾误用含补偿的视觉中心
-/// 39.29% → 全屏锚点偏 0.074 容器（任何窗口都不对——用户反馈根因）
-/// cx = (0.4465−0.5)/(0.55+0.45×0.3786)+0.5 ≈ 0.4257；cy = 0.3786
-pub const LOGO_DESIGN_CENTER: (f64, f64) = (0.4257, 0.3786);
-
-/// 设计基准 logo 归一化宽度（推导值——全屏校准时的 logo 状态）：
-/// 全屏 logo 宽 196px ÷ 容器宽 1904px ≈ 0.103
-pub const LOGO_DESIGN_W: f64 = 0.103;
-
-/// logo 三球锚点（世界坐标，站主实测给点；相对 LOGO_DESIGN_CENTER 的
-/// 偏移 = V_i×LOGO_DESIGN_W——set_logo_transform 让锚点跟 logo 走）
+/// logo 三球锚点（世界坐标，站主实测给点——固定：锚点恒等于本常量，
+/// 不再跟 logo 变换；调试拖球经 state.set_anchor 临时改）
 pub const ANCHORS: [(f64, f64); 3] = [
     (0.542, 0.382), // 粉（上）——人眼校准 2026-08-06 二次
     (0.480, 0.400), // 水蓝（左）

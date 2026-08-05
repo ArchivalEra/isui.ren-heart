@@ -93,17 +93,6 @@ pub fn set_anchor_overlay(on: bool) {
     });
 }
 
-/// 小球调试模式（暂停 logo 采样注入——拖球不被覆盖）
-#[cfg(target_arch = "wasm32")]
-#[wasm_bindgen::prelude::wasm_bindgen]
-pub fn set_ball_mode(on: bool) {
-    ENGINE.with(|e| {
-        if let Some(eng) = e.borrow_mut().as_mut() {
-            eng.set_ball_mode(on);
-        }
-    });
-}
-
 /// 锚点世界坐标（JS 复制参数）
 #[cfg(target_arch = "wasm32")]
 #[wasm_bindgen::prelude::wasm_bindgen]
