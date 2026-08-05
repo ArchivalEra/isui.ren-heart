@@ -3,6 +3,8 @@
 // 屏 1 动画窗口舞台（三球 + logo）+ 文件夹按钮；屏 2 卡片区（动画 freeze——翻页完成调 wasm）
 import { useEffect, useRef, useState } from "preact/hooks";
 import BallsCanvas from "./BallsCanvas";
+import CardWall from "./CardWall";
+import ScrollHint from "./ScrollHint";
 import LogoDebug from "./LogoDebug";
 import Typewriter from "./Typewriter";
 import * as wasm from "./wasm/isui_ren_heart.js";
@@ -271,7 +273,10 @@ export default function Heart() {
                 大卡网格（2 列自适应，纯白灰阶）
               - 卡片元素沿用 .wall-card 类名（白底细边框圆角大卡、无阴影）——
                 若 CardWall 改用别的类名，需同步 styles.css 的 .screen2-card-wall .wall-card */}
-          <div class="card-wall screen2-card-wall"></div>
+          {page === 1 && <ScrollHint onGoUp={() => go(0)} />}
+          <div class="card-wall screen2-card-wall">
+            <CardWall />
+          </div>
         </section>
       </div>
       {/* 窗口外控件：两屏共用（position: fixed） */}

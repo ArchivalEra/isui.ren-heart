@@ -833,3 +833,47 @@ body {
   background: rgba(140, 140, 145, 0.55);
   border-color: #777;
 }
+
+/* ── 屏 2 回程提示箭头（自研——纯白+灰阶——5s 周期出现闪一闪+跳动）── */
+.scroll-hint {
+  position: absolute;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid #E4E4E7;
+  background: #FFFFFF;
+  box-shadow: 0 2px 8px #0000000D;
+  color: #A1A1AA;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  padding: 0;
+}
+.scroll-hint.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+.scroll-hint-arrow {
+  display: block;
+  animation: hint-bounce 1.2s ease-in-out infinite;
+}
+.scroll-hint.show .scroll-hint-arrow {
+  animation: hint-flash 0.45s ease-out, hint-bounce 1.2s 0.45s ease-in-out infinite;
+}
+@keyframes hint-flash {
+  0%   { opacity: 0; transform: translateY(0); }
+  45%  { opacity: 1; }
+  70%  { opacity: 0.35; }
+  100% { opacity: 1; transform: translateY(0); }
+}
+@keyframes hint-bounce {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-7px); }
+}
