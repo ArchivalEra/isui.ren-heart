@@ -11,6 +11,25 @@
 // ═══════════════════════════════════════════════════════════════════
 use crate::config::profile::ACTIVE_PROFILE;
 
+// ═══════════════════════════════════════════════════════════════════
+// 【Gemini 可操作区·性格】三球灵魂差异化——每个孩子独立的运动性格
+// - curv_bias：模板曲率偏好（+ = 爱大弯绕圈 / - = 爱直路巡航 / 0 = 中立）
+// - speed_band：速度档钦定（Some(0)=慢 / Some(1)=巡航 / Some(2)=高速 /
+//   None=随机）——"跳跃爱好者"给 Some(2)
+// - follow_prob：跟随意愿（蓝绿想跟粉球玩的概率——每 5s 判定）
+// 改数值即可——测试 personality_bias_observable 校验差异可观测
+pub struct Personality {
+    pub name: &'static str,
+    pub curv_bias: f64,
+    pub speed_band: Option<usize>,
+    pub follow_prob: f64,
+}
+pub const PERSONALITIES: [Personality; 3] = [
+    Personality { name: "粉球·领航", curv_bias: 0.0, speed_band: None, follow_prob: 0.3 },
+    Personality { name: "蓝球·绕圈", curv_bias: 0.3, speed_band: None, follow_prob: 0.2 },
+    Personality { name: "绿球·巡航", curv_bias: -0.2, speed_band: Some(1), follow_prob: 0.4 },
+];
+
 pub const BALL_COLORS: [&str; 3] = ["#F09ABD", "#6EC6E6", "#7FC39F"];
 
 pub const BALL_RADIUS: f64 = 10.0;

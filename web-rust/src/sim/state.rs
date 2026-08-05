@@ -179,6 +179,7 @@ impl State {
         } else if restart {
             // Queueing 重启：粉球新链（旧仪式保留——重启巡航）
             let mut p = Player::new(self.anchors[0], random_dir());
+            p.set_personality(0);
             // bounds 由 engine 每帧 set_bounds 实时更新（此处 fallback 即可）
             p.ensure_chain_to(PREPLAN_SECONDS * WORLD_SPEED * 1.1);
             self.balls[0].player = p;
@@ -276,6 +277,7 @@ impl State {
                 if self.balls[s].phase_t >= QUEUE_DELAY_MIN_MS {
                     // 重启巡航：新链 + 新方向，贴锚点启动（位置无跳变）
                     let mut p = Player::new(self.anchors[s], random_dir());
+                    p.set_personality(s);
                     p.ensure_chain_to(PREPLAN_SECONDS * WORLD_SPEED * 1.1);
                     p.snap(self.anchors[s]);
                     self.balls[s].player = p;
@@ -358,7 +360,7 @@ impl State {
                         if check_t >= FOLLOW_CHECK_MS {
                             self.balls[s].check_t = 0.0;
                             let r = decide();
-                            if r < FOLLOW_PROB {
+                            if r < crate::config::params::PERSONALITIES[s].follow_prob {
                                 self.balls[s].mode = BallMode::FollowPink;
                                 self.balls[s].follow_t = 0.0;
                                 self.balls[s].follow_enter = self.balls[s].player.pos();

@@ -115,6 +115,8 @@ pub struct Player {
     state: BallState,
     /// 云中心跟随目标的 EMA 状态（时序滤波，套在目标输出后面）
     ema_target: Vec2,
+    /// 性格索引（params::PERSONALITIES——curv_bias/speed_band/follow_prob）
+    personality: usize,
     /// 回家模式：extend_home_chain 后置位——tick 不再补巡航链
     /// （曾继续补链：链尾被推远 → at_chain_end 永不触发 → 超时兜底先到
     /// → 球在回家半路被 snap 锚点 = 0.13-0.23 跳变）
@@ -160,6 +162,7 @@ impl Player {
                 vel: Vec2 { x: 0.0, y: 0.0 },
                 rate: WORLD_SPEED,
             },
+            personality: 0,
             home_mode: false,
             // EMA 状态保留：切回 CloudEma 时重新收敛（可接受）
             ema_target: anchor,
@@ -278,6 +281,11 @@ impl Player {
         }
     }
 
+    /// 设置性格（state.rs 构造时调用——Gemini 可操作区·性格）
+    pub fn set_personality(&mut self, idx: usize) {
+        self.personality = idx.min(crate::config::params::PERSONALITIES.len() - 1);
+    }
+
     /// 直接设置位置（回家/定住期间渲染同步——player.pos() 是渲染源）
     pub fn snap(&mut self, pos: Vec2) {
         self.state.pos = pos;
@@ -348,7 +356,13 @@ impl Player {
             }
             // 段生成全部委托 ChainBuilder（near_edge/mix/段长/target/bounds 兜底）
             let choice = ChainBuilder::plan_leg(
-                &LegContext { from, dir, prev_template: tail.template_idx },
+                &LegContext {
+                    from,
+                    dir,
+                    prev_template: tail.template_idx,
+                    curv_bias: crate::config::params::PERSONALITIES[self.personality].curv_bias,
+                    speed_band: crate::config::params::PERSONALITIES[self.personality].speed_band,
+                },
                 &self.bounds,
                 is_logo,
                 &mut rng,

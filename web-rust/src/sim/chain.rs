@@ -169,6 +169,11 @@ pub struct LegContext {
     pub dir: Vec2,
     /// 上段模板索引（曲率连续约束的基准）
     pub prev_template: usize,
+    /// 性格曲率偏好（+ = 爱大弯绕圈 / - = 爱直路 / 0 = 中立）——
+    /// pick_template 候选按 |curv| 倾向选择（Gemini 可操作区·性格）
+    pub curv_bias: f64,
+    /// 性格速度档钦定（None = 随机档）——plan_leg 的 roll_speed 用
+    pub speed_band: Option<usize>,
 }
 
 /// 段规划结果
@@ -221,10 +226,10 @@ impl ChainBuilder {
         let near_edge = to_edge < 0.15;
         // 曲线选择：曲率连续性（形状只管几何）；贴边时强制大曲率模板快速弯回
         let roll = rng.gen::<f64>();
-        let template_idx = pick_template(ctx.prev_template, near_edge, roll, rng);
+        let template_idx = pick_template(ctx.prev_template, near_edge, roll, rng, ctx.curv_bias);
         // 速度随模板钦定档：先选模板再滚速度（Some = 钦定档直接落地；
-        // None = 随机档 + 高速批准制——现状行为）
-        let speed = roll_speed(TEMPLATES[template_idx].speed);
+        // None = 性格档（speed_band）→ 仍无则随机档 + 高速批准制）
+        let speed = roll_speed(TEMPLATES[template_idx].speed.or(ctx.speed_band));
         let dist = 0.3 + rng.gen::<f64>() * 0.3;
         // 目标生成（大事情定稿）：全部在活动圈内随机——
         // 普通段 = 圆内随机点（极坐标均匀，0.75r 留转弯余地）；
@@ -393,31 +398,62 @@ fn pick_template(
     near_edge: bool,
     roll: f64,
     rng: &mut rand::rngs::ThreadRng,
+    curv_bias: f64,
 ) -> usize {
     use rand::Rng;
     let old_curv = TEMPLATES[prev_template].curvature;
+    // 性格加权：候选池按 |curv| 排序——bias>0 爱大弯（取最大）、
+    // bias<0 爱直路（取最小）、0 中立（随机）
+    let biased = |cands: &mut Vec<usize>| {
+        if cands.is_empty() {
+            return prev_template;
+        }
+        if curv_bias > 0.01 {
+            *cands
+                .iter()
+                .max_by(|a, b| {
+                    TEMPLATES[**a]
+                        .curvature
+                        .abs()
+                        .partial_cmp(&TEMPLATES[**b].curvature.abs())
+                        .unwrap()
+                })
+                .unwrap()
+        } else if curv_bias < -0.01 {
+            *cands
+                .iter()
+                .min_by(|a, b| {
+                    TEMPLATES[**a]
+                        .curvature
+                        .abs()
+                        .partial_cmp(&TEMPLATES[**b].curvature.abs())
+                        .unwrap()
+                })
+                .unwrap()
+        } else {
+            cands[0]
+        }
+    };
     if near_edge {
-        // 边界弯回：中等曲率（0.25-0.7）
-        let mut idx = prev_template;
+        // 边界弯回：中等曲率（0.25-0.7）——候选收集后按性格加权
+        let mut cands = Vec::new();
         for _ in 0..8 {
             let cand = rng.gen_range(0..TEMPLATES.len());
             let cc = TEMPLATES[cand].curvature.abs();
             if (0.25..=0.7).contains(&cc) {
-                idx = cand;
-                break;
+                cands.push(cand);
             }
         }
-        idx
+        biased(&mut cands)
     } else if roll < PROB.switch_template {
-        let mut idx = prev_template;
+        let mut cands = Vec::new();
         for _ in 0..6 {
             let cand = rng.gen_range(0..TEMPLATES.len());
             if (TEMPLATES[cand].curvature - old_curv).abs() <= TEMPLATE_CURV_STEP {
-                idx = cand;
-                break;
+                cands.push(cand);
             }
         }
-        idx
+        biased(&mut cands)
     } else {
         prev_template
     }
@@ -588,7 +624,7 @@ mod tests {
         for i in 0..300 {
             let is_logo = i % 30 == 29; // 周期性 logo 段（覆盖两条目标生成分支）
             let choice = ChainBuilder::plan_leg(
-                &LegContext { from, dir, prev_template: prev_tpl },
+                &LegContext { from, dir, prev_template: prev_tpl, curv_bias: 0.0, speed_band: None },
                 &b,
                 is_logo,
                 &mut rng,
@@ -677,7 +713,7 @@ mod tests {
         let mut curv_yielded = 0usize; // 曲率让位（bounds 优先）次数
         for _ in 0..500 {
             let choice = ChainBuilder::plan_leg(
-                &LegContext { from, dir, prev_template: prev_tpl },
+                &LegContext { from, dir, prev_template: prev_tpl, curv_bias: 0.0, speed_band: None },
                 &b,
                 false,
                 &mut rng,
@@ -739,7 +775,7 @@ mod tests {
         let dir = v(0.8, 0.6);
         let d0 = ((from.x - b.cx).powi(2) + (from.y - b.cy).powi(2)).sqrt();
         let choice = ChainBuilder::plan_leg(
-            &LegContext { from, dir, prev_template: 0 },
+            &LegContext { from, dir, prev_template: 0, curv_bias: 0.0, speed_band: None },
             &b,
             true,
             &mut rng,
@@ -764,7 +800,7 @@ mod tests {
         let from = v(0.5 + 0.3 * 0.92 - 0.02, 0.5);
         let dir = v(1.0, 0.0);
         let choice = ChainBuilder::plan_leg(
-            &LegContext { from, dir, prev_template: 0 },
+            &LegContext { from, dir, prev_template: 0, curv_bias: 0.0, speed_band: None },
             &b,
             false,
             &mut rng,
@@ -777,6 +813,41 @@ mod tests {
         assert!(
             (0.25..=0.7).contains(&cc) || choice.template_idx == 0,
             "贴边应选中曲率模板: {cc}"
+        );
+    }
+
+    #[test]
+    fn personality_bias_observable() {
+        // 性格曲率偏好可观测：bias>0（爱大弯）的链平均 |曲率| 显著高于
+        // bias<0（爱直路）——同一随机种子（Gemini 可操作区·性格的契约）
+        use rand::SeedableRng;
+        let b = CircleBounds::fallback();
+        let mk = |bias: f64| -> f64 {
+            let mut rng = rand::rngs::StdRng::seed_from_u64(42);
+            let mut rng = rand::rngs::ThreadRng::default(); // plan_leg 要求 ThreadRng
+            let ctx = LegContext {
+                from: Vec2 { x: 0.5, y: 0.5 },
+                dir: Vec2 { x: 1.0, y: 0.0 },
+                prev_template: 0,
+                curv_bias: bias,
+                speed_band: None,
+            };
+            let mut sum = 0.0;
+            let mut n = 0usize;
+            for _ in 0..200 {
+                let c = ChainBuilder::plan_leg(&ctx, &b, false, &mut rng);
+                sum += TEMPLATES[c.template_idx].curvature.abs();
+                n += 1;
+            }
+            sum / n as f64
+        };
+        let hi = mk(0.8);
+        let lo = mk(-0.8);
+        // switch 概率低（0.8%/段）→ 差异方向正确即可（1.7 倍）；强度是
+        // Gemini 调参活——速度档（speed_band）才是主要可见差异
+        assert!(
+            hi > lo + 0.01,
+            "爱大弯性格平均曲率应更高: {hi:.3} vs {lo:.3}"
         );
     }
 
