@@ -565,6 +565,12 @@ body {
   font-size: 11px;
 }
 
+.logo-debug-hint {
+  font-size: 10px;
+  color: #888;
+  user-select: none;
+}
+
 .logo-debug-params {
   display: flex;
   flex-direction: column;

@@ -52,25 +52,33 @@ export default function LogoDebug() {
       dragging = false;
     };
 
-    // ── 缩放（滚轮——向上放大/向下缩小）──
-    const onWheel = (e: WheelEvent) => {
-      e.preventDefault();
+    // ── 缩放（L 放大 / M 缩小——用户钦定：滚轮会带动页面滚动/球锚点
+    //   缩放歧义——改键位明确控制）──
+    const resizeBy = (delta: number) => {
       const cur = logo.getBoundingClientRect().width;
-      const next = Math.round(Math.max(60, Math.min(1200, cur - e.deltaY * 0.4)));
+      const next = Math.round(Math.max(60, Math.min(1200, cur + delta)));
       logo.style.width = next + "px";
       setParams((p) => ({ ...p, width: next + "px" }));
+    };
+    const onKey = (e: KeyboardEvent) => {
+      const k = e.key.toLowerCase();
+      if (k === "l") {
+        resizeBy(24); // 放大
+      } else if (k === "m") {
+        resizeBy(-24); // 缩小
+      }
     };
 
     logo.addEventListener("pointerdown", onDown);
     window.addEventListener("pointermove", onMove);
     window.addEventListener("pointerup", onUp);
-    logo.addEventListener("wheel", onWheel, { passive: false });
+    window.addEventListener("keydown", onKey);
     return () => {
       logo.classList.remove("debug-grab");
       logo.removeEventListener("pointerdown", onDown);
       window.removeEventListener("pointermove", onMove);
       window.removeEventListener("pointerup", onUp);
-      logo.removeEventListener("wheel", onWheel);
+      window.removeEventListener("keydown", onKey);
     };
   }, [debug]);
 
@@ -94,7 +102,8 @@ export default function LogoDebug() {
   }
   return (
     <div class="logo-debug-panel">
-      <div class="logo-debug-params" title="当前参数（拖拽移动 / 滚轮缩放）">
+      <div class="logo-debug-hint">拖拽移动 · L 放大 / M 缩小</div>
+      <div class="logo-debug-params" title="当前参数（拖拽移动 / L/M 缩放）">
         <span>L {params.left}</span>
         <span>T {params.top}</span>
         <span>W {params.width}</span>
