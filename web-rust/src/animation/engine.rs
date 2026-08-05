@@ -37,6 +37,7 @@ pub struct BallsEngine {
     last_cw: f64,
     last_ch: f64,
     last_dpr: f64,
+    last_bounds: crate::sim::planner::CircleBounds,
 }
 
 impl BallsEngine {
@@ -66,6 +67,7 @@ impl BallsEngine {
             last_cw: 0.0,
             last_ch: 0.0,
             last_dpr: 0.0,
+            last_bounds: crate::sim::planner::CircleBounds::fallback(),
         };
         engine.install_keyboard_shortcuts();
         engine
@@ -134,6 +136,15 @@ impl BallsEngine {
             self.logo_bounds = self.sample_logo_bounds();
         }
         self.state.set_bounds(self.logo_bounds);
+        // 圆中心显著变化（首帧 fallback → 布局完成后的真圆）→ 重建链——
+        // 曾只首帧 rebuild：logo 布局晚于首帧时链按 fallback 圆规划，
+        // 真圆生效后链错位（球沿错位链跑——不见/不动）
+        if (self.logo_bounds.cx - self.last_bounds.cx).abs() > 0.1
+            || (self.logo_bounds.cy - self.last_bounds.cy).abs() > 0.1
+        {
+            self.state.rebuild_chains(self.logo_bounds);
+            self.last_bounds = self.logo_bounds;
+        }
         self.step(dt);
         self.render();
         for s in 0..3 {
@@ -185,7 +196,8 @@ impl BallsEngine {
         self.state.set_bounds(self.logo_bounds);
         // 真圆注入后重建三球链（State::new 预生成用 fallback 圆——
         // 与真圆错位——起始位置不对真凶）
-        self.state.rebuild_chains();
+        self.state.rebuild_chains(self.logo_bounds);
+        self.last_bounds = self.logo_bounds;
         // 重置差分速度基准 + 拖尾历史——防重建后首帧「旧位置→新位置」大尾迹
         for s in 0..3 {
             self.prev_pos[s] = self.state.ball_pos(s, self.balls[s].offset);
@@ -207,6 +219,14 @@ impl BallsEngine {
             let cw = self.canvas.client_width() as f64;
             let ch = self.canvas.client_height() as f64;
             if cw > 0.0 && ch > 0.0 {
+                // 防御：logo 未布局（rect 全 0）或中心出界 → fallback——
+                // 曾 rect 全 0 → cx_ratio=0 → 反透视 cx 负（~-0.4）→
+                // 活动圆异常 → 链异常 → 球不见（用户反馈"球没回来"）
+                let cxr = (rect.left() + rect.width() / 2.0) / cw;
+                let cyr = (rect.top() + rect.height() / 2.0) / ch;
+                if !(0.0..=1.0).contains(&cxr) || !(0.0..=1.0).contains(&cyr) {
+                    return CircleBounds::fallback();
+                }
                 let cx_ratio = (rect.left() + rect.width() / 2.0) / cw;
                 let cy = (rect.top() + rect.height() / 2.0) / ch;
                 // 反透视（嫌疑②修复）：screen_of 的 x 被 depth 压缩——

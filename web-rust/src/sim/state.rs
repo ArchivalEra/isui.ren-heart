@@ -111,11 +111,19 @@ impl State {
         }
     }
 
-    /// 用当前 bounds 重建三球链（engine 首帧真圆注入后调用——曾预生成用
-    /// fallback 圆与真圆错位——起始位置不对真凶）
-    pub fn rebuild_chains(&mut self) {
-        for ball in self.balls.iter_mut() {
-            ball.player.rebuild_chain();
+    /// 用给定 bounds 重建三球链（engine 首帧真圆注入后调用——曾预生成用
+    /// fallback 圆与真圆错位——起始位置不对真凶）。
+    /// 重建 = 全新 Player（自带首段——曾 player.rebuild_chain 清链后
+    /// ensure_chain_to → 空 VecDeque back().expect panic → wasm 崩溃 →
+    /// rAF 停止 → 球永不绘制——用户"球没回来"真凶）
+    pub fn rebuild_chains(&mut self, bounds: CircleBounds) {
+        for (s, ball) in self.balls.iter_mut().enumerate() {
+            let mut p = Player::new(self.anchors[s], random_dir());
+            p.set_personality(s);
+            p.set_bounds(bounds);
+            p.ensure_chain_to(PREPLAN_SECONDS * WORLD_SPEED * 1.1);
+            p.snap(self.anchors[s]);
+            ball.player = p;
         }
     }
 
@@ -849,6 +857,28 @@ mod tests {
     // 注：home_sync_with_pink_native 曾存在——删（测试审查：回家计时
     // （粉球 Phase）静态可证与 profile 零交互；切全局 ACTIVE_IDX
     // 会与并行测试竞态（11/15 失败）——证明力低、污染高，删除）
+
+    #[test]
+    fn rebuild_chains_recovers() {
+        // panic 回归：rebuild_chains 曾 chain.clear() 后 ensure_chain_to →
+        // 空 VecDeque back().expect panic → wasm 崩溃 → 球永不绘制
+        let mut st = state();
+        let b = CircleBounds { cx: 0.5, cy: 0.42, r: 0.35 };
+        st.set_bounds(b);
+        st.rebuild_chains(b); // 曾在此 panic——重建 Player 自带首段
+        for s in 0..3 {
+            assert!(st.balls[s].player.chain_arc() > 1.0, "ball[{s}] 重建后链应非空");
+            let pos = st.ball_pos(s, 0.0);
+            let d = ((pos.x - st.anchors[s].x).powi(2) + (pos.y - st.anchors[s].y).powi(2)).sqrt();
+            assert!(d < 1e-6, "ball[{s}] 重建后应在锚点");
+        }
+        // 重建后正常巡航（不 panic）
+        let mut dec = seq_decide(usize::MAX);
+        fast_forward(&mut st, 2000.0, &mut dec);
+        for s in 0..3 {
+            assert!(st.balls[s].player.chain_arc() > 1.5, "ball[{s}] 重建后应正常推进");
+        }
+    }
 
     #[test]
     fn lifecycle_90s_no_teleport() {

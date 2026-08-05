@@ -91,7 +91,9 @@ body {
 /* logo：全页唯一黑色（站主把去三球版 PNG 放 assets/logo.png 即可） */
 .heart-logo {
   position: absolute;
-  left: 37.93%;
+  /* 焊死到卡片墙按钮中轴（用户钦定：文件夹图标任何宽度不偏离中轴——
+     以其为参考——logo 横坐标 = 中轴 - 12.07% 固定偏移——增宽/减宽不偏） */
+  left: calc(50% - 12.07%);
   top: 27.40%;
   transform: translate(-50%, -50%);
   z-index: 2;
