@@ -1,0 +1,26 @@
+name: test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Rust toolchain (wasm target)
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+
+      - name: cargo test（全量——父代理本地只跑快速单测，稳定性验证在此）
+        run: cd web-rust && CARGO_BUILD_JOBS=2 cargo test
+
+      - name: wasm check（动画核心编译目标）
+        run: cd web-rust && cargo check --target wasm32-unknown-unknown
+
+      - name: 稳定性复跑（×10——随机链生成测试的偶发在此暴露）
+        run: cd web-rust && for i in $(seq 1 10); do CARGO_BUILD_JOBS=2 cargo test --quiet || exit 1; done
