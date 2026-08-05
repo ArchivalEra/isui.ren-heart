@@ -191,19 +191,8 @@ impl BallsEngine {
             let (new_b, logo_w) = self.sample_logo_bounds();
             // 锚点跟随 logo（非 fallback 时——fallback (0.5,0.42) 是防御值，
             // 注入会扰动用户实测的锚点）
-            if (new_b.cx - 0.5).abs() > 1e-9 || (new_b.cy - 0.42).abs() > 1e-9 {
-                // 小球调试模式：暂停注入（拖球不被 set_logo_transform 覆盖）
-                if !self.ball_mode {
-                    // 无状态归一化向量法（Gemini 真经五版）：w = logo 归一化宽
-                    // = rect.width ÷ canvas 宽——State 内 anchors = c + V_i×w
-                    // （无校准状态——每帧注入即重算）
-                    let w = logo_w / cw;
-                    self.state.set_logo_transform(
-                        crate::sim::math::Vec2 { x: new_b.cx, y: new_b.cy },
-                        w,
-                    );
-                }
-            }
+            // 锚点注入已删（用户钦定 2026-08-06：小窗不做了——锚点固定
+            // 大屏 ANCHORS；活动圆采样保留——球巡航仍围绕 logo）
             self.logo_bounds = new_b;
         }
         self.state.set_bounds(self.logo_bounds);
@@ -270,17 +259,7 @@ impl BallsEngine {
         let cw = self.canvas.client_width() as f64;
         let (b, logo_w) = self.sample_logo_bounds();
         self.logo_bounds = b;
-        // 非 fallback 才注入（fallback (0.5,0.42) 是防御值——注入会扰动
-        // 用户实测锚点）；小球调试模式暂停注入（拖球不被覆盖）
-        if (b.cx - 0.5).abs() > 1e-9 || (b.cy - 0.42).abs() > 1e-9 {
-            if !self.ball_mode {
-                let w = logo_w / cw; // logo 归一化宽 = rect.width ÷ canvas 宽
-                self.state.set_logo_transform(
-                    crate::sim::math::Vec2 { x: b.cx, y: b.cy },
-                    w,
-                );
-            }
-        }
+        // 锚点注入已删（小窗不做了——锚点固定大屏 ANCHORS）；活动圆保留
         self.state.set_bounds(self.logo_bounds);
         // 真圆注入后重建三球链（State::new 预生成用 fallback 圆——
         // 与真圆错位——起始位置不对真凶）
