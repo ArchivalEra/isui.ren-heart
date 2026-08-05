@@ -474,21 +474,61 @@ impl Player {
         let tan = bezier_tangent(tail_last.from, tail_last.ctrl, tail_last.target, 1.0);
         let l = (tan.x * tan.x + tan.y * tan.y).sqrt().max(1e-9);
         let dir = Vec2 { x: tan.x / l, y: tan.y / l }; // 链尾切线——C1 连续
-        // 单段回家弧（曾双段：1.5-2.5 弧长 → 8-15s——超时兜底擦边触发 →
-        // 半路 snap 跳；单段弧长 ≈ dist×1.1 → 3-6s——快且连续）
-        let tpl = TEMPLATES
-            .iter()
-            .position(|x| (x.curvature - 0.40).abs() < 1e-9)
-            .unwrap_or(8);
-        let speed = roll_speed(Some(1)); // 巡航档回家——tune 平滑衔接当前速度（不顿不拖）
-        let mut pl = make_planned_leg(from, dir, tpl, anchor, speed);
-        // ctrl clamp 屏内（dir 朝屏外时防段中出屏——段尾 target 不受影响）
-        pl.legs[0].ctrl.x = pl.legs[0].ctrl.x.clamp(0.04, 0.96);
-        pl.legs[0].ctrl.y = pl.legs[0].ctrl.y.clamp(0.04, 0.96);
-        let a = pl.arc;
-        self.chain.push_back(clamp_dur_to_chain(pl, self.chain.back().unwrap().dur_ms));
+        // 三段渐进回家弧（最最后优化——感叹号根治）：
+        // 曾单段 0.40 曲率大弯——急转处拖尾弯折（感叹号）；且链尾段
+        // profile_speed 的 v_next=v_i（截断后无下一段）→ 高速段尾 1.3 直接
+        // 跳回家段 0.72（速度跳 0.58 → 拖尾间距突变）
+        // 现在：曲率 0.12→0.28→0.20（段间 |Δκ| ≤ 0.16 < 步长 0.2——拖尾
+        // 渐进转向）；速度 巡航→巡航→慢档（温和减速）；末尾显式 tune_tail
+        // 平滑链尾与回家段的速度衔接
+        let tpl_of = |curv: f64| -> usize {
+            TEMPLATES
+                .iter()
+                .position(|x| (x.curvature - curv).abs() < 1e-9)
+                .unwrap_or(8)
+        };
+        // 分段目标点：沿链尾切线渐进偏转逼近锚点（C1 继承 + 每段曲率渐增）
+        let p1 = Vec2 {
+            x: from.x + (anchor.x - from.x) * 0.33 + dir.x * (dist * 0.10),
+            y: from.y + (anchor.y - from.y) * 0.33 + dir.y * (dist * 0.10),
+        };
+        let p2 = Vec2 {
+            x: from.x + (anchor.x - from.x) * 0.66,
+            y: from.y + (anchor.y - from.y) * 0.66,
+        };
+        let seg_speed = roll_speed(Some(1)); // 巡航档（段 1/2——衔接当前速度）
+        // 段 1：低曲率（0.12 闲步）沿 dir 出发——拖尾开始缓慢转向
+        let mut pl1 = make_planned_leg(from, dir, tpl_of(0.12), p1, seg_speed);
+        pl1.legs[0].ctrl.x = pl1.legs[0].ctrl.x.clamp(0.04, 0.96);
+        pl1.legs[0].ctrl.y = pl1.legs[0].ctrl.y.clamp(0.04, 0.96);
+        self.chain.push_back(clamp_dur_to_chain(pl1, self.chain.back().unwrap().dur_ms));
+        // 段 2：中曲率（0.28 漪涟）——主弯
+        let last1 = self.chain.back().unwrap().legs[4];
+        let t1 = bezier_tangent(last1.from, last1.ctrl, last1.target, 1.0);
+        let l1 = (t1.x * t1.x + t1.y * t1.y).sqrt().max(1e-9);
+        let d1 = Vec2 { x: t1.x / l1, y: t1.y / l1 };
+        let mut pl2 = make_planned_leg(last1.target, d1, tpl_of(0.28), p2, seg_speed);
+        pl2.legs[0].ctrl.x = pl2.legs[0].ctrl.x.clamp(0.04, 0.96);
+        pl2.legs[0].ctrl.y = pl2.legs[0].ctrl.y.clamp(0.04, 0.96);
+        self.chain.push_back(clamp_dur_to_chain(pl2, self.chain.back().unwrap().dur_ms));
+        // 段 3：低曲率（0.20 拂风）精确命中锚点 + 慢档（到家前温和减速）
+        let last2 = self.chain.back().unwrap().legs[4];
+        let t2 = bezier_tangent(last2.from, last2.ctrl, last2.target, 1.0);
+        let l2 = (t2.x * t2.x + t2.y * t2.y).sqrt().max(1e-9);
+        let d2 = Vec2 { x: t2.x / l2, y: t2.y / l2 };
+        let slow = roll_speed(Some(0)); // 慢档——收尾减速
+        let mut pl3 = make_planned_leg(last2.target, d2, tpl_of(0.20), anchor, slow);
+        pl3.legs[0].ctrl.x = pl3.legs[0].ctrl.x.clamp(0.04, 0.96);
+        pl3.legs[0].ctrl.y = pl3.legs[0].ctrl.y.clamp(0.04, 0.96);
+        let a3 = pl3.arc;
+        self.chain.push_back(clamp_dur_to_chain(pl3, self.chain.back().unwrap().dur_ms));
+        // 显式 tune 链尾 ~20 段：链尾段（截断后 v_next=v_i——高速段尾 vs 回家段
+        // 的速度跳）被 savgol + SEG_V_DELTA 钳制平滑——段边界速度差 ~0.13
+        if crate::config::profile::ACTIVE_PROFILE.tune_speeds {
+            self.tune_tail(self.chain.len().min(20));
+        }
         self.home_mode = true; // 链尾已固定 = anchor——不再补链
-        a
+        a3
     }
 
     /// 是否已到家。home_mode 下用位置判据（球实际到链尾附近——s_lead 判据
@@ -673,6 +713,57 @@ mod tests {
             let d = ((near.x - q.x).powi(2) + (near.y - q.y).powi(2)).sqrt();
             assert!(d < 0.1, "最近弧长定位：链上点与点距离 {d:.4} 应 < 0.1");
         }
+    }
+
+    #[test]
+    fn home_chain_progressive_and_smooth() {
+        // 三段渐进回家：段间曲率差 ≤ 0.2（拖尾渐进转向——无感叹号）；
+        // 段边界速度差 ≤ SEG_V_DELTA（tune 平滑——高速段尾不跳变）
+        let anchor = Vec2 { x: 0.3, y: 0.7 };
+        let mut p = Player::new(Vec2 { x: 0.6, y: 0.4 }, Vec2 { x: 0.8, y: 0.6 });
+        for _ in 0..120 {
+            p.tick(16.7, None);
+        }
+        p.extend_home_chain(anchor);
+        // 链尾三段的曲率（模板曲率）
+        let len = p.chain.len();
+        let k: Vec<f64> = (len.saturating_sub(3)..len)
+            .map(|i| TEMPLATES[p.chain[i].template_idx].curvature)
+            .collect();
+        assert_eq!(k.len(), 3, "回家应有三段");
+        for w in k.windows(2) {
+            assert!(
+                (w[1] - w[0]).abs() <= 0.2,
+                "回家段间曲率差应 ≤ 0.2（拖尾渐进转向）: {w:?}"
+            );
+        }
+        // 段边界速度差（speed 字段——tune 后）
+        let s: Vec<f64> = (len.saturating_sub(3)..len)
+            .map(|i| p.chain[i].speed)
+            .collect();
+        for w in s.windows(2) {
+            assert!(
+                (w[1] - w[0]).abs() <= 0.6,
+                "回家段间速度差应 ≤ SEG_V_DELTA（温和减速）: {w:?}"
+            );
+        }
+        // 链尾精确命中锚点
+        let tail = p.chain.back().unwrap().legs[4];
+        assert!(
+            (tail.target.x - anchor.x).abs() < 1e-9 && (tail.target.y - anchor.y).abs() < 1e-9,
+            "链尾应精确 = 锚点"
+        );
+        // tick 到链尾 → 位置 = 锚点（位置判据到家——无跳变由 lifecycle 覆盖）
+        let mut guard = 0;
+        while !p.at_chain_end() && guard < 20000 {
+            p.tick(16.7, None);
+            guard += 1;
+        }
+        let pos = p.pos();
+        assert!(
+            (pos.x - anchor.x).powi(2) + (pos.y - anchor.y).powi(2) < 0.05,
+            "到家位置应 = 锚点附近: {pos:?}"
+        );
     }
 
     #[test]
