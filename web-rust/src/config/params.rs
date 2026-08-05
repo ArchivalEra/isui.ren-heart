@@ -40,6 +40,9 @@ pub const TRAIL_MAX_SEG: f64 = 0.12;
 /// 相邻段时长比上限：约束球速差异（「换顺序」过程太快 = dur 差异过大）
 /// 调小 → 换序更慢更平滑；调大 → 允许暴快（拖尾出师后高速韵味）
 pub const MAX_DUR_RATIO: f64 = 2.5;
+/// 相邻段速度倍率差上限（调速器钳制）：0.6 = 冲刺后两段内阶梯回落，
+/// 曾形同虚设（±5.7）→ 高速直跳低速 → spring 惯性回弹（冲刺反方向回退）
+pub const SEG_V_DELTA: f64 = 0.6;
 
 /// 规划时独立概率事件（网格判断已废弃——规划/执行架构下为纯负担）
 pub struct Prob {
@@ -89,7 +92,6 @@ pub const CURVE_PROFILE: crate::sim::planner::CurveProfile = crate::sim::planner
 /// EulerBlend 下混合段概率（make_blend_leg 保留为独立工具含测试）
 pub const BLEND_PROB: f64 = 0.2;
 /// logo 区域：每隔 LOGO_EVERY_ARC 弧长规划一个「logo 游走段」（区域规划回归）
-pub const LOGO_CENTER: (f64, f64) = (0.52, 0.42);
 pub const LOGO_RADIUS: f64 = 0.13;
 pub const LOGO_EVERY_ARC: f64 = 9.6; // ≈ 60s 巡航弧长
 /// 队形常量：三球法线分离量（不再属于模板）

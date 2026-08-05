@@ -6,6 +6,7 @@
 // - Savitzky–Golay 5 点 2 阶核：Y_j = (−3y_{j−2}+12y_{j−1}+17y_j+12y_{j+1}−3y_{j+2})/35
 //   低通平滑速度序列，保留趋势、削尖峰
 // - 加速度约束：相邻段速度差 |Δv| ≤ max_accel × 过渡时间（TOTG 的约束思想简化版）
+use crate::config::params::SEG_V_DELTA;
 use crate::sim::planner::PlannedLeg;
 
 /// 段速度序列（倍率 × WORLD_SPEED）——调速师傅的第一眼
@@ -33,26 +34,25 @@ pub fn savgol5(v: &[f64]) -> Vec<f64> {
     out
 }
 
-/// 加速度钳制：相邻段速度差不得超过 max_accel × 过渡半程（段时长折半）
-/// 逐段扫描 + 双向传播（左到右压减速，右到左压加速）——速度钝点消除
-pub fn clamp_accel(v: &[f64], max_accel: f64, world_speed: f64, dur_ms: &[f64]) -> Vec<f64> {
+/// 相邻段速度倍率差钳制（最终收尾：曾用 max_accel×t_trans/world_speed 换算，
+/// 允许 ±5.7 倍率差 = 形同虚设——高速档直接跳低速档 → spring 惯性回弹）
+/// 现在直接倍率域钳制：相邻段差 ≤ SEG_V_DELTA（0.6），双向传播
+pub fn clamp_accel(v: &[f64], seg_v_delta: f64) -> Vec<f64> {
     let n = v.len();
     if n < 2 {
         return v.to_vec();
     }
     let mut out = v.to_vec();
-    // 左→右：v[i+1] 不能比 v[i] 快太多（加速受限）
+    // 左→右：加速受限
     for i in 0..n - 1 {
-        let t_trans = (dur_ms[i].min(dur_ms[i + 1]) / 1000.0 * 0.5).max(0.05);
-        let v_lim = out[i] + max_accel * t_trans / world_speed;
+        let v_lim = out[i] + seg_v_delta;
         if out[i + 1] > v_lim {
             out[i + 1] = v_lim;
         }
     }
-    // 右→左：v[i] 不能比 v[i+1] 快太多（减速受限）
+    // 右→左：减速受限（冲刺后回落需要阶梯过渡，不骤降）
     for i in (0..n - 1).rev() {
-        let t_trans = (dur_ms[i].min(dur_ms[i + 1]) / 1000.0 * 0.5).max(0.05);
-        let v_lim = out[i + 1] + max_accel * t_trans / world_speed;
+        let v_lim = out[i + 1] + seg_v_delta;
         if out[i] > v_lim {
             out[i] = v_lim;
         }
@@ -70,14 +70,12 @@ pub fn clamp_accel(v: &[f64], max_accel: f64, world_speed: f64, dur_ms: &[f64]) 
 /// 返回 (新速度倍率, 新时长 ms)。时长 = 弧长 / 新速度。
 pub fn tune(
     chain: &[PlannedLeg],
-    max_accel: f64,
     world_speed: f64,
     do_smooth: bool,
 ) -> (Vec<f64>, Vec<f64>) {
     let v = raw_speeds(chain);
-    let dur: Vec<f64> = chain.iter().map(|pl| pl.dur_ms).collect();
     let mut tuned = if do_smooth { savgol5(&v) } else { v };
-    tuned = clamp_accel(&tuned, max_accel, world_speed, &dur);
+    tuned = clamp_accel(&tuned, SEG_V_DELTA);
     let new_dur: Vec<f64> = chain
         .iter()
         .zip(tuned.iter())
@@ -110,19 +108,18 @@ mod tests {
 
     #[test]
     fn clamp_accel_bounds_adjacent_diff() {
-        // 速度倍率差 1.0（极大钝点）→ 钳制
+        // 速度倍率差 1.0（极大钝点）→ 钳制到 ≤ SEG_V_DELTA
         let v = vec![0.6, 0.6, 1.6, 0.6, 0.6];
-        let dur = vec![1000.0, 1000.0, 1000.0, 1000.0, 1000.0];
-        let out = clamp_accel(&v, 1.2, 0.22, &dur);
-        let t_trans = 0.5;
-        let lim = 1.2 * t_trans / 0.22;
+        let out = clamp_accel(&v, 0.6);
         for i in 0..4 {
             assert!(
-                (out[i + 1] - out[i]).abs() <= lim + 1e-9,
-                "相邻差应 ≤ {lim:.3}，实际 {}",
+                (out[i + 1] - out[i]).abs() <= 0.6 + 1e-9,
+                "相邻差应 ≤ 0.6，实际 {}",
                 (out[i + 1] - out[i]).abs()
             );
         }
+        // 冲刺后阶梯回落：1.6 → 1.0 → 0.6（不骤降）
+        assert!(out[2] >= 1.0, "高速段应阶梯回落: {}", out[2]);
     }
 
     #[test]

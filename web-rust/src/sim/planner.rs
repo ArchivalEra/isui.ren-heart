@@ -191,7 +191,8 @@ impl Player {
 
         let k = SPRING.stiffness;
         let c_damp = SPRING.damping * 2.0 * k.sqrt();
-        let rate_lerp = (dt_s / 0.12).min(1.0);
+        // 低通 0.35s：高速→低速段时球速平滑下降（曾 0.12s 骤降 → 惯性超前被 spring 拉回 = 冲刺反方向回弹）
+        let rate_lerp = (dt_s / 0.35).min(1.0);
 
         for s in 0..3 {
             // 球 i 弧长 = 队首 - 错开；未上链（<0）→ 目标 = 起点（链起点后方）
@@ -325,7 +326,7 @@ impl Player {
             let target = if chain_arc_now >= next_logo_arc {
                 next_logo_arc += LOGO_EVERY_ARC;
                 let ang = rng.gen::<f64>() * std::f64::consts::PI * 2.0;
-                let rr = rng.gen::<f64>().sqrt() * b.r * 0.18;
+                let rr = rng.gen::<f64>().sqrt() * b.r * LOGO_RADIUS;
                 Vec2 { x: b.cx + ang.cos() * rr, y: b.cy + ang.sin() * rr }
             } else {
                 // 保持前进方向为主（段长随机），但目标必须落在圆内——越界则随机转向圆内
@@ -395,7 +396,7 @@ impl Player {
             return;
         }
         let tail: Vec<PlannedLeg> = self.chain.iter().skip(start).cloned().collect();
-        let (speeds, durs) = crate::sim::velo::tune(&tail, MAX_ACCEL, WORLD_SPEED, true);
+        let (speeds, durs) = crate::sim::velo::tune(&tail, WORLD_SPEED, true);
         for (i, pl) in self.chain.iter_mut().skip(start).enumerate() {
             pl.speed = speeds[i];
             pl.dur_ms = durs[i];
