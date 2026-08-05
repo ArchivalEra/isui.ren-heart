@@ -14,16 +14,43 @@ pub enum Phase {
         player: Player,
         /// 静止构图位置（= 锚点）
         from: [Vec2; 3],
-        /// 每球思考期（粉 5s；蓝绿 5+1-3s）——各自决定啥时候跟上粉球
+        /// 每球思考期（开场粉 5s；重启粉 0s——Resting 已算停顿；蓝绿 1-3s）
         delays: [f64; 3],
     },
-    Formation { player: Player },
+    Formation {
+        /// 本轮巡航时长（到 HOME_EVERY_MS 触发回家）
+        t: f64,
+        player: Player,
+    },
+    /// 回家仪式：粉先回（t=0 出发），蓝绿错开 HOME_STAGGER_MS 依次回
+    Homeward {
+        t: f64,
+        /// 每球开始回家时刻（ms）
+        home_t: [f64; 3],
+        /// 每球回家弧线（None = 已在锚点附近，直接算到家）
+        homes: [Option<HomeLeg>; 3],
+        player: Player,
+    },
+    /// 全部到家后定住 HOME_REST_MS（粉球启动前的停顿）
+    Resting { t: f64, player: Player },
+}
+
+/// 单球回家弧线：当前位置 → 锚点（贝塞尔侧偏，非直线）
+#[derive(Clone, Copy)]
+pub struct HomeLeg {
+    pub from: Vec2,
+    pub ctrl: Vec2,
+    pub target: Vec2,
+    /// 0→1 推进（HOME_DURATION_MS 内到家）
+    pub s: f64,
 }
 
 pub struct State {
     phase: Phase,
     /// 页面年龄（淡入用）
     age: f64,
+    /// 三球锚点（回家目标 / 重启构图位）
+    anchors: [Vec2; 3],
 }
 
 impl State {
@@ -46,6 +73,7 @@ impl State {
         State {
             phase: Phase::Queueing { t: 0.0, player, from: anchors, delays },
             age: 0.0,
+            anchors,
         }
     }
 
@@ -53,7 +81,10 @@ impl State {
     /// 更新活动圈边界（engine 实时采样 logo 位置后调用）
     pub fn set_bounds(&mut self, b: crate::sim::planner::CircleBounds) {
         match &mut self.phase {
-            Phase::Queueing { player, .. } | Phase::Formation { player } => {
+            Phase::Queueing { player, .. }
+            | Phase::Formation { player, .. }
+            | Phase::Homeward { player, .. }
+            | Phase::Resting { player, .. } => {
                 player.set_bounds(b);
             }
             _ => {}
@@ -70,17 +101,97 @@ impl State {
                 // 完成条件 = 最晚思考期 + 滑行期 + 余量
                 let max_delay = delays.iter().cloned().fold(0.0, f64::max);
                 if *t >= max_delay + QUEUE_TRANSIT_MS + 200.0 {
-                    // 过渡完成 → 永久编队巡航（player 直接转移，无跳变）
+                    // 过渡完成 → 编队巡航（player 直接转移，无跳变）
                     let player = std::mem::replace(
                         player,
                         Player::new(Vec2 { x: 0.5, y: 0.5 }, Vec2 { x: 1.0, y: 0.0 }),
                     );
-                    next = Some(Phase::Formation { player });
+                    next = Some(Phase::Formation { t: 0.0, player });
                 }
             }
-            Phase::Formation { player } => {
-                // 永久巡航：链无限增长，段级变化（曲线/速度/摆动）由 Player 内部驱动
+            Phase::Formation { t, player } => {
+                // 巡航：链无限增长，段级变化由 Player 内部驱动；
+                // 巡航满 HOME_EVERY_MS → 回家仪式（checkpoint）
+                *t += dt;
                 player.tick(dt);
+                if *t >= HOME_EVERY_MS {
+                    let mut homes = [None; 3];
+                    for s in 0..3 {
+                        let pos = player.world_pos(s, 0.0);
+                        let home = self.anchors[s];
+                        let dx = home.x - pos.x;
+                        let dy = home.y - pos.y;
+                        let dist = (dx * dx + dy * dy).sqrt();
+                        if dist > 0.03 {
+                            // 弧线回家：控制点 = 中点 + 法线侧偏（幅度 0.22×dist）
+                            let ctrl = Vec2 {
+                                x: (pos.x + home.x) * 0.5 + (-dy / dist) * dist * 0.22,
+                                y: (pos.y + home.y) * 0.5 + (dx / dist) * dist * 0.22,
+                            };
+                            let ctrl = Vec2 {
+                                x: ctrl.x.clamp(0.04, 0.96),
+                                y: ctrl.y.clamp(0.04, 0.96),
+                            };
+                            homes[s] = Some(HomeLeg { from: pos, ctrl, target: home, s: 0.0 });
+                        }
+                    }
+                    let player = std::mem::replace(
+                        player,
+                        Player::new(Vec2 { x: 0.5, y: 0.5 }, Vec2 { x: 1.0, y: 0.0 }),
+                    );
+                    next = Some(Phase::Homeward {
+                        t: 0.0,
+                        home_t: [0.0, HOME_STAGGER_MS, HOME_STAGGER_MS * 2.0],
+                        homes,
+                        player,
+                    });
+                }
+            }
+            Phase::Homeward { t, home_t, homes, player } => {
+                // 粉先回（home_t=0），蓝绿错开依次回；全部到家 → Resting
+                *t += dt;
+                let mut all_home = true;
+                for s in 0..3 {
+                    if let Some(leg) = &mut homes[s] {
+                        if leg.s < 1.0 {
+                            all_home = false;
+                            if *t >= home_t[s] {
+                                leg.s = (leg.s + dt / HOME_DURATION_MS).min(1.0);
+                            }
+                        }
+                    }
+                }
+                if all_home {
+                    let player = std::mem::replace(
+                        player,
+                        Player::new(Vec2 { x: 0.5, y: 0.5 }, Vec2 { x: 1.0, y: 0.0 }),
+                    );
+                    next = Some(Phase::Resting { t: 0.0, player });
+                }
+            }
+            Phase::Resting { t, player } => {
+                // 全部到家定住 HOME_REST_MS → 粉球启动重启巡航
+                // （重启 Queueing：粉 delay=0 立即启动，蓝绿 1-3s 思考跟上）
+                *t += dt;
+                if *t >= HOME_REST_MS {
+                    let player = std::mem::replace(
+                        player,
+                        Player::new(Vec2 { x: 0.5, y: 0.5 }, Vec2 { x: 1.0, y: 0.0 }),
+                    );
+                    let delays = [
+                        0.0,
+                        QUEUE_DELAY_MIN_MS
+                            + rand::random::<f64>() * (QUEUE_DELAY_MAX_MS - QUEUE_DELAY_MIN_MS),
+                        QUEUE_DELAY_MIN_MS
+                            + rand::random::<f64>() * (QUEUE_DELAY_MAX_MS - QUEUE_DELAY_MIN_MS),
+                    ];
+                    next = Some(Phase::Queueing {
+                        t: 0.0,
+                        player,
+                        from: self.anchors,
+                        delays,
+                    });
+                }
             }
         }
         if let Some(p) = next {
@@ -107,7 +218,19 @@ impl State {
                 };
                 crate::sim::math::quad_bezier(base, ctrl, slot, k)
             }
-            Phase::Formation { player } => player.world_pos(color_slot, offset),
+            Phase::Formation { player, .. } => player.world_pos(color_slot, offset),
+            Phase::Homeward { t, home_t, homes, .. } => {
+                // 未到出发时刻：停在回家起点（巡航位置）；回家中：弧线推进
+                match &homes[color_slot] {
+                    Some(leg) if *t >= home_t[color_slot] => {
+                        let k = smoothstep(leg.s);
+                        crate::sim::math::quad_bezier(leg.from, leg.ctrl, leg.target, k)
+                    }
+                    Some(leg) => leg.from,
+                    None => self.anchors[color_slot],
+                }
+            }
+            Phase::Resting { .. } => self.anchors[color_slot],
         }
     }
 
@@ -124,7 +247,7 @@ impl State {
     /// 渲染排列（Formation 由 Player 随机换序）
     pub fn order(&self) -> [usize; 3] {
         match &self.phase {
-            Phase::Formation { player } => player.order,
+            Phase::Formation { player, .. } => player.order,
             _ => [0, 1, 2],
         }
     }
@@ -204,8 +327,8 @@ mod tests {
     }
 
     #[test]
-    fn formation_never_ends() {
-        // Free 已删除：Formation 永久巡航（30s 后仍是 Formation，且球持续运动）
+    fn formation_cruises_until_homecoming() {
+        // 巡航期（30s 回家触发前）：Formation 持续运动；30s 后进入回家仪式
         let anchors = [Vec2 { x: 0.2, y: 0.2 }, Vec2 { x: 0.4, y: 0.4 }, Vec2 { x: 0.6, y: 0.6 }];
         let mut s = State::new(anchors);
         let total = (ENTRY_DELAY_MS + QUEUE_DELAY_MAX_MS + QUEUE_TRANSIT_MS + 500.0) / 16.7;
@@ -215,15 +338,86 @@ mod tests {
         assert!(matches!(s.phase, Phase::Formation { .. }));
         let last = s.ball_pos(0, 0.0);
         let mut moved = false;
-        for _ in 0..(30.0 * 1000.0 / 16.7) as usize {
+        // 巡航 25s（30s 触发前）：持续运动
+        for _ in 0..(25.0 * 1000.0 / 16.7) as usize {
             s.step(16.7, &mut || 0.5);
-            assert!(matches!(s.phase, Phase::Formation { .. }), "Formation 应永久");
+            assert!(matches!(s.phase, Phase::Formation { .. }), "25s 内应仍在巡航");
             let p = s.ball_pos(0, 0.0);
             if (p.x - last.x).abs() > 1e-6 || (p.y - last.y).abs() > 1e-6 {
                 moved = true;
             }
         }
         assert!(moved, "Formation 期间球应持续运动（无限轨迹）");
+        // 30s 后：进入回家仪式（Homeward 或更后阶段）
+        for _ in 0..(10.0 * 1000.0 / 16.7) as usize {
+            s.step(16.7, &mut || 0.5);
+        }
+        assert!(
+            !matches!(s.phase, Phase::Formation { .. }),
+            "30s 后应触发回家（checkpoint）"
+        );
+    }
+
+    #[test]
+    fn homecoming_pink_first_then_rest_then_restart() {
+        // 回家程序：粉先到锚点 → 蓝绿依次到 → 定住 HOME_REST_MS → 粉启动重启
+        let anchors = [Vec2 { x: 0.555, y: 0.355 }, Vec2 { x: 0.473, y: 0.379 }, Vec2 { x: 0.525, y: 0.471 }];
+        let mut s = State::new(anchors);
+        // 跑进巡航（开场 ~10s）
+        let total = (ENTRY_DELAY_MS + QUEUE_DELAY_MAX_MS + QUEUE_TRANSIT_MS + 500.0) / 16.7;
+        for _ in 0..total as usize + 10 {
+            s.step(16.7, &mut || 0.5);
+        }
+        // 巡航到 30s 触发回家
+        let mut seen_homeward = false;
+        let mut seen_resting = false;
+        let mut pink_home_t = f64::MAX;
+        let mut green_home_t = f64::MAX;
+        let mut t_sim = 0.0f64;
+        let mut home_t0 = f64::MAX; // 粉到家时刻
+        let mut home_t2 = f64::MAX; // 绿到家时刻
+        for _ in 0..(40.0 * 1000.0 / 16.7) as usize {
+            s.step(16.7, &mut || 0.5);
+            t_sim += 16.7;
+            match &s.phase {
+                Phase::Homeward { .. } => seen_homeward = true,
+                Phase::Resting { .. } => seen_resting = true,
+                _ => {}
+            }
+            // 粉/绿到家时刻：仅统计回家时段（t_sim > 25s——
+            // 开场构图期球本就在锚点，会误报）
+            if t_sim > 25000.0 {
+                let p0 = s.ball_pos(0, 0.0);
+                if (p0.x - anchors[0].x).abs() < 0.02 && (p0.y - anchors[0].y).abs() < 0.02 {
+                    if home_t0 == f64::MAX {
+                        home_t0 = t_sim;
+                    }
+                }
+                let p2 = s.ball_pos(2, 0.0);
+                if (p2.x - anchors[2].x).abs() < 0.02 && (p2.y - anchors[2].y).abs() < 0.02 {
+                    if home_t2 == f64::MAX {
+                        home_t2 = t_sim;
+                    }
+                }
+            }
+        }
+        assert!(seen_homeward, "30s 后应进入回家仪式");
+        assert!(seen_resting, "回家后应定住（Resting）");
+        assert!(
+            home_t0 < home_t2,
+            "粉球应先到家（{home_t0:.1}s vs 绿 {home_t2:.1}s）"
+        );
+        // 40s 时应在重启流程（Queueing：粉 delay=0 立即启动）
+        assert!(
+            matches!(s.phase, Phase::Queueing { .. } | Phase::Formation { .. }),
+            "回家+定住后应重启巡航，当前 {:?}",
+            std::mem::discriminant(&s.phase)
+        );
+        // 重启后粉球离开锚点（启动）
+        let p0 = s.ball_pos(0, 0.0);
+        let moving = (p0.x - anchors[0].x).abs() > 0.02 || (p0.y - anchors[0].y).abs() > 0.02;
+        assert!(moving, "重启后粉球应启动（离开锚点）");
+        let _ = (pink_home_t, green_home_t);
     }
 
     #[test]
