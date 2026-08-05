@@ -208,10 +208,12 @@ impl BallsEngine {
         }
         self.state.set_bounds(self.logo_bounds);
         // 圆中心显著变化（首帧 fallback → 布局完成后的真圆）→ 重建链——
-        // 曾只首帧 rebuild：logo 布局晚于首帧时链按 fallback 圆规划，
-        // 真圆生效后链错位（球沿错位链跑——不见/不动）
-        if (self.logo_bounds.cx - self.last_bounds.cx).abs() > 0.1
-            || (self.logo_bounds.cy - self.last_bounds.cy).abs() > 0.1
+        // ⚠️ 阈值 0.1 曾放过 fallback→真圆（差 0.074 < 0.1）：首帧链按
+        // fallback 圆规划（围绕 (0.5,0.42)——logo 实际 0.4257）→ 球沿
+        // 错位链跑——用户"首帧闪过正确然后位置不对"（锚点对、链错）。
+        // 收紧到 0.02：fallback→真圆必 rebuild（球围绕真 logo 巡航）
+        if (self.logo_bounds.cx - self.last_bounds.cx).abs() > 0.02
+            || (self.logo_bounds.cy - self.last_bounds.cy).abs() > 0.02
         {
             self.state.rebuild_chains(self.logo_bounds);
             self.last_bounds = self.logo_bounds;
