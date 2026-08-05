@@ -179,6 +179,16 @@ impl State {
         self.anchors
     }
 
+    /// 调试拖拽更新单个锚点（世界坐标——clamp 屏内；用户拖球到理想位置）
+    pub fn set_anchor(&mut self, s: usize, x: f64, y: f64) {
+        if s < 3 {
+            self.anchors[s] = Vec2 {
+                x: x.clamp(0.02, 0.98),
+                y: y.clamp(0.02, 0.98),
+            };
+        }
+    }
+
     /// 更新活动圈边界（engine 实时采样 logo 位置后调用——转发三球）
     pub fn set_bounds(&mut self, b: CircleBounds) {
         for ball in self.balls.iter_mut() {

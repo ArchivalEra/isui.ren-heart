@@ -608,3 +608,59 @@ body {
 .heart-logo.debug-grab:active {
   cursor: grabbing;
 }
+
+/* ── 调试中心：模式切换 + 小球可拖标记 ── */
+.logo-debug-modes {
+  display: flex;
+  gap: 6px;
+}
+
+.logo-debug-mode {
+  flex: 1;
+  padding: 4px 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: #fff;
+  color: var(--on-surface);
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.logo-debug-mode.active {
+  background: #eee;
+  border-color: #999;
+  font-weight: 600;
+}
+
+.logo-debug-pre {
+  margin: 4px 0;
+  padding: 6px 8px;
+  border: 1px solid #eee;
+  border-radius: 6px;
+  background: #fafafa;
+  font-family: ui-monospace, monospace;
+  font-size: 11px;
+  color: #555;
+  white-space: pre-wrap;
+  max-width: 220px;
+}
+
+/* 小球可拖标记（灰圈——canvas 之上最高层） */
+.ball-drag-mark {
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  margin: -14px 0 0 -14px; /* 中心对齐 */
+  border: 2px solid #aaa;
+  border-radius: 50%;
+  background: rgba(180, 180, 185, 0.35);
+  cursor: move;
+  touch-action: none;
+  z-index: 100000;
+  box-sizing: border-box;
+}
+
+.ball-drag-mark:hover {
+  background: rgba(140, 140, 145, 0.55);
+  border-color: #777;
+}

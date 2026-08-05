@@ -41,6 +41,8 @@ pub struct BallsEngine {
     calib_w: f64,
     /// 调试涂层：灰色锚点标记（用户钦定——调试时看小球起始位置，最上层）
     anchor_overlay: bool,
+    /// 小球调试模式：暂停 logo 采样注入（拖球不被 set_logo_transform 覆盖）
+    ball_mode: bool,
     last_bounds: crate::sim::planner::CircleBounds,
 }
 
@@ -73,6 +75,7 @@ impl BallsEngine {
             last_dpr: 0.0,
             calib_w: 0.0,
             anchor_overlay: false,
+            ball_mode: false,
             last_bounds: crate::sim::planner::CircleBounds::fallback(),
         };
         engine.install_keyboard_shortcuts();
@@ -81,9 +84,50 @@ impl BallsEngine {
 
     /// 切换拖尾风格（大拖尾 ↔ 小拖尾）——纯渲染层 mode 翻转，零逻辑副作用。
     /// wasm 导出（前端按钮）+ P 键热切换均复用本方法。
+    /// State 可变访问（lib.rs 调试导出用）
+    pub fn state_mut(&mut self) -> &mut crate::sim::state::State {
+        &mut self.state
+    }
+
     /// 调试涂层开关（JS 在调试模式激活/退出时调用）
     pub fn set_anchor_overlay(&mut self, on: bool) {
         self.anchor_overlay = on;
+    }
+
+    /// 小球调试模式：暂停 logo 采样注入（拖球不被 set_logo_transform 覆盖）
+    pub fn set_ball_mode(&mut self, on: bool) {
+        self.ball_mode = on;
+    }
+
+    /// 锚点世界坐标（JS 复制参数用）
+    pub fn anchors(&self) -> [f64; 6] {
+        let a = self.state.anchor_positions();
+        [
+            a[0].x, a[0].y, a[1].x, a[1].y, a[2].x, a[2].y,
+        ]
+    }
+
+    /// 锚点屏幕像素（JS 画可拖标记用——CSS px，与 render 同坐标系）
+    pub fn anchor_screens(&self, cw: f64, ch: f64) -> [f64; 6] {
+        let a = self.state.anchor_positions();
+        let mut out = [0.0f64; 6];
+        for (i, p) in a.iter().enumerate() {
+            let (sx, sy, _) = crate::sim::math::screen_of(*p, cw, ch);
+            out[i * 2] = sx;
+            out[i * 2 + 1] = sy;
+        }
+        out
+    }
+
+    /// 屏幕像素 → 世界坐标（JS 拖拽换算——与 engine 反透视同公式）
+    pub fn screen_to_world(&self, sx: f64, sy: f64, cw: f64, ch: f64) -> (f64, f64) {
+        if cw <= 0.0 || ch <= 0.0 {
+            return (0.5, 0.5);
+        }
+        let cy = (sy / ch).clamp(0.0, 1.0);
+        let depth = 0.55 + 0.45 * cy;
+        let wx = ((sx / cw - 0.5) / depth + 0.5).clamp(0.0, 1.0);
+        (wx, cy)
     }
 
     pub fn toggle_trail_style(&mut self) {
@@ -148,18 +192,21 @@ impl BallsEngine {
             // 锚点跟随 logo（非 fallback 时——fallback (0.5,0.42) 是防御值，
             // 注入会扰动用户实测的锚点）
             if (new_b.cx - 0.5).abs() > 1e-9 || (new_b.cy - 0.42).abs() > 1e-9 {
-                if self.calib_w <= 0.0 {
-                    self.calib_w = logo_w; // 首帧校准基准宽度
+                // 小球调试模式：暂停注入（拖球不被 set_logo_transform 覆盖）
+                if !self.ball_mode {
+                    if self.calib_w <= 0.0 {
+                        self.calib_w = logo_w; // 首帧校准基准宽度
+                    }
+                    let scale = if self.calib_w > 0.0 && logo_w > 0.0 {
+                        logo_w / self.calib_w
+                    } else {
+                        1.0
+                    };
+                    self.state.set_logo_transform(
+                        crate::sim::math::Vec2 { x: new_b.cx, y: new_b.cy },
+                        scale,
+                    );
                 }
-                let scale = if self.calib_w > 0.0 && logo_w > 0.0 {
-                    logo_w / self.calib_w
-                } else {
-                    1.0
-                };
-                self.state.set_logo_transform(
-                    crate::sim::math::Vec2 { x: new_b.cx, y: new_b.cy },
-                    scale,
-                );
             }
             self.logo_bounds = new_b;
         }

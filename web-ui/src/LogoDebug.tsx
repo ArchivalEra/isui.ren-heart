@@ -1,33 +1,42 @@
-// logo 调试器：拖拽移动 + 滚轮缩放 + 复制参数（人眼校准后把参数给站主 →
-// 站主写回 styles.css）。调试改动是运行时 inline style——刷新即恢复。
+// 调试中心（用户钦定：logo 与小球位置调整分开——双模式 + 独立复制）
+// - logo 模式：拖拽 logo + L 放大 / M 缩小 → 复制 left/top/width
+// - 小球模式：鼠标分别拖动三个灰色锚点标记到理想位置 → 复制 ANCHORS
+// 调试改动是运行时 inline / wasm 内存——刷新即恢复（参数复制给站主写死）
 import { useEffect, useState } from "preact/hooks";
-import { set_anchor_overlay } from "./wasm/isui_ren_heart.js";
+import {
+  set_anchor_overlay,
+  set_ball_mode,
+  get_anchors,
+  anchor_screens,
+  screen_to_world,
+  set_anchor,
+} from "./wasm/isui_ren_heart.js";
+
+type Mode = "logo" | "balls";
 
 export default function LogoDebug() {
-  const [debug, setDebug] = useState(false);
-  const [params, setParams] = useState({ left: "", top: "", width: "" });
+  const [mode, setMode] = useState<Mode | null>(null); // null = 未调试
+  const [logoParams, setLogoParams] = useState({ left: "", top: "", width: "" });
+  const [ballText, setBallText] = useState("");
   const [copied, setCopied] = useState(false);
 
+  // ── logo 模式：拖拽 + L/M 缩放 ──
   useEffect(() => {
-    if (!debug) return;
+    if (mode !== "logo") return;
     const logo = document.querySelector<HTMLElement>(".heart-logo");
     const logoImg = document.querySelector<HTMLElement>(".heart-logo-img");
     if (!logo || !logoImg) return;
     logo.classList.add("debug-grab");
-    set_anchor_overlay(true); // 调试涂层：灰色锚点标记（最上层）
+    set_anchor_overlay(true); // 涂层：灰色锚点标记
 
-    // 初始参数：left/top = div 计算样式（拖拽）；width = img 渲染像素（缩放——
-    // 曾改 div.width——img 有自己的 width 规则不跟随——SVG 纹丝不动）
     const cs = getComputedStyle(logo);
-    const rect = logo.getBoundingClientRect();
     const imgRect = logoImg.getBoundingClientRect();
-    setParams({
+    setLogoParams({
       left: cs.left,
       top: cs.top,
       width: Math.round(imgRect.width) + "px",
     });
 
-    // ── 拖拽（pointer capture——跟手）──
     let dragging = false;
     let sx = 0;
     let sy = 0;
@@ -51,28 +60,21 @@ export default function LogoDebug() {
       const pctT = (((ot + (e.clientY - sy)) / ph) * 100).toFixed(2) + "%";
       logo.style.left = pctL;
       logo.style.top = pctT;
-      setParams((p) => ({ ...p, left: pctL, top: pctT }));
+      setLogoParams((p) => ({ ...p, left: pctL, top: pctT }));
     };
     const onUp = () => {
       dragging = false;
     };
-
-    // ── 缩放（L 放大 / M 缩小——用户钦定）──
-    // 改 .heart-logo-img（SVG）宽度——div 宽度 auto 跟随内容 → engine 采样
-    // rect 变化 → 球锚点缩放同步（曾改 div.width——img 独立规则不跟随）
     const resizeBy = (delta: number) => {
       const cur = logoImg.getBoundingClientRect().width;
       const next = Math.round(Math.max(60, Math.min(1200, cur + delta)));
       logoImg.style.width = next + "px";
-      setParams((p) => ({ ...p, width: next + "px" }));
+      setLogoParams((p) => ({ ...p, width: next + "px" }));
     };
     const onKey = (e: KeyboardEvent) => {
       const k = e.key.toLowerCase();
-      if (k === "l") {
-        resizeBy(24); // 放大
-      } else if (k === "m") {
-        resizeBy(-24); // 缩小
-      }
+      if (k === "l") resizeBy(24);
+      else if (k === "m") resizeBy(-24);
     };
 
     logo.addEventListener("pointerdown", onDown);
@@ -87,43 +89,127 @@ export default function LogoDebug() {
       window.removeEventListener("pointerup", onUp);
       window.removeEventListener("keydown", onKey);
     };
-  }, [debug]);
+  }, [mode]);
 
-  const copy = async () => {
-    const text = `left: ${params.left}\ntop: ${params.top}\nwidth: ${params.width}`;
+  // ── 小球模式：三个可拖灰色标记（拖到理想位置 → 复制 ANCHORS）──
+  useEffect(() => {
+    if (mode !== "balls") return;
+    const canvas = document.querySelector<HTMLElement>("#balls-canvas");
+    const host = canvas?.parentElement ?? document.body;
+    if (!canvas) return;
+    set_ball_mode(true);
+    set_anchor_overlay(false); // 标记用 DOM div（wasm 涂层关——避免双份）
+
+    const cw = canvas.clientWidth;
+    const ch = canvas.clientHeight;
+    const screens = anchor_screens(cw, ch);
+    const marks: HTMLElement[] = [];
+    const COLORS = ["#e8e8ec", "#d8d8dc", "#c8c8cc"]; // 灰阶（球调试标记）
+    for (let s = 0; s < 3; s++) {
+      const d = document.createElement("div");
+      d.className = "ball-drag-mark";
+      d.style.left = (screens[s * 2] ?? 0) + "px";
+      d.style.top = (screens[s * 2 + 1] ?? 0) + "px";
+      d.style.borderColor = COLORS[s % 3];
+      host.appendChild(d);
+      marks.push(d);
+      let dragging = false;
+      let ox = 0;
+      let oy = 0;
+      d.addEventListener("pointerdown", (e) => {
+        dragging = true;
+        ox = e.clientX;
+        oy = e.clientY;
+        d.setPointerCapture?.(e.pointerId);
+      });
+      d.addEventListener("pointermove", (e) => {
+        if (!dragging) return;
+        const nx = e.clientX;
+        const ny = e.clientY;
+        const x = parseFloat(d.style.left) + (nx - ox);
+        const y = parseFloat(d.style.top) + (ny - oy);
+        d.style.left = x + "px";
+        d.style.top = y + "px";
+        ox = nx;
+        oy = ny;
+        const w = screen_to_world(x, y, cw, ch);
+        if (w.length === 2) set_anchor(s, w[0], w[1]);
+      });
+      d.addEventListener("pointerup", () => {
+        dragging = false;
+      });
+    }
+    const a = get_anchors();
+    if (a.length === 6) {
+      setBallText(
+        `ANCHORS: [\n  (${a[0].toFixed(3)}, ${a[1].toFixed(3)}),\n  (${a[2].toFixed(3)}, ${a[3].toFixed(3)}),\n  (${a[4].toFixed(3)}, ${a[5].toFixed(3)}),\n]`,
+      );
+    }
+    return () => {
+      marks.forEach((m) => m.remove());
+      set_ball_mode(false);
+    };
+  }, [mode]);
+
+  const copy = async (text: string) => {
     try {
       await navigator.clipboard.writeText(text);
       setCopied(true);
       setTimeout(() => setCopied(false), 1200);
     } catch {
-      // 剪贴板不可用（非 https）——用户手抄
+      // 剪贴板不可用（非 https）——手抄
     }
   };
 
-  if (!debug) {
+  if (mode === null) {
     return (
-      <button class="logo-debug-btn" onClick={() => setDebug(true)} title="拖拽/缩放 logo 并复制参数">
-        🔧 logo
+      <button class="logo-debug-btn" onClick={() => setMode("logo")} title="调试 logo / 小球位置">
+        🔧 调试
       </button>
     );
   }
+  const logoText = `left: ${logoParams.left}\ntop: ${logoParams.top}\nwidth: ${logoParams.width}`;
   return (
     <div class="logo-debug-panel">
-      <div class="logo-debug-hint">拖拽移动 · L 放大 / M 缩小</div>
-      <div class="logo-debug-params" title="当前参数（拖拽移动 / L/M 缩放）">
-        <span>L {params.left}</span>
-        <span>T {params.top}</span>
-        <span>W {params.width}</span>
+      <div class="logo-debug-modes">
+        <button
+          class={"logo-debug-mode" + (mode === "logo" ? " active" : "")}
+          onClick={() => setMode("logo")}
+        >
+          调 logo
+        </button>
+        <button
+          class={"logo-debug-mode" + (mode === "balls" ? " active" : "")}
+          onClick={() => setMode("balls")}
+        >
+          调小球
+        </button>
       </div>
-      <button class="logo-debug-copy" onClick={copy}>
-        {copied ? "已复制 ✓" : "复制参数"}
-      </button>
-      <button
-        class="logo-debug-exit"
-        onClick={() => {
-          setDebug(false);
-        }}
-      >
+      {mode === "logo" ? (
+        <>
+          <div class="logo-debug-hint">拖拽移动 · L 放大 / M 缩小</div>
+          <div class="logo-debug-params">
+            <span>L {logoParams.left}</span>
+            <span>T {logoParams.top}</span>
+            <span>W {logoParams.width}</span>
+          </div>
+          <button class="logo-debug-copy" onClick={() => copy(logoText)}>
+            {copied ? "已复制 ✓" : "复制 logo 参数"}
+          </button>
+        </>
+      ) : (
+        <>
+          <div class="logo-debug-hint">拖动灰色标记到理想位置</div>
+          <pre class="logo-debug-pre">{ballText}</pre>
+          <button
+            class="logo-debug-copy"
+            onClick={() => copy(`pub const ANCHORS: [(f64, f64); 3] = ${ballText}`)}
+          >
+            {copied ? "已复制 ✓" : "复制小球参数"}
+          </button>
+        </>
+      )}
+      <button class="logo-debug-exit" onClick={() => setMode(null)}>
         退出
       </button>
     </div>
