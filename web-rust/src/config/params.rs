@@ -120,7 +120,7 @@ pub const FADE_IN_MS: f64 = 800.0; // 锚点淡入时长
 pub const HOME_EVERY_MS: f64 = 30000.0;
 pub const HOME_STAGGER_MS: f64 = 150.0;
 pub const HOME_DURATION_MS: f64 = 1500.0;
-pub const HOME_REST_MS: f64 = 5000.0;
+pub const HOME_REST_MS: f64 = 7000.0;
 
 /// logo 三球锚点（世界坐标，站主实测给点）
 pub const ANCHORS: [(f64, f64); 3] = [

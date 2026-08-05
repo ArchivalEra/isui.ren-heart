@@ -123,18 +123,17 @@ impl State {
                         let dy = home.y - pos.y;
                         let dist = (dx * dx + dy * dy).sqrt();
                         if dist > 0.03 {
-                            // 弧线回家：控制点 = 中点 + 法线侧偏——
-                            // 弯高 = min(0.25, 0.45×dist)（长距离大弯、短距离小弯，
-                            // 告别视觉直线）；蓝绿无需等粉到家——出发即各回各家
-                            let off = 0.25f64.min(0.45 * dist);
-                            let ctrl = Vec2 {
-                                x: (pos.x + home.x) * 0.5 + (-dy / dist) * off,
-                                y: (pos.y + home.y) * 0.5 + (dx / dist) * off,
+                            // 拟合助手：回家弧线起点沿巡航切线伸出（C1 连续——
+                            // 回家路径与巡航曲线平滑接出，不是"顿一下换方向"），
+                            // 再加法线侧偏（弯度）弯向锚点
+                            let dir = player.lead_tangent(s);
+                            let off = 0.2f64.min(0.35 * dist);
+                            let mut ctrl = Vec2 {
+                                x: pos.x + dir.x * (dist * 0.4) + (-dir.y) * off,
+                                y: pos.y + dir.y * (dist * 0.4) + dir.x * off,
                             };
-                            let ctrl = Vec2 {
-                                x: ctrl.x.clamp(0.04, 0.96),
-                                y: ctrl.y.clamp(0.04, 0.96),
-                            };
+                            ctrl.x = ctrl.x.clamp(0.04, 0.96);
+                            ctrl.y = ctrl.y.clamp(0.04, 0.96);
                             homes[s] = Some(HomeLeg { from: pos, ctrl, target: home, s: 0.0 });
                         }
                     }

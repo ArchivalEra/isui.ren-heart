@@ -560,6 +560,26 @@ impl Player {
         st.pos
     }
 
+    /// 球 i 所在链位置的切线（归一化）——回家拟合助手：
+    /// 回家弧线起点方向 = 巡航切线，C1 连续平滑接出
+    pub fn lead_tangent(&self, color_slot: usize) -> Vec2 {
+        let s_i = self.s_lead - self.gaps[color_slot];
+        if s_i >= 0.0 {
+            let (_, tan, _, _) = chain_pos_and_tangent(&self.chain, s_i);
+            let l = (tan.x * tan.x + tan.y * tan.y).sqrt().max(1e-9);
+            Vec2 { x: tan.x / l, y: tan.y / l }
+        } else {
+            // 未上链（等待期）：朝链起点方向
+            let leg0 = &self.chain.front().unwrap().legs[0];
+            let d = Vec2 {
+                x: leg0.target.x - leg0.from.x,
+                y: leg0.target.y - leg0.from.y,
+            };
+            let l = (d.x * d.x + d.y * d.y).sqrt().max(1e-9);
+            Vec2 { x: d.x / l, y: d.y / l }
+        }
+    }
+
     #[allow(dead_code)] // 测试用
     pub fn chain_len(&self) -> usize {
         self.chain.len()
