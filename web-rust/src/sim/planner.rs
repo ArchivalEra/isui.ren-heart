@@ -6,6 +6,9 @@
 // - PD spring 追踪链上目标（丝滑：位置+速度双目标）
 use crate::config::params::*;
 use crate::config::templates::TEMPLATES;
+use crate::sim::chain::{
+    clamp_target_in_bounds, leg_in_bounds, make_planned_leg, roll_speed, ChainBuilder, LegContext,
+};
 
 /// 曲线生成 profile：以后新增曲线策略就加一个变体（如 EulerBlend 已备）
 /// 自研 = 单段贝塞尔（默认）；EulerBlend = 段内曲率渐变（make_blend_leg）
@@ -361,163 +364,28 @@ impl Player {
                 let l = (tan.x * tan.x + tan.y * tan.y).sqrt().max(1e-9);
                 Vec2 { x: tan.x / l, y: tan.y / l }
             };
-            let roll = rng.gen::<f64>();
-            // 段级运动参数：速度档（含高速批准制）
-            let speed = roll_speed();
             if rng.gen::<f64>() < PROB.switch_order {
                 let next = ORDERS[rng.gen_range(0..ORDERS.len())];
                 if next != self.order {
                     self.order = next;
                 }
             }
-            // 目标生成（大事情定稿）：全部在活动圈内随机——
-            // 普通段 = 圆内随机点（极坐标均匀，0.75r 留转弯余地）；
-            // logo 游走段 = 圆心附近小范围（LOGO_RADIUS×0.4，三球回标志旁）
+            // 区域规划：到 logo 弧长则规划 logo 游走段（三球回标志旁）
             let chain_arc_now = self.chain.iter().map(|x| x.arc).sum::<f64>();
-            let b = self.bounds;
-            // 到活动圆边界的距离（沿当前方向）——边界检测：贴边时强制大曲率弯回
-            let to_edge = {
-                let ocx = b.cx - from.x;
-                let ocy = b.cy - from.y;
-                let proj = ocx * dir.x + ocy * dir.y;
-                let disc = proj * proj - (ocx * ocx + ocy * ocy - b.r * b.r);
-                if disc > 0.0 {
-                    (proj + disc.sqrt()).max(0.0)
-                } else {
-                    f64::MAX
-                }
-            };
-            let near_edge = to_edge < 0.15;
-            // 曲线选择：曲率连续性（形状只管几何）；贴边时强制大曲率模板快速弯回
-            let old_curv = TEMPLATES[tail.template_idx].curvature;
-            let template_idx = if near_edge {
-                // 边界弯回：中等曲率（0.25-0.7）——大曲率 ctrl 偏移 > 段长时
-                // 段尾切线反转（180° 跳变 = 回弹之源）
-                let mut idx = tail.template_idx;
-                for _ in 0..8 {
-                    let cand = rng.gen_range(0..TEMPLATES.len());
-                    let cc = TEMPLATES[cand].curvature.abs();
-                    if (0.25..=0.7).contains(&cc) {
-                        idx = cand;
-                        break;
-                    }
-                }
-                idx
-            } else if roll < PROB.switch_template {
-                let mut idx = tail.template_idx;
-                for _ in 0..6 {
-                    let cand = rng.gen_range(0..TEMPLATES.len());
-                    if (TEMPLATES[cand].curvature - old_curv).abs() <= TEMPLATE_CURV_STEP {
-                        idx = cand;
-                        break;
-                    }
-                }
-                idx
-            } else {
-                tail.template_idx
-            };
-            let dist = 0.3 + rng.gen::<f64>() * 0.3;
-            let target = if chain_arc_now >= next_logo_arc {
-                // logo 游走段：方向 = 当前方向与 logo 圆心方向的混合（渐进转向，
-                // 多段累积到达 logo——不一步 180° 掉头 = U 形段 = 回弹之源）
+            let is_logo = chain_arc_now >= next_logo_arc;
+            if is_logo {
                 next_logo_arc += LOGO_EVERY_ARC;
-                let to_c = Vec2 { x: b.cx - from.x, y: b.cy - from.y };
-                let d = (to_c.x * to_c.x + to_c.y * to_c.y).sqrt().max(1e-9);
-                let mx = (dir.x * 0.6 + to_c.x / d * 0.4)
-                    .hypot(dir.y * 0.6 + to_c.y / d * 0.4)
-                    .max(1e-9);
-                let mix = Vec2 {
-                    x: (dir.x * 0.6 + to_c.x / d * 0.4) / mx,
-                    y: (dir.y * 0.6 + to_c.y / d * 0.4) / mx,
-                };
-                let ang = rng.gen::<f64>() * std::f64::consts::PI * 2.0;
-                let rr = rng.gen::<f64>().sqrt() * b.r * LOGO_RADIUS;
-                let logo_p = Vec2 {
-                    x: b.cx + ang.cos() * rr,
-                    y: b.cy + ang.sin() * rr,
-                };
-                // 目标 = mix 方向、logo 圆半径处（渐进接近 logo）
-                let dist_eff = dist.min((logo_p.x - from.x).hypot(logo_p.y - from.y)).max(0.2);
-                let tg = Vec2 {
-                    x: from.x + mix.x * dist_eff,
-                    y: from.y + mix.y * dist_eff,
-                };
-                // clamp 屏内（logo 段 mix 方向可能朝外——曾推出屏幕）
-                Vec2 { x: tg.x.clamp(0.05, 0.95), y: tg.y.clamp(0.05, 0.95) }
-            } else {
-                // 段长自适应：dist 取「随机段长」与「圆内可用空间」的较小者——
-                // 贴边时自然缩短，永不越界（越界跳点 = 方向突变 = 回弹之源）
-                let tg = if near_edge {
-                    // 边界弯回：方向 = 当前方向与圆心方向的混合——权重按越界深度
-                    // 自适应（圆内渐进 ~19°/段；越往外 to_c 权重越大，圆外纯朝圆心——
-                    // 否则链在圆外恶性循环，出屏）
-                    let to_c = Vec2 { x: b.cx - from.x, y: b.cy - from.y };
-                    let d = (to_c.x * to_c.x + to_c.y * to_c.y).sqrt().max(1e-9);
-                    let w = ((d - b.r * 0.8) / (b.r * 0.2).max(1e-9)).clamp(0.0, 1.0);
-                    let fwd = 0.65 * (1.0 - w);
-                    let tow = 0.35 + 0.65 * w;
-                    let mx = (dir.x * fwd + to_c.x / d * tow)
-                        .hypot(dir.y * fwd + to_c.y / d * tow)
-                        .max(1e-9);
-                    let mix = Vec2 {
-                        x: (dir.x * fwd + to_c.x / d * tow) / mx,
-                        y: (dir.y * fwd + to_c.y / d * tow) / mx,
-                    };
-                    let dist_eff = dist.min(to_edge * 0.7).max(0.12);
-                    Vec2 {
-                        x: from.x + mix.x * dist_eff,
-                        y: from.y + mix.y * dist_eff,
-                    }
-                } else {
-                    // 段长自适应：dist 取「随机段长」与「圆内可用空间」的较小者
-                    let dist_eff = dist.min(to_edge * 0.8).max(0.05);
-                    Vec2 {
-                        x: from.x + dir.x * dist_eff,
-                        y: from.y + dir.y * dist_eff,
-                    }
-                };
-                // 兜底（防御）：仍越界则沿 dir 截断到圆边界（方向连续）
-                let tg = if b.contains(tg) {
-                    tg
-                } else {
-                    let ray = to_edge.min(0.3).max(0.05);
-                    Vec2 {
-                        x: from.x + dir.x * ray,
-                        y: from.y + dir.y * ray,
-                    }
-                };
-                // 终极防御：目标 clamp 屏内（球永远不出屏幕）
-                Vec2 { x: tg.x.clamp(0.05, 0.95), y: tg.y.clamp(0.05, 0.95) }
-            };
-            // 曲线 profile：Native=自研单段；EulerBlend=段内曲率渐变（默认关闭）
-            let mut pl = if CURVE_PROFILE == CurveProfile::EulerBlend && rng.gen::<f64>() < BLEND_PROB {
-                let old_curv2 = TEMPLATES[tail.template_idx].curvature;
-                let pick = |rng: &mut rand::rngs::ThreadRng, prev: f64| {
-                    for _ in 0..6 {
-                        let c = rng.gen_range(0..TEMPLATES.len());
-                        if (TEMPLATES[c].curvature - prev).abs() <= TEMPLATE_CURV_STEP {
-                            return TEMPLATES[c].curvature;
-                        }
-                    }
-                    prev
-                };
-                let curv_b = pick(&mut rng, old_curv2);
-                let curv_c = pick(&mut rng, curv_b);
-                make_blend_leg(
-                    from, dir, [old_curv2, curv_b, curv_c], target, 0.3,
-                    template_idx, speed,
-                )
-            } else {
-                make_planned_leg(from, dir, template_idx, target, speed)
-            };
-            if !leg_in_bounds(&pl, &self.bounds) {
-                let safe = clamp_target_in_bounds(from, dir, template_idx, target, speed, &self.bounds);
-                pl = if rng.gen::<f64>() < BLEND_PROB {
-                    make_blend_leg(from, dir, [0.0, 0.0, 0.0], safe, 0.3, template_idx, speed)
-                } else {
-                    make_planned_leg(from, dir, template_idx, safe, speed)
-                };
             }
+            // 段生成全部委托 ChainBuilder（near_edge/mix/段长/target/bounds 兜底）
+            let choice = ChainBuilder::plan_leg(
+                &LegContext { from, dir, prev_template: tail.template_idx },
+                &self.bounds,
+                is_logo,
+                &mut rng,
+            );
+            let template_idx = choice.template_idx;
+            let speed = choice.speed;
+            let mut pl = choice.leg;
             if pl.arc < 0.05 {
                 // 死循环防护：零长度段（收缩失败）强制拉一段——朝屏中心方向，必在屏内
                 let dx = 0.5 - from.x;
@@ -625,148 +493,12 @@ pub fn chain_pos_and_tangent(
     (tail.target, Vec2 { x: 1.0, y: 0.0 }, chain.len() - 1, 1.0)
 }
 
-/// 段速度：随机档位；高速档（>1.2）40% 批准，不批准回落巡航档（重新生成新路径）
-fn roll_speed() -> f64 {
-    let idx = rand::random::<usize>() % SPEED_BANDS.len();
-    let (lo, hi) = SPEED_BANDS[idx];
-    let v = lo + rand::random::<f64>() * (hi - lo);
-    if v > SPEED_THRESHOLD && rand::random::<f64>() >= SPEED_APPROVE_PROB {
-        let (lo, hi) = SPEED_BANDS[1];
-        lo + rand::random::<f64>() * (hi - lo)
-    } else {
-        v
-    }
-}
-
-/// 造段（几何纯函数）：切线连续 + 段级 speed（wave 已彻底删除）
-pub fn make_planned_leg(
-    from: Vec2,
-    dir: Vec2,
-    template_idx: usize,
-    target: Vec2,
-    speed: f64,
-) -> PlannedLeg {
-    let dx = target.x - from.x;
-    let dy = target.y - from.y;
-    let dist = (dx * dx + dy * dy).sqrt().max(1e-6);
-    let template = &TEMPLATES[template_idx];
-    // 小圈圈滤波：段长低于 MIN_LEG_LEN 时曲率按比例衰减（短段配小弯，防哆嗦）
-    let curv_eff = template.curvature * (dist / MIN_LEG_LEN).min(1.0);
-    make_blend_leg(from, dir, [curv_eff, curv_eff, curv_eff], target, dist, template_idx, speed)
-}
-
-/// 混合模板段：一整段内曲率从 A 渐变到 B 再到 C（Euler spiral 离散近似）
-/// 5 子段：前 2 段 lerp(A→B)、第 3 段 B、后 2 段 lerp(B→C)——段内模板渐变，
-/// 子段间切线继承（C1 连续）+ 曲率阶梯采样（≈ 线性变化，无折角）
-pub fn make_blend_leg(
-    from: Vec2,
-    dir: Vec2,
-    curvs: [f64; 3],
-    target: Vec2,
-    dist: f64,
-    template_idx: usize,
-    speed: f64,
-) -> PlannedLeg {
-    let sub_len = dist / 5.0;
-    let mut legs = [Leg {
-        from: Vec2 { x: 0.0, y: 0.0 },
-        ctrl: Vec2 { x: 0.0, y: 0.0 },
-        target: Vec2 { x: 0.0, y: 0.0 },
-    }; 5];
-    let mut cur = from;
-    let mut d = dir;
-    let mut arc = 0.0;
-    for i in 0..5 {
-        // 子段曲率：A→B 前半，B 中段，B→C 后半（Euler spiral 采样）
-        let u = (i as f64 + 0.5) / 5.0;
-        let curv = if u < 0.5 {
-            curvs[0] + (curvs[1] - curvs[0]) * (u / 0.5)
-        } else {
-            curvs[1] + (curvs[2] - curvs[1]) * ((u - 0.5) / 0.5)
-        };
-        // 前 4 子段沿切线渐变；第 5 子段直接指向目标（保证终点精确命中）
-        // sub_target clamp 屏内：贝塞尔段尾（下子段 from）——曾漏 clamp，
-        // 链几何出屏（y=-0.021 规律出屏的根源）
-        let sub_target = if i == 4 {
-            target
-        } else {
-            let st = Vec2 {
-                x: cur.x + d.x * sub_len,
-                y: cur.y + d.y * sub_len,
-            };
-            Vec2 { x: st.x.clamp(0.04, 0.96), y: st.y.clamp(0.04, 0.96) }
-        };
-        let norm = Vec2 { x: -d.y, y: d.x };
-        let mut ctrl = Vec2 {
-            x: cur.x + d.x * (sub_len * 0.5) + norm.x * sub_len * curv * 0.35,
-            y: cur.y + d.y * (sub_len * 0.5) + norm.y * sub_len * curv * 0.35,
-        };
-        // ctrl clamp 屏内：贝塞尔最凸点（u≈0.5）——8 点采样曾漏检极值，
-        // 曲线中途出屏（第二个循环/边缘布局时球跑出屏幕）
-        ctrl.x = ctrl.x.clamp(0.04, 0.96);
-        ctrl.y = ctrl.y.clamp(0.04, 0.96);
-        legs[i] = Leg { from: cur, ctrl, target: sub_target };
-        arc += ((ctrl.x - cur.x).powi(2) + (ctrl.y - cur.y).powi(2)).sqrt()
-            + ((sub_target.x - ctrl.x).powi(2) + (sub_target.y - ctrl.y).powi(2)).sqrt();
-        // 下子段方向 = 本子段切线（C1 连续）
-        let tan = bezier_tangent(cur, ctrl, sub_target, 1.0);
-        let tl = (tan.x * tan.x + tan.y * tan.y).sqrt().max(1e-9);
-        d = Vec2 { x: tan.x / tl, y: tan.y / tl };
-        cur = sub_target;
-    }
-    let curv_eff = (curvs[0] + curvs[1] + curvs[2]) / 3.0;
-    let dur_ms = (arc / (WORLD_SPEED * speed) * 1000.0).max(200.0);
-    PlannedLeg {
-        legs,
-        template_idx,
-        speed,
-        curv_eff,
-        dur_ms,
-        arc,
-    }
-}
 
 fn dir_of(from: Vec2, to: Vec2) -> Vec2 {
     let dx = to.x - from.x;
     let dy = to.y - from.y;
     let l = (dx * dx + dy * dy).sqrt().max(1e-9);
     Vec2 { x: dx / l, y: dy / l }
-}
-
-pub fn leg_in_bounds(pl: &PlannedLeg, bounds: &CircleBounds) -> bool {
-    // 大事情定稿：段全程须在活动圈内（每个子段 8 点采样，含曲线中途）
-    for leg in pl.legs.iter() {
-        if !bounds.contains(leg.from) {
-            return false;
-        }
-        for i in 0..=8 {
-            let u = i as f64 / 8.0;
-            let p = quad_bezier(leg.from, leg.ctrl, leg.target, u);
-            if !bounds.contains(p) {
-                return false;
-            }
-        }
-    }
-    true
-}
-
-fn clamp_target_in_bounds(
-    from: Vec2,
-    dir: Vec2,
-    template_idx: usize,
-    mut target: Vec2,
-    speed: f64,
-    bounds: &CircleBounds,
-) -> Vec2 {
-    for _ in 0..24 {
-        let pl = make_planned_leg(from, dir, template_idx, target, speed);
-        if leg_in_bounds(&pl, bounds) {
-            return target;
-        }
-        // 朝圆心收缩（活动圈内）
-        target = bounds.toward_center(from, target, 0.82);
-    }
-    from
 }
 
 fn clamp_dur_to_chain(mut pl: PlannedLeg, tail_dur: f64) -> PlannedLeg {
@@ -783,6 +515,8 @@ fn clamp_dur_to_chain(mut pl: PlannedLeg, tail_dur: f64) -> PlannedLeg {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::config::templates::TEMPLATES;
+    use crate::sim::chain::make_blend_leg;
 
     #[test]
     fn circle_bounds_contains_and_random() {
