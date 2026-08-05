@@ -262,13 +262,11 @@ impl BallsEngine {
             self.canvas.set_width(bw as u32);
             self.canvas.set_height(bh as u32);
         }
-        // transform 独立更新（嫌疑③修复）：DPR 变化时也重设——
-        // 曾与 buffer resize 同 if：跨屏拖动时 round 后尺寸巧合不变
-        // → transform 不更新 → 整幅绘制错位
-        if (dpr - self.last_dpr).abs() > 1e-9 {
-            self.ctx.set_transform(dpr, 0.0, 0.0, dpr, 0.0, 0.0).unwrap();
-            self.last_dpr = dpr;
-        }
+        // transform 每帧设置（根治：canvas set_width/set_height 会重置
+        // transform——曾只在 dpr 变化时重设 → resize 后 transform 保持恒等
+        // → 绘制只覆盖 1/dpr 区域——球被裁掉看不见（用户反馈小球见不着））
+        self.ctx.set_transform(dpr, 0.0, 0.0, dpr, 0.0, 0.0).unwrap();
+        self.last_dpr = dpr;
         let (w, h) = (cw, ch);
         let fade = self.fade_alpha();
         self.ctx.clear_rect(0.0, 0.0, w, h);

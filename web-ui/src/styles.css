@@ -84,7 +84,7 @@ body {
   inset: 0;
   width: 100%;
   height: 100%;
-  z-index: 999; /* 三球图层高于所有东西（站主钦点） */
+  z-index: 9999; /* 三球图层高于所有东西（站主钦点）——与 trail-toggle 同级最高 */
   pointer-events: none;
 }
 
