@@ -1,4 +1,4 @@
-// /heart — 博客主页：tayori 视觉（灰阶白 + 三球队列动画 + 唯一黑色 logo + typed.js 打字机）
+// /heart — 博客主页：tayori 视觉（灰阶白 + 三球队列动画 + 唯一黑色 logo + 轻量自研打字机）
 import { useEffect, useRef, useState } from "preact/hooks";
 import Typed from "typed.js";
 import BallsCanvas from "./BallsCanvas";

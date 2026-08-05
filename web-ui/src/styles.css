@@ -137,6 +137,7 @@ body {
   margin: 0 auto;
   white-space: pre-wrap;
   word-break: break-word;
+  contain: content; /* 打字重排隔离——不影响外部布局（canvas 动画不丢帧） */
   transition: opacity 0.3s ease; /* 卡片墙展开时整块淡出（stop/start 保留进度） */
 }
 
