@@ -58,7 +58,8 @@ pub struct MotionProfile {
 }
 
 /// 简易去 EMA 版：Chain 跟随（直接贴链上点）+ 无 EMA（α=1.0）+ 无偏移
-/// （offset_scale=0）+ 无调速器（tune_speeds=false）——断尾求生对比用
+/// （offset_scale=0）——断尾求生对比用。tune_speeds=true（调速器不是 EMA——
+/// 保留速度平滑，对比差异纯粹是 EMA 有无）
 /// 手感参数与 CLOUD_PROFILE 相同（当前只有一套手感；引入第二套手感时从这里分化）
 #[allow(dead_code)]
 pub const NATIVE_PROFILE: MotionProfile = MotionProfile {
@@ -66,7 +67,7 @@ pub const NATIVE_PROFILE: MotionProfile = MotionProfile {
     follow: FollowStyle::Chain,
     offset_scale: 0.0,
     ema_alpha: 1.0, // 无滤波（一步到位 = 直接追目标）
-    tune_speeds: false,
+    tune_speeds: true,
     speed_bands: &[(0.5, 0.65), (0.72, 0.85), (1.1, 1.3)],
     spring_stiffness: 700.0,
     spring_damping: 1.0,
@@ -123,6 +124,7 @@ mod tests {
     use super::*;
     use crate::sim::cloud::ema_step;
     use crate::sim::math::Vec2;
+    use std::sync::atomic::Ordering;
 
     #[test]
     fn profiles_are_valid() {
@@ -165,7 +167,8 @@ mod tests {
         assert_ne!(NATIVE_PROFILE.follow, CLOUD_PROFILE.follow);
         assert_ne!(NATIVE_PROFILE.ema_alpha, CLOUD_PROFILE.ema_alpha);
         assert_ne!(NATIVE_PROFILE.offset_scale, CLOUD_PROFILE.offset_scale);
-        assert_ne!(NATIVE_PROFILE.tune_speeds, CLOUD_PROFILE.tune_speeds);
+        // tune_speeds 已统一 true（调速器非 EMA——对比纯粹化）
+        assert_eq!(NATIVE_PROFILE.tune_speeds, CLOUD_PROFILE.tune_speeds);
 
         // EMA 对拍：同一 raw 点序列，α 不同 → 滤波轨迹不同
         // NATIVE α=1.0（无滤波一步到位）vs CLOUD α=0.28（柔化滞后）

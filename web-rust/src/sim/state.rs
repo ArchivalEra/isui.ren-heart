@@ -819,6 +819,10 @@ mod tests {
         }
     }
 
+    // 注：home_sync_with_pink_native 曾存在——删（测试审查：回家计时
+    // （cycle_t/State.phase）静态可证与 profile 零交互；切全局 ACTIVE_IDX
+    // 会与并行测试竞态（11/15 失败）——证明力低、污染高，删除）
+
     #[test]
     fn lifecycle_90s_no_teleport() {
         // 三球 90s 生命周期：每帧位移 < 0.08（无闪现/跳变）
