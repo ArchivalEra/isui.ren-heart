@@ -132,7 +132,13 @@ impl BallsEngine {
             if cw > 0.0 && ch > 0.0 {
                 let cx = (rect.left() + rect.width() / 2.0) / cw;
                 let cy = (rect.top() + rect.height() / 2.0) / ch;
-                let r = (cx.min(1.0 - cx).min(cy).min(1.0 - cy)) * 1.25; // 活动圆放大——满屏跑
+                // 活动圆放大（满屏跑）但 clamp 屏内——放大后仍超屏会让
+                // 补段链出屏幕（第二个循环重启后没有小圆预渲染保护）
+                let r = ((cx.min(1.0 - cx).min(cy).min(1.0 - cy)) * 1.25)
+                    .min(cx)
+                    .min(1.0 - cx)
+                    .min(cy)
+                    .min(1.0 - cy);
                 return CircleBounds { cx, cy, r: r.max(0.08) };
             }
         }

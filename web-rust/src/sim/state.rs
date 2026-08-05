@@ -3,7 +3,7 @@
 // - 不依赖 web_sys/wasm
 use crate::config::params::*;
 use crate::sim::math::{smoothstep, Vec2};
-use crate::sim::planner::Player;
+use crate::sim::planner::{CircleBounds, Player};
 
 /// 动画阶段
 /// - Queueing：入场——三球静止构图，粉球 delay 后沿链开跑，蓝绿再等 1-3s 滑向槽位跟上
@@ -141,6 +141,7 @@ impl State {
                     );
                     next = Some(Phase::Homeward {
                         t: 0.0,
+                        // 粉先转身、蓝绿紧随（0.35s/0.7s 错开）——不是等粉到家再动
                         home_t: [0.0, HOME_STAGGER_MS, HOME_STAGGER_MS * 2.0],
                         homes,
                         player,
@@ -174,10 +175,13 @@ impl State {
                 // （重启 Queueing：粉 delay=0 立即启动，蓝绿 1-3s 思考跟上）
                 *t += dt;
                 if *t >= HOME_REST_MS {
-                    let player = std::mem::replace(
+                    let mut player = std::mem::replace(
                         player,
                         Player::new(Vec2 { x: 0.5, y: 0.5 }, Vec2 { x: 1.0, y: 0.0 }),
                     );
+                    // 重启预渲染：5s 定住期空闲——提前生成几分钟的链
+                    // （第二个循环无小圆预渲染保护，运行时补段会出屏）
+                    player.ensure_chain_to(PREPLAN_SECONDS * WORLD_SPEED * 1.1);
                     let delays = [
                         0.0,
                         QUEUE_DELAY_MIN_MS
@@ -473,3 +477,32 @@ mod tests {
         );
     }
 }
+
+    #[test]
+    fn two_cycles_stay_on_screen() {
+        // 两轮回家循环（75s：入场→巡航→回家→重启→再巡航）：
+        // 球必须始终在屏幕内（重启后无小圆预渲染保护——曾出屏）
+        let anchors = [Vec2 { x: 0.555, y: 0.355 }, Vec2 { x: 0.473, y: 0.379 }, Vec2 { x: 0.525, y: 0.471 }];
+        let mut s = State::new(anchors);
+        // 模拟 engine 实时采样的 logo 圆（clamp 屏内后的典型值）
+        s.set_bounds(CircleBounds { cx: 0.5, cy: 0.42, r: 0.42 });
+        let mut worst = (0.0f64, 0usize, 0.0f64);
+        for i in 0..(75.0 * 1000.0 / 16.7) as usize {
+            s.step(16.7, &mut || 0.5);
+            for slot in 0..3 {
+                let p = s.ball_pos(slot, 0.0);
+                let out = (p.x - 0.5).abs().max((p.y - 0.5).abs()) - 0.5;
+                if out > worst.0 {
+                    worst = (out, slot, i as f64 * 16.7 / 1000.0);
+                }
+                assert!(
+                    p.x >= -0.02 && p.x <= 1.02 && p.y >= -0.02 && p.y <= 1.02,
+                    "球出屏幕！slot{slot} t={:.1}s ({:.3},{:.3}) phase={:?}",
+                    i as f64 * 16.7 / 1000.0, p.x, p.y,
+                    std::mem::discriminant(&s.phase)
+                );
+            }
+        }
+        // 允许贴链收敛瞬间小越界（<0.1），但整体必须屏内
+        assert!(worst.0 < 0.1, "最大越屏 {:.3}（slot{} t={:.1}s）", worst.0, worst.1, worst.2);
+    }

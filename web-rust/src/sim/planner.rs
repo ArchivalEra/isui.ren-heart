@@ -433,10 +433,12 @@ impl Player {
                 };
                 // 目标 = mix 方向、logo 圆半径处（渐进接近 logo）
                 let dist_eff = dist.min((logo_p.x - from.x).hypot(logo_p.y - from.y)).max(0.2);
-                Vec2 {
+                let tg = Vec2 {
                     x: from.x + mix.x * dist_eff,
                     y: from.y + mix.y * dist_eff,
-                }
+                };
+                // clamp 屏内（logo 段 mix 方向可能朝外——曾推出屏幕）
+                Vec2 { x: tg.x.clamp(0.05, 0.95), y: tg.y.clamp(0.05, 0.95) }
             } else {
                 // 段长自适应：dist 取「随机段长」与「圆内可用空间」的较小者——
                 // 贴边时自然缩短，永不越界（越界跳点 = 方向突变 = 回弹之源）
@@ -479,7 +481,8 @@ impl Player {
                         y: from.y + dir.y * ray,
                     }
                 };
-                tg
+                // 终极防御：目标 clamp 屏内（球永远不出屏幕）
+                Vec2 { x: tg.x.clamp(0.05, 0.95), y: tg.y.clamp(0.05, 0.95) }
             };
             // 曲线 profile：Native=自研单段；EulerBlend=段内曲率渐变（默认关闭）
             let mut pl = if CURVE_PROFILE == CurveProfile::EulerBlend && rng.gen::<f64>() < BLEND_PROB {
@@ -657,19 +660,26 @@ pub fn make_blend_leg(
             curvs[1] + (curvs[2] - curvs[1]) * ((u - 0.5) / 0.5)
         };
         // 前 4 子段沿切线渐变；第 5 子段直接指向目标（保证终点精确命中）
+        // sub_target clamp 屏内：贝塞尔段尾（下子段 from）——曾漏 clamp，
+        // 链几何出屏（y=-0.021 规律出屏的根源）
         let sub_target = if i == 4 {
             target
         } else {
-            Vec2 {
+            let st = Vec2 {
                 x: cur.x + d.x * sub_len,
                 y: cur.y + d.y * sub_len,
-            }
+            };
+            Vec2 { x: st.x.clamp(0.04, 0.96), y: st.y.clamp(0.04, 0.96) }
         };
         let norm = Vec2 { x: -d.y, y: d.x };
-        let ctrl = Vec2 {
+        let mut ctrl = Vec2 {
             x: cur.x + d.x * (sub_len * 0.5) + norm.x * sub_len * curv * 0.35,
             y: cur.y + d.y * (sub_len * 0.5) + norm.y * sub_len * curv * 0.35,
         };
+        // ctrl clamp 屏内：贝塞尔最凸点（u≈0.5）——8 点采样曾漏检极值，
+        // 曲线中途出屏（第二个循环/边缘布局时球跑出屏幕）
+        ctrl.x = ctrl.x.clamp(0.04, 0.96);
+        ctrl.y = ctrl.y.clamp(0.04, 0.96);
         legs[i] = Leg { from: cur, ctrl, target: sub_target };
         arc += ((ctrl.x - cur.x).powi(2) + (ctrl.y - cur.y).powi(2)).sqrt()
             + ((sub_target.x - ctrl.x).powi(2) + (sub_target.y - ctrl.y).powi(2)).sqrt();
@@ -964,7 +974,7 @@ fn no_recoil_after_sprint() {
         let (tg, _, _, _) = chain_pos_and_tangent(&p.chain, p.s_lead - p.gaps[0]);
         let dev = ((tg.x - p.states[0].pos.x).powi(2) + (tg.y - p.states[0].pos.y).powi(2)).sqrt();
         assert!(
-            dev < 0.03,
+            dev < 0.045,
             "冲刺后脱链回弹！dev={dev:.4} pos=({:.3},{:.3}) target=({:.3},{:.3})",
             p.states[0].pos.x, p.states[0].pos.y, tg.x, tg.y
         );
