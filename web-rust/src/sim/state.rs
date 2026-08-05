@@ -139,14 +139,16 @@ impl State {
             self.calibrated = true;
             return;
         }
-        // 绝对语义（相对首帧基准）：锚点 = LOGO_REF + 偏移×缩放比 + (c - 基准中心)
-        // ——曾增量式（缩放时丢平移）：缩放重算从原始偏移出发，之前的平移丢失
+        // 绝对语义（相对首帧基准）：锚点 = 校准中心 + 偏移×缩放比 + (c - 基准中心)
+        // ——偏移基准 = 实际首帧采样中心（曾用 CSS 推导 LOGO_REF——与图形中心
+        // 有偏差——缩放时偏移基准错；trim + 补偿后图形中心 = 采样中心——用
+        // calib_center 精确）
         let ds = scale / self.calib_scale; // 缩放比（相对首帧）
         let dx = c.x - self.calib_center.x;
         let dy = c.y - self.calib_center.y;
         // 无幂等短路：曾 dx=0/ds=1 时 return——但输入=基准 ≠ 当前锚点=基准
         // （连续变换后回到基准值会误跳）——绝对公式每 30 帧重算开销可忽略
-        let (ref_x, ref_y) = crate::config::params::LOGO_REF;
+        let (ref_x, ref_y) = (self.calib_center.x, self.calib_center.y);
         for s in 0..3 {
             let (ax, ay) = crate::config::params::ANCHORS[s];
             self.anchors[s] = Vec2 {
@@ -1074,16 +1076,15 @@ mod tests {
             let r01o = ((orig[0].x - orig[1].x).powi(2) + (orig[0].y - orig[1].y).powi(2)).sqrt();
             assert!((r01 - r01o).abs() < 1e-9, "相对形状应恒定");
         }
-        // logo 缩放（真经精髓）→ 锚点偏移随缩放成比例（相对 LOGO_REF 构图）
+        // logo 缩放（真经精髓）→ 锚点偏移随缩放成比例（相对首帧校准中心构图）
         // 基准 scale=1.0；缩到 0.6 → 偏移 ×0.6（logo 小球收拢）
-        let (ref_x, ref_y) = crate::config::params::LOGO_REF;
         st.set_logo_transform(v(0.40, 0.26), 0.6);
         let scaled: [Vec2; 3] = [st.anchors[0], st.anchors[1], st.anchors[2]];
         for s in 0..3 {
             let (ax, ay) = crate::config::params::ANCHORS[s];
             let expect = v(
-                ref_x + (ax - ref_x) * 0.6 + dx,
-                ref_y + (ay - ref_y) * 0.6 + dy,
+                0.36 + (ax - 0.36) * 0.6 + dx,
+                0.30 + (ay - 0.30) * 0.6 + dy,
             );
             let d = ((scaled[s].x - expect.x).powi(2) + (scaled[s].y - expect.y).powi(2)).sqrt();
             assert!(d < 1e-9, "ball[{s}] 锚点偏移应随 logo 缩放: {d:.6}");

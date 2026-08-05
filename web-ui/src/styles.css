@@ -95,7 +95,10 @@ body {
      以其为参考——logo 横坐标 = 中轴 - 12.07% 固定偏移——增宽/减宽不偏） */
   left: calc(50% - 12.07%);
   top: 27.40%;
-  transform: translate(-50%, -50%);
+  /* 透明边已裁切（logo.png 为 trimmed 版）——补偿图形中心偏移：
+     图形原偏左 5px/偏下 9px（相对原画布 433x372）——transform % 相对
+     新画布（236x261）→ 补偿 2.119% / 3.448%——平移回原位置 */
+  transform: translate(calc(-50% - 2.119%), calc(-50% + 3.448%));
   z-index: 2;
   pointer-events: none;
 }

@@ -1,5 +1,6 @@
 // logo.png → logo.svg（potrace 矢量化——构建时工具，运行时零依赖）
 // 用法：npm run trace-logo（logo.png 更新后重转）
+// logo.png 应为已裁切透明边的版本（scripts/trim-logo.py 生成）
 import fs from 'node:fs';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
