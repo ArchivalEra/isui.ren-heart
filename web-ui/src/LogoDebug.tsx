@@ -11,17 +11,20 @@ export default function LogoDebug() {
   useEffect(() => {
     if (!debug) return;
     const logo = document.querySelector<HTMLElement>(".heart-logo");
-    if (!logo) return;
+    const logoImg = document.querySelector<HTMLElement>(".heart-logo-img");
+    if (!logo || !logoImg) return;
     logo.classList.add("debug-grab");
     set_anchor_overlay(true); // 调试涂层：灰色锚点标记（最上层）
 
-    // 初始参数：left/top = 计算样式（拖拽后为 inline 百分比）；width = 渲染像素
+    // 初始参数：left/top = div 计算样式（拖拽）；width = img 渲染像素（缩放——
+    // 曾改 div.width——img 有自己的 width 规则不跟随——SVG 纹丝不动）
     const cs = getComputedStyle(logo);
     const rect = logo.getBoundingClientRect();
+    const imgRect = logoImg.getBoundingClientRect();
     setParams({
       left: cs.left,
       top: cs.top,
-      width: Math.round(rect.width) + "px",
+      width: Math.round(imgRect.width) + "px",
     });
 
     // ── 拖拽（pointer capture——跟手）──
@@ -54,12 +57,13 @@ export default function LogoDebug() {
       dragging = false;
     };
 
-    // ── 缩放（L 放大 / M 缩小——用户钦定：滚轮会带动页面滚动/球锚点
-    //   缩放歧义——改键位明确控制）──
+    // ── 缩放（L 放大 / M 缩小——用户钦定）──
+    // 改 .heart-logo-img（SVG）宽度——div 宽度 auto 跟随内容 → engine 采样
+    // rect 变化 → 球锚点缩放同步（曾改 div.width——img 独立规则不跟随）
     const resizeBy = (delta: number) => {
-      const cur = logo.getBoundingClientRect().width;
+      const cur = logoImg.getBoundingClientRect().width;
       const next = Math.round(Math.max(60, Math.min(1200, cur + delta)));
-      logo.style.width = next + "px";
+      logoImg.style.width = next + "px";
       setParams((p) => ({ ...p, width: next + "px" }));
     };
     const onKey = (e: KeyboardEvent) => {
