@@ -77,13 +77,16 @@ pub struct State {
     anchors: [Vec2; 3],
     /// 粉球上一帧位置（跟随 tvel 的差分速度用）
     pink_prev: Vec2,
-    /// logo 实际中心（归一化——engine 每 30 帧采样注入；锚点跟随平移）
-    logo_center: Vec2,
+    /// 首帧校准的 logo 中心（归一化基准——锚点平移/缩放都相对它）
+    calib_center: Vec2,
     /// 首帧校准标志：第一次有效采样作为基准（锚点零平移——用户实测
     /// ANCHORS 即默认比例下的正确开场位置）；之后 logo 变化才跟随平移。
     /// 曾用 CSS 推导 LOGO_REF 作基准——与实际采样中心有偏差 →
     /// 首帧注入即平移错位（用户：默认比例开场位置不对）
     calibrated: bool,
+    /// 首帧校准的 logo 缩放因子（基准——锚点偏移缩放比 = 当前/基准）——
+    /// 真经精髓：logo 大球散开、logo 小球收拢——构图恒定
+    calib_scale: f64,
 }
 
 impl State {
@@ -117,32 +120,39 @@ impl State {
             age: 0.0,
             anchors,
             pink_prev: anchors[0],
-            logo_center: Vec2 { x: crate::config::params::LOGO_REF.0, y: crate::config::params::LOGO_REF.1 },
+            calib_center: Vec2 { x: crate::config::params::LOGO_REF.0, y: crate::config::params::LOGO_REF.1 },
             calibrated: false,
+            calib_scale: 1.0,
         }
     }
 
-    /// 锚点跟随 logo 实际中心（用户钦定：球按 logo 计算初始位置——logo
-    /// 缩放/移动时球跟着走，视觉焊死）。平移量 = logo 中心变化——三球
-    /// 相对形状（ANCHORS - LOGO_REF 偏移）恒定。
-    /// 首帧校准：第一次有效采样作为基准零平移（用户实测 ANCHORS 即默认
-    /// 比例的正确开场位置）——之后变化才跟随
-    pub fn set_logo_center(&mut self, c: Vec2) {
+    /// 锚点跟随 logo 实际中心 + 缩放（用户钦定：球按 logo 计算初始位置；
+    /// 真经精髓：锚点 = LOGO_REF + 偏移×缩放 + 中心平移——logo 大球散开、
+    /// 小球收拢，围绕 logo 的构图恒定）。首帧校准：第一次有效采样作为
+    /// 基准零平移（锚点 = 用户实测 ANCHORS——默认比例开场位置正确）
+    pub fn set_logo_transform(&mut self, c: Vec2, scale: f64) {
+        let scale = scale.clamp(0.5, 1.5); // 防御：极端缩放不出圆
         if !self.calibrated {
-            // 首帧校准：锚点不动（ANCHORS 原样）——基准 = 当前 logo 位置
-            self.logo_center = c;
+            // 首帧校准：锚点不动（ANCHORS 原样）——基准 = 当前 logo 位置/尺寸
+            self.calib_center = c;
+            self.calib_scale = scale;
             self.calibrated = true;
             return;
         }
-        let dx = c.x - self.logo_center.x;
-        let dy = c.y - self.logo_center.y;
-        if dx * dx + dy * dy < 1e-12 {
-            return;
-        }
-        self.logo_center = c;
+        // 绝对语义（相对首帧基准）：锚点 = LOGO_REF + 偏移×缩放比 + (c - 基准中心)
+        // ——曾增量式（缩放时丢平移）：缩放重算从原始偏移出发，之前的平移丢失
+        let ds = scale / self.calib_scale; // 缩放比（相对首帧）
+        let dx = c.x - self.calib_center.x;
+        let dy = c.y - self.calib_center.y;
+        // 无幂等短路：曾 dx=0/ds=1 时 return——但输入=基准 ≠ 当前锚点=基准
+        // （连续变换后回到基准值会误跳）——绝对公式每 30 帧重算开销可忽略
+        let (ref_x, ref_y) = crate::config::params::LOGO_REF;
         for s in 0..3 {
-            self.anchors[s].x += dx;
-            self.anchors[s].y += dy;
+            let (ax, ay) = crate::config::params::ANCHORS[s];
+            self.anchors[s] = Vec2 {
+                x: ref_x + (ax - ref_x) * ds + dx,
+                y: ref_y + (ay - ref_y) * ds + dy,
+            };
         }
     }
 
@@ -1039,8 +1049,8 @@ mod tests {
         // 开场位置正确）；之后 logo 变化才等量平移（相对形状恒定）
         let mut st = state();
         let orig: [Vec2; 3] = [st.anchors[0], st.anchors[1], st.anchors[2]];
-        // 首帧校准：注入任意中心 → 锚点零平移（基准 = 当前 logo 位置）
-        st.set_logo_center(v(0.36, 0.30));
+        // 首帧校准：注入任意中心/缩放 → 锚点零平移（基准 = 当前 logo 位置）
+        st.set_logo_transform(v(0.36, 0.30), 1.0);
         let after_cal: [Vec2; 3] = [st.anchors[0], st.anchors[1], st.anchors[2]];
         for s in 0..3 {
             assert!(
@@ -1050,7 +1060,7 @@ mod tests {
             );
         }
         // logo 中心变化（如切小屏）→ 锚点等量平移（基准 = 校准值 0.36,0.30）
-        st.set_logo_center(v(0.40, 0.26));
+        st.set_logo_transform(v(0.40, 0.26), 1.0);
         let moved: [Vec2; 3] = [st.anchors[0], st.anchors[1], st.anchors[2]];
         let dx = 0.04;
         let dy = -0.04;
@@ -1064,14 +1074,29 @@ mod tests {
             let r01o = ((orig[0].x - orig[1].x).powi(2) + (orig[0].y - orig[1].y).powi(2)).sqrt();
             assert!((r01 - r01o).abs() < 1e-9, "相对形状应恒定");
         }
-        // 回到校准基准 → 锚点回到初始（切回默认比例位置恢复）
-        st.set_logo_center(v(0.36, 0.30));
+        // logo 缩放（真经精髓）→ 锚点偏移随缩放成比例（相对 LOGO_REF 构图）
+        // 基准 scale=1.0；缩到 0.6 → 偏移 ×0.6（logo 小球收拢）
+        let (ref_x, ref_y) = crate::config::params::LOGO_REF;
+        st.set_logo_transform(v(0.40, 0.26), 0.6);
+        let scaled: [Vec2; 3] = [st.anchors[0], st.anchors[1], st.anchors[2]];
+        for s in 0..3 {
+            let (ax, ay) = crate::config::params::ANCHORS[s];
+            let expect = v(
+                ref_x + (ax - ref_x) * 0.6 + dx,
+                ref_y + (ay - ref_y) * 0.6 + dy,
+            );
+            let d = ((scaled[s].x - expect.x).powi(2) + (scaled[s].y - expect.y).powi(2)).sqrt();
+            assert!(d < 1e-9, "ball[{s}] 锚点偏移应随 logo 缩放: {d:.6}");
+        }
+        // 回到校准基准（中心+缩放）→ 锚点回到初始（切回默认比例恢复）
+        st.set_logo_transform(v(0.36, 0.30), 1.0);
         let back: [Vec2; 3] = [st.anchors[0], st.anchors[1], st.anchors[2]];
         for s in 0..3 {
             assert!(
                 (back[s].x - orig[s].x).abs() < 1e-12
                     && (back[s].y - orig[s].y).abs() < 1e-12,
-                "回到基准应恢复初始锚点"
+                "回到基准应恢复初始锚点: back={:?} orig={:?}",
+                back[s], orig[s]
             );
         }
     }

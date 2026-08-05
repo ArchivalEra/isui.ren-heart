@@ -37,6 +37,8 @@ pub struct BallsEngine {
     last_cw: f64,
     last_ch: f64,
     last_dpr: f64,
+    /// 首帧校准的 logo 宽度（CSS px）——缩放基准（scale = 当前宽/基准宽）
+    calib_w: f64,
     last_bounds: crate::sim::planner::CircleBounds,
 }
 
@@ -67,6 +69,7 @@ impl BallsEngine {
             last_cw: 0.0,
             last_ch: 0.0,
             last_dpr: 0.0,
+            calib_w: 0.0,
             last_bounds: crate::sim::planner::CircleBounds::fallback(),
         };
         engine.install_keyboard_shortcuts();
@@ -133,12 +136,21 @@ impl BallsEngine {
         // getBoundingClientRect 每 30 帧一次，活动圈随 logo 实际位置更新）
         self.logo_tick += 1;
         if self.logo_tick % 30 == 0 {
-            let new_b = self.sample_logo_bounds();
+            let (new_b, logo_w) = self.sample_logo_bounds();
             // 锚点跟随 logo（非 fallback 时——fallback (0.5,0.42) 是防御值，
             // 注入会扰动用户实测的锚点）
             if (new_b.cx - 0.5).abs() > 1e-9 || (new_b.cy - 0.42).abs() > 1e-9 {
-                self.state.set_logo_center(
+                if self.calib_w <= 0.0 {
+                    self.calib_w = logo_w; // 首帧校准基准宽度
+                }
+                let scale = if self.calib_w > 0.0 && logo_w > 0.0 {
+                    logo_w / self.calib_w
+                } else {
+                    1.0
+                };
+                self.state.set_logo_transform(
                     crate::sim::math::Vec2 { x: new_b.cx, y: new_b.cy },
+                    scale,
                 );
             }
             self.logo_bounds = new_b;
@@ -200,7 +212,8 @@ impl BallsEngine {
         let anchors = ANCHORS.map(|(x, y)| Vec2 { x, y });
         self.state = State::new(anchors);
         // 立即重采样（不等 30 帧节流）——新尺寸下活动圆立刻生效
-        self.logo_bounds = self.sample_logo_bounds();
+        let (b, _) = self.sample_logo_bounds();
+        self.logo_bounds = b;
         self.state.set_bounds(self.logo_bounds);
         // 真圆注入后重建三球链（State::new 预生成用 fallback 圆——
         // 与真圆错位——起始位置不对真凶）
@@ -216,7 +229,7 @@ impl BallsEngine {
     /// 采样 .heart-logo 的实际位置 → 活动圈（圆心 = logo 中心，
     /// 半径 = logo 中心到最近屏幕边缘——用户钦定；clamp 屏内仅防御
     /// 历史 scale>1 放大用法，scale=1.0 时圆天然内切屏、不越界）
-    fn sample_logo_bounds(&self) -> crate::sim::planner::CircleBounds {
+    fn sample_logo_bounds(&self) -> (crate::sim::planner::CircleBounds, f64) {
         use crate::sim::planner::CircleBounds;
         let el = web_sys::window()
             .and_then(|w| w.document())
@@ -233,7 +246,7 @@ impl BallsEngine {
                 let cxr = (rect.left() + rect.width() / 2.0) / cw;
                 let cyr = (rect.top() + rect.height() / 2.0) / ch;
                 if !(0.0..=1.0).contains(&cxr) || !(0.0..=1.0).contains(&cyr) {
-                    return CircleBounds::fallback();
+                    return (CircleBounds::fallback(), 0.0);
                 }
                 let cx_ratio = (rect.left() + rect.width() / 2.0) / cw;
                 let cy = (rect.top() + rect.height() / 2.0) / ch;
@@ -252,10 +265,13 @@ impl BallsEngine {
                     .min(x_r - cx)
                     .min(cy)
                     .min(1.0 - cy);
-                return CircleBounds { cx, cy, r: r.max(LOGO_BOUNDS_MIN_RADIUS) };
+                return (
+                    CircleBounds { cx, cy, r: r.max(LOGO_BOUNDS_MIN_RADIUS) },
+                    rect.width(),
+                );
             }
         }
-        CircleBounds::fallback()
+        (CircleBounds::fallback(), 0.0)
     }
 
     fn step(&mut self, dt: f64) {
