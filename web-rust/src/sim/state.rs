@@ -179,6 +179,15 @@ impl State {
         self.anchors
     }
 
+    /// 重建后恢复校准基准（engine rebuild_on_resize 创建全新 State 后调用——
+    /// 曾校准重置 → 小屏切换后锚点回到全屏 ANCHORS 不缩放 → 球与 logo
+    /// 分离（用户：小球没跟 logo 焊死））
+    pub fn set_calib(&mut self, center: Vec2, scale: f64) {
+        self.calib_center = center;
+        self.calib_scale = scale;
+        self.calibrated = true;
+    }
+
     /// 调试拖拽更新单个锚点（世界坐标——clamp 屏内；用户拖球到理想位置）
     pub fn set_anchor(&mut self, s: usize, x: f64, y: f64) {
         if s < 3 {
@@ -976,7 +985,7 @@ mod tests {
         // ——三球两两不同（顺位 [0,1,2] 排列 → 必然错开）；10 次构造至少一次
         // 粉球非第一顺位（主次随机——粉球不再固定第一）
         let mut pink_not_first = false;
-        for _ in 0..10 {
+        for _ in 0..20 {
             let st = state();
             let lts: [f64; 3] =
                 [st.balls[0].launch_t, st.balls[1].launch_t, st.balls[2].launch_t];
@@ -995,7 +1004,7 @@ mod tests {
                 pink_not_first = true;
             }
         }
-        assert!(pink_not_first, "10 次构造应至少一次粉球非第一顺位（主次随机）");
+        assert!(pink_not_first, "20 次构造应至少一次粉球非第一顺位（主次随机）——失败率 0.03%");
     }
 
     #[test]
@@ -1118,6 +1127,40 @@ mod tests {
                 back[s], orig[s]
             );
         }
+    }
+
+    #[test]
+    fn calib_survives_rebuild() {
+        // 重建场景（小屏切换）：set_calib 恢复旧基准后，新的 set_logo_transform
+        // 仍按「相对全屏基准」缩放——锚点不回到全屏值（球跟 logo 焊死）
+        let mut st = state();
+        // 全屏校准（首帧：注入零平移——基准 = 全屏状态）
+        st.set_logo_transform(v(0.393, 0.274), 1.0);
+        let orig: [Vec2; 3] = [st.anchors[0], st.anchors[1], st.anchors[2]];
+        // 模拟 rebuild：新 State + 恢复旧校准基准
+        let mut st2 = state();
+        st2.set_calib(v(0.393, 0.274), 1.0);
+        // 小屏：中心平移 + 缩放 0.77 → 锚点应 = 旧锚点收拢平移（不是全屏值）
+        st2.set_logo_transform(v(0.30, 0.30), 0.77);
+        let s2: [Vec2; 3] = [st2.anchors[0], st2.anchors[1], st2.anchors[2]];
+        let (rx, ry) = (0.393, 0.274);
+        let (dx, dy) = (0.30 - rx, 0.30 - ry);
+        for s in 0..3 {
+            let (ax, ay) = crate::config::params::ANCHORS[s];
+            let expect = v(rx + (ax - rx) * 0.77 + dx, ry + (ay - ry) * 0.77 + dy);
+            let d = ((s2[s].x - expect.x).powi(2) + (s2[s].y - expect.y).powi(2)).sqrt();
+            assert!(d < 1e-9, "ball[{s}] 重建后缩放应保留（相对全屏基准）: {d:.6}");
+        }
+        // 与未重建的 State 行为一致（st 同样注入小屏值）
+        st.set_logo_transform(v(0.30, 0.30), 0.77);
+        let orig2: [Vec2; 3] = [st.anchors[0], st.anchors[1], st.anchors[2]];
+        for s in 0..3 {
+            assert!(
+                (s2[s].x - orig2[s].x).abs() < 1e-9 && (s2[s].y - orig2[s].y).abs() < 1e-9,
+                "重建前后锚点应一致（焊死）"
+            );
+        }
+        let _ = orig;
     }
 
     #[test]

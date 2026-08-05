@@ -43,6 +43,8 @@ pub struct BallsEngine {
     anchor_overlay: bool,
     /// 小球调试模式：暂停 logo 采样注入（拖球不被 set_logo_transform 覆盖）
     ball_mode: bool,
+    /// 最近一次注入的校准基准（rebuild 后恢复——锚点缩放跨 resize 保留）
+    last_calib: (f64, f64, f64), // center.x, center.y, scale
     last_bounds: crate::sim::planner::CircleBounds,
 }
 
@@ -76,6 +78,7 @@ impl BallsEngine {
             calib_w: 0.0,
             anchor_overlay: false,
             ball_mode: false,
+            last_calib: (0.5, 0.42, 1.0),
             last_bounds: crate::sim::planner::CircleBounds::fallback(),
         };
         engine.install_keyboard_shortcuts();
@@ -206,6 +209,7 @@ impl BallsEngine {
                         crate::sim::math::Vec2 { x: new_b.cx, y: new_b.cy },
                         scale,
                     );
+                    self.last_calib = (new_b.cx, new_b.cy, scale);
                 }
             }
             self.logo_bounds = new_b;
@@ -273,6 +277,11 @@ impl BallsEngine {
         // 真圆注入后重建三球链（State::new 预生成用 fallback 圆——
         // 与真圆错位——起始位置不对真凶）
         self.state.rebuild_chains(self.logo_bounds);
+        // 恢复校准基准（曾重置 → 小屏切换后锚点不缩放——球与 logo 分离）
+        self.state.set_calib(
+            crate::sim::math::Vec2 { x: self.last_calib.0, y: self.last_calib.1 },
+            self.last_calib.2,
+        );
         self.last_bounds = self.logo_bounds;
         // 重置差分速度基准 + 拖尾历史——防重建后首帧「旧位置→新位置」大尾迹
         for s in 0..3 {
