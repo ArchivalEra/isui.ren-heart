@@ -509,7 +509,9 @@ body {
      挡着不缩——scale=1 球也不缩放；曾 left:50% 覆盖造成偏右——统一
      44.65% 与大屏一致） */
   .heart-logo-img {
-    width: min(52vw, 42vh, 150px);
+    /* 小屏占比收敛（曾 52vw——390 窗口占 38.5% vs 全屏 10.3%——锚点按
+       logo 比例焊死时偏移出屏；28vw 接近全屏占比——球距离适中） */
+    width: min(28vw, 28vh, 120px);
   }
   .heart-title {
     font-size: clamp(1.1rem, 5.2vw, 1.8rem);

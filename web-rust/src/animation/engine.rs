@@ -184,7 +184,10 @@ impl BallsEngine {
         // 大事情定稿：实时采样 tayori 标志位置（不同设备排版差异——
         // getBoundingClientRect 每 30 帧一次，活动圈随 logo 实际位置更新）
         self.logo_tick += 1;
-        if self.logo_tick % 30 == 0 {
+        // 首帧快速收敛：前 90 帧（1.5s）每帧采样——svg 加载/布局完成后
+        // 立即注入（曾 30 帧节流：首帧 fallback 不注入 → 锚点停在全屏
+        // ANCHORS——小屏加载首帧错位）；之后恢复 30 帧节流
+        if self.logo_tick % 30 == 0 || self.logo_tick < 90 {
             let (new_b, logo_w) = self.sample_logo_bounds();
             // 锚点跟随 logo（非 fallback 时——fallback (0.5,0.42) 是防御值，
             // 注入会扰动用户实测的锚点）
