@@ -191,29 +191,30 @@ impl Player {
 
         let k = SPRING.stiffness;
         let c_damp = SPRING.damping * 2.0 * k.sqrt();
-        // 低通 0.35s：高速→低速段时球速平滑下降（曾 0.12s 骤降 → 惯性超前被 spring 拉回 = 冲刺反方向回弹）
-        let rate_lerp = (dt_s / 0.35).min(1.0);
+        // 低通：球速紧贴链速（阻尼项全功率制动，见下方力模型）——
+        // 低通过大 → 链速已降球速仍高 → 冲过头被 spring 拉回 = 冲刺回弹
+        let rate_lerp = (dt_s / 0.12).min(1.0);
 
         for s in 0..3 {
             // 球 i 弧长 = 队首 - 错开；未上链（<0）→ 目标 = 起点（链起点后方）
             let s_i = self.s_lead - self.gaps[s];
-            let (target, tan, seg_i, u_i) = if s_i >= 0.0 {
+            let (target, seg_i, u_i) = if s_i >= 0.0 {
                 match self.follow {
                     crate::config::profile::FollowStyle::Chain => {
                         // 自研：直接追链上弧长点（spring 物理）
-                        let (p, tan, seg, u) = chain_pos_and_tangent(&self.chain, s_i);
-                        (p, tan, seg, u)
+                        let (p, _, seg, u) = chain_pos_and_tangent(&self.chain, s_i);
+                        (p, seg, u)
                     }
                     crate::config::profile::FollowStyle::CloudEma => {
                         // 云中心：Frenet 法线偏移 + EMA 时序滤波——
                         // 转弯三球走同一条曲线的偏移轨迹 → 同弧、无多段线
                         let d = FORMATION_OFFSETS[s] * self.offset_scale;
-                        let (raw, tan) = crate::sim::cloud::follower_target(&self.chain, s_i, d);
+                        let (raw, _) = crate::sim::cloud::follower_target(&self.chain, s_i, d);
                         let (_, _, seg, u) = chain_pos_and_tangent(&self.chain, s_i);
                         let ema =
                             crate::sim::cloud::ema_step(self.ema_targets[s], raw, self.ema_alpha);
                         self.ema_targets[s] = ema;
-                        (ema, tan, seg, u)
+                        (ema, seg, u)
                     }
                 }
             } else {
@@ -224,33 +225,93 @@ impl Player {
                     y: (leg0.from.y - d.y * self.gaps[s]).clamp(0.05, 0.95),
                 };
                 match self.follow {
-                    crate::config::profile::FollowStyle::Chain => (pos, Vec2 { x: -d.y, y: d.x }, 0usize, 0.0),
+                    crate::config::profile::FollowStyle::Chain => (pos, 0usize, 0.0),
                     crate::config::profile::FollowStyle::CloudEma => {
                         let ema = crate::sim::cloud::ema_step(self.ema_targets[s], pos, self.ema_alpha);
                         self.ema_targets[s] = ema;
-                        (ema, Vec2 { x: -d.y, y: d.x }, 0usize, 0.0)
+                        (ema, 0usize, 0.0)
                     }
                 }
             };
 
             let r_ideal = self.profile_speed(seg_i, u_i);
+            let stv = self.states[s];
+            let rate_now = stv.rate;
+            // 前瞻：tvel 用「未来弧长处」的速度/切线——链要减速/转向时球提前反应，
+            // 不冲过头（惯性超前 → spring 拉回 = 冲刺回弹的物理根源）
+            let lookahead_arc = rate_now * WORLD_SPEED * LOOKAHEAD_SECONDS;
+            let (_, tan_f, seg_f, u_f) =
+                chain_pos_and_tangent(&self.chain, (s_i + lookahead_arc).max(0.0));
+            let r_future = self.profile_speed(seg_f, u_f);
+            let tl_f = (tan_f.x * tan_f.x + tan_f.y * tan_f.y).sqrt().max(1e-9);
+            let tvel = Vec2 {
+                x: tan_f.x / tl_f * r_future,
+                y: tan_f.y / tl_f * r_future,
+            };
+            // 方向低通：tvel 方向每秒最多转 MAX_TURN_RATE——防链几何切线
+            // 退化/跳变导致的瞬间掉头（球沿旧方向平滑弧线转向新方向）
+            let tv_mag = (tvel.x * tvel.x + tvel.y * tvel.y).sqrt();
+            let v_mag = (stv.vel.x * stv.vel.x + stv.vel.y * stv.vel.y).sqrt();
+            let tvel = if tv_mag > 1e-6 && v_mag > 1e-6 {
+                let cross = stv.vel.x * tvel.y - stv.vel.y * tvel.x;
+                let dot = (stv.vel.x * tvel.x + stv.vel.y * tvel.y) / (v_mag * tv_mag);
+                let ang = dot.clamp(-1.0, 1.0).acos();
+                let max_turn = MAX_TURN_RATE * dt_s;
+                if ang > max_turn {
+                    // 把 tvel 方向旋转到「当前速度方向 + max_turn」（沿最小旋转侧）
+                    let dir = if cross >= 0.0 { 1.0 } else { -1.0 };
+                    let s = dir * max_turn.sin();
+                    let c = max_turn.cos();
+                    let ux = stv.vel.x / v_mag;
+                    let uy = stv.vel.y / v_mag;
+                    Vec2 {
+                        x: (ux * c - uy * s) * tv_mag,
+                        y: (ux * s + uy * c) * tv_mag,
+                    }
+                } else {
+                    tvel
+                }
+            } else {
+                tvel
+            };
             let st = &mut self.states[s];
             st.rate += (r_ideal - st.rate) * rate_lerp;
-            let tl = (tan.x * tan.x + tan.y * tan.y).sqrt().max(1e-9);
-            let tvel = Vec2 { x: tan.x / tl * st.rate, y: tan.y / tl * st.rate };
-            let ax = k * (target.x - st.pos.x) + c_damp * (tvel.x - st.vel.x);
-            let ay = k * (target.y - st.pos.y) + c_damp * (tvel.y - st.vel.y);
-            // 加速度钳制：spring 误差大时力无上限 → 高速冲点；clamp 后温和冲刺
-            let a_mag = (ax * ax + ay * ay).sqrt();
-            let (ax, ay) = if a_mag > MAX_ACCEL {
-                (ax / a_mag * MAX_ACCEL, ay / a_mag * MAX_ACCEL)
+            // 力模型：位置项（弹簧）+ 阻尼项（速度追踪）分离钳制
+            // —— 位置项按法向/切向分解：法向（纠偏离链）全强度，
+            //    切向（纠弧长错位 = 冲刺回弹感之源）只留 TANGENTIAL_GAIN 柔和纠偏；
+            //    阻尼项全功率（高速→低速制动不足 = 惯性超前 = 回弹）
+            let rel = Vec2 { x: target.x - st.pos.x, y: target.y - st.pos.y };
+            let tl_n = (tan_f.x * tan_f.x + tan_f.y * tan_f.y).sqrt().max(1e-9);
+            let un = Vec2 { x: tan_f.x / tl_n, y: tan_f.y / tl_n };
+            let along = rel.x * un.x + rel.y * un.y;
+            let perp_x = rel.x - un.x * along;
+            let perp_y = rel.y - un.y * along;
+            let px = (perp_x + un.x * along * TANGENTIAL_GAIN) * k;
+            let py = (perp_y + un.y * along * TANGENTIAL_GAIN) * k;
+            let p_mag = (px * px + py * py).sqrt();
+            let (px, py) = if p_mag > MAX_ACCEL {
+                (px / p_mag * MAX_ACCEL, py / p_mag * MAX_ACCEL)
             } else {
-                (ax, ay)
+                (px, py)
             };
-            st.vel.x += ax * dt_s;
-            st.vel.y += ay * dt_s;
-            st.pos.x = (st.pos.x + st.vel.x * dt_s).clamp(0.03, 0.97);
-            st.pos.y = (st.pos.y + st.vel.y * dt_s).clamp(0.03, 0.97);
+            // 巡航贴链：偏差小（<0.035）时位置直接参数化贴链上点
+            // （速度 = 切线×链速）——spring 追弧必切弯（弦<弧 → 球超前被拉回 = 回弹），
+            // 参数化跟随物理上零偏差；spring 只用于过渡（入场/汇入/偏差大）
+            let dev = ((target.x - st.pos.x).powi(2) + (target.y - st.pos.y).powi(2)).sqrt();
+            if dev < 0.025 {
+                // 巡航贴链：位置 = 链上点（参数化——零偏差零切弯零回弹）。
+                // 进入瞬间有 ≤0.025 的收敛（视觉 < 20px，一次性）——
+                // 换来冲刺/转弯全程无回弹（用户核心诉求）
+                st.pos = target;
+                st.vel = tvel;
+            } else {
+                let ax = px + c_damp * (tvel.x - st.vel.x);
+                let ay = py + c_damp * (tvel.y - st.vel.y);
+                st.vel.x += ax * dt_s;
+                st.vel.y += ay * dt_s;
+                st.pos.x = (st.pos.x + st.vel.x * dt_s).clamp(0.03, 0.97);
+                st.pos.y = (st.pos.y + st.vel.y * dt_s).clamp(0.03, 0.97);
+            }
         }
     }
 
@@ -295,21 +356,6 @@ impl Player {
                 Vec2 { x: tan.x / l, y: tan.y / l }
             };
             let roll = rng.gen::<f64>();
-            let old_curv = TEMPLATES[tail.template_idx].curvature;
-            // 曲线选择：曲率连续性（形状只管几何）
-            let template_idx = if roll < PROB.switch_template {
-                let mut idx = tail.template_idx;
-                for _ in 0..6 {
-                    let cand = rng.gen_range(0..TEMPLATES.len());
-                    if (TEMPLATES[cand].curvature - old_curv).abs() <= TEMPLATE_CURV_STEP {
-                        idx = cand;
-                        break;
-                    }
-                }
-                idx
-            } else {
-                tail.template_idx
-            };
             // 段级运动参数：速度档（含高速批准制）
             let speed = roll_speed();
             if rng.gen::<f64>() < PROB.switch_order {
@@ -323,18 +369,115 @@ impl Player {
             // logo 游走段 = 圆心附近小范围（LOGO_RADIUS×0.4，三球回标志旁）
             let chain_arc_now = self.chain.iter().map(|x| x.arc).sum::<f64>();
             let b = self.bounds;
+            // 到活动圆边界的距离（沿当前方向）——边界检测：贴边时强制大曲率弯回
+            let to_edge = {
+                let ocx = b.cx - from.x;
+                let ocy = b.cy - from.y;
+                let proj = ocx * dir.x + ocy * dir.y;
+                let disc = proj * proj - (ocx * ocx + ocy * ocy - b.r * b.r);
+                if disc > 0.0 {
+                    (proj + disc.sqrt()).max(0.0)
+                } else {
+                    f64::MAX
+                }
+            };
+            let near_edge = to_edge < 0.15;
+            // 曲线选择：曲率连续性（形状只管几何）；贴边时强制大曲率模板快速弯回
+            let old_curv = TEMPLATES[tail.template_idx].curvature;
+            let template_idx = if near_edge {
+                // 边界弯回：中等曲率（0.25-0.7）——大曲率 ctrl 偏移 > 段长时
+                // 段尾切线反转（180° 跳变 = 回弹之源）
+                let mut idx = tail.template_idx;
+                for _ in 0..8 {
+                    let cand = rng.gen_range(0..TEMPLATES.len());
+                    let cc = TEMPLATES[cand].curvature.abs();
+                    if (0.25..=0.7).contains(&cc) {
+                        idx = cand;
+                        break;
+                    }
+                }
+                idx
+            } else if roll < PROB.switch_template {
+                let mut idx = tail.template_idx;
+                for _ in 0..6 {
+                    let cand = rng.gen_range(0..TEMPLATES.len());
+                    if (TEMPLATES[cand].curvature - old_curv).abs() <= TEMPLATE_CURV_STEP {
+                        idx = cand;
+                        break;
+                    }
+                }
+                idx
+            } else {
+                tail.template_idx
+            };
+            let dist = 0.3 + rng.gen::<f64>() * 0.3;
             let target = if chain_arc_now >= next_logo_arc {
+                // logo 游走段：方向 = 当前方向与 logo 圆心方向的混合（渐进转向，
+                // 多段累积到达 logo——不一步 180° 掉头 = U 形段 = 回弹之源）
                 next_logo_arc += LOGO_EVERY_ARC;
+                let to_c = Vec2 { x: b.cx - from.x, y: b.cy - from.y };
+                let d = (to_c.x * to_c.x + to_c.y * to_c.y).sqrt().max(1e-9);
+                let mx = (dir.x * 0.6 + to_c.x / d * 0.4)
+                    .hypot(dir.y * 0.6 + to_c.y / d * 0.4)
+                    .max(1e-9);
+                let mix = Vec2 {
+                    x: (dir.x * 0.6 + to_c.x / d * 0.4) / mx,
+                    y: (dir.y * 0.6 + to_c.y / d * 0.4) / mx,
+                };
                 let ang = rng.gen::<f64>() * std::f64::consts::PI * 2.0;
                 let rr = rng.gen::<f64>().sqrt() * b.r * LOGO_RADIUS;
-                Vec2 { x: b.cx + ang.cos() * rr, y: b.cy + ang.sin() * rr }
-            } else {
-                // 保持前进方向为主（段长随机），但目标必须落在圆内——越界则随机转向圆内
-                let dist = 0.3 + rng.gen::<f64>() * 0.3;
-                let mut tg = Vec2 { x: from.x + dir.x * dist, y: from.y + dir.y * dist };
-                if !b.contains(tg) {
-                    tg = b.random_point(&mut rng);
+                let logo_p = Vec2 {
+                    x: b.cx + ang.cos() * rr,
+                    y: b.cy + ang.sin() * rr,
+                };
+                // 目标 = mix 方向、logo 圆半径处（渐进接近 logo）
+                let dist_eff = dist.min((logo_p.x - from.x).hypot(logo_p.y - from.y)).max(0.2);
+                Vec2 {
+                    x: from.x + mix.x * dist_eff,
+                    y: from.y + mix.y * dist_eff,
                 }
+            } else {
+                // 段长自适应：dist 取「随机段长」与「圆内可用空间」的较小者——
+                // 贴边时自然缩短，永不越界（越界跳点 = 方向突变 = 回弹之源）
+                let tg = if near_edge {
+                    // 边界弯回：方向 = 当前方向与圆心方向的混合——权重按越界深度
+                    // 自适应（圆内渐进 ~19°/段；越往外 to_c 权重越大，圆外纯朝圆心——
+                    // 否则链在圆外恶性循环，出屏）
+                    let to_c = Vec2 { x: b.cx - from.x, y: b.cy - from.y };
+                    let d = (to_c.x * to_c.x + to_c.y * to_c.y).sqrt().max(1e-9);
+                    let w = ((d - b.r * 0.8) / (b.r * 0.2).max(1e-9)).clamp(0.0, 1.0);
+                    let fwd = 0.65 * (1.0 - w);
+                    let tow = 0.35 + 0.65 * w;
+                    let mx = (dir.x * fwd + to_c.x / d * tow)
+                        .hypot(dir.y * fwd + to_c.y / d * tow)
+                        .max(1e-9);
+                    let mix = Vec2 {
+                        x: (dir.x * fwd + to_c.x / d * tow) / mx,
+                        y: (dir.y * fwd + to_c.y / d * tow) / mx,
+                    };
+                    let dist_eff = dist.min(to_edge * 0.7).max(0.12);
+                    Vec2 {
+                        x: from.x + mix.x * dist_eff,
+                        y: from.y + mix.y * dist_eff,
+                    }
+                } else {
+                    // 段长自适应：dist 取「随机段长」与「圆内可用空间」的较小者
+                    let dist_eff = dist.min(to_edge * 0.8).max(0.05);
+                    Vec2 {
+                        x: from.x + dir.x * dist_eff,
+                        y: from.y + dir.y * dist_eff,
+                    }
+                };
+                // 兜底（防御）：仍越界则沿 dir 截断到圆边界（方向连续）
+                let tg = if b.contains(tg) {
+                    tg
+                } else {
+                    let ray = to_edge.min(0.3).max(0.05);
+                    Vec2 {
+                        x: from.x + dir.x * ray,
+                        y: from.y + dir.y * ray,
+                    }
+                };
                 tg
             };
             // 曲线 profile：Native=自研单段；EulerBlend=段内曲率渐变（默认关闭）
@@ -434,7 +577,15 @@ pub fn chain_pos_and_tangent(
             let u = ((s_in - sub_idx as f64 * sub_arc) / sub_arc.max(1e-9)).clamp(0.0, 1.0);
             let leg = &pl.legs[sub_idx];
             let p = quad_bezier(leg.from, leg.ctrl, leg.target, u);
-            let tan = bezier_tangent(leg.from, leg.ctrl, leg.target, u);
+            let mut tan = bezier_tangent(leg.from, leg.ctrl, leg.target, u);
+            // 退化切线（|tan| 极小——ctrl≈端点）：归一化后方向是浮点噪声，
+            // tvel 被噪声方向猛拉 = 回弹之源——用段整体方向（from→target）替代
+            if tan.x * tan.x + tan.y * tan.y < 0.06 * 0.06 {
+                tan = Vec2 {
+                    x: leg.target.x - leg.from.x,
+                    y: leg.target.y - leg.from.y,
+                };
+            }
             return (p, tan, idx, u);
         }
         acc += pl.arc;
@@ -758,4 +909,164 @@ mod tests {
         let long = make_planned_leg(from, dir, 0, Vec2 { x: 0.95, y: 0.5 }, 1.0);
         assert!(long.dur_ms > short.dur_ms * 2.0);
     }
+}
+
+#[test]
+fn no_recoil_after_sprint() {
+    // 冲刺回弹回归测试：高速段(1.6) → 低速段(0.55) 切换时，
+    // 球不得先越过目标再被 spring 拉回（阻尼项被 MAX_ACCEL 钳制时的典型症状）
+    let mk_leg = |y0: f64, y1: f64, speed: f64| -> PlannedLeg {
+        let from = Vec2 { x: 0.5, y: y0 };
+        let target = Vec2 { x: 0.5, y: y1 };
+        let ctrl = Vec2 { x: 0.5, y: (y0 + y1) / 2.0 };
+        let sub = (y1 - y0) / 5.0;
+        let mut legs = [Leg { from, ctrl, target }; 5];
+        for (i, leg) in legs.iter_mut().enumerate() {
+            let f = y0 + sub * i as f64;
+            leg.from = Vec2 { x: 0.5, y: f };
+            leg.target = Vec2 { x: 0.5, y: f + sub };
+            leg.ctrl = Vec2 { x: 0.5, y: f + sub / 2.0 };
+        }
+        PlannedLeg {
+            legs,
+            template_idx: 0,
+            speed,
+            curv_eff: 0.0,
+            dur_ms: (y1 - y0) / (WORLD_SPEED * speed) * 1000.0,
+            arc: y1 - y0,
+        }
+    };
+
+    // 高速段 0.70 世界（y 轴 0.15→0.85）：让球充分加速到全速 0.35，再进低速段
+    let mut p = Player::new(Vec2 { x: 0.5, y: 0.5 }, Vec2 { x: 1.0, y: 0.0 });
+    // 测试用大活动圆（0.6）覆盖测试链全程——fallback 圆(0.35)会让测试链出圆
+    p.bounds = CircleBounds { cx: 0.5, cy: 0.5, r: 0.6 };
+    p.chain = VecDeque::from([mk_leg(0.15, 0.85, 1.6), mk_leg(0.85, 0.96, 0.55)]);
+    p.s_lead = 0.17;
+
+    // 热身：先跑 300 帧确保球贴链（dev<0.025，真实巡航状态）
+    let mut dev0 = f64::MAX;
+    for _ in 0..300 {
+        p.tick(16.0);
+        let (tg, _, _, _) = chain_pos_and_tangent(&p.chain, p.s_lead - p.gaps[0]);
+        dev0 = ((tg.x - p.states[0].pos.x).powi(2) + (tg.y - p.states[0].pos.y).powi(2)).sqrt();
+    }
+    eprintln!(
+        "warm done: s_lead={:.3} pos.y={:.3} vel.y={:.3} dev={dev0:.4}",
+        p.s_lead, p.states[0].pos.y, p.states[0].vel.y
+    );
+    assert!(dev0 < 0.025, "热身未贴链：dev={dev0:.4}");
+    // 监测 300 帧（覆盖跨入低速段窗口）：球必须保持贴链（dev < 0.03）——
+    // 回弹 = 球被拉离链（dev 先增后减）；链本身方向变化（y 升降）不算回弹
+    for _ in 0..300 {
+        p.tick(16.0);
+        let (tg, _, _, _) = chain_pos_and_tangent(&p.chain, p.s_lead - p.gaps[0]);
+        let dev = ((tg.x - p.states[0].pos.x).powi(2) + (tg.y - p.states[0].pos.y).powi(2)).sqrt();
+        assert!(
+            dev < 0.03,
+            "冲刺后脱链回弹！dev={dev:.4} pos=({:.3},{:.3}) target=({:.3},{:.3})",
+            p.states[0].pos.x, p.states[0].pos.y, tg.x, tg.y
+        );
+    }
+}
+
+#[test]
+fn sprint_recoil_audit() {
+    // 真实链审计：随机链跑 100s，统计「回弹事件」——
+    // 球速与目标切线夹角 >100°（球往目标反方向运动）且速度 >0.05
+    let mut p = Player::new(Vec2 { x: 0.5, y: 0.5 }, Vec2 { x: 1.0, y: 0.0 });
+    let mut recoils = 0usize;
+    let mut worst_dot = 1.0f64;
+    let mut total = 0usize;
+    for i in 0..6000 {
+        p.tick(16.0);
+        // 三球都查
+        for s in 0..3 {
+            let s_i = p.s_lead - p.gaps[s];
+            if s_i < 0.0 { continue; }
+            let (tgt, tan, seg_at, _) = chain_pos_and_tangent(&p.chain, s_i);
+            let v = p.states[s].vel;
+            let vm = (v.x * v.x + v.y * v.y).sqrt();
+            if vm < 0.05 { continue; }
+            let tm = (tan.x * tan.x + tan.y * tan.y).sqrt().max(1e-9);
+            let dot = (v.x * tan.x + v.y * tan.y) / vm / tm;
+            worst_dot = worst_dot.min(dot);
+            // 真回弹 = 球超前于目标（沿切线方向）且正在后退（沿 -tan 运动）
+            // ——转弯（夹角大但没超前）不算回弹
+            let rel_x = p.states[s].pos.x - tgt.x;
+            let rel_y = p.states[s].pos.y - tgt.y;
+            let ahead = (rel_x * tan.x + rel_y * tan.y) / tm; // >0 = 球在目标前方
+            let retreat = -(v.x * tan.x + v.y * tan.y) / tm; // >0 = 球在后退
+            if ahead > 0.02 && retreat > 0.02 {
+                recoils += 1;
+                if recoils <= 12 {
+                    let seg = &p.chain[seg_at];
+                    let f = seg.legs[0].from;
+                    let tg = seg.legs[4].target;
+                    // 未来段（tan_f 所在段）
+                    let s_fut = s_i + p.states[s].rate * WORLD_SPEED * LOOKAHEAD_SECONDS;
+                    let (_, _, seg_f_at, _) = chain_pos_and_tangent(&p.chain, s_fut);
+                    let segf = &p.chain[seg_f_at];
+                    let ff = segf.legs[0].from;
+                    let tf = segf.legs[4].target;
+                    eprintln!(
+                        "RECOIL s={} s_i={:.3} v=({:.3},{:.3}) ahead={:.3} retreat={:.3} | at tpl={} curv={:.2} from=({:.2},{:.2})->({:.2},{:.2}) | fut tpl={} curv={:.2} from=({:.2},{:.2})->({:.2},{:.2})",
+                        s, s_i, v.x, v.y, ahead, retreat,
+                        seg.template_idx,
+                        crate::config::templates::TEMPLATES[seg.template_idx].curvature,
+                        f.x, f.y, tg.x, tg.y,
+                        segf.template_idx,
+                        crate::config::templates::TEMPLATES[segf.template_idx].curvature,
+                        ff.x, ff.y, tf.x, tf.y,
+                    );
+                }
+            }
+            total += 1;
+        }
+        if i % 1000 == 0 {
+            eprintln!("t={i} worst_dot={worst_dot:.3} recoils={recoils}");
+        }
+    }
+    eprintln!("AUDIT: recoils={recoils} total={total} worst_dot={worst_dot:.3}");
+    assert!(
+        recoils <= 3,
+        "回弹事件过多：{recoils}/6000 帧（worst_dot={worst_dot:.3}）"
+    );
+}
+
+#[test]
+fn chain_direction_jumps_audit() {
+    // 链几何审计：补 300 段，统计段间方向差 >60° 的跳变（180° 反转的直接证据）
+    let mut p = Player::new(Vec2 { x: 0.5, y: 0.5 }, Vec2 { x: 1.0, y: 0.0 });
+    p.ensure_chain_to(300.0);
+    let chain: Vec<_> = p.chain.iter().cloned().collect();
+    let mut jumps = 0usize;
+    for w in chain.windows(2) {
+        let a = &w[0];
+        let b = &w[1];
+        let ta = bezier_tangent(a.legs[4].from, a.legs[4].ctrl, a.legs[4].target, 1.0);
+        let tb = bezier_tangent(b.legs[0].from, b.legs[0].ctrl, b.legs[0].target, 0.0);
+        let la = (ta.x * ta.x + ta.y * ta.y).sqrt().max(1e-9);
+        let lb = (tb.x * tb.x + tb.y * tb.y).sqrt().max(1e-9);
+        let dot = (ta.x * tb.x + ta.y * tb.y) / la / lb;
+        let deg = dot.clamp(-1.0, 1.0).acos().to_degrees();
+        if deg > 60.0 {
+            jumps += 1;
+            if jumps <= 6 {
+                let from = a.legs[4].target;
+                eprintln!(
+                    "JUMP {deg:.0}°  from=({:.3},{:.3})  A_tpl={} curv={:.2} arc={:.2}  B_tpl={} curv={:.2} arc={:.2}",
+                    from.x, from.y,
+                    a.template_idx,
+                    TEMPLATES[a.template_idx].curvature,
+                    a.arc,
+                    b.template_idx,
+                    TEMPLATES[b.template_idx].curvature,
+                    b.arc,
+                );
+            }
+        }
+    }
+    eprintln!("CHAIN AUDIT: jumps={jumps}/300 段");
+    assert!(jumps <= 6, "段间方向跳变过多：{jumps}");
 }

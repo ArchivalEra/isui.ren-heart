@@ -129,7 +129,7 @@ mod tests {
             make_leg(0.9),
             make_leg(1.1),
         ];
-        let (v, dur) = tune(&chain, 1.2, 0.22, true);
+        let (v, dur) = tune(&chain, 1.2, true);
         assert_eq!(v.len(), 3);
         assert_eq!(dur.len(), 3);
         assert!(dur[0] >= 200.0);
