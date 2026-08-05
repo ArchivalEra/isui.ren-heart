@@ -79,6 +79,11 @@ pub struct State {
     pink_prev: Vec2,
     /// logo 实际中心（归一化——engine 每 30 帧采样注入；锚点跟随平移）
     logo_center: Vec2,
+    /// 首帧校准标志：第一次有效采样作为基准（锚点零平移——用户实测
+    /// ANCHORS 即默认比例下的正确开场位置）；之后 logo 变化才跟随平移。
+    /// 曾用 CSS 推导 LOGO_REF 作基准——与实际采样中心有偏差 →
+    /// 首帧注入即平移错位（用户：默认比例开场位置不对）
+    calibrated: bool,
 }
 
 impl State {
@@ -113,13 +118,22 @@ impl State {
             anchors,
             pink_prev: anchors[0],
             logo_center: Vec2 { x: crate::config::params::LOGO_REF.0, y: crate::config::params::LOGO_REF.1 },
+            calibrated: false,
         }
     }
 
     /// 锚点跟随 logo 实际中心（用户钦定：球按 logo 计算初始位置——logo
     /// 缩放/移动时球跟着走，视觉焊死）。平移量 = logo 中心变化——三球
-    /// 相对形状（ANCHORS - LOGO_REF 偏移）恒定
+    /// 相对形状（ANCHORS - LOGO_REF 偏移）恒定。
+    /// 首帧校准：第一次有效采样作为基准零平移（用户实测 ANCHORS 即默认
+    /// 比例的正确开场位置）——之后变化才跟随
     pub fn set_logo_center(&mut self, c: Vec2) {
+        if !self.calibrated {
+            // 首帧校准：锚点不动（ANCHORS 原样）——基准 = 当前 logo 位置
+            self.logo_center = c;
+            self.calibrated = true;
+            return;
+        }
         let dx = c.x - self.logo_center.x;
         let dy = c.y - self.logo_center.y;
         if dx * dx + dy * dy < 1e-12 {
@@ -1020,18 +1034,29 @@ mod tests {
 
     #[test]
     fn anchors_follow_logo_center() {
-        // 用户钦定：球按 logo 计算初始位置——set_logo_center 平移锚点
-        // （logo 缩放/移动 → 球跟着走，相对形状恒定）
+        // 用户钦定：球按 logo 计算初始位置——set_logo_center 平移锚点。
+        // 首帧校准：第一次注入零平移（锚点 = 用户实测 ANCHORS——默认比例
+        // 开场位置正确）；之后 logo 变化才等量平移（相对形状恒定）
         let mut st = state();
         let orig: [Vec2; 3] = [st.anchors[0], st.anchors[1], st.anchors[2]];
-        // logo 中心移动（如小窗布局偏移）→ 锚点等量平移
+        // 首帧校准：注入任意中心 → 锚点零平移（基准 = 当前 logo 位置）
         st.set_logo_center(v(0.36, 0.30));
-        let moved: [Vec2; 3] = [st.anchors[0], st.anchors[1], st.anchors[2]];
-        let dx = 0.36 - crate::config::params::LOGO_REF.0;
-        let dy = 0.30 - crate::config::params::LOGO_REF.1;
+        let after_cal: [Vec2; 3] = [st.anchors[0], st.anchors[1], st.anchors[2]];
         for s in 0..3 {
-            let d = ((moved[s].x - (orig[s].x + dx)).powi(2)
-                + (moved[s].y - (orig[s].y + dy)).powi(2))
+            assert!(
+                (after_cal[s].x - orig[s].x).abs() < 1e-12
+                    && (after_cal[s].y - orig[s].y).abs() < 1e-12,
+                "首帧校准应零平移（ANCHORS 原样）"
+            );
+        }
+        // logo 中心变化（如切小屏）→ 锚点等量平移（基准 = 校准值 0.36,0.30）
+        st.set_logo_center(v(0.40, 0.26));
+        let moved: [Vec2; 3] = [st.anchors[0], st.anchors[1], st.anchors[2]];
+        let dx = 0.04;
+        let dy = -0.04;
+        for s in 0..3 {
+            let d = ((moved[s].x - (after_cal[s].x + dx)).powi(2)
+                + (moved[s].y - (after_cal[s].y + dy)).powi(2))
             .sqrt();
             assert!(d < 1e-9, "ball[{s}] 锚点应等量平移: {d:.6}");
             // 相对形状恒定（三球相对位置不变）
@@ -1039,13 +1064,14 @@ mod tests {
             let r01o = ((orig[0].x - orig[1].x).powi(2) + (orig[0].y - orig[1].y).powi(2)).sqrt();
             assert!((r01 - r01o).abs() < 1e-9, "相对形状应恒定");
         }
-        // 无变化 → 零平移（幂等）
+        // 回到校准基准 → 锚点回到初始（切回默认比例位置恢复）
         st.set_logo_center(v(0.36, 0.30));
-        let again: [Vec2; 3] = [st.anchors[0], st.anchors[1], st.anchors[2]];
+        let back: [Vec2; 3] = [st.anchors[0], st.anchors[1], st.anchors[2]];
         for s in 0..3 {
             assert!(
-                (again[s].x - moved[s].x).abs() < 1e-12,
-                "幂等：重复注入同一中心不应平移"
+                (back[s].x - orig[s].x).abs() < 1e-12
+                    && (back[s].y - orig[s].y).abs() < 1e-12,
+                "回到基准应恢复初始锚点"
             );
         }
     }

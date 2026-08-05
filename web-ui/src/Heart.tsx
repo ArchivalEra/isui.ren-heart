@@ -102,7 +102,7 @@ export default function Heart() {
       <div class="heart-bg" aria-hidden="true"></div>
       <BallsCanvas />
       <div class="heart-logo" aria-hidden="true">
-        <img class="heart-logo-img" src="logo.png" alt="tayori" />
+        <img class="heart-logo-img" src="logo.svg" alt="tayori" />
       </div>
       <main class="heart-main">
         <h1 class="heart-title">
