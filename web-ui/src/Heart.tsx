@@ -98,6 +98,25 @@ function EmojiTyper({ scatter }: { scatter: boolean }) {
 
 export default function Heart() {
   const [wallOpen, setWallOpen] = useState(false);
+
+  // 窗口舞台 fit：scale = min(视口/1280×720 设计尺寸)——窗口整体缩放；
+  // translate 初始 = 用户校准 (69px, 66px)——调试器拖拽写 dataset 保留
+  useEffect(() => {
+    const el = document.querySelector<HTMLElement>(".stage-window");
+    if (!el) return;
+    el.dataset.tx = el.dataset.tx || "69";
+    el.dataset.ty = el.dataset.ty || "66";
+    const apply = () => {
+      const s = Math.min(
+        window.innerWidth / 1280,
+        window.innerHeight / 720,
+      ).toFixed(4);
+      el.style.transform = `scale(${s}) translate(${el.dataset.tx}px, ${el.dataset.ty}px)`;
+    };
+    apply();
+    window.addEventListener("resize", apply);
+    return () => window.removeEventListener("resize", apply);
+  }, []);
   return (
     <div class="heart-page fade-stagger">
       <div class="heart-bg" aria-hidden="true"></div>

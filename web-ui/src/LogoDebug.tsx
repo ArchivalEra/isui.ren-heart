@@ -65,7 +65,11 @@ export default function LogoDebug() {
 
     const st = readWinTransform(el);
     const apply = () => {
-      el.style.transform = `translate(${st.x.toFixed(0)}px, ${st.y.toFixed(0)}px) scale(${st.s.toFixed(2)})`;
+      // 格式统一 scale 先（fit 缩放后 translate 视觉偏移恒定——小窗不漂移）；
+      // 写 dataset 供 Heart 的 fit 逻辑读取（resize 时保留拖拽偏移）
+      el.dataset.tx = st.x.toFixed(0);
+      el.dataset.ty = st.y.toFixed(0);
+      el.style.transform = `scale(${st.s.toFixed(2)}) translate(${st.x.toFixed(0)}px, ${st.y.toFixed(0)}px)`;
       setWinTrans(`translate(${st.x.toFixed(0)}px, ${st.y.toFixed(0)}px)`);
       setWinScale(`scale(${st.s.toFixed(2)})`);
     };
