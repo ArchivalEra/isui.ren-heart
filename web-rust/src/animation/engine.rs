@@ -188,12 +188,9 @@ impl BallsEngine {
         // 立即注入（曾 30 帧节流：首帧 fallback 不注入 → 锚点停在全屏
         // ANCHORS——小屏加载首帧错位）；之后恢复 30 帧节流
         if self.logo_tick % 30 == 0 || self.logo_tick < 90 {
-            let (new_b, logo_w) = self.sample_logo_bounds();
-            // 锚点跟随 logo（非 fallback 时——fallback (0.5,0.42) 是防御值，
-            // 注入会扰动用户实测的锚点）
             // 锚点注入已删（用户钦定 2026-08-06：小窗不做了——锚点固定
             // 大屏 ANCHORS；活动圆采样保留——球巡航仍围绕 logo）
-            self.logo_bounds = new_b;
+            self.logo_bounds = self.sample_logo_bounds().0;
         }
         self.state.set_bounds(self.logo_bounds);
         // 圆中心显著变化（首帧 fallback → 布局完成后的真圆）→ 重建链——
@@ -253,12 +250,8 @@ impl BallsEngine {
     fn rebuild_on_resize(&mut self) {
         let anchors = ANCHORS.map(|(x, y)| Vec2 { x, y });
         self.state = State::new(anchors);
-        // 立即重采样 + set_logo_transform（不等 30 帧节流——Gemini 真经五版：
-        // resize 显式触发 logo 跟随；State::new 已算好 V_i 常数——注入即生效，
-        // 无校准状态可恢复（calib 体系已删））
-        let cw = self.canvas.client_width() as f64;
-        let (b, logo_w) = self.sample_logo_bounds();
-        self.logo_bounds = b;
+        // 立即重采样活动圆（resize 显式触发——不等 30 帧节流）
+        self.logo_bounds = self.sample_logo_bounds().0;
         // 锚点注入已删（小窗不做了——锚点固定大屏 ANCHORS）；活动圆保留
         self.state.set_bounds(self.logo_bounds);
         // 真圆注入后重建三球链（State::new 预生成用 fallback 圆——
