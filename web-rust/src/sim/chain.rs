@@ -191,11 +191,11 @@ pub struct ChainBuilder;
 impl ChainBuilder {
     /// 规划下一段：给定上下文 + bounds + rng，产出经 leg_in_bounds 验证的合法段。
     /// （行为与重构前 ensure_chain 循环体逐行一致——先立结构，不改行为）
-    pub fn plan_leg(
+    pub fn plan_leg<R: rand::Rng>(
         ctx: &LegContext,
         bounds: &CircleBounds,
         is_logo: bool,
-        rng: &mut rand::rngs::ThreadRng,
+        rng: &mut R,
     ) -> PlannedLegChoice {
         use rand::Rng;
         let from = ctx.from;
@@ -308,7 +308,7 @@ impl ChainBuilder {
         // 曲线 profile：Native=自研单段；EulerBlend=段内曲率渐变（默认关闭）
         let mut pl = if CURVE_PROFILE == CurveProfile::EulerBlend && rng.gen::<f64>() < BLEND_PROB {
             let old_curv2 = TEMPLATES[ctx.prev_template].curvature;
-            let pick = |rng: &mut rand::rngs::ThreadRng, prev: f64| {
+            let pick = |rng: &mut R, prev: f64| {
                 for _ in 0..6 {
                     let c = rng.gen_range(0..TEMPLATES.len());
                     if (TEMPLATES[c].curvature - prev).abs() <= TEMPLATE_CURV_STEP {
@@ -393,11 +393,11 @@ pub fn edge_distance(from: Vec2, dir: Vec2, b: &CircleBounds) -> f64 {
 
 /// 模板选择：贴边 → 中等曲率（0.25-0.7）快速弯回；roll 命中 → 曲率步长内随机；否则继承
 /// （大曲率 ctrl 偏移 > 段长时段尾切线反转 = 180° 跳变 = 回弹之源，故贴边不取大曲率）
-fn pick_template(
+fn pick_template<R: rand::Rng>(
     prev_template: usize,
     near_edge: bool,
     roll: f64,
-    rng: &mut rand::rngs::ThreadRng,
+    rng: &mut R,
     curv_bias: f64,
 ) -> usize {
     use rand::Rng;
@@ -823,8 +823,7 @@ mod tests {
         use rand::SeedableRng;
         let b = CircleBounds::fallback();
         let mk = |bias: f64| -> f64 {
-            let mut rng = rand::rngs::StdRng::seed_from_u64(42);
-            let mut rng = rand::rngs::ThreadRng::default(); // plan_leg 要求 ThreadRng
+            let mut rng = rand::rngs::StdRng::seed_from_u64(42); // 确定性种子
             let ctx = LegContext {
                 from: Vec2 { x: 0.5, y: 0.5 },
                 dir: Vec2 { x: 1.0, y: 0.0 },
