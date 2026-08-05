@@ -16,7 +16,13 @@ type Mode = "logo" | "balls";
 
 export default function LogoDebug() {
   const [mode, setMode] = useState<Mode | null>(null); // null = 未调试
-  const [logoParams, setLogoParams] = useState({ left: "", top: "", width: "" });
+  const [logoParams, setLogoParams] = useState({
+    left: "",
+    top: "",
+    width: "",
+    leftPx: "",
+    topPx: "",
+  });
   const [ballText, setBallText] = useState("");
   const [copied, setCopied] = useState(false);
 
@@ -28,12 +34,11 @@ export default function LogoDebug() {
     if (!logo || !logoImg) return;
     logo.classList.add("debug-grab");
     set_anchor_overlay(true); // 涂层：灰色锚点标记
+    set_ball_mode(true); // 暂停锚点跟随——拖 logo 时小球不被拽着走（分离）
 
     const cs = getComputedStyle(logo);
     const imgRect = logoImg.getBoundingClientRect();
-    // left/top 复制百分比语义：拖过 = style.left（百分比）；未拖 =
-    // 计算 px ÷ 容器宽高 → 百分比（站主可直接写回 CSS——曾复制计算 px
-    // 依赖窗口尺寸无法换算）
+    // left/top 双格式：百分比（写回 CSS 用）+ 像素（当前窗口参考）
     const parent = logo.parentElement!;
     const pctL =
       logo.style.left ||
@@ -45,6 +50,8 @@ export default function LogoDebug() {
       left: pctL,
       top: pctT,
       width: Math.round(imgRect.width) + "px",
+      leftPx: Math.round(parseFloat(cs.left)) + "px",
+      topPx: Math.round(parseFloat(cs.top)) + "px",
     });
 
     let dragging = false;
@@ -93,6 +100,7 @@ export default function LogoDebug() {
     window.addEventListener("keydown", onKey);
     return () => {
       set_anchor_overlay(false);
+      set_ball_mode(false);
       logo.classList.remove("debug-grab");
       logo.removeEventListener("pointerdown", onDown);
       window.removeEventListener("pointermove", onMove);
@@ -147,14 +155,19 @@ export default function LogoDebug() {
       });
       d.addEventListener("pointerup", () => {
         dragging = false;
+        refreshText();
       });
     }
-    const a = get_anchors();
-    if (a.length === 6) {
-      setBallText(
-        `ANCHORS: [\n  (${a[0].toFixed(3)}, ${a[1].toFixed(3)}),\n  (${a[2].toFixed(3)}, ${a[3].toFixed(3)}),\n  (${a[4].toFixed(3)}, ${a[5].toFixed(3)}),\n]`,
-      );
-    }
+    const refreshText = () => {
+      const a = get_anchors();
+      const sc = anchor_screens(cw, ch);
+      if (a.length === 6 && sc.length === 6) {
+        setBallText(
+          `ANCHORS: [\n  (${a[0].toFixed(3)}, ${a[1].toFixed(3)}) [${sc[0].toFixed(0)}, ${sc[1].toFixed(0)}],\n  (${a[2].toFixed(3)}, ${a[3].toFixed(3)}) [${sc[2].toFixed(0)}, ${sc[3].toFixed(0)}],\n  (${a[4].toFixed(3)}, ${a[5].toFixed(3)}) [${sc[4].toFixed(0)}, ${sc[5].toFixed(0)}],\n]`,
+        );
+      }
+    };
+    refreshText();
     return () => {
       marks.forEach((m) => m.remove());
       set_ball_mode(false);
@@ -178,7 +191,7 @@ export default function LogoDebug() {
       </button>
     );
   }
-  const logoText = `left: ${logoParams.left}\ntop: ${logoParams.top}\nwidth: ${logoParams.width}`;
+  const logoText = `left: ${logoParams.left} (${logoParams.leftPx})\ntop: ${logoParams.top} (${logoParams.topPx})\nwidth: ${logoParams.width}`;
   return (
     <div class="logo-debug-panel">
       <div class="logo-debug-modes">
@@ -199,8 +212,8 @@ export default function LogoDebug() {
         <>
           <div class="logo-debug-hint">拖拽移动 · L 放大 / M 缩小</div>
           <div class="logo-debug-params">
-            <span>L {logoParams.left}</span>
-            <span>T {logoParams.top}</span>
+            <span>L {logoParams.left} ({logoParams.leftPx})</span>
+            <span>T {logoParams.top} ({logoParams.topPx})</span>
             <span>W {logoParams.width}</span>
           </div>
           <button class="logo-debug-copy" onClick={() => copy(logoText)}>
