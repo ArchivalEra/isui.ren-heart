@@ -197,7 +197,7 @@ impl ChainBuilder {
         is_logo: bool,
         rng: &mut R,
     ) -> PlannedLegChoice {
-        use rand::Rng;
+// use rand::Rng; // 泛型约束 R: rand::Rng 已引入 trait——此 use 多余（封仓清理）
         let from = ctx.from;
         let dir = ctx.dir;
         let b = *bounds;
@@ -400,7 +400,7 @@ fn pick_template<R: rand::Rng>(
     rng: &mut R,
     curv_bias: f64,
 ) -> usize {
-    use rand::Rng;
+// use rand::Rng; // 泛型约束 R: rand::Rng 已引入 trait——此 use 多余（封仓清理）
     let old_curv = TEMPLATES[prev_template].curvature;
     // 性格加权：候选池按 |curv| 排序——bias>0 爱大弯（取最大）、
     // bias<0 爱直路（取最小）、0 中立（随机）

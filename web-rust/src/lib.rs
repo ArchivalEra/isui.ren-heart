@@ -1,3 +1,7 @@
+// 封仓（v1.0.0）：native cargo check 的大量 dead_code 是 wasm 误报
+//（代码只被 wasm 侧引用）——统一 allow；unused imports 是真问题（下方清理）
+#![allow(dead_code)]
+
 // 入口：动画核心 wasm 模块（纯 CSR，零服务端开销）
 // 前端（web-ui/Preact）通过 wasm-bindgen 导出的 API 挂载三球动画：
 //   start_balls(canvas_id)    启动动画

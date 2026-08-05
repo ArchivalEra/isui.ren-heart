@@ -5,6 +5,7 @@
 // - 跟随模式（tick(dt, Some(ext))）：链冻结（s_lead 不推进），位置/速度 =
 //   外部注入目标（ExtTarget 由 state.rs 用粉球链计算，本球不持有其他球链引用）
 use crate::config::params::*;
+#[cfg(test)]
 use crate::config::params::TEMPLATES;
 use crate::sim::chain::{
     clamp_target_in_bounds, leg_in_bounds, make_planned_leg, roll_speed, ChainBuilder, LegContext,
