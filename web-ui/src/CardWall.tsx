@@ -1,5 +1,6 @@
-// 卡片墙：拟物化按钮（纯 CSS 卡片堆）+ 下拉展开（页面内，不跳转）
-// 受控组件：open/onToggle 由 Heart 提升（展开时打字机文字粉化分散）
+// 屏 2 卡片墙：大卡（纯 CSS 灰阶卡片——站名大字 + 描述 + 箭头）
+// 容器 .screen2-card-wall 由 Heart 放置；布局/大卡样式（.card-lg）在 styles.css
+// （保留旧 open/onToggle 可选 props——屏 1 旧下拉交互已下线，双屏翻页后不再使用）
 import type { JSX } from "preact";
 
 const LINKS = [
@@ -8,38 +9,34 @@ const LINKS = [
   { title: "官方网站", url: "https://tayori-official.com", icon: "◎", desc: "官网" },
 ];
 
-export default function CardWall({
-  open,
-  onToggle,
-}: {
-  open: boolean;
-  onToggle: (v: boolean) => void;
-}): JSX.Element {
+export default function CardWall(
+  _props: { open?: boolean; onToggle?: (v: boolean) => void },
+): JSX.Element {
   return (
-    <div class={`card-wall-wrap${open ? " open" : ""}`}>
-      <button
-        class="card-wall-btn"
-        aria-label="卡片墙"
-        aria-expanded={open}
-        onClick={() => onToggle(!open)}
-      ></button>
-      <div class={`card-wall${open ? " card-wall-open" : ""}`}>
-        {LINKS.map((item) => (
-          <a
-            class="wall-card"
-            href={item.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            key={item.url}
-          >
-            <span class="wall-card-icon" aria-hidden="true">{item.icon}</span>
-            <span class="wall-card-body">
-              <span class="wall-card-title">{item.title}</span>
-              <span class="wall-card-desc">{item.desc}</span>
-            </span>
-          </a>
-        ))}
+    <>
+      {LINKS.map((item) => (
+        <a
+          class="card card-lg"
+          href={item.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          key={item.url}
+        >
+          <span class="card-icon" aria-hidden="true">{item.icon}</span>
+          <span class="card-body">
+            <span class="card-title">{item.title}</span>
+            <span class="card-desc">{item.desc}</span>
+          </span>
+          <span class="card-arrow" aria-hidden="true">→</span>
+        </a>
+      ))}
+      <div class="card card-lg placeholder">
+        <span class="card-icon" aria-hidden="true">＋</span>
+        <span class="card-body">
+          <span class="card-title">更多即将到来</span>
+          <span class="card-desc">敬请期待</span>
+        </span>
       </div>
-    </div>
+    </>
   );
 }
