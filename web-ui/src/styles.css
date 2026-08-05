@@ -501,10 +501,11 @@ body {
 
 /* ── 小窗适配（窄/矮窗口——排版不崩；logo 连续缩放——曾 52vw 覆盖跳变）── */
 @media (max-width: 560px), (max-height: 560px) {
-  /* 小屏：logo 与文件夹中轴对齐（用户钦定——大屏保持 calc(50%-12.07%)
-     构图；球锚点跟随 logo——采样中心变化自动平移） */
-  .heart-logo {
-    left: 50%;
+  /* 小屏：logo 跟随窗口缩小（曾 min(70vw,70vh,196px) 上限 196 在窄屏
+     挡着不缩——scale=1 球也不缩放；曾 left:50% 覆盖造成偏右——统一
+     44.65% 与大屏一致） */
+  .heart-logo-img {
+    width: min(52vw, 42vh, 150px);
   }
   .heart-title {
     font-size: clamp(1.1rem, 5.2vw, 1.8rem);
