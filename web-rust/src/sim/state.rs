@@ -34,6 +34,8 @@ pub struct Ball {
     pub mode: BallMode,
     /// 入场静止倒计时（ms；≤0 = 已出发）
     pub launch_t: f64,
+    /// 重启顺位倒计时（ms；Queueing 阶段各自计时——错开出发；≤0 = 已重启）
+    pub restart_t: f64,
     /// FollowPink 已持续（ms）
     pub follow_t: f64,
     /// 距上次「是否跟随」判定（ms）
@@ -56,13 +58,14 @@ pub struct Ball {
 /// - Homeward：预渲染回家动画（t 推进；位置 = anim.sample(t)——三球共享同一
 ///   anim，时间对齐；t ≥ dur_ms → 三球同时 Resting）
 /// - Resting：三球在锚点定住 HOME_REST_MS
-/// - Queueing：三球重启巡航的停顿（静立 QUEUE_DELAY_MIN_MS 后同时启动新链）
+/// - Queueing：三球重启巡航的停顿（三球各自 restart_t = 顺位×RESTART_STAGGER_MS
+///   倒计时——错开出发；粉球到点阈值 = pink_rank×RESTART_STAGGER_MS）
 #[derive(Debug)]
 pub enum Phase {
     Cruise { t: f64 },
     Homeward { t: f64, anim: Option<HomeAnim> },
     Resting { t: f64 },
-    Queueing { t: f64 },
+    Queueing { t: f64, pink_rank: usize },
 }
 
 pub struct State {
@@ -81,21 +84,20 @@ impl State {
     /// 各自沿自己的链自由巡航；蓝绿开始周期性「是否跟随粉球」判定
     pub fn new(anchors: [Vec2; 3]) -> Self {
         let dir = random_dir();
+        // 出发顺位随机（主次随机——粉球不再固定第一）：launch = 基准 +
+        // 顺位×错开间隔——谁先出发谁领跑，每次打开页面不同
+        let order = shuffle_order();
         let mut balls = [
-            Ball::new(anchors[0], dir, ENTRY_DELAY_MS),
+            Ball::new(anchors[0], dir, ENTRY_DELAY_MS + order[0] as f64 * LAUNCH_STAGGER_MS),
             Ball::new(
                 anchors[1],
                 random_dir(),
-                ENTRY_DELAY_MS
-                    + QUEUE_DELAY_MIN_MS
-                    + rand::random::<f64>() * (QUEUE_DELAY_MAX_MS - QUEUE_DELAY_MIN_MS),
+                ENTRY_DELAY_MS + order[1] as f64 * LAUNCH_STAGGER_MS,
             ),
             Ball::new(
                 anchors[2],
                 random_dir(),
-                ENTRY_DELAY_MS
-                    + QUEUE_DELAY_MIN_MS
-                    + rand::random::<f64>() * (QUEUE_DELAY_MAX_MS - QUEUE_DELAY_MIN_MS),
+                ENTRY_DELAY_MS + order[2] as f64 * LAUNCH_STAGGER_MS,
             ),
         ];
         // 入场空闲期一次性生成几分钟的链（运行期 ensure_chain 静默）——三球各自
@@ -162,9 +164,11 @@ impl State {
                     (false, false, false)
                 }
             }
-            Phase::Queueing { t } => {
+            Phase::Queueing { t, pink_rank } => {
                 *t += dt;
-                if *t >= QUEUE_DELAY_MIN_MS {
+                // 粉球到点阈值 = 顺位×RESTART_STAGGER_MS（顺位 0 立即出发；
+                // 蓝绿各自 restart_t 由 tick_blue_green 倒计时——错开出发）
+                if *t >= *pink_rank as f64 * RESTART_STAGGER_MS {
                     (false, false, true)
                 } else {
                     (false, false, false)
@@ -186,28 +190,26 @@ impl State {
             }
             self.phase = Phase::Homeward { t: 0.0, anim: Some(anim) };
         } else if to_queue {
-            // Resting → Queueing：三球同时（蓝绿一并切——严格同帧）
-            for s in 1..3 {
+            // Resting → Queueing：三球同时切 Queueing（回家仪式同步段——保持），
+            // 生成新顺位（每次重启重新洗牌——领跑者不同）→ 各自 restart_t =
+            // 顺位×RESTART_STAGGER_MS（Queueing 阶段各自倒计时，错开出发）
+            let order = shuffle_order();
+            for s in 0..3 {
                 self.balls[s].mode = BallMode::Queueing;
+                self.balls[s].restart_t = order[s] as f64 * RESTART_STAGGER_MS;
             }
-            self.phase = Phase::Queueing { t: 0.0 };
+            self.phase = Phase::Queueing { t: 0.0, pink_rank: order[0] };
         } else if restart {
-            // Queueing 重启：三球同时启动新链（粉球 Cruise / 蓝绿 Free——同帧）
+            // 粉球到点重启（Queueing → Cruise——按顺位×RESTART_STAGGER_MS）。
+            // 蓝绿不再同步出发：各自 restart_t 在 tick_blue_green 倒计时，
+            // 到点各自重启为 Free（之后启动也主次随机——错开出发）
             let mut p = Player::new(self.anchors[0], random_dir());
             p.set_personality(0);
             // bounds 由 engine 每帧 set_bounds 实时更新（此处 fallback 即可）
             p.ensure_chain_to(PREPLAN_SECONDS * WORLD_SPEED * 1.1);
             self.balls[0].player = p;
+            self.balls[0].restart_t = 0.0;
             self.phase = Phase::Cruise { t: 0.0 };
-            for s in 1..3 {
-                let mut p = Player::new(self.anchors[s], random_dir());
-                p.set_personality(s);
-                p.ensure_chain_to(PREPLAN_SECONDS * WORLD_SPEED * 1.1);
-                p.snap(self.anchors[s]);
-                self.balls[s].player = p;
-                self.balls[s].mode = BallMode::Free;
-                self.balls[s].check_t = 0.0;
-            }
         }
 
         // ── 三球各自推进 ──
@@ -285,9 +287,18 @@ impl State {
                     self.balls[s].player.snap(self.anchors[s]);
                 }
             }
-            BallMode::Resting | BallMode::Queueing => {
-                // 锚点定住（切换由粉球统一驱动）
+            BallMode::Resting => {
+                // 锚点定住（切换由粉球统一驱动——Homeward/Resting 保持同步）
                 self.balls[s].player.snap(self.anchors[s]);
+            }
+            BallMode::Queueing => {
+                // 锚点定住 + 重启倒计时（各自计时——restart_t 到点重启新链 →
+                // Free。不再三球同步启动——错开出发）
+                self.balls[s].player.snap(self.anchors[s]);
+                self.balls[s].restart_t -= dt;
+                if self.balls[s].restart_t <= 0.0 {
+                    self.restart_blue_green(s);
+                }
             }
             // ── 巡航 / 跟随：周期判定跟随（不再自己触发回家——唯一计时 = 粉球 Cruise）──
             BallMode::Free | BallMode::FollowPink => {
@@ -372,6 +383,20 @@ impl State {
         }
     }
 
+    /// 蓝绿重启（Queueing → Free）：重启新链（错开出发——各自 restart_t 到点）。
+    /// 位置连续：锚点出发（Queueing 全程定锚）——无跳变
+    fn restart_blue_green(&mut self, s: usize) {
+        let mut p = Player::new(self.anchors[s], random_dir());
+        p.set_personality(s);
+        p.ensure_chain_to(PREPLAN_SECONDS * WORLD_SPEED * 1.1);
+        p.snap(self.anchors[s]);
+        self.balls[s].player = p;
+        self.balls[s].mode = BallMode::Free;
+        self.balls[s].check_t = 0.0;
+        self.balls[s].follow_t = 0.0;
+        self.balls[s].restart_t = 0.0;
+    }
+
     /// 松开跟随：自由链从当前位置最近弧长继续（位置不跳）
     fn release_follow(&mut self, s: usize) {
         let arc = self.balls[s].player.nearest_arc(self.balls[s].player.pos());
@@ -407,6 +432,7 @@ impl Ball {
             player: Player::new(anchor, dir),
             mode: BallMode::Free,
             launch_t,
+            restart_t: 0.0,
             follow_t: 0.0,
             check_t: 0.0,
             follow_gap: 0.2,
@@ -441,6 +467,17 @@ pub fn should_track(speed_per_sec: f64) -> bool {
 pub fn random_dir() -> Vec2 {
     let a = rand::random::<f64>() * std::f64::consts::PI * 2.0;
     Vec2 { x: a.cos(), y: a.sin() }
+}
+
+/// 出发顺位洗牌（[0,1,2] 随机排列——主次随机：谁先出发谁领跑；
+/// 每次加载/每次重启重新洗牌——出场顺序每次不同）
+pub fn shuffle_order() -> [usize; 3] {
+    let mut order = [0usize, 1, 2];
+    for i in (1..order.len()).rev() {
+        let j = rand::random::<usize>() % (i + 1);
+        order.swap(i, j);
+    }
+    order
 }
 
 // ─────────────────────────── 测试 ───────────────────────────
@@ -726,7 +763,7 @@ mod tests {
             (pos.x - anchor0.x).powi(2) + (pos.y - anchor0.y).powi(2) < 0.01,
             "Resting 应在锚点: {pos:?}"
         );
-        // Resting → Queueing → 重启巡航
+        // Resting → Queueing → 重启巡航（粉球顺位 0-2 → 0-2s——窗口覆盖最晚）
         fast_forward(&mut st, HOME_REST_MS + 2000.0, &mut dec);
         assert!(matches!(st.phase, Phase::Cruise { .. }), "粉球应重启巡航");
     }
@@ -795,11 +832,18 @@ mod tests {
             let d = ((p.x - a.x).powi(2) + (p.y - a.y).powi(2)).sqrt();
             assert!(d < 0.01, "ball[{s}] 应同时到家: {d:.4}");
         }
-        // Resting → Queueing → 三球同时重启（粉球 Cruise / 蓝绿 Free）
+        // Resting → Queueing → 重启（错开出发——重启顺序随机化后不再同帧；
+        // 窗口 HOME_REST_MS + 2000 覆盖最晚顺位）
         fast_forward(&mut st, HOME_REST_MS + 2000.0, &mut dec);
         assert!(matches!(st.phase, Phase::Cruise { .. }), "粉球应重启巡航");
         for s in 1..3 {
-            assert_eq!(st.balls[s].mode, BallMode::Free, "ball[{s}] 应同时重启");
+            // 重启成功即可（Free | FollowPink）——重启顺序随机化后 decide
+            // 窗口落点随机——跟随与否都合法（测试审查：断言过强会偶发失败）
+            assert!(
+                matches!(st.balls[s].mode, BallMode::Free | BallMode::FollowPink),
+                "ball[{s}] 应已重启（错开后）: {:?}",
+                st.balls[s].mode
+            );
             assert!(st.balls[s].player.chain_arc() > 0.5, "ball[{s}] 重启后链推进");
         }
     }
@@ -846,17 +890,114 @@ mod tests {
             let d = ((p.x - a.x).powi(2) + (p.y - a.y).powi(2)).sqrt();
             assert!(d < 0.01, "ball[{s}] 应同时到家: {d:.4}");
         }
-        // 同时重启：粉球 Cruise / 蓝绿 Free
+        // 重启（错开出发——重启顺序随机化后不再同帧；窗口覆盖最晚顺位）
         fast_forward(&mut st, HOME_REST_MS + 2000.0, &mut dec);
         assert!(matches!(st.phase, Phase::Cruise { .. }), "粉球应重启巡航");
         for s in 1..3 {
-            assert_eq!(st.balls[s].mode, BallMode::Free, "ball[{s}] 应同时重启");
+            // 重启成功即可（Free | FollowPink）——理由同上
+            assert!(
+                matches!(st.balls[s].mode, BallMode::Free | BallMode::FollowPink),
+                "ball[{s}] 应已重启: {:?}",
+                st.balls[s].mode
+            );
         }
     }
 
     // 注：home_sync_with_pink_native 曾存在——删（测试审查：回家计时
     // （粉球 Phase）静态可证与 profile 零交互；切全局 ACTIVE_IDX
     // 会与并行测试竞态（11/15 失败）——证明力低、污染高，删除）
+
+    #[test]
+    fn launch_order_staggered() {
+        // 首次启动主次随机：launch_t = ENTRY_DELAY_MS + 顺位×LAUNCH_STAGGER_MS
+        // ——三球两两不同（顺位 [0,1,2] 排列 → 必然错开）；10 次构造至少一次
+        // 粉球非第一顺位（主次随机——粉球不再固定第一）
+        let mut pink_not_first = false;
+        for _ in 0..10 {
+            let st = state();
+            let lts: [f64; 3] =
+                [st.balls[0].launch_t, st.balls[1].launch_t, st.balls[2].launch_t];
+            assert!(
+                lts[0] != lts[1] && lts[1] != lts[2] && lts[0] != lts[2],
+                "三球 launch_t 应两两不同（主次错开）: {lts:?}"
+            );
+            for (s, &lt) in lts.iter().enumerate() {
+                let rank = (lt - ENTRY_DELAY_MS) / LAUNCH_STAGGER_MS;
+                assert!(
+                    (rank.round() - rank).abs() < 1e-9 && (-1e-9..=2.0 + 1e-9).contains(&rank),
+                    "ball[{s}] launch_t 应为整顺位×LAUNCH_STAGGER_MS: {lt}"
+                );
+            }
+            if lts[0] - ENTRY_DELAY_MS > 1e-9 {
+                pink_not_first = true;
+            }
+        }
+        assert!(pink_not_first, "10 次构造应至少一次粉球非第一顺位（主次随机）");
+    }
+
+    #[test]
+    fn restart_order_staggered() {
+        // 重启：回家仪式后 Queueing——每次重启重新洗牌——三球 restart_t =
+        // 顺位×RESTART_STAGGER_MS 两两不同（各自倒计时错开出发——不再同步）。
+        // Homeward/Resting 的同步断言保持由 home_sync_with_pink 覆盖
+        let mut st = state();
+        skip_launch(&mut st);
+        let mut dec = seq_decide(usize::MAX);
+        // 30s 触发回家 → Homeward(2500) → Resting(HOME_REST_MS) → Queueing
+        fast_forward(&mut st, 30000.0 + 3000.0 + HOME_REST_MS + 16.7, &mut dec);
+        // 粉球顺位 0 时立即重启（phase=Cruise{小 t}）——两种状态都合法
+        // （shuffle 随机——1/3 概率粉球第一——断言只认 Queueing 会偶发失败）
+        assert!(
+            matches!(st.phase, Phase::Queueing { .. } | Phase::Cruise { .. }),
+            "应已进入 Queueing 或立即重启: {:?}",
+            st.phase
+        );
+        // 三球 restart_t 两两不同（顺位 [0,1,2] 排列 → 必然错开；
+        // 已重启球 restart_t=0——其余球倒扣后仍两两不同）
+        let rts: [f64; 3] =
+            [st.balls[0].restart_t, st.balls[1].restart_t, st.balls[2].restart_t];
+        assert!(
+            rts[0] != rts[1] && rts[1] != rts[2] && rts[0] != rts[2],
+            "三球 restart_t 应两两不同（重启错开）: {rts:?}"
+        );
+        for (s, &rt) in rts.iter().enumerate() {
+            // Queueing 推进中 restart_t 已倒扣（读取时刻非刚进入）——
+            // 只断言未超最大顺位（错开核心由两两不同断言覆盖）
+            assert!(
+                rt <= 2.0 * RESTART_STAGGER_MS + 1e-9,
+                "ball[{s}] restart_t 应 ≤ 最大顺位×RESTART_STAGGER_MS: {rt}"
+            );
+        }
+        // 行为证据——错开出发：推进到第二早到点时刻时，最晚顺位球仍未重启
+        let mut sorted = rts;
+        sorted.sort_by(|a, b| a.partial_cmp(b).unwrap());
+        fast_forward(&mut st, sorted[1], &mut dec);
+        let mut n_waiting = 0;
+        if !matches!(st.phase, Phase::Cruise { .. }) {
+            n_waiting += 1; // 粉球未重启
+        }
+        for s in 1..3 {
+            if st.balls[s].mode == BallMode::Queueing {
+                n_waiting += 1;
+            }
+        }
+        assert!(
+            n_waiting >= 1,
+            "推进到第二早顺位时刻：最晚顺位球应仍 Queueing（错开出发）"
+        );
+        // 最终：窗口覆盖最晚顺位 + 巡航余量 → 三球全部重启成功
+        fast_forward(&mut st, sorted[2] - sorted[1] + 3000.0, &mut dec);
+        assert!(matches!(st.phase, Phase::Cruise { .. }), "粉球应已重启巡航");
+        for s in 1..3 {
+            // 重启成功即可（Free | FollowPink）——decide 窗口随机——跟随与否都合法
+            assert!(
+                matches!(st.balls[s].mode, BallMode::Free | BallMode::FollowPink),
+                "ball[{s}] 应已重启: {:?}",
+                st.balls[s].mode
+            );
+            assert!(st.balls[s].player.chain_arc() > 0.5, "ball[{s}] 重启后链推进");
+        }
+    }
 
     #[test]
     fn rebuild_chains_recovers() {
