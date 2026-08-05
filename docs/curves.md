@@ -59,7 +59,7 @@ ctrl = from + dir×(dist/2) + normal×dist×curvature×0.35
 
 1. **多样性优先**：曲率覆盖均匀（-1.5 ~ +1.5 都有代表），避免同质化（现在 crawl/stroll/wiggle 太接近）
 2. **注意实际效果**：模板是**单段贝塞尔**，curvature 大时弧会急转；想看效果用图谱：
-   `/opt/reasonix-cradle/website-workplace/curves-gallery.html`（每个模板画出真实弧线）
+   `<本地构建产物路径>`（每个模板画出真实弧线）
 3. **正负成对**：左弯模板最好有右弯镜像（如 coil ↔ coil_r），轨迹才对称
 4. **数量建议**：12~18 个最佳（多了选择冗余，少了单调）
 5. **命名**：id 见名知意（snake_case），name 中文两字最佳

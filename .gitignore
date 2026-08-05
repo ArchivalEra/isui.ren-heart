@@ -4,3 +4,7 @@ web-ui/node_modules/
 web-ui/dist/
 web-ui/src/wasm/
 web-rust/dist/
+
+.DS_Store
+__pycache__/
+*.pyc
