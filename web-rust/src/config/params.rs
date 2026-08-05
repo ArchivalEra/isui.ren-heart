@@ -3,26 +3,13 @@
 // LOOKAHEAD_SECONDS/TANGENTIAL_GAIN/MAX_TURN_RATE）已迁入风格对象
 // MotionProfile（profile.rs）：下方这些常量 = ACTIVE_PROFILE 字段的别名——
 // 换手感 = 改 ACTIVE_PROFILE = 一处全变。
-// 几何/节奏参数（CHAIN_GAP/LOGO_*/PROB/ORDERS/TEMPLATES/HOME_*/QUEUE_* 等）
+// 几何/节奏参数（LOGO_*/PROB/TEMPLATES/HOME_*/QUEUE_* 等）
 // 不属于风格，仍留在此处。
 use crate::config::profile::ACTIVE_PROFILE;
 
 pub const BALL_COLORS: [&str; 3] = ["#F09ABD", "#6EC6E6", "#7FC39F"];
 
 pub const BALL_RADIUS: f64 = 10.0;
-
-/// 三球排列：6 种全排列
-pub const ORDERS: [[usize; 3]; 6] = [
-    [0, 1, 2],
-    [0, 2, 1],
-    [1, 0, 2],
-    [1, 2, 0],
-    [2, 0, 1],
-    [2, 1, 0],
-];
-
-/// 链上错开弧长：球 i 落后队首 i×CHAIN_GAP（成群结对一个接一个）
-pub const CHAIN_GAP: f64 = 0.15;
 
 // ---- 排队节奏 ----
 /// 蓝绿球思考期：各自随机延迟出发（充分思考啥时候跟上粉球）
@@ -58,14 +45,9 @@ pub const SEG_V_DELTA: f64 = ACTIVE_PROFILE.seg_v_delta;
 pub struct Prob {
     /// 规划时完全随机换模板的概率（防单一模板连发绕圈）
     pub switch_template: f64,
-    /// 规划时切换排列（队首）的概率
-    pub switch_order: f64,
 }
 
-pub const PROB: Prob = Prob {
-    switch_template: 0.4,
-    switch_order: 0.008,
-};
+pub const PROB: Prob = Prob { switch_template: 0.4 };
 
 /// 世界速度（单位/秒）：恒定速度 → 时长与路径长度挂钩
 /// （固定时长导致长路径飞掠 = 视觉「闪现」的根因）
@@ -122,7 +104,8 @@ pub const BLEND_PROB: f64 = 0.2;
 /// logo 区域：每隔 LOGO_EVERY_ARC 弧长规划一个「logo 游走段」（区域规划回归）
 pub const LOGO_RADIUS: f64 = 0.13;
 pub const LOGO_EVERY_ARC: f64 = 9.6; // ≈ 60s 巡航弧长
-/// 队形常量：三球法线分离量（不再属于模板）
+/// 跟随偏移量：蓝绿跟随粉球时按槽位法线分离（FORMATION_OFFSETS[s]×offset_scale，
+/// 由 state.rs 构造 ExtTarget 时注入——不再属于模板）
 pub const FORMATION_OFFSETS: [f64; 3] = [0.0, 0.6, -0.6];
 
 
@@ -136,6 +119,16 @@ pub const HOME_EVERY_MS: f64 = 30000.0;
 pub const HOME_STAGGER_MS: f64 = 150.0;
 pub const HOME_DURATION_MS: f64 = 1500.0;
 pub const HOME_REST_MS: f64 = 7000.0;
+
+// ── 蓝绿跟随粉球（独立球模式）──
+/// Free 中每 FOLLOW_CHECK_MS 判定一次是否进入 FollowPink
+pub const FOLLOW_CHECK_MS: f64 = 5000.0;
+/// 判定进入跟随的概率（随机 < 此值 → FollowPink）
+pub const FOLLOW_PROB: f64 = 0.3;
+/// 跟随最短时长（ms）
+pub const FOLLOW_DUR_MIN_MS: f64 = 5000.0;
+/// 跟随最长时长（ms）
+pub const FOLLOW_DUR_MAX_MS: f64 = 20000.0;
 
 /// logo 三球锚点（世界坐标，站主实测给点）
 pub const ANCHORS: [(f64, f64); 3] = [

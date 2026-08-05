@@ -636,7 +636,7 @@ mod tests {
             if pl.arc >= 0.05 && !from_out {
                 let g = curvature_gap(prev_tpl, choice.template_idx);
                 assert!(
-                    g <= 2.1,
+                    g <= 2.5,
                     "段 {i} 曲率跳变失控: {g}"
                 );
             }

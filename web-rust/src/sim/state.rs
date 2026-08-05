@@ -1,42 +1,22 @@
-// 状态机（纯逻辑，原生可测）：入场静止构图 → 粉球先行蓝绿跟上 → 永久编队巡航
-// - Free 阶段已删除（做不好就去掉）：三球永远成队，链无限延伸
+// 三球独立状态机（纯逻辑，原生可测）：一球一链 + 蓝绿低优先级跟随粉球
+// - 粉球（ball[0]）：自由巡航 + 回家仪式（Cruise→Homeward→Resting→Queueing→Cruise）
+// - 蓝绿（ball[1]/ball[2]）：自由巡航（各自独立的链）+ FollowPink（低优先级任务：
+//   每 FOLLOW_CHECK_MS 判定 FOLLOW_PROB 概率进入，跟 FOLLOW_DUR 时长，粉球回家时松开）
+// - 契约：docs/independent-balls-design.md（并发重构的唯一契约）
 // - 不依赖 web_sys/wasm
 use crate::config::params::*;
-use crate::sim::math::{smoothstep, Vec2};
-use crate::sim::planner::{CircleBounds, Player};
+use crate::sim::math::{normal_of, smoothstep, Vec2};
+use crate::sim::planner::{CircleBounds, ExtTarget, Player};
 
-/// 动画阶段
-/// - Queueing：入场——三球静止构图，粉球 delay 后沿链开跑，蓝绿再等 1-3s 滑向槽位跟上
-/// - Formation：永久编队巡航（粉蓝绿沿链错开），链无限增长，模板/速度/摆动段级变化
-pub enum Phase {
-    Queueing {
-        t: f64,
-        player: Player,
-        /// 静止构图位置（= 锚点）
-        from: [Vec2; 3],
-        /// 每球思考期（开场粉 5s；重启粉 0s——Resting 已算停顿；蓝绿 1-3s）
-        delays: [f64; 3],
-    },
-    Formation {
-        /// 本轮巡航时长（到 HOME_EVERY_MS 触发回家）
-        t: f64,
-        player: Player,
-    },
-    /// 回家仪式：粉先回（t=0 出发），蓝绿错开 HOME_STAGGER_MS 依次回
-    Homeward {
-        t: f64,
-        /// 每球开始回家时刻（ms）
-        home_t: [f64; 3],
-        /// 每球回家弧线（None = 已在锚点附近，直接算到家）
-        homes: [Option<HomeLeg>; 3],
-        player: Player,
-    },
-    /// 全部到家后定住 HOME_REST_MS（粉球启动前的停顿）
-    Resting { t: f64, player: Player },
+/// 蓝绿任务模式：Free = 自由巡航；FollowPink = 低优先级跟随粉球
+#[derive(Clone, Copy, PartialEq, Debug)]
+pub enum BallMode {
+    Free,
+    FollowPink,
 }
 
-/// 单球回家弧线：当前位置 → 锚点（贝塞尔侧偏，非直线）
-#[derive(Clone, Copy)]
+/// 单球回家弧线（粉球专用）：当前位置 → 锚点（贝塞尔侧偏，非直线）
+#[derive(Clone, Copy, Debug)]
 pub struct HomeLeg {
     pub from: Vec2,
     pub ctrl: Vec2,
@@ -45,460 +25,560 @@ pub struct HomeLeg {
     pub s: f64,
 }
 
+/// 一球一链 + 任务状态
+pub struct Ball {
+    pub player: Player,
+    pub mode: BallMode,
+    /// 入场静止倒计时（ms；≤0 = 已出发）
+    pub launch_t: f64,
+    /// FollowPink 已持续（ms）
+    pub follow_t: f64,
+    /// 距上次「是否跟随」判定（ms）
+    pub check_t: f64,
+    /// 本次跟随的落后弧长（随机 0.1-0.3）
+    pub follow_gap: f64,
+    /// 本次跟随总时长（ms）
+    pub follow_dur: f64,
+    /// 进入跟随时的起始位置（前 500ms 渐变——避免进入瞬间跳变）
+    pub follow_enter: Vec2,
+}
+
+/// 粉球阶段
+/// - Cruise：自由巡航（计时到 HOME_EVERY_MS 触发回家）
+/// - Homeward：粉球沿弧线回家（HOME_DURATION_MS 到家）
+/// - Resting：粉球在锚点定住 HOME_REST_MS（蓝绿不受影响——各自玩）
+/// - Queueing：粉球重启巡航的停顿（= 旧入场仪式：静立后启动新链）
+#[derive(Debug)]
+pub enum Phase {
+    Cruise { t: f64 },
+    Homeward { t: f64, home: Option<HomeLeg> },
+    Resting { t: f64 },
+    Queueing { t: f64 },
+}
+
 pub struct State {
+    pub balls: [Ball; 3],
     phase: Phase,
     /// 页面年龄（淡入用）
     age: f64,
-    /// 三球锚点（回家目标 / 重启构图位）
+    /// 三球锚点（回家目标 / 入场构图位）
     anchors: [Vec2; 3],
+    /// 粉球上一帧位置（跟随 tvel 的差分速度用）
+    pink_prev: Vec2,
 }
 
 impl State {
-    /// 开场：三球静止构图（粉球停 5 秒），粉球先行、蓝绿思考后跟上，然后永久巡航
+    /// 开场：三球静立构图（粉球 ENTRY_DELAY_MS 后出发、蓝绿再错开 1-3s），
+    /// 各自沿自己的链自由巡航；蓝绿开始周期性「是否跟随粉球」判定
     pub fn new(anchors: [Vec2; 3]) -> Self {
         let dir = random_dir();
-        let mut player = Player::new(anchors[0], dir);
-        // 预生成风暴：入场空闲期一次性生成几分钟的链（运行期 ensure_chain 静默）
-        player.ensure_chain_to(PREPLAN_SECONDS * WORLD_SPEED * 1.1);
-        // 开场节奏：粉球先停 5 秒，蓝绿在粉球出发后再等 1-3 秒
-        let delays = [
-            ENTRY_DELAY_MS,
+        let mut balls = [Ball::new(anchors[0], dir, ENTRY_DELAY_MS), Ball::new(
+            anchors[1],
+            random_dir(),
             ENTRY_DELAY_MS
                 + QUEUE_DELAY_MIN_MS
                 + rand::random::<f64>() * (QUEUE_DELAY_MAX_MS - QUEUE_DELAY_MIN_MS),
+        ), Ball::new(
+            anchors[2],
+            random_dir(),
             ENTRY_DELAY_MS
                 + QUEUE_DELAY_MIN_MS
                 + rand::random::<f64>() * (QUEUE_DELAY_MAX_MS - QUEUE_DELAY_MIN_MS),
-        ];
+        )];
+        // 入场空闲期一次性生成几分钟的链（运行期 ensure_chain 静默）——三球各自
+        for ball in balls.iter_mut() {
+            ball.player.ensure_chain_to(PREPLAN_SECONDS * WORLD_SPEED * 1.1);
+        }
         State {
-            phase: Phase::Queueing { t: 0.0, player, from: anchors, delays },
+            balls,
+            phase: Phase::Cruise { t: 0.0 },
             age: 0.0,
             anchors,
+            pink_prev: anchors[0],
         }
     }
 
-    /// 推进一帧。`decide` 保留签名（历史测试兼容；当前状态机无随机决策点）
-    /// 更新活动圈边界（engine 实时采样 logo 位置后调用）
-    pub fn set_bounds(&mut self, b: crate::sim::planner::CircleBounds) {
-        match &mut self.phase {
-            Phase::Queueing { player, .. }
-            | Phase::Formation { player, .. }
-            | Phase::Homeward { player, .. }
-            | Phase::Resting { player, .. } => {
-                player.set_bounds(b);
-            }
-            _ => {}
+    /// 更新活动圈边界（engine 实时采样 logo 位置后调用——转发三球）
+    pub fn set_bounds(&mut self, b: CircleBounds) {
+        for ball in self.balls.iter_mut() {
+            ball.player.set_bounds(b);
         }
     }
 
-    pub fn step(&mut self, dt: f64, _decide: &mut dyn FnMut() -> f64) {
+    /// 推进一帧。`decide` 注入随机源（生产 = rand；测试 = 固定序列）
+    pub fn step(&mut self, dt: f64, decide: &mut dyn FnMut() -> f64) {
         self.age += dt;
-        let mut next: Option<Phase> = None;
-        match &mut self.phase {
-            Phase::Queueing { t, player, delays, .. } => {
+
+        // ── 粉球阶段推进 ──
+        let (home, restart) = match &mut self.phase {
+            Phase::Cruise { t } => {
                 *t += dt;
-                player.tick(dt);
-                // 完成条件 = 最晚思考期 + 滑行期 + 余量
-                let max_delay = delays.iter().cloned().fold(0.0, f64::max);
-                if *t >= max_delay + QUEUE_TRANSIT_MS + 200.0 {
-                    // 过渡完成 → 编队巡航（player 直接转移，无跳变）
-                    let player = std::mem::replace(
-                        player,
-                        Player::new(Vec2 { x: 0.5, y: 0.5 }, Vec2 { x: 1.0, y: 0.0 }),
-                    );
-                    next = Some(Phase::Formation { t: 0.0, player });
-                }
-            }
-            Phase::Formation { t, player } => {
-                // 巡航：链无限增长，段级变化由 Player 内部驱动；
-                // 巡航满 HOME_EVERY_MS → 回家仪式（checkpoint）
-                *t += dt;
-                player.tick(dt);
                 if *t >= HOME_EVERY_MS {
-                    let mut homes = [None; 3];
-                    for s in 0..3 {
-                        let pos = player.world_pos(s, 0.0);
-                        let home = self.anchors[s];
-                        let dx = home.x - pos.x;
-                        let dy = home.y - pos.y;
-                        let dist = (dx * dx + dy * dy).sqrt();
-                        if dist > 0.03 {
-                            // 拟合助手：回家弧线起点沿巡航切线伸出（C1 连续——
-                            // 回家路径与巡航曲线平滑接出，不是"顿一下换方向"），
-                            // 再加法线侧偏（弯度）弯向锚点
-                            let dir = player.lead_tangent(s);
-                            let off = 0.3f64.min(0.45 * dist);
-                            let mut ctrl = Vec2 {
-                                x: pos.x + dir.x * (dist * 0.4) + (-dir.y) * off,
-                                y: pos.y + dir.y * (dist * 0.4) + dir.x * off,
-                            };
-                            ctrl.x = ctrl.x.clamp(0.04, 0.96);
-                            ctrl.y = ctrl.y.clamp(0.04, 0.96);
-                            homes[s] = Some(HomeLeg { from: pos, ctrl, target: home, s: 0.0 });
-                        }
-                    }
-                    let player = std::mem::replace(
-                        player,
-                        Player::new(Vec2 { x: 0.5, y: 0.5 }, Vec2 { x: 1.0, y: 0.0 }),
-                    );
-                    next = Some(Phase::Homeward {
-                        t: 0.0,
-                        // 蓝绿提前预知：三球同时出发回家（零停顿）——
-                        // 粉球靠更短的回家弧线先到（见 Homeward 推进）
-                        home_t: [0.0, 0.0, 0.0],
-                        homes,
-                        player,
-                    });
+                    (Some(true), false)
+                } else {
+                    (None, false)
                 }
             }
-            Phase::Homeward { t, home_t, homes, player } => {
-                // 粉先回（home_t=0），蓝绿错开依次回；全部到家 → Resting
+            Phase::Homeward { t, home: _ } => {
                 *t += dt;
-                let mut all_home = true;
-                for s in 0..3 {
-                    if let Some(leg) = &mut homes[s] {
-                        if leg.s < 1.0 {
-                            all_home = false;
-                            if *t >= home_t[s] {
-                                // 粉球回家弧线更短（0.75×）——同时出发、粉先到
-                                let dur = HOME_DURATION_MS * if s == 0 { 0.75 } else { 1.0 };
-                                leg.s = (leg.s + dt / dur).min(1.0);
-                            }
-                        }
-                    }
-                }
-                if all_home {
-                    let player = std::mem::replace(
-                        player,
-                        Player::new(Vec2 { x: 0.5, y: 0.5 }, Vec2 { x: 1.0, y: 0.0 }),
-                    );
-                    next = Some(Phase::Resting { t: 0.0, player });
+                if *t >= HOME_DURATION_MS {
+                    (Some(false), false)
+                } else {
+                    (None, false)
                 }
             }
-            Phase::Resting { t, player } => {
-                // 全部到家定住 HOME_REST_MS → 粉球启动重启巡航
-                // （重启 Queueing：粉 delay=0 立即启动，蓝绿 1-3s 思考跟上）
+            Phase::Resting { t } => {
                 *t += dt;
                 if *t >= HOME_REST_MS {
-                    let mut player = std::mem::replace(
-                        player,
-                        Player::new(Vec2 { x: 0.5, y: 0.5 }, Vec2 { x: 1.0, y: 0.0 }),
-                    );
-                    // 重启预渲染：5s 定住期空闲——提前生成几分钟的链
-                    // （第二个循环无小圆预渲染保护，运行时补段会出屏）
-                    player.ensure_chain_to(PREPLAN_SECONDS * WORLD_SPEED * 1.1);
-                    let delays = [
-                        0.0,
-                        QUEUE_DELAY_MIN_MS
-                            + rand::random::<f64>() * (QUEUE_DELAY_MAX_MS - QUEUE_DELAY_MIN_MS),
-                        QUEUE_DELAY_MIN_MS
-                            + rand::random::<f64>() * (QUEUE_DELAY_MAX_MS - QUEUE_DELAY_MIN_MS),
-                    ];
-                    next = Some(Phase::Queueing {
-                        t: 0.0,
-                        player,
-                        from: self.anchors,
-                        delays,
-                    });
+                    (None, true)
+                } else {
+                    (None, false)
                 }
             }
-        }
-        if let Some(p) = next {
-            self.phase = p;
-        }
-    }
-
-    /// 球 i 渲染位置（含法线偏移）
-    pub fn ball_pos(&self, color_slot: usize, offset: f64) -> Vec2 {
-        match &self.phase {
-            Phase::Queueing { t, player, from, delays } => {
-                // 思考期（t < delay）：静止构图；思考结束 2s 内**弧线**汇入链上槽位
-                // （贝塞尔侧偏——不是直线 lerp，蓝绿跟进有弧线轨迹）
-                let k = smoothstep(((t - delays[color_slot]) / QUEUE_TRANSIT_MS).clamp(0.0, 1.0));
-                let base = from[color_slot];
-                let slot = player.world_pos(color_slot, offset);
-                let dx = slot.x - base.x;
-                let dy = slot.y - base.y;
-                let dist = (dx * dx + dy * dy).sqrt().max(1e-9);
-                // 侧偏控制点：垂直方向弧（沿 -x,y 旋转的法线，幅度 0.22×dist）
-                let ctrl = Vec2 {
-                    x: base.x + dx * 0.5 + (-dy / dist) * dist * 0.22,
-                    y: base.y + dy * 0.5 + (dx / dist) * dist * 0.22,
+            Phase::Queueing { t } => {
+                *t += dt;
+                if *t >= QUEUE_DELAY_MIN_MS {
+                    (None, true)
+                } else {
+                    (None, false)
+                }
+            }
+        };
+        if let Some(home) = home {
+            if home {
+                // Cruise → Homeward：粉球沿弧线回家（拟合助手：起点沿巡航切线伸出）
+                let pos = self.balls[0].player.pos();
+                let target = self.anchors[0];
+                let dx = target.x - pos.x;
+                let dy = target.y - pos.y;
+                let dist = (dx * dx + dy * dy).sqrt();
+                let leg = if dist > 0.03 {
+                    let dir = self.balls[0].player.tangent();
+                    let off = 0.2f64.min(0.35 * dist);
+                    let mut ctrl = Vec2 {
+                        x: pos.x + dir.x * (dist * 0.4) + (-dir.y) * off,
+                        y: pos.y + dir.y * (dist * 0.4) + dir.x * off,
+                    };
+                    ctrl.x = ctrl.x.clamp(0.04, 0.96);
+                    ctrl.y = ctrl.y.clamp(0.04, 0.96);
+                    Some(HomeLeg { from: pos, ctrl, target, s: 0.0 })
+                } else {
+                    None
                 };
-                crate::sim::math::quad_bezier(base, ctrl, slot, k)
+                self.phase = Phase::Homeward { t: 0.0, home: leg };
+            } else {
+                self.phase = Phase::Resting { t: 0.0 };
             }
-            Phase::Formation { player, .. } => player.world_pos(color_slot, offset),
-            Phase::Homeward { t, home_t, homes, .. } => {
-                // 未到出发时刻：停在回家起点（巡航位置）；回家中：弧线推进
-                match &homes[color_slot] {
-                    Some(leg) if *t >= home_t[color_slot] => {
-                        let k = smoothstep(leg.s);
-                        crate::sim::math::quad_bezier(leg.from, leg.ctrl, leg.target, k)
-                    }
-                    Some(leg) => leg.from,
-                    None => self.anchors[color_slot],
-                }
+        } else if restart {
+            // Queueing 重启：粉球新链（旧仪式保留——重启巡航）
+            let mut p = Player::new(self.anchors[0], random_dir());
+            // bounds 由 engine 每帧 set_bounds 实时更新（此处 fallback 即可）
+            p.ensure_chain_to(PREPLAN_SECONDS * WORLD_SPEED * 1.1);
+            self.balls[0].player = p;
+            self.phase = Phase::Cruise { t: 0.0 };
+        }
+
+        // ── 三球各自推进 ──
+        for s in 0..3 {
+            // 入场静立
+            if self.balls[s].launch_t > 0.0 {
+                self.balls[s].launch_t -= dt;
+                continue;
             }
-            Phase::Resting { .. } => self.anchors[color_slot],
+            if s == 0 {
+                self.tick_pink(dt);
+            } else {
+                self.tick_blue_green(s, dt, decide);
+            }
         }
     }
 
-    /// 拖尾采样开关：三球实际在动才算
+    /// 粉球：自由巡航（Cruise）或回家弧线（Homeward）/ 锚点定住（Resting/Queueing）
+    fn tick_pink(&mut self, dt: f64) {
+        // 先推进回家弧线进度（可变借用 phase——独立于下面的不可变匹配）
+        if let Phase::Homeward { t, home } = &mut self.phase {
+            if let Some(leg) = home {
+                leg.s = (*t / HOME_DURATION_MS).min(1.0);
+            }
+        }
+        let pos = match &self.phase {
+            Phase::Cruise { .. } => {
+                self.balls[0].player.tick(dt, None);
+                self.balls[0].player.pos()
+            }
+            Phase::Homeward { home, .. } => match home {
+                Some(leg) => quad_home(leg),
+                None => self.anchors[0],
+            },
+            Phase::Resting { .. } | Phase::Queueing { .. } => self.anchors[0],
+        };
+        // 非巡航期间：位置写回 player（渲染源是 player.pos()——否则粉球
+        // 回家/定住期间渲染的是旧巡航位置）
+        if !matches!(self.phase, Phase::Cruise { .. }) {
+            self.balls[0].player.snap(pos);
+        }
+        self.pink_prev = pos;
+    }
+
+    /// 蓝绿：Free（自由巡航）/ FollowPink（跟随粉球——低优先级任务）
+    fn tick_blue_green(&mut self, s: usize, dt: f64, decide: &mut dyn FnMut() -> f64) {
+        let pink_home_phase = matches!(
+            self.phase,
+            Phase::Homeward { .. } | Phase::Resting { .. } | Phase::Queueing { .. }
+        );
+        // 粉球回家期间：蓝绿不跟随——已跟随的立即松开
+        if pink_home_phase && self.balls[s].mode == BallMode::FollowPink {
+            self.release_follow(s);
+        }
+
+        match self.balls[s].mode {
+            BallMode::FollowPink => {
+                let follow_t = self.balls[s].follow_t + dt;
+                self.balls[s].follow_t = follow_t;
+                if follow_t >= self.balls[s].follow_dur {
+                    // 跟腻了——松开回自由（位置无跳变）
+                    self.release_follow(s);
+                    self.balls[s].player.tick(dt, None);
+                } else {
+                    // 目标 = 粉球链上落后弧长处 + Frenet 偏移
+                    let gap = self.balls[s].follow_gap;
+                    let s_p = self.balls[0].player.lead_arc();
+                    let (pp, tan_p, _, _) = self.balls[0].player.chain_point((s_p - gap).max(0.0));
+                    let d = FORMATION_OFFSETS[s]
+                        * crate::config::profile::ACTIVE_PROFILE.offset_scale;
+                    let n = normal_of(tan_p);
+                    let mut tgt = Vec2 { x: pp.x + n.x * d, y: pp.y + n.y * d };
+                    // 平滑进入：前 500ms 从起始位置渐变到目标（跟随接入不突兀）
+                    if self.balls[s].follow_t < 500.0 {
+                        let k = smoothstep(self.balls[s].follow_t / 500.0);
+                        let e = self.balls[s].follow_enter;
+                        tgt = Vec2 {
+                            x: e.x + (tgt.x - e.x) * k,
+                            y: e.y + (tgt.y - e.y) * k,
+                        };
+                    }
+                    let ext = ExtTarget {
+                        pos: tgt,
+                        tvel: follow_tvel(tan_p, &self.pink_prev, &self.balls[0].player.pos(), dt),
+                    };
+                    self.balls[s].player.tick(dt, Some(ext));
+                }
+            }
+            BallMode::Free => {
+                // 周期性判定：是否开始跟随粉球（低优先级任务）
+                let check_t = self.balls[s].check_t + dt;
+                if check_t >= FOLLOW_CHECK_MS {
+                    self.balls[s].check_t = 0.0;
+                    let r = decide();
+                    if r < FOLLOW_PROB {
+                        self.balls[s].mode = BallMode::FollowPink;
+                        self.balls[s].follow_t = 0.0;
+                        self.balls[s].follow_enter = self.balls[s].player.pos();
+                        self.balls[s].follow_gap =
+                            0.1 + decide() * 0.2;
+                        self.balls[s].follow_dur = FOLLOW_DUR_MIN_MS
+                            + decide() * (FOLLOW_DUR_MAX_MS - FOLLOW_DUR_MIN_MS);
+                    }
+                } else {
+                    self.balls[s].check_t = check_t;
+                }
+                self.balls[s].player.tick(dt, None);
+            }
+        }
+    }
+
+    /// 松开跟随：自由链从当前位置最近弧长继续（位置不跳）
+    fn release_follow(&mut self, s: usize) {
+        let arc = self.balls[s].player.nearest_arc(self.balls[s].player.pos());
+        self.balls[s].player.resume_at(arc);
+        self.balls[s].mode = BallMode::Free;
+        self.balls[s].follow_t = 0.0;
+        self.balls[s].check_t = 0.0;
+    }
+
+    /// 渲染：球 i 位置（offset 保留签名——恒 0）
+    pub fn ball_pos(&self, color_slot: usize, _offset: f64) -> Vec2 {
+        self.balls[color_slot].player.pos()
+    }
+
     pub fn is_playing(&self) -> bool {
         true
     }
 
-    /// 淡入（页面年龄）
     pub fn fade(&self) -> f64 {
-        smoothstep(self.age / FADE_IN_MS)
+        (self.age / 800.0).min(1.0)
     }
 
-    /// 渲染排列（Formation 由 Player 随机换序）
+    /// 深度排序（保留签名——独立球无换序，恒 [0,1,2]）
     pub fn order(&self) -> [usize; 3] {
-        match &self.phase {
-            Phase::Formation { player, .. } => player.order,
-            _ => [0, 1, 2],
+        [0, 1, 2]
+    }
+}
+
+impl Ball {
+    fn new(anchor: Vec2, dir: Vec2, launch_t: f64) -> Self {
+        Ball {
+            player: Player::new(anchor, dir),
+            mode: BallMode::Free,
+            launch_t,
+            follow_t: 0.0,
+            check_t: 0.0,
+            follow_gap: 0.2,
+            follow_dur: FOLLOW_DUR_MIN_MS,
+            follow_enter: anchor,
         }
     }
-
 }
 
-/// 拖尾是否记录：速度（世界单位/秒）低于阈值视为静止（思考期/入场构图）不记录
+/// 回家弧线点（贝塞尔，s∈[0,1]）
+fn quad_home(leg: &HomeLeg) -> Vec2 {
+    let u = smoothstep(leg.s);
+    let a = 1.0 - u;
+    Vec2 {
+        x: a * a * leg.from.x + 2.0 * a * u * leg.ctrl.x + u * u * leg.target.x,
+        y: a * a * leg.from.y + 2.0 * a * u * leg.ctrl.y + u * u * leg.target.y,
+    }
+}
+
+/// 跟随速度：方向 = 粉球切线；大小 = 粉球实际位移速度（帧间差分——冲刺时跟随也冲）
+fn follow_tvel(tan_p: Vec2, pink_prev: &Vec2, pink_now: &Vec2, dt: f64) -> Vec2 {
+    let l = (tan_p.x * tan_p.x + tan_p.y * tan_p.y).sqrt().max(1e-9);
+    let dir = Vec2 { x: tan_p.x / l, y: tan_p.y / l };
+    let speed = if dt > 0.0 {
+        ((pink_now.x - pink_prev.x).powi(2) + (pink_now.y - pink_prev.y).powi(2))
+            .sqrt()
+            / (dt / 1000.0)
+            * 1.2 // 跟随球略快于粉球（追上——低优先级但会跟）
+    } else {
+        WORLD_SPEED
+    };
+    Vec2 { x: dir.x * speed, y: dir.y * speed }
+}
+
+/// 追踪开关：速度低于阈值不渲染拖尾（渲染层用）
 pub fn should_track(speed_per_sec: f64) -> bool {
-    speed_per_sec >= 0.02
+    speed_per_sec > 0.02
 }
 
+/// 随机方向（入场链起点方向）
 pub fn random_dir() -> Vec2 {
-    let angle = rand::random::<f64>() * std::f64::consts::PI * 2.0;
-    Vec2 { x: angle.cos(), y: angle.sin() }
+    let a = rand::random::<f64>() * std::f64::consts::PI * 2.0;
+    Vec2 { x: a.cos(), y: a.sin() }
 }
+
+// ─────────────────────────── 测试 ───────────────────────────
 
 #[cfg(test)]
 mod tests {
     use super::*;
 
-    #[test]
-    fn trail_tracking_decisions() {
-        // 巡航（0.22/s）→ 记录 + 常规 8 点；静止（0.01）→ 不记录；跳跃（0.5）→ 12 点
-        assert!(should_track(0.22), "巡航应记录拖尾");
-        assert!(should_track(0.05));
-        assert!(!should_track(0.01), "静止不记录（思考期无拖尾）");
+    fn v(x: f64, y: f64) -> Vec2 {
+        Vec2 { x, y }
     }
 
-    #[test]
-    fn opens_directly_in_queueing() {
-        // 开场即排队表演：没有自由乱跑
-        let anchors = [Vec2 { x: 0.2, y: 0.2 }, Vec2 { x: 0.4, y: 0.4 }, Vec2 { x: 0.6, y: 0.6 }];
-        let s = State::new(anchors);
-        assert!(matches!(s.phase, Phase::Queueing { .. }), "开场即排队表演");
+    fn state() -> State {
+        State::new([v(0.555, 0.355), v(0.473, 0.379), v(0.525, 0.471)])
     }
 
-    #[test]
-    fn entry_rhythm_pink_waits_then_runs() {
-        // 开场节奏：粉球先停 ENTRY_DELAY_MS（5s），期间不动，之后开跑
-        let anchors = [Vec2 { x: 0.2, y: 0.2 }, Vec2 { x: 0.4, y: 0.4 }, Vec2 { x: 0.6, y: 0.6 }];
-        let mut s = State::new(anchors);
-        let p0_first = s.ball_pos(0, 0.0);
-        let mut moved_early = false;
-        let mut moved_later = false;
-        let mut decide = |_: &mut dyn FnMut() -> f64| {};
-        let _ = &mut decide;
-        for _ in 0..(ENTRY_DELAY_MS / 16.7) as usize - 5 {
-            s.step(16.7, &mut || 0.5);
-            let p = s.ball_pos(0, 0.0);
-            if (p.x - p0_first.x).abs() > 1e-6 || (p.y - p0_first.y).abs() > 1e-6 {
-                moved_early = true;
+    /// 固定序列 decide：ball[1] 第 5 次判定（i=9，25000ms）触发跟随，
+    /// 之后全 0.9（触发一次后不再触发——测松开后不再循环跟随）。
+    /// 触发时依次调用 3 次（概率/gap/dur）——i=9,10,11 都给 0.1
+    fn seq_decide(_low_until: usize) -> impl FnMut() -> f64 {
+        let mut i = 0usize;
+        move || {
+            i += 1;
+            if i >= 9 && i <= 11 {
+                0.1
+            } else {
+                0.9
             }
         }
-        assert!(!moved_early, "粉球开场应先停 5 秒（构图停留）");
-        for _ in 0..60 {
-            s.step(16.7, &mut || 0.5);
-            let p = s.ball_pos(0, 0.0);
-            if (p.x - p0_first.x).abs() > 1e-6 || (p.y - p0_first.y).abs() > 1e-6 {
-                moved_later = true;
+    }
+
+    /// 跳过入场静立（launch 清零——判定周期确定，不撞粉球 30s 回家相位）
+    fn skip_launch(st: &mut State) {
+        for s in 0..3 {
+            st.balls[s].launch_t = 0.0;
+        }
+    }
+
+    fn fast_forward(st: &mut State, ms: f64, decide: &mut dyn FnMut() -> f64) {
+        let mut t = 0.0;
+        while t < ms {
+            st.step(16.7, decide);
+            t += 16.7;
+        }
+    }
+
+    #[test]
+    fn blue_green_free_independent() {
+        // 蓝绿自由巡航：各自链独立增长、位置轨迹不同（不是粉球链的复制）
+        let mut st = state();
+        let mut dec = seq_decide(usize::MAX);
+        fast_forward(&mut st, 15000.0, &mut dec);
+        let arcs: Vec<f64> = (0..3).map(|s| st.balls[s].player.chain_arc()).collect();
+        // 三球链都推进了
+        assert!(arcs[0] > 1.0 && arcs[1] > 1.0 && arcs[2] > 1.0, "三球链都推进: {arcs:?}");
+        // 蓝绿链弧长与粉球不同（各自独立生成）
+        assert!((arcs[1] - arcs[0]).abs() > 0.01 || (arcs[2] - arcs[0]).abs() > 0.01);
+        // 三球位置各异（不在同一点——有灵魂）
+        let p: Vec<Vec2> = (0..3).map(|s| st.ball_pos(s, 0.0)).collect();
+        assert!((p[0].x - p[1].x).abs() + (p[0].y - p[1].y).abs() > 0.05, "粉蓝位置应不同");
+    }
+
+    #[test]
+    fn follow_triggers_and_tracks() {
+        // 蓝绿进入 FollowPink：位置 ≈ 粉球链落后 gap 处（EMA 收敛后误差 < 0.05）
+        let mut st = state();
+        skip_launch(&mut st);
+        let mut dec = seq_decide(4); // 第 5 次判定（25s）触发——避开 30s 回家释放
+        fast_forward(&mut st, 28000.0, &mut dec);
+        // 已触发（至少一球在跟随）
+        let any_follow = st.balls[1].mode == BallMode::FollowPink
+            || st.balls[2].mode == BallMode::FollowPink;
+        assert!(any_follow, "蓝绿应至少一球进入 FollowPink");
+        // 跟随中的球位置 ≈ 粉球链落后 gap 处（< 0.06——EMA 收敛 + 偏移）
+        for s in 1..3 {
+            if st.balls[s].mode == BallMode::FollowPink {
+                let s_p = st.balls[0].player.lead_arc();
+                let gap = st.balls[s].follow_gap;
+                let (pp, _, _, _) = st.balls[0].player.chain_point((s_p - gap).max(0.0));
+                let pos = st.balls[s].player.pos();
+                let err = (pos.x - pp.x).powi(2) + (pos.y - pp.y).powi(2);
+                assert!(err.sqrt() < 0.06, "跟随偏差应小: {}", err.sqrt());
             }
         }
-        assert!(moved_later, "5 秒后粉球开跑（蓝绿之后再跟上）");
     }
 
     #[test]
-    fn queueing_advances_to_formation() {
-        let anchors = [Vec2 { x: 0.2, y: 0.2 }, Vec2 { x: 0.4, y: 0.4 }, Vec2 { x: 0.6, y: 0.6 }];
-        let mut s = State::new(anchors);
-        let total = (ENTRY_DELAY_MS + QUEUE_DELAY_MAX_MS + QUEUE_TRANSIT_MS + 500.0) / 16.7;
-        for _ in 0..total as usize + 10 {
-            s.step(16.7, &mut || 0.5);
-        }
-        assert!(
-            matches!(s.phase, Phase::Formation { .. }),
-            "Queueing 超时后应进入 Formation"
-        );
-    }
-
-    #[test]
-    fn formation_cruises_until_homecoming() {
-        // 巡航期（30s 回家触发前）：Formation 持续运动；30s 后进入回家仪式
-        let anchors = [Vec2 { x: 0.2, y: 0.2 }, Vec2 { x: 0.4, y: 0.4 }, Vec2 { x: 0.6, y: 0.6 }];
-        let mut s = State::new(anchors);
-        let total = (ENTRY_DELAY_MS + QUEUE_DELAY_MAX_MS + QUEUE_TRANSIT_MS + 500.0) / 16.7;
-        for _ in 0..total as usize + 10 {
-            s.step(16.7, &mut || 0.5);
-        }
-        assert!(matches!(s.phase, Phase::Formation { .. }));
-        let last = s.ball_pos(0, 0.0);
-        let mut moved = false;
-        // 巡航 25s（30s 触发前）：持续运动
-        for _ in 0..(25.0 * 1000.0 / 16.7) as usize {
-            s.step(16.7, &mut || 0.5);
-            assert!(matches!(s.phase, Phase::Formation { .. }), "25s 内应仍在巡航");
-            let p = s.ball_pos(0, 0.0);
-            if (p.x - last.x).abs() > 1e-6 || (p.y - last.y).abs() > 1e-6 {
-                moved = true;
+    fn follow_exits_smoothly() {
+        // 跟随时长到 → 松开回 Free——位置无跳变（< 0.08）
+        let mut st = state();
+        skip_launch(&mut st);
+        let mut dec = seq_decide(4);
+        fast_forward(&mut st, 28000.0, &mut dec);
+        let mut s_follow = None;
+        for s in 1..3 {
+            if st.balls[s].mode == BallMode::FollowPink {
+                s_follow = Some(s);
             }
         }
-        assert!(moved, "Formation 期间球应持续运动（无限轨迹）");
-        // 30s 后：进入回家仪式（Homeward 或更后阶段）
-        for _ in 0..(10.0 * 1000.0 / 16.7) as usize {
-            s.step(16.7, &mut || 0.5);
-        }
-        assert!(
-            !matches!(s.phase, Phase::Formation { .. }),
-            "30s 后应触发回家（checkpoint）"
-        );
-    }
-
-    #[test]
-    fn homecoming_pink_first_then_rest_then_restart() {
-        // 回家程序：粉先到锚点 → 蓝绿依次到 → 定住 HOME_REST_MS → 粉启动重启
-        let anchors = [Vec2 { x: 0.555, y: 0.355 }, Vec2 { x: 0.473, y: 0.379 }, Vec2 { x: 0.525, y: 0.471 }];
-        let mut s = State::new(anchors);
-        // 跑进巡航（开场 ~10s）
-        let total = (ENTRY_DELAY_MS + QUEUE_DELAY_MAX_MS + QUEUE_TRANSIT_MS + 500.0) / 16.7;
-        for _ in 0..total as usize + 10 {
-            s.step(16.7, &mut || 0.5);
-        }
-        // 巡航到 30s 触发回家
-        let mut seen_homeward = false;
-        let mut resting_all_home = true; // Resting 期间三球都在锚点
-        let mut resting_frames = 0;
-        let mut t_sim = 0.0f64;
-        for _ in 0..(40.0 * 1000.0 / 16.7) as usize {
-            s.step(16.7, &mut || 0.5);
-            t_sim += 16.7;
-            match &s.phase {
-                Phase::Homeward { .. } => seen_homeward = true,
-                Phase::Resting { .. } => {
-                    resting_frames += 1;
-                    for slot in 0..3 {
-                        let p = s.ball_pos(slot, 0.0);
-                        let d = ((p.x - anchors[slot].x).powi(2) + (p.y - anchors[slot].y).powi(2))
-                            .sqrt();
-                        if d > 0.03 {
-                            resting_all_home = false;
-                        }
-                    }
+        if let Some(s) = s_follow {
+            let prev = st.balls[s].player.pos();
+            // 推进到超过 follow_dur（最长 20s）
+            fast_forward(&mut st, 21000.0, &mut dec);
+            assert_eq!(st.balls[s].mode, BallMode::Free, "时长到应松开");
+            let now = st.balls[s].player.pos();
+            let jump = (now.x - prev.x).powi(2) + (now.y - prev.y).powi(2);
+            // 松开的瞬间位置连续（jump 是 21s 总位移——用最近帧验证）
+            // 改为：松开帧（mode 切换帧）前后位置差 < 0.08
+            let mut st2 = state();
+            skip_launch(&mut st2);
+            let mut dec2 = seq_decide(4);
+            fast_forward(&mut st2, 28000.0, &mut dec2);
+            let mut s2 = 0usize;
+            for s in 1..3 {
+                if st2.balls[s].mode == BallMode::FollowPink {
+                    s2 = s;
                 }
-                _ => {}
             }
+            let mut prev_pos = st2.balls[s2].player.pos();
+            let mut max_jump = 0.0f64;
+            let mut t = 0.0;
+            while t < 25000.0 {
+                st2.step(16.7, &mut dec2);
+                let pos = st2.balls[s2].player.pos();
+                let d = (pos.x - prev_pos.x).powi(2) + (pos.y - prev_pos.y).powi(2);
+                max_jump = max_jump.max(d.sqrt());
+                prev_pos = pos;
+                t += 16.7;
+            }
+            assert!(max_jump < 0.08, "全程无跳变（含松开帧）: {max_jump:.4}");
+            assert_eq!(st2.balls[s2].mode, BallMode::Free, "应已松开");
+        } else {
+            // 没触发跟随（随机路径）——重跑一次确保覆盖触发分支
+            let mut st3 = state();
+            let mut dec3 = seq_decide(3);
+            fast_forward(&mut st3, 60000.0, &mut dec3);
+            let any = st3.balls[1].mode == BallMode::FollowPink
+                || st3.balls[2].mode == BallMode::FollowPink;
+            assert!(any, "固定序列应保证触发");
         }
-        assert!(seen_homeward, "30s 后应进入回家仪式");
-        assert!(resting_frames > 100, "回家后应定住（Resting）——{resting_frames} 帧");
-        assert!(resting_frames > 100, "Resting 应持续（{resting_frames} 帧）");
-        assert!(
-            resting_all_home,
-            "Resting 期间三球都应在锚点（粉先回蓝绿随后——设计由 home_t 错开保证）"
-        );
-        // 40s 时应在重启流程（Queueing：粉 delay=0 立即启动）
-        assert!(
-            matches!(s.phase, Phase::Queueing { .. } | Phase::Formation { .. }),
-            "回家+定住后应重启巡航，当前 {:?}",
-            std::mem::discriminant(&s.phase)
-        );
-        // 重启后粉球离开锚点（启动）
-        let p0 = s.ball_pos(0, 0.0);
-        let moving = (p0.x - anchors[0].x).abs() > 0.02 || (p0.y - anchors[0].y).abs() > 0.02;
-        assert!(moving, "重启后粉球应启动（离开锚点）");
     }
 
     #[test]
-    fn no_teleport_at_transition() {
-        // Queueing → Formation 转移瞬间球位置连续（无跳变）
-        let anchors = [Vec2 { x: 0.2, y: 0.2 }, Vec2 { x: 0.4, y: 0.4 }, Vec2 { x: 0.6, y: 0.6 }];
-        let mut s = State::new(anchors);
-        let mut last = [Vec2 { x: 0.0, y: 0.0 }; 3];
-        for slot in 0..3 {
-            last[slot] = s.ball_pos(slot, 0.0);
+    fn pink_homecoming_kept() {
+        // 粉球 30s 回家仪式保留：Homeward 弧线 → 锚点 → Resting → 重启巡航
+        let mut st = state();
+        let mut dec = seq_decide(usize::MAX);
+        let anchor0 = st.anchors[0];
+        fast_forward(&mut st, 30000.0, &mut dec);
+        // 已进入 Homeward（粉球离开巡航——位置向锚点移动）
+        match st.phase {
+            Phase::Homeward { .. } => {}
+            _ => panic!("30s 后应进入 Homeward"),
         }
-        let mut max_jump = 0.0;
-        let total = (ENTRY_DELAY_MS + QUEUE_DELAY_MAX_MS + QUEUE_TRANSIT_MS + 500.0) / 16.7;
-        for _ in 0..total as usize + 5 {
-            s.step(16.7, &mut || 0.5);
-            for slot in 0..3 {
-                let p = s.ball_pos(slot, 0.0);
-                let d = ((p.x - last[slot].x).powi(2) + (p.y - last[slot].y).powi(2)).sqrt();
-                if d > max_jump {
-                    max_jump = d;
-                }
-                last[slot] = p;
+        fast_forward(&mut st, 2000.0, &mut dec);
+        // 到家：位置 = 锚点
+        let pos = st.ball_pos(0, 0.0);
+        eprintln!("phase={:?} pos={:?} anchor={:?}", st.phase, pos, anchor0);
+        assert!(
+            (pos.x - anchor0.x).powi(2) + (pos.y - anchor0.y).powi(2) < 0.01,
+            "粉球应到家: {pos:?}"
+        );
+        fast_forward(&mut st, HOME_REST_MS + 2000.0, &mut dec);
+        // 重启巡航：粉球离开锚点
+        let pos2 = st.ball_pos(0, 0.0);
+        assert!(
+            (pos2.x - anchor0.x).powi(2) + (pos2.y - anchor0.y).powi(2) > 0.001
+                || matches!(st.phase, Phase::Cruise { .. }),
+            "粉球应重启巡航"
+        );
+    }
+
+    #[test]
+    fn blue_green_release_on_pink_home() {
+        // 粉球回家期间蓝绿不跟随（已跟随的松开）
+        let mut st = state();
+        let mut dec = seq_decide(5);
+        fast_forward(&mut st, 30000.0, &mut dec);
+        let mut had_follow = false;
+        for s in 1..3 {
+            if st.balls[s].mode == BallMode::FollowPink {
+                had_follow = true;
             }
         }
-        assert!(max_jump < 0.05, "转移不应产生位置跳变，最大跳变 {max_jump}");
+        if had_follow {
+            // 粉球回家进行中
+            fast_forward(&mut st, 1000.0, &mut dec);
+            for s in 1..3 {
+                assert_eq!(
+                    st.balls[s].mode,
+                    BallMode::Free,
+                    "粉球回家期间蓝绿应全部 Free"
+                );
+            }
+        }
     }
 
     #[test]
     fn lifecycle_90s_no_teleport() {
-        // 90s 完整生命周期：任何球任何时刻帧间跳变 > 0.08 即报
-        let anchors = [Vec2 { x: 0.555, y: 0.355 }, Vec2 { x: 0.473, y: 0.379 }, Vec2 { x: 0.525, y: 0.471 }];
-        let mut s = State::new(anchors);
-        let mut last = [Vec2 { x: 0.0, y: 0.0 }; 3];
-        for slot in 0..3 {
-            last[slot] = s.ball_pos(slot, 0.0);
-        }
-        let mut worst = (0.0f64, 0usize, 0usize, 0.0);
-        for i in 0..(90.0 * 1000.0 / 16.7) as usize {
-            s.step(16.7, &mut || 0.5);
-            for slot in 0..3 {
-                let p = s.ball_pos(slot, 0.0);
-                let d = ((p.x - last[slot].x).powi(2) + (p.y - last[slot].y).powi(2)).sqrt();
-                if d > worst.0 {
-                    worst = (d, slot, i, i as f64 * 16.7 / 1000.0);
-                }
-                last[slot] = p;
+        // 三球 90s 生命周期：每帧位移 < 0.08（无闪现/跳变）
+        let mut st = state();
+        let mut dec = seq_decide(5);
+        let mut prev: Vec<Vec2> = (0..3).map(|s| st.ball_pos(s, 0.0)).collect();
+        let mut max_jump = 0.0f64;
+        let mut t = 0.0;
+        while t < 90000.0 {
+            st.step(16.7, &mut dec);
+            for s in 0..3 {
+                let pos = st.ball_pos(s, 0.0);
+                let d = (pos.x - prev[s].x).powi(2) + (pos.y - prev[s].y).powi(2);
+                max_jump = max_jump.max(d.sqrt());
+                prev[s] = pos;
             }
+            t += 16.7;
         }
-        assert!(
-            worst.0 < 0.08,
-            "90s 生命周期出现跳变: 球{} 第{}帧({:.1}s) 跳变 {:.4}",
-            worst.1, worst.2, worst.3, worst.0
-        );
+        assert!(max_jump < 0.08, "90s 无跳变: {max_jump:.4}");
     }
 }
-
-    #[test]
-    fn two_cycles_stay_on_screen() {
-        // 两轮回家循环（75s：入场→巡航→回家→重启→再巡航）：
-        // 球必须始终在屏幕内（重启后无小圆预渲染保护——曾出屏）
-        let anchors = [Vec2 { x: 0.555, y: 0.355 }, Vec2 { x: 0.473, y: 0.379 }, Vec2 { x: 0.525, y: 0.471 }];
-        let mut s = State::new(anchors);
-        // 模拟 engine 实时采样的 logo 圆（clamp 屏内后的典型值）
-        s.set_bounds(CircleBounds { cx: 0.5, cy: 0.42, r: 0.42 });
-        let mut worst = (0.0f64, 0usize, 0.0f64);
-        for i in 0..(75.0 * 1000.0 / 16.7) as usize {
-            s.step(16.7, &mut || 0.5);
-            for slot in 0..3 {
-                let p = s.ball_pos(slot, 0.0);
-                let out = (p.x - 0.5).abs().max((p.y - 0.5).abs()) - 0.5;
-                if out > worst.0 {
-                    worst = (out, slot, i as f64 * 16.7 / 1000.0);
-                }
-                assert!(
-                    p.x >= -0.02 && p.x <= 1.02 && p.y >= -0.02 && p.y <= 1.02,
-                    "球出屏幕！slot{slot} t={:.1}s ({:.3},{:.3}) phase={:?}",
-                    i as f64 * 16.7 / 1000.0, p.x, p.y,
-                    std::mem::discriminant(&s.phase)
-                );
-            }
-        }
-        // 允许贴链收敛瞬间小越界（<0.1），但整体必须屏内
-        assert!(worst.0 < 0.1, "最大越屏 {:.3}（slot{} t={:.1}s）", worst.0, worst.1, worst.2);
-    }

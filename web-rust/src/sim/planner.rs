@@ -1,11 +1,10 @@
 // 规划器 + 执行器（纯 Rust，可单测）
-// 弧长共享链模型：三球成群结对沿同一链跑，弧长错开（一个接一个）
+// 独立球模型（一球一条链）：本球沿自己的链自由巡航——s_lead 推进 + 贴链
 // - 链 = 连续路径段队列（段间 from=上段 target，切线继承）
-// - 队首弧长 s_lead 推进；球 i 弧长 = s_lead - i×GAP（沿链错开）
-// - 球 i 未上链（s<0）时停在起点（= Travel 到达点，链起点后方）→ 自然滑上链，无排队仪式
-// - PD spring 追踪链上目标（丝滑：位置+速度双目标）
+// - 自由模式（tick(dt, None)）：s_lead += profile_speed × dt，位置贴链上目标
+// - 跟随模式（tick(dt, Some(ext))）：链冻结（s_lead 不推进），位置/速度 =
+//   外部注入目标（ExtTarget 由 state.rs 用粉球链计算，本球不持有其他球链引用）
 use crate::config::params::*;
-use crate::config::templates::TEMPLATES;
 use crate::sim::chain::{
     clamp_target_in_bounds, leg_in_bounds, make_planned_leg, roll_speed, ChainBuilder, LegContext,
 };
@@ -23,7 +22,7 @@ use std::collections::VecDeque;
 
 /// 活动圈边界（大事情定稿）：以 tayori 标志为中心的最大内切圆——
 /// 圆心 = logo 实时采样位置，半径 = 圆心到四边（横/竖）最窄距离。
-/// 三球所有轨迹点都必须在这个圆内。
+/// 所有球的轨迹点都必须在这个圆内。
 #[derive(Clone, Copy, Debug)]
 pub struct CircleBounds {
     pub cx: f64,
@@ -86,7 +85,17 @@ pub struct PlannedLeg {
     pub arc: f64,
 }
 
-/// 每球物理状态（PD spring 追踪）
+/// 跟随注入目标（state.rs 每帧用粉球链计算好）：
+/// 蓝绿 FollowPink 时调用 `player.tick(dt, Some(ext))`，本球不持有粉球链引用。
+#[derive(Clone, Copy)]
+pub struct ExtTarget {
+    /// 目标位置（粉球链上落后弧长处 + Frenet 偏移——由 state.rs 算好）
+    pub pos: Vec2,
+    /// 目标速度（切线×链速——跟随期间球的显示速度）
+    pub tvel: Vec2,
+}
+
+/// 每球物理状态（贴链跟随；单球 = 原队首球 0 语义）
 #[derive(Clone, Copy)]
 struct BallState {
     pos: Vec2,
@@ -95,28 +104,24 @@ struct BallState {
     rate: f64,
 }
 
-/// 执行器：弧长共享链 + 三球 spring 物理
+/// 执行器：一球一条链 + 单球贴链物理
 #[derive(Clone)]
 pub struct Player {
     chain: VecDeque<PlannedLeg>,
-    /// 队首（球0）弧长
+    /// 本球链弧长（自由模式推进；跟随模式冻结）
     s_lead: f64,
-    states: [BallState; 3],
-    /// 每球沿链错开弧长（0, GAP, 2×GAP）
-    gaps: [f64; 3],
-    /// 云中心跟随目标的 EMA 状态（时序滤波，套在云中心输出后面）
-    ema_targets: [Vec2; 3],
+    /// 单球物理状态
+    state: BallState,
+    /// 云中心跟随目标的 EMA 状态（时序滤波，套在目标输出后面）
+    ema_target: Vec2,
     /// 活动圈边界（tayori 标志中心圆——实时采样更新）
     bounds: CircleBounds,
     /// 跟随风格（来自 ACTIVE_PROFILE：Chain 自研 / CloudEma 云中心）
     follow: crate::config::profile::FollowStyle,
-    /// 云中心偏移幅度（FORMATION_OFFSETS[s] × offset_scale）
-    offset_scale: f64,
     /// EMA 系数（1.0 = 无滤波）
     ema_alpha: f64,
     /// 调速器开关
     tune_speeds: bool,
-    pub order: [usize; 3],
 }
 
 impl Player {
@@ -127,23 +132,9 @@ impl Player {
 }
 
 impl Player {
-    /// 上链点：球 i 到达点 = 链起点后方 i×GAP 弧长（沿 -dir）
-    /// 到达即 Play：队首在链起点，其余在后方错开，s_lead 前进自然滑上链
-    pub fn entry_points(anchor: Vec2, dir: Vec2) -> [Vec2; 3] {
-        let mut pts = [anchor; 3];
-        for i in 1..3 {
-            pts[i] = Vec2 {
-                x: (anchor.x - dir.x * i as f64 * CHAIN_GAP).clamp(0.10, 0.90),
-                y: (anchor.y - dir.y * i as f64 * CHAIN_GAP).clamp(0.10, 0.90),
-            };
-        }
-        pts
-    }
-
+    /// 单球 Player：一条自己的链。anchor = 起点锚点（蓝绿用自己锚点），
+    /// dir = 首段方向（与入场 dir 一致，保证位置连续）
     pub fn new(anchor: Vec2, dir: Vec2) -> Self {
-        let spots = Self::entry_points(anchor, dir);
-        // 首段：链起点 = 球0（anchor），方向 = 入口 dir（与 entry_points 槽位方向一致，
-        // 保证等待上链的球在解散/转移时位置连续——曾因随机 target 方向导致蓝绿闪现）
         let target = {
             let r = 0.3 + rand::random::<f64>() * 0.3;
             Vec2 {
@@ -161,167 +152,152 @@ impl Player {
         let mut chain = VecDeque::new();
         chain.push_back(pl);
 
-        let states = [
-            BallState { pos: spots[0], vel: Vec2 { x: 0.0, y: 0.0 }, rate: WORLD_SPEED },
-            BallState { pos: spots[1], vel: Vec2 { x: 0.0, y: 0.0 }, rate: WORLD_SPEED },
-            BallState { pos: spots[2], vel: Vec2 { x: 0.0, y: 0.0 }, rate: WORLD_SPEED },
-        ];
-
         let pr = crate::config::profile::ACTIVE_PROFILE;
         let mut p = Player {
             chain,
             s_lead: 0.0,
-            states,
-            gaps: [0.0, CHAIN_GAP, 2.0 * CHAIN_GAP],
-            ema_targets: spots,
+            state: BallState {
+                pos: anchor,
+                vel: Vec2 { x: 0.0, y: 0.0 },
+                rate: WORLD_SPEED,
+            },
+            ema_target: anchor,
             bounds: CircleBounds::fallback(),
             follow: pr.follow,
-            offset_scale: pr.offset_scale,
             ema_alpha: pr.ema_alpha,
             tune_speeds: pr.tune_speeds,
-            order: ORDERS[0],
         };
         p.ensure_chain();
         p
     }
 
-    pub fn tick(&mut self, dt: f64) {
+    /// 每帧步进。
+    /// - ext = Some：跟随模式——链冻结（s_lead 不推进），位置 = EMA(ext.pos)（云中心）
+    ///   或 ext.pos（native），速度 = ext.tvel（本球链冻结）。
+    /// - ext = None：自由模式——本球链推进 + 贴链（现有逻辑搬入单球版）。
+    ///   两种模式切换时的位置连续性由 state.rs 保证，Player 不做额外过渡。
+    pub fn tick(&mut self, dt: f64, ext: Option<ExtTarget>) {
         let dt_s = dt / 1000.0;
-        // 队首弧长推进：速度 profile（段内温和加速/减速，段间连续——预渲染衔接）
-        let (_, _, seg0, u0) = chain_pos_and_tangent(&self.chain, self.s_lead);
-        self.s_lead += self.profile_speed(seg0, u0) * dt_s;
-        self.ensure_chain();
-
-        let k = SPRING.stiffness;
-        let c_damp = SPRING.damping * 2.0 * k.sqrt();
         // 低通：球速紧贴链速（阻尼项全功率制动，见下方力模型）——
         // 低通过大 → 链速已降球速仍高 → 冲过头被 spring 拉回 = 冲刺回弹
         let rate_lerp = (dt_s / 0.12).min(1.0);
 
-        for s in 0..3 {
-            // 球 i 弧长 = 队首 - 错开；未上链（<0）→ 目标 = 起点（链起点后方）
-            let s_i = self.s_lead - self.gaps[s];
-            let (target, seg_i, u_i) = if s_i >= 0.0 {
-                match self.follow {
+        match ext {
+            Some(ext) => {
+                // 跟随模式：目标 = ext.pos（云中心：直接进 EMA；native：直接取）
+                let target = match self.follow {
+                    crate::config::profile::FollowStyle::Chain => ext.pos,
+                    crate::config::profile::FollowStyle::CloudEma => {
+                        let ema =
+                            crate::sim::cloud::ema_step(self.ema_target, ext.pos, self.ema_alpha);
+                        self.ema_target = ema;
+                        ema
+                    }
+                };
+                let st = &mut self.state;
+                st.pos.x += (target.x - st.pos.x) * 0.5;
+                st.pos.y += (target.y - st.pos.y) * 0.5;
+                st.vel = ext.tvel;
+            }
+            None => {
+                // 自由模式：本球链推进（队首语义——单球弧长 = s_lead）
+                let (_, _, seg0, u0) = chain_pos_and_tangent(&self.chain, self.s_lead);
+                self.s_lead += self.profile_speed(seg0, u0) * dt_s;
+                self.ensure_chain();
+
+                let s_i = self.s_lead;
+                // 本球目标：云中心 = 链上点 + Frenet 偏移 + EMA（单球走链中心线，
+                // 原队首 FORMATION_OFFSETS[0]=0；跟随偏移由 state.rs 注入 ext）
+                let (target, seg_i, u_i) = match self.follow {
                     crate::config::profile::FollowStyle::Chain => {
-                        // 自研：直接追链上弧长点（spring 物理）
+                        // 自研：直接追链上弧长点
                         let (p, _, seg, u) = chain_pos_and_tangent(&self.chain, s_i);
                         (p, seg, u)
                     }
                     crate::config::profile::FollowStyle::CloudEma => {
-                        // 云中心：Frenet 法线偏移 + EMA 时序滤波——
-                        // 转弯三球走同一条曲线的偏移轨迹 → 同弧、无多段线
-                        let d = FORMATION_OFFSETS[s] * self.offset_scale;
-                        let (raw, _) = crate::sim::cloud::follower_target(&self.chain, s_i, d);
+                        // 云中心：Frenet 法线偏移 + EMA 时序滤波
+                        let (raw, _) = crate::sim::cloud::follower_target(&self.chain, s_i, 0.0);
                         let (_, _, seg, u) = chain_pos_and_tangent(&self.chain, s_i);
-                        let ema =
-                            crate::sim::cloud::ema_step(self.ema_targets[s], raw, self.ema_alpha);
-                        self.ema_targets[s] = ema;
+                        let ema = crate::sim::cloud::ema_step(self.ema_target, raw, self.ema_alpha);
+                        self.ema_target = ema;
                         (ema, seg, u)
                     }
-                }
-            } else {
-                let leg0 = &self.chain.front().unwrap().legs[0];
-                let d = dir_of(leg0.from, leg0.target);
-                let pos = Vec2 {
-                    x: (leg0.from.x - d.x * self.gaps[s]).clamp(0.05, 0.95),
-                    y: (leg0.from.y - d.y * self.gaps[s]).clamp(0.05, 0.95),
                 };
-                match self.follow {
-                    crate::config::profile::FollowStyle::Chain => (pos, 0usize, 0.0),
-                    crate::config::profile::FollowStyle::CloudEma => {
-                        let ema = crate::sim::cloud::ema_step(self.ema_targets[s], pos, self.ema_alpha);
-                        self.ema_targets[s] = ema;
-                        (ema, 0usize, 0.0)
-                    }
-                }
-            };
 
-            let r_ideal = self.profile_speed(seg_i, u_i);
-            let stv = self.states[s];
-            let rate_now = stv.rate;
-            // 智能匀速：队列速度统一 = 队首速度——跟随者不再有自己的速度
-            // profile 波动（慢速段走走停停 = 蓝绿按自己链上位置的段级速度
-            // 忽快忽慢；统一后像火车——相对位置恒定、无走走停停）
-            let (_, _, seg_lead, u_lead) =
-                chain_pos_and_tangent(&self.chain, self.s_lead);
-            let lead_speed = self.profile_speed(seg_lead, u_lead) * WORLD_SPEED;
-            // 前瞻：tvel 方向用「未来弧长处」切线——链要转向时球提前反应；
-            // 速度大小统一 lead_speed（温和加减速由队首 profile 的 smoothstep 保证）
-            let lookahead_arc = rate_now * WORLD_SPEED * LOOKAHEAD_SECONDS;
-            let (_, tan_f, _, _) =
-                chain_pos_and_tangent(&self.chain, (s_i + lookahead_arc).max(0.0));
-            let tl_f = (tan_f.x * tan_f.x + tan_f.y * tan_f.y).sqrt().max(1e-9);
-            let tvel = Vec2 {
-                x: tan_f.x / tl_f * lead_speed,
-                y: tan_f.y / tl_f * lead_speed,
-            };
-            // 方向低通：tvel 方向每秒最多转 MAX_TURN_RATE——防链几何切线
-            // 退化/跳变导致的瞬间掉头（球沿旧方向平滑弧线转向新方向）
-            let tv_mag = (tvel.x * tvel.x + tvel.y * tvel.y).sqrt();
-            let v_mag = (stv.vel.x * stv.vel.x + stv.vel.y * stv.vel.y).sqrt();
-            let tvel = if tv_mag > 1e-6 && v_mag > 1e-6 {
-                let cross = stv.vel.x * tvel.y - stv.vel.y * tvel.x;
-                let dot = (stv.vel.x * tvel.x + stv.vel.y * tvel.y) / (v_mag * tv_mag);
-                let ang = dot.clamp(-1.0, 1.0).acos();
-                let max_turn = MAX_TURN_RATE * dt_s;
-                if ang > max_turn {
-                    // 把 tvel 方向旋转到「当前速度方向 + max_turn」（沿最小旋转侧）
-                    let dir = if cross >= 0.0 { 1.0 } else { -1.0 };
-                    let s = dir * max_turn.sin();
-                    let c = max_turn.cos();
-                    let ux = stv.vel.x / v_mag;
-                    let uy = stv.vel.y / v_mag;
-                    Vec2 {
-                        x: (ux * c - uy * s) * tv_mag,
-                        y: (ux * s + uy * c) * tv_mag,
+                let r_ideal = self.profile_speed(seg_i, u_i);
+                let stv = self.state;
+                let rate_now = stv.rate;
+                // 智能匀速：球速 = 本球链速（profile 波动不引起走走停停）
+                let (_, _, seg_lead, u_lead) = chain_pos_and_tangent(&self.chain, self.s_lead);
+                let lead_speed = self.profile_speed(seg_lead, u_lead) * WORLD_SPEED;
+                // 前瞻：tvel 方向用「未来弧长处」切线——链要转向时球提前反应；
+                // 速度大小统一 lead_speed（温和加减速由队首 profile 的 smoothstep 保证）
+                let lookahead_arc = rate_now * WORLD_SPEED * LOOKAHEAD_SECONDS;
+                let (_, tan_f, _, _) =
+                    chain_pos_and_tangent(&self.chain, (s_i + lookahead_arc).max(0.0));
+                let tl_f = (tan_f.x * tan_f.x + tan_f.y * tan_f.y).sqrt().max(1e-9);
+                let tvel = Vec2 {
+                    x: tan_f.x / tl_f * lead_speed,
+                    y: tan_f.y / tl_f * lead_speed,
+                };
+                // 方向低通：tvel 方向每秒最多转 MAX_TURN_RATE——防链几何切线
+                // 退化/跳变导致的瞬间掉头（球沿旧方向平滑弧线转向新方向）
+                let tv_mag = (tvel.x * tvel.x + tvel.y * tvel.y).sqrt();
+                let v_mag = (stv.vel.x * stv.vel.x + stv.vel.y * stv.vel.y).sqrt();
+                let tvel = if tv_mag > 1e-6 && v_mag > 1e-6 {
+                    let cross = stv.vel.x * tvel.y - stv.vel.y * tvel.x;
+                    let dot = (stv.vel.x * tvel.x + stv.vel.y * tvel.y) / (v_mag * tv_mag);
+                    let ang = dot.clamp(-1.0, 1.0).acos();
+                    let max_turn = MAX_TURN_RATE * dt_s;
+                    if ang > max_turn {
+                        // 把 tvel 方向旋转到「当前速度方向 + max_turn」（沿最小旋转侧）
+                        let dir = if cross >= 0.0 { 1.0 } else { -1.0 };
+                        let s = dir * max_turn.sin();
+                        let c = max_turn.cos();
+                        let ux = stv.vel.x / v_mag;
+                        let uy = stv.vel.y / v_mag;
+                        Vec2 {
+                            x: (ux * c - uy * s) * tv_mag,
+                            y: (ux * s + uy * c) * tv_mag,
+                        }
+                    } else {
+                        tvel
                     }
                 } else {
                     tvel
-                }
-            } else {
-                tvel
-            };
-            let st = &mut self.states[s];
-            st.rate += (r_ideal - st.rate) * rate_lerp;
-            // 力模型：位置项（弹簧）+ 阻尼项（速度追踪）分离钳制
-            // —— 位置项按法向/切向分解：法向（纠偏离链）全强度，
-            //    切向（纠弧长错位 = 冲刺回弹感之源）只留 TANGENTIAL_GAIN 柔和纠偏；
-            //    阻尼项全功率（高速→低速制动不足 = 惯性超前 = 回弹）
-            let rel = Vec2 { x: target.x - st.pos.x, y: target.y - st.pos.y };
-            let tl_n = (tan_f.x * tan_f.x + tan_f.y * tan_f.y).sqrt().max(1e-9);
-            let un = Vec2 { x: tan_f.x / tl_n, y: tan_f.y / tl_n };
-            let along = rel.x * un.x + rel.y * un.y;
-            let perp_x = rel.x - un.x * along;
-            let perp_y = rel.y - un.y * along;
-            let px = (perp_x + un.x * along * TANGENTIAL_GAIN) * k;
-            let py = (perp_y + un.y * along * TANGENTIAL_GAIN) * k;
-            let p_mag = (px * px + py * py).sqrt();
-            let (px, py) = if p_mag > MAX_ACCEL {
-                (px / p_mag * MAX_ACCEL, py / p_mag * MAX_ACCEL)
-            } else {
-                (px, py)
-            };
-            // 巡航贴链：偏差小（<0.035）时位置直接参数化贴链上点
-            // （速度 = 切线×链速）——spring 追弧必切弯（弦<弧 → 球超前被拉回 = 回弹），
-            // 参数化跟随物理上零偏差；spring 只用于过渡（入场/汇入/偏差大）
-            // 上链即贴链（无条件）：位置每帧 50% 收敛到链上点（指数衰减——
-            // 数学上不超调 = 物理零回弹），速度 = 切线×链速（与链完全同步，
-            // 无惯性超前）。spring 只用于未上链（入场滑向等待点）。
-            // 曾用 spring 巡航：追弧必切弯/滞后 → 减速时被拉回 = 冲刺回弹
-            if s_i >= 0.0 {
+                };
+                let st = &mut self.state;
+                st.rate += (r_ideal - st.rate) * rate_lerp;
+                // 巡航贴链：位置每帧 50% 收敛到链上目标（指数衰减——
+                // 数学上不超调 = 物理零回弹），速度 = 切线×链速（与链完全同步，
+                // 无惯性超前）。单球恒在链上（s_lead ≥ 0），无未上链等待期。
                 st.pos.x += (target.x - st.pos.x) * 0.5;
                 st.pos.y += (target.y - st.pos.y) * 0.5;
                 st.vel = tvel;
-            } else {
-                let ax = px + c_damp * (tvel.x - st.vel.x);
-                let ay = py + c_damp * (tvel.y - st.vel.y);
-                st.vel.x += ax * dt_s;
-                st.vel.y += ay * dt_s;
-                st.pos.x = (st.pos.x + st.vel.x * dt_s).clamp(0.03, 0.97);
-                st.pos.y = (st.pos.y + st.vel.y * dt_s).clamp(0.03, 0.97);
             }
         }
+    }
+
+    /// 直接设置位置（回家/定住期间渲染同步——player.pos() 是渲染源）
+    pub fn snap(&mut self, pos: Vec2) {
+        self.state.pos = pos;
+    }
+
+    /// 本球当前位置
+    pub fn pos(&self) -> Vec2 {
+        self.state.pos
+    }
+
+    /// 本球速度（渲染/拖尾用）
+    pub fn vel(&self) -> Vec2 {
+        self.state.vel
+    }
+
+    /// 本球位置切线（归一化——渲染/拖尾用）：链上 s_lead 处切线方向
+    pub fn tangent(&self) -> Vec2 {
+        let (_, tan, _, _) = chain_pos_and_tangent(&self.chain, self.s_lead);
+        let l = (tan.x * tan.x + tan.y * tan.y).sqrt().max(1e-9);
+        Vec2 { x: tan.x / l, y: tan.y / l }
     }
 
     /// 速度 profile：段内从「本段全速」温和过渡到「下段全速」，
@@ -342,14 +318,14 @@ impl Player {
 
     /// 链增长：总弧长保持 ≥ s_lead + 余量（无限轨迹）
     fn ensure_chain(&mut self) {
-        self.ensure_chain_to(CHAIN_GAP * 3.0 + 0.5);
+        // 余量 0.95 = 原 CHAIN_GAP×3+0.5 的数值（单球只需覆盖前瞻，保守保留）
+        self.ensure_chain_to(0.95);
     }
 
-    /// 批量补链到「队首前方 ahead 弧长」。入场预生成风暴用：一次性补几分钟的链，
+    /// 批量补链到「本球前方 ahead 弧长」。入场预生成风暴用：一次性补几分钟的链，
     /// 运行期 ensure_chain 静默（零规划抖动，帧率确定）
-    /// 区域规划：每隔 LOGO_EVERY_ARC 弧长插一个「logo 游走段」（三球回 logo 附近）
+    /// 区域规划：每隔 LOGO_EVERY_ARC 弧长插一个「logo 游走段」（每球回 logo 附近）
     pub fn ensure_chain_to(&mut self, ahead: f64) {
-        use rand::Rng;
         let mut rng = rand::thread_rng();
         let mut next_logo_arc = self.chain.iter().map(|x| x.arc).sum::<f64>() + LOGO_EVERY_ARC;
         let need = self.s_lead + ahead;
@@ -364,13 +340,7 @@ impl Player {
                 let l = (tan.x * tan.x + tan.y * tan.y).sqrt().max(1e-9);
                 Vec2 { x: tan.x / l, y: tan.y / l }
             };
-            if rng.gen::<f64>() < PROB.switch_order {
-                let next = ORDERS[rng.gen_range(0..ORDERS.len())];
-                if next != self.order {
-                    self.order = next;
-                }
-            }
-            // 区域规划：到 logo 弧长则规划 logo 游走段（三球回标志旁）
+            // 区域规划：到 logo 弧长则规划 logo 游走段（每球回标志旁）
             let chain_arc_now = self.chain.iter().map(|x| x.arc).sum::<f64>();
             let is_logo = chain_arc_now >= next_logo_arc;
             if is_logo {
@@ -423,34 +393,45 @@ impl Player {
         }
     }
 
-    /// 链上弧长 s 处：位置 + 切线 + 段索引 + 段内 u（速度 profile 用）
-    /// 链 = 段 × 5 子段：定位时先找段，再在段内 5 子段中定位
-
-
-    /// 球位：spring 物理状态（云中心 Frenet 偏移已在 tick 目标中完成）
-    pub fn world_pos(&self, color_slot: usize, _offset: f64) -> Vec2 {
-        let st = &self.states[color_slot];
-        st.pos
+    /// 链上弧长 s 处：位置 + 切线 + 段索引 + 段内 u（现有 chain_pos_and_tangent 包装）
+    /// 本球当前链弧长（跟随目标计算用——state.rs 取粉球 s_lead 落后 gap）
+    pub fn lead_arc(&self) -> f64 {
+        self.s_lead
     }
 
-    /// 球 i 所在链位置的切线（归一化）——回家拟合助手：
-    /// 回家弧线起点方向 = 巡航切线，C1 连续平滑接出
-    pub fn lead_tangent(&self, color_slot: usize) -> Vec2 {
-        let s_i = self.s_lead - self.gaps[color_slot];
-        if s_i >= 0.0 {
-            let (_, tan, _, _) = chain_pos_and_tangent(&self.chain, s_i);
-            let l = (tan.x * tan.x + tan.y * tan.y).sqrt().max(1e-9);
-            Vec2 { x: tan.x / l, y: tan.y / l }
-        } else {
-            // 未上链（等待期）：朝链起点方向
-            let leg0 = &self.chain.front().unwrap().legs[0];
-            let d = Vec2 {
-                x: leg0.target.x - leg0.from.x,
-                y: leg0.target.y - leg0.from.y,
-            };
-            let l = (d.x * d.x + d.y * d.y).sqrt().max(1e-9);
-            Vec2 { x: d.x / l, y: d.y / l }
+    /// 跟随退出：自由链从该弧长继续（nearest_arc 定位后调用——位置不跳）
+    pub fn resume_at(&mut self, arc: f64) {
+        self.s_lead = arc.max(0.0);
+    }
+
+    pub fn chain_point(&self, s: f64) -> (Vec2, Vec2, usize, f64) {
+        chain_pos_and_tangent(&self.chain, s)
+    }
+
+    /// 自由链当前总弧长
+    pub fn chain_arc(&self) -> f64 {
+        self.chain.iter().map(|x| x.arc).sum::<f64>()
+    }
+
+    /// 链上离 point 最近弧长（跟随退出时定位用——分段采样查找，便宜）
+    pub fn nearest_arc(&self, point: Vec2) -> f64 {
+        let total = self.chain_arc();
+        let step = 0.01;
+        let mut best_s = 0.0f64;
+        let mut best_d2 = f64::MAX;
+        let mut s = 0.0;
+        while s <= total {
+            let (p, _, _, _) = chain_pos_and_tangent(&self.chain, s);
+            let dx = p.x - point.x;
+            let dy = p.y - point.y;
+            let d2 = dx * dx + dy * dy;
+            if d2 < best_d2 {
+                best_d2 = d2;
+                best_s = s;
+            }
+            s += step;
         }
+        best_s
     }
 
     #[allow(dead_code)] // 测试用
@@ -493,14 +474,6 @@ pub fn chain_pos_and_tangent(
     (tail.target, Vec2 { x: 1.0, y: 0.0 }, chain.len() - 1, 1.0)
 }
 
-
-fn dir_of(from: Vec2, to: Vec2) -> Vec2 {
-    let dx = to.x - from.x;
-    let dy = to.y - from.y;
-    let l = (dx * dx + dy * dy).sqrt().max(1e-9);
-    Vec2 { x: dx / l, y: dy / l }
-}
-
 fn clamp_dur_to_chain(mut pl: PlannedLeg, tail_dur: f64) -> PlannedLeg {
     let ratio = pl.dur_ms / tail_dur.max(1.0);
     if ratio > crate::config::params::MAX_DUR_RATIO {
@@ -511,11 +484,9 @@ fn clamp_dur_to_chain(mut pl: PlannedLeg, tail_dur: f64) -> PlannedLeg {
     pl
 }
 
-
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::config::templates::TEMPLATES;
     use crate::sim::chain::make_blend_leg;
 
     #[test]
@@ -550,30 +521,97 @@ mod tests {
         assert!(pl.arc > 0.0);
     }
 
+    // ── 单球 Player：自由巡航 ──
+
     #[test]
-    fn entry_points_staggered() {
+    fn single_ball_free_cruises() {
+        // Free 模式 30s：链持续推进、位置速度合理（无跳变）
         let anchor = Vec2 { x: 0.5, y: 0.5 };
-        let dir = Vec2 { x: 1.0, y: 0.0 };
-        let pts = Player::entry_points(anchor, dir);
-        assert!(pts[0].x > pts[1].x && pts[1].x > pts[2].x, "沿 -dir 错开");
+        let dir = Vec2 { x: 0.8, y: 0.6 };
+        let mut p = Player::new(anchor, dir);
+        let mut last = p.pos();
+        let mut max_step = 0.0f64;
+        for _ in 0..(30.0 * 1000.0 / 16.7) as usize {
+            p.tick(16.7, None);
+            let cur = p.pos();
+            let d = ((cur.x - last.x).powi(2) + (cur.y - last.y).powi(2)).sqrt();
+            max_step = max_step.max(d);
+            last = cur;
+        }
+        assert!(max_step < 0.08, "自由巡航帧间无跳变: {max_step:.4}");
+        let v = p.vel();
+        let speed = (v.x * v.x + v.y * v.y).sqrt();
+        // 段内 smoothstep 起步段（u 小）速度可低至 ~0.03——断言下限放宽
+        assert!(speed > 0.03, "自由巡航应持续运动: speed={speed:.3}");
+        // 最低速度档 0.5×WORLD_SPEED 下 30s 也有 ~3.3 弧长——断言保守下限
+        assert!(p.chain_arc() > 3.0, "链应持续推进: {:.2}", p.chain_arc());
+        assert!(p.s_lead > 2.0, "弧长应持续推进: {:.2}", p.s_lead);
     }
 
     #[test]
-    fn balls_stay_in_screen_forever() {
+    fn single_ball_follows_ext_target() {
+        // 跟随模式：位置收敛到 ext.pos（EMA 收敛后误差 < 0.05），速度 = ext.tvel，链冻结
+        let anchor = Vec2 { x: 0.5, y: 0.5 };
+        let dir = Vec2 { x: 0.8, y: 0.6 };
+        let mut p = Player::new(anchor, dir);
+        let ext = ExtTarget {
+            pos: Vec2 { x: 0.7, y: 0.3 },
+            tvel: Vec2 { x: 0.2, y: -0.1 },
+        };
+        for _ in 0..120 {
+            p.tick(16.7, Some(ext));
+        }
+        let pos = p.pos();
+        let err = ((pos.x - ext.pos.x).powi(2) + (pos.y - ext.pos.y).powi(2)).sqrt();
+        assert!(err < 0.05, "跟随应收敛到 ext.pos（EMA 收敛后）: err={err:.4}");
+        let v = p.vel();
+        assert!(
+            (v.x - ext.tvel.x).abs() < 1e-9 && (v.y - ext.tvel.y).abs() < 1e-9,
+            "速度应 = ext.tvel: {:?}",
+            v
+        );
+        // 链冻结：跟随期间 s_lead / 链不推进
+        let arc0 = p.chain_arc();
+        p.tick(16.7, Some(ext));
+        assert!((p.chain_arc() - arc0).abs() < 1e-12, "跟随期间链应冻结");
+    }
+
+    #[test]
+    fn nearest_arc_located() {
+        // 随机链上点 + 小扰动 → nearest_arc 定位的链上点与点距离 < 0.1
+        let anchor = Vec2 { x: 0.5, y: 0.5 };
+        let dir = Vec2 { x: 0.8, y: 0.6 };
+        let mut p = Player::new(anchor, dir);
+        p.ensure_chain_to(20.0);
+        let total = p.chain_arc();
+        for _ in 0..50 {
+            let s0 = 0.2 + rand::random::<f64>() * (total - 0.4);
+            let (pt, _, _, _) = p.chain_point(s0);
+            let r = rand::random::<f64>() * 0.03;
+            let ang = rand::random::<f64>() * std::f64::consts::PI * 2.0;
+            let q = Vec2 { x: pt.x + r * ang.cos(), y: pt.y + r * ang.sin() };
+            let s1 = p.nearest_arc(q);
+            let (near, _, _, _) = p.chain_point(s1);
+            let d = ((near.x - q.x).powi(2) + (near.y - q.y).powi(2)).sqrt();
+            assert!(d < 0.1, "最近弧长定位：链上点与点距离 {d:.4} 应 < 0.1");
+        }
+    }
+
+    #[test]
+    fn single_ball_stays_in_screen_forever() {
+        // 120s 自由巡航：球始终在屏幕内
         let anchor = Vec2 { x: 0.5, y: 0.5 };
         let dir = Vec2 { x: 0.8, y: 0.6 };
         let mut p = Player::new(anchor, dir);
         for _ in 0..120 * 60 {
-            p.tick(16.7);
+            p.tick(16.7, None);
         }
-        for s in 0..3 {
-            let pos = p.world_pos(s, 0.0);
-            assert!(
-                (0.0..=1.0).contains(&pos.x) && (0.0..=1.0).contains(&pos.y),
-                "球{s} 出屏: {:?}",
-                pos
-            );
-        }
+        let pos = p.pos();
+        assert!(
+            (0.0..=1.0).contains(&pos.x) && (0.0..=1.0).contains(&pos.y),
+            "球出屏: {:?}",
+            pos
+        );
     }
 
     #[test]
@@ -581,49 +619,20 @@ mod tests {
         let anchor = Vec2 { x: 0.5, y: 0.5 };
         let dir = Vec2 { x: 0.8, y: 0.6 };
         let mut p = Player::new(anchor, dir);
-        let mut last = [Vec2 { x: 0.0, y: 0.0 }; 3];
-        for s in 0..3 {
-            last[s] = p.world_pos(s, 0.0);
-        }
+        let mut last = p.pos();
         let mut moved = false;
         for i in 0..120 * 60 {
-            p.tick(16.7);
+            p.tick(16.7, None);
             if i % 60 == 0 {
-                for s in 0..3 {
-                    let cur = p.world_pos(s, 0.0);
-                    let d = ((cur.x - last[s].x).powi(2) + (cur.y - last[s].y).powi(2)).sqrt();
-                    if d > 1e-9 {
-                        moved = true;
-                    }
-                    last[s] = cur;
+                let cur = p.pos();
+                let d = ((cur.x - last.x).powi(2) + (cur.y - last.y).powi(2)).sqrt();
+                if d > 1e-9 {
+                    moved = true;
                 }
+                last = cur;
             }
         }
         assert!(moved, "球应持续运动（无限轨迹）");
-    }
-
-    #[test]
-    fn group_moves_together() {
-        // 成群结对：三球沿链错开（两两弧长差 ≈ CHAIN_GAP）
-        let anchor = Vec2 { x: 0.5, y: 0.5 };
-        let dir = Vec2 { x: 0.8, y: 0.6 };
-        let mut p = Player::new(anchor, dir);
-        for _ in 0..60 * 60 {
-            p.tick(16.7);
-        }
-        // 弧长差恒定 = 编队；实际位置互相接近（同链）
-        let s0 = p.s_lead - p.gaps[0];
-        let s1 = p.s_lead - p.gaps[1];
-        let s2 = p.s_lead - p.gaps[2];
-        assert!(s0 > s1 && s1 > s2, "弧长应错开: {s0} {s1} {s2}");
-        for s in 0..3 {
-            let pos = p.world_pos(s, 0.0);
-            for o in (s + 1)..3 {
-                let p2 = p.world_pos(o, 0.0);
-                let d = ((pos.x - p2.x).powi(2) + (pos.y - p2.y).powi(2)).sqrt();
-                assert!(d < 0.6, "球{s}/{o} 应成群（同链）: {d}");
-            }
-        }
     }
 
     #[test]
@@ -633,10 +642,12 @@ mod tests {
         let mut p = Player::new(anchor, dir);
         let len0 = p.chain_len();
         for _ in 0..60 * 60 {
-            p.tick(16.7);
+            p.tick(16.7, None);
         }
         assert!(p.chain_len() > len0, "链应持续增长（无限轨迹）");
     }
+
+    // ── ChainBuilder 规则测试（迁移单球语义，原有规则保留）──
 
     #[test]
     fn blend_leg_curvature_gradates_a_to_c() {
@@ -717,32 +728,32 @@ fn no_recoil_after_sprint() {
     // 热身：先跑 300 帧确保球贴链（dev<0.025，真实巡航状态）
     let mut dev0 = f64::MAX;
     for _ in 0..300 {
-        p.tick(16.0);
-        let (tg, _, _, _) = chain_pos_and_tangent(&p.chain, p.s_lead - p.gaps[0]);
-        dev0 = ((tg.x - p.states[0].pos.x).powi(2) + (tg.y - p.states[0].pos.y).powi(2)).sqrt();
+        p.tick(16.0, None);
+        let (tg, _, _, _) = chain_pos_and_tangent(&p.chain, p.s_lead);
+        dev0 = ((tg.x - p.state.pos.x).powi(2) + (tg.y - p.state.pos.y).powi(2)).sqrt();
     }
     eprintln!(
         "warm done: s_lead={:.3} pos.y={:.3} vel.y={:.3} dev={dev0:.4}",
-        p.s_lead, p.states[0].pos.y, p.states[0].vel.y
+        p.s_lead, p.state.pos.y, p.state.vel.y
     );
     assert!(dev0 < 0.025, "热身未贴链：dev={dev0:.4}");
     // 先跑 30 帧消化贴链收敛瞬态；再监测 300 帧（覆盖跨入低速段窗口）：
     // 回弹 = 球超前目标（ahead>0.02）且正在后退（retreat>0.02，沿 -tan 运动）——
     // 贴链调整（dev 波动、收敛）不超调不后退，不算回弹
     for _ in 0..30 {
-        p.tick(16.0);
+        p.tick(16.0, None);
     }
     for _ in 0..300 {
-        p.tick(16.0);
-        let (tgt, tan, _, _) = chain_pos_and_tangent(&p.chain, p.s_lead - p.gaps[0]);
-        let v = p.states[0].vel;
+        p.tick(16.0, None);
+        let (tgt, tan, _, _) = chain_pos_and_tangent(&p.chain, p.s_lead);
+        let v = p.state.vel;
         let tm = (tan.x * tan.x + tan.y * tan.y).sqrt().max(1e-9);
-        let ahead = ((p.states[0].pos.x - tgt.x) * tan.x + (p.states[0].pos.y - tgt.y) * tan.y) / tm;
+        let ahead = ((p.state.pos.x - tgt.x) * tan.x + (p.state.pos.y - tgt.y) * tan.y) / tm;
         let retreat = -(v.x * tan.x + v.y * tan.y) / tm;
         assert!(
             ahead < 0.02 || retreat < 0.02,
             "冲刺后回弹！ahead={ahead:.4} retreat={retreat:.4} pos=({:.3},{:.3}) target=({:.3},{:.3})",
-            p.states[0].pos.x, p.states[0].pos.y, tgt.x, tgt.y
+            p.state.pos.x, p.state.pos.y, tgt.x, tgt.y
         );
     }
 }
@@ -756,50 +767,48 @@ fn sprint_recoil_audit() {
     let mut worst_dot = 1.0f64;
     let mut total = 0usize;
     for i in 0..6000 {
-        p.tick(16.0);
-        // 三球都查
-        for s in 0..3 {
-            let s_i = p.s_lead - p.gaps[s];
-            if s_i < 0.0 { continue; }
-            let (tgt, tan, seg_at, _) = chain_pos_and_tangent(&p.chain, s_i);
-            let v = p.states[s].vel;
-            let vm = (v.x * v.x + v.y * v.y).sqrt();
-            if vm < 0.05 { continue; }
-            let tm = (tan.x * tan.x + tan.y * tan.y).sqrt().max(1e-9);
-            let dot = (v.x * tan.x + v.y * tan.y) / vm / tm;
-            worst_dot = worst_dot.min(dot);
-            // 真回弹 = 球超前于目标（沿切线方向）且正在后退（沿 -tan 运动）
-            // ——转弯（夹角大但没超前）不算回弹
-            let rel_x = p.states[s].pos.x - tgt.x;
-            let rel_y = p.states[s].pos.y - tgt.y;
-            let ahead = (rel_x * tan.x + rel_y * tan.y) / tm; // >0 = 球在目标前方
-            let retreat = -(v.x * tan.x + v.y * tan.y) / tm; // >0 = 球在后退
-            if ahead > 0.02 && retreat > 0.02 {
-                recoils += 1;
-                if recoils <= 12 {
-                    let seg = &p.chain[seg_at];
-                    let f = seg.legs[0].from;
-                    let tg = seg.legs[4].target;
-                    // 未来段（tan_f 所在段）
-                    let s_fut = s_i + p.states[s].rate * WORLD_SPEED * LOOKAHEAD_SECONDS;
-                    let (_, _, seg_f_at, _) = chain_pos_and_tangent(&p.chain, s_fut);
-                    let segf = &p.chain[seg_f_at];
-                    let ff = segf.legs[0].from;
-                    let tf = segf.legs[4].target;
-                    eprintln!(
-                        "RECOIL s={} s_i={:.3} v=({:.3},{:.3}) ahead={:.3} retreat={:.3} | at tpl={} curv={:.2} from=({:.2},{:.2})->({:.2},{:.2}) | fut tpl={} curv={:.2} from=({:.2},{:.2})->({:.2},{:.2})",
-                        s, s_i, v.x, v.y, ahead, retreat,
-                        seg.template_idx,
-                        crate::config::templates::TEMPLATES[seg.template_idx].curvature,
-                        f.x, f.y, tg.x, tg.y,
-                        segf.template_idx,
-                        crate::config::templates::TEMPLATES[segf.template_idx].curvature,
-                        ff.x, ff.y, tf.x, tf.y,
-                    );
-                }
-            }
-            total += 1;
+        p.tick(16.0, None);
+        let s_i = p.s_lead;
+        let (tgt, tan, seg_at, _) = chain_pos_and_tangent(&p.chain, s_i);
+        let v = p.state.vel;
+        let vm = (v.x * v.x + v.y * v.y).sqrt();
+        if vm < 0.05 {
+            continue;
         }
+        let tm = (tan.x * tan.x + tan.y * tan.y).sqrt().max(1e-9);
+        let dot = (v.x * tan.x + v.y * tan.y) / vm / tm;
+        worst_dot = worst_dot.min(dot);
+        // 真回弹 = 球超前于目标（沿切线方向）且正在后退（沿 -tan 运动）
+        // ——转弯（夹角大但没超前）不算回弹
+        let rel_x = p.state.pos.x - tgt.x;
+        let rel_y = p.state.pos.y - tgt.y;
+        let ahead = (rel_x * tan.x + rel_y * tan.y) / tm; // >0 = 球在目标前方
+        let retreat = -(v.x * tan.x + v.y * tan.y) / tm; // >0 = 球在后退
+        if ahead > 0.02 && retreat > 0.02 {
+            recoils += 1;
+            if recoils <= 12 {
+                let seg = &p.chain[seg_at];
+                let f = seg.legs[0].from;
+                let tg = seg.legs[4].target;
+                // 未来段（tan_f 所在段）
+                let s_fut = s_i + p.state.rate * WORLD_SPEED * LOOKAHEAD_SECONDS;
+                let (_, _, seg_f_at, _) = chain_pos_and_tangent(&p.chain, s_fut);
+                let segf = &p.chain[seg_f_at];
+                let ff = segf.legs[0].from;
+                let tf = segf.legs[4].target;
+                eprintln!(
+                    "RECOIL s_i={:.3} v=({:.3},{:.3}) ahead={:.3} retreat={:.3} | at tpl={} curv={:.2} from=({:.2},{:.2})->({:.2},{:.2}) | fut tpl={} curv={:.2} from=({:.2},{:.2})->({:.2},{:.2})",
+                    s_i, v.x, v.y, ahead, retreat,
+                    seg.template_idx,
+                    crate::config::templates::TEMPLATES[seg.template_idx].curvature,
+                    f.x, f.y, tg.x, tg.y,
+                    segf.template_idx,
+                    crate::config::templates::TEMPLATES[segf.template_idx].curvature,
+                    ff.x, ff.y, tf.x, tf.y,
+                );
+            }
+        }
+        total += 1;
         if i % 1000 == 0 {
             eprintln!("t={i} worst_dot={worst_dot:.3} recoils={recoils}");
         }
@@ -807,7 +816,7 @@ fn sprint_recoil_audit() {
     eprintln!("AUDIT: recoils={recoils} total={total} worst_dot={worst_dot:.3}");
     assert!(
         recoils <= 6,
-        "回弹事件过多：{recoils}/6000 帧（worst_dot={worst_dot:.3}）"
+        "回弹事件过多：{recoils}/{total} 帧（worst_dot={worst_dot:.3}）"
     );
 }
 
@@ -846,62 +855,4 @@ fn chain_direction_jumps_audit() {
     }
     eprintln!("CHAIN AUDIT: jumps={jumps}/300 段");
     assert!(jumps <= 6, "段间方向跳变过多：{jumps}");
-}
-
-#[test]
-fn queue_speed_uniform_no_stop_go() {
-    // 走走停停回归测试：交替高速/低速段链——三球速度大小必须一致
-    // （智能匀速 = 队列同速；曾按各自链上位置的 profile 速度 → 蓝绿忽快忽慢）
-    let mk_leg = |x0: f64, x1: f64, speed: f64| -> PlannedLeg {
-        let from = Vec2 { x: x0, y: 0.5 };
-        let target = Vec2 { x: x1, y: 0.5 };
-        let sub = (x1 - x0) / 5.0;
-        let mut legs = [Leg { from, ctrl: target, target }; 5];
-        for (i, leg) in legs.iter_mut().enumerate() {
-            let f = x0 + sub * i as f64;
-            leg.from = Vec2 { x: f, y: 0.5 };
-            leg.target = Vec2 { x: f + sub, y: 0.5 };
-            leg.ctrl = Vec2 { x: f + sub / 2.0, y: 0.5 };
-        }
-        PlannedLeg {
-            legs,
-            template_idx: 0,
-            speed,
-            curv_eff: 0.0,
-            dur_ms: (x1 - x0) / (WORLD_SPEED * speed) * 1000.0,
-            arc: x1 - x0,
-        }
-    };
-    let mut p = Player::new(Vec2 { x: 0.5, y: 0.5 }, Vec2 { x: 1.0, y: 0.0 });
-    p.bounds = CircleBounds { cx: 0.5, cy: 0.5, r: 0.6 };
-    // 交替：高速(1.6) 低速(0.55) 高速 低速——共 8 段覆盖三球错开范围
-    let mut chain = VecDeque::new();
-    let mut x = 0.1;
-    for i in 0..8 {
-        let sp = if i % 2 == 0 { 1.6 } else { 0.55 };
-        chain.push_back(mk_leg(x, x + 0.15, sp));
-        x += 0.15;
-    }
-    p.chain = chain;
-    p.s_lead = 0.08;
-    // 热身 100 帧（上链+贴链）
-    for _ in 0..100 {
-        p.tick(16.0);
-    }
-    // 监测 200 帧：三球速度大小必须一致（相对差 < 2%）
-    let mut worst = 0.0f64;
-    for _ in 0..200 {
-        p.tick(16.0);
-        let v0 = (p.states[0].vel.x.powi(2) + p.states[0].vel.y.powi(2)).sqrt();
-        let v1 = (p.states[1].vel.x.powi(2) + p.states[1].vel.y.powi(2)).sqrt();
-        let v2 = (p.states[2].vel.x.powi(2) + p.states[2].vel.y.powi(2)).sqrt();
-        let max = v0.max(v1).max(v2).max(1e-9);
-        let spread = (max - v0.min(v1).min(v2)) / max;
-        worst = worst.max(spread);
-    }
-    eprintln!("queue speed spread: {worst:.4}");
-    assert!(
-        worst < 0.02,
-        "队列速度不一致（走走停停）：spread={worst:.4}"
-    );
 }
