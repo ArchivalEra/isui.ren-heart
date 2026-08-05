@@ -72,8 +72,8 @@ impl TrailRenderer {
                     let p1 = pts[k];
                     let p2 = pts[k + 1];
                     let p3 = if k + 2 < pts.len() { pts[k + 2] } else { pts[pts.len() - 1] };
-                    for s in 0..4 {
-                        let t = s as f64 / 4.0;
+                    for s in 0..TRAIL_CATMULL_SEGMENTS {
+                        let t = s as f64 / TRAIL_CATMULL_SEGMENTS as f64;
                         let q = catmull_rom(p0, p1, p2, p3, t);
                         if k == 0 && s == 0 {
                             ctx.move_to(q.x, q.y);
@@ -100,8 +100,8 @@ impl TrailRenderer {
                     let p2 = pts[k + 1];
                     let p3 = if k + 2 < pts.len() { pts[k + 2] } else { pts[pts.len() - 1] };
                     ctx.begin_path();
-                    for s in 0..4 {
-                        let t = s as f64 / 4.0;
+                    for s in 0..TRAIL_CATMULL_SEGMENTS {
+                        let t = s as f64 / TRAIL_CATMULL_SEGMENTS as f64;
                         let q = catmull_rom(p0, p1, p2, p3, t);
                         if s == 0 {
                             ctx.move_to(q.x, q.y);

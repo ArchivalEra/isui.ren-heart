@@ -26,8 +26,10 @@ pub struct Personality {
 }
 pub const PERSONALITIES: [Personality; 3] = [
     Personality { name: "粉球·领航", curv_bias: 0.0, speed_band: None, follow_prob: 0.3 },
-    Personality { name: "蓝球·绕圈", curv_bias: 0.3, speed_band: None, follow_prob: 0.2 },
-    Personality { name: "绿球·巡航", curv_bias: -0.2, speed_band: Some(1), follow_prob: 0.4 },
+    // Gemini 真经三号：强曲率偏好 + 慢速优雅转圈
+    Personality { name: "蓝球·绕圈", curv_bias: 0.45, speed_band: Some(0), follow_prob: 0.15 },
+    // Gemini 真经三号：直路 + 高速疾速穿梭
+    Personality { name: "绿球·巡航", curv_bias: -0.35, speed_band: Some(2), follow_prob: 0.5 },
 ];
 
 pub const BALL_COLORS: [&str; 3] = ["#F09ABD", "#6EC6E6", "#7FC39F"];
@@ -286,7 +288,7 @@ pub const TEMPLATES: [Template; 25] = [
 /// 每帧全量重绘的填充率随 DPR² 增长：2.0 上限下 1920×1080 屏 = 3840×2160 ≈ 830 万
 /// 像素/帧。改小 → 明显降填充率（画面略糊）；改大 → 3x/4x 屏更清晰但更重。
 /// 现状值 2.0（engine.rs `device_pixel_ratio().min(2.0)`）
-pub const RENDER_MAX_DPR: f64 = 2.0;
+pub const RENDER_MAX_DPR: f64 = 1.5; // Gemini 真经三号：高 DPR 屏画幅填充压力削减
 /// 【Gemini 可操作】canvas 物理尺寸变更容差（px）。|物理宽/高 − 目标| ≤ 0.5 才
 /// 重设 canvas 尺寸 + set_transform（防每帧 resize 抖动；也减少 set_transform 次数）。
 /// 现状值 0.5（engine.rs `.abs() > 0.5`）
@@ -310,7 +312,7 @@ pub const RENDER_RADIUS_MAX_SCALE: f64 = 1.0;
 /// 减半（4）≈ 拖尾路径点减半（拖尾变短 + 每帧 catmull 采样减半）；
 /// 注意这是渲染压力与拖尾长度的核心权衡点。
 /// 现状值 8（engine.rs `h.len() > 8`；trail.rs sample_history frames 参数同样 8）
-pub const TRAIL_MAX_POINTS: usize = 8;
+pub const TRAIL_MAX_POINTS: usize = 6; // Gemini 真经三号：-25% 路径顶点
 /// 【Gemini 可操作】拖尾采样速度阈值（世界单位/秒）。速度低于此值清空拖尾
 /// （静止/思考期不渲染——省绘制）。也是「速度过高时截断重建」判定的伴生阈值。
 /// 现状值 0.02（trail.rs `speed_per_sec < 0.02`；engine.rs 经 sim::state.rs
@@ -320,7 +322,7 @@ pub const TRAIL_SPEED_THRESHOLD: f64 = 0.02;
 /// 4 = 每历史段 4 个路径点（拖尾平滑度）；路径顶点数 ≈ TRAIL_MAX_POINTS×本值。
 /// 减到 3/2 → 拖尾更「折角」但路径点更少；这是平滑度 vs 顶点数的权衡点。
 /// 现状值 4（engine.rs `for s in 0..4`；trail.rs 同）
-pub const TRAIL_CATMULL_SEGMENTS: usize = 4;
+pub const TRAIL_CATMULL_SEGMENTS: usize = 3; // Gemini 真经三号：插值密度降低
 
 // ---- 拖尾 Trail（实心大拖尾：一次 stroke 一条路径）----
 /// 【Gemini 可操作】实心拖尾线宽 = 球半径 × 本系数（全宽 2r）。

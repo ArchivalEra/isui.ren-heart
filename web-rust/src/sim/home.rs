@@ -34,6 +34,7 @@
 use crate::config::params::*;
 use crate::sim::math::Vec2;
 use crate::sim::chain::{make_planned_leg, roll_speed};
+use crate::sim::math::bezier_tangent;
 use crate::sim::planner::PlannedLeg;
 
 /// 回家段生成上下文（planner 提供——Gemini 只消费）
@@ -46,18 +47,40 @@ pub struct HomeCtx {
     pub anchor: Vec2,
 }
 
-/// 生成回家段（当前基线：单段 0.40 曲率——Gemini 的改造对象）
+/// 生成回家段（Gemini 真经三号：两段式渐进弧线）
+/// - 段 1（0.20 缓冲）：沿原切线低曲率切入到中点——缓解高速下突然截断的
+///   法向加速度跳变（感叹号分离现象）
+/// - 段 2（0.38 主回归）：从段 1 尾切线出发精准命中 anchor
+/// - 段间曲率差 |0.38-0.20| = 0.18 ≤ 0.2（拖尾渐进——契约）
 pub fn plan_home_legs(ctx: &HomeCtx) -> Vec<PlannedLeg> {
-    let tpl = TEMPLATES
+    let tpl_buf = TEMPLATES
         .iter()
-        .position(|x| (x.curvature - 0.40).abs() < 1e-9)
-        .unwrap_or(8);
-    let speed = roll_speed(Some(1)); // 巡航档回家——tune 平滑衔接当前速度
-    let mut pl = make_planned_leg(ctx.from, ctx.dir, tpl, ctx.anchor, speed);
-    // ctrl clamp 屏内（dir 朝屏外时防段中出屏——段尾 target 不受影响）
-    pl.legs[0].ctrl.x = pl.legs[0].ctrl.x.clamp(0.04, 0.96);
-    pl.legs[0].ctrl.y = pl.legs[0].ctrl.y.clamp(0.04, 0.96);
-    vec![pl]
+        .position(|x| (x.curvature - 0.20).abs() < 1e-9)
+        .unwrap_or(5);
+    let tpl_main = TEMPLATES
+        .iter()
+        .position(|x| (x.curvature - 0.38).abs() < 1e-9)
+        .unwrap_or(9);
+    let speed = roll_speed(Some(1)); // 巡航档平滑衔接
+
+    // 段 1：中途过渡点（起点与锚点中点）
+    let mid_target = Vec2 {
+        x: ctx.from.x * 0.5 + ctx.anchor.x * 0.5,
+        y: ctx.from.y * 0.5 + ctx.anchor.y * 0.5,
+    };
+    let mut pl1 = make_planned_leg(ctx.from, ctx.dir, tpl_buf, mid_target, speed);
+    pl1.legs[0].ctrl.x = pl1.legs[0].ctrl.x.clamp(0.04, 0.96);
+    pl1.legs[0].ctrl.y = pl1.legs[0].ctrl.y.clamp(0.04, 0.96);
+
+    // 段 2：段 1 尾切线出发（Gemini 原稿 pl1.legs.dir 不存在——用 bezier_tangent）
+    let t1 = bezier_tangent(pl1.legs[4].from, pl1.legs[4].ctrl, pl1.legs[4].target, 1.0);
+    let l1 = (t1.x * t1.x + t1.y * t1.y).sqrt().max(1e-9);
+    let next_dir = Vec2 { x: t1.x / l1, y: t1.y / l1 };
+    let mut pl2 = make_planned_leg(mid_target, next_dir, tpl_main, ctx.anchor, speed);
+    pl2.legs[0].ctrl.x = pl2.legs[0].ctrl.x.clamp(0.04, 0.96);
+    pl2.legs[0].ctrl.y = pl2.legs[0].ctrl.y.clamp(0.04, 0.96);
+
+    vec![pl1, pl2]
 }
 
 // ─────────────────────────── 测试 ───────────────────────────

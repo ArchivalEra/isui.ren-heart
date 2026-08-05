@@ -133,7 +133,7 @@ impl BallsEngine {
                     }
                 }
                 h.push_back((pos.x, pos.y));
-                if h.len() > 8 {
+                if h.len() > TRAIL_MAX_POINTS {
                     h.pop_front();
                 }
             } else {
@@ -199,7 +199,7 @@ impl BallsEngine {
         let dpr = web_sys::window()
             .map(|w| w.device_pixel_ratio())
             .unwrap_or(1.0)
-            .min(2.0);
+            .min(RENDER_MAX_DPR);
         let bw = (cw * dpr).round();
         let bh = (ch * dpr).round();
         if (self.canvas.width() as f64 - bw).abs() > 0.5
