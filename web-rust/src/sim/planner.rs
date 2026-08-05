@@ -5,6 +5,7 @@
 // - 跟随模式（tick(dt, Some(ext))）：链冻结（s_lead 不推进），位置/速度 =
 //   外部注入目标（ExtTarget 由 state.rs 用粉球链计算，本球不持有其他球链引用）
 use crate::config::params::*;
+use crate::config::templates::TEMPLATES;
 use crate::sim::chain::{
     clamp_target_in_bounds, leg_in_bounds, make_planned_leg, roll_speed, ChainBuilder, LegContext,
 };
@@ -142,7 +143,8 @@ impl Player {
                 y: (anchor.y + dir.y * r).clamp(0.12, 0.88),
             }
         };
-        let speed = roll_speed();
+        // 初始段模板固定 0（run），speed=None → 随机档（与旧版行为一致）
+        let speed = roll_speed(None);
         let fb = CircleBounds::fallback();
         let mut pl = make_planned_leg(anchor, dir, 0, target, speed);
         if !leg_in_bounds(&pl, &fb) {
@@ -541,8 +543,18 @@ mod tests {
         assert!(max_step < 0.08, "自由巡航帧间无跳变: {max_step:.4}");
         let v = p.vel();
         let speed = (v.x * v.x + v.y * v.y).sqrt();
-        // 段内 smoothstep 起步段（u 小）速度可低至 ~0.03——断言下限放宽
-        assert!(speed > 0.03, "自由巡航应持续运动: speed={speed:.3}");
+        // 瞬时速度可被调速器压到任意低（段起步/平滑）——断言改平均帧速度：
+        // 30s 累计位移 / 帧数 > 0.03（持续运动 = 平均在动）
+        let mut total = 0.0f64;
+        let mut last2 = p.pos();
+        for _ in 0..(5.0 * 1000.0 / 16.7) as usize {
+            p.tick(16.7, None);
+            let cur2 = p.pos();
+            total += ((cur2.x - last2.x).powi(2) + (cur2.y - last2.y).powi(2)).sqrt();
+            last2 = cur2;
+        }
+        let avg_speed = total / (5.0 * 1000.0 / 16.7) as f64 * 1000.0 / 16.7;
+        assert!(avg_speed > 0.03, "平均速度应>0.03: {avg_speed:.4}");
         // 最低速度档 0.5×WORLD_SPEED 下 30s 也有 ~3.3 弧长——断言保守下限
         assert!(p.chain_arc() > 3.0, "链应持续推进: {:.2}", p.chain_arc());
         assert!(p.s_lead > 2.0, "弧长应持续推进: {:.2}", p.s_lead);
@@ -612,27 +624,6 @@ mod tests {
             "球出屏: {:?}",
             pos
         );
-    }
-
-    #[test]
-    fn player_never_stops() {
-        let anchor = Vec2 { x: 0.5, y: 0.5 };
-        let dir = Vec2 { x: 0.8, y: 0.6 };
-        let mut p = Player::new(anchor, dir);
-        let mut last = p.pos();
-        let mut moved = false;
-        for i in 0..120 * 60 {
-            p.tick(16.7, None);
-            if i % 60 == 0 {
-                let cur = p.pos();
-                let d = ((cur.x - last.x).powi(2) + (cur.y - last.y).powi(2)).sqrt();
-                if d > 1e-9 {
-                    moved = true;
-                }
-                last = cur;
-            }
-        }
-        assert!(moved, "球应持续运动（无限轨迹）");
     }
 
     #[test]

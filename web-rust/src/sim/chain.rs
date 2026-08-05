@@ -197,7 +197,6 @@ impl ChainBuilder {
         let from = ctx.from;
         let dir = ctx.dir;
         let b = *bounds;
-        let speed = roll_speed();
         // from 圆外（链异常态——正常生成下段尾必在圆内，此分支只应出现在
         // 极端收缩/兜底后）：朝圆心 0.12 直线段快速回圆——不混入正常几何。
         // 段尾可能仍在圆外（from 太远）——由调用方收敛性断言覆盖（收敛即可）
@@ -208,6 +207,8 @@ impl ChainBuilder {
                 x: from.x + to_c.x / d * 0.12,
                 y: from.y + to_c.y / d * 0.12,
             };
+            // 模板固定 0（run），速度随它的 speed 字段（None → 随机档，现状行为）
+            let speed = roll_speed(TEMPLATES[0].speed);
             let pl = make_planned_leg(from, dir, 0, target, speed);
             return PlannedLegChoice {
                 template_idx: 0,
@@ -222,6 +223,9 @@ impl ChainBuilder {
         // 曲线选择：曲率连续性（形状只管几何）；贴边时强制大曲率模板快速弯回
         let roll = rng.gen::<f64>();
         let template_idx = pick_template(ctx.prev_template, near_edge, roll, rng);
+        // 速度随模板钦定档：先选模板再滚速度（Some = 钦定档直接落地；
+        // None = 随机档 + 高速批准制——现状行为）
+        let speed = roll_speed(TEMPLATES[template_idx].speed);
         let dist = 0.3 + rng.gen::<f64>() * 0.3;
         // 目标生成（大事情定稿）：全部在活动圈内随机——
         // 普通段 = 圆内随机点（极坐标均匀，0.75r 留转弯余地）；
@@ -352,11 +356,17 @@ impl ChainBuilder {
 
 /// 段速度：随机档位；高速档（>1.2）40% 批准，不批准回落巡航档（重新生成新路径）
 /// （自 planner.rs 迁移，逐行一致）
-pub fn roll_speed() -> f64 {
-    let idx = rand::random::<usize>() % SPEED_BANDS.len();
+/// 参数 template_speed：模板钦定速度档——
+///   Some(idx) = 用 SPEED_BANDS[idx] 档内随机，**不经高速批准制**（AI 钦定 =
+///   艺术意图直接落地）；None = 随机档（现状行为：高速档走批准制）
+pub fn roll_speed(template_speed: Option<usize>) -> f64 {
+    let idx = match template_speed {
+        Some(i) => i,
+        None => rand::random::<usize>() % SPEED_BANDS.len(),
+    };
     let (lo, hi) = SPEED_BANDS[idx];
     let v = lo + rand::random::<f64>() * (hi - lo);
-    if v > SPEED_THRESHOLD && rand::random::<f64>() >= SPEED_APPROVE_PROB {
+    if template_speed.is_none() && v > SPEED_THRESHOLD && rand::random::<f64>() >= SPEED_APPROVE_PROB {
         let (lo, hi) = SPEED_BANDS[1];
         lo + rand::random::<f64>() * (hi - lo)
     } else {
@@ -773,11 +783,21 @@ mod tests {
 
     #[test]
     fn roll_speed_respects_bands() {
-        // 速度档位 + 高速批准制：不批准回落巡航档（0.72-0.85）
+        // 随机档（None）：档位内 + 高速批准制——不批准回落巡航档（0.72-0.85）
         for _ in 0..200 {
-            let v = roll_speed();
+            let v = roll_speed(None);
             let in_band = SPEED_BANDS.iter().any(|&(lo, hi)| v >= lo && v <= hi);
             assert!(in_band, "速度应在档位内: {v}");
+        }
+        // 钦定档（Some(2)）：固定 SPEED_BANDS[2]（高速 1.1-1.3）内随机——
+        // 不经批准制，永不回落巡航档（艺术意图直接落地）
+        let (lo, hi) = SPEED_BANDS[2];
+        for _ in 0..200 {
+            let v = roll_speed(Some(2));
+            assert!(
+                (lo..=hi).contains(&v),
+                "钦定档 2 速度应恒在高速档 {lo}-{hi} 内: {v}"
+            );
         }
     }
 }

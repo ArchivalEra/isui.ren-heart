@@ -25,6 +25,15 @@
 //   - 相邻段切换时 |Δcurvature| 会被 TEMPLATE_CURV_STEP(0.35) 约束
 //     （自动，无需处理）
 //
+// 【如何钦定速度档】（可选；默认 None = 随机档，行为与旧版完全一致）
+//   Template.speed = Some(档位索引)，指向 params.rs 的 SPEED_BANDS：
+//     0 = 慢档 0.5-0.65，1 = 巡航档 0.72-0.85，2 = 高速档 1.1-1.3
+//   例：`Template { id: "coil", ..., speed: Some(2) }` = 线圈固定高速档
+//     （艺术表达：coil 天生高速甩尾的视觉意图直接落地）。
+//   钦定档不走高速批准制（SPEED_THRESHOLD/SPEED_APPROVE_PROB 只作用于随机档）——
+//   AI/Gemini 钦定 = 艺术意图直接落地；随机档才需要批准制防视觉失控。
+//   现有模板全部 speed: None（零行为变化）；想钦定才把 None 改成 Some(档位)。
+//
 // 【设计要点】
 //   - 曲线是「从当前点出发、朝当前方向继续」的贝塞尔弧：
 //     ctrl = from + dir×(dist/2) + normal×dist×curvature×0.35
@@ -51,45 +60,50 @@ pub struct Template {
     pub name: &'static str,
     /// 路径弯度 [-1.6, 1.6]：0=直线，正=左弯，负=右弯；|x|>1 呈线圈
     pub curvature: f64,
+    /// 钦定速度档位（索引指向 params.rs 的 SPEED_BANDS，见文件头档位对照）：
+    /// Some(idx) = 模板固定该档（艺术意图直接落地，不经高速批准制）；
+    /// None = 随机档（现状行为，默认）
+    pub speed: Option<usize>,
 }
 
 pub const TEMPLATES: [Template; 25] = [
     // --- 0. 轴线基准 ---
-    Template { id: "run", name: "直线", curvature: 0.00 },
+    Template { id: "run", name: "直线", curvature: 0.00, speed: None },
     // --- 1. 细微流韵 (±0.10 ~ ±0.20) ---
-    Template { id: "stroll", name: "闲步", curvature: 0.10 },
-    Template { id: "stroll_r", name: "闲步·反", curvature: -0.10 },
-    Template { id: "breeze", name: "拂风", curvature: 0.20 },
-    Template { id: "breeze_r", name: "拂风·反", curvature: -0.20 },
+    Template { id: "stroll", name: "闲步", curvature: 0.10, speed: None },
+    Template { id: "stroll_r", name: "闲步·反", curvature: -0.10, speed: None },
+    Template { id: "breeze", name: "拂风", curvature: 0.20, speed: None },
+    Template { id: "breeze_r", name: "拂风·反", curvature: -0.20, speed: None },
     // --- 2. 优雅巡航 (±0.30 ~ ±0.52) ---
-    Template { id: "ripple", name: "漪涟", curvature: 0.30 },
-    Template { id: "ripple_r", name: "漪涟·反", curvature: -0.30 },
-    Template { id: "glide", name: "滑翔", curvature: 0.40 },
-    Template { id: "glide_r", name: "滑翔·反", curvature: -0.40 },
-    Template { id: "sway", name: "摇摆", curvature: 0.52 },
-    Template { id: "sway_r", name: "摇摆·反", curvature: -0.52 },
+    Template { id: "ripple", name: "漪涟", curvature: 0.30, speed: None },
+    Template { id: "ripple_r", name: "漪涟·反", curvature: -0.30, speed: None },
+    Template { id: "glide", name: "滑翔", curvature: 0.40, speed: None },
+    Template { id: "glide_r", name: "滑翔·反", curvature: -0.40, speed: None },
+    Template { id: "sway", name: "摇摆", curvature: 0.52, speed: None },
+    Template { id: "sway_r", name: "摇摆·反", curvature: -0.52, speed: None },
     // --- 3. 律动开合 (±0.65 ~ ±0.90) ---
-    Template { id: "loop", name: "绕弧", curvature: 0.65 },
-    Template { id: "loop_r", name: "绕弧·反", curvature: -0.65 },
-    Template { id: "sweep", name: "漫游", curvature: 0.78 },
-    Template { id: "sweep_r", name: "漫游·反", curvature: -0.78 },
-    Template { id: "surge", name: "涌浪", curvature: 0.90 },
-    Template { id: "surge_r", name: "涌浪·反", curvature: -0.90 },
+    Template { id: "loop", name: "绕弧", curvature: 0.65, speed: None },
+    Template { id: "loop_r", name: "绕弧·反", curvature: -0.65, speed: None },
+    Template { id: "sweep", name: "漫游", curvature: 0.78, speed: None },
+    Template { id: "sweep_r", name: "漫游·反", curvature: -0.78, speed: None },
+    Template { id: "surge", name: "涌浪", curvature: 0.90, speed: None },
+    Template { id: "surge_r", name: "涌浪·反", curvature: -0.90, speed: None },
     // --- 4. 疾速甩尾 (±1.05 ~ ±1.22) ---
-    Template { id: "drift", name: "漂移", curvature: 1.05 },
-    Template { id: "drift_r", name: "漂移·反", curvature: -1.05 },
-    Template { id: "whirl", name: "柔卷", curvature: 1.22 },
-    Template { id: "whirl_r", name: "柔卷·反", curvature: -1.22 },
+    Template { id: "drift", name: "漂移", curvature: 1.05, speed: None },
+    Template { id: "drift_r", name: "漂移·反", curvature: -1.05, speed: None },
+    Template { id: "whirl", name: "柔卷", curvature: 1.22, speed: None },
+    Template { id: "whirl_r", name: "柔卷·反", curvature: -1.22, speed: None },
     // --- 5. 极光飞花 (±1.40 ~ ±1.55) ---
-    Template { id: "coil", name: "灵线", curvature: 1.40 },
-    Template { id: "coil_r", name: "灵线·反", curvature: -1.40 },
-    Template { id: "vortex", name: "漩涡", curvature: 1.55 },
-    Template { id: "vortex_r", name: "漩涡·反", curvature: -1.55 },
+    Template { id: "coil", name: "灵线", curvature: 1.40, speed: None },
+    Template { id: "coil_r", name: "灵线·反", curvature: -1.40, speed: None },
+    Template { id: "vortex", name: "漩涡", curvature: 1.55, speed: None },
+    Template { id: "vortex_r", name: "漩涡·反", curvature: -1.55, speed: None },
 ];
 
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::config::params::SPEED_BANDS;
 
     /// 曲线模板规范校验：所有模板取值必须合法（新增模板违规会在这里红）
     #[test]
@@ -111,6 +125,12 @@ mod tests {
                 (-1.6..=1.6).contains(&t.curvature),
                 "模板 '{}' curvature {} 超出 [-1.6, 1.6]",
                 t.id, t.curvature
+            );
+            // speed：None（随机档）或索引 < SPEED_BANDS.len()（钦定档）
+            assert!(
+                t.speed.map_or(true, |s| s < SPEED_BANDS.len()),
+                "模板 '{}' speed 档位 {:?} 越界（SPEED_BANDS 共 {} 档）",
+                t.id, t.speed, SPEED_BANDS.len()
             );
         }
     }
