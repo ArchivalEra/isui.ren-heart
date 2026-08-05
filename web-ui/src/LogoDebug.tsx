@@ -31,9 +31,19 @@ export default function LogoDebug() {
 
     const cs = getComputedStyle(logo);
     const imgRect = logoImg.getBoundingClientRect();
+    // left/top 复制百分比语义：拖过 = style.left（百分比）；未拖 =
+    // 计算 px ÷ 容器宽高 → 百分比（站主可直接写回 CSS——曾复制计算 px
+    // 依赖窗口尺寸无法换算）
+    const parent = logo.parentElement!;
+    const pctL =
+      logo.style.left ||
+      ((parseFloat(cs.left) / parent.clientWidth) * 100).toFixed(2) + "%";
+    const pctT =
+      logo.style.top ||
+      ((parseFloat(cs.top) / parent.clientHeight) * 100).toFixed(2) + "%";
     setLogoParams({
-      left: cs.left,
-      top: cs.top,
+      left: pctL,
+      top: pctT,
       width: Math.round(imgRect.width) + "px",
     });
 

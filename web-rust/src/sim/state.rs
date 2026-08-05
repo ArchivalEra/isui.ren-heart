@@ -551,7 +551,10 @@ mod tests {
     }
 
     fn state() -> State {
-        State::new([v(0.555, 0.355), v(0.473, 0.379), v(0.525, 0.471)])
+        // 动态读 params ANCHORS（人眼校准值会更新——硬编码旧值导致
+        // set_logo_transform 期望错位）
+        let a = crate::config::params::ANCHORS;
+        State::new([v(a[0].0, a[0].1), v(a[1].0, a[1].1), v(a[2].0, a[2].1)])
     }
 
     /// 固定序列 decide：ball[1] 第 5 次判定（i=9，25000ms）触发跟随，
