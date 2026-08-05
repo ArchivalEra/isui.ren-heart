@@ -127,7 +127,7 @@ impl State {
                             // 回家路径与巡航曲线平滑接出，不是"顿一下换方向"），
                             // 再加法线侧偏（弯度）弯向锚点
                             let dir = player.lead_tangent(s);
-                            let off = 0.2f64.min(0.35 * dist);
+                            let off = 0.3f64.min(0.45 * dist);
                             let mut ctrl = Vec2 {
                                 x: pos.x + dir.x * (dist * 0.4) + (-dir.y) * off,
                                 y: pos.y + dir.y * (dist * 0.4) + dir.x * off,
@@ -143,8 +143,9 @@ impl State {
                     );
                     next = Some(Phase::Homeward {
                         t: 0.0,
-                        // 粉先转身、蓝绿紧随（0.35s/0.7s 错开）——不是等粉到家再动
-                        home_t: [0.0, HOME_STAGGER_MS, HOME_STAGGER_MS * 2.0],
+                        // 蓝绿提前预知：三球同时出发回家（零停顿）——
+                        // 粉球靠更短的回家弧线先到（见 Homeward 推进）
+                        home_t: [0.0, 0.0, 0.0],
                         homes,
                         player,
                     });
@@ -159,7 +160,9 @@ impl State {
                         if leg.s < 1.0 {
                             all_home = false;
                             if *t >= home_t[s] {
-                                leg.s = (leg.s + dt / HOME_DURATION_MS).min(1.0);
+                                // 粉球回家弧线更短（0.75×）——同时出发、粉先到
+                                let dur = HOME_DURATION_MS * if s == 0 { 0.75 } else { 1.0 };
+                                leg.s = (leg.s + dt / dur).min(1.0);
                             }
                         }
                     }
