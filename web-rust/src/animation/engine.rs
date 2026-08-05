@@ -33,6 +33,10 @@ pub struct BallsEngine {
     logo_bounds: crate::sim::planner::CircleBounds,
     /// 采样计数（每 30 帧采样一次 logo 位置——getBoundingClientRect 有 layout 成本）
     logo_tick: u32,
+    /// 上次检测的 canvas CSS 尺寸（px，0 = 尚未检测）——resize 检测基准
+    last_cw: f64,
+    last_ch: f64,
+    last_dpr: f64,
 }
 
 impl BallsEngine {
@@ -59,6 +63,9 @@ impl BallsEngine {
             history: [VecDeque::new(), VecDeque::new(), VecDeque::new()],
             logo_bounds: crate::sim::planner::CircleBounds::fallback(),
             logo_tick: 0,
+            last_cw: 0.0,
+            last_ch: 0.0,
+            last_dpr: 0.0,
         };
         engine.install_keyboard_shortcuts();
         engine
@@ -102,6 +109,24 @@ impl BallsEngine {
     }
 
     pub fn frame(&mut self, dt: f64) {
+        // ① resize 检测：canvas CSS 尺寸变化 >1%（或 0→非 0——首帧亦算）→
+        //    重建 State + 立即重采样活动圆。曾：resize 后旧链/旧圆混合 →
+        //    小球起始位置错乱（旧链按旧归一化活动圆规划，新尺寸下已失效）。
+        //    last_cw/last_ch 每帧更新——重建只触发一次，不会每帧重复重建
+        let cw = self.canvas.client_width() as f64;
+        let ch = self.canvas.client_height() as f64;
+        let sized = cw > 0.0 && ch > 0.0;
+        let resized = if self.last_cw <= 0.0 || self.last_ch <= 0.0 {
+            sized // 首帧（0→实际）也算一次 resize——重建一次无害
+        } else {
+            (cw - self.last_cw).abs() > self.last_cw * 0.01
+                || (ch - self.last_ch).abs() > self.last_ch * 0.01
+        };
+        self.last_cw = cw;
+        self.last_ch = ch;
+        if resized {
+            self.rebuild_on_resize();
+        }
         // 大事情定稿：实时采样 tayori 标志位置（不同设备排版差异——
         // getBoundingClientRect 每 30 帧一次，活动圈随 logo 实际位置更新）
         self.logo_tick += 1;
@@ -148,8 +173,29 @@ impl BallsEngine {
         Vec2 { x: cur.x - prev.x, y: cur.y - prev.y }
     }
 
+    /// resize 重建：全新 State（State::new = 入场静立 + 链预生成 preplan——
+    /// 新 State 自带入场预生成 ensure_chain_to，无需额外标志）+
+    /// 立即重采样 logo 活动圈 + set_bounds——新链基于新尺寸的归一化活动圆规划。
+    /// 曾：resize 后旧链/旧圆混合 → 小球起始位置错乱
+    fn rebuild_on_resize(&mut self) {
+        let anchors = ANCHORS.map(|(x, y)| Vec2 { x, y });
+        self.state = State::new(anchors);
+        // 立即重采样（不等 30 帧节流）——新尺寸下活动圆立刻生效
+        self.logo_bounds = self.sample_logo_bounds();
+        self.state.set_bounds(self.logo_bounds);
+        // 真圆注入后重建三球链（State::new 预生成用 fallback 圆——
+        // 与真圆错位——起始位置不对真凶）
+        self.state.rebuild_chains();
+        // 重置差分速度基准 + 拖尾历史——防重建后首帧「旧位置→新位置」大尾迹
+        for s in 0..3 {
+            self.prev_pos[s] = self.state.ball_pos(s, self.balls[s].offset);
+            self.history[s].clear();
+        }
+    }
+
     /// 采样 .heart-logo 的实际位置 → 活动圈（圆心 = logo 中心，
-    /// 半径 = 圆心到四边最窄距离——横竖边取最小，圆永不越界）
+    /// 半径 = logo 中心到最近屏幕边缘——用户钦定；clamp 屏内仅防御
+    /// 历史 scale>1 放大用法，scale=1.0 时圆天然内切屏、不越界）
     fn sample_logo_bounds(&self) -> crate::sim::planner::CircleBounds {
         use crate::sim::planner::CircleBounds;
         let el = web_sys::window()
@@ -161,16 +207,24 @@ impl BallsEngine {
             let cw = self.canvas.client_width() as f64;
             let ch = self.canvas.client_height() as f64;
             if cw > 0.0 && ch > 0.0 {
-                let cx = (rect.left() + rect.width() / 2.0) / cw;
+                let cx_ratio = (rect.left() + rect.width() / 2.0) / cw;
                 let cy = (rect.top() + rect.height() / 2.0) / ch;
-                // 活动圆放大（满屏跑）但 clamp 屏内——放大后仍超屏会让
-                // 补段链出屏幕（第二个循环重启后没有小圆预渲染保护）
-                let r = ((cx.min(1.0 - cx).min(cy).min(1.0 - cy)) * 1.25)
-                    .min(cx)
-                    .min(1.0 - cx)
+                // 反透视（嫌疑②修复）：screen_of 的 x 被 depth 压缩——
+                // 曾纯比例 cx 被当世界坐标 → 球渲染偏 logo 右 ~4% 视口宽
+                // （resize 拉宽更明显）。反透视：world_x = (ratio-0.5)/depth+0.5
+                let depth = 0.55 + 0.45 * cy; // depth_scale(cy)——y 线性
+                let cx = (cx_ratio - 0.5) / depth + 0.5;
+                // "最近屏幕边缘"（世界坐标）：x 边缘 = 反透视(0/1)；
+                // y 边缘 = 0/1（线性）
+                let x_l = 0.5 - 0.5 / depth;
+                let x_r = 0.5 + 0.5 / depth;
+                let edge_min = (cx - x_l).min(x_r - cx).min(cy).min(1.0 - cy);
+                let r = (edge_min * LOGO_BOUNDS_SCALE)
+                    .min(cx - x_l)
+                    .min(x_r - cx)
                     .min(cy)
                     .min(1.0 - cy);
-                return CircleBounds { cx, cy, r: r.max(0.08) };
+                return CircleBounds { cx, cy, r: r.max(LOGO_BOUNDS_MIN_RADIUS) };
             }
         }
         CircleBounds::fallback()
@@ -207,7 +261,13 @@ impl BallsEngine {
         {
             self.canvas.set_width(bw as u32);
             self.canvas.set_height(bh as u32);
+        }
+        // transform 独立更新（嫌疑③修复）：DPR 变化时也重设——
+        // 曾与 buffer resize 同 if：跨屏拖动时 round 后尺寸巧合不变
+        // → transform 不更新 → 整幅绘制错位
+        if (dpr - self.last_dpr).abs() > 1e-9 {
             self.ctx.set_transform(dpr, 0.0, 0.0, dpr, 0.0, 0.0).unwrap();
+            self.last_dpr = dpr;
         }
         let (w, h) = (cw, ch);
         let fade = self.fade_alpha();

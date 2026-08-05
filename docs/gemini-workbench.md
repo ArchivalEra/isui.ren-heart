@@ -29,7 +29,8 @@
 - **自由发挥**：弧线形状（ctrl 法线偏移 / curv_bias 权重）、时长
   （HOME_ANIM_MS）、缓动（ease_in_out）——只要守契约
 - **验证**：`cargo test home_plan` + 强刷看回家冲刺瞬间（当前全量测试约
-  57——契约实施后 home.rs 契约测试升级、总数再增）
+  57——静态统计原生 55 + wasm 侧 trail.rs 3，实际以 `cargo test` 输出为准，
+  **待集成确认**；契约实施后 home.rs 契约测试升级、总数再增）
 
 ## 战场 2：⚡ 渲染性能（压力大——你判断的主要战场）
 
@@ -39,6 +40,26 @@
 - **方向建议**（供参考）：链扫描缓存/降频、拖尾采样降点、DPR 上限、
   clear 区域化、catmull 求值降频
 - **验证**：目测流畅度 + 浏览器 performance 面板（若可）
+
+### 📐 屏幕适配（Gemini 可调——活动圆 + 卡片墙）
+
+- **活动圆半径 = logo 中心到最近屏幕边缘**：engine.rs `sample_logo_bounds()`
+  每 30 帧采样 `.heart-logo` 实际位置（getBoundingClientRect）→ 圆心 = logo
+  中心（归一化世界坐标）、半径 = 圆心到四边最近距离（横竖边取最小）——
+  圆永不越界
+- **`LOGO_BOUNDS_SCALE`**（`web-rust/src/config/params.rs`——Gemini 可调）：
+  现值 **1.0**（用户钦定：活动圆不放大、圆与最近边相切）；调大 = 活动圆
+  放大（满屏跑但 clamp 屏内）；伴生 `LOGO_BOUNDS_MIN_RADIUS` = 0.08（防退化）。
+  ⚠️ 接线状态：params.rs 已定 1.0，engine.rs 仍读字面量 `* 1.25`（见
+  render-performance.md §5 接线清单）——**待集成确认**
+- **resize 自动适配**：无显式 resize 重建/监听——靠每 30 帧重采样 logo 实际
+  位置，窗口 resize 后约 0.5s 内自动跟上；圆心/半径始终以 logo 实际位置
+  为准（起始位置正确）——**待集成确认**
+- **卡片墙响应式**（web-ui/ 已实现——本战场只引用、勿改）：
+  `.card-wall { width: min(92vw, 320px); max-height: min(60vh, 420px) }`
+  ——小屏不溢出、大屏不失控、矮屏内部滚动；`.card-grid` 自适应网格
+  （auto-fill minmax(240px, 1fr)）
+- **验证**：拖拽窗口 / 旋转设备 → 活动圆随 logo 位置自适应、卡片墙不溢出
 
 ## 战场 3：🎭 三球性格差异化（灵魂深化——参数战场已就绪）
 

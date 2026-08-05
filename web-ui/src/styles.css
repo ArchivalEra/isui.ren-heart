@@ -266,7 +266,9 @@ body {
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
-  min-width: 260px;
+  width: min(92vw, 320px); /* 宽度响应：小屏不溢出、大屏不失控 */
+  max-height: min(60vh, 420px); /* 小屏（矮）高度不够时内部滚动 */
+  overflow-y: auto;
   z-index: 50;
   opacity: 0;
   pointer-events: none;
@@ -318,6 +320,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 0.15rem;
+  min-width: 0; /* 窄屏：文字可收缩换行，不撑破卡片墙 */
   text-align: left;
 }
 
@@ -512,5 +515,16 @@ body {
   }
   .heart-sub {
     font-size: 1rem;
+  }
+}
+
+/* 小屏（≤480）：卡片墙 gap/padding 略减（保持纯白灰阶） */
+@media (max-width: 480px) {
+  .card-wall {
+    gap: 0.4rem;
+  }
+  .wall-card {
+    gap: 0.6rem;
+    padding: 0.65rem 0.85rem;
   }
 }

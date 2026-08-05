@@ -111,6 +111,14 @@ impl State {
         }
     }
 
+    /// 用当前 bounds 重建三球链（engine 首帧真圆注入后调用——曾预生成用
+    /// fallback 圆与真圆错位——起始位置不对真凶）
+    pub fn rebuild_chains(&mut self) {
+        for ball in self.balls.iter_mut() {
+            ball.player.rebuild_chain();
+        }
+    }
+
     /// 更新活动圈边界（engine 实时采样 logo 位置后调用——转发三球）
     pub fn set_bounds(&mut self, b: CircleBounds) {
         for ball in self.balls.iter_mut() {
@@ -469,6 +477,102 @@ mod tests {
         while t < ms {
             st.step(16.7, decide);
             t += 16.7;
+        }
+    }
+
+    // ── 屏幕适配焊死：锚点（归一化 0-1）在任何宽高比下都落在 logo 活动圆内 ──
+    // 背景：用户反馈不同屏幕适配灾难——起始位置（锚点）随窗口变化出错。
+    // 锚点是归一化坐标（0-1）——理论映射不变；以下测试把这一不变量焊死。
+
+    #[test]
+    fn anchors_within_logo_circle_any_ratio() {
+        // 活动圆 = logo 归一化中心 (0.5, 0.42) 到最近屏幕边缘的距离为半径
+        // （LOGO_BOUNDS_SCALE=1.0 不放大——engine.rs sample_logo_bounds 同款）。
+        // 模拟多种宽高比：任一比例下 ANCHORS 全部在圆内 → 起始位置合法。
+        let logo = v(0.5, 0.42);
+        let screens: [(f64, f64, &str); 4] = [
+            (1920.0, 1080.0, "16:9 桌面 1920x1080"),
+            (1080.0, 1920.0, "9:16 竖屏 1080x1920"),
+            (3440.0, 1440.0, "超宽 3440x1440"),
+            (390.0, 844.0, "手机 390x844"),
+        ];
+        for (w, h, label) in screens {
+            // logo 归一化中心 → 像素（x=0.5 处 screen_of 透视项为零 → 屏幕水平中心）
+            let (cx, cy, _) = crate::sim::math::screen_of(logo, w, h);
+            // 像素空间活动圆半径 = logo 中心到最近屏幕边缘距离
+            let r = cx.min(w - cx).min(cy).min(h - cy);
+            for &(ax, ay) in crate::config::params::ANCHORS.iter() {
+                let (sx, sy, _) = crate::sim::math::screen_of(v(ax, ay), w, h);
+                let d = ((sx - cx).powi(2) + (sy - cy).powi(2)).sqrt();
+                assert!(
+                    d <= r + 1e-9,
+                    "{label}: 锚点 ({ax},{ay}) 距 logo 中心 {d:.1}px 超出活动圆半径 {r:.1}px——起始位置越界"
+                );
+            }
+        }
+        // 归一化空间（真实规划约束所在空间，chain.rs leg_in_bounds 同款语义）：
+        // 锚点须在圆心 (0.5, 0.42)、半径 = 到最近归一化边缘的圆内——尺寸无关
+        let r_norm = logo.x.min(1.0 - logo.x).min(logo.y).min(1.0 - logo.y);
+        for &(ax, ay) in crate::config::params::ANCHORS.iter() {
+            let d = ((ax - logo.x).powi(2) + (ay - logo.y).powi(2)).sqrt();
+            assert!(
+                d <= r_norm + 1e-9,
+                "归一化空间: 锚点 ({ax},{ay}) 距 logo 中心 {d:.4} 超出半径 {r_norm:.4}"
+            );
+        }
+    }
+
+    #[test]
+    fn normalized_mapping_invariant() {
+        // 归一化位置 ↔ 像素映射必须无损：screen_of 是「归一化 → 像素」的纯函数，
+        // 反归一化后还原原值；且相对位置（像素/屏幕尺寸）与屏幕尺寸无关——
+        // 起始位置（锚点）不随窗口变化。
+        let sizes: [(f64, f64, &str); 4] = [
+            (1920.0, 1080.0, "16:9 桌面"),
+            (1080.0, 1920.0, "9:16 竖屏"),
+            (3440.0, 1440.0, "超宽"),
+            (390.0, 844.0, "手机"),
+        ];
+        // 采样点：全部 ANCHORS + logo 中心 + 0-1 网格（覆盖透视深度变化区间）
+        let mut pts: Vec<Vec2> =
+            crate::config::params::ANCHORS.iter().map(|&(x, y)| v(x, y)).collect();
+        pts.push(v(0.5, 0.42));
+        for i in 0..=4 {
+            for j in 0..=4 {
+                pts.push(v(i as f64 / 4.0, j as f64 / 4.0));
+            }
+        }
+        // screen_of 的逆：y = sy/h；d = depth_scale(y)；x = (sx - w/2)/(w*d) + 0.5
+        let inv = |sx: f64, sy: f64, w: f64, h: f64| -> Vec2 {
+            let y = sy / h;
+            let d = crate::sim::math::depth_scale(y);
+            v((sx - w / 2.0) / (w * d) + 0.5, y)
+        };
+        // 1) 往返无损：归一化 → 像素 → 反归一化 = 原值（任意尺寸）
+        for (w, h, label) in sizes {
+            for p in &pts {
+                let (sx, sy, _) = crate::sim::math::screen_of(*p, w, h);
+                let q = inv(sx, sy, w, h);
+                let err = ((q.x - p.x).powi(2) + (q.y - p.y).powi(2)).sqrt();
+                assert!(
+                    err < 1e-9,
+                    "{label}: 归一化点 ({},{}) 往返误差 {err:.2e}——映射不可逆/依赖尺寸",
+                    p.x, p.y
+                );
+            }
+        }
+        // 2) 相对位置不变量：同一归一化点在不同尺寸下，像素位置 / 屏幕尺寸一致
+        let (w1, h1, _) = sizes[0];
+        let (w2, h2, _) = sizes[1];
+        for p in &pts {
+            let (a1, b1, _) = crate::sim::math::screen_of(*p, w1, h1);
+            let (a2, b2, _) = crate::sim::math::screen_of(*p, w2, h2);
+            let rel = (a1 / w1 - a2 / w2).abs() + (b1 / h1 - b2 / h2).abs();
+            assert!(
+                rel < 1e-12,
+                "归一化点 ({},{}) 相对位置跨尺寸漂移 {rel:.2e}——起始位置随窗口变化",
+                p.x, p.y
+            );
         }
     }
 

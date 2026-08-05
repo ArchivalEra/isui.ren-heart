@@ -353,9 +353,10 @@ pub const TRAIL_MINI_MIN_WIDTH: f64 = 0.5;
 /// 采样越频繁活动圈越贴 logo（但 getBoundingClientRect 触发 layout 越频繁）。
 /// 现状值 30（engine.rs `self.logo_tick % 30 == 0`）
 pub const LOGO_SAMPLE_EVERY_FRAMES: u32 = 30;
-/// 【Gemini 可操作】活动圆放大系数（1.25 = 满屏跑但 clamp 屏内，见 engine.rs）。
+/// 【Gemini 可操作】活动圆半径 = logo 中心到最近屏幕边缘的距离（1.0 = 不放大：
+/// 圆与最近边相切、永不越界；去掉满屏放大——用户钦定）。
 /// 现状值 1.25（engine.rs `* 1.25`）
-pub const LOGO_BOUNDS_SCALE: f64 = 1.25;
+pub const LOGO_BOUNDS_SCALE: f64 = 1.0; // 用户钦定：活动圆不放大，半径 = 到最近屏幕边缘距离
 /// 【Gemini 可操作】活动圆最小半径（世界坐标，防退化）。
 /// 现状值 0.08（engine.rs `r.max(0.08)`）
 pub const LOGO_BOUNDS_MIN_RADIUS: f64 = 0.08;

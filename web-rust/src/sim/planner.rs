@@ -276,6 +276,16 @@ impl Player {
         }
     }
 
+    /// 重建链：清空 + 用当前 bounds 重新预生成（首帧真圆注入后调用——
+    /// 曾 State::new 预生成用 fallback 圆，与真圆错位 ~0.19——球沿错位链
+    /// 跑 5.5 分钟才回正——"起始位置不对"真凶）
+    pub fn rebuild_chain(&mut self) {
+        self.chain.clear();
+        self.s_lead = 0.0;
+        self.ema_target = self.state.pos;
+        self.ensure_chain_to(PREPLAN_SECONDS * WORLD_SPEED * 1.1);
+    }
+
     /// 设置性格（state.rs 构造时调用——Gemini 可操作区·性格）
     pub fn set_personality(&mut self, idx: usize) {
         self.personality = idx.min(crate::config::params::PERSONALITIES.len() - 1);
