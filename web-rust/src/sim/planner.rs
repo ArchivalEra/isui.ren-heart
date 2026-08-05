@@ -142,7 +142,7 @@ impl Player {
         // 首段：链起点 = 球0（anchor），方向 = 入口 dir（与 entry_points 槽位方向一致，
         // 保证等待上链的球在解散/转移时位置连续——曾因随机 target 方向导致蓝绿闪现）
         let target = {
-            let r = 0.3 + rand::random::<f64>() * 0.3;
+            let r = (0.3 + rand::random::<f64>() * 0.3).min(0.16);
             Vec2 {
                 x: (anchor.x + dir.x * r).clamp(0.12, 0.88),
                 y: (anchor.y + dir.y * r).clamp(0.12, 0.88),
@@ -415,7 +415,8 @@ impl Player {
             } else {
                 tail.template_idx
             };
-            let dist = 0.3 + rng.gen::<f64>() * 0.3;
+            // 段长自适应活动圆：小窗（圆小）时段长收敛——链适配圆不畸形
+            let dist = (0.3 + rng.gen::<f64>() * 0.3).min(b.r * 0.8).max(0.12);
             let target = if chain_arc_now >= next_logo_arc {
                 // logo 游走段：方向 = 当前方向与 logo 圆心方向的混合（渐进转向，
                 // 多段累积到达 logo——不一步 180° 掉头 = U 形段 = 回弹之源）

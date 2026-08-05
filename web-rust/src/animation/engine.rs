@@ -33,6 +33,7 @@ pub struct BallsEngine {
     logo_bounds: crate::sim::planner::CircleBounds,
     /// 采样计数（每 30 帧采样一次 logo 位置——getBoundingClientRect 有 layout 成本）
     logo_tick: u32,
+    preplanned: bool,
 }
 
 impl BallsEngine {
@@ -59,6 +60,7 @@ impl BallsEngine {
             history: [VecDeque::new(), VecDeque::new(), VecDeque::new()],
             logo_bounds: crate::sim::planner::CircleBounds::fallback(),
             logo_tick: 0,
+            preplanned: false,
         }
     }
 
@@ -78,6 +80,10 @@ impl BallsEngine {
             self.logo_bounds = self.sample_logo_bounds();
         }
         self.state.set_bounds(self.logo_bounds);
+        if !self.preplanned {
+            self.state.preplan();
+            self.preplanned = true;
+        }
         self.step(dt);
         self.render();
         for s in 0..3 {

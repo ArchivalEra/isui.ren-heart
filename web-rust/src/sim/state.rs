@@ -58,8 +58,8 @@ impl State {
     pub fn new(anchors: [Vec2; 3]) -> Self {
         let dir = random_dir();
         let mut player = Player::new(anchors[0], dir);
-        // 预生成风暴：入场空闲期一次性生成几分钟的链（运行期 ensure_chain 静默）
-        player.ensure_chain_to(PREPLAN_SECONDS * WORLD_SPEED * 1.1);
+        // 预生成延迟：等 engine 首帧 set_bounds（真实活动圆）后触发——
+        // 曾用 fallback 圆预渲染，小窗实际圆更小时链出圆（球位置跟不上 logo）
         // 开场节奏：粉球先停 5 秒，蓝绿在粉球出发后再等 1-3 秒
         let delays = [
             ENTRY_DELAY_MS,
@@ -78,6 +78,13 @@ impl State {
     }
 
     /// 推进一帧。`decide` 保留签名（历史测试兼容；当前状态机无随机决策点）
+    /// 入场预渲染（engine 首帧 set_bounds 后调用一次——链按真实活动圆生成）
+    pub fn preplan(&mut self) {
+        if let Phase::Queueing { player, .. } = &mut self.phase {
+            player.ensure_chain_to(PREPLAN_SECONDS * WORLD_SPEED * 1.1);
+        }
+    }
+
     /// 更新活动圈边界（engine 实时采样 logo 位置后调用）
     pub fn set_bounds(&mut self, b: crate::sim::planner::CircleBounds) {
         match &mut self.phase {
