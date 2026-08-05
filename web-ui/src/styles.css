@@ -100,7 +100,7 @@ body {
 
 .heart-logo-img {
   display: block;
-  width: min(70vw, 460px);
+  width: min(70vw, 70vh, 460px); /* 高度约束——小窗（矮）时 logo 不溢出 */
   height: auto;
   filter: drop-shadow(0 8px 30px rgba(17, 17, 17, 0.1));
 }
@@ -114,7 +114,7 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: flex-end;
-  padding-bottom: 8vh;
+  padding-bottom: max(2rem, 8vh); /* 下限保护——小窗（矮）内容不被挤没 */
   text-align: center;
 }
 
@@ -489,4 +489,27 @@ body {
 
 .scatter-char.fading {
   opacity: 0;
+}
+
+/* ── 小窗适配（窄/矮窗口——排版不崩）── */
+@media (max-width: 560px), (max-height: 560px) {
+  .heart-logo-img {
+    width: min(52vw, 42vh, 300px);
+  }
+  .heart-title {
+    font-size: clamp(1.1rem, 5.2vw, 1.8rem);
+    margin-bottom: 0.4rem;
+  }
+  .heart-main {
+    padding-bottom: max(1.2rem, 4vh);
+  }
+  .heart-nav {
+    margin-top: 1.2rem;
+  }
+  .card-wall-wrap.open {
+    transform: translateY(-170px); /* 小窗展开距离收敛（不顶出屏） */
+  }
+  .heart-sub {
+    font-size: 1rem;
+  }
 }
