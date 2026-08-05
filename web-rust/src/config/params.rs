@@ -118,7 +118,7 @@ pub const FADE_IN_MS: f64 = 800.0; // 锚点淡入时长
 // 巡航 HOME_EVERY_MS 后三球回家：粉先回（0ms）→ 蓝绿错开 HOME_STAGGER_MS 依次回
 // （弧线回家 HOME_DURATION_MS）→ 全部到家定住 HOME_REST_MS → 粉球启动重启巡航
 pub const HOME_EVERY_MS: f64 = 30000.0;
-pub const HOME_STAGGER_MS: f64 = 350.0;
+pub const HOME_STAGGER_MS: f64 = 150.0;
 pub const HOME_DURATION_MS: f64 = 1500.0;
 pub const HOME_REST_MS: f64 = 5000.0;
 

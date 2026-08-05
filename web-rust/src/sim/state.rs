@@ -123,10 +123,13 @@ impl State {
                         let dy = home.y - pos.y;
                         let dist = (dx * dx + dy * dy).sqrt();
                         if dist > 0.03 {
-                            // 弧线回家：控制点 = 中点 + 法线侧偏（幅度 0.22×dist）
+                            // 弧线回家：控制点 = 中点 + 法线侧偏——
+                            // 弯高 = min(0.25, 0.45×dist)（长距离大弯、短距离小弯，
+                            // 告别视觉直线）；蓝绿无需等粉到家——出发即各回各家
+                            let off = 0.25f64.min(0.45 * dist);
                             let ctrl = Vec2 {
-                                x: (pos.x + home.x) * 0.5 + (-dy / dist) * dist * 0.22,
-                                y: (pos.y + home.y) * 0.5 + (dx / dist) * dist * 0.22,
+                                x: (pos.x + home.x) * 0.5 + (-dy / dist) * off,
+                                y: (pos.y + home.y) * 0.5 + (dx / dist) * off,
                             };
                             let ctrl = Vec2 {
                                 x: ctrl.x.clamp(0.04, 0.96),
