@@ -1,4 +1,12 @@
-// 全局可配置参数 —— 解耦：改这里即改行为
+// 全局可配置参数
+// 手感参数（SPEED_BANDS/SPRING/MAX_ACCEL/SEG_V_DELTA/TRAIL_MAX_SEG/
+// LOOKAHEAD_SECONDS/TANGENTIAL_GAIN/MAX_TURN_RATE）已迁入风格对象
+// MotionProfile（profile.rs）：下方这些常量 = ACTIVE_PROFILE 字段的别名——
+// 换手感 = 改 ACTIVE_PROFILE = 一处全变。
+// 几何/节奏参数（CHAIN_GAP/LOGO_*/PROB/ORDERS/TEMPLATES/HOME_*/QUEUE_* 等）
+// 不属于风格，仍留在此处。
+use crate::config::profile::ACTIVE_PROFILE;
+
 pub const BALL_COLORS: [&str; 3] = ["#F09ABD", "#6EC6E6", "#7FC39F"];
 
 pub const BALL_RADIUS: f64 = 10.0;
@@ -35,14 +43,16 @@ pub const SPEED_APPROVE_PROB: f64 = 0.4;
 
 // ---- 拖尾 ----
 /// 历史点最大间距（世界坐标）：超过即截断（高速/交叉时不会连成大长条）
-pub const TRAIL_MAX_SEG: f64 = 0.12;
+/// 手感参数 → ACTIVE_PROFILE.trail_max_seg
+pub const TRAIL_MAX_SEG: f64 = ACTIVE_PROFILE.trail_max_seg;
 
 /// 相邻段时长比上限：约束球速差异（「换顺序」过程太快 = dur 差异过大）
 /// 调小 → 换序更慢更平滑；调大 → 允许暴快（拖尾出师后高速韵味）
 pub const MAX_DUR_RATIO: f64 = 2.5;
 /// 相邻段速度倍率差上限（调速器钳制）：0.6 = 冲刺后两段内阶梯回落，
 /// 曾形同虚设（±5.7）→ 高速直跳低速 → spring 惯性回弹（冲刺反方向回退）
-pub const SEG_V_DELTA: f64 = 0.6;
+/// 手感参数 → ACTIVE_PROFILE.seg_v_delta
+pub const SEG_V_DELTA: f64 = ACTIVE_PROFILE.seg_v_delta;
 
 /// 规划时独立概率事件（网格判断已废弃——规划/执行架构下为纯负担）
 pub struct Prob {
@@ -70,31 +80,36 @@ pub struct Spring {
     pub damping: f64,
 }
 
-pub const SPRING: Spring = Spring { stiffness: 700.0, damping: 1.0 };
+/// 手感参数 → ACTIVE_PROFILE.spring_stiffness / spring_damping
+pub const SPRING: Spring = Spring {
+    stiffness: ACTIVE_PROFILE.spring_stiffness,
+    damping: ACTIVE_PROFILE.spring_damping,
+};
 /// spring 加速度上限（世界单位/s²）：防「高速冲到一个点定住」
-pub const MAX_ACCEL: f64 = 2.5;
+/// 手感参数 → ACTIVE_PROFILE.max_accel
+pub const MAX_ACCEL: f64 = ACTIVE_PROFILE.max_accel;
 
 /// tvel 前瞻时长（秒）：阻尼目标速度取「未来弧长处」的速度/切线——
 /// 链减速/转向时球提前反应，根治惯性超前 → spring 拉回（冲刺回弹）
-pub const LOOKAHEAD_SECONDS: f64 = 0.45;
+/// 手感参数 → ACTIVE_PROFILE.lookahead_seconds
+pub const LOOKAHEAD_SECONDS: f64 = ACTIVE_PROFILE.lookahead_seconds;
 
 /// 位置项切向力占比（0-1）：切向拉回 = 回弹感之源——
 /// 法向（纠偏离链）全强度，切向（纠弧长错位）柔和
-pub const TANGENTIAL_GAIN: f64 = 0.2;
+/// 手感参数 → ACTIVE_PROFILE.tangential_gain
+pub const TANGENTIAL_GAIN: f64 = ACTIVE_PROFILE.tangential_gain;
 
 /// tvel 方向低通：球速度方向每秒最多转 MAX_TURN_RATE 弧度——
 /// 链几何切线退化/跳变时球不瞬间掉头（冲刺回弹的直接表现），
 /// 而是平滑弧线转向（灵动的单弧线转弯）
-pub const MAX_TURN_RATE: f64 = 5.0;
+/// 手感参数 → ACTIVE_PROFILE.max_turn_rate
+pub const MAX_TURN_RATE: f64 = ACTIVE_PROFILE.max_turn_rate;
 
 // ---- 段级运动参数（独立于曲线模板，消除组合爆炸）----
 /// 速度档位（pixel 开机动画风格：整体慢而优雅，高速档少量保留）
 /// 巡航档距小（拖尾均匀），高速档大（跳跃感）
-pub const SPEED_BANDS: [(f64, f64); 3] = [
-    (0.5, 0.65),   // 慢（pixel 主基调）
-    (0.72, 0.85),  // 巡航
-    (1.1, 1.3),    // 高速（需批准，40%）
-];
+/// 手感参数 → ACTIVE_PROFILE.speed_bands（值 = 原字面量原样搬入）
+pub const SPEED_BANDS: &'static [(f64, f64)] = ACTIVE_PROFILE.speed_bands;
 /// 入场预生成：粉球开跑前一次性预生成 N 秒的链（压力前置，运行期零规划）
 pub const PREPLAN_SECONDS: f64 = 300.0;
 /// 小圈圈滤波：段长低于此值时曲率按比例衰减（短段配小弯，防绿球哆嗦）
