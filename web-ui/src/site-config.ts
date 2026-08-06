@@ -2,7 +2,8 @@
 // 数据源：fetch('./config.json')（2s 超时 abort）→ 按 hostname 选段（'cn.' 前缀 → cn；'global.' 前缀 → global；否则 default）
 //   → inherit 合并（default + 自身：sites 按 url 去重、default 优先；pages 浅合并、自身 key 覆盖）；
 //   matchPage() glob 通配符匹配（仅支持 *）——精确 > 最长具体模式 > 兜底 "*"；无匹配返回 null；
-//   pageConfig() 取当前路径规则——无规则默认 { enabled: true }（未配置即默认开放）。
+//   pageConfig() 取当前路径规则——无规则默认 { enabled: false }（安全默认——
+//   用户钦定「默认配置一直是禁止访问」——新页面部署后需在管理页显式开放）。
 // 红线：零依赖（不引路由/glob 库）；纯白灰阶。
 
 export interface Site {
@@ -124,8 +125,9 @@ function escapeRe(s: string): string {
   return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
-// 取当前路径的页面访问规则：选段 → 通配符匹配 → 无匹配默认开放（enabled: true）
+// 取当前路径的页面访问规则：选段 → 通配符匹配 → 无匹配默认禁止（enabled: false——
+// 安全默认——用户钦定工作流：部署页面 → 管理页显式开放）
 export function pageConfig(config: Config | null, path: string): PageRule {
   const seg = config ? resolveSegment(config) : null;
-  return matchPage(seg?.pages, path) ?? { enabled: true };
+  return matchPage(seg?.pages, path) ?? { enabled: false };
 }
