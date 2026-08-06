@@ -7,9 +7,6 @@ import CardWall from "./CardWall";
 import ScrollHint from "./ScrollHint";
 import LogoDebug from "./LogoDebug";
 import Typewriter from "./Typewriter";
-import CardAdmin from "./CardAdmin";
-import NotFound from "./NotFound";
-import { fetchConfig, pageConfig, type Config } from "./site-config";
 import * as wasm from "./wasm/isui_ren_heart.js";
 
 const EMOJI = [
@@ -133,57 +130,6 @@ export default function Heart() {
   const stageRef = useRef<HTMLDivElement>(null);
   const screen2Ref = useRef<HTMLElement>(null);
 
-  // admin 路径路由：location.pathname === '/admin' → 全屏管理编辑器（cn.isui.ren/admin#heart——
-  // #heart 是管理 heart 站的子路由占位——当前只需 heart——hash 不做处理只作占位）
-  // 正常页隐藏（.admin-active）——翻页/滚轮/键盘监听在回调开头暂停（adminRef）
-  const [admin, setAdmin] = useState(false);
-  const adminRef = useRef(false); // 事件回调读最新（监听注册一次，避免闭包 stale）
-
-  // 页面访问规则（site-config.ts）：config pages 规则 enabled=false → 整页 NotFound；
-  // 配置失败/null → fallback 正常渲染；/admin 不受规则影响（强制正常渲染）
-  const [notFound, setNotFound] = useState(false);
-  const cfgRef = useRef<Config | null>(null); // 启动 fetch 后保存——路径变化时重新判定
-
-  // 路径监听：进入 /admin → CardAdmin 全屏覆盖 + 冻结三球；离开 → 恢复（wasm resume）。
-  // popstate 覆盖浏览器前进/后退与链接导航；hashchange 覆盖 hash 变动（如 CardAdmin 清 hash）——
-  // 状态只由 pathname 决定（hash 仅作子路由占位，不参与判断）
-  useEffect(() => {
-    const check = () => {
-      // ⚠️ 仓库只有 /heart 展示页——管理页不是站点页面（独立工具——以后在
-      // cn.isui.ren/admin 单独部署）。生产环境 /admin 不上线：只有本地
-      // 开发（localhost/127.0.0.1）豁免走管理编辑器——生产 /admin 与普通
-      // 路径一样按页面规则判定（默认 * denied → 404 页）
-      const local = ["localhost", "127.0.0.1"].includes(window.location.hostname);
-      const on = local && window.location.pathname === "/admin";
-      adminRef.current = on;
-      setAdmin(on);
-      // 页面访问规则：仅本地 admin 豁免；生产普通路径（含 /admin）按配置判定
-      if (on) setNotFound(false);
-      else if (cfgRef.current)
-        setNotFound(!pageConfig(cfgRef.current, window.location.pathname).enabled);
-      setBallsPaused(on); // admin 期间冻结球（恢复时 check 里 resume）
-    };
-    check();
-    window.addEventListener("popstate", check);
-    window.addEventListener("hashchange", check);
-    return () => {
-      window.removeEventListener("popstate", check);
-      window.removeEventListener("hashchange", check);
-      setBallsPaused(false);
-    };
-  }, []);
-
-  // 启动读取配置（site-config.ts fetchConfig——2s 超时 abort）→ 按当前路径判定页面访问规则：
-  // enabled=false → 渲染 NotFound（不渲染正常页）；配置失败/null → fallback 正常渲染；/admin 不受规则影响
-  useEffect(() => {
-    fetchConfig().then((cfg) => {
-      if (!cfg) return; // 配置失败 → 保持正常渲染（fallback）
-      cfgRef.current = cfg;
-      if (window.location.pathname === "/admin") return;
-      setNotFound(!pageConfig(cfg, window.location.pathname).enabled);
-    });
-  }, []);
-
   /** 翻页：上锁 → 换页 → 600ms 后解锁（与 CSS transition 同长；transitionend 另负责 freeze） */
   const go = (p: number) => {
     if (animating.current || p === pageRef.current) return;
@@ -221,7 +167,7 @@ export default function Heart() {
     let touchStartY = 0;
 
     const onWheel = (e: WheelEvent) => {
-      if (adminRef.current || animating.current) return;
+      if (animating.current) return;
       if (pageRef.current === 0) {
         // 屏 1：向下滚 → 翻屏 2
         if (e.deltaY > 0) go(1);
@@ -237,7 +183,7 @@ export default function Heart() {
     };
 
     const onTouchEnd = (e: TouchEvent) => {
-      if (adminRef.current || animating.current) return;
+      if (animating.current) return;
       const dy = (e.changedTouches[0]?.clientY ?? touchStartY) - touchStartY;
       if (pageRef.current === 0) {
         // 屏 1：上滑 → 屏 2
@@ -250,7 +196,7 @@ export default function Heart() {
     };
 
     const onKey = (e: KeyboardEvent) => {
-      if (adminRef.current || animating.current) return;
+      if (animating.current) return;
       if (e.key === "ArrowDown" || e.key === " ") {
         if (pageRef.current === 0) {
           e.preventDefault();
@@ -285,10 +231,8 @@ export default function Heart() {
     };
   }, []);
 
-  // 页面访问规则判定（notFound）：整页灰阶 404——不渲染正常页（/admin 恒为 false 不受影响）
-  if (notFound) return <NotFound />;
   return (
-    <div class={`heart-page fade-stagger${admin ? " admin-active" : ""}`}>
+    <div class="heart-page fade-stagger">
       {/* 双屏舞台：200vh 两屏上下排——transform 平移翻页（transition 由 .scroll-stage 承担） */}
       <div class={`scroll-stage${page === 1 ? " page-2" : ""}`} ref={stageRef}>
         {/* 屏 1：动画窗口舞台（三球 + logo）+ 标题 + 文件夹按钮 */}
@@ -324,12 +268,11 @@ export default function Heart() {
         {/* 屏 2：卡片区（overflow-y auto——原生滚动） */}
         <section class="screen-2" ref={screen2Ref}>
           {/* 卡片区容器契约（CardWall 组件——另一小弟改——渲染到此容器）：
-              - 容器类名：.card-wall.screen2-card-wall——.screen2-card-wall 已覆盖
-                .card-wall 的"下拉折叠"默认值并回基础容器（position:relative +
-                height:100vh）——作 .cards-window（1280×720 设计坐标系）绝对居中的宿主
-              - CardWall 只读渲染：.cards-window（窗口块）+ .cw-card（百分比坐标卡）+
-                .card-favicon/.card-favicon-fallback（styles.css 已配套）——管理与展示解耦，
-                编辑在管理页 cn.isui.ren/admin（CardAdmin）——导出 JSON 贴回仓库 config */}
+              - 容器类名：.card-wall.screen2-card-wall——.screen2-card-wall 负责覆盖
+                .card-wall 的"下拉折叠"默认值（absolute/scaleY(0)/opacity:0）并切为
+                大卡网格（2 列自适应，纯白灰阶）
+              - 卡片元素沿用 .wall-card 类名（白底细边框圆角大卡、无阴影）——
+                若 CardWall 改用别的类名，需同步 styles.css 的 .screen2-card-wall .wall-card */}
           {page === 1 && <ScrollHint onGoUp={() => go(0)} />}
           <div class="card-wall screen2-card-wall">
             <CardWall />
@@ -339,7 +282,6 @@ export default function Heart() {
       {/* 窗口外控件：两屏共用（position: fixed） */}
       <TrailToggle />
       <LogoDebug />
-      {admin && <CardAdmin />}
     </div>
   );
 }
