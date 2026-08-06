@@ -1,0 +1,36 @@
+{
+  "default": {
+    "sites": [
+      {
+        "title": "X (Twitter)",
+        "url": "https://x.com"
+      },
+      {
+        "title": "YouTube",
+        "url": "https://youtube.com"
+      },
+      {
+        "title": "官方网站",
+        "url": "https://tayori-official.com"
+      }
+    ],
+    "pages": {
+      "*": {
+        "enabled": false
+      },
+      "/heart": {
+        "enabled": true
+      }
+    }
+  },
+  "cn": {
+    "inherit": true,
+    "sites": [],
+    "pages": {}
+  },
+  "global": {
+    "inherit": true,
+    "sites": [],
+    "pages": {}
+  }
+}

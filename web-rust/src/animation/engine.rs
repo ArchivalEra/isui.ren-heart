@@ -43,6 +43,8 @@ pub struct BallsEngine {
     last_dpr: f64,
     /// 调试涂层：灰色锚点标记（用户钦定——调试时看小球起始位置，最上层）
     anchor_overlay: bool,
+    /// 暂停标志（pause_balls 置 true → frame 开头立即 return；resume_balls 清 false）
+    pub paused: bool,
 }
 
 impl BallsEngine {
@@ -71,6 +73,7 @@ impl BallsEngine {
             last_ch: 0.0,
             last_dpr: 0.0,
             anchor_overlay: false,
+            paused: false,
         };
         // 固定窗口坐标系：活动圆 = WINDOW_BOUNDS 常量——初始化即注入并重建链
         // （State::new 预生成用 fallback 圆，需覆盖为真圆，否则链围绕错圆心）
@@ -159,7 +162,13 @@ impl BallsEngine {
     }
 
     pub fn frame(&mut self, dt: f64) {
-        // ① resize 检测：canvas CSS 尺寸变化 >1%（或 0→非 0——首帧亦算）→
+        // ① 暂停（pause_balls 置位）→ 整帧跳过（双保险——rAF 循环本已停止）
+        if self.paused {
+            return;
+        }
+        // 防御 clamp：单帧上限 100ms（dt 单位 ms）——resume 后极端大帧不弹飞
+        let dt = dt.min(100.0);
+        // ② resize 检测：canvas CSS 尺寸变化 >1%（或 0→非 0——首帧亦算）→
         //    重建 State（防御保留——窗口固定坐标系下活动圆是常量，无采样）。
         //    last_cw/last_ch 每帧更新——重建只触发一次，不会每帧重复重建
         let cw = self.canvas.client_width() as f64;

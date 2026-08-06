@@ -16,10 +16,16 @@ mod animation;
 #[cfg(target_arch = "wasm32")]
 use std::cell::RefCell;
 
+/// rAF 循环 holder：closure 自调度引用锚点（RAF 置 None 即失去活跃身份）
+#[cfg(target_arch = "wasm32")]
+type RafHolder = std::rc::Rc<RefCell<Option<wasm_bindgen::closure::Closure<dyn FnMut()>>>>;
+
 #[cfg(target_arch = "wasm32")]
 thread_local! {
     /// 全局动画引擎（wasm 单实例；前端调用 start_balls 初始化）
     static ENGINE: RefCell<Option<crate::animation::engine::BallsEngine>> = RefCell::new(None);
+    /// rAF 循环句柄（start_raf 存；pause_balls 置 None 停循环；resume_balls 重建）
+    static RAF: RefCell<Option<RafHolder>> = RefCell::new(None);
 }
 
 /// 启动三球动画：在指定 canvas 上创建引擎并跑 rAF 循环
@@ -40,15 +46,22 @@ pub fn start_balls(canvas_id: &str) {
 
     ENGINE.with(|e| *e.borrow_mut() = Some(engine));
 
-    // rAF 循环（与 vsync 对齐；跳帧产生不均匀帧间隔 = 肉眼卡顿）
+    start_raf();
+}
+
+/// 启动/重建 rAF 循环（每次调用新建 holder/closure 并立即调度首帧；
+/// closure 自调度：每帧先跑 engine.frame，再检查 RAF 是否仍持有本循环的
+/// holder——不是则不再调度：pause 置 None、或 resume 重建后旧残留回调都停）
+#[cfg(target_arch = "wasm32")]
+fn start_raf() {
+    use wasm_bindgen::JsCast;
     let window = web_sys::window().expect("window");
     let performance = window.performance().expect("performance");
-    let holder: std::rc::Rc<std::cell::RefCell<Option<wasm_bindgen::closure::Closure<dyn FnMut()>>>> =
-        std::rc::Rc::new(std::cell::RefCell::new(None));
+    let holder: RafHolder = std::rc::Rc::new(RefCell::new(None));
     let holder_loop = std::rc::Rc::clone(&holder);
     let perf_loop = performance.clone();
     let window_loop = window.clone();
-    let mut last = 0.0;
+    let mut last = 0.0; // 首帧 dt=16.7（不跳变）；此后为真实帧间隔
 
     *holder.borrow_mut() = Some(wasm_bindgen::closure::Closure::wrap(Box::new(move || {
         let now = perf_loop.now();
@@ -59,16 +72,54 @@ pub fn start_balls(canvas_id: &str) {
                 eng.frame(dt);
             }
         });
+        // 活跃性检查：RAF 仍持有本循环 holder 才继续自我调度
+        let keep = RAF.with(|raf| {
+            raf.borrow()
+                .as_ref()
+                .map_or(false, |r| std::rc::Rc::ptr_eq(r, &holder_loop))
+        });
+        if !keep {
+            return;
+        }
         let b = holder_loop.borrow();
         let cb = b.as_ref().unwrap().as_ref().unchecked_ref();
         let _ = window_loop.request_animation_frame(cb);
     }) as Box<dyn FnMut()>));
+
+    // holder 存模块级静态——pause_balls 置 None 即停循环（主线程零开销）
+    RAF.with(|raf| *raf.borrow_mut() = Some(holder.clone()));
 
     {
         let b = holder.borrow();
         let cb = b.as_ref().unwrap().as_ref().unchecked_ref();
         let _ = window.request_animation_frame(cb);
     }
+}
+
+/// 暂停动画（屏 2 freeze）：停 rAF 循环 + ENGINE 置 paused 双保险。
+/// RAF 置 None → 下一次（若残留）回调检测到不活跃 → 不再自我调度 → 循环停。
+#[cfg(target_arch = "wasm32")]
+#[wasm_bindgen::prelude::wasm_bindgen]
+pub fn pause_balls() {
+    RAF.with(|raf| *raf.borrow_mut() = None);
+    ENGINE.with(|e| {
+        if let Some(eng) = e.borrow_mut().as_mut() {
+            eng.paused = true;
+        }
+    });
+}
+
+/// 恢复动画（回屏 1）：ENGINE 已有不重建——清 paused + 重建 rAF 循环。
+/// 新 closure last=0.0 → 首帧 dt=16.7（与 start_balls 首帧同语义，不跳变）。
+#[cfg(target_arch = "wasm32")]
+#[wasm_bindgen::prelude::wasm_bindgen]
+pub fn resume_balls() {
+    ENGINE.with(|e| {
+        if let Some(eng) = e.borrow_mut().as_mut() {
+            eng.paused = false;
+        }
+    });
+    start_raf();
 }
 
 /// 切换拖尾风格（大拖尾 ↔ 小拖尾）——前端按钮调用
