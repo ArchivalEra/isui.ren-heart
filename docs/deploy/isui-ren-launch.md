@@ -60,27 +60,41 @@ Oracle 对象存储（配置同步盘——公共读——以后大文件源站�
 
 ---
 
-## 2. cn 站（EdgeOne——cn.isui.ren）
+## 2. 一键部署（GitHub Actions → deploy 分支 → 双平台自动拉取）
 
-### 2.1 构建
-```bash
-cd web-ui && ./build.sh   # 产物 dist/
-```
+> 已提交 `.github/workflows/deploy.yml`：**推 main → Actions 构建 wasm+dist
+> → 推 `deploy` 分支（根目录 = dist 内容）→ EdgeOne Makers + CF Pages
+> 都盯 deploy 分支自动部署**。你只管推 main。
+>
+> 为什么 Actions 构建：wasm 需要 Rust/cargo——Makers 与 CF Pages 的构建
+> 环境大概率没有 Rust（已查 Makers 文档：Git 集成需「构建命令」——没保证
+> Rust）——Actions（ubuntu 自带 cargo）构建后，deploy 分支是纯静态，
+> 两平台构建命令留空即可。
 
-### 2.2 部署（二选一）
-**方案 A：EdgeOne 静态托管（Makers）**——腾讯云国际控制台 → 边缘托管/静态站点
-（用户备注：曾找不到入口——中文界面叫「边缘托管」或「静态网站托管」，英文 Makers/Static Site）
-1. 新建项目 → 上传 `dist/` 整个目录
-2. 绑定 `cn.isui.ren`（若未接入 EdgeOne：控制台 → 站点 → 添加域名 `cn.isui.ren`）
-3. DNS：在 DNS 面板加 `cn.isui.ren CNAME → <EdgeOne 分配的地址>`（控制台给）
+### 2.1 EdgeOne Makers（cn 站）
+1. EdgeOne 控制台 → Makers 页 → **Create Project → Import Git Repository**
+2. 连接 GitHub → **Authorize EO Makers** → 授权仓库（ArchivalEra/isui.ren）
+3. 项目设置：
+   - 仓库：`ArchivalEra/isui.ren`——**分支：`deploy`**（若控制台只支持 main，
+     则接 main + 构建命令 `cd web-ui && ./build.sh`——但需确认 Makers 环境有 Rust；
+     推荐 deploy 分支零构建）
+   - **构建命令：留空**（deploy 分支已是成品——或填 `echo noop`）
+   - 加速区域：全球可用区域（不含中国大陆）——同 cn 站现状
+4. 绑定 `cn.isui.ren`（Domain Management → Custom Domain——CNAME 指向 Makers 分配地址）
+5. DNS：`cn.isui.ren CNAME → <Makers 分配地址>`
 
-**方案 B：对象存储回源**——EdgeOne 源站指向 Oracle 桶（把 dist/ 也传到桶里）
-（EdgeOne 支持 S3 兼容回源——配置源站为对象存储 URL——适合以后大文件场景）
+### 2.2 Cloudflare Pages（global 站）
+1. CF 控制台 → Workers & Pages → Create → Pages → **Connect to Git**
+2. 选仓库 `ArchivalEra/isui.ren`——**分支：`deploy`**
+   - 构建命令：**留空**（deploy 分支已是成品）
+   - 输出目录：`/`（根）
+3. 绑定 `global.isui.ren`（Custom domains——DNS 自动/手动加 CNAME → pages.dev）
 
 ### 2.3 SPA fallback（关键）
 `/`、`/heart`、`/admin` 都要回 `index.html`：
-- 方案 A：Makers 托管一般自动 SPA fallback——**务必验证** `/heart` 和 `/admin#heart` 能打开（不是 404）
-- 方案 B：EdgeOne 规则引擎 → URL 重写（无匹配静态文件 → `/index.html`）
+- CF Pages：默认 SPA fallback ✓
+- EdgeOne Makers：**务必验证** `/heart` 和 `/admin#heart` 能打开（不是 404）；
+  若 404 → 规则引擎 → URL 重写（无匹配静态文件 → `/index.html`）
 
 ### 2.4 验证
 - `https://cn.isui.ren/heart` → 三球动画 + 文件夹翻页
@@ -89,23 +103,22 @@ cd web-ui && ./build.sh   # 产物 dist/
 
 ---
 
-## 3. global 站（Cloudflare Pages——global.isui.ren）
+## 3. 手动部署（备选——不用 Git 集成时）
 
-### 3.1 部署（推荐 Direct Upload——不用 CF 构建环境）
-> ⚠️ CF Pages 构建环境没有 Rust/wasm 工具链（build.sh 需要 cargo）——**别用 Git 自动构建**，
-> 本地构建后直接上传 dist/ 最稳。
-1. CF 控制台 → Workers & Pages → Create → Pages → **Upload assets**
-2. 上传 `web-ui/dist/`（拖入目录）
-3. 项目设置 → Custom domains → 添加 `global.isui.ren`
-4. DNS：`global.isui.ren CNAME → <pages.dev 域名>`（CF 自动添加或手动）
-5. 每次更新：重新上传 dist（同名文件覆盖——强缓存问题见附录）
+### 3.1 本地构建
+```bash
+cd web-ui && ./build.sh   # 产物 dist/
+```
 
-### 3.2 SPA fallback
-CF Pages 默认 SPA fallback（任意路径回 index.html）——**验证** `/heart`、`/admin#heart`
+### 3.2 EdgeOne Makers Direct Upload
+Makers → Create Project → **Upload directly** → 拖入 `dist/` → 绑定 `cn.isui.ren`
+> ⚠️ 文档明确：**选了上传方式的项目不能切 Git 集成**——要 Git 自动部署
+> 必须新建「Import Git Repository」项目
 
-### 3.3 验证
-- `https://global.isui.ren/heart` → 动画正常
-- `https://global.isui.ren/admin#heart` → 管理页
+### 3.3 CF Pages Direct Upload
+Workers & Pages → Create → **Upload assets** → 拖入 `dist/` → 绑定 `global.isui.ren`
+> ⚠️ CF Pages 构建环境无 Rust——别用 Git 自动构建（除非接 deploy 分支——见第 2 节）
+> 每次更新重新上传（强缓存见附录）
 
 ---
 

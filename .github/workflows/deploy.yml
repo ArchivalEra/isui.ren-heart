@@ -1,0 +1,52 @@
+# 一键部署：推 main → GitHub Actions 构建 wasm+dist → 推 deploy 分支
+# → EdgeOne Makers + Cloudflare Pages 自动拉取 deploy 分支部署（零构建）
+#
+# 为什么用 deploy 分支：wasm 构建需要 Rust/cargo——EdgeOne Makers 与
+# CF Pages 的构建环境大概率没有 Rust——Actions（ubuntu 自带 cargo）构建
+# 好后把 dist 推给 deploy 分支，两个平台只做静态部署（构建命令留空）。
+name: deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Rust (wasm32 target)
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install wasm-bindgen
+        run: |
+          cd web-rust
+          WASM_BINDGEN=$(grep -oP 'wasm-bindgen = "\K[0-9.]+' Cargo.toml | head -1)
+          cargo install wasm-bindgen-cli --version "$WASM_BINDGEN" --locked
+
+      - name: Build wasm + frontend
+        run: |
+          cd web-ui
+          npm ci
+          ./build.sh
+
+      - name: Push dist to deploy branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # 切到孤儿分支——deploy 分支根目录 = dist 内容（平台零构建直接部署）
+          git checkout --orphan deploy
+          git rm -rf . --quiet || true
+          cp -r web-ui/dist/* .
+          git add -A
+          git commit -m "deploy: $(date -u +%Y-%m-%dT%H:%M:%SZ) from main $(git rev-parse main)"
+          git push origin deploy --force
