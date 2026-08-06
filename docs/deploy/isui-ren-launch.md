@@ -73,9 +73,9 @@ Oracle 对象存储（配置同步盘——公共读——以后大文件源站�
 
 ### 2.1 EdgeOne Makers（cn 站）
 1. EdgeOne 控制台 → Makers 页 → **Create Project → Import Git Repository**
-2. 连接 GitHub → **Authorize EO Makers** → 授权仓库（ArchivalEra/isui.ren）
+2. 连接 GitHub → **Authorize EO Makers** → 授权仓库（ArchivalEra/isui.ren-heart）
 3. 项目设置：
-   - 仓库：`ArchivalEra/isui.ren`——**分支：`deploy`**（若控制台只支持 main，
+   - 仓库：`ArchivalEra/isui.ren-heart`——**分支：`deploy`**（若控制台只支持 main，
      则接 main + 构建命令 `cd web-ui && ./build.sh`——但需确认 Makers 环境有 Rust；
      推荐 deploy 分支零构建）
    - **构建命令：留空**（deploy 分支已是成品——或填 `echo noop`）
@@ -85,7 +85,7 @@ Oracle 对象存储（配置同步盘——公共读——以后大文件源站�
 
 ### 2.2 Cloudflare Pages（global 站）
 1. CF 控制台 → Workers & Pages → Create → Pages → **Connect to Git**
-2. 选仓库 `ArchivalEra/isui.ren`——**分支：`deploy`**
+2. 选仓库 `ArchivalEra/isui.ren-heart`——**分支：`deploy`**
    - 构建命令：**留空**（deploy 分支已是成品）
    - 输出目录：`/`（根）
 3. 绑定 `global.isui.ren`（Custom domains——DNS 自动/手动加 CNAME → pages.dev）
