@@ -56,10 +56,16 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # 先存 dist 到临时目录（孤儿分支切换会保留工作树——后面要清空它）
+          rm -rf /tmp/deploy-out
+          cp -r web-ui/dist /tmp/deploy-out
           # 切到孤儿分支——deploy 分支根目录 = dist 内容（平台零构建直接部署）
           git checkout --orphan deploy
-          git rm -rf . --quiet || true
-          cp -r web-ui/dist/* .
+          # ⚠️ git rm 在 orphan 分支无效（index 空——不删 untracked 工作树）——
+          # 曾导致 web-rust/web-ui 源码目录残留进 deploy 分支——手动清工作树
+          git rm -rf . --quiet 2>/dev/null || true
+          find . -mindepth 1 -maxdepth 1 ! -name '.git' -exec rm -rf {} +
+          cp -r /tmp/deploy-out/. .
           git add -A
           git commit -m "deploy: $(date -u +%Y-%m-%dT%H:%M:%SZ) from main $(git rev-parse main)"
           git push origin deploy --force 2>&1 || { echo "PUSH_FAILED——检查 GITHUB_TOKEN 权限（仓库 Settings→Actions→Workflow permissions→Read and write）"; exit 1; }
