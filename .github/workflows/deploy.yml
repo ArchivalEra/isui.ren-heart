@@ -66,6 +66,17 @@ jobs:
           git rm -rf . --quiet 2>/dev/null || true
           find . -mindepth 1 -maxdepth 1 ! -name '.git' -exec rm -rf {} +
           cp -r /tmp/deploy-out/. .
+          # CF Pages 新版用 wrangler deploy——显式配置（否则 auto-config
+          # 用默认 npx hugo/public 交互询问 → 非交互 fallback no → 部署错乱）
+          cat > wrangler.toml << 'EOF'
+name = "isui-ren-heart"
+compatibility_date = "2024-11-01"
+
+[assets]
+directory = "./"
+not_found_handling = "single-page-application"
+EOF
+          echo '{}' > package.json
           git add -A
           git commit -m "deploy: $(date -u +%Y-%m-%dT%H:%M:%SZ) from main $(git rev-parse main)"
           git push origin deploy --force 2>&1 || { echo "PUSH_FAILED——检查 GITHUB_TOKEN 权限（仓库 Settings→Actions→Workflow permissions→Read and write）"; exit 1; }
