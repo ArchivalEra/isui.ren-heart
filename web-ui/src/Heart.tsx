@@ -8,6 +8,8 @@ import ScrollHint from "./ScrollHint";
 import LogoDebug from "./LogoDebug";
 import Typewriter from "./Typewriter";
 import CardAdmin from "./CardAdmin";
+import NotFound from "./NotFound";
+import { fetchConfig, pageConfig, type Config } from "./site-config";
 import * as wasm from "./wasm/isui_ren_heart.js";
 
 const EMOJI = [
@@ -137,6 +139,11 @@ export default function Heart() {
   const [admin, setAdmin] = useState(false);
   const adminRef = useRef(false); // 事件回调读最新（监听注册一次，避免闭包 stale）
 
+  // 页面访问规则（site-config.ts）：config pages 规则 enabled=false → 整页 NotFound；
+  // 配置失败/null → fallback 正常渲染；/admin 不受规则影响（强制正常渲染）
+  const [notFound, setNotFound] = useState(false);
+  const cfgRef = useRef<Config | null>(null); // 启动 fetch 后保存——路径变化时重新判定
+
   // 路径监听：进入 /admin → CardAdmin 全屏覆盖 + 冻结三球；离开 → 恢复（wasm resume）。
   // popstate 覆盖浏览器前进/后退与链接导航；hashchange 覆盖 hash 变动（如 CardAdmin 清 hash）——
   // 状态只由 pathname 决定（hash 仅作子路由占位，不参与判断）
@@ -145,6 +152,10 @@ export default function Heart() {
       const on = window.location.pathname === "/admin";
       adminRef.current = on;
       setAdmin(on);
+      // 页面访问规则：/admin 不受规则影响（强制正常渲染）；普通路径按配置判定
+      if (on) setNotFound(false);
+      else if (cfgRef.current)
+        setNotFound(!pageConfig(cfgRef.current, window.location.pathname).enabled);
       setBallsPaused(on); // admin 期间冻结球（恢复时 check 里 resume）
     };
     check();
@@ -155,6 +166,17 @@ export default function Heart() {
       window.removeEventListener("hashchange", check);
       setBallsPaused(false);
     };
+  }, []);
+
+  // 启动读取配置（site-config.ts fetchConfig——2s 超时 abort）→ 按当前路径判定页面访问规则：
+  // enabled=false → 渲染 NotFound（不渲染正常页）；配置失败/null → fallback 正常渲染；/admin 不受规则影响
+  useEffect(() => {
+    fetchConfig().then((cfg) => {
+      if (!cfg) return; // 配置失败 → 保持正常渲染（fallback）
+      cfgRef.current = cfg;
+      if (window.location.pathname === "/admin") return;
+      setNotFound(!pageConfig(cfg, window.location.pathname).enabled);
+    });
   }, []);
 
   /** 翻页：上锁 → 换页 → 600ms 后解锁（与 CSS transition 同长；transitionend 另负责 freeze） */
@@ -258,6 +280,8 @@ export default function Heart() {
     };
   }, []);
 
+  // 页面访问规则判定（notFound）：整页灰阶 404——不渲染正常页（/admin 恒为 false 不受影响）
+  if (notFound) return <NotFound />;
   return (
     <div class={`heart-page fade-stagger${admin ? " admin-active" : ""}`}>
       {/* 双屏舞台：200vh 两屏上下排——transform 平移翻页（transition 由 .scroll-stage 承担） */}

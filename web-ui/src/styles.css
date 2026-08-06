@@ -1212,3 +1212,190 @@ body {
   max-width: 90vw;
   text-align: center;
 }
+
+/* ── 页面规则编辑（CardAdmin.tsx 栏内 tab——站点卡片 / 页面规则）──
+   栏内 tab 小按钮组（纯白灰阶）：激活态白底黑字 + 细阴影 */
+.admin-tabs {
+  display: inline-flex;
+  gap: 2px;
+  padding: 2px;
+  border: 1px solid #E4E4E7;
+  border-radius: 8px;
+  background: #F2F2F2;
+}
+.admin-tab {
+  padding: 0.2rem 0.55rem;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: #71717A;
+  font-size: 0.73rem;
+  line-height: 1.4;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.admin-tab:hover {
+  background: #FFFFFF;
+  color: #111111;
+}
+.admin-tab.active {
+  background: #FFFFFF;
+  color: #111111;
+  font-weight: 600;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+/* 规则编辑区：占满栏内剩余空间——搜索框 + 可滚动规则列表 */
+.admin-rules {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 0.7rem 0.8rem;
+  overflow: hidden;
+}
+.admin-search {
+  flex-shrink: 0;
+  width: 100%;
+  padding: 0.42rem 0.6rem;
+  border: 1px solid #E4E4E7;
+  border-radius: 8px;
+  background: #FFFFFF;
+  color: #111111;
+  font-size: 0.8rem;
+  outline: none;
+}
+.admin-search:focus {
+  border-color: #A1A1AA;
+}
+.admin-rules-list {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  overflow-y: auto;
+}
+.admin-rules-empty {
+  flex-shrink: 0;
+  padding: 1.5rem 1rem;
+  border: 1px dashed #D4D4D8;
+  border-radius: 12px;
+  color: #A1A1AA;
+  font-size: 0.78rem;
+  text-align: center;
+}
+
+/* 规则行：白底灰边圆角——头部（path / enabled / 上下移 / 删除）+ 参数键值行 */
+.admin-rule {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.6rem 0.7rem;
+  border: 1px solid #E4E4E7;
+  border-radius: 12px;
+  background: #FFFFFF;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+}
+.admin-rule-head {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+.admin-rule-path {
+  flex: 1;
+  min-width: 0;
+  padding: 0.38rem 0.55rem;
+  border: 1px solid #E4E4E7;
+  border-radius: 8px;
+  background: #FAFAFA;
+  color: #111111;
+  font-size: 0.8rem;
+  font-family: ui-monospace, monospace;
+  outline: none;
+}
+.admin-rule-path:focus {
+  border-color: #A1A1AA;
+  background: #FFFFFF;
+}
+.admin-rule-enabled {
+  white-space: nowrap;
+}
+.admin-rule-order {
+  display: inline-flex;
+  gap: 2px;
+}
+.admin-rule-move {
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: 1px solid #E4E4E7;
+  border-radius: 6px;
+  background: #FFFFFF;
+  color: #4D4D4D;
+  font-size: 0.72rem;
+  line-height: 1;
+  cursor: pointer;
+}
+.admin-rule-move:hover:not(:disabled) {
+  background: #F2F2F2;
+  color: #111111;
+}
+.admin-rule-move:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+/* 参数键值行：k = v 三件套（灰底圆角胶囊）——可增删 */
+.admin-rule-params {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+}
+.admin-rule-param {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.26rem 0.4rem;
+  border: 1px solid #ECECEC;
+  border-radius: 8px;
+  background: #FAFAFA;
+}
+.admin-rule-param input {
+  width: 92px;
+  padding: 0.26rem 0.4rem;
+  border: none;
+  background: transparent;
+  color: #111111;
+  font-size: 0.74rem;
+  font-family: ui-monospace, monospace;
+  outline: none;
+}
+.admin-rule-param input:focus {
+  background: #FFFFFF;
+  box-shadow: inset 0 0 0 1px #A1A1AA;
+}
+.admin-rule-param-eq {
+  color: #A1A1AA;
+  font-size: 0.72rem;
+}
+.admin-rule-param-del {
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: #A1A1AA;
+  font-size: 0.85rem;
+  line-height: 1;
+  cursor: pointer;
+}
+.admin-rule-param-del:hover {
+  background: #ECECEC;
+  color: #111111;
+}

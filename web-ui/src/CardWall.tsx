@@ -1,8 +1,7 @@
 // 屏 2 卡片墙——只读窗口块（管理与展示解耦：展示页 /heart 屏 2 只读绘制；编辑/拖拽/缩放/增删
 // 在独立 admin 管理页——本文件零交互逻辑）。
-// 数据源：fetch('./config.json')（2s 超时 abort——失败/结构非法回退内置 LINKS）→ 按 hostname 选段：
-//   三分层配置（default 通用 / cn / global）——'cn.' 前缀 hostname → cn 段；'global.' 前缀 → global 段；否则 default 段；
-//   segment.inherit=true → 继承 default.sites 并追加自身 sites（按 url 去重，default 优先）；false/缺省 → 只渲染自身 sites。
+// 数据源：site-config.ts 的 fetchConfig/resolveSegment（fetch('./config.json') 2s 超时 abort——
+//   失败/结构非法回退内置 LINKS；三分层 default/cn/global 按 hostname 选段 + inherit 合并去重——见共享模块）。
 // 根 .cards-window：固定设计坐标系 1280×720（同 .stage-window 哲学）——
 //   JS 算 scale = min(容器宽/1280, 容器高/720)（容器 = 本组件父元素，Heart 的 .card-wall.screen2-card-wall），
 //   inline transform: translate(-50%,-50%) scale(s) + transform-origin:center，window resize 重算；
@@ -20,35 +19,13 @@
 // 红线：零依赖；纯白灰阶（站点图标本身彩色是内容不算 UI 违规）；只读（无拖拽/缩放/增删/localStorage）。
 import { useEffect, useLayoutEffect, useRef, useState } from "preact/hooks";
 import type { JSX } from "preact";
-
-interface Site {
-  title: string;
-  url: string;
-  desc?: string; // 仅内置 LINKS 带描述；config 书签栏只有标题+地址（副行显示域名）
-  // admin 管理页导出布局（百分比——config 可选字段；缺失则该卡自动排）
-  x?: number;
-  y?: number;
-  w?: number;
-  h?: number;
-}
+import { fetchConfig, resolveSegment, type Site } from "./site-config";
 
 interface Layout {
   x: number; // 左上角横坐标（容器宽 %）
   y: number; // 左上角纵坐标（容器高 %）
   w: number; // 宽（%）
   h: number; // 高（%）
-}
-
-// config.json 三分层配置（通用 default / cn / global——展示页按 hostname 选段合并）
-interface Segment {
-  inherit?: boolean; // true = 继承 default.sites 并追加自身 sites（同 url 去重，default 优先）；false/缺省 = 完全独立
-  sites: Site[];
-}
-
-interface Config {
-  default: Segment;
-  cn?: Segment;
-  global?: Segment;
 }
 
 // 设计坐标系（同 .stage-window）——scale = min(容器宽/1280, 容器高/720)
@@ -62,33 +39,6 @@ const LINKS: Site[] = [
   { title: "YouTube", url: "https://youtube.com", desc: "视频与音乐" },
   { title: "官方网站", url: "https://tayori-official.com", desc: "官网" },
 ];
-
-// 三分层选段：hostname 以 'cn.' 开头 → cn 段；'global.' 开头 → global 段；否则 default 段
-function segmentKeyOf(hostname: string): "cn" | "global" | "default" {
-  if (hostname.startsWith("cn.")) return "cn";
-  if (hostname.startsWith("global.")) return "global";
-  return "default";
-}
-
-// 选段 + 合并：inherit → default.sites + 自身 sites（按 url 去重，default 优先——追加语义）；
-// 不 inherit → 只自身 sites；结构非法返回 null（调用方保持内置 LINKS fallback）
-function resolveSites(data: unknown): Site[] | null {
-  const cfg = data as Partial<Config> | null | undefined;
-  if (!cfg || typeof cfg !== "object" || Array.isArray(cfg)) return null;
-  const def = cfg.default;
-  if (!def || !Array.isArray(def.sites)) return null;
-  const seg = cfg[segmentKeyOf(window.location.hostname)] ?? def;
-  if (!seg || !Array.isArray(seg.sites)) return null;
-  if (!seg.inherit) return seg.sites;
-  const seen = new Set<string>();
-  const out: Site[] = [];
-  for (const s of [...def.sites, ...seg.sites]) {
-    if (seen.has(s.url)) continue;
-    seen.add(s.url);
-    out.push(s);
-  }
-  return out;
-}
 
 // 域名提取：非法 URL 返回 null（卡片照常渲染，favicon 直接落首字母 fallback）
 function hostOf(url: string): string | null {
@@ -149,27 +99,13 @@ export default function CardWall(): JSX.Element {
   const rootRef = useRef<HTMLDivElement | null>(null);
   const [scale, setScale] = useState(1);
 
-  // config 加载（2s 超时 abort——失败/超时保持内置 LINKS fallback）
+  // config 加载（site-config.ts：2s 超时 abort——失败/超时保持内置 LINKS fallback）
   useEffect(() => {
-    const ac = new AbortController();
-    const timer = setTimeout(() => ac.abort(), 2000);
-    fetch("./config.json", { signal: ac.signal })
-      .then((r) =>
-        r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`)),
-      )
-      .then((data) => {
-        // 三分层选段合并；结构非法（null）保持内置 LINKS fallback
-        const sites = resolveSites(data);
-        if (sites) setSites(sites);
-      })
-      .catch(() => {
-        /* 失败/超时：什么都不做——保持内置 LINKS */
-      })
-      .finally(() => clearTimeout(timer));
-    return () => {
-      clearTimeout(timer);
-      ac.abort();
-    };
+    fetchConfig().then((cfg) => {
+      // 三分层选段合并；null（失败/超时/结构非法）保持内置 LINKS fallback
+      const seg = resolveSegment(cfg);
+      if (seg) setSites(seg.sites);
+    });
   }, []);
 
   // 窗口块 fit（同 .stage-window 哲学）：scale = min(容器宽/1280, 容器高/720)——

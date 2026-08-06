@@ -5,11 +5,13 @@
 // 各自独立编辑卡片（拖拽/缩放/增删/属性面板——原单栏逻辑按栏复用，每栏独立的选中态/拖拽状态）；
 // cn/global 栏有「继承通用」开关：勾选 → 该栏 canvas 顶部提示「继承中」并把 default.sites
 // 以半透明只读参照铺在画布底层（参照不可交互）——本栏编辑的仍是自己的 sites——导出时 inherit 字段写入；
-// 导出整体三段 JSON：{ default:{sites}, cn:{inherit,sites}, global:{inherit,sites} }。
+// 导出整体三段 JSON：{ default:{sites,pages}, cn:{inherit,sites,pages}, global:{inherit,sites,pages} }——
+// pages = 页面规则（Record<path,{enabled,params}>：通配符 path + 启用开关 + k=v 参数——每栏独立）。
 // 红线：零依赖（原生 Pointer Events + ResizeObserver）；纯白灰阶（favicon 彩色是内容不算 UI）；
 //       不写 localStorage（导出 JSON 是唯一输出——刷新即回到 config 原始态）。
 // 数据：启动 fetch('./config.json')（兼容旧格式 {sites} → 当 default 段；失败空列表）→
-//       三段内存编辑状态（defaultSites/cnSites/globalSites + inheritCb/inheritGb，改动不自动持久化）。
+//       三段内存编辑状态（defaultSites/cnSites/globalSites + defaultPages/cnPages/globalPages
+//       + inheritCb/inheritGb——改动不自动持久化）。
 // 坐标：每栏独立 1280×720 设计坐标系（.admin-canvas）——卡片 absolute 百分比（x/y/w/h）；
 //       每栏 canvas 按各自容器 fit 缩放（ResizeObserver 监听 .admin-canvas-wrap）。
 // 交互：拖（卡片任意处——setPointerCapture——x/y 百分比 clamp——松手吸附 2% 网格）；
@@ -28,6 +30,14 @@ interface Card extends Site {
   y: number; // 左上角纵坐标（canvas 高 %）
   w: number; // 宽（%）
   h: number; // 高（%）
+}
+
+// 页面规则：path 通配符模式（如 /heart、/card/*、*）+ 启用开关 + 键值参数（k=v）
+// 有序数组编辑（可上下移——匹配按顺序优先、具体规则放前）——导出时转 Record 保序
+interface PageRule {
+  path: string;
+  enabled: boolean;
+  params: Record<string, string>;
 }
 
 const SNAP = 2; // 松手吸附网格粒度（%）
@@ -102,6 +112,8 @@ interface AdminPaneProps {
   title: string; // 栏名（通用配置 / cn 配置 / global 配置）
   cards: Card[];
   onCards: (updater: (prev: Card[]) => Card[]) => void;
+  pages: PageRule[]; // 页面规则（有序——导出转 Record 保序，匹配按顺序优先）
+  onPages: (updater: (prev: PageRule[]) => PageRule[]) => void;
   selected: number | null;
   onSelected: (i: number | null) => void;
   draft: { title: string; url: string };
@@ -119,11 +131,15 @@ function AdminPane({
   onSelected,
   draft,
   onDraft,
+  pages,
+  onPages,
   inherit = false,
   onInherit,
   reference = [],
 }: AdminPaneProps): JSX.Element {
   const [scale, setScale] = useState(1); // 画布 fit 缩放（每栏独立）
+  const [tab, setTab] = useState<"sites" | "rules">("sites"); // 栏内 tab：站点卡片 / 页面规则
+  const [search, setSearch] = useState(""); // 页面规则搜索（按 path 简单 includes）
 
   const wrapRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLDivElement>(null);
@@ -148,11 +164,11 @@ function AdminPane({
     const ro = new ResizeObserver(apply);
     ro.observe(wrap);
     return () => ro.disconnect();
-  }, []);
+  }, [tab]); // 依赖 tab：切回「站点卡片」时 canvas-wrap 重新挂载——需重新 apply + observe（否则 fit 失效）
 
   // Delete 键删除本栏选中卡（每栏独立注册——只在自己有选中时生效）
   useEffect(() => {
-    if (selected === null) return;
+    if (tab !== "sites" || selected === null) return; // 仅「站点卡片」tab 响应 Delete
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Delete") {
         e.preventDefault();
@@ -163,7 +179,7 @@ function AdminPane({
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [selected]);
+  }, [selected, tab]);
 
   const select = (idx: number) => {
     onSelected(idx);
@@ -269,10 +285,107 @@ function AdminPane({
     onDraft({ title: "", url: "" });
   };
 
+  // ── 页面规则编辑（栏内有序数组——搜索过滤 + 上下移保序）──
+  // 搜索过滤：按 path 简单 includes（空搜索 = 全量）
+  const q = search.trim().toLowerCase();
+  const filtered = q ? pages.filter((r) => r.path.toLowerCase().includes(q)) : pages;
+
+  const switchTab = (t: "sites" | "rules") => {
+    setTab(t);
+    if (t === "rules" && selected !== null) {
+      // 规则 tab 与卡片选中无关——切走时清空选中/草稿
+      onSelected(null);
+      onDraft({ title: "", url: "" });
+    }
+  };
+
+  const patchRule = (i: number, patch: Partial<PageRule>) =>
+    onPages((prev) => prev.map((r, idx) => (idx === i ? { ...r, ...patch } : r)));
+
+  const addRule = () =>
+    onPages((prev) => [...prev, { path: "*", enabled: true, params: {} }]);
+
+  const delRule = (i: number) => onPages((prev) => prev.filter((_, idx) => idx !== i));
+
+  // 上下移：在过滤列表内相邻交换（对象引用映射回原数组——搜索过滤下相对顺序不变）
+  const moveRule = (i: number, dir: -1 | 1) => {
+    const j = i + dir;
+    if (j < 0 || j >= filtered.length) return;
+    const from = pages.indexOf(filtered[i]);
+    const to = pages.indexOf(filtered[j]);
+    if (from < 0 || to < 0) return;
+    onPages((prev) => {
+      const arr = [...prev];
+      const [item] = arr.splice(from, 1);
+      arr.splice(to, 0, item);
+      return arr;
+    });
+  };
+
+  // 参数键值对编辑（对象存储——改名=删旧键+插新键，保持顺序）
+  const renameParam = (i: number, oldKey: string, newKey: string) =>
+    onPages((prev) =>
+      prev.map((r, idx) => {
+        if (idx !== i || newKey === oldKey) return r; // 未改名不触碰（避免键重排）
+        const params = { ...r.params };
+        delete params[oldKey];
+        params[newKey] = r.params[oldKey];
+        return { ...r, params };
+      }),
+    );
+
+  const setParamVal = (i: number, key: string, val: string) =>
+    onPages((prev) =>
+      prev.map((r, idx) =>
+        idx === i ? { ...r, params: { ...r.params, [key]: val } } : r,
+      ),
+    );
+
+  const delParam = (i: number, key: string) =>
+    onPages((prev) =>
+      prev.map((r, idx) => {
+        if (idx !== i) return r;
+        const params = { ...r.params };
+        delete params[key];
+        return { ...r, params };
+      }),
+    );
+
+  const addParam = (i: number) =>
+    onPages((prev) =>
+      prev.map((r, idx) => {
+        if (idx !== i) return r;
+        const params = { ...r.params };
+        let n = 1;
+        let k = `参数${n}`;
+        while (k in params) {
+          n += 1;
+          k = `参数${n}`;
+        }
+        params[k] = "";
+        return { ...r, params };
+      }),
+    );
+
   return (
     <section class="admin-pane">
       <div class="admin-pane-head">
         <span class="admin-pane-title">{title}</span>
+        <span class="admin-tabs">
+          <button
+            class={`admin-tab${tab === "sites" ? " active" : ""}`}
+            onClick={() => switchTab("sites")}
+          >
+            站点卡片
+          </button>
+          <button
+            class={`admin-tab${tab === "rules" ? " active" : ""}`}
+            onClick={() => switchTab("rules")}
+          >
+            页面规则
+          </button>
+        </span>
+        <span class="admin-pane-spacer" />
         {onInherit && (
           <label class="admin-check">
             <input
@@ -283,11 +396,15 @@ function AdminPane({
             继承通用
           </label>
         )}
-        <span class="admin-pane-spacer" />
-        <button class="admin-btn" onClick={addCard}>＋ 添加</button>
+        {tab === "sites" ? (
+          <button class="admin-btn" onClick={addCard}>＋ 添加</button>
+        ) : (
+          <button class="admin-btn" onClick={addRule}>＋ 添加规则</button>
+        )}
       </div>
-      <div class="admin-canvas-wrap" ref={wrapRef}>
-        <div class="admin-canvas" ref={canvasRef} style={{ transform: `scale(${scale})` }}>
+      {tab === "sites" ? (
+        <div class="admin-canvas-wrap" ref={wrapRef}>
+          <div class="admin-canvas" ref={canvasRef} style={{ transform: `scale(${scale})` }}>
           {inherit &&
             reference.map((c, i) => (
               <div
@@ -371,7 +488,95 @@ function AdminPane({
             </div>
           </aside>
         )}
-      </div>
+        </div>
+      ) : (
+        <div class="admin-rules">
+          <input
+            class="admin-search"
+            type="search"
+            placeholder="搜索规则（按 path 过滤）"
+            value={search}
+            onInput={(e) => setSearch((e.target as HTMLInputElement).value)}
+          />
+          <div class="admin-rules-list">
+            {filtered.length === 0 && (
+              <div class="admin-rules-empty">
+                {pages.length === 0 ? "无规则——全部 fallback default" : "没有匹配的规则"}
+              </div>
+            )}
+            {filtered.map((r, i) => (
+              <div class="admin-rule" key={pages.indexOf(r)}>
+                <div class="admin-rule-head">
+                  <input
+                    class="admin-rule-path"
+                    value={r.path}
+                    placeholder="/heart、/card/*、*"
+                    onInput={(e) =>
+                      patchRule(pages.indexOf(r), { path: (e.target as HTMLInputElement).value })
+                    }
+                  />
+                  <label class="admin-check admin-rule-enabled">
+                    <input
+                      type="checkbox"
+                      checked={r.enabled}
+                      onChange={(e) =>
+                        patchRule(pages.indexOf(r), {
+                          enabled: (e.target as HTMLInputElement).checked,
+                        })
+                      }
+                    />
+                    enabled
+                  </label>
+                  <span class="admin-rule-order">
+                    <button
+                      class="admin-rule-move"
+                      disabled={i === 0}
+                      onClick={() => moveRule(i, -1)}
+                      title="上移（匹配更优先）"
+                    >↑</button>
+                    <button
+                      class="admin-rule-move"
+                      disabled={i === filtered.length - 1}
+                      onClick={() => moveRule(i, 1)}
+                      title="下移"
+                    >↓</button>
+                  </span>
+                  <button class="admin-btn danger" onClick={() => delRule(pages.indexOf(r))}>删除</button>
+                </div>
+                <div class="admin-rule-params">
+                  {Object.entries(r.params).map(([k, v], pi) => (
+                    <div class="admin-rule-param" key={pi}>
+                      <input
+                        class="admin-rule-param-key"
+                        value={k}
+                        placeholder="参数名"
+                        onInput={(e) =>
+                          renameParam(pages.indexOf(r), k, (e.target as HTMLInputElement).value)
+                        }
+                      />
+                      <span class="admin-rule-param-eq">=</span>
+                      <input
+                        class="admin-rule-param-val"
+                        value={v}
+                        placeholder="值"
+                        onInput={(e) =>
+                          setParamVal(pages.indexOf(r), k, (e.target as HTMLInputElement).value)
+                        }
+                      />
+                      <button
+                        class="admin-rule-param-del"
+                        onClick={() => delParam(pages.indexOf(r), k)}
+                        title="删除参数"
+                      >×</button>
+                    </div>
+                  ))}
+                  <button class="admin-btn" onClick={() => addParam(pages.indexOf(r))}>＋ 参数</button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </section>
   );
 }
@@ -381,6 +586,9 @@ export default function CardAdmin(): JSX.Element {
   const [defaultSites, setDefaultSites] = useState<Card[]>([]);
   const [cnSites, setCnSites] = useState<Card[]>([]);
   const [globalSites, setGlobalSites] = useState<Card[]>([]);
+  const [defaultPages, setDefaultPages] = useState<PageRule[]>([]);
+  const [cnPages, setCnPages] = useState<PageRule[]>([]);
+  const [globalPages, setGlobalPages] = useState<PageRule[]>([]);
   const [inheritCb, setInheritCb] = useState(false); // cn 继承通用
   const [inheritGb, setInheritGb] = useState(false); // global 继承通用
   // 每栏独立选中态/属性面板草稿
@@ -417,6 +625,34 @@ export default function CardAdmin(): JSX.Element {
       }));
   };
 
+  // 页面规则段 → PageRule[]（Record<path,{enabled,params}> → 有序数组——Object.entries 保插入顺序）
+  const parsePages = (sec: { pages?: unknown } | null | undefined): PageRule[] => {
+    if (
+      !sec ||
+      typeof sec.pages !== "object" ||
+      sec.pages === null ||
+      Array.isArray(sec.pages)
+    ) {
+      return [];
+    }
+    return Object.entries(sec.pages as Record<string, unknown>).map(([path, raw]) => {
+      const rule =
+        raw && typeof raw === "object" ? (raw as Record<string, unknown>) : null;
+      const params: Record<string, string> = {};
+      if (
+        rule &&
+        rule.params &&
+        typeof rule.params === "object" &&
+        !Array.isArray(rule.params)
+      ) {
+        for (const [k, v] of Object.entries(rule.params as Record<string, unknown>)) {
+          params[k] = typeof v === "string" ? v : String(v);
+        }
+      }
+      return { path, enabled: Boolean(rule?.enabled), params };
+    });
+  };
+
   // 加载 config（旧格式 {sites} → 当 default 段；失败/超时——空列表，刷新即恢复）
   const loadConfig = () => {
     const ac = new AbortController();
@@ -429,6 +665,9 @@ export default function CardAdmin(): JSX.Element {
         setDefaultSites(parseSites(def));
         setCnSites(parseSites(data?.cn));
         setGlobalSites(parseSites(data?.global));
+        setDefaultPages(parsePages(def));
+        setCnPages(parsePages(data?.cn));
+        setGlobalPages(parsePages(data?.global));
         setInheritCb(Boolean(data?.cn?.inherit));
         setInheritGb(Boolean(data?.global?.inherit));
       })
@@ -436,6 +675,9 @@ export default function CardAdmin(): JSX.Element {
         setDefaultSites([]);
         setCnSites([]);
         setGlobalSites([]);
+        setDefaultPages([]);
+        setCnPages([]);
+        setGlobalPages([]);
       });
     return ac;
   };
@@ -461,11 +703,28 @@ export default function CardAdmin(): JSX.Element {
       w: c.w,
       h: c.h,
     });
+    // 页面规则 → Record（保插入顺序 = 编辑顺序——空 path/空参数名无效，跳过不导出）
+    const toPages = (
+      rules: PageRule[],
+    ): Record<string, { enabled: boolean; params: Record<string, string> }> => {
+      const rec: Record<string, { enabled: boolean; params: Record<string, string> }> = {};
+      for (const r of rules) {
+        const path = r.path.trim();
+        if (!path) continue;
+        const params: Record<string, string> = {};
+        for (const [k, v] of Object.entries(r.params)) {
+          if (k.trim() === "") continue;
+          params[k] = v;
+        }
+        rec[path] = { enabled: r.enabled, params };
+      }
+      return rec;
+    };
     const json = JSON.stringify(
       {
-        default: { sites: defaultSites.map(toPlain) },
-        cn: { inherit: inheritCb, sites: cnSites.map(toPlain) },
-        global: { inherit: inheritGb, sites: globalSites.map(toPlain) },
+        default: { sites: defaultSites.map(toPlain), pages: toPages(defaultPages) },
+        cn: { inherit: inheritCb, sites: cnSites.map(toPlain), pages: toPages(cnPages) },
+        global: { inherit: inheritGb, sites: globalSites.map(toPlain), pages: toPages(globalPages) },
       },
       null,
       2,
@@ -523,6 +782,8 @@ export default function CardAdmin(): JSX.Element {
           title="通用配置"
           cards={defaultSites}
           onCards={setDefaultSites}
+          pages={defaultPages}
+          onPages={setDefaultPages}
           selected={selD}
           onSelected={setSelD}
           draft={draftD}
@@ -532,6 +793,8 @@ export default function CardAdmin(): JSX.Element {
           title="cn 配置"
           cards={cnSites}
           onCards={setCnSites}
+          pages={cnPages}
+          onPages={setCnPages}
           selected={selC}
           onSelected={setSelC}
           draft={draftC}
@@ -544,6 +807,8 @@ export default function CardAdmin(): JSX.Element {
           title="global 配置"
           cards={globalSites}
           onCards={setGlobalSites}
+          pages={globalPages}
+          onPages={setGlobalPages}
           selected={selG}
           onSelected={setSelG}
           draft={draftG}
