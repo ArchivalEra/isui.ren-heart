@@ -126,22 +126,28 @@ Workers & Pages → Create → **Upload assets** → 拖入 `dist/` → 绑定 `
 
 > ⚠️ **只动 @ 记录——其他子域名一概不碰**
 
-### 4.1 DNS 分线路解析（在你有分线路能力的 DNS 面板做）
+### 4.1 DNS 分线路解析（域名在腾讯中国 dnspod——分线路在 dnspod 配）
 ```
-@.isui.ren  境内（大陆）  → CNAME/A → EdgeOne 分配地址（cn 站）
-@.isui.ren  境外（全球）  → CNAME → global.isui.ren（CF Pages）
+@.isui.ren  境内（大陆）  → CNAME/A → EdgeOne 分配地址（cn 站——Makers 域名）
+@.isui.ren  境外（全球）  → CNAME → global.isui.ren 的 Pages 域名
 ```
-面板差异：
-- **dnspod 免费版**：支持「境内/境外」分线（默认线路就有）——够用
-- **腾讯云国际 DNS**：看是否提供线路分组（没有就用 dnspod 或注册商）
+- **dnspod 免费版**：支持「境内/境外」分线（默认线路就有）——**够用**
+  （按省份/运营商细分才要付费——我们只要境内/境外两档）
 - 没有分线路能力：退而求其次——`@` 直接 CNAME 到其中一个站（先全局走 cn 或 global）
+- ⚠️ DNS 记录在腾讯中国面板加（cn.isui.ren CNAME → EdgeOne、global CNAME → Pages
+  ——跨平台正常：EdgeOne 是腾讯国际、DNS 是腾讯国内——互不冲突）
 
-### 4.2 根域 302 → /heart（同源——地址栏不变）
-> ⚠️ 用户钦定：「重要的是我们要做到 302」——**但别用「回源 302」**（会暴露目标 URL、
-> 地址栏变成百度那次事故）。要用 **CDN 重定向规则**（同源跳转 / → /heart）。
+### 4.2 根域泛覆写 302（非 admin——路径保留）
+> ⚠️ 用户钦定：「重要的是我们要做到 302」——**别用「回源 302」**（会暴露目标 URL、
+> 地址栏变成百度那次事故）。要用 **CDN 重定向规则**。
+> 泛覆写：`/*`（**排除 /admin***）→ `302 对应域名同路径`——地址栏变 cn/global
+> 域名（前端 hostname 选段正好靠它生效——配置分层正确）。
 
-- **EdgeOne**：规则引擎 → 重定向规则 → `@.isui.ren` 请求路径 `/` → 302 `/heart`
-- **CF**：Redirect Rules（或 Pages 的 `_redirects`：`/ /heart 302`）
+- **EdgeOne（境内落点）**：规则引擎 → 重定向规则：匹配 `/*`（排除 `/admin*`）
+  → `302 https://cn.isui.ren/$1`（$1 = 捕获路径——保留路径）
+- **CF（境外落点）**：Redirect Rules（或 Pages `_redirects`：`/* https://global.isui.ren/:splat 302`）
+- **admin 例外**：`/admin*` 不覆写（留在 isui.ren——线上 404；以后管理页独立部署在
+  cn.isui.ren/admin——不受根域规则干扰）
 
 ### 4.3 验证
 - 境内访问 `http://isui.ren` → 302 → `cn.isui.ren/heart`（地址栏变为 cn 域名/heart）
@@ -161,8 +167,9 @@ Workers & Pages → Create → **Upload assets** → 拖入 `dist/` → 绑定 `
 | `cn.isui.ren/heart` | 三球动画 + 翻页 + 卡片墙 |
 | `global.isui.ren/heart` | 同上 |
 | `cn.isui.ren/admin` / `global.../admin` | **404 页**（不上线——非部署目标） |
-| `isui.ren`（境内） | 302 → cn/heart |
-| `isui.ren`（境外） | 302 → global/heart |
+| `isui.ren/*`（境内） | 302 → cn.isui.ren/同路径（如 / → /heart） |
+| `isui.ren/*`（境外） | 302 → global.isui.ren/同路径 |
+| `isui.ren/admin*` | 不覆写——404（本站） |
 | 其他子域名 | 原样不动 |
 | 改 config.json → 推 main | Actions 构建 → 双平台自动更新 |
 
