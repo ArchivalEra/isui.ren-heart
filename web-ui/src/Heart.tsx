@@ -149,10 +149,15 @@ export default function Heart() {
   // 状态只由 pathname 决定（hash 仅作子路由占位，不参与判断）
   useEffect(() => {
     const check = () => {
-      const on = window.location.pathname === "/admin";
+      // ⚠️ 仓库只有 /heart 展示页——管理页不是站点页面（独立工具——以后在
+      // cn.isui.ren/admin 单独部署）。生产环境 /admin 不上线：只有本地
+      // 开发（localhost/127.0.0.1）豁免走管理编辑器——生产 /admin 与普通
+      // 路径一样按页面规则判定（默认 * denied → 404 页）
+      const local = ["localhost", "127.0.0.1"].includes(window.location.hostname);
+      const on = local && window.location.pathname === "/admin";
       adminRef.current = on;
       setAdmin(on);
-      // 页面访问规则：/admin 不受规则影响（强制正常渲染）；普通路径按配置判定
+      // 页面访问规则：仅本地 admin 豁免；生产普通路径（含 /admin）按配置判定
       if (on) setNotFound(false);
       else if (cfgRef.current)
         setNotFound(!pageConfig(cfgRef.current, window.location.pathname).enabled);

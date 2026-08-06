@@ -152,15 +152,19 @@ Workers & Pages → Create → **Upload assets** → 拖入 `dist/` → 绑定 `
 
 ## 5. 总验证清单
 
+> ⚠️ **本仓库只有 `/heart` 一个页面**——管理页（/admin）是独立工具，
+> 不在本仓库上线（生产 /admin 走页面规则默认 * denied → 404 页；
+> 仅本地 localhost 可打开管理编辑器）。管理页以后在 cn.isui.ren/admin 独立部署。
+
 | 检查项 | 期望 |
 |---|---|
 | `cn.isui.ren/heart` | 三球动画 + 翻页 + 卡片墙 |
 | `global.isui.ren/heart` | 同上 |
-| `cn.isui.ren/admin#heart` / `global...` | 三栏管理页 |
+| `cn.isui.ren/admin` / `global.../admin` | **404 页**（不上线——非部署目标） |
 | `isui.ren`（境内） | 302 → cn/heart |
 | `isui.ren`（境外） | 302 → global/heart |
 | 其他子域名 | 原样不动 |
-| 管理页导出 config → 对象存储/仓库上传 | 刷新全站生效 |
+| 改 config.json → 推 main | Actions 构建 → 双平台自动更新 |
 
 ---
 
