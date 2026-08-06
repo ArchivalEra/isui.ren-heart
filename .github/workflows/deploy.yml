@@ -68,14 +68,10 @@ jobs:
           cp -r /tmp/deploy-out/. .
           # CF Pages 新版用 wrangler deploy——显式配置（否则 auto-config
           # 用默认 npx hugo/public 交互询问 → 非交互 fallback no → 部署错乱）
-          cat > wrangler.toml << 'EOF'
-name = "isui-ren-heart"
-compatibility_date = "2024-11-01"
-
-[assets]
-directory = "./"
-not_found_handling = "single-page-application"
-EOF
+          # ⚠️ heredoc 内容在 YAML 块标量里必须缩进但 EOF 必须行首——矛盾
+          # 导致 ScannerError（deploy failed：GitHub 解析失败 jobs 空）——
+          # 改用 printf 逐行写（YAML 安全）
+          printf '%s\n' 'name = "isui-ren-heart"' 'compatibility_date = "2024-11-01"' '' '[assets]' 'directory = "./"' 'not_found_handling = "single-page-application"' > wrangler.toml
           echo '{}' > package.json
           git add -A
           git commit -m "deploy: $(date -u +%Y-%m-%dT%H:%M:%SZ) from main $(git rev-parse main)"
