@@ -1,7 +1,4 @@
-# isui.ren — tayori 粉丝站 💖
-
-> 三个孩子（粉、水蓝、薄荷）在一个无边框窗口里，绕着 logo 永远地跑。
-> 这个仓库充满了爱。
+# isui.ren/heart — tayori 粉丝站 💖
 
 纯 CSR 静态站点（零服务端开销），部署于 EdgeOne Makers / Cloudflare Pages。
 动画核心用 Rust 编译成 wasm——性能敏感的地方绝不妥协。
