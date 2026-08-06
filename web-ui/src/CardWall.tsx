@@ -1,6 +1,8 @@
 // 屏 2 卡片墙——只读窗口块（管理与展示解耦：展示页 /heart 屏 2 只读绘制；编辑/拖拽/缩放/增删
 // 在独立 admin 管理页——本文件零交互逻辑）。
-// 数据源：fetch('./config.json')（2s 超时 abort——失败回退内置 LINKS）→ 渲染 config.sites。
+// 数据源：fetch('./config.json')（2s 超时 abort——失败/结构非法回退内置 LINKS）→ 按 hostname 选段：
+//   三分层配置（default 通用 / cn / global）——'cn.' 前缀 hostname → cn 段；'global.' 前缀 → global 段；否则 default 段；
+//   segment.inherit=true → 继承 default.sites 并追加自身 sites（按 url 去重，default 优先）；false/缺省 → 只渲染自身 sites。
 // 根 .cards-window：固定设计坐标系 1280×720（同 .stage-window 哲学）——
 //   JS 算 scale = min(容器宽/1280, 容器高/720)（容器 = 本组件父元素，Heart 的 .card-wall.screen2-card-wall），
 //   inline transform: translate(-50%,-50%) scale(s) + transform-origin:center，window resize 重算；
@@ -37,6 +39,18 @@ interface Layout {
   h: number; // 高（%）
 }
 
+// config.json 三分层配置（通用 default / cn / global——展示页按 hostname 选段合并）
+interface Segment {
+  inherit?: boolean; // true = 继承 default.sites 并追加自身 sites（同 url 去重，default 优先）；false/缺省 = 完全独立
+  sites: Site[];
+}
+
+interface Config {
+  default: Segment;
+  cn?: Segment;
+  global?: Segment;
+}
+
 // 设计坐标系（同 .stage-window）——scale = min(容器宽/1280, 容器高/720)
 const DESIGN_W = 1280;
 const DESIGN_H = 720;
@@ -48,6 +62,33 @@ const LINKS: Site[] = [
   { title: "YouTube", url: "https://youtube.com", desc: "视频与音乐" },
   { title: "官方网站", url: "https://tayori-official.com", desc: "官网" },
 ];
+
+// 三分层选段：hostname 以 'cn.' 开头 → cn 段；'global.' 开头 → global 段；否则 default 段
+function segmentKeyOf(hostname: string): "cn" | "global" | "default" {
+  if (hostname.startsWith("cn.")) return "cn";
+  if (hostname.startsWith("global.")) return "global";
+  return "default";
+}
+
+// 选段 + 合并：inherit → default.sites + 自身 sites（按 url 去重，default 优先——追加语义）；
+// 不 inherit → 只自身 sites；结构非法返回 null（调用方保持内置 LINKS fallback）
+function resolveSites(data: unknown): Site[] | null {
+  const cfg = data as Partial<Config> | null | undefined;
+  if (!cfg || typeof cfg !== "object" || Array.isArray(cfg)) return null;
+  const def = cfg.default;
+  if (!def || !Array.isArray(def.sites)) return null;
+  const seg = cfg[segmentKeyOf(window.location.hostname)] ?? def;
+  if (!seg || !Array.isArray(seg.sites)) return null;
+  if (!seg.inherit) return seg.sites;
+  const seen = new Set<string>();
+  const out: Site[] = [];
+  for (const s of [...def.sites, ...seg.sites]) {
+    if (seen.has(s.url)) continue;
+    seen.add(s.url);
+    out.push(s);
+  }
+  return out;
+}
 
 // 域名提取：非法 URL 返回 null（卡片照常渲染，favicon 直接落首字母 fallback）
 function hostOf(url: string): string | null {
@@ -117,7 +158,9 @@ export default function CardWall(): JSX.Element {
         r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`)),
       )
       .then((data) => {
-        if (Array.isArray(data?.sites)) setSites(data.sites as Site[]);
+        // 三分层选段合并；结构非法（null）保持内置 LINKS fallback
+        const sites = resolveSites(data);
+        if (sites) setSites(sites);
       })
       .catch(() => {
         /* 失败/超时：什么都不做——保持内置 LINKS */

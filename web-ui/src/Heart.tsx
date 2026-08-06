@@ -131,22 +131,27 @@ export default function Heart() {
   const stageRef = useRef<HTMLDivElement>(null);
   const screen2Ref = useRef<HTMLElement>(null);
 
-  // admin hash 路由：location.hash 含 'admin' → 全屏管理编辑器（cn.isui.ren/admin#xxx）
+  // admin 路径路由：location.pathname === '/admin' → 全屏管理编辑器（cn.isui.ren/admin#heart——
+  // #heart 是管理 heart 站的子路由占位——当前只需 heart——hash 不做处理只作占位）
   // 正常页隐藏（.admin-active）——翻页/滚轮/键盘监听在回调开头暂停（adminRef）
   const [admin, setAdmin] = useState(false);
   const adminRef = useRef(false); // 事件回调读最新（监听注册一次，避免闭包 stale）
 
-  // hash 监听：进入 → CardAdmin 全屏覆盖 + 冻结三球；清除 → 恢复（wasm resume）
+  // 路径监听：进入 /admin → CardAdmin 全屏覆盖 + 冻结三球；离开 → 恢复（wasm resume）。
+  // popstate 覆盖浏览器前进/后退与链接导航；hashchange 覆盖 hash 变动（如 CardAdmin 清 hash）——
+  // 状态只由 pathname 决定（hash 仅作子路由占位，不参与判断）
   useEffect(() => {
     const check = () => {
-      const on = window.location.hash.includes("admin");
+      const on = window.location.pathname === "/admin";
       adminRef.current = on;
       setAdmin(on);
       setBallsPaused(on); // admin 期间冻结球（恢复时 check 里 resume）
     };
     check();
+    window.addEventListener("popstate", check);
     window.addEventListener("hashchange", check);
     return () => {
+      window.removeEventListener("popstate", check);
       window.removeEventListener("hashchange", check);
       setBallsPaused(false);
     };
@@ -295,7 +300,7 @@ export default function Heart() {
                 height:100vh）——作 .cards-window（1280×720 设计坐标系）绝对居中的宿主
               - CardWall 只读渲染：.cards-window（窗口块）+ .cw-card（百分比坐标卡）+
                 .card-favicon/.card-favicon-fallback（styles.css 已配套）——管理与展示解耦，
-                编辑在管理页 cn.isui.ren/admin#xxx（CardAdmin）——导出 JSON 贴回仓库 config */}
+                编辑在管理页 cn.isui.ren/admin（CardAdmin）——导出 JSON 贴回仓库 config */}
           {page === 1 && <ScrollHint onGoUp={() => go(0)} />}
           <div class="card-wall screen2-card-wall">
             <CardWall />
