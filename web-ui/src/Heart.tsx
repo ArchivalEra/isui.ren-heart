@@ -7,6 +7,7 @@ import CardWall from "./CardWall";
 import ScrollHint from "./ScrollHint";
 import LogoDebug from "./LogoDebug";
 import Typewriter from "./Typewriter";
+import CardAdmin from "./CardAdmin";
 import * as wasm from "./wasm/isui_ren_heart.js";
 
 const EMOJI = [
@@ -130,6 +131,27 @@ export default function Heart() {
   const stageRef = useRef<HTMLDivElement>(null);
   const screen2Ref = useRef<HTMLElement>(null);
 
+  // admin hash 路由：location.hash 含 'admin' → 全屏管理编辑器（cn.isui.ren/admin#xxx）
+  // 正常页隐藏（.admin-active）——翻页/滚轮/键盘监听在回调开头暂停（adminRef）
+  const [admin, setAdmin] = useState(false);
+  const adminRef = useRef(false); // 事件回调读最新（监听注册一次，避免闭包 stale）
+
+  // hash 监听：进入 → CardAdmin 全屏覆盖 + 冻结三球；清除 → 恢复（wasm resume）
+  useEffect(() => {
+    const check = () => {
+      const on = window.location.hash.includes("admin");
+      adminRef.current = on;
+      setAdmin(on);
+      setBallsPaused(on); // admin 期间冻结球（恢复时 check 里 resume）
+    };
+    check();
+    window.addEventListener("hashchange", check);
+    return () => {
+      window.removeEventListener("hashchange", check);
+      setBallsPaused(false);
+    };
+  }, []);
+
   /** 翻页：上锁 → 换页 → 600ms 后解锁（与 CSS transition 同长；transitionend 另负责 freeze） */
   const go = (p: number) => {
     if (animating.current || p === pageRef.current) return;
@@ -167,7 +189,7 @@ export default function Heart() {
     let touchStartY = 0;
 
     const onWheel = (e: WheelEvent) => {
-      if (animating.current) return;
+      if (adminRef.current || animating.current) return;
       if (pageRef.current === 0) {
         // 屏 1：向下滚 → 翻屏 2
         if (e.deltaY > 0) go(1);
@@ -183,7 +205,7 @@ export default function Heart() {
     };
 
     const onTouchEnd = (e: TouchEvent) => {
-      if (animating.current) return;
+      if (adminRef.current || animating.current) return;
       const dy = (e.changedTouches[0]?.clientY ?? touchStartY) - touchStartY;
       if (pageRef.current === 0) {
         // 屏 1：上滑 → 屏 2
@@ -196,7 +218,7 @@ export default function Heart() {
     };
 
     const onKey = (e: KeyboardEvent) => {
-      if (animating.current) return;
+      if (adminRef.current || animating.current) return;
       if (e.key === "ArrowDown" || e.key === " ") {
         if (pageRef.current === 0) {
           e.preventDefault();
@@ -232,7 +254,7 @@ export default function Heart() {
   }, []);
 
   return (
-    <div class="heart-page fade-stagger">
+    <div class={`heart-page fade-stagger${admin ? " admin-active" : ""}`}>
       {/* 双屏舞台：200vh 两屏上下排——transform 平移翻页（transition 由 .scroll-stage 承担） */}
       <div class={`scroll-stage${page === 1 ? " page-2" : ""}`} ref={stageRef}>
         {/* 屏 1：动画窗口舞台（三球 + logo）+ 标题 + 文件夹按钮 */}
@@ -268,11 +290,12 @@ export default function Heart() {
         {/* 屏 2：卡片区（overflow-y auto——原生滚动） */}
         <section class="screen-2" ref={screen2Ref}>
           {/* 卡片区容器契约（CardWall 组件——另一小弟改——渲染到此容器）：
-              - 容器类名：.card-wall.screen2-card-wall——.screen2-card-wall 负责覆盖
-                .card-wall 的"下拉折叠"默认值（absolute/scaleY(0)/opacity:0）并切为
-                大卡网格（2 列自适应，纯白灰阶）
-              - 卡片元素沿用 .wall-card 类名（白底细边框圆角大卡、无阴影）——
-                若 CardWall 改用别的类名，需同步 styles.css 的 .screen2-card-wall .wall-card */}
+              - 容器类名：.card-wall.screen2-card-wall——.screen2-card-wall 已覆盖
+                .card-wall 的"下拉折叠"默认值并回基础容器（position:relative +
+                height:100vh）——作 .cards-window（1280×720 设计坐标系）绝对居中的宿主
+              - CardWall 只读渲染：.cards-window（窗口块）+ .cw-card（百分比坐标卡）+
+                .card-favicon/.card-favicon-fallback（styles.css 已配套）——管理与展示解耦，
+                编辑在管理页 cn.isui.ren/admin#xxx（CardAdmin）——导出 JSON 贴回仓库 config */}
           {page === 1 && <ScrollHint onGoUp={() => go(0)} />}
           <div class="card-wall screen2-card-wall">
             <CardWall />
@@ -282,6 +305,7 @@ export default function Heart() {
       {/* 窗口外控件：两屏共用（position: fixed） */}
       <TrailToggle />
       <LogoDebug />
+      {admin && <CardAdmin />}
     </div>
   );
 }

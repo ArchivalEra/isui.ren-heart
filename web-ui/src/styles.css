@@ -467,50 +467,88 @@ body {
   color: var(--on-surface-variant);
 }
 
-/* ── 屏 2 卡片区（契约容器：.card-wall.screen2-card-wall——CardWall 组件渲染于此）──
-   覆盖 .card-wall 的"下拉折叠"默认值（absolute/left 50%/scaleY(0)/opacity:0/pointer-events:none
-   /overflow-y:auto/max-height/z-index）——.screen2-card-wall 是常驻大卡网格：
-   2 列自适应（auto-fill minmax）、纯白灰阶（颜色铁律：三球彩色除外） */
+/* ── 屏 2 卡片区（契约容器 .card-wall.screen2-card-wall——CardWall 只读窗口块宿主）──
+   覆盖 .card-wall 的"下拉折叠"默认值（absolute/scaleY(0)/opacity:0/pointer-events:none
+   /overflow-y:auto/max-height/z-index）——回基础容器：position:relative + height:100vh，
+   作 .cards-window（1280×720 设计坐标系）绝对居中的定位宿主；
+   管理与展示解耦：展示端只读渲染 config.json——卡片 absolute 百分比坐标（管理端导出）；
+   纯白灰阶（颜色铁律：三球彩色除外） */
 .screen2-card-wall {
-  position: static;
+  position: relative; /* .cards-window 绝对居中的宿主 */
   left: auto;
   top: auto;
   width: 100%;
-  max-width: 960px;
+  max-width: none;
   max-height: none;
   margin: 0 auto;
-  padding: max(6vh, 2.5rem) 2rem max(8vh, 3rem);
+  padding: 0;
   transform: none;
   transform-origin: unset;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 1.4rem;
+  display: block;
+  height: 100vh; /* 坐标参照高 */
   z-index: auto;
   opacity: 1;
   overflow: visible;
   pointer-events: auto;
+  background: transparent;
 }
 
-/* 大卡（CardWall 渲染 .wall-card——类名契约——白底细边框圆角，无阴影/极浅） */
-.screen2-card-wall .wall-card {
-  padding: 1.6rem 1.7rem;
-  border-radius: var(--shape-lg);
-  background: var(--surface);
-  border: 1px solid var(--outline);
+/* ── 屏 2 展示窗口块（CardWall 只读——类名契约：.cards-window/.cw-card/
+   .card-favicon/.card-favicon-fallback）──
+   1280×720 设计坐标系窗口：absolute 居中（margin 负半宽/半高对准宿主中心——transform
+   全让给 JS fit scale）——transform-origin:center（scale 以窗口中心缩放）；
+   无边框/极浅背景（窗格即屏 2——白底由 .screen-2 提供） */
+.cards-window {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 1280px;
+  height: 720px;
+  margin: -360px 0 0 -640px;
+  transform-origin: center;
+  z-index: 2;
+  background: transparent;
+}
+
+/* 窗口内卡片：absolute 百分比坐标（inline left/top/width/height——相对 .cards-window）——
+   白底 1px #E4E4E7 圆角 16px、无阴影——flex（favicon + 标题/副行 + 箭头）；
+   声明在 .card 系列之后——覆盖 .card 的 padding/box-shadow/hover/active 层叠 */
+.cw-card {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  /* 覆盖 .card.card-lg 的 1.6/1.7 留白——窗口内紧凑一格（保持大卡视觉） */
+  padding: 1.25rem 1.4rem;
+  background: #FFFFFF;
+  border: 1px solid #E4E4E7;
+  border-radius: 16px;
   box-shadow: none;
-  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+  overflow: hidden;
+  user-select: none;
 }
 
-.screen2-card-wall .wall-card:hover {
-  background: var(--surface-variant);
-  transform: translateY(-2px);
-  box-shadow: var(--elev-1);
+.cw-card:hover {
+  transform: none; /* 只读窗口块——覆盖 .card hover 上浮 */
+  box-shadow: none;
+  background: #F2F2F2; /* 极浅灰 hover 提示（纯白灰阶） */
 }
 
-.screen2-card-wall .wall-card:active {
-  background: var(--state-active);
-  transform: scale(0.99);
+.cw-card:active {
+  transform: none;
 }
+
+/* 卡片内容（链接）：铺满卡片——原 .card 内部 flex 布局 */
+.cw-card .card-inner {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  text-decoration: none;
+  color: inherit;
+}
+
 
 /* ---------- /home ---------- */
 .home-page {
@@ -914,4 +952,175 @@ body {
 @keyframes hint-bounce {
   0%, 100% { transform: translateY(0); }
   50%      { transform: translateY(-7px); }
+}
+
+/* ── 管理端（CardAdmin.tsx——cn.isui.ren/admin#xxx 全屏编辑器）──
+   管理与展示解耦：管理页负责编辑——拖拽/缩放/增删/属性编辑——导出 JSON 贴回仓库
+   public/config.json 部署即热更新。纯白灰阶铁律（无彩色 UI——favicon 是内容不算）；
+   不写 localStorage（导出 JSON 是唯一输出）。
+   层级：z-index 10000 全站最高（盖过 LogoDebug/trail-toggle 的 9999） */
+.heart-page.admin-active .scroll-stage {
+  display: none; /* admin 激活：正常页隐藏（翻页/滚轮监听已在 Heart.tsx JS 暂停） */
+}
+
+.admin-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  background: #FFFFFF;
+  overflow: hidden;
+}
+
+/* 顶部工具条：白底灰边——按钮灰阶 */
+.admin-toolbar {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.7rem 1.1rem;
+  background: #FFFFFF;
+  border-bottom: 1px solid #E4E4E7;
+}
+.admin-toolbar-title {
+  margin-right: auto;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #111111;
+}
+.admin-btn {
+  padding: 0.4rem 0.85rem;
+  border: 1px solid #E4E4E7;
+  border-radius: 8px;
+  background: #FFFFFF;
+  color: #4D4D4D;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.admin-btn:hover {
+  background: #F2F2F2;
+  color: #111111;
+}
+.admin-btn.primary {
+  background: #111111;
+  border-color: #111111;
+  color: #FFFFFF;
+}
+.admin-btn.primary:hover {
+  background: #2A2A2A;
+}
+.admin-btn.danger {
+  background: #F2F2F2;
+  color: #4D4D4D;
+}
+
+/* 画布区：toolbar 下方 flex 居中宿主 */
+.admin-canvas-wrap {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 设计坐标系画布：1280×720——浅灰 8% 网格（rgba(0,0,0,0.04)）——卡片 absolute 百分比；
+   JS inline transform: scale(min(视口/1280, 可用高/720)) 居中适配——transform-origin:center */
+.admin-canvas {
+  flex-shrink: 0;
+  width: 1280px;
+  height: 720px;
+  transform-origin: center;
+  background-color: #FFFFFF;
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
+  background-size: 8% 8%;
+}
+
+/* 画布内卡片：复用 .cw-card 白底灰边样式——可拖拽 */
+.admin-canvas .cw-card {
+  cursor: grab;
+  touch-action: none; /* 触屏拖拽不触发滚动 */
+}
+.admin-canvas .cw-card:hover {
+  background: #FFFFFF; /* 管理端 hover 不变色——选中态才高亮 */
+}
+.admin-canvas .cw-card.selected {
+  border: 2px solid #A1A1AA; /* 选中卡：灰阶边框 2px */
+  cursor: grabbing;
+  z-index: 2;
+}
+
+/* 缩放手柄（仅选中卡渲染）：右下角 12px 灰阶小方块 */
+.admin-canvas .card-resize {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 12px;
+  height: 12px;
+  cursor: nwse-resize;
+  touch-action: none;
+  z-index: 3;
+  background: #A1A1AA;
+  border: 1px solid #FFFFFF;
+}
+
+/* 属性面板（左下角浮动——白底灰边圆角）：选中卡标题/URL 实时编辑 */
+.admin-props {
+  position: fixed;
+  left: 1rem;
+  bottom: 1rem;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 260px;
+  padding: 0.9rem 1rem;
+  border: 1px solid #E4E4E7;
+  border-radius: 12px;
+  background: #FFFFFF;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+}
+.admin-props label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.72rem;
+  color: #A1A1AA;
+}
+.admin-props input {
+  border: 1px solid #E4E4E7;
+  border-radius: 8px;
+  padding: 0.4rem 0.55rem;
+  font-size: 0.82rem;
+  color: #111111;
+  background: #FFFFFF;
+  outline: none;
+}
+.admin-props input:focus {
+  border-color: #A1A1AA;
+}
+.admin-props-actions {
+  display: flex;
+  gap: 0.4rem;
+  margin-top: 0.2rem;
+}
+
+/* 提示条（导出复制结果——黑底白字 toast，居中底部） */
+.admin-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 2rem;
+  transform: translateX(-50%);
+  z-index: 4;
+  padding: 0.55rem 1.1rem;
+  border-radius: 10px;
+  background: #111111;
+  color: #FFFFFF;
+  font-size: 0.82rem;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.16);
+  max-width: 90vw;
+  text-align: center;
 }
