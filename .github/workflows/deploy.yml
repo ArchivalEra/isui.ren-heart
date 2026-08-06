@@ -27,11 +27,18 @@ jobs:
         with:
           node-version: 22
 
-      - name: Install wasm-bindgen
+      - name: Install wasm-bindgen (prebuilt release)
         run: |
+          # Cargo.toml 是宽松版本（"0.2"）——cargo install --version 匹配失败
+          # （deploy failed 真凶）——改从 Cargo.lock 读精确版本 + 官方预编译
+          # release 二进制直下（秒级——不用 cargo install 编译 10 分钟）
           cd web-rust
-          WASM_BINDGEN=$(grep -oP 'wasm-bindgen = "\K[0-9.]+' Cargo.toml | head -1)
-          cargo install wasm-bindgen-cli --version "$WASM_BINDGEN" --locked
+          VERSION=$(grep -A1 'name = "wasm-bindgen"' Cargo.lock | grep '^version' | grep -oP '"\K[0-9.]+')
+          echo "wasm-bindgen-cli: $VERSION"
+          curl -sL "https://github.com/rustwasm/wasm-bindgen/releases/download/${VERSION}/wasm-bindgen-${VERSION}-x86_64-unknown-linux-musl.tar.gz" -o wb.tar.gz
+          tar xzf wb.tar.gz
+          mv "wasm-bindgen-${VERSION}-x86_64-unknown-linux-musl/wasm-bindgen" ~/.cargo/bin/
+          wasm-bindgen --version
 
       - name: Build wasm + frontend
         run: |
