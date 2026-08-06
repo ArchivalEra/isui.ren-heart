@@ -6,6 +6,12 @@
 # 好后把 dist 推给 deploy 分支，两个平台只做静态部署（构建命令留空）。
 name: deploy
 
+# ⚠️ GITHUB_TOKEN 写权限：除本声明外，仓库 Settings → Actions → General
+# → Workflow permissions 必须为「Read and write permissions」——新仓库
+# 默认只读会导致 push deploy 分支失败（deploy failed 第三真凶）
+permissions:
+  contents: write
+
 on:
   push:
     branches: [main]
@@ -56,4 +62,4 @@ jobs:
           cp -r web-ui/dist/* .
           git add -A
           git commit -m "deploy: $(date -u +%Y-%m-%dT%H:%M:%SZ) from main $(git rev-parse main)"
-          git push origin deploy --force
+          git push origin deploy --force 2>&1 || { echo "PUSH_FAILED——检查 GITHUB_TOKEN 权限（仓库 Settings→Actions→Workflow permissions→Read and write）"; exit 1; }
