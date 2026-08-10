@@ -8,7 +8,7 @@
 //   零依赖；ResizeObserver 兜底卡片宽度变化）
 // 数据：public/config.json { sites: [{ title, url, desc, icon }] }——fetch 2s
 // 超时 fallback 内置三站
-import { useEffect, useRef } from "preact/hooks";
+import { useEffect, useRef, useState } from "preact/hooks";
 import type { JSX } from "preact";
 
 interface Site {
