@@ -5,7 +5,6 @@ import { useEffect, useRef, useState } from "preact/hooks";
 import BallsCanvas from "./BallsCanvas";
 import CardWall from "./CardWall";
 import ScrollHint from "./ScrollHint";
-import LogoDebug from "./LogoDebug";
 import Typewriter from "./Typewriter";
 import * as wasm from "./wasm/isui_ren_heart.js";
 
@@ -281,23 +280,28 @@ export default function Heart() {
       </div>
       {/* 窗口外控件：两屏共用（position: fixed） */}
       <TrailToggle />
-      <LogoDebug />
     </div>
   );
 }
 
-/** 拖尾风格切换（大/小）——调用 wasm 导出 */
+/** 拖尾风格切换（大/小）——无字幽灵按钮（用户钦定视觉）：
+ *  默认只有左+下的朦胧灰阶；hover 慢慢浮起微左上；点击方形灰波纹扩散
+ *  生效；active 显色（三球粉——设计一部分） */
 function TrailToggle() {
-  const [mini, setMini] = useState(false);
+  const [active, setActive] = useState(false);
+  const [ripple, setRipple] = useState(0);
   return (
     <button
-      class="trail-toggle"
+      type="button"
+      class={`trail-toggle${active ? " active" : ""}`}
+      aria-label="切换拖尾风格"
       onClick={() => {
         wasm.toggle_trail_style();
-        setMini(!mini);
+        setActive(!active);
+        setRipple((r) => r + 1);
       }}
     >
-      {mini ? "拖尾：小" : "拖尾：大"}
+      {ripple > 0 && <span key={ripple} class="trail-toggle-ripple" />}
     </button>
   );
 }
