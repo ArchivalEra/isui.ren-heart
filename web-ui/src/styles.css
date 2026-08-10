@@ -493,8 +493,11 @@ body {
   padding: max(6vh, 2.5rem) 2rem max(8vh, 3rem);
   transform: none;
   transform-origin: unset;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  /* flex wrap 混合排版（浏览器原生——零依赖现成排版）：
+     完整卡 flex: 1 1 280px 伸展填满；icon-only 卡 flex: 0 0 auto
+     贴合图标比例（图标多大卡片就多大） */
+  display: flex;
+  flex-wrap: wrap;
   gap: 1.4rem;
   z-index: auto;
   opacity: 1;
@@ -504,6 +507,8 @@ body {
 
 /* 大卡（CardWall 渲染 .wall-card——类名契约——白底细边框圆角，无阴影/极浅） */
 .screen2-card-wall .wall-card {
+  flex: 1 1 280px;
+  min-width: 280px;
   padding: 1.6rem 1.7rem;
   border-radius: var(--shape-lg);
   background: var(--surface);
@@ -549,15 +554,20 @@ body {
   transform: translateX(3px);
 }
 
-/* 仅图标卡片（config 只有 icon 无文字）：图标居中放大 */
+/* 仅图标卡片（config 只有 icon 无文字）：贴合图标比例的小方卡——
+   flex: 0 0 auto 宽度由内容撑开 + aspect-ratio 1/1 成正方形
+   （图标多大卡片就多大——用户钦定） */
 .screen2-card-wall .icon-only {
+  flex: 0 0 auto;
+  width: fit-content;
+  aspect-ratio: 1 / 1;
+  align-items: center;
   justify-content: center;
-  min-height: 5.5rem;
-  padding: 1.3rem;
+  padding: 1.2rem;
+  min-width: 0;
 }
 .screen2-card-wall .icon-only .cw-icon {
   min-width: 0;
-  font-size: 2.2rem;
 }
 
 /* 幽灵占位卡：虚线灰边透明底（非链接——凑满网格、暗示更多内容） */
@@ -697,9 +707,12 @@ body {
     grid-template-columns: 1fr;
   }
   .screen2-card-wall {
-    grid-template-columns: 1fr;
     padding: max(4vh, 1.5rem) 1.2rem max(6vh, 2rem);
     gap: 1rem;
+  }
+  .screen2-card-wall .wall-card {
+    flex-basis: 100%;
+    min-width: 0;
   }
   .home-page {
     padding: 1rem 0.8rem 2.5rem;
