@@ -1,12 +1,14 @@
 // 屏 2 卡片墙：config.json 驱动 + 自动网格排版
-// 容器契约：.card-wall.screen2-card-wall（Heart 放置）——网格布局 auto-fill
+// 容器契约：.card-wall.screen2-card-wall（Heart 放置）——flex wrap 混合排版
 // 兼容模式（用户钦定）：字段全可选——
 //   · 有 url 即成为可点完整卡片
 //   · icon/desc 缺省不渲染（不做 fallback 方块/域名）
-//   · 光图标无文字 → .icon-only 居中大图标；无图标光文字 → 纯文字卡片
+//   · 光图标无文字 → .icon-only 贴合图标比例小方卡；无图标光文字 → 纯文字卡片
+// FitText（用户钦定：不要省略号——文字放不下就缩小字号，JS 测量二分，
+//   零依赖；ResizeObserver 兜底卡片宽度变化）
 // 数据：public/config.json { sites: [{ title, url, desc, icon }] }——fetch 2s
 // 超时 fallback 内置三站
-import { useEffect, useState } from "preact/hooks";
+import { useEffect, useRef } from "preact/hooks";
 import type { JSX } from "preact";
 
 interface Site {
@@ -21,6 +23,50 @@ const FALLBACK: Site[] = [
   { title: "YouTube", url: "https://youtube.com", desc: "视频与音乐", icon: "▶" },
   { title: "官方网站", url: "https://tayori-official.com", desc: "官网", icon: "◎" },
 ];
+
+/** 字号自适应：放不下就逐步缩小（下限 62%），绝不省略号 */
+function FitText({
+  className,
+  children,
+}: {
+  className: string;
+  children?: JSX.Element | string;
+}): JSX.Element {
+  const ref = useRef<HTMLSpanElement>(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const fit = () => {
+      if (!el.isConnected) return;
+      el.style.fontSize = "";
+      const base = parseFloat(getComputedStyle(el).fontSize) || 16;
+      let s = base;
+      while (s > base * 0.62) {
+        el.style.fontSize = s + "px";
+        if (
+          el.scrollWidth <= el.clientWidth + 1 &&
+          el.scrollHeight <= el.clientHeight + 1
+        ) {
+          break;
+        }
+        s *= 0.92;
+      }
+    };
+    fit();
+    const ro = new ResizeObserver(fit);
+    ro.observe(el);
+    window.addEventListener("resize", fit);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", fit);
+    };
+  }, [children]);
+  return (
+    <span ref={ref} class={className}>
+      {children}
+    </span>
+  );
+}
 
 export default function CardWall(
   _props: { open?: boolean; onToggle?: (v: boolean) => void },
@@ -71,8 +117,12 @@ export default function CardWall(
             )}
             {(hasTitle || hasDesc) && (
               <span class="card-body">
-                {hasTitle && <span class="card-title">{site.title}</span>}
-                {hasDesc && <span class="card-desc">{site.desc}</span>}
+                {hasTitle && (
+                  <FitText className="card-title">{site.title}</FitText>
+                )}
+                {hasDesc && (
+                  <FitText className="card-desc">{site.desc}</FitText>
+                )}
               </span>
             )}
             {!onlyIcon && (

@@ -528,6 +528,16 @@ body {
   transform: scale(0.99);
 }
 
+/* 文字自动收缩（用户钦定：不要省略号——放不下就缩小字号）：
+   nowrap + overflow hidden 防换行/溢出撑破卡片；字号缩小由
+   CardWall 的 FitText 组件（JS 测量二分）处理 */
+.screen2-card-wall .card-title,
+.screen2-card-wall .card-desc {
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 100%;
+}
+
 /* 图标：无底片裸图标（用户钦定——去掉灰色方底片，与卡片融合）；
    icon 缺省不渲染（不做首字母 fallback） */
 .screen2-card-wall .cw-icon {
