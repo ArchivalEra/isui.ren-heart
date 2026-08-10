@@ -523,20 +523,18 @@ body {
   transform: scale(0.99);
 }
 
-/* 图标方块：灰阶圆角（surface-container 底 + outline 边）——icon 缺省首字母 */
+/* 图标：无底片裸图标（用户钦定——去掉灰色方底片，与卡片融合）；
+   icon 缺省不渲染（不做首字母 fallback） */
 .screen2-card-wall .cw-icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 2.9rem;
-  height: 2.9rem;
   flex-shrink: 0;
-  border-radius: var(--shape-sm);
-  background: var(--surface-container);
-  border: 1px solid var(--outline);
-  color: var(--on-surface-variant);
-  font-size: 1.1rem;
+  min-width: 2.4rem;
+  color: var(--on-surface);
+  font-size: 1.5rem;
   font-weight: 600;
+  line-height: 1;
 }
 
 /* 箭头：右侧淡灰——hover 变深 + 微移 */
@@ -549,6 +547,17 @@ body {
 .screen2-card-wall .wall-card:hover .card-arrow {
   color: var(--on-surface);
   transform: translateX(3px);
+}
+
+/* 仅图标卡片（config 只有 icon 无文字）：图标居中放大 */
+.screen2-card-wall .icon-only {
+  justify-content: center;
+  min-height: 5.5rem;
+  padding: 1.3rem;
+}
+.screen2-card-wall .icon-only .cw-icon {
+  min-width: 0;
+  font-size: 2.2rem;
 }
 
 /* 幽灵占位卡：虚线灰边透明底（非链接——凑满网格、暗示更多内容） */
@@ -565,8 +574,6 @@ body {
   box-shadow: none;
 }
 .screen2-card-wall .placeholder .cw-icon {
-  background: transparent;
-  border-style: dashed;
   color: var(--outline-variant);
 }
 
