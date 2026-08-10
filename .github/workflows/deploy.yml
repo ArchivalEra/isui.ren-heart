@@ -1,9 +1,10 @@
 # 一键部署：推 main → GitHub Actions 构建 wasm+dist → 推 deploy 分支
-# → EdgeOne Makers + Cloudflare Pages 自动拉取 deploy 分支部署（零构建）
+# → EdgeOne Makers 自动拉取 deploy 分支部署（零构建）
 #
-# 为什么用 deploy 分支：wasm 构建需要 Rust/cargo——EdgeOne Makers 与
-# CF Pages 的构建环境大概率没有 Rust——Actions（ubuntu 自带 cargo）构建
-# 好后把 dist 推给 deploy 分支，两个平台只做静态部署（构建命令留空）。
+# 为什么用 deploy 分支：wasm 构建需要 Rust/cargo——EdgeOne Makers 的
+# 构建环境没有 Rust——Actions（ubuntu 自带 cargo）构建好后把 dist 推给
+# deploy 分支，Makers 只做静态部署（构建命令留空）。
+# ⚠️ 已弃 Cloudflare（全迁 EdgeOne）——不再生成 wrangler.toml/package.json。
 name: deploy
 
 # ⚠️ GITHUB_TOKEN 写权限：除本声明外，仓库 Settings → Actions → General
@@ -66,13 +67,6 @@ jobs:
           git rm -rf . --quiet 2>/dev/null || true
           find . -mindepth 1 -maxdepth 1 ! -name '.git' -exec rm -rf {} +
           cp -r /tmp/deploy-out/. .
-          # CF Pages 新版用 wrangler deploy——显式配置（否则 auto-config
-          # 用默认 npx hugo/public 交互询问 → 非交互 fallback no → 部署错乱）
-          # ⚠️ heredoc 内容在 YAML 块标量里必须缩进但 EOF 必须行首——矛盾
-          # 导致 ScannerError（deploy failed：GitHub 解析失败 jobs 空）——
-          # 改用 printf 逐行写（YAML 安全）
-          printf '%s\n' 'name = "isui-ren-heart"' 'compatibility_date = "2024-11-01"' '' '[assets]' 'directory = "./"' 'not_found_handling = "single-page-application"' > wrangler.toml
-          echo '{}' > package.json
           git add -A
           git commit -m "deploy: $(date -u +%Y-%m-%dT%H:%M:%SZ) from main $(git rev-parse main)"
           git push origin deploy --force 2>&1 || { echo "PUSH_FAILED——检查 GITHUB_TOKEN 权限（仓库 Settings→Actions→Workflow permissions→Read and write）"; exit 1; }
