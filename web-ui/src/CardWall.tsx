@@ -1,14 +1,17 @@
-// 屏 2 卡片墙（最终形态）：config.json 驱动 + 自动网格排版
-// 容器契约：.card-wall.screen2-card-wall（Heart 放置）——.screen2-card-wall 负责
-// 网格布局（auto-fill minmax——数量自适应）；卡片 .wall-card（白底细边圆角大卡）
+// 屏 2 卡片墙：config.json 驱动 + 自动网格排版
+// 容器契约：.card-wall.screen2-card-wall（Heart 放置）——网格布局 auto-fill
+// 兼容模式（用户钦定）：字段全可选——
+//   · 有 url 即成为可点完整卡片
+//   · icon/desc 缺省不渲染（不做 fallback 方块/域名）
+//   · 光图标无文字 → .icon-only 居中大图标；无图标光文字 → 纯文字卡片
 // 数据：public/config.json { sites: [{ title, url, desc, icon }] }——fetch 2s
-// 超时 fallback 内置三站；icon 缺省取域名首字母（纯灰阶、零依赖、不联网取 favicon）
+// 超时 fallback 内置三站
 import { useEffect, useState } from "preact/hooks";
 import type { JSX } from "preact";
 
 interface Site {
-  title: string;
-  url: string;
+  title?: string;
+  url?: string;
   desc?: string;
   icon?: string;
 }
@@ -18,22 +21,6 @@ const FALLBACK: Site[] = [
   { title: "YouTube", url: "https://youtube.com", desc: "视频与音乐", icon: "▶" },
   { title: "官方网站", url: "https://tayori-official.com", desc: "官网", icon: "◎" },
 ];
-
-/** icon 缺省 → 域名首字母（灰阶方块——不联网） */
-function iconFor(site: Site): string {
-  if (site.icon) return site.icon;
-  const host = (site.url || "").replace(/^https?:\/\//, "").split("/")[0];
-  return (host && host[0] ? host[0] : "?").toUpperCase();
-}
-
-/** desc 缺省 → 域名（去 www） */
-function descFor(site: Site): string {
-  if (site.desc) return site.desc;
-  return (site.url || "")
-    .replace(/^https?:\/\//, "")
-    .replace(/^www\./, "")
-    .split("/")[0];
-}
 
 export default function CardWall(
   _props: { open?: boolean; onToggle?: (v: boolean) => void },
@@ -62,24 +49,38 @@ export default function CardWall(
 
   return (
     <>
-      {sites.map((site) => (
-        <a
-          class="wall-card card card-lg"
-          href={site.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          key={site.url || site.title}
-        >
-          <span class="cw-icon" aria-hidden="true">
-            {iconFor(site)}
-          </span>
-          <span class="card-body">
-            <span class="card-title">{site.title}</span>
-            <span class="card-desc">{descFor(site)}</span>
-          </span>
-          <span class="card-arrow" aria-hidden="true">→</span>
-        </a>
-      ))}
+      {sites.map((site) => {
+        const hasIcon = !!site.icon;
+        const hasTitle = !!site.title;
+        const hasDesc = !!site.desc;
+        const onlyIcon = hasIcon && !hasTitle && !hasDesc;
+        const cls = ["wall-card", "card", "card-lg"];
+        if (onlyIcon) cls.push("icon-only");
+        return (
+          <a
+            class={cls.join(" ")}
+            href={site.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            key={site.url || site.title || site.icon}
+          >
+            {hasIcon && (
+              <span class="cw-icon" aria-hidden="true">
+                {site.icon}
+              </span>
+            )}
+            {(hasTitle || hasDesc) && (
+              <span class="card-body">
+                {hasTitle && <span class="card-title">{site.title}</span>}
+                {hasDesc && <span class="card-desc">{site.desc}</span>}
+              </span>
+            )}
+            {!onlyIcon && (
+              <span class="card-arrow" aria-hidden="true">→</span>
+            )}
+          </a>
+        );
+      })}
       {/* 幽灵占位卡：非链接——凑满网格、暗示更多内容（设计元素，永远存在） */}
       <div class="wall-card placeholder" aria-hidden="true">
         <span class="cw-icon">＋</span>
