@@ -1,0 +1,7 @@
+{
+  "sites": [
+    { "title": "X (Twitter)", "url": "https://x.com", "desc": "乐队动态", "icon": "𝕏" },
+    { "title": "YouTube", "url": "https://youtube.com", "desc": "视频与音乐", "icon": "▶" },
+    { "title": "官方网站", "url": "https://tayori-official.com", "desc": "官网", "icon": "◎" }
+  ]
+}

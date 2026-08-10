@@ -96,7 +96,18 @@ body {
   position: relative;
   height: 100vh;
   overflow-y: auto; /* 屏 2 卡片区原生滚动——顶端向上滚才切回屏 1 */
-  background: var(--surface);
+  /* ⚠️ 与 .heart-bg 同款渐变灰（曾纯平色——翻页时两屏背景断层——
+     用户钦定：同一灰色背景） */
+  background:
+    radial-gradient(120% 90% at 15% 10%, var(--surface) 0%, var(--surface-dim) 45%, var(--surface-variant) 100%),
+    linear-gradient(180deg, var(--surface) 0%, var(--surface-variant) 100%);
+  /* ⚠️ 关键：background-attachment: fixed——背景钉在视口，与屏 1 的 .heart-bg
+     （absolute inset 0，同样视口定位）是同一块灰度图层——滚动时不露 body 白底、
+     翻页瞬间两屏背景像素级一致。iOS Safari 不支持 fixed 时退化为 scroll（不更差） */
+  background-attachment: fixed;
+  box-shadow:
+    inset 0 0 120px var(--state-hover),
+    inset 0 0 40px rgba(17, 17, 17, 0.06);
 }
 
 /* ── 窗口舞台：logo + 三球 canvas 固定在同一容器（无边框窗口——设计尺寸 1280×720）──
@@ -512,6 +523,53 @@ body {
   transform: scale(0.99);
 }
 
+/* 图标方块：灰阶圆角（surface-container 底 + outline 边）——icon 缺省首字母 */
+.screen2-card-wall .cw-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.9rem;
+  height: 2.9rem;
+  flex-shrink: 0;
+  border-radius: var(--shape-sm);
+  background: var(--surface-container);
+  border: 1px solid var(--outline);
+  color: var(--on-surface-variant);
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+/* 箭头：右侧淡灰——hover 变深 + 微移 */
+.screen2-card-wall .card-arrow {
+  margin-left: auto;
+  color: var(--outline-variant);
+  font-size: 1.1rem;
+  transition: color 0.2s, transform 0.2s;
+}
+.screen2-card-wall .wall-card:hover .card-arrow {
+  color: var(--on-surface);
+  transform: translateX(3px);
+}
+
+/* 幽灵占位卡：虚线灰边透明底（非链接——凑满网格、暗示更多内容） */
+.screen2-card-wall .placeholder {
+  border-style: dashed;
+  background: transparent;
+  box-shadow: none;
+  color: var(--outline-variant);
+  cursor: default;
+}
+.screen2-card-wall .placeholder:hover {
+  background: transparent;
+  transform: none;
+  box-shadow: none;
+}
+.screen2-card-wall .placeholder .cw-icon {
+  background: transparent;
+  border-style: dashed;
+  color: var(--outline-variant);
+}
+
 /* ---------- /home ---------- */
 .home-page {
   max-width: 880px;
@@ -631,6 +689,11 @@ body {
   .card-grid {
     grid-template-columns: 1fr;
   }
+  .screen2-card-wall {
+    grid-template-columns: 1fr;
+    padding: max(4vh, 1.5rem) 1.2rem max(6vh, 2rem);
+    gap: 1rem;
+  }
   .home-page {
     padding: 1rem 0.8rem 2.5rem;
   }
@@ -648,17 +711,81 @@ body {
 
 /* 拖尾切换按钮（原 balls.rs 内联创建 → CSS class） */
 .trail-toggle {
+  /* 无字幽灵按钮（用户钦定）：默认只有左+下的朦胧灰阶（本体几乎不可见）——
+     hover 慢慢浮起微左上；点击方形波纹扩散生效；hover/active 用 inset
+     内部灰阶渗入表达（不要黑边——用户钦定：灰阶渗入） */
   position: fixed;
-  right: 16px;
-  bottom: 16px;
-  z-index: 9999;
-  padding: 6px 14px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.85);
-  color: var(--on-surface);
+  right: 26px;
+  bottom: 26px;
+  width: 52px;
+  height: 40px;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  opacity: 0.55;
+  /* 左+下朦胧灰阶（唯一可见） */
+  box-shadow:
+    -3px 3px 8px rgba(0, 0, 0, 0.06),
+    -7px 7px 18px rgba(0, 0, 0, 0.04);
   cursor: pointer;
-  font-size: 12px;
+  padding: 0;
+  transition:
+    transform 0.4s cubic-bezier(0.2, 0, 0, 1),
+    opacity 0.4s ease,
+    box-shadow 0.4s ease;
+}
+.trail-toggle:hover {
+  /* 慢慢从右下浮起到微微左上——灰阶从内部边缘渗入（inset） */
+  transform: translate(-8px, -8px);
+  opacity: 1;
+  box-shadow:
+    -1px 1px 6px rgba(0, 0, 0, 0.08),
+    -4px 4px 14px rgba(0, 0, 0, 0.05),
+    inset 0 0 0 1px rgba(0, 0, 0, 0.07),
+    inset 0 0 12px rgba(0, 0, 0, 0.045);
+}
+.trail-toggle.active {
+  /* 显色 = 深灰渗入更深（灰阶内显色——铁律） */
+  box-shadow:
+    -1px 1px 6px rgba(0, 0, 0, 0.14),
+    -4px 4px 14px rgba(0, 0, 0, 0.1),
+    inset 0 0 0 1px rgba(0, 0, 0, 0.13),
+    inset 0 0 16px rgba(0, 0, 0, 0.08);
+}
+.trail-toggle.active:hover {
+  box-shadow:
+    -1px 1px 6px rgba(0, 0, 0, 0.16),
+    -4px 4px 14px rgba(0, 0, 0, 0.12),
+    inset 0 0 0 1px rgba(0, 0, 0, 0.18),
+    inset 0 0 18px rgba(0, 0, 0, 0.1);
+}
+/* 点击方形波纹（从按钮周围扩散——用户钦定：三色渐变——粉→蓝→绿
+ * 三球彩色系——设计的一部分——非 UI 彩色） */
+.trail-toggle-ripple {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 40px;
+  height: 32px;
+  transform: translate(-50%, -50%) scale(0.2);
+  border: 2px solid transparent;
+  /* 渐变边框技巧：padding-box 白底（内部透明感）+ border-box 三色渐变 */
+  background:
+    linear-gradient(#ffffff, #ffffff) padding-box,
+    linear-gradient(135deg, #f472b6, #38bdf8, #4ade80) border-box;
+  border-radius: 3px;
+  animation: trail-ripple 0.6s cubic-bezier(0.2, 0, 0, 1) forwards;
+  pointer-events: none;
+}
+@keyframes trail-ripple {
+  0% {
+    transform: translate(-50%, -50%) scale(0.2);
+    opacity: 0.7;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(2.4);
+    opacity: 0;
+  }
 }
 
 /* ---------- 打字机文字淡出（卡片墙展开时，站主钦点不做粉碎） ---------- */
@@ -705,69 +832,6 @@ body {
 }
 
 /* ── logo 调试器（人眼校准——拖拽/缩放/复制参数）── */
-.logo-debug-btn {
-  position: fixed;
-  left: 16px;
-  bottom: 16px;
-  z-index: 9999;
-  padding: 6px 14px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.85);
-  color: var(--on-surface);
-  cursor: pointer;
-  font-size: 12px;
-}
-
-.logo-debug-panel {
-  position: fixed;
-  left: 16px;
-  bottom: 16px;
-  z-index: 9999;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  padding: 10px 12px;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.92);
-  font-size: 11px;
-}
-
-.logo-debug-hint {
-  font-size: 10px;
-  color: #888;
-  user-select: none;
-}
-
-.logo-debug-params {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  font-family: ui-monospace, monospace;
-  color: #444;
-}
-
-.logo-debug-copy,
-.logo-debug-exit {
-  padding: 4px 10px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  background: #fff;
-  color: var(--on-surface);
-  cursor: pointer;
-  font-size: 12px;
-}
-
-.logo-debug-copy:hover {
-  background: #f5f5f5;
-}
-
-.logo-debug-exit {
-  border-color: #e0c0c0;
-  color: #a05050;
-}
-
 /* 调试模式：logo 可拖拽（原 pointer-events: none——调试时放开） */
 .heart-logo.debug-grab {
   pointer-events: auto;
