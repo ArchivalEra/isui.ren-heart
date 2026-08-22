@@ -60,10 +60,13 @@ jobs:
           # Preserve Bahnhof/ from the existing deploy branch — this job
           # owns the root, not Bahnhof. heart pushes no longer pay the blog
           # cost, and blog pushes no longer get wiped by the next heart build.
-          git fetch origin deploy:refs/remotes/origin/deploy 2>/dev/null || true
+          # NOTE: archive must run against the FETCHED local ref — GitHub
+          # does not support `git archive --remote`, and swallowing that
+          # failure once wiped Bahnhof/ off deploy (2026-08-22).
+          git fetch origin deploy:refs/remotes/origin/deploy
           rm -rf /tmp/keep-bahnhof
-          if git ls-remote --exit-code origin refs/heads/deploy >/dev/null 2>&1; then
-            git archive --remote=origin deploy -- Bahnhof 2>/dev/null | tar -x -C /tmp 2>/dev/null || true
+          if git cat-file -e refs/remotes/origin/deploy 2>/dev/null; then
+            git archive refs/remotes/origin/deploy -- Bahnhof | tar -x -C /tmp
             if [ -d /tmp/Bahnhof ]; then
               mkdir -p /tmp/keep-bahnhof
               mv /tmp/Bahnhof /tmp/keep-bahnhof/Bahnhof
