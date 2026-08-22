@@ -4,10 +4,10 @@
 # 为什么用 deploy 分支：wasm 构建需要 Rust/cargo——EdgeOne Makers 的
 # 构建环境没有 Rust——Actions（ubuntu 自带 cargo）构建好后把 dist 推给
 # deploy 分支，Makers 只做静态部署（构建命令留空）。
-# ⚠️ 已弃 Cloudflare（全迁 EdgeOne）——不再生成 wrangler.toml/package.json。
+# WARNING: 已弃 Cloudflare（全迁 EdgeOne）——不再生成 wrangler.toml/package.json。
 name: deploy
 
-# ⚠️ GITHUB_TOKEN 写权限：除本声明外，仓库 Settings → Actions → General
+# WARNING: GITHUB_TOKEN 写权限：除本声明外，仓库 Settings → Actions → General
 # → Workflow permissions 必须为「Read and write permissions」——新仓库
 # 默认只读会导致 push deploy 分支失败（deploy failed 第三真凶）
 permissions:

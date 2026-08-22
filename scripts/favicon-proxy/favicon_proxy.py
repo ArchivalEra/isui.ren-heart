@@ -17,7 +17,7 @@ favicon_proxy.py —— 零依赖 favicon 白手套代理（VPS 侧）
     python3 favicon_proxy.py              # 默认监听 0.0.0.0:8787
     PORT=9000 python3 favicon_proxy.py    # env PORT 覆盖端口
 
-⚠️⚠️ 安全红线（SSRF 防护，禁止移除/绕过）⚠️⚠️
+WARNING: WARNING: 安全红线（SSRF 防护，禁止移除/绕过）WARNING: WARNING: 
     本服务会代表用户去抓取任意域名，必须对目标做 SSRF 检查：
       · _validate_url        —— URL 形状检查（scheme / 端口 / userinfo / hostname）
       · _resolve_and_check   —— DNS 解析后逐 IP 检查（内网/环回/链路本地/保留/组播/CGNAT 全拒）
@@ -109,7 +109,7 @@ class FetchError(Exception):
     """上游抓取失败（超时/连接失败/非图片/HTTP 错误等）。"""
 
 
-# ---------------------------------------------------------------- ⚠️ SSRF 防护
+# ---------------------------------------------------------------- WARNING: SSRF 防护
 
 def _ip_is_unsafe(ip):
     """判定 IP 是否不可作为回源目标（SSRF 黑名单）。
@@ -135,7 +135,7 @@ def _ip_is_unsafe(ip):
 def _resolve_and_check(host):
     """解析 host 的全部 A/AAAA 记录并逐一做 SSRF 检查。
 
-    ⚠️ 保守策略：任一解析结果 IP 不安全 → 整体拒绝（防止多地址混用绕过校验）。
+    WARNING: 保守策略：任一解析结果 IP 不安全 → 整体拒绝（防止多地址混用绕过校验）。
     """
     try:
         infos = socket.getaddrinfo(host, None)
@@ -161,7 +161,7 @@ def _resolve_and_check(host):
 def _validate_url(raw):
     """校验并规范化目标 URL。
 
-    ⚠️ SSRF 防护核心入口：scheme 仅 http/https；拒绝 userinfo（user:pass@）；
+    WARNING: SSRF 防护核心入口：scheme 仅 http/https；拒绝 userinfo（user:pass@）；
     端口仅 80/443；hostname 必填；随后 DNS 解析逐 IP 检查。违规抛 ProxyError。
     """
     url = (raw or "").strip()
@@ -198,7 +198,7 @@ def _validate_url(raw):
     if not re.fullmatch(r"[A-Za-z0-9.\-:]+", host):  # 域名或 IPv6 字面量
         raise ProxyError(400, "invalid hostname")
 
-    ips = _resolve_and_check(host)          # ⚠️ SSRF：逐 IP 校验
+    ips = _resolve_and_check(host)          # WARNING: SSRF：逐 IP 校验
     return scheme, host, port, ips
 
 
@@ -443,7 +443,7 @@ class Handler(BaseHTTPRequestHandler):
 
         raw_url = (urllib.parse.parse_qs(parts.query).get("url") or [""])[0].strip()
         try:
-            scheme, host, _port, _ips = _validate_url(raw_url)   # ⚠️ SSRF
+            scheme, host, _port, _ips = _validate_url(raw_url)   # WARNING: SSRF
         except ProxyError as e:
             self._send_json(e.status, {"error": e.message})
             self._access_log(e.status, 0, f"url={raw_url[:120]!r} reason={e.message}")

@@ -4,7 +4,7 @@
 > （高 DPR 屏 / 低端 GPU）上可感知帧率波动、发热。
 > 本报告 = 渲染管线现状 + 可疑热点 + **Gemini 可操作参数清单** + 验证方法，
 > 供渲染层优化参考。
-> ⚠️ 运动数学「顿顿」问题已由 docs/stutter-report.md 覆盖（已排除渲染层）；
+> WARNING: 运动数学「顿顿」问题已由 docs/stutter-report.md 覆盖（已排除渲染层）；
 > 本报告只谈**渲染层绘制开销**，两者正交。
 
 ---
@@ -111,7 +111,7 @@ history 采样     // 每球 push 位置历史（上限 8 点，世界坐标）
 - 已集中但非性能参数（记录不动）：`BALL_RADIUS`=10.0（球基础半径）、
   `TRAIL_MAX_SEG`=0.12（拖尾间距截断）。
 
-## 5. 参数接线状态（⚠️ 重要）
+## 5. 参数接线状态（WARNING: 重要）
 
 - 本报告发布时：params.rs 已定义【Gemini 可操作区·渲染】全部常量，
   **数值 = engine.rs/trail.rs 现状字面量（纯搬家，零行为变化）**。
@@ -151,7 +151,7 @@ history 采样     // 每球 push 位置历史（上限 8 点，世界坐标）
 | draw Mini 下限 | `lw.max(0.5)` | `lw.max(TRAIL_MINI_MIN_WIDTH)` |
 | draw catmull 采样 | `for s in 0..4`（Solid/Mini 各 1 处） | `0..TRAIL_CATMULL_SEGMENTS` |
 
-- ⚠️ `TRAIL_SPEED_THRESHOLD`(0.02) 同时是 sim/state.rs `should_track` 的同一数值
+- WARNING: `TRAIL_SPEED_THRESHOLD`(0.02) 同时是 sim/state.rs `should_track` 的同一数值
   ——sim/ 属红线区，接线时不应改 state.rs，可保留字面量并注明与常量同值。
 
 ## 7. 验证方法

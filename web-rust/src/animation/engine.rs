@@ -191,7 +191,7 @@ impl BallsEngine {
         self.render();
         for s in 0..3 {
             let pos = self.ball_world_pos(s);
-            // ⚠️ 先算速度（基于上帧 prev_pos）再更新 prev_pos——
+            // WARNING: 先算速度（基于上帧 prev_pos）再更新 prev_pos——
             // 曾先更新后计算 → 差分恒 0 → 拖尾永远消失（真凶）
             let v = self.ball_velocity(s);
             self.prev_pos[s] = pos;

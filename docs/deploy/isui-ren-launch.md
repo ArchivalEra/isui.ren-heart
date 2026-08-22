@@ -2,7 +2,7 @@
 
 > 顺序（用户钦定）：① Oracle 对象存储（配置同步盘）→ ② cn 站（EdgeOne）
 > → ③ global 站（Cloudflare Pages）→ ④ 根域 @.isui.ren 泛分流（geo 分 cn/global + 302 /heart）
-> ⚠️ **只动 @.isui.ren 根域记录——其他子域名（cn./global. 等）保持现状**（之后另有他用）
+> WARNING: **只动 @.isui.ren 根域记录——其他子域名（cn./global. 等）保持现状**（之后另有他用）
 
 ## 目标拓扑
 
@@ -112,19 +112,19 @@ cd web-ui && ./build.sh   # 产物 dist/
 
 ### 3.2 EdgeOne Makers Direct Upload
 Makers → Create Project → **Upload directly** → 拖入 `dist/` → 绑定 `cn.isui.ren`
-> ⚠️ 文档明确：**选了上传方式的项目不能切 Git 集成**——要 Git 自动部署
+> WARNING: 文档明确：**选了上传方式的项目不能切 Git 集成**——要 Git 自动部署
 > 必须新建「Import Git Repository」项目
 
 ### 3.3 CF Pages Direct Upload
 Workers & Pages → Create → **Upload assets** → 拖入 `dist/` → 绑定 `global.isui.ren`
-> ⚠️ CF Pages 构建环境无 Rust——别用 Git 自动构建（除非接 deploy 分支——见第 2 节）
+> WARNING: CF Pages 构建环境无 Rust——别用 Git 自动构建（除非接 deploy 分支——见第 2 节）
 > 每次更新重新上传（强缓存见附录）
 
 ---
 
 ## 4. 根域 @.isui.ren 泛分流（geo 分 cn/global + 302 /heart）
 
-> ⚠️ **只动 @ 记录——其他子域名一概不碰**
+> WARNING: **只动 @ 记录——其他子域名一概不碰**
 
 ### 4.1 DNS 分线路解析（域名在腾讯中国 dnspod——分线路在 dnspod 配）
 ```
@@ -134,11 +134,11 @@ Workers & Pages → Create → **Upload assets** → 拖入 `dist/` → 绑定 `
 - **dnspod 免费版**：支持「境内/境外」分线（默认线路就有）——**够用**
   （按省份/运营商细分才要付费——我们只要境内/境外两档）
 - 没有分线路能力：退而求其次——`@` 直接 CNAME 到其中一个站（先全局走 cn 或 global）
-- ⚠️ DNS 记录在腾讯中国面板加（cn.isui.ren CNAME → EdgeOne、global CNAME → Pages
+- WARNING: DNS 记录在腾讯中国面板加（cn.isui.ren CNAME → EdgeOne、global CNAME → Pages
   ——跨平台正常：EdgeOne 是腾讯国际、DNS 是腾讯国内——互不冲突）
 
 ### 4.2 根域泛覆写 302（非 admin——路径保留）
-> ⚠️ 用户钦定：「重要的是我们要做到 302」——**别用「回源 302」**（会暴露目标 URL、
+> WARNING: 用户钦定：「重要的是我们要做到 302」——**别用「回源 302」**（会暴露目标 URL、
 > 地址栏变成百度那次事故）。要用 **CDN 重定向规则**。
 > 泛覆写：`/*`（**排除 /admin***）→ `302 对应域名同路径`——地址栏变 cn/global
 > 域名（前端 hostname 选段正好靠它生效——配置分层正确）。
@@ -158,7 +158,7 @@ Workers & Pages → Create → **Upload assets** → 拖入 `dist/` → 绑定 `
 
 ## 5. 总验证清单
 
-> ⚠️ **本仓库只有 `/heart` 一个页面**——管理页（/admin）是独立工具，
+> WARNING: **本仓库只有 `/heart` 一个页面**——管理页（/admin）是独立工具，
 > 不在本仓库上线（生产 /admin 走页面规则默认 * denied → 404 页；
 > 仅本地 localhost 可打开管理编辑器）。管理页以后在 cn.isui.ren/admin 独立部署。
 

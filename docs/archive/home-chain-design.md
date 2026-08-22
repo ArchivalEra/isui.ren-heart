@@ -1,6 +1,6 @@
 # 回家链段化契约（/heart 收尾）
 
-> ✅ **已完成**（/heart 收尾验收通过）——本文档作为本次收尾的契约存档保留。
+> [OK] **已完成**（/heart 收尾验收通过）——本文档作为本次收尾的契约存档保留。
 > 实现/运行态见 docs/agent-handoff.md（回家链段化 + 渲染可操作区说明）与
 > web-rust/src/config/params.rs【Gemini 可操作区·渲染】。
 

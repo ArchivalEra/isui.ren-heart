@@ -96,12 +96,12 @@ body {
   position: relative;
   height: 100vh;
   overflow-y: auto; /* 屏 2 卡片区原生滚动——顶端向上滚才切回屏 1 */
-  /* ⚠️ 与 .heart-bg 同款渐变灰（曾纯平色——翻页时两屏背景断层——
+  /* WARNING: 与 .heart-bg 同款渐变灰（曾纯平色——翻页时两屏背景断层——
      用户钦定：同一灰色背景） */
   background:
     radial-gradient(120% 90% at 15% 10%, var(--surface) 0%, var(--surface-dim) 45%, var(--surface-variant) 100%),
     linear-gradient(180deg, var(--surface) 0%, var(--surface-variant) 100%);
-  /* ⚠️ 关键：background-attachment: fixed——背景钉在视口，与屏 1 的 .heart-bg
+  /* WARNING: 关键：background-attachment: fixed——背景钉在视口，与屏 1 的 .heart-bg
      （absolute inset 0，同样视口定位）是同一块灰度图层——滚动时不露 body 白底、
      翻页瞬间两屏背景像素级一致。iOS Safari 不支持 fixed 时退化为 scroll（不更差） */
   background-attachment: fixed;

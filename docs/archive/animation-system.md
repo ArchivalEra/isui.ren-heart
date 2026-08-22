@@ -12,15 +12,15 @@
 ```
 web-rust/src/
 ├── lib.rs           入口；内联 mod app（App + 路由跳转）；mod config/sim（全平台）、mod animation/pages（仅 wasm32）
-├── app.rs           ⚠️ 死文件！lib.rs 用内联 `mod app {}`，src/app.rs 从未编译（内容重复）
+├── app.rs           WARNING: 死文件！lib.rs 用内联 `mod app {}`，src/app.rs 从未编译（内容重复）
 ├── config/
 │   ├── params.rs    全部调参常量（见 §4）—— 动画的「控制面板」
 │   └── templates.rs 14 个运动模板（见 §6）
-├── sim/             ⚠️ 纯逻辑层，可 cargo test（原生测试）
+├── sim/             WARNING: 纯逻辑层，可 cargo test（原生测试）
 │   ├── math.rs      Vec2/贝塞尔/样条/缓动/投影 —— 纯函数
 │   ├── planner.rs   核心：Player（弧长共享链 + PD spring）+ Phase 状态机定义
 │   └── mod.rs
-├── animation/       ⚠️ 仅 wasm32（依赖 web_sys）
+├── animation/       WARNING: 仅 wasm32（依赖 web_sys）
 │   ├── engine.rs    BallsEngine：渲染 + 状态机驱动（step）
 │   ├── balls.rs     组件：rAF 循环 + 调试面板（拖拽/键盘/模式/坐标复制）
 │   └── mod.rs
