@@ -4,10 +4,10 @@
 > 以下战场全部可独立操作，互不干扰。改完跑 `cd web-rust && cargo test`
 > + `cd web-ui && ./build.sh` 强刷目测即可；父代理负责验收集成。
 
-## 战场 1：🏠 回家动画预渲染（感叹号——最高优先）
+## 战场 1：回家动画预渲染（感叹号——最高优先）
 
 > **状态**：预渲染契约已定稿（docs/home-anim-design.md——并发子代理唯一契约）。
-> ⚠️ 当前代码仍为链段化基线（`sim/home.rs` 的 `plan_home_legs/HomeCtx` +
+> WARNING: 当前代码仍为链段化基线（`sim/home.rs` 的 `plan_home_legs/HomeCtx` +
 > `planner.rs` 的 `extend_home_chain`）；契约 B/C/D 实施 + 父代理集成
 > （契约 §7）落地后，以下描述生效——生效前别在 home.rs 找 `HomeAnim`。
 
@@ -32,7 +32,7 @@
   57——静态统计原生 55 + wasm 侧 trail.rs 3，实际以 `cargo test` 输出为准，
   **待集成确认**；契约实施后 home.rs 契约测试升级、总数再增）
 
-## 战场 2：⚡ 渲染性能（压力大——你判断的主要战场）
+## 战场 2：渲染性能（压力大——你判断的主要战场）
 
 - **文件**：`web-rust/src/config/params.rs`【Gemini 可操作区·渲染】（16 参数已集中）
 - **数据**：`docs/render-performance.md`（每帧成本热点：18 次链扫描 + 96 次
@@ -41,7 +41,7 @@
   clear 区域化、catmull 求值降频
 - **验证**：目测流畅度 + 浏览器 performance 面板（若可）
 
-### 📐 屏幕适配（Gemini 可调——活动圆 + 卡片墙）
+### 屏幕适配（Gemini 可调——活动圆 + 卡片墙）
 
 - **活动圆半径 = logo 中心到最近屏幕边缘**：engine.rs `sample_logo_bounds()`
   每 30 帧采样 `.heart-logo` 实际位置（getBoundingClientRect）→ 圆心 = logo
@@ -50,7 +50,7 @@
 - **`LOGO_BOUNDS_SCALE`**（`web-rust/src/config/params.rs`——Gemini 可调）：
   现值 **1.0**（用户钦定：活动圆不放大、圆与最近边相切）；调大 = 活动圆
   放大（满屏跑但 clamp 屏内）；伴生 `LOGO_BOUNDS_MIN_RADIUS` = 0.08（防退化）。
-  ⚠️ 接线状态：params.rs 已定 1.0，engine.rs 仍读字面量 `* 1.25`（见
+  WARNING: 接线状态：params.rs 已定 1.0，engine.rs 仍读字面量 `* 1.25`（见
   render-performance.md §5 接线清单）——**待集成确认**
 - **resize 自动适配**：无显式 resize 重建/监听——靠每 30 帧重采样 logo 实际
   位置，窗口 resize 后约 0.5s 内自动跟上；圆心/半径始终以 logo 实际位置
@@ -61,7 +61,7 @@
   （auto-fill minmax(240px, 1fr)）
 - **验证**：拖拽窗口 / 旋转设备 → 活动圆随 logo 位置自适应、卡片墙不溢出
 
-## 战场 3：🎭 三球性格差异化（灵魂深化——参数战场已就绪）
+## 战场 3：三球性格差异化（灵魂深化——参数战场已就绪）
 
 - **文件**：`web-rust/src/config/params.rs`【Gemini 可操作区·性格】
   （PERSONALITIES 数组——代码支持已完成：模板选择按 curv_bias 加权、
@@ -74,12 +74,12 @@
   排队节奏区新增两个参数）：`LAUNCH_STAGGER_MS`（1500，首次启动出发错开
   间隔）+ `RESTART_STAGGER_MS`（1000，回家后重启错开间隔）——按「顺位 ×
   间隔」错开出发，且**主次随机**：每次加载/重启洗牌决定谁先出发谁领跑，
-  三球出场主次每次打开/重启都不同（不再是粉球固定先发）。⚠️ 接线状态：
+  三球出场主次每次打开/重启都不同（不再是粉球固定先发）。WARNING: 接线状态：
   参数已就绪待集成接入（现有开场仍为粉球 ENTRY_DELAY_MS 先发、蓝绿随机
   错开 1-3s；重启仍三球同步）——Gemini 现在可调数值，集成时按顺位接入
 - **验证**：`cargo test personality` + 强刷观察三球运动风格差异
 
-## 战场 4：🎨 拖尾视觉艺术（你有眼睛的战场）
+## 战场 4：拖尾视觉艺术（你有眼睛的战场）
 
 - **文件**：`web-rust/src/config/params.rs`【Gemini 可操作区·渲染】的 TRAIL_*
   参数 +（如需）`web-rust/src/animation/trail.rs`
@@ -89,7 +89,7 @@
   彩色是设计一部分，拖尾可以更"艺术"
 - **红线**：切换 P 键时只改拖尾视觉——不触 sim 逻辑（铁律）
 
-## 战场 5：📐 曲线模板艺术（25 个已有——可继续）
+## 战场 5：曲线模板艺术（25 个已有——可继续）
 
 - **文件**：`web-rust/src/config/params.rs`【Gemini 可操作区】TEMPLATES 数组
 - **现状**：六主题梯队（run 0.0 → coil ±1.38，阶梯差 0.05-0.18）+ 高曲率

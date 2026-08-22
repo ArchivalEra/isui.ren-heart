@@ -22,7 +22,7 @@
 
 | 字段 | 填什么 | 为什么 |
 |---|---|---|
-| **Production branch** | **`deploy`** | ⚠️ 关键！成品在 deploy 分支。别选 main（CF 构建环境没有 Rust——build.sh 跑不了） |
+| **Production branch** | **`deploy`** | WARNING: 关键！成品在 deploy 分支。别选 main（CF 构建环境没有 Rust——build.sh 跑不了） |
 | Framework preset | None（不选） | 我们是纯静态 |
 | **Build command** | **留空** | deploy 分支已经是 dist 成品——不需要构建 |
 | **Build output directory** | **`/`** | dist 内容就在仓库根 |
