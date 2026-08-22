@@ -1,10 +1,11 @@
-# 一键部署：推 main → GitHub Actions 把 site-root/ 推给 deploy 分支
+# 一键部署：推 main → GitHub Actions 构建 wasm+dist → 推 deploy 分支
 # → EdgeOne Makers 自动拉取 deploy 分支部署（零构建）
 #
-# tayori（wasm 前端）已退役：站点根现在只是 Bahnhof 风格的 404 页，
-# 不再需要 Rust/cargo 构建。Bahnhof/ 子目录归 Bahnhof 流水线所有，
-# 这里原样保留。⚠️ 已弃 Cloudflare（全迁 EdgeOne）。
-
+# 为什么用 deploy 分支：wasm 构建需要 Rust/cargo——EdgeOne Makers 的
+# 构建环境没有 Rust——Actions（ubuntu 自带 cargo）构建好后把 dist 推给
+# deploy 分支，Makers 只做静态部署（构建命令留空）。
+# ⚠️ 已弃 Cloudflare（全迁 EdgeOne）——不再生成 wrangler.toml/package.json。
+name: deploy
 
 # ⚠️ GITHUB_TOKEN 写权限：除本声明外，仓库 Settings → Actions → General
 # → Workflow permissions 必须为「Read and write permissions」——新仓库
@@ -18,29 +19,58 @@ on:
   workflow_dispatch:
 
 jobs:
-  deploy-root:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: Push site root to deploy branch
+      - name: Setup Rust (wasm32 target)
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install wasm-bindgen (prebuilt release)
         run: |
-          # tayori 已退役：站点根 = site-root/（Bahnhof 风格 404 + 空 edgeone 配置）。
-          # Bahnhof/ 子目录仍归 Bahnhof 流水线所有，这里原样保留。
+          # Cargo.toml 是宽松版本（"0.2"）——cargo install --version 匹配失败
+          # （deploy failed 真凶）——改从 Cargo.lock 读精确版本 + 官方预编译
+          # release 二进制直下（秒级——不用 cargo install 编译 10 分钟）
+          cd web-rust
+          VERSION=$(grep -A1 'name = "wasm-bindgen"' Cargo.lock | grep '^version' | grep -oP '"\K[0-9.]+')
+          echo "wasm-bindgen-cli: $VERSION"
+          curl -sL "https://github.com/rustwasm/wasm-bindgen/releases/download/${VERSION}/wasm-bindgen-${VERSION}-x86_64-unknown-linux-musl.tar.gz" -o wb.tar.gz
+          tar xzf wb.tar.gz
+          mv "wasm-bindgen-${VERSION}-x86_64-unknown-linux-musl/wasm-bindgen" ~/.cargo/bin/
+          wasm-bindgen --version
+
+      - name: Build wasm + frontend
+        run: |
+          cd web-ui
+          npm ci
+          ./build.sh
+
+      - name: Push dist to deploy branch
+        run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # Preserve Bahnhof/ from the existing deploy branch — this job
+          # owns the root, not Bahnhof. heart pushes no longer pay the blog
+          # cost, and blog pushes no longer get wiped by the next heart build.
           git fetch origin deploy:refs/remotes/origin/deploy 2>/dev/null || true
           rm -rf /tmp/keep-bahnhof
           if git ls-remote --exit-code origin refs/heads/deploy >/dev/null 2>&1; then
-            mkdir -p /tmp/keep-bahnhof
             git archive --remote=origin deploy -- Bahnhof 2>/dev/null | tar -x -C /tmp 2>/dev/null || true
             if [ -d /tmp/Bahnhof ]; then
+              mkdir -p /tmp/keep-bahnhof
               mv /tmp/Bahnhof /tmp/keep-bahnhof/Bahnhof
             fi
           fi
           rm -rf /tmp/deploy-out
-          mkdir -p /tmp/deploy-out
-          cp -r site-root/. /tmp/deploy-out/
+          cp -r web-ui/dist /tmp/deploy-out
           # 先删本地分支——deploy 已存在时 checkout --orphan 会游离,绿勾假象
           git branch -D deploy 2>/dev/null || true
           git checkout --orphan deploy
@@ -53,5 +83,5 @@ jobs:
             cp -r /tmp/keep-bahnhof/Bahnhof ./Bahnhof
           fi
           git add -A
-          git commit -m "deploy root: $(date -u +%Y-%m-%dT%H:%M:%SZ) from main $(git rev-parse main)"
+          git commit -m "deploy: $(date -u +%Y-%m-%dT%H:%M:%SZ) from main $(git rev-parse main)"
           git push origin deploy --force 2>&1 || { echo "PUSH_FAILED——检查 GITHUB_TOKEN 权限（仓库 Settings→Actions→Workflow permissions→Read and write）"; exit 1; }
