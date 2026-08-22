@@ -597,41 +597,6 @@ body {
   color: var(--outline-variant);
 }
 
-/* ---------- /home ---------- */
-.home-page {
-  max-width: 880px;
-  margin: 0 auto;
-  padding: 1.5rem 1rem 3rem;
-}
-
-.home-header {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
-}
-
-.home-back {
-  color: var(--on-surface-variant);
-  text-decoration: none;
-  font-size: 0.9rem;
-}
-
-.home-back:hover {
-  text-decoration: underline;
-}
-
-.home-header h2 {
-  margin: 0;
-  font-size: 1.4rem;
-}
-
-.card-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 1rem;
-}
-
 /* Material You 卡片：大圆角 + elevation + 状态层 */
 .card {
   display: flex;
@@ -682,13 +647,6 @@ body {
   color: var(--outline-variant);
 }
 
-.home-footer {
-  margin-top: 2.5rem;
-  text-align: center;
-  color: var(--outline-variant);
-  font-size: 0.8rem;
-}
-
 /* ---------- 响应式：电视 → 手机 ---------- */
 
 /* 电视 / 大屏（≥1920）：更大 logo、更大字、更深氛围 */
@@ -723,9 +681,6 @@ body {
   .screen2-card-wall .wall-card {
     flex-basis: 100%;
     min-width: 0;
-  }
-  .home-page {
-    padding: 1rem 0.8rem 2.5rem;
   }
 }
 
