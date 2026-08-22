@@ -77,7 +77,8 @@ export default function CardWall(
     let alive = true;
     const ctrl = new AbortController();
     const timer = setTimeout(() => ctrl.abort(), 2000);
-    fetch("./config.json", { signal: ctrl.signal })
+    // 绝对路径：页面 URL 是 /heart（无尾斜杠），./ 会解析到站点根去
+    fetch("/heart/config.json", { signal: ctrl.signal })
       .then((r) =>
         r.ok ? r.json() : Promise.reject(new Error(String(r.status))),
       )

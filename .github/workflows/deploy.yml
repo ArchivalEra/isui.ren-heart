@@ -64,26 +64,36 @@ jobs:
           # does not support `git archive --remote`, and swallowing that
           # failure once wiped Bahnhof/ off deploy (2026-08-22).
           git fetch origin deploy:refs/remotes/origin/deploy
-          rm -rf /tmp/keep-bahnhof
+          rm -rf /tmp/keep-deploy
           if git cat-file -e refs/remotes/origin/deploy 2>/dev/null; then
-            git archive refs/remotes/origin/deploy -- Bahnhof | tar -x -C /tmp
-            if [ -d /tmp/Bahnhof ]; then
-              mkdir -p /tmp/keep-bahnhof
-              mv /tmp/Bahnhof /tmp/keep-bahnhof/Bahnhof
+            # Bahnhof/ station and the root 404 page belong to the Bahnhof
+            # repo's pipeline - carry them across this rebuild untouched
+            git archive refs/remotes/origin/deploy -- Bahnhof 404.html | tar -x -C /tmp
+            if [ -e /tmp/Bahnhof ] || [ -e /tmp/404.html ]; then
+              mkdir -p /tmp/keep-deploy
+              [ -e /tmp/Bahnhof ] && mv /tmp/Bahnhof /tmp/keep-deploy/Bahnhof
+              [ -e /tmp/404.html ] && mv /tmp/404.html /tmp/keep-deploy/404.html
             fi
           fi
           rm -rf /tmp/deploy-out
-          cp -r web-ui/dist /tmp/deploy-out
+          # 应用住在 /heart/ 子目录（vite base 同步为 /heart/）；
+          # 站点根 = 跳转页 + 404 页（site-root/），死路径由 404.html 接管
+          mkdir -p /tmp/deploy-out/heart
+          cp -r web-ui/dist/. /tmp/deploy-out/heart/
+          cp -r site-root/. /tmp/deploy-out/
           # 先删本地分支——deploy 已存在时 checkout --orphan 会游离,绿勾假象
           git branch -D deploy 2>/dev/null || true
           git checkout --orphan deploy
           git rm -rf . --quiet 2>/dev/null || true
           find . -mindepth 1 -maxdepth 1 ! -name '.git' -exec rm -rf {} +
           cp -r /tmp/deploy-out/. .
-          # Restore Bahnhof/ if it existed before this run
-          if [ -d /tmp/keep-bahnhof/Bahnhof ]; then
+          # Restore Bahnhof/ and 404.html if they existed before this run
+          if [ -d /tmp/keep-deploy/Bahnhof ]; then
             rm -rf ./Bahnhof
-            cp -r /tmp/keep-bahnhof/Bahnhof ./Bahnhof
+            cp -r /tmp/keep-deploy/Bahnhof ./Bahnhof
+          fi
+          if [ -f /tmp/keep-deploy/404.html ]; then
+            cp /tmp/keep-deploy/404.html ./404.html
           fi
           git add -A
           git commit -m "deploy: $(date -u +%Y-%m-%dT%H:%M:%SZ) from main $(git rev-parse main)"
