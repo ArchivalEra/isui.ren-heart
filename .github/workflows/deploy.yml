@@ -72,7 +72,7 @@ jobs:
             if [ -e /tmp/Bahnhof ] || [ -e /tmp/404.html ]; then
               mkdir -p /tmp/keep-deploy
               [ -e /tmp/Bahnhof ] && mv /tmp/Bahnhof /tmp/keep-deploy/Bahnhof
-              [ -e /tmp/404.html ] && mv /tmp/404.html /tmp/keep-deploy/404.html
+              [ -f /tmp/404.html ] && mv /tmp/404.html /tmp/keep-deploy/404.html
             fi
           fi
           rm -rf /tmp/deploy-out
