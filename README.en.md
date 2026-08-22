@@ -2,6 +2,17 @@
 
 English | [中文](README.md)
 
+The origin: a week before being diagnosed with otitis media with
+effusion, I had found isui's songs — and the doctor told me my ears are
+naturally oversensitive, with negative pressure in one ear lasting over
+four years. For the next few years I should keep music to a minimum;
+there is no treatment.
+Heartbroken, I built this site to hide a little notebook behind it,
+jotting down the songs I want to hear again in a few years.
+I have never run a proper database (apart from collecting notebooks and
+discs). This is my attempt at what teacher Li Ruiming does — pulling
+15-year-old material out on a whim.
+
 The entry page of isui.ren (`/heart`): the front door of a tayori fan
 site — a three-ball queue animation, typewriter, and card wall.
 Pure-CSR static site (zero server overhead), deployed on EdgeOne
