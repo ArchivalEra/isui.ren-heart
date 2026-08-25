@@ -19,9 +19,8 @@ interface Site {
 }
 
 const FALLBACK: Site[] = [
-  { title: "X (Twitter)", url: "https://x.com", desc: "乐队动态", icon: "𝕏" },
-  { title: "YouTube", url: "https://youtube.com", desc: "视频与音乐", icon: "▶" },
-  { title: "官方网站", url: "https://tayori-official.com", desc: "官网", icon: "◎" },
+  { title: "Station", url: "https://isui.ren/Bahnhof", desc: "Everything started here", icon: "〇" },
+  { title: "Source", url: "https://github.com/ArchivalEra/isui.ren-heart", desc: "This repo", icon: "^-^" },
 ];
 
 /** 字号自适应：放不下就逐步缩小（下限 62%），绝不省略号 */
