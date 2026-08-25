@@ -220,12 +220,21 @@ export default function Heart() {
     window.addEventListener("touchend", onTouchEnd, { passive: true });
     window.addEventListener("keydown", onKey);
     stage?.addEventListener("transitionend", onTransitionEnd);
+    // 下拉刷新的最后一道闸：iOS Safari 对不可滚动页面的 overscroll-behavior
+    // 不生效，只能在源头掐断 touchmove（卡片墙内部滚动放行）
+    const killPullToRefresh = (e: TouchEvent) => {
+      const target = e.target as Element | null;
+      if (target && target.closest(".screen-2")) return;
+      if (e.cancelable) e.preventDefault();
+    };
+    document.addEventListener("touchmove", killPullToRefresh, { passive: false });
     return () => {
       window.removeEventListener("wheel", onWheel);
       window.removeEventListener("touchstart", onTouchStart);
       window.removeEventListener("touchend", onTouchEnd);
       window.removeEventListener("keydown", onKey);
       stage?.removeEventListener("transitionend", onTransitionEnd);
+      document.removeEventListener("touchmove", killPullToRefresh);
       window.clearTimeout(turnTimer.current);
     };
   }, []);
