@@ -34,6 +34,9 @@ body {
   margin: 0;
   background: var(--surface);
   color: var(--on-surface);
+  /* 手机端禁用下拉刷新手势（pull-to-refresh）——双屏切页手势不该被误触 */
+  overscroll-behavior-y: none;
+  overscroll-behavior: none;
 }
 
 /* ---------- 阶梯淡入（stagger） ---------- */
