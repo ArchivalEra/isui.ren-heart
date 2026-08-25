@@ -1,0 +1,5 @@
+{
+  "redirects": [
+    { "source": "/:slug/", "destination": "/:slug", "statusCode": 301 }
+  ]
+}
