@@ -242,7 +242,7 @@ export default function Heart() {
               （canvas z-index 更高——球盖 logo）；LogoDebug 调试器拖整个窗口（类名契约） */}
           <div class="stage-window">
             <div class="heart-logo" aria-hidden="true">
-              <img class="heart-logo-img" src="logo.svg" alt="tayori" />
+              <img class="heart-logo-img" src="/logo.svg" alt="tayori" />
             </div>
             <BallsCanvas />
           </div>
