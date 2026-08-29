@@ -18,11 +18,6 @@ interface Site {
   icon?: string;
 }
 
-const FALLBACK: Site[] = [
-  { title: "Station", url: "https://isui.ren/Bahnhof", desc: "Everything started here", icon: "〇" },
-  { title: "Source", url: "https://github.com/ArchivalEra/isui.ren-heart", desc: "This repo", icon: "^-^" },
-];
-
 /** 字号自适应：放不下就逐步缩小（下限 62%），绝不省略号 */
 function FitText({
   className,
@@ -70,32 +65,47 @@ function FitText({
 export default function CardWall(
   _props: { open?: boolean; onToggle?: (v: boolean) => void },
 ): JSX.Element {
-  const [sites, setSites] = useState<Site[]>(FALLBACK);
+  // null = 还没拿到 config：只渲染幽灵占位卡，绝不拿假数据顶替
+  const [sites, setSites] = useState<Site[] | null>(null);
 
   useEffect(() => {
     let alive = true;
-    const ctrl = new AbortController();
-    const timer = setTimeout(() => ctrl.abort(), 2000);
-    // 绝对路径：页面 URL 是 /heart（无尾斜杠），./ 会解析到站点根去
-    fetch("/heart/config.json", { signal: ctrl.signal })
-      .then((r) =>
-        r.ok ? r.json() : Promise.reject(new Error(String(r.status))),
-      )
-      .then((data) => {
-        if (alive && Array.isArray(data?.sites)) setSites(data.sites);
-      })
-      .catch(() => {})
-      .finally(() => clearTimeout(timer));
+    let attempt = 0;
+    const tryFetch = () => {
+      if (!alive) return;
+      attempt += 1;
+      const ctrl = new AbortController();
+      const timer = setTimeout(() => ctrl.abort(), 8000);
+      // 绝对路径：页面 URL 是 /heart（无尾斜杠），./ 会解析到站点根去
+      fetch("/heart/config.json", { signal: ctrl.signal })
+        .then((r) =>
+          r.ok ? r.json() : Promise.reject(new Error(String(r.status))),
+        )
+        .then((data) => {
+          if (!alive) return;
+          if (Array.isArray(data?.sites)) setSites(data.sites);
+          else scheduleRetry();
+        })
+        .catch(() => {
+          // 拉取失败就重试（间隔递增，上限 15s）——同一台服务器上的
+          // 679 字节配置，没有任何理由用静态兜底数据顶替
+          if (alive) scheduleRetry();
+        })
+        .finally(() => clearTimeout(timer));
+    };
+    const scheduleRetry = () => {
+      if (!alive) return;
+      setTimeout(tryFetch, Math.min(3000 * attempt, 15000));
+    };
+    tryFetch();
     return () => {
       alive = false;
-      clearTimeout(timer);
-      ctrl.abort();
     };
   }, []);
 
   return (
     <>
-      {sites.map((site) => {
+      {(sites ?? []).map((site) => {
         const hasIcon = !!site.icon;
         const hasTitle = !!site.title;
         const hasDesc = !!site.desc;
