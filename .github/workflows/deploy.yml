@@ -57,7 +57,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          # Preserve Bahnhof/ and blogs/ from the existing deploy branch —
+          # Preserve Bahnhof/ and Blog/ from the existing deploy branch —
           # this job owns the root, not the slot repos. heart pushes no
           # longer pay the peer rebuild cost, and peer pushes no longer
           # get wiped by the next heart build.
@@ -67,14 +67,14 @@ jobs:
           git fetch origin deploy:refs/remotes/origin/deploy
           rm -rf /tmp/keep-deploy
           if git cat-file -e refs/remotes/origin/deploy 2>/dev/null; then
-            # Bahnhof/ station, the blogs/ hub and the root 404 page belong
+            # Bahnhof/ station, the Blog/ hub and the root 404 page belong
             # to their own repos' pipelines - carry them across this
             # rebuild untouched
-            git archive refs/remotes/origin/deploy -- Bahnhof blogs 404.html | tar -x -C /tmp
-            if [ -e /tmp/Bahnhof ] || [ -e /tmp/blogs ] || [ -e /tmp/404.html ]; then
+            git archive refs/remotes/origin/deploy -- Bahnhof Blog 404.html | tar -x -C /tmp
+            if [ -e /tmp/Bahnhof ] || [ -e /tmp/Blog ] || [ -e /tmp/404.html ]; then
               mkdir -p /tmp/keep-deploy
               [ -e /tmp/Bahnhof ] && mv /tmp/Bahnhof /tmp/keep-deploy/Bahnhof
-              [ -e /tmp/blogs ] && mv /tmp/blogs /tmp/keep-deploy/blogs
+              [ -e /tmp/Blog ] && mv /tmp/Blog /tmp/keep-deploy/Blog
               [ -f /tmp/404.html ] && mv /tmp/404.html /tmp/keep-deploy/404.html
             fi
           fi
@@ -90,15 +90,15 @@ jobs:
           git rm -rf . --quiet 2>/dev/null || true
           find . -mindepth 1 -maxdepth 1 ! -name '.git' -exec rm -rf {} +
           cp -r /tmp/deploy-out/. .
-          # Restore Bahnhof/, blogs/ and 404.html if they existed before
+          # Restore Bahnhof/, Blog/ and 404.html if they existed before
           # this run
           if [ -d /tmp/keep-deploy/Bahnhof ]; then
             rm -rf ./Bahnhof
             cp -r /tmp/keep-deploy/Bahnhof ./Bahnhof
           fi
-          if [ -d /tmp/keep-deploy/blogs ]; then
-            rm -rf ./blogs
-            cp -r /tmp/keep-deploy/blogs ./blogs
+          if [ -d /tmp/keep-deploy/Blog ]; then
+            rm -rf ./Blog
+            cp -r /tmp/keep-deploy/Blog ./Blog
           fi
           if [ -f /tmp/keep-deploy/404.html ]; then
             cp /tmp/keep-deploy/404.html ./404.html
