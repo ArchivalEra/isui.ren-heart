@@ -1,5 +1,6 @@
 {
   "redirects": [
+    { "source": "/blog", "destination": "/Blog", "statusCode": 301 },
     { "source": "/:slug/", "destination": "/:slug", "statusCode": 301 }
   ]
 }
