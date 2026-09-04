@@ -1,0 +1,16 @@
+# isui.ren
+
+> Mango Mesa
+
+This is the llms.txt file for isui.ren. It provides a machine-readable directory of published articles and core pages for Large Language Models.
+
+## Core Pages
+- [Home](https://isui.ren/): Main blog entrance and latest post stream.
+- [About](https://isui.ren/about/): Author profile, technical stack, and background.
+- [Archive](https://isui.ren/archive/): Chronological index of all published writings.
+
+## Articles
+- [第一篇](https://isui.ren/MangoMesa/posts/第一篇/): 双仓重建验证文章
+
+## Full Text Dump
+- [Full Text Archive](https://isui.ren/llms-full.txt): Complete, concatenated Markdown content of all public articles for full-context ingestion.

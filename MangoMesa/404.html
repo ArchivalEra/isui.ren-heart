@@ -1,0 +1,62 @@
+<!DOCTYPE html><html lang="de" data-astro-cid-ibpinaeu><head><meta charset="utf-8"><link rel="icon" type="image/svg+xml" href="/logo.svg"><meta name="viewport" content="width=device-width, initial-scale=1"><title>404 — IM BAHNHOF</title><link rel="stylesheet" href="/MangoMesa/_astro/404.BZJWVJAO.css"><script type="module" src="/MangoMesa/_astro/page.De27o93e.js"></script></head><body data-astro-cid-ibpinaeu><main class="panel" data-astro-cid-ibpinaeu><div class="head" data-astro-cid-ibpinaeu><h1 data-astro-cid-ibpinaeu>ISUI.REN — HAUPTBAHNHOF</h1><span class="clock" id="clock" data-astro-cid-ibpinaeu>--:--</span></div><div class="big" data-astro-cid-ibpinaeu>404</div><table data-astro-cid-ibpinaeu><thead data-astro-cid-ibpinaeu><tr data-astro-cid-ibpinaeu><th scope="col" data-astro-cid-ibpinaeu>ZUG</th><th scope="col" data-astro-cid-ibpinaeu>NACH</th><th scope="col" class="hidewide" data-astro-cid-ibpinaeu>GLEIS</th><th scope="col" data-astro-cid-ibpinaeu>STATUS</th></tr></thead><tbody data-astro-cid-ibpinaeu><tr data-astro-cid-ibpinaeu><td data-astro-cid-ibpinaeu>— — —</td><td class="dest" data-astro-cid-ibpinaeu>Nirgendwo<span class="sub" id="requested-path-sub" data-astro-cid-ibpinaeu>this platform does not exist</span></td><td class="hidewide" data-astro-cid-ibpinaeu>—</td><td data-astro-cid-ibpinaeu><span class="status" data-astro-cid-ibpinaeu>CANCELLED</span><span class="sub" data-astro-cid-ibpinaeu>not found im bahnhof · seite nicht gefunden</span></td></tr></tbody></table><!-- Astro-style Intelligent Route Reminder --><div id="route-notice" class="route-notice" data-astro-cid-ibpinaeu><div class="notice-badge" data-astro-cid-ibpinaeu>FAHRPLAN-AUSKUNFT · ROUTE SUGGESTION</div><div class="notice-msg" id="notice-msg" data-astro-cid-ibpinaeu>Checking route schedule...</div><div class="available-routes" data-astro-cid-ibpinaeu><span class="routes-label" data-astro-cid-ibpinaeu>Available destinations / Verfügbare Strecken:</span><ul class="routes-list" data-astro-cid-ibpinaeu><li data-astro-cid-ibpinaeu><a href="/MangoMesa/" data-astro-cid-ibpinaeu>/MangoMesa/ (Mango Mesa 博客)</a></li><li data-astro-cid-ibpinaeu><a href="/Bahnhof/" data-astro-cid-ibpinaeu>/Bahnhof/ (Hauptbahnhof 站台)</a></li><li data-astro-cid-ibpinaeu><a href="/heart/" data-astro-cid-ibpinaeu>/heart/ (Core 核心)</a></li></ul></div></div><div class="foot" data-astro-cid-ibpinaeu><span data-astro-cid-ibpinaeu>AKTUALISIERT LIVE · SOLL/IST</span><div class="foot-links" data-astro-cid-ibpinaeu><a href="/MangoMesa/" data-astro-cid-ibpinaeu>ZUM MANGO MESA →</a><a href="/Bahnhof/" data-astro-cid-ibpinaeu>ZURÜCK IM BAHNHOF →</a></div></div></main><script>
+  // 1. Visitor's Local Clock
+  const el = document.getElementById("clock");
+  const tick = () => {
+    el.textContent = new Date().toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit" });
+  };
+  tick();
+  setInterval(tick, 1000);
+
+  // 2. Astro-style intelligent path hint logic
+  (function initAstroPathHint() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const fromParam = urlParams.get("from");
+    const rawPath = fromParam ? decodeURIComponent(fromParam) : window.location.pathname;
+    const search = window.location.search;
+    const hash = window.location.hash;
+    const msgEl = document.getElementById("notice-msg");
+    const requestedPathSub = document.getElementById("requested-path-sub");
+
+    if (requestedPathSub && rawPath) {
+      requestedPathSub.textContent = "requested: " + rawPath;
+    }
+
+    const knownRoutes = [
+      "about", "archive", "moments", "albums", "categories", "tags",
+      "projects", "skills", "timeline", "devices", "compass", "friends", "anime",
+      "posts", "atom.xml", "rss.xml", "llms.txt"
+    ];
+
+    let explanation = "";
+
+    // A. Visited old /Blog/ path
+    if (/^\/Blog(\/.*)?$/i.test(rawPath)) {
+      const target = rawPath.replace(/^\/Blog/i, "/MangoMesa") + search + hash;
+      explanation = `The blog has migrated to <code>/MangoMesa/</code>. Did you mean to visit <a href="${escapeHtml(target)}">${escapeHtml(target)}</a>?`;
+    }
+    // B. Visited known blog route without /MangoMesa/ prefix
+    else {
+      const cleanPath = rawPath.replace(/^\/+/, "");
+      const firstSegment = cleanPath.split("/")[0].toLowerCase();
+
+      if (knownRoutes.includes(firstSegment)) {
+        const target = "/MangoMesa/" + cleanPath + search + hash;
+        explanation = `The server is configured with routes under <code>/MangoMesa/</code>. Did you mean to visit <a href="${escapeHtml(target)}">${escapeHtml(target)}</a>?`;
+      } else if (cleanPath === "" || cleanPath === "index.html") {
+        explanation = `Looking for the station hub? Connect directly to <a href="/MangoMesa/">/MangoMesa/</a>.`;
+      } else if (firstSegment === "station" || firstSegment === "bahn") {
+        explanation = `Did you mean to visit the station at <a href="/Bahnhof/">/Bahnhof/</a>?`;
+      } else {
+        explanation = `The requested URL <code>${escapeHtml(rawPath)}</code> was not found on this platform. Did you mean to visit <a href="/MangoMesa/">/MangoMesa/</a>?`;
+      }
+    }
+
+    if (msgEl) {
+      msgEl.innerHTML = explanation;
+    }
+
+    function escapeHtml(str) {
+      return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+    }
+  })();
+</script></body></html>

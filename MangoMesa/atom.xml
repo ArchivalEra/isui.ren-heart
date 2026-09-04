@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh_CN">
+  <title>isui.ren</title>
+  <subtitle>Mango Mesa</subtitle>
+  <link href="https://isui.ren/" rel="alternate" type="text/html"/>
+  <link href="https://isui.ren/atom.xml" rel="self" type="application/atom+xml"/>
+  <id>https://isui.ren/</id>
+  <updated>2026-09-03T00:00:00.000Z</updated>
+  <entry>
+    <title>第一篇</title>
+    <link href="https://isui.ren/MangoMesa/posts/%E7%AC%AC%E4%B8%80%E7%AF%87/" rel="alternate" type="text/html"/>
+    <id>https://isui.ren/MangoMesa/posts/%E7%AC%AC%E4%B8%80%E7%AF%87/</id>
+    <published>2026-09-03T00:00:00.000Z</published>
+    <updated>2026-09-03T00:00:00.000Z</updated>
+    <summary>双仓重建验证文章</summary>
+    <content type="html"><![CDATA[<h1>第一篇</h1>
+<p>这是 isui.ren-Blog 双仓重建后的第一篇验证文章。</p>
+<p>如果你能在 <code>https://isui.ren/MangoMesa/</code> 看到这篇内容，说明完整链路已通：</p>
+<ol>
+<li>内容仓 <code>ArchivalEra/isui.ren-Blog</code> push →</li>
+<li><code>trigger-build.yml</code> 触发 → 跨仓调用主题仓 <code>content-validate.yml</code> 校验 →</li>
+<li><code>repository_dispatch [content-updated]</code> 派发到主题仓 →</li>
+<li>主题仓 <code>deploy.yml</code> 拉取内容仓 → <code>content:sync</code> → <code>pnpm build</code> →</li>
+<li>SSH 推送到 <code>isui.ren-heart@deploy:MangoMesa/</code> →</li>
+<li><code>https://isui.ren/MangoMesa/</code> 可访问。</li>
+</ol>
+<p>日常写作只需在内容仓 <code>content/posts/</code> 下新建 <code>.md</code> 文件并 push，无需触碰主题仓或 heart 仓。</p>
+]]></content>
+    <author><name>ArchivalEra</name></author>
+  </entry>
+</feed>

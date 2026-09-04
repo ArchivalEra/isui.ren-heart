@@ -1,0 +1,27 @@
+# isui.ren - Full Content Archive
+
+> Generated on 2026-09-04. Contains full text of all public articles for LLM ingestion.
+
+---
+
+## 第一篇
+
+- **URL**: https://isui.ren/MangoMesa/posts/第一篇/
+- **Published**: 2026-09-03
+- **Tags**: 验证, 双仓
+- **Description**: 双仓重建验证文章
+
+# 第一篇
+
+这是 isui.ren-Blog 双仓重建后的第一篇验证文章。
+
+如果你能在 `https://isui.ren/MangoMesa/` 看到这篇内容，说明完整链路已通：
+
+1. 内容仓 `ArchivalEra/isui.ren-Blog` push →
+2. `trigger-build.yml` 触发 → 跨仓调用主题仓 `content-validate.yml` 校验 →
+3. `repository_dispatch [content-updated]` 派发到主题仓 →
+4. 主题仓 `deploy.yml` 拉取内容仓 → `content:sync` → `pnpm build` →
+5. SSH 推送到 `isui.ren-heart@deploy:MangoMesa/` →
+6. `https://isui.ren/MangoMesa/` 可访问。
+
+日常写作只需在内容仓 `content/posts/` 下新建 `.md` 文件并 push，无需触碰主题仓或 heart 仓。
