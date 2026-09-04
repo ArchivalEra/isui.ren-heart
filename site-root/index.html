@@ -5,10 +5,20 @@
     <link rel="icon" type="image/svg+xml" href="/logo.svg" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ISUI.REN</title>
-<script>location.replace("/heart" + location.search + location.hash);</script>
-<meta http-equiv="refresh" content="0; url=/heart/">
+<script>
+(function() {
+  var p = location.pathname;
+  if (p === "/" || p === "" || p === "/index.html") {
+    location.replace("/heart/" + location.search + location.hash);
+  } else {
+    location.replace("/404.html?from=" + encodeURIComponent(p + location.search + location.hash));
+  }
+})();
+</script>
 </head>
 <body>
+<noscript>
 <a href="/heart/">ZUM HEART →</a>
+</noscript>
 </body>
 </html>
