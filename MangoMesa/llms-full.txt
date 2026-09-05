@@ -4,6 +4,79 @@
 
 ---
 
+## 折腾 Shirone 做博客的这两天
+
+- **URL**: https://isui.ren/MangoMesa/posts/折腾shirone做博客的这两天/
+- **Published**: 2026-09-06
+- **Tags**: 博客, Shirone, Astro, 折腾
+- **Description**: 记录下这两天把 Shirone 接入 isui.ren 的过程：双仓架构、踩坑给上游提 PR、接入 B 站追番，以及把天天挂的 GitHub Actions 彻底修顺。
+
+# 折腾 Shirone 做博客的这两天
+
+6 月底查出点破事，7 月顺手买了 `isui.ren` 这个域名，前两天终于下定决心把博客给搭起来。
+
+挑了一圈选了 [Shirone](https://github.com/LyraVoid/Shirone)，Material 3 Expressive + Astro 7 + Svelte 5，二次元风格味很足，动效也做得不错。但真要接进自己的工作流，这两天基本全在排雷和改代码。
+
+简单记一下这两天干的事。
+
+---
+
+## 1. 双仓架构
+
+我不太喜欢把文章 Markdown 和博客主题源码混在一起。主题更新、魔改组件和写博客本来就是两码事，所以一开始就定了双仓：
+
+- **`isui.ren-Blog`**：纯内容仓。放文章、所有 `yaml` 配置，以及自定义数据（设备、项目、技能、罗盘导航等）。
+- **`Shirone-personalized`**：主题仓。Fork 自上游，负责模板、样式、脚本和构建。
+- **发布目标**：主题仓构建完成后，通过 Actions 用 SSH 推到 `isui.ren-heart` 仓库的 `deploy` 分支（落到 `MangoMesa/` 目录），由边缘网关统一分发。
+
+平时写完东西只往内容仓推，内容仓的 Actions 会发一个 `repository_dispatch` 戳主题仓拉取内容、执行 `pnpm content:sync` 把 YAML 配置物化覆盖进主题，然后打包发布。
+
+---
+
+## 2. 给上游修的几个 Bug
+
+把主题拖下来跑的时候，碰上了几个很离谱的坑，索性顺手全修了：
+
+### Vibrant 配色运行时暴毙
+切到 `vibrant` 配色模式直接白屏，控制台报错 `normalizeMcStyle is not defined`。翻进 `mc-utils.ts` 一看，模块根本就没 import 进去，补上引用完事。
+
+### 顶栏导航被短链中枢占坑
+我顶栏挂了个外部跳转 `Bahnhof`，结果进首页时导航下划线直接标到了 Bahnhof 头上。排查发现是页面路由判断时没把 `BASE_URL`（`/MangoMesa/`）剥离干净，导致根路径匹配短链匹配歪了。
+
+### 音乐播放器在空本地列表时死锁
+这是排查时间最长的一个问题。主题的播放器支持 `mixed` 混合模式（本地曲目 + 网易云 Meting 歌单）。但我本地没放 MP3，想全靠网易云拉歌单。
+
+结果页面一加载，歌名永远卡在占位符「口笛で愛は歌えない」，怎么点都没反应。翻源码才发现：Svelte 客户端组件在 `onMount` 的时候根本就没调用 `runtime.initialize()` 去异步抓 Meting；而且一旦本地列表为空，当前播放索引永远停在 `-1`，状态机直接卡死。
+
+改了初始状态机逻辑，加了异步初始化触发，顺带补了一组测试。最后用隔离的 worktree 分支给上游提了 [PR #36](https://github.com/LyraVoid/Shirone/pull/36)。
+
+---
+
+## 3. 接入 B 站追番
+
+看番数据没必要纯手写。主题自带了从 B 站和 Bangumi 抓快照的脚本，直接配上我的 B 站公开 UID（`248600523`）。
+
+这里有个不错的设计是快照机制：数据在构建期由 Node 脚本拉下来转成 JSON，番剧封面直接本地下载成 WebP 存进静态目录，不走 B 站图片外链防盗链，也不在页面运行时打任何第三方请求。
+
+我们顺手把 `pnpm anime:sync --provider bilibili` 塞进了部署流水线里，并配上了 `BILI_SESSDATA` 环境变量，以后就算追番列表改私密了也照样能拉。
+
+---
+
+## 4. 把天天报警的 Actions 修绿
+
+这两天只要一推代码，GitHub 邮件就叮咚响，Actions 天天挂。刚才仔细拉了 `gh run view` 的报错日志，破案了：
+
+1. **单测硬编码了 Demo 数据**：主题官方自带的 `feature-data.test.mjs`，里面断言项目列表必须包含 `kernelpatch`、技能必须包含 `TypeScript`、设备必须有 `macbook-pro-16`。我把自己的真实项目和设备换上去之后，单测必然当场暴毙。改成通用的断言逻辑（动态取第一项做禁用测试，验证过滤函数行为本身），不再依赖任何写死的数据。
+2. **覆盖层空模块断言**：`content-config.test.mjs` 有个用例强行断言仓库里的 `user-config.ts` 必须是个空模块。但个人 fork 只要执行过一次 `content:sync`，这个文件就会被注入真实配置并提交，每次 CI 跑这里必挂。去掉了对磁盘文件的生硬比对，只测生成器函数的输出。
+
+修完之后，Actions 终于变全绿了。
+
+---
+
+两天下来，总算从上游的各种暗坑和 CI 报错里趟了出来。现在写文章只需要推 Markdown，剩下的全交给 Actions 自动化，清爽多了。
+
+---
+
 ## 第一篇
 
 - **URL**: https://isui.ren/MangoMesa/posts/第一篇/

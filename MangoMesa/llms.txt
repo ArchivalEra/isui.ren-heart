@@ -10,6 +10,7 @@ This is the llms.txt file for isui.ren. It provides a machine-readable directory
 - [Archive](https://isui.ren/archive/): Chronological index of all published writings.
 
 ## Articles
+- [折腾 Shirone 做博客的这两天](https://isui.ren/MangoMesa/posts/折腾shirone做博客的这两天/): 记录下这两天把 Shirone 接入 isui.ren 的过程：双仓架构、踩坑给上游提 PR、接入 B 站追番，以及把天天挂的 GitHub Actions 彻底修顺。
 - [第一篇](https://isui.ren/MangoMesa/posts/第一篇/): 双仓重建验证文章
 
 ## Full Text Dump

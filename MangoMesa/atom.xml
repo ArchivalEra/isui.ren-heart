@@ -5,7 +5,56 @@
   <link href="https://isui.ren/" rel="alternate" type="text/html"/>
   <link href="https://isui.ren/atom.xml" rel="self" type="application/atom+xml"/>
   <id>https://isui.ren/</id>
-  <updated>2026-09-03T00:00:00.000Z</updated>
+  <updated>2026-09-06T00:00:00.000Z</updated>
+  <entry>
+    <title>折腾 Shirone 做博客的这两天</title>
+    <link href="https://isui.ren/MangoMesa/posts/%E6%8A%98%E8%85%BEshirone%E5%81%9A%E5%8D%9A%E5%AE%A2%E7%9A%84%E8%BF%99%E4%B8%A4%E5%A4%A9/" rel="alternate" type="text/html"/>
+    <id>https://isui.ren/MangoMesa/posts/%E6%8A%98%E8%85%BEshirone%E5%81%9A%E5%8D%9A%E5%AE%A2%E7%9A%84%E8%BF%99%E4%B8%A4%E5%A4%A9/</id>
+    <published>2026-09-06T00:00:00.000Z</published>
+    <updated>2026-09-06T00:00:00.000Z</updated>
+    <summary>记录下这两天把 Shirone 接入 isui.ren 的过程：双仓架构、踩坑给上游提 PR、接入 B 站追番，以及把天天挂的 GitHub Actions 彻底修顺。</summary>
+    <content type="html"><![CDATA[<h1>折腾 Shirone 做博客的这两天</h1>
+<p>6 月底查出点破事，7 月顺手买了 <code>isui.ren</code> 这个域名，前两天终于下定决心把博客给搭起来。</p>
+<p>挑了一圈选了 <a href="https://github.com/LyraVoid/Shirone">Shirone</a>，Material 3 Expressive + Astro 7 + Svelte 5，二次元风格味很足，动效也做得不错。但真要接进自己的工作流，这两天基本全在排雷和改代码。</p>
+<p>简单记一下这两天干的事。</p>
+<hr />
+<h2>1. 双仓架构</h2>
+<p>我不太喜欢把文章 Markdown 和博客主题源码混在一起。主题更新、魔改组件和写博客本来就是两码事，所以一开始就定了双仓：</p>
+<ul>
+<li><strong><code>isui.ren-Blog</code></strong>：纯内容仓。放文章、所有 <code>yaml</code> 配置，以及自定义数据（设备、项目、技能、罗盘导航等）。</li>
+<li><strong><code>Shirone-personalized</code></strong>：主题仓。Fork 自上游，负责模板、样式、脚本和构建。</li>
+<li><strong>发布目标</strong>：主题仓构建完成后，通过 Actions 用 SSH 推到 <code>isui.ren-heart</code> 仓库的 <code>deploy</code> 分支（落到 <code>MangoMesa/</code> 目录），由边缘网关统一分发。</li>
+</ul>
+<p>平时写完东西只往内容仓推，内容仓的 Actions 会发一个 <code>repository_dispatch</code> 戳主题仓拉取内容、执行 <code>pnpm content:sync</code> 把 YAML 配置物化覆盖进主题，然后打包发布。</p>
+<hr />
+<h2>2. 给上游修的几个 Bug</h2>
+<p>把主题拖下来跑的时候，碰上了几个很离谱的坑，索性顺手全修了：</p>
+<h3>Vibrant 配色运行时暴毙</h3>
+<p>切到 <code>vibrant</code> 配色模式直接白屏，控制台报错 <code>normalizeMcStyle is not defined</code>。翻进 <code>mc-utils.ts</code> 一看，模块根本就没 import 进去，补上引用完事。</p>
+<h3>顶栏导航被短链中枢占坑</h3>
+<p>我顶栏挂了个外部跳转 <code>Bahnhof</code>，结果进首页时导航下划线直接标到了 Bahnhof 头上。排查发现是页面路由判断时没把 <code>BASE_URL</code>（<code>/MangoMesa/</code>）剥离干净，导致根路径匹配短链匹配歪了。</p>
+<h3>音乐播放器在空本地列表时死锁</h3>
+<p>这是排查时间最长的一个问题。主题的播放器支持 <code>mixed</code> 混合模式（本地曲目 + 网易云 Meting 歌单）。但我本地没放 MP3，想全靠网易云拉歌单。</p>
+<p>结果页面一加载，歌名永远卡在占位符「口笛で愛は歌えない」，怎么点都没反应。翻源码才发现：Svelte 客户端组件在 <code>onMount</code> 的时候根本就没调用 <code>runtime.initialize()</code> 去异步抓 Meting；而且一旦本地列表为空，当前播放索引永远停在 <code>-1</code>，状态机直接卡死。</p>
+<p>改了初始状态机逻辑，加了异步初始化触发，顺带补了一组测试。最后用隔离的 worktree 分支给上游提了 <a href="https://github.com/LyraVoid/Shirone/pull/36">PR #36</a>。</p>
+<hr />
+<h2>3. 接入 B 站追番</h2>
+<p>看番数据没必要纯手写。主题自带了从 B 站和 Bangumi 抓快照的脚本，直接配上我的 B 站公开 UID（<code>248600523</code>）。</p>
+<p>这里有个不错的设计是快照机制：数据在构建期由 Node 脚本拉下来转成 JSON，番剧封面直接本地下载成 WebP 存进静态目录，不走 B 站图片外链防盗链，也不在页面运行时打任何第三方请求。</p>
+<p>我们顺手把 <code>pnpm anime:sync --provider bilibili</code> 塞进了部署流水线里，并配上了 <code>BILI_SESSDATA</code> 环境变量，以后就算追番列表改私密了也照样能拉。</p>
+<hr />
+<h2>4. 把天天报警的 Actions 修绿</h2>
+<p>这两天只要一推代码，GitHub 邮件就叮咚响，Actions 天天挂。刚才仔细拉了 <code>gh run view</code> 的报错日志，破案了：</p>
+<ol>
+<li><strong>单测硬编码了 Demo 数据</strong>：主题官方自带的 <code>feature-data.test.mjs</code>，里面断言项目列表必须包含 <code>kernelpatch</code>、技能必须包含 <code>TypeScript</code>、设备必须有 <code>macbook-pro-16</code>。我把自己的真实项目和设备换上去之后，单测必然当场暴毙。改成通用的断言逻辑（动态取第一项做禁用测试，验证过滤函数行为本身），不再依赖任何写死的数据。</li>
+<li><strong>覆盖层空模块断言</strong>：<code>content-config.test.mjs</code> 有个用例强行断言仓库里的 <code>user-config.ts</code> 必须是个空模块。但个人 fork 只要执行过一次 <code>content:sync</code>，这个文件就会被注入真实配置并提交，每次 CI 跑这里必挂。去掉了对磁盘文件的生硬比对，只测生成器函数的输出。</li>
+</ol>
+<p>修完之后，Actions 终于变全绿了。</p>
+<hr />
+<p>两天下来，总算从上游的各种暗坑和 CI 报错里趟了出来。现在写文章只需要推 Markdown，剩下的全交给 Actions 自动化，清爽多了。</p>
+]]></content>
+    <author><name>ArchivalEra</name></author>
+  </entry>
   <entry>
     <title>第一篇</title>
     <link href="https://isui.ren/MangoMesa/posts/%E7%AC%AC%E4%B8%80%E7%AF%87/" rel="alternate" type="text/html"/>
