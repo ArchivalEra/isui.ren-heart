@@ -2,17 +2,19 @@
 <html lang="de">
 <head>
 <meta charset="utf-8">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <link rel="icon" type="image/svg+xml" href="/logo.svg" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ISUI.REN</title>
 <script>
 (function() {
   var p = location.pathname;
-  if (p === "/" || p === "" || p === "/index.html") {
-    location.replace("/heart/" + location.search + location.hash);
-  } else {
-    location.replace("/404.html?from=" + encodeURIComponent(p + location.search + location.hash));
-  }
+  var isHttp = location.protocol === "http:" && location.hostname !== "localhost" && location.hostname !== "127.0.0.1";
+  var targetPath = (p === "/" || p === "" || p === "/index.html")
+    ? ("/heart/" + location.search + location.hash)
+    : ("/404.html?from=" + encodeURIComponent(p + location.search + location.hash));
+  var origin = isHttp ? ("https://" + location.host) : "";
+  location.replace(origin + targetPath);
 })();
 </script>
 </head>
