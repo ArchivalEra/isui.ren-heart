@@ -1,7 +1,7 @@
 /**
  * EdgeOne Makers Middleware
  * Runs before page load on EdgeOne edge nodes.
- * Intercepts /api/activity and reverse-proxies to upstream or rewrites.
+ * Intercepts /api/activity and /api/activity/report, reverse-proxying to upstream Cloudflare Worker.
  */
 export async function middleware(context) {
 	const { request, rewrite, next } = context;
@@ -43,8 +43,52 @@ export async function middleware(context) {
 				},
 			});
 		} catch (_err) {
-			// Fallback to native EdgeOne rewrite proxy if direct fetch is unsupported in middleware
 			return rewrite("https://api.mango-mesa.ccwu.cc/api/activity");
+		}
+	}
+
+	if (url.pathname === "/api/activity/report") {
+		if (request.method === "OPTIONS") {
+			return new Response(null, {
+				status: 204,
+				headers: {
+					"Access-Control-Allow-Origin": "*",
+					"Access-Control-Allow-Methods": "POST, OPTIONS",
+					"Access-Control-Allow-Headers": "*",
+					"Access-Control-Max-Age": "86400",
+				},
+			});
+		}
+
+		if (request.method === "POST") {
+			try {
+				const body = await request.text();
+				const upstreamResp = await fetch(
+					"https://api.mango-mesa.ccwu.cc/api/activity/report",
+					{
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+							Authorization: request.headers.get("authorization") || "",
+							"User-Agent":
+								request.headers.get("user-agent") || "EdgeOne-Middleware-Proxy",
+						},
+						body,
+					},
+				);
+				const respBody = await upstreamResp.text();
+				return new Response(respBody, {
+					status: upstreamResp.status,
+					headers: {
+						"Content-Type": "application/json; charset=utf-8",
+						"Access-Control-Allow-Origin": "*",
+						"Access-Control-Allow-Methods": "POST, OPTIONS",
+						"Access-Control-Allow-Headers": "*",
+					},
+				});
+			} catch (_err) {
+				return rewrite("https://api.mango-mesa.ccwu.cc/api/activity/report");
+			}
 		}
 	}
 
@@ -52,5 +96,5 @@ export async function middleware(context) {
 }
 
 export const config = {
-	matcher: ["/api/activity"],
+	matcher: ["/api/activity", "/api/activity/:path*"],
 };
