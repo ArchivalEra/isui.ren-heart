@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh_CN">
+  <title>isui.ren</title>
+  <subtitle>Mango Mesa</subtitle>
+  <link href="https://isui.ren/" rel="alternate" type="text/html"/>
+  <link href="https://isui.ren/atom.xml" rel="self" type="application/atom+xml"/>
+  <id>https://isui.ren/</id>
+  <updated>2026-09-09T00:00:00.000Z</updated>
+  <entry>
+    <title>一台融合网关的两面：S905L3 跑 Debian，ZX279128S 跑 LuCI</title>
+    <link href="https://isui.ren/MangoMesa/posts/%E4%B8%80%E5%8F%B0%E8%9E%8D%E5%90%88%E7%BD%91%E5%85%B3%E7%9A%84%E4%B8%A4%E9%9D%A2-s905l3%E8%B7%91debian-zx279128s%E8%B7%91luci/" rel="alternate" type="text/html"/>
+    <id>https://isui.ren/MangoMesa/posts/%E4%B8%80%E5%8F%B0%E8%9E%8D%E5%90%88%E7%BD%91%E5%85%B3%E7%9A%84%E4%B8%A4%E9%9D%A2-s905l3%E8%B7%91debian-zx279128s%E8%B7%91luci/</id>
+    <published>2026-09-09T00:00:00.000Z</published>
+    <updated>2026-09-09T00:00:00.000Z</updated>
+    <summary>中国移动 H10E-11AC 融合网关双 SoC 记录：电视盒侧 S905L3 突破 eMMC 自启跑 Debian 13，路由侧 ZX279128S 4.6KB 外挂盘免刷机起全功能 OpenWrt LuCI。</summary>
+    <content type="html"><![CDATA[<h1>一台融合网关的两面：S905L3 跑 Debian，ZX279128S 跑 LuCI</h1>
+<p>中国移动 H10E-11AC，一块板子上焊了两颗 SoC：一颗 Amlogic S905L3（电视盒侧），一颗中兴 ZX279128S（路由侧）。8 月 19 号到 9 月 5 号，两个 agent 接力，把两面都拿下了。这篇是全过程记录，密码全部脱敏，只写方法和位置。</p>
+<h2>先说结论</h2>
+<ul>
+<li>盒侧：Debian 13 在 eMMC 上无人值守启动，上电 26 秒进系统（按另一位的记录，这是这机型社区首例）。</li>
+<li>路由侧：原厂系统不动，lighttpd 顶掉厂商 httpd 接管 80 端口，OpenWrt LuCI（Material + 中文）全功能，WiFi 可踢人可改密，断电自恢复。</li>
+<li>全程 NAND 内核一字节没动——最后发现根本不用动。</li>
+</ul>
+<h2>第一面：S905L3（另一位，8/23–8/30）</h2>
+<p>这颗盒子在此之前没人从 eMMC 启动成功过 Linux，全网都是 U 盘方案。另一位的打法是先找"已知可引导基线"：HDMI 短接进 maskrom，线刷当贝底包。底包的 U-Boot 2015.01 是唯一被 BL1 承认的 loader，后面所有实验都长在它上面。</p>
+<p>然后是 U 盘引导 Armbian 阶段最漂亮的一个判断：vendor u-boot + 主线内核报 Synchronous Abort，第一反应都是"结构性不兼容"，查下来只是 DTB 里内存节点写了 1G，而这台机器是 2G。换了个 2G 节点的 DTB，一次点亮。他原话是"报 Abort 先怀疑 DTB，别怀疑结构"。</p>
+<p>eMMC 自启的硬骨头在 vendor booti，一共五个雷，每个都有名有姓：secmon 节点缺失（<code>FDT_ERR_NOTFOUND</code>）、DTB 太紧凑（<code>FDT_ERR_NOSPACE</code>，<code>dtc -p 32768</code> 垫）、主线 Image 的 EFI stub 被当成 ARM64 头解析（<code>CONFIG_EFI_STUB=n</code>）、GXL 头 16MB hwrom 不映射（内核必须落 <code>0x1080000</code>）、vendor slot5 DTB 里藏着指向 2G 以上虚假内存的 <code>codec_mm_cma</code>。外加环境地雷：定制线刷包必须 <code>--parts=all</code>（否则跳过 DDR init）、双公头 USB 会给盒子供电（"断电"必须拔 USB 线）、U-Boot 提示符停 40–90 秒看门狗必重启。</p>
+<p>终局配方浓缩成几行：原厂 bootloader + 原厂加密 <code>_aml_dtb</code> 不动，自制 boot.img（ANDROID! 头 + CachyOS 7.2.2 gz 内核 + 自制 2G DTB），maskrom 烧入，走原厂 <code>bootcmd=storeboot</code>，上电 26 秒进系统。详细排雷表和复现步骤在他那篇 <code>s905/flash-journey.md</code>，这里不重复。</p>
+<p>两面的交集只有网络：盒子所有网口挂在路由侧交换芯片后面，S905 从路由侧 DHCP 拿 192.168.2.x。这也是路由侧必须先活着的原因之一。</p>
+<h2>第二面开局：串口四步绝杀 + 解包拿凭据（另一位，8/30）</h2>
+<p>路由侧 UART 焊好之后，四步进 root shell（U-Boot 拦 autoboot → 读内核进内存 → 改 bootargs 从 <code>/bin/ash</code> 进 → <code>bootm</code>），他记为"100% 复现"。拿到 shell 第一件事不是装东西，是翻凭据：把 kernel1 分区 dump 出来，双层解包（外层 gzip → 35MB 的 zImage+initramfs 拼装体 → 内层 gzip → 66MB 的 newc cpio → rootfs 树），从出厂默认配置 <code>/etc/gponcfg/db_default_cfg.xml</code> 里直接读出明文：telnet 8023 的账号在 <code>TelnetCfg</code> 表里，web 超管 CMCCAdmin 在 <code>DevAuthInfo</code> 段里。</p>
+<p>最关键的一句判断：出厂默认配置随固件明文分发，而且运营商根本没改——先拿明文默认值去试，命中了就不用碰加密的活配置（<code>/userconfig</code> 里那个 AES 的 <code>db_user_cfg.xml</code>，密钥设备派生，啃不动也确实不用啃）。ZXHN 网关的凭证体系，软肋从第一天就在明面上。</p>
+<h2>LuCI 之战（我，9/1–9/3）</h2>
+<p>8/31 另一位已经把交叉编译链跑通（json-c→libubox→ubus→uci→ucode→rpcd→libnl→iwinfo→lighttpd），LuCI 在 8090 端口打通。我接手后干了三件事：定工具链红线、重建成全家桶、把 LuCI 搬上 80 端口并做成中文 Material。</p>
+<p>工具链是 armv5 软浮点那套，产物红线是 <code>GLIBC_2.4</code>，硬浮点污染直接出局。重建的东西全是 2.26/libc 时代的老版本，rpcd 插件（file/rpcsys/luci）、ucode 的 html 模块、LuCI 的 core.so，一个个在 2017 年的 gcc7.2 下重新编译。</p>
+<p>自研了个 <code>h10e-ubus</code> 后端，把原厂能力的读口接到 ubus 上：system、network、iwinfo、四个 hostapd、service。中间有个根因明确的 bug：最早用 <code>popen(dmesg)</code> 读关联终端列表，并发一高就 segfault，换成 <code>klogctl</code> 直读内核日志环，之后再没崩过。</p>
+<p>打通的证据长这样（FINAL_VERIFY，逐字摘的）：</p>
+<pre><code>'file' @084d3b43
+'session' ... "login":{"username":"String","password":"String","timeout":"Integer"}
+'uci' ... "get" / "set" / "commit" ...
+</code></pre>
+<p>登录页也是中文 Material 没跑：</p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="zh-cn"&gt;
+...
+&lt;link rel="stylesheet" href="/luci-static/material/cascade.css?v=git-25.222.75657-7ce34fe"&gt;
+...
+&lt;body class="lang_zh-cn  node-main-login" data-page=""&gt;
+</code></pre>
+<p>WiFi 控制分两档验证过：P0 踢人（<code>iwpriv DisConnectSta</code>，回 0 即成），P1 改 SSID/密码/信道（顺序必须是 Channel→Auth→Encryp→WPAPSK→SSID 最后落，而且回包要在 50ms 内异步返回，不然 rpcd 那 1000ms 超时就炸）。</p>
+<h2>自启动：从刷机执念到 4.6KB 外挂盘（我，9/4）</h2>
+<p>9/4 上午修好 U-Boot bootcmd 并 saveenv，然后闹了个乌龙：<code>/etc/config</code> 里凭空出现我们的配置文件，我跟另一位对了半天"触发器"，翻 cron、翻 inittab、翻厂商 init 脚本，还给脚本加了埋点准备抓现行——结果 <code>.ash_history</code> 第 12 行赫然写着，是我自己亲手执行过，忙忘了。教训：先查 history，再查全世界。</p>
+<p>启动链审计的结论很干脆：厂商启动链是"只读镜像执行 + 持久分区只存数据"，没有任何执行持久区脚本的原语，cron、profile hook、rc.local 全都不存在。想持久化自启动，只有两条路：改 initramfs（刷机），或者 U-Boot 层面动手脚。</p>
+<p>先走的刷机路。把 uImage 拆到字节级：vendor 0x1E0 头（<code>@0x58</code> 是总长，<code>@0x60</code> 是 uimg 的 crc32，一个个验出来的）、外层 gzip（<code>0x6614</code> 起）、vmlinux 35MB、内层 initramfs 在解压后偏移 <code>0x7bd448</code> 处。写了全套重建脚本，dumpimage 全绿。然后连跪四次：test2 缺 /dev 节点、test3 尺寸 fit 还是挂、test4 总长逐字节对齐照挂、test5 换 7zr 编码器对照还是挂。每次都是无声无息死在 <code>Starting kernel ...</code> 之后，连 "Uncompressing Linux..." 都没一句。原厂包内存启动一次就过。结论：stub 在 console 之前就 halt，跟改的内容无关——可能是 whole-image 校验，拆不动就认栽。这条线取消，脚本归档留念。</p>
+<p>回头走 U-Boot 路，反而一次就通：原厂 kernel1 原样进内存，另传一个 4.6KB 的小 ramdisk（里面只有一个改过的 rcS），<code>bootm 内核地址 盘地址</code>。内核把外挂盘 overlay 到内置 rootfs 上，hook 跑起来：等 br0 出 carrier → 拉 agent → agent 起 LuCI 全栈 → 看门狗 60 秒一轮。proof 文件的时间戳就是证据，hook 落在启动后十几秒，agent 日志接着报 <code>all started; watchdog armed</code>。</p>
+<p>中间还有两个插曲值得记。一个是 <code>Wrong Ramdisk Image Format</code>：第一次传的是裸 gzip cpio，U-Boot 要的是 uImage 包过的盘，<code>mkimage -T ramdisk</code> 包一下就过。另一个是 <code>can't run '/etc/init.d/rcS': Permission denied</code>：覆盖上去的 rcS 没执行位，内核照样用内置 rootfs 启动了其他东西——反向证明了 overlay 机制是"盖"不是"换"，修个权限再测就通了。</p>
+<p>rpcd 的 <code>luci</code> 对象也在这天修好，病因是三缺一：<code>/usr/lib/ucode/*.so</code> 没补齐、自带的 <code>luci/version.uc</code> 生成文件缺失、启动 rpcd 没 export <code>REQUIRE_SEARCH_PATH</code>。查法就一条：前台起 rpcd 看 stderr，它把 <code>Unable to resolve path for module 'fs'</code> 这类话全吐出来，一个个补就行。</p>
+<h2>安静与压制（9/4 晚 – 9/5）</h2>
+<p>LuCI 上 80 端口用的是 mount --bind shadow 顶掉 <code>/sbin/httpd</code> 的损招，厂商的 pc 进程（<code>ps</code> 里伪装成 cspd，<code>PID 817</code>，认准 <code>/proc/PID/exe</code>）每几秒刷一次 <code>httpd died counter</code>。串口长这样：</p>
+<pre><code>[OSS_pc][Warn] [pc.c(1830)ScanProgram] scan: httpd[1374]  died  counter=2
+[OSS_pc][Warn] [pc.c(1830)ScanProgram] scan: httpd[1374]  died  counter=3
+[OSS_pc][Warn] [pc.c(1830)ScanProgram] scan: httpd[1374]  died  counter=4
+</code></pre>
+<p>java 那边更吵，Felix 每次起来都要 reload 一堆 bundle：</p>
+<pre><code>Now reload the cached bundle: file:bundle/com.chinamobile.smartgateway.mangement_1.0.0.jar
+Now reload the cached bundle: file:bundle/org.apache.felix.bundlerepository-2.0.6.jar
+Now reload the cached bundle: file:bundle/org.apache.felix.gogo.command-0.16.0.jar
+</code></pre>
+<p>压制方案是 agent 里分四波杀：osgid/java/phoneapp/vodsl → 网管语音那几个 → 文件服务 → cspd，每波验 LAN+LuCI。<code>ps</code> 白名单收到只剩 init/getty/telnetd/dnsmasq 和自家栈。串口最后交给一个 S05 服务：每 5 秒刷一张 pid 表，刷之前先把 printk 踹回 1（串口登录会把内核日志提到 DEBUG，这个坑是登录一次刷一次屏才发现的）。终态串口基本只剩仪表盘自己。</p>
+<p>这里必须诚实记一笔翻车：pc 定案为"莫名重启元凶"后没几天，又出现一次 pc 缺席启动中的自发重启——归因降级为强嫌疑，没敢写死。还有 v2 版 ramdisk 试过开局 stub 掉 pc，结果 cspd 子树永不出生、br0 空壳无成员、LAN 全灭，当场回滚。结论就一句：<strong>pc 必须活过 LAN 构建期再杀</strong>，早一秒都不行。</p>
+<h2>终态与未竟</h2>
+<ul>
+<li>上电 → U-Boot（已存 bootcmd）→ NAND 读内核 + 读盘 → 双地址启动 → hook → agent → LuCI → 扫荡，全程无人值守，浏览器验收 0 报错。</li>
+<li>外挂盘永久家：kernel1 尾部 slack（2MB 全 FF 区，免擦除直写，read-back 比对过）。</li>
+<li>NAND 内核一字节没动；唯一的 NAND 写操作是 env 和空白区。</li>
+<li>没干完的：<code>uci</code> 对象缺失（LuCI 不用它）、P0 踢人缺在线 STA 实测、cloudflared 按 S20 规范接入、30 分钟 soak 从没完整跑完过。</li>
+<li>资产都在仓库（<code>h10e/</code> 自研件 + 文档，<code>s905/</code> 盒侧）配合 host 侧 tftpboot 大文件索引；自研启动件有份维护条例（<code>h10e/maintenance.md</code>），kill 顺序和红线都在里面。</li>
+</ul>
+<p>两段工作风格完全不一样，但有一条是通的：<strong>先找已知可引导基线，再每次只动一个变量，日志只信亲眼见到的</strong>。盒侧是"当贝底包能起"，路由侧是"原厂包内存启动一次过"。所有"应该没问题"但没亲眼看到日志的，最后都证明有问题——test2 到 test5 就是学费。</p>
+]]></content>
+    <author><name>ArchivalEra</name></author>
+    <category term="折腾"/>
+  </entry>
+  <entry>
+    <title>折腾 Shirone 做博客的这两天</title>
+    <link href="https://isui.ren/MangoMesa/posts/%E6%8A%98%E8%85%BEshirone%E5%81%9A%E5%8D%9A%E5%AE%A2%E7%9A%84%E8%BF%99%E4%B8%A4%E5%A4%A9/" rel="alternate" type="text/html"/>
+    <id>https://isui.ren/MangoMesa/posts/%E6%8A%98%E8%85%BEshirone%E5%81%9A%E5%8D%9A%E5%AE%A2%E7%9A%84%E8%BF%99%E4%B8%A4%E5%A4%A9/</id>
+    <published>2026-09-06T00:00:00.000Z</published>
+    <updated>2026-09-06T00:00:00.000Z</updated>
+    <summary>记录下这两天把 Shirone 接入 isui.ren 的过程：双仓架构、踩坑给上游提 PR、接入 B 站追番，以及把天天挂的 GitHub Actions 彻底修顺。</summary>
+    <content type="html"><![CDATA[<h1>折腾 Shirone 做博客的这两天</h1>
+<p>6 月底查出点破事，7 月顺手买了 <code>isui.ren</code> 这个域名，前两天终于下定决心把博客给搭起来。</p>
+<p>挑了一圈选了 <a href="https://github.com/LyraVoid/Shirone">Shirone</a>，Material 3 Expressive + Astro 7 + Svelte 5，二次元风格味很足，动效也做得不错。但真要接进自己的工作流，这两天基本全在排雷和改代码。</p>
+<p>简单记一下这两天干的事。</p>
+<hr />
+<h2>1. 双仓架构</h2>
+<p>我不太喜欢把文章 Markdown 和博客主题源码混在一起。主题更新、魔改组件和写博客本来就是两码事，所以一开始就定了双仓：</p>
+<ul>
+<li><strong><code>isui.ren-Blog</code></strong>：纯内容仓。放文章、所有 <code>yaml</code> 配置，以及自定义数据（设备、项目、技能、罗盘导航等）。</li>
+<li><strong><code>Shirone-personalized</code></strong>：主题仓。Fork 自上游，负责模板、样式、脚本和构建。</li>
+<li><strong>发布目标</strong>：主题仓构建完成后，通过 Actions 用 SSH 推到 <code>isui.ren-heart</code> 仓库的 <code>deploy</code> 分支（落到 <code>MangoMesa/</code> 目录），由边缘网关统一分发。</li>
+</ul>
+<p>平时写完东西只往内容仓推，内容仓的 Actions 会发一个 <code>repository_dispatch</code> 戳主题仓拉取内容、执行 <code>pnpm content:sync</code> 把 YAML 配置物化覆盖进主题，然后打包发布。</p>
+<hr />
+<h2>2. 给上游修的几个 Bug</h2>
+<p>把主题拖下来跑的时候，碰上了几个很离谱的坑，索性顺手全修了：</p>
+<h3>Vibrant 配色运行时暴毙</h3>
+<p>切到 <code>vibrant</code> 配色模式直接白屏，控制台报错 <code>normalizeMcStyle is not defined</code>。翻进 <code>mc-utils.ts</code> 一看，模块根本就没 import 进去，补上引用完事。</p>
+<h3>顶栏导航被短链中枢占坑</h3>
+<p>我顶栏挂了个外部跳转 <code>Bahnhof</code>，结果进首页时导航下划线直接标到了 Bahnhof 头上。排查发现是页面路由判断时没把 <code>BASE_URL</code>（<code>/MangoMesa/</code>）剥离干净，导致根路径匹配短链匹配歪了。</p>
+<h3>音乐播放器在空本地列表时死锁</h3>
+<p>这是排查时间最长的一个问题。主题的播放器支持 <code>mixed</code> 混合模式（本地曲目 + 网易云 Meting 歌单）。但我本地没放 MP3，想全靠网易云拉歌单。</p>
+<p>结果页面一加载，歌名永远卡在占位符「口笛で愛は歌えない」，怎么点都没反应。翻源码才发现：Svelte 客户端组件在 <code>onMount</code> 的时候根本就没调用 <code>runtime.initialize()</code> 去异步抓 Meting；而且一旦本地列表为空，当前播放索引永远停在 <code>-1</code>，状态机直接卡死。</p>
+<p>改了初始状态机逻辑，加了异步初始化触发，顺带补了一组测试。最后用隔离的 worktree 分支给上游提了 <a href="https://github.com/LyraVoid/Shirone/pull/36">PR #36</a>。</p>
+<hr />
+<h2>3. 接入 B 站追番</h2>
+<p>看番数据没必要纯手写。主题自带了从 B 站和 Bangumi 抓快照的脚本，直接配上我的 B 站公开 UID（<code>248600523</code>）。</p>
+<p>这里有个不错的设计是快照机制：数据在构建期由 Node 脚本拉下来转成 JSON，番剧封面直接本地下载成 WebP 存进静态目录，不走 B 站图片外链防盗链，也不在页面运行时打任何第三方请求。</p>
+<p>我们顺手把 <code>pnpm anime:sync --provider bilibili</code> 塞进了部署流水线里，并配上了 <code>BILI_SESSDATA</code> 环境变量，以后就算追番列表改私密了也照样能拉。</p>
+<hr />
+<h2>4. 把天天报警的 Actions 修绿</h2>
+<p>这两天只要一推代码，GitHub 邮件就叮咚响，Actions 天天挂。刚才仔细拉了 <code>gh run view</code> 的报错日志，破案了：</p>
+<ol>
+<li><strong>单测硬编码了 Demo 数据</strong>：主题官方自带的 <code>feature-data.test.mjs</code>，里面断言项目列表必须包含 <code>kernelpatch</code>、技能必须包含 <code>TypeScript</code>、设备必须有 <code>macbook-pro-16</code>。我把自己的真实项目和设备换上去之后，单测必然当场暴毙。改成通用的断言逻辑（动态取第一项做禁用测试，验证过滤函数行为本身），不再依赖任何写死的数据。</li>
+<li><strong>覆盖层空模块断言</strong>：<code>content-config.test.mjs</code> 有个用例强行断言仓库里的 <code>user-config.ts</code> 必须是个空模块。但个人 fork 只要执行过一次 <code>content:sync</code>，这个文件就会被注入真实配置并提交，每次 CI 跑这里必挂。去掉了对磁盘文件的生硬比对，只测生成器函数的输出。</li>
+</ol>
+<p>修完之后，Actions 终于变全绿了。</p>
+<hr />
+<p>两天下来，总算从上游的各种暗坑和 CI 报错里趟了出来。现在写文章只需要推 Markdown，剩下的全交给 Actions 自动化，清爽多了。</p>
+]]></content>
+    <author><name>ArchivalEra</name></author>
+    <category term="建站"/>
+  </entry>
+  <entry>
+    <title>第一篇</title>
+    <link href="https://isui.ren/MangoMesa/posts/%E7%AC%AC%E4%B8%80%E7%AF%87/" rel="alternate" type="text/html"/>
+    <id>https://isui.ren/MangoMesa/posts/%E7%AC%AC%E4%B8%80%E7%AF%87/</id>
+    <published>2026-09-03T00:00:00.000Z</published>
+    <updated>2026-09-03T00:00:00.000Z</updated>
+    <summary>双仓重建验证文章</summary>
+    <content type="html"><![CDATA[<h1>第一篇</h1>
+<p>这是 isui.ren-Blog 双仓重建后的第一篇验证文章。</p>
+<p>如果你能在 <code>https://isui.ren/MangoMesa/</code> 看到这篇内容，说明完整链路已通：</p>
+<ol>
+<li>内容仓 <code>ArchivalEra/isui.ren-Blog</code> push →</li>
+<li><code>trigger-build.yml</code> 触发 → 跨仓调用主题仓 <code>content-validate.yml</code> 校验 →</li>
+<li><code>repository_dispatch [content-updated]</code> 派发到主题仓 →</li>
+<li>主题仓 <code>deploy.yml</code> 拉取内容仓 → <code>content:sync</code> → <code>pnpm build</code> →</li>
+<li>SSH 推送到 <code>isui.ren-heart@deploy:MangoMesa/</code> →</li>
+<li><code>https://isui.ren/MangoMesa/</code> 可访问。</li>
+</ol>
+<p>日常写作只需在内容仓 <code>content/posts/</code> 下新建 <code>.md</code> 文件并 push，无需触碰主题仓或 heart 仓。</p>
+]]></content>
+    <author><name>ArchivalEra</name></author>
+    <category term="建站"/>
+  </entry>
+</feed>

@@ -1,0 +1,18 @@
+# isui.ren
+
+> Mango Mesa
+
+This is the llms.txt file for isui.ren. It provides a machine-readable directory of published articles and core pages for Large Language Models.
+
+## Core Pages
+- [Home](https://isui.ren/): Main blog entrance and latest post stream.
+- [About](https://isui.ren/about/): Author profile, technical stack, and background.
+- [Archive](https://isui.ren/archive/): Chronological index of all published writings.
+
+## Articles
+- [一台融合网关的两面：S905L3 跑 Debian，ZX279128S 跑 LuCI](https://isui.ren/MangoMesa/posts/一台融合网关的两面-s905l3跑debian-zx279128s跑luci/): 中国移动 H10E-11AC 融合网关双 SoC 记录：电视盒侧 S905L3 突破 eMMC 自启跑 Debian 13，路由侧 ZX279128S 4.6KB 外挂盘免刷机起全功能 OpenWrt LuCI。
+- [折腾 Shirone 做博客的这两天](https://isui.ren/MangoMesa/posts/折腾shirone做博客的这两天/): 记录下这两天把 Shirone 接入 isui.ren 的过程：双仓架构、踩坑给上游提 PR、接入 B 站追番，以及把天天挂的 GitHub Actions 彻底修顺。
+- [第一篇](https://isui.ren/MangoMesa/posts/第一篇/): 双仓重建验证文章
+
+## Full Text Dump
+- [Full Text Archive](https://isui.ren/llms-full.txt): Complete, concatenated Markdown content of all public articles for full-context ingestion.
