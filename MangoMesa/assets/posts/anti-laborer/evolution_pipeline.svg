@@ -65,7 +65,7 @@
     <line x1="25" y1="95" x2="305" y2="95" stroke="var(--outline-variant, rgba(255,255,255,0.12))" stroke-width="1" />
     <!-- Items -->
     <g transform="translate(25, 135)" font-size="14.5" fill="var(--on-surface, #e6e1e5)" letter-spacing="0.2">
-      <text x="0" y="0" font-weight="500">- 2026 一线实证 (打螺丝8000/股市真赚)</text>
+      <text x="0" y="0" font-weight="500">- 2026 一线实证 (打螺丝5000+/股市真赚)</text>
       <text x="0" y="70" font-weight="500">- 宏大实体'嘉豪'与'本来'目的论防御</text>
       <text x="0" y="140" font-weight="500">- 东亚代际创伤与双向伦理互惠契约</text>
       <text x="0" y="210" font-weight="500">- OKF v0.2 知识库与执行技能彻底解耦</text>
