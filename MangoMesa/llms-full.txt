@@ -384,7 +384,7 @@ Internal error: Oops: 5 [#1] SMP ARM
 
 Anti-Laborer-Skills 想做的事其实很简单：**给 AI Agent 和我们自己，配一套基于控制论、运筹学和实证数据的客观工具，遇到力工思维时能直接降维解构，省下时间和算力去干正经事。**
 
-![Anti-Laborer-Skills 演进架构与持续训练](/assets/posts/anti-laborer/evolution_pipeline.svg#dynamic)
+![Anti-Laborer-Skills 演进架构与持续训练（2026 一线实证校准）](/assets/posts/anti-laborer/evolution_pipeline.svg#dynamic)
 
 ## 演进的三步走
 
