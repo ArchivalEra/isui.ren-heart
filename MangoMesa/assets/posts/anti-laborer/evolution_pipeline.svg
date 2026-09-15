@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 620" width="100%" height="auto" style="font-family: var(--font-sans), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; display: block; margin: 1.5rem auto;">
+  <defs>
+    <!-- Arrow marker for Phase 1 to Phase 2 (Secondary color) -->
+    <marker id="arrow-secondary" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="var(--secondary, #e29050)" />
+    </marker>
+    <!-- Arrow marker for Phase 2 to Phase 3 (Tertiary color) -->
+    <marker id="arrow-tertiary" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="var(--tertiary, #4ea395)" />
+    </marker>
+  </defs>
+
+  <!-- Canvas Background with Material 3 Surface & Outline -->
+  <rect width="1200" height="620" rx="20" fill="var(--surface-container-lowest, #141218)" stroke="var(--outline-variant, rgba(255,255,255,0.12))" stroke-width="1.5" />
+
+  <!-- Main Title -->
+  <text x="600" y="52" text-anchor="middle" fill="var(--on-surface, #e6e1e5)" font-size="24" font-weight="700" letter-spacing="0.5">
+    Anti-Laborer-Skills: 演进架构与持续训练
+  </text>
+
+  <!-- Subtitle -->
+  <text x="600" y="86" text-anchor="middle" fill="var(--on-surface-variant, #cac4d0)" font-size="14.5" letter-spacing="0.2">
+    从破除前现代规训到拆解 2026 技术卢德主义的第一性原理演进
+  </text>
+
+  <!-- ==================== Phase 1 Card (Primary Accent) ==================== -->
+  <g transform="translate(45, 125)">
+    <!-- Card Frame -->
+    <rect width="330" height="420" rx="18" fill="var(--surface-container-low, #1d1b20)" stroke="var(--primary, #6750a4)" stroke-width="2.5" />
+    <!-- Phase Label -->
+    <text x="25" y="38" fill="var(--primary, #6750a4)" font-size="13" font-weight="600" letter-spacing="0.5">
+      Phase 1: Foundations
+    </text>
+    <!-- Phase Title -->
+    <text x="25" y="72" fill="var(--on-surface, #e6e1e5)" font-size="18" font-weight="700">
+      阶段一：破除基础规训
+    </text>
+    <!-- Divider -->
+    <line x1="25" y1="95" x2="305" y2="95" stroke="var(--outline-variant, rgba(255,255,255,0.12))" stroke-width="1" />
+    <!-- Items -->
+    <g transform="translate(25, 135)" font-size="14.5" fill="var(--on-surface, #e6e1e5)" letter-spacing="0.2">
+      <text x="0" y="0" font-weight="500">- 35岁年龄门槛与社会时钟单轨</text>
+      <text x="0" y="70" font-weight="500">- 盲目吃苦与低效体力出汗崇拜</text>
+      <text x="0" y="140" font-weight="500">- 攀附大佛与虚假全知权威</text>
+      <text x="0" y="210" font-weight="500">- 犬儒表情包 [笑哭] 与'理论上'甩锅</text>
+    </g>
+  </g>
+
+  <!-- ==================== Arrow 1 -> 2 ==================== -->
+  <line x1="385" y1="335" x2="425" y2="335" stroke="var(--secondary, #e29050)" stroke-width="3" stroke-linecap="round" marker-end="url(#arrow-secondary)" />
+
+  <!-- ==================== Phase 2 Card (Secondary Accent) ==================== -->
+  <g transform="translate(435, 125)">
+    <!-- Card Frame -->
+    <rect width="330" height="420" rx="18" fill="var(--surface-container-low, #1d1b20)" stroke="var(--secondary, #e29050)" stroke-width="2.5" />
+    <!-- Phase Label -->
+    <text x="25" y="38" fill="var(--secondary, #e29050)" font-size="13" font-weight="600" letter-spacing="0.5">
+      Phase 2: Reality &amp; Decoupling
+    </text>
+    <!-- Phase Title -->
+    <text x="25" y="72" fill="var(--on-surface, #e6e1e5)" font-size="18" font-weight="700">
+      阶段二：一线事实校准与工程解耦
+    </text>
+    <!-- Divider -->
+    <line x1="25" y1="95" x2="305" y2="95" stroke="var(--outline-variant, rgba(255,255,255,0.12))" stroke-width="1" />
+    <!-- Items -->
+    <g transform="translate(25, 135)" font-size="14.5" fill="var(--on-surface, #e6e1e5)" letter-spacing="0.2">
+      <text x="0" y="0" font-weight="500">- 2026 一线实证 (打螺丝8000/股市真赚)</text>
+      <text x="0" y="70" font-weight="500">- 宏大实体'嘉豪'与'本来'目的论防御</text>
+      <text x="0" y="140" font-weight="500">- 东亚代际创伤与双向伦理互惠契约</text>
+      <text x="0" y="210" font-weight="500">- OKF v0.2 知识库与执行技能彻底解耦</text>
+    </g>
+  </g>
+
+  <!-- ==================== Arrow 2 -> 3 ==================== -->
+  <line x1="775" y1="335" x2="815" y2="335" stroke="var(--tertiary, #4ea395)" stroke-width="3" stroke-linecap="round" marker-end="url(#arrow-tertiary)" />
+
+  <!-- ==================== Phase 3 Card (Tertiary Accent) ==================== -->
+  <g transform="translate(825, 125)">
+    <!-- Card Frame -->
+    <rect width="330" height="420" rx="18" fill="var(--surface-container-low, #1d1b20)" stroke="var(--tertiary, #4ea395)" stroke-width="2.5" />
+    <!-- Phase Label -->
+    <text x="25" y="38" fill="var(--tertiary, #4ea395)" font-size="13" font-weight="600" letter-spacing="0.5">
+      Phase 3: Cutting-Edge Frontiers
+    </text>
+    <!-- Phase Title -->
+    <text x="25" y="72" fill="var(--on-surface, #e6e1e5)" font-size="18" font-weight="700">
+      阶段三：2026 前沿盲区与自动化
+    </text>
+    <!-- Divider -->
+    <line x1="25" y1="95" x2="305" y2="95" stroke="var(--outline-variant, rgba(255,255,255,0.12))" stroke-width="1" />
+    <!-- Items -->
+    <g transform="translate(25, 135)" font-size="14.5" fill="var(--on-surface, #e6e1e5)" letter-spacing="0.2">
+      <text x="0" y="0" font-weight="500">- AI 时代手搓原教旨与 Prompt 力工</text>
+      <text x="0" y="70" font-weight="500">- 物理实体拜物教与数字虚无主义</text>
+      <text x="0" y="140" font-weight="500">- 表演性工时与防御性伪工作</text>
+      <text x="0" y="210" font-weight="500">- pre-commit / pre-push 双重门禁保障</text>
+    </g>
+  </g>
+
+  <!-- ==================== Footer ==================== -->
+  <text x="600" y="585" text-anchor="middle" fill="var(--on-surface-variant, #cac4d0)" font-size="13" letter-spacing="0.5">
+    Anti-Laborer-Skills | 拒绝情绪反调 · 依靠控制论与第一性原理 · 持续演进
+  </text>
+</svg>
