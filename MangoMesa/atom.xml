@@ -379,62 +379,6 @@ end Kernel panic - not syncing: Fatal exception in interrupt
     <category term="技术思考"/>
   </entry>
   <entry>
-    <title>Continuously Trained Anti-Laborer Skills</title>
-    <link href="https://isui.ren/MangoMesa/posts/%E6%8C%81%E7%BB%AD%E8%AE%AD%E7%BB%83%E7%9A%84%E5%8F%8D%E5%8A%9B%E5%B7%A5skillen/" rel="alternate" type="text/html"/>
-    <id>https://isui.ren/MangoMesa/posts/%E6%8C%81%E7%BB%AD%E8%AE%AD%E7%BB%83%E7%9A%84%E5%8F%8D%E5%8A%9B%E5%B7%A5skillen/</id>
-    <published>2026-09-15T00:00:00.000Z</published>
-    <updated>2026-09-15T00:00:00.000Z</updated>
-    <summary>Equipping AI agents and ourselves with objective tools grounded in cybernetics, operations research, and empirical data, deconstructing anti-intellectual laborer tropes systematically.</summary>
-    <content type="html"><![CDATA[<h1>Continuously Trained Anti-Laborer Skills</h1>
-<p>This repository was never started to pick fights online, nor was it built to be contrary for its own sake.</p>
-<p>Almost everyone has encountered these arguments in daily life: "Code must be typed line-by-line by hand to have a craftsman's soul; using AI is just lazy cutting corners." Or on the flip side: "Now that we have LLMs, who needs compilers or data structures? Just spam prompts every day." Looking back further, there are the usual tropes: "Do what fits your age; if you haven't settled by 35, you're finished," "Only through enduring bitter hardship can one rise above others," or "Typing on keyboards is all fluff; real security comes only from hard manual trades like auto repair."</p>
-<p>Hearing these talking points over and over is exhausting. If you respond to emotional provocations, the conversation quickly devolves into labeling and bad-faith arguments. If you ignore them, the surrounding engineering culture gets weighed down by the sheer inertia of mindless mechanical toil.</p>
-<p>The premise of Anti-Laborer-Skills is straightforward: <strong>equip AI agents and ourselves with objective tools grounded in cybernetics, operations research, and empirical data, deconstructing anti-intellectual laborer tropes systematically so we can save our time and compute for real work.</strong></p>
-<p><img src="/assets/posts/anti-laborer/evolution_pipeline.svg#dynamic" alt="Anti-Laborer-Skills Evolution Architecture" /></p>
-<h2>The Three Stages of Evolution</h2>
-<p>From scattered personal notes to the current system, the project progressed through three distinct phases:</p>
-<h3>1. Breaking Pre-Modern Conditioning</h3>
-<p>The repository began by addressing the most widespread anti-intellectual formulas:</p>
-<ul>
-<li>The "social clock" dogma, which mistakes localized policy gates (such as public sector 35-year age barriers) for immutable biological laws;</li>
-<li>The "suffering fetish," which sanctifies mechanical energy expenditure and sweating over intelligent leverage;</li>
-<li>Epistemic outsourcing to phantom authorities, epitomized by rhetorical appeals like "How could tens of thousands of big-tech engineers not have thought of this?";</li>
-<li>The twin low-SNR shields of Chinese social forums: hiding behind cynical facepalm emojis (<code>[笑哭]</code>) for false superiority, and hedging with "in theory" to dodge accountability when plans fail in reality.</li>
-</ul>
-<h3>2. Grounding in 2026 Field Realities</h3>
-<p>Commentators sitting in ivory towers often hallucinate what life is like on the ground, producing detached caricatures.</p>
-<p>In 2026, the reality is that factory workers frequently earn over 8,000 RMB per month on assembly lines, and many young people have genuinely made money in financial markets. Why do they still latch onto grandiose nationalistic chauvinism or rigid traditional conditioning? Field investigations reveal that many are trapped under marriage mortgage debts and unilateral elder filial obligations transferred from older generations. When self-esteem is crushed in daily life, people seek psychological compensation by identifying with colossal macro-entities. Similarly, youth who lean on "it was supposed to be this way by default" as a defensive shell often lack practical production experience; once they enter genuine workplaces and face realistic constraints, they rapidly adapt and return to practical rationality.</p>
-<p>Understanding the underlying pathology allows responses to address root causes rather than lecturing from moral high ground.</p>
-<p><img src="/assets/posts/anti-laborer/decoupled_architecture.svg#dynamic" alt="Core Decoupled Architecture" /></p>
-<h3>3. Decoupling Knowledge from Execution</h3>
-<p>A common flaw in prompt repositories is blending empirical evidence, mathematical models, and dialogue templates together. This causes language models to hallucinate while injecting sarcasm and preachy tones into outputs.</p>
-<p>We split the repository into two clean layers:</p>
-<ul>
-<li><strong>Knowledge Layer (<code>knowledge/</code>)</strong>: Built under Google's Open Knowledge Format (OKF v0.2), containing peer-reviewed literature, legal comparisons, cybernetic proofs, and empirical counter-cases. No prompt templates or emotional contrarian rhetoric are permitted here—only verified facts.</li>
-<li><strong>Skill Execution Layer (<code>skills/</code>)</strong>: Includes tools like <code>source-evaluator</code> (a 3-tier sieve filtering political noise and emotional venting) and <code>anti-laborer-output</code> (enforcing natural grounded prose, zero decorative emojis, and minimal context load). Downstream dialogue generation treats the knowledge base strictly as a read-only dictionary.</li>
-</ul>
-<h2>The 2026 Frontier: What Do Modern Laborers Look Like?</h2>
-<p>Laborer mentality evolves alongside technology, surfacing in new disguises:</p>
-<ol>
-<li><strong>AI-Era Artisan Luddism vs. Prompt Laborers</strong>:
-On one side, people treat typists' mechanical friction as "craftsmanship," resisting automation; on the other, individuals abandon architectural boundary constraints and concurrency models, becoming aimless trial-and-error prompt pray-ers. Both confuse the essential topological complexity of software with the accidental complexity of typing code.</li>
-<li><strong>Physicalist Matter Fetishism &amp; Digital Nihilism</strong>:
-Viewing algorithms, software architecture, and scheduling networks as "intangible bubbles," arguing that only moving physical mass from point A to point B constitutes real labor. This ignores information as negative entropy and its astronomical multiplier on physical productivity.</li>
-<li><strong>Performative Presenteeism &amp; Defensive Pseudo-Work</strong>:
-When management lacks the technical ability to assess intellectual output, it regresses to measuring desk time. Employees respond with defensive overtime. Nocturnal fatigue causes defect escape rates and production outages to surge by 300% to 500%; superficial dedication directly compromises engineering integrity.</li>
-</ol>
-<h2>Maintaining Engineering Integrity</h2>
-<p>Pledging objectivity in prose is insufficient; engineering repositories require mechanical guardrails:</p>
-<ul>
-<li><strong><code>pre-commit</code></strong>: Strictly enforces bilingual markdown pairing, absolute-path <code>.gitignore</code> whitelists, and mandatory README updates whenever skills change.</li>
-<li><strong><code>pre-push</code></strong>: Automatically verifies that any modification to knowledge concepts is synchronized with the Symptom-to-Knowledge Diagnostic Matrix in master indexes and root READMEs.</li>
-</ul>
-<p>Continuous training is not about creating argumentative agents; it provides a sober, grounded technical baseline for navigating a noisy world. When confronted with low-SNR dogma, we offer no emotional appeasement—only refutable first principles.</p>
-]]></content>
-    <author><name>ArchivalEra</name></author>
-    <category term="Technology"/>
-  </entry>
-  <entry>
     <title>一台融合网关的两面：S905L3 跑 Debian，ZX279128S 跑 LuCI</title>
     <link href="https://isui.ren/MangoMesa/posts/%E4%B8%80%E5%8F%B0%E8%9E%8D%E5%90%88%E7%BD%91%E5%85%B3%E7%9A%84%E4%B8%A4%E9%9D%A2-s905l3%E8%B7%91debian-zx279128s%E8%B7%91luci/" rel="alternate" type="text/html"/>
     <id>https://isui.ren/MangoMesa/posts/%E4%B8%80%E5%8F%B0%E8%9E%8D%E5%90%88%E7%BD%91%E5%85%B3%E7%9A%84%E4%B8%A4%E9%9D%A2-s905l3%E8%B7%91debian-zx279128s%E8%B7%91luci/</id>
