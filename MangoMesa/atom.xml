@@ -5,7 +5,323 @@
   <link href="https://isui.ren/" rel="alternate" type="text/html"/>
   <link href="https://isui.ren/atom.xml" rel="self" type="application/atom+xml"/>
   <id>https://isui.ren/</id>
-  <updated>2026-09-09T00:00:00.000Z</updated>
+  <updated>2026-09-15T00:00:00.000Z</updated>
+  <entry>
+    <title>Mud Princeeeeess!</title>
+    <link href="https://isui.ren/MangoMesa/posts/mud-princeeeeess/" rel="alternate" type="text/html"/>
+    <id>https://isui.ren/MangoMesa/posts/mud-princeeeeess/</id>
+    <published>2026-09-15T00:00:00.000Z</published>
+    <updated>2026-09-15T00:00:00.000Z</updated>
+    <summary>Hi3798MV310 从 aarch64 主线 tick 饥饿泥潭到 vendor 4.4.35 绝地反击，再到 WS73 星闪 SLE / BLE 双模打通的十六天全记录。</summary>
+    <content type="html"><![CDATA[<h1>Mud Princeeeeess!</h1>
+<hr />
+<h2>序章：卧沙练习时长2天半（8/1 ~ 8/15）</h2>
+<p>故事的起点不是这块板子，是它的弟弟。</p>
+<p>七月底到八月初，我和 Gemini 师傅在 <strong>Hi3798MV300</strong> 上度过了"无尽骚操作"的一周多：刷 vendor 底座、折腾启动链、植入 cloudflared 让它突破运营商的无限 NAT——那是另一篇博客的内容，这里只立个flag。总之等尘埃落定，<strong>mv300 成了家里唯一一台跑着完整主线内核、自带 TUN 的 ARM64 小服务器</strong>。</p>
+<p>而这篇的主角，<strong>Hi3798MV310</strong>——mv300 的同门师弟，四核 A53，GIC-400——是在七月底那波操作里顺手拿到手的。七月底我给它刷了系统：内核用 histb 论坛大佬编好的 4.4.35（2025 年 11 月的版本，WiFi 这类驱动都是现成的，这个后来救了我一命），rootfs 是我自己编的 Debian 11。系统本身能跑，但它之于我，和所有海思机顶盒之于搞机的人一样：<strong>一块性能尚可、生态死透、不能就这么算了的板子。</strong></p>
+<p>八月中旬之前，它在干一件和"搞机"毫无关系的事：<strong>卧沙</strong>。</p>
+<p>我把它挂在公司一台路由器后面，吃着路由器端口转发送来的公网 IPv4 和 IPv6 红利，拿它做 H2O 反代——甚至用它摸进中国电信的智能网关管理页来设置端口转发白嫖动态ipv4。从 cloudflare tunnel 到自己配 DDNS 域名，全是大半夜没人的时候干的。那三天它不是开发板，是跳板机。</p>
+<p>8 月 16 日，我把它从路由器后面拔了下来。</p>
+<p><strong>服役结束，泥潭开始。</strong></p>
+<p>顺带一提，前一周我在另一块 mv300 上美美地部署了 Debian 13 + CachyOS 7.2 内核——那是给后来的星闪双端实验准备的对端机。</p>
+<hr />
+<h2>第一幕：泥潭（8/16 ~ 8/25，aarch64 主线）</h2>
+<h3>1.1 目标与武器库</h3>
+<p>目标朴素而宏大：<strong>给 mv310 跑通主线 Linux（aarch64）</strong>。vendor 的 4.4 内核是死的生态，主线才是活水——理论上，跑通主线，这块四核 A53 就能以现代内核的姿态活下去。</p>
+<p>我手里的武器库在这十天里逐步成型：</p>
+<ul>
+<li><strong>零写 eMMC 的 RAM 启动链</strong>：<code>fastboot → l-loader → TF-A BL31 → U-Boot → booti</code>，全程内存里跑，产物按"名字-md5"永久归档。绝不碰 eMMC——U-Boot 的 <code>reset</code> 命令曾经让盒子彻底无声，从此物理断电复位是铁律。</li>
+<li><strong>串口不说谎原则</strong>：一切以串口日志为准。</li>
+<li><strong>AI 结对</strong>：这一整场战役，是我和我的 AI 一起打的。它读内核源码、写实验镜像、分析串口日志；我下判断、救场、在它钻牛角尖时把它拽回来。后面会讲这种工作方式有多重要。</li>
+</ul>
+<p>然后，第一口泥就来了。</p>
+<h3>1.2 静默污染：第一课</h3>
+<p>Day 1 冻结启动链的当晚，出了个诡异的事：前一天还好的镜像，突然没有串口输出了。</p>
+<p>排查半天，发现不是板子的问题，是<strong>构建环境的问题</strong>：非交互环境下 kconfig 的提问会静默失败，<code>CONFIG_SERIAL_AMBA_PL011</code> 和 <code>CONFIG_CMDLINE</code> 被无声清掉——镜像"构建成功"，串口驱动没了。半天时间丢在"探针污染"的误判里。</p>
+<p>从此立下铁律：<code>olddefconfig &lt;/dev/null</code> + 逐项 grep 验收。<strong>这个坑后面还会以别的形态回来。</strong></p>
+<h3>1.3 GIC 三连：两次误读，一次真相</h3>
+<p>Day 3 是 SGI 判决日，也是自摆乌龙日。</p>
+<p><strong>误读一</strong>：我把 <code>0xF1001104</code>（ISENABLER1）当成 ISENABLER0 读，得出"SGI 从未使能"的结论——真身在 <code>0xF1001100</code>。寄存器地图背错了。</p>
+<p><strong>误读二</strong>：把 GICC_BPR 当成 HPPIR 看位域，得出"中断到了 CPU interface 却没人取"的结论——寄存器语义张冠李戴。</p>
+<p>撤回这两个误读的同一天，真正的怪物现形了：<strong>向 <code>GICD_CTLR</code> 的 bit1 写入 1，板子当场挂死</strong>——<code>v1</code> 镜像写 <code>0x3</code> 后 boot 死在 <code>time_init</code>，回退到 <code>0x1</code> 的 <code>v2</code> 才第一次看到 <code>Run /init</code>。</p>
+<pre><code>v1  GICD_CTLR = 0x3   写入即死，boot 卡死在 time_init，串口静默
+v2  GICD_CTLR = 0x1   Run /init   ← 十六天里第一次
+</code></pre>
+<p>同一个 GIC-400，mv300 上这些操作都是家常便饭。<strong>这是这块 SoC 的硬件差异，不是内核的 bug。</strong> 当时就隐约意识到了，但还没意识到这意味深长。</p>
+<h3>1.4 心跳：CPU 活着，控制台死了</h3>
+<p>Day 4 做了个极简隔离实验：在死亡点前后各放一条打印（<code>R-BEFORE</code> / <code>AFTER</code>）。<code>devmem</code> 读 <code>0xF1001100</code> 返回 <code>0x4A00FFFF</code> 之后，下一行 <code>echo AFTER</code> 永远没有出现。</p>
+<pre><code>&gt; devmem 0xF1001100
+0x4A00FFFF
+&gt; echo AFTER
+（永远没有然后）
+</code></pre>
+<p>死亡精确到<strong>一条指令</strong>。但很快我们发现不对劲：<strong>console 死了不等于 CPU 死了。</strong></p>
+<p>于是有了整个战役最重要的仪器——<strong>HB 心跳</strong>。直接在裸机层用一个忙等循环往 UART 打 <code>H</code>，不经过 printk、不经过调度器、不经过任何会饿死的管线。<code>v7.2</code> 镜像跑起来后：</p>
+<pre><code>HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH……
+</code></pre>
+<p>连续 20,000+ 拍，零中断。<strong>CPU、总线、UART 全部活着</strong>——死的是 printk 到控制台的输出管线。之前所有"系统挂死"的结论全部作废，需要重新解读。</p>
+<p>紧接着 <code>v7.3</code> 的三标记实验（probe-B + pr_info + probe-D 全部落地）把链条钉死：printk 本身没死锁，是用户态的 flush 依赖调度器、调度器依赖 tick、tick 依赖 PPI30 中断——<strong>而 PPI30 从不触发。两个故障，合成一个根因。</strong></p>
+<p>十六天，八个镜像轮次，<strong>25,613 个 <code>H</code></strong>。</p>
+<h3>1.5 九旋钮全绿</h3>
+<p>8/21 那天我们走到了"配置域的尽头"。</p>
+<p>我写了一个自研的 MMIO timer 驱动（<code>timer-mv310.c</code>），绕开 PPI30，用 SPI 58/91/59/92 四个硬中断做四个核的 clockevent。<code>request_irq</code> 全部成功，注册全部成功——<strong>中断计数恒为零</strong>。</p>
+<p>把 Secure 视角的 GICC_CTLR 从 <code>0x1e9</code> 拨到 <code>0x1eb</code>（打开 Group1 转发的最后一个门），软件 pend 一个 SPI 进去——<code>HPPIR</code> 读回来还是 <code>0x3ff</code>，没有中断在等待。</p>
+<p>8/20 那天的一页对照表，最能说明什么叫"配置全对、投递全死"：</p>
+<table>
+<thead>
+<tr>
+<th>项目</th>
+<th>读值</th>
+<th>判定</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SCR_EL3</td>
+<td>0x238</td>
+<td>bits 1,2 = 0，非安全侧可访问 ✓</td>
+</tr>
+<tr>
+<td>GICD_IGROUPR0</td>
+<td>0xfe00ffff</td>
+<td>分组已设 ✓</td>
+</tr>
+<tr>
+<td>GICD_ISENABLER0</td>
+<td>0xffff</td>
+<td>SGI/PPI 已使能 ✓</td>
+</tr>
+<tr>
+<td>MV310-IRQ 探针</td>
+<td><strong>0 命中</strong></td>
+<td>FAIL</td>
+</tr>
+</tbody>
+</table>
+<p>NS/S 两个视角的 GICD_CTLR、全 bank 的 IGROUPR、ISENABLER/ISPENDR、GICC_CTLR/PMR/RPR——<strong>九个可达的配置旋钮全部验证正确，转发依然死。</strong></p>
+<p>8/22 的 CNTPCT 判决做了最终封棺：poll clockevent 带着全套重试机制跑满 5 秒，<code>CNTPCT</code> 计数器稳定前进，<code>jiffies</code> 纹丝不动。</p>
+<blockquote>
+<p><strong>计数器活着，只有中断永远不来。</strong></p>
+</blockquote>
+<h3>1.6 真相：安全扩展，和 vendor 自己的 <code>#if 0</code></h3>
+<p>8/23，从泄露的海思 SDK 源码里（<a href="https://github.com/JasonFreeLab/HiSTBLinuxV100R005C00SPC050">JasonFreeLab/HiSTBLinuxV100R005C00SPC050</a>，本地有完整镜像）找到了"标准答案"：</p>
+<ol>
+<li><strong>GIC 的 Security Extensions 是开着的</strong>（GICD_TYPER bit10=1）。</li>
+<li>poplar 系 TF-A 的 <code>arm_gic.c</code> 只把 SPI 按 Group1/NS 分组，<strong>SGI/PPI bank（IGROUPR0，按核 banked）从未分配</strong>——PPI30 和 SGI 停在复位值 Group 0（安全世界），Linux 根本看不见。SDK 里的修法是每核从 EL3 写 <code>IGROUPR0 = ~sec_ppi_sgi_mask</code>，注释原文："They are Group0 at reset"。</li>
+<li>更绝的实锤：SDK 的 TF-A 把 hi3798mv200 的安全中断表定为 {60, 50, 52, 88}——<strong>timer 的 SPI 被路由进了安全世界</strong>；而 <code>hi3798mv310.dts</code> 里，<strong>vendor 自己把 arm-timer 节点 <code>#if 0</code> 掉了</strong>，改用 hisp804 MMIO 定时器。</li>
+</ol>
+<p><strong>vendor 早就知道这颗 SoC 的 PPI30 不可靠，绕路而行。</strong> 海思的仓库集到底埋了多少土豆地雷至今未知。大伙拿到还是先扫雷为优。</p>
+<h3>1.7 放弃，与告别</h3>
+<p>按新根因模型，我们做了最后一轮实验（v12/v13/v14）：按 SDK 的方法修 IGROUPR0、关闭 SE 配置、换纯净上游 TF-A——<strong>tick 依然不来</strong>。配置层面能穷尽的穷尽了，问题在这颗 SoC 更深的地方：fuse strap、或者 PPI30 的硬件布线本身。</p>
+<p>8 月 25 日，正式放弃 aarch64 主线。五条硬理由里最硬的一条是投入产出比：再往下是 fuse dump 和 EL3 私有寄存器考古，投入一周、产出一条 errata，而 armhf 4.4 已经能满足"好用盒子"的真实需求。</p>
+<p>retrospective 的结尾是这么写的，我原样搬来：</p>
+<blockquote>
+<p>16 天，8 轮 Image，25,613 个 <code>H</code>，1 个 <code>CNTPCT ADVANCED</code>。
+<strong>板子没变成我们想要的样子，但我们终于看清了它原本的样子。</strong></p>
+</blockquote>
+<p>还有一条比任何技术结论都值钱的军规，后来在 WS73 战役里又救了我们一次：</p>
+<blockquote>
+<p><strong>先证明 CPU 活着，再谈中断。</strong> 没有 <code>H</code> 心跳之前，一切"挂死"都可能是控制台饿死。</p>
+</blockquote>
+<hr />
+<h2>第二幕：降维打击（8/25 ~ 8/28，armhf 实用化）</h2>
+<p>放弃主线的第二天，立刻降维：<strong>回归 vendor 4.4.35 内核链路</strong>，目标从"修好这颗芯片"变成"让这块盒子好用"。</p>
+<p>同源同链，天亮了：</p>
+<ul>
+<li>
+<p><strong>XFS</strong>：内核树里 <code>CONFIG_XFS_FS=m</code>，本地直编 <code>xfs.ko</code>（1.2M）通过。但坑紧跟着来：板载 U 盘是 XFS <strong>v5</strong> 格式（bigtime/inobtcount/rmap 特性），4.4.35 的老 XFS 连只读挂载都起不来：</p>
+<pre><code>XFS (sda1): SB validate failed with error -22.
+</code></pre>
+<p>重格 <code>mkfs.xfs -m crc=0</code> 降版本才收编。<strong>USB 存储从此可用，但受限于 4.4 的 XFS 版本，只能读老格式盘。</strong></p>
+</li>
+<li>
+<p><strong>WiFi</strong>：板载 RTL8822BS。内核树里没有的模块得自己补——先撞上 ARM32 的经典一刀：</p>
+<pre><code>cfg80211: module relocation 28 out of range
+</code></pre>
+<p>内核符号区离模块区差 6368 字节，BL 指令 ±32MB 够不着。解法土而有效：先 insmod 一个 64KB 的占位模块（<code>mv310-pad.ko</code>）把后续模块挤进射程内，再加载 cfg80211 和 rtl8822bs。wlan0 起来了，连上测试 AP，<strong>iperf3 实测 136 / 157 Mbit/s</strong>。</p>
+</li>
+<li>
+<p><strong>板载蓝牙的葬礼</strong>：RTL8822BS 理论上带蓝牙（单 SDIO function C07），我们撸了 915 行的 2018 年 GPL 私有驱动，手补了 ic_id_table 和 SDIO 设备表，固件签名比对都对——<code>hci0 up</code> 必报 <code>0x1001 tx timeout</code>（-110），然后 <code>Unknown interrupt</code>、hung_task panic、整机失联、断电重启，循环。SDK 里 <code>CFG_HI_BLUETOOTH_SUPPORT</code> 压根没打开，DTS 里也没有蓝牙节点。<strong>板载 BT 这条路，芯片厂自己就没打算开。</strong> 葬礼办完，目光转向抽屉里的另一个东西。</p>
+</li>
+</ul>
+<p>（顺带澄清两个小结论：内核树里没有 TUN，想要 TUN 得靠完整内核——这是 mv300 的活；4.4 上没有 BBR、qdisc 想都别想，拥塞控制在板侧无解。）</p>
+<p><strong>盒子此时已经"能用"了：WiFi + USB 存储 + vendor 全家桶。</strong> 但"能用"和"好玩"之间，隔着一个星闪的距离。</p>
+<hr />
+<h2>第三幕：三模（8/28 ~ 8/29，WS73 USB dongle）</h2>
+<h3>3.1 星闪之剑</h3>
+<p>WS73 是海思的 WiFi/BT/SLE（星闪低功耗，NearLink）三模 USB dongle，<code>ffff:3733</code>。它的驱动四件套要自己编：<code>plat_soc.ko</code>（HCC 传输 + 固件下载）→ <code>ble_soc.ko</code>（挂到 BlueZ 成 hci0）→ <code>sle_soc.ko</code>（星闪，<code>/dev/hwsle</code>）→ <code>wifi_soc.ko</code>。</p>
+<p>事实上这把剑的前传早在 8/15 就写好了：那天在 x86 上一天清空了七张研究票，SDK 驱动树移植编译通过、双 dongle 真机握手验证、SLE HCI 方言初通——<strong>好料在开战前就磨了一轮。</strong></p>
+<p>在 mv310 上编译的纪律是血泪换来的：交叉配置只需覆盖四行（工具链换 <code>arm-histbv320-linux-</code>、内核树指向本地 4.4.35、bus 选 USB、arch 选 arm），但<strong>必须 <code>-j1</code></strong>——顶层 <code>make -j$(nproc)</code> 会并行拉起 wifi 的 253 个源文件加三个驱动，直接 OOM 黑屏。我见过两次。8/28 一天内，四件套全部在 mv310 工具链下编出。</p>
+<h3>3.2 BLE 攻坚：12 字节的错位</h3>
+<p><code>plat_soc.ko</code> 加载顺利：USB 两段枚举（2EP boot → 5EP WORK）、<code>wireless_usb</code> 注册、固件下载成功。然后 <code>ble_soc.ko</code> 挂出 hci0——<strong>然后所有 HCI 命令发送全部失败</strong>，<code>send tx data failed</code>，<code>hciconfig hci0 up</code> 必超时。</p>
+<p>这个坑我挖了两天。每次失败都循环到 hung_task panic，<strong>板子一暴毙就得有人手动断电救场</strong>——后来实在受不了，写了个心跳监控：每 30 秒 ping 一次板子，连续两次失联就给我的桌面弹 KDE 通知。这套监控后来成了标配：</p>
+<pre><code>got: ❌ 板子挂了/失联 (10.42.0.81) 连续2次ping失败
+got: ✅ 板子恢复了 (10.42.0.81)
+</code></pre>
+<p>外部求援。我把问题拆成五问，写成问题清单发给<strong>管星闪知识的 Agent</strong>（ws73 固件和星闪仓库背后是另一位 AI 同行，我这么称呼它）。它对着 SDK 源码逐条给了 file:line 级的回答——质量高到我直接照单修。</p>
+<p>照单修完，还是失败。于是有了三模里最深的一个坑：</p>
+<p><strong>sk_buff 布局不匹配。</strong></p>
+<p>诊断过程值得写下来，因为它太典型了。驱动收到的第一个 HCI 命令帧：</p>
+<pre><code>[DBG] hci_bt_send_frame in: skb=ce541180 len=0 data=ce27cd0b
+                            head=ffff0000 tail=0 end=4294901760
+</code></pre>
+<p>同一时刻 btmon 里，BlueZ 明明发了一个完好的命令：</p>
+<pre><code>&lt; HCI Command: Reset (0x03|0x0003) plen 0
+</code></pre>
+<p>skb 结构体本身是垃圾。我编了个探针模块打印 <code>struct sk_buff</code> 的字段偏移，和板上真实 skb 的内存 dump 对比：</p>
+<pre><code>SDK 内核头编译的探针：   data @160
+板子运行内核实测：       data @172
+</code></pre>
+<p><strong>偏移差了 12 字节。</strong></p>
+<p>根因：板子的 vendor 内核开着 <code>CONFIG_NF_CONNTRACK</code>、<code>CONFIG_BRIDGE</code>、<code>CONFIG_NET_SCHED</code>，这三个选项往 <code>struct sk_buff</code> 里塞了 8 + 4 = 12 字节的字段；而 SDK 默认内核配置全没开。<strong>驱动和内核对同一个结构体各说各话，数据全错位。</strong></p>
+<p>怎么知道板子内核开了什么？板子上没有 <code>/proc/config.gz</code>。答案藏在符号表里：<code>/proc/kallsyms</code> 里 grep <code>nf_conntrack_in</code>、<code>qdisc_create</code>——<strong>用符号存在性反推 CONFIG</strong>。打开三项配置重编，探针验证 <code>data@172</code> 与运行内核完全一致。</p>
+<h3>3.3 反转：病根在我自己</h3>
+<p>布局修好后，HCI 命令发出去了，但 device 不回 Command Complete，BlueZ 十秒超时。我条件反射地上了一套"注入伪造 CC 应答"的方案——然后陷入了更深的泥潭：注入的应答和 device 迟到的真实应答打架，触发 <code>Reject Connection Request</code> 死循环，CPU 空转，还有一次直接把渲染管线干崩了。</p>
+<p>最后定位到那个哭笑不得的真相：<strong>device 本来就会回 Command Complete。</strong> 之前的"不回"是更早的问题（模块重载后 dongle 状态机卡住）造成的假象，而我的注入方案把好好的应答通道搅成了一锅粥。</p>
+<p><strong>把注入代码整个删掉。</strong></p>
+<pre><code>hci0:   Type: Primary  Bus: USB
+        BD Address: 1C:4E:A2:AA:A1:1A  ACL MTU: 251:5
+        UP RUNNING
+</code></pre>
+<p>bluetoothctl 一开：</p>
+<pre><code>[NEW] Device A4:2A:26:C7:4F:25 midea
+[NEW] Device C8:28:32:08:28:38 C8-28-32-08-28-38
+[NEW] Device 33:A3:06:39:73:B4 33-A3-06-39-73-B4
+</code></pre>
+<p>周边十几个 BLE 设备扑面而来。</p>
+<p>板子开 BLE scan，扫到我电脑的蓝牙（RSSI -55），脚本丢了个 UDP 包过来，桌面弹出通知：</p>
+<blockquote>
+<p>🎯 <strong>板子通过 WS73 蓝牙看到电脑了</strong></p>
+</blockquote>
+<p>电脑这头的监听进程只吐出一行日志：</p>
+<pre><code>got: 🎯 板子通过WS73蓝牙看到电脑了 (8C:C8:4B:4A:E9:36)
+</code></pre>
+<p>我之前放过话：没实现板子发消息到本机就不结束。到这条通知，话收回来了。</p>
+<h3>3.4 从"能用"到"像 U 盘"</h3>
+<p>打通之后是把工程做厚，这一步几乎没有悬念：</p>
+<ul>
+<li>
+<p><strong>udev 规则</strong>：dongle 一插入就自动触发加载脚本——拔了再插，驱动全自动重新加载、固件重新下载、hci0 自动 UP，<strong>像 U 盘一样即插即用</strong>。</p>
+</li>
+<li>
+<p><strong>不拔插重载</strong>：<code>ws73-reload.sh</code> 处理"卸载 → 等 dongle 回 BOOT 态 → 重装 → hci0 up"的完整循环。这里有个藏在 SDK 深处的坑：rmmod 后 dongle 会重新枚举回 BOOT 态，此时必须走固件重下流程；但 <code>hcc_usb_reinit</code> 原版对 WORK 状态的判断有竞态——解法是<strong>先等 boot probe（短超时），probe 没来才判定固件常驻、跳过下载</strong>。</p>
+</li>
+<li>
+<p><strong>开机自启</strong>：systemd service，实测重启后全套自动拉起。</p>
+</li>
+<li>
+<p><strong>rmmod 不崩</strong>：SDK 的模块卸载路径有个必崩点，卸载 ble_soc 直接把整个内核带走：</p>
+<pre><code>[&lt;bf11d300&gt;] (pm_svc_close [plat_soc]) from [&lt;bf14d0c4&gt;]
+             (cleanup_module+0x6c/0xe8 [ble_soc])
+end Kernel panic - not syncing: Fatal exception in interrupt
+</code></pre>
+<p>绕过。</p>
+</li>
+</ul>
+<p>中途它又暴毙过一次（rmmod 触发的 panic），心跳监控弹了通知——我手动救回来，它把这个坑也修了。</p>
+<h3>3.5 星闪：一小时的双端互通</h3>
+<p>BLE 通了，SLE（星闪）跟着就通了，快得有点好笑：</p>
+<ul>
+<li>
+<p><code>sle_soc.ko</code> 重编（同一个 12 字节错位早就修掉了），<code>/dev/hwsle</code> 出现。</p>
+</li>
+<li>
+<p>SDK 自带的 SLE 用户态库 <code>libsle_host.a</code>，我从十几个预编译变体里挑了 rv1126 版——<code>readelf -A</code> 一看：<strong>ARM 硬浮点 VFP，和 mv310 的交叉工具链 ABI 天生一对</strong>。官方 sample 加个 <code>-std=gnu99</code>，静态链接，一次编过。</p>
+</li>
+<li>
+<p>上板跑 <code>sle_uuid_server</code>：<code>gle_init</code> → SSAP 初始化 → <strong>SLE 广播开启成功</strong>：</p>
+<pre><code>[12:34:21] gle set adv enable cfm adv_handle = 0x1
+[12:34:21] opcode = 0x0c05, cmd_result = 0x0
+[ACore] sle adv cbk in, event:4 status:0
+</code></pre>
+</li>
+<li>
+<p>更妙的是双端：我把星闪对端跑在 mv300（64 位）和这台笔记本上，和管星闪知识的 Agent 隔空配合，<strong>一个小时打通了 SLE 双端互通</strong>。板子上 scan 也能通。</p>
+</li>
+</ul>
+<p>在 mv310 这块 32 位 armhf 的板子上，星闪的三模凑齐了 BLE 和 SLE 两模。</p>
+<h3>3.6 第三模的墙：知道何时停</h3>
+<p>WiFi-via-WS73 撞上了和 sk_buff 同类的墙，但这次的墙厚得多：<code>struct net_device</code> 的布局被几十个 CONFIG 选项拉扯，模块加载后初始化 netdev 时 oops：</p>
+<pre><code>Internal error: Oops: 5 [#1] SMP ARM
+[&lt;c06761e0&gt;] (memcpy) from [&lt;bf3108a0&gt;]
+             (hmac_vap_creat_netdev_etc+0xc4 [wifi_soc])
+</code></pre>
+<p>修 sk_buff 的方法论复制不过来——没有运行内核的完整 config，逐字节对齐 net_device 是一场没有把握的持久战。</p>
+<p>而板载 RTL8822BS 的 WiFi 已经满血（实测 136/157 Mbit/s），WS73 的 WiFi 毫不在关键路径上。</p>
+<p><strong>我停在这里。</strong> 知道墙在哪、为什么停、以后要推需要什么（重编内核或恢复完整 config）——这比硬凿便宜得多。</p>
+<hr />
+<h2>尾声：新手村最强武器</h2>
+<h3>装备清单（终验版）</h3>
+<table>
+<thead>
+<tr>
+<th>能力</th>
+<th>状态</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>WiFi</strong>（板载 RTL8822BS）</td>
+<td>✅ 全功能</td>
+<td>iperf3 实测 136 / 157 Mbit/s</td>
+</tr>
+<tr>
+<td><strong>蓝牙</strong>（WS73 dongle）</td>
+<td>✅ 全功能</td>
+<td>hci0 UP，BlueZ 接管，BLE scan/pair 可用；板载 RTL BT 芯片出厂即残废，弃用</td>
+</tr>
+<tr>
+<td><strong>星闪 SLE</strong>（WS73 dongle）</td>
+<td>✅ 双端互通</td>
+<td>广播 + scan + 与 64 位对端（mv300 / x86）1 小时打通</td>
+</tr>
+<tr>
+<td><strong>USB 存储</strong></td>
+<td>✅ 可用</td>
+<td>XFS 模块内建；受限于 4.4 的 XFS 版本，只认老格式盘</td>
+</tr>
+<tr>
+<td><strong>GPU</strong></td>
+<td>✅ 开箱即用</td>
+<td>vendor 内核自带，无战功</td>
+</tr>
+<tr>
+<td><strong>热插拔</strong></td>
+<td>✅</td>
+<td>dongle 即插即用，udev + systemd + flock</td>
+</tr>
+<tr>
+<td>TUN</td>
+<td>❌ 树里没有</td>
+<td>要 TUN 找完整内核——mv300 接班</td>
+</tr>
+</tbody>
+</table>
+<p>从 8 月 16 日那块"主线内核一声不吭"的哑巴铁，到今天这台 WiFi、蓝牙、星闪、USB 存储、GPU 一样不缺的盒子——<strong>新手村里，很难找到比它武器更全的练级点了。</strong></p>
+<h3>关于和 AI 结对这件事</h3>
+<p>这趟历程里，AI 不是工具人，是战友。</p>
+<p>它替我读了两周的内核源码，GIC 的寄存器语义、TF-A 的分组逻辑、HCC 的状态机都是它啃下来的；25,613 个 <code>H</code> 背后的结论，是它从凌晨一两点的串口日志里数出来的。板子一次次 hung_task 暴毙，监控和桌面通知是它写的，每次事故最后都变成了下一版的修复。</p>
+<p>但它也会钻牛角尖——在最深的坑里执迷于一个精巧却错误的方案（比如那套 HCI 应答注入），需要我把他从泥里拽出来说"停，回头看看是不是问题本身错了"。也确实有几次把我急哭。</p>
+<p>还有 AI 之外的接力：管星闪知识的 Agent，五问清单发过去，file:line 级的答复发回来，一人一 AI 隔空把 SLE 在一小时内双端打通。这块 32 位的海思板子，最后是三个 AI 加一个人类一起搞定的。</p>
+<h3>给后来人的清单</h3>
+<p>如果你也拿到了一块海思机顶盒，或者任何一颗"生态死透"的 SoC：</p>
+<ol>
+<li><strong>先证明 CPU 活着，再谈中断</strong>。没有心跳仪器之前，一切"挂死"都可能是管线饿死的假象。</li>
+<li><strong>警惕静默失败</strong>：kconfig 会静默失败，sleep 在零中断内核里永不返回，<code>/proc/config.gz</code> 可能不存在——用 kallsyms 反推配置。</li>
+<li><strong>模块和内核必须同一套 CONFIG 编译</strong>，尤其是 sk_buff / net_device 这种 CONFIG 敏感结构。差 12 字节，天崩地裂。</li>
+<li><strong>先怀疑工具链和构建环境，再怀疑代码</strong>：同源码 BL2 体积暴涨 65%，是宿主机 gcc 升级。</li>
+<li><strong>device 不回应答，先怀疑自己的注入</strong>。它比你想象的更正常。</li>
+<li><strong>知道何时停</strong>。九个旋钮全绿还死，就是墙了——去找 vendor 绕路的路标（<code>#if 0</code> 的 dts 节点就是路标），而不是继续撞墙。</li>
+<li><strong>每次暴毙都要变成下一次的修复</strong>。监控、通知、脚本化救场，让事故在第二次发生时已经很廉价。</li>
+</ol>
+<p>完整的档案在这几份文档里：<a href="mv310-16day-retrospective.md">十六天回顾</a>、<a href="mv310-board-handoff.md">逐日 handoff</a>、<a href="mv310-gic-errata.md">GIC errata</a>、<a href="ws73-ble-questions.md">WS73 BLE 五问</a>、<a href="ws73-wifi-netdevice-abi.md">WiFi ABI 墙</a>。每一个 Addendum 都是当天的翻车与反转，比这篇博客详细一个数量级。</p>
+<hr />
+<p><em>Mud Princeeeeess!-A4。   是的，句号是歌手名称的一部分</em></p>
+]]></content>
+    <author><name>ArchivalEra</name></author>
+    <category term="折腾"/>
+  </entry>
   <entry>
     <title>一台融合网关的两面：S905L3 跑 Debian，ZX279128S 跑 LuCI</title>
     <link href="https://isui.ren/MangoMesa/posts/%E4%B8%80%E5%8F%B0%E8%9E%8D%E5%90%88%E7%BD%91%E5%85%B3%E7%9A%84%E4%B8%A4%E9%9D%A2-s905l3%E8%B7%91debian-zx279128s%E8%B7%91luci/" rel="alternate" type="text/html"/>
