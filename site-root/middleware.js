@@ -92,9 +92,16 @@ export async function middleware(context) {
 		}
 	}
 
+	// Hard-wire /Bahnhof slash normalization
+	if (url.pathname === "/Bahnhof") {
+		const redirectUrl = new URL(request.url);
+		redirectUrl.pathname = "/Bahnhof/";
+		return Response.redirect(redirectUrl.toString(), 301);
+	}
+
 	// Reverse-proxy /repo/<repoName>/* to https://archivalera.github.io/<repoName>/*
 	if (url.pathname === "/repo" || url.pathname === "/repo/") {
-		return Response.redirect("https://isui.ren/projects/", 302);
+		return Response.redirect("https://isui.ren/MangoMesa/projects/", 302);
 	}
 
 	if (url.pathname.startsWith("/repo/")) {
@@ -231,7 +238,7 @@ export async function middleware(context) {
             <a href="https://github.com/ArchivalEra/${repoName}" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
                 查看 GitHub 源码仓库 →
             </a>
-            <a href="https://isui.ren/projects/" class="btn btn-secondary">
+            <a href="https://isui.ren/MangoMesa/projects/" class="btn btn-secondary">
                 返回博客项目展台
             </a>
         </div>
@@ -314,5 +321,6 @@ export const config = {
 		"/api/activity/:path*",
 		"/repo",
 		"/repo/:path*",
+		"/Bahnhof",
 	],
 };
