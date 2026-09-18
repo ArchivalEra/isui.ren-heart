@@ -117,9 +117,16 @@ export async function middleware(context) {
 				return Response.redirect(redirectUrl.toString(), 301);
 			}
 
-			// If repository has its own static files deployed locally in EdgeOne (e.g. S26-1Shitass),
-			// serve directly via EdgeOne static origin
+			// 301 redirect legacy repo name S26-1Shitass to S26-1_202609
 			if (repoName === "S26-1Shitass") {
+				const redirectUrl = new URL(request.url);
+				redirectUrl.pathname = `/repo/S26-1_202609${restPath || "/"}`;
+				return Response.redirect(redirectUrl.toString(), 301);
+			}
+
+			// If repository has its own static files deployed locally in EdgeOne,
+			// serve directly via EdgeOne static origin
+			if (repoName === "S26-1_202609") {
 				return next();
 			}
 
