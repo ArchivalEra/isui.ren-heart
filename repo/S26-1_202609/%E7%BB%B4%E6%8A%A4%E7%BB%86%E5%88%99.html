@@ -323,7 +323,8 @@ git diff --check                                # 空白与冲突标记</code></
 </ul>
 <h3 id="3-2-读图-强制交给子代理">3.2 读图（强制交给子代理）</h3><p><strong>主对话每对话最多 60 张图片</strong>，超限后主代理无法再读图，会把整批任务卡住。因此：</p>
 <ul>
-<li><strong>批量读图一律派子代理</strong>：用 Agent 工具（<code>general-purpose</code>）分批读，一个子代理读 4–8 张，要求它输出「页码 + 节号 + 逐页忠实转录」，看不清处标〔待核对〕。</li>
+<li><strong>批量读图一律派子代理</strong>：用 Agent 工具（<code>general-purpose</code>）分批读，一个子代理读 4–8 张。提示词只列出<strong>要读的具体那几行字</strong>（某个下标、某个标注），并写明「<strong>不要转录整页正文</strong>」。</li>
+<li><strong>每张图只读一次，看不清就上报重拍</strong>：禁止重复打开同一张、禁止换副本重试、禁止裁剪/放大/增强等自救手段。读不清的按「文件名 + 原书页码 + 看不清的位置 + 原因」报给用户重拍，由用户决定。正常单张约 1 万 token；若某次读图远超此量级，说明提示词里让它抄整页了。</li>
 <li>子代理有独立的图片预算，不受主对话上限影响；主代理只汇总它返回的文字结论。</li>
 <li>主代理只在需要目视确认<strong>一两个关键点</strong>（例如某一步变换标注、某个下标）时才直接读图，并计入自己的预算。</li>
 <li><strong>禁止用 OCR 代替读图</strong>：公式、矩阵、上下标、手写旁注在识别结果里普遍出错（实测会漏掉 <code>1</code>、负号和下标）。OCR 只能用来辅助定位页码，不能作为转录依据。</li>
@@ -400,7 +401,7 @@ git diff --check                                # 空白与冲突标记</code></
 <ul>
 <li>课程 <strong>1</strong> 门；正式资料 <strong>12</strong> 份（不含索引、模板和历史入口）。</li>
 <li>精确白名单 <strong>74</strong> 条逐文件路径（无通配符），仓库共 <strong>74</strong> 个受管文件。</li>
-<li>暂存内容摘要（不含本文件与 README）：<code>6c9c16a44037ca7855cb96bf8313c4368441ecd274cfc46a977d9464f42c18b6</code>。任何正文改动都会改变这一行。</li>
+<li>暂存内容摘要（不含本文件与 README）：<code>f3b293e0aafa87827406d50aed4e9fd541ad794330084ecca06e5dd66edf0735</code>。任何正文改动都会改变这一行。</li>
 </ul>
 <h3 id="课程分类一览">课程分类一览</h3><div class="table-scroll-container"><table>
 <thead>
