@@ -117,6 +117,12 @@ export async function middleware(context) {
 				return Response.redirect(redirectUrl.toString(), 301);
 			}
 
+			// If repository has its own static files deployed locally in EdgeOne (e.g. S26-1Shitass),
+			// serve directly via EdgeOne static origin
+			if (repoName === "S26-1Shitass") {
+				return next();
+			}
+
 			const cleanRest = restPath.startsWith("/") ? restPath.slice(1) : restPath;
 			const upstreamUrl = `https://archivalera.github.io/${repoName}/${cleanRest}${url.search}`;
 
