@@ -1,0 +1,466 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>isui.ren</title><description>Mango Mesa</description><link>https://isui.ren/</link><language>zh_CN</language><item><title>Mud Princeeeeess!</title><link>https://isui.ren/MangoMesa/posts/mud-princeeeeess/</link><guid isPermaLink="true">https://isui.ren/MangoMesa/posts/mud-princeeeeess/</guid><description>Hi3798MV310 从 aarch64 主线 tick 饥饿泥潭到 vendor 4.4.35 绝地反击，再到 WS73 星闪 SLE / BLE 双模打通的十六天全记录。</description><pubDate>Tue, 15 Sep 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;Mud Princeeeeess!&lt;/h1&gt;
+&lt;hr /&gt;
+&lt;h2&gt;序章：卧沙练习时长2天半（8/1 ~ 8/15）&lt;/h2&gt;
+&lt;p&gt;故事的起点不是这块板子，是它的弟弟。&lt;/p&gt;
+&lt;p&gt;七月底到八月初，我和 Gemini 师傅在 &lt;strong&gt;Hi3798MV300&lt;/strong&gt; 上度过了&quot;无尽骚操作&quot;的一周多：刷 vendor 底座、折腾启动链、植入 cloudflared 让它突破运营商的无限 NAT——那是另一篇博客的内容，这里只立个flag。总之等尘埃落定，&lt;strong&gt;mv300 成了家里唯一一台跑着完整主线内核、自带 TUN 的 ARM64 小服务器&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;而这篇的主角，&lt;strong&gt;Hi3798MV310&lt;/strong&gt;——mv300 的同门师弟，四核 A53，GIC-400——是在七月底那波操作里顺手拿到手的。七月底我给它刷了系统：内核用 histb 论坛大佬编好的 4.4.35（2025 年 11 月的版本，WiFi 这类驱动都是现成的，这个后来救了我一命），rootfs 是我自己编的 Debian 11。系统本身能跑，但它之于我，和所有海思机顶盒之于搞机的人一样：&lt;strong&gt;一块性能尚可、生态死透、不能就这么算了的板子。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;八月中旬之前，它在干一件和&quot;搞机&quot;毫无关系的事：&lt;strong&gt;卧沙&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;我把它挂在公司一台路由器后面，吃着路由器端口转发送来的公网 IPv4 和 IPv6 红利，拿它做 H2O 反代——甚至用它摸进中国电信的智能网关管理页来设置端口转发白嫖动态ipv4。从 cloudflare tunnel 到自己配 DDNS 域名，全是大半夜没人的时候干的。那三天它不是开发板，是跳板机。&lt;/p&gt;
+&lt;p&gt;8 月 16 日，我把它从路由器后面拔了下来。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;服役结束，泥潭开始。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;顺带一提，前一周我在另一块 mv300 上美美地部署了 Debian 13 + CachyOS 7.2 内核——那是给后来的星闪双端实验准备的对端机。&lt;/p&gt;
+&lt;hr /&gt;
+&lt;h2&gt;第一幕：泥潭（8/16 ~ 8/25，aarch64 主线）&lt;/h2&gt;
+&lt;h3&gt;1.1 目标与武器库&lt;/h3&gt;
+&lt;p&gt;目标朴素而宏大：&lt;strong&gt;给 mv310 跑通主线 Linux（aarch64）&lt;/strong&gt;。vendor 的 4.4 内核是死的生态，主线才是活水——理论上，跑通主线，这块四核 A53 就能以现代内核的姿态活下去。&lt;/p&gt;
+&lt;p&gt;我手里的武器库在这十天里逐步成型：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;零写 eMMC 的 RAM 启动链&lt;/strong&gt;：&lt;code&gt;fastboot → l-loader → TF-A BL31 → U-Boot → booti&lt;/code&gt;，全程内存里跑，产物按&quot;名字-md5&quot;永久归档。绝不碰 eMMC——U-Boot 的 &lt;code&gt;reset&lt;/code&gt; 命令曾经让盒子彻底无声，从此物理断电复位是铁律。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;串口不说谎原则&lt;/strong&gt;：一切以串口日志为准。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;AI 结对&lt;/strong&gt;：这一整场战役，是我和我的 AI 一起打的。它读内核源码、写实验镜像、分析串口日志；我下判断、救场、在它钻牛角尖时把它拽回来。后面会讲这种工作方式有多重要。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;然后，第一口泥就来了。&lt;/p&gt;
+&lt;h3&gt;1.2 静默污染：第一课&lt;/h3&gt;
+&lt;p&gt;Day 1 冻结启动链的当晚，出了个诡异的事：前一天还好的镜像，突然没有串口输出了。&lt;/p&gt;
+&lt;p&gt;排查半天，发现不是板子的问题，是&lt;strong&gt;构建环境的问题&lt;/strong&gt;：非交互环境下 kconfig 的提问会静默失败，&lt;code&gt;CONFIG_SERIAL_AMBA_PL011&lt;/code&gt; 和 &lt;code&gt;CONFIG_CMDLINE&lt;/code&gt; 被无声清掉——镜像&quot;构建成功&quot;，串口驱动没了。半天时间丢在&quot;探针污染&quot;的误判里。&lt;/p&gt;
+&lt;p&gt;从此立下铁律：&lt;code&gt;olddefconfig &amp;lt;/dev/null&lt;/code&gt; + 逐项 grep 验收。&lt;strong&gt;这个坑后面还会以别的形态回来。&lt;/strong&gt;&lt;/p&gt;
+&lt;h3&gt;1.3 GIC 三连：两次误读，一次真相&lt;/h3&gt;
+&lt;p&gt;Day 3 是 SGI 判决日，也是自摆乌龙日。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;误读一&lt;/strong&gt;：我把 &lt;code&gt;0xF1001104&lt;/code&gt;（ISENABLER1）当成 ISENABLER0 读，得出&quot;SGI 从未使能&quot;的结论——真身在 &lt;code&gt;0xF1001100&lt;/code&gt;。寄存器地图背错了。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;误读二&lt;/strong&gt;：把 GICC_BPR 当成 HPPIR 看位域，得出&quot;中断到了 CPU interface 却没人取&quot;的结论——寄存器语义张冠李戴。&lt;/p&gt;
+&lt;p&gt;撤回这两个误读的同一天，真正的怪物现形了：&lt;strong&gt;向 &lt;code&gt;GICD_CTLR&lt;/code&gt; 的 bit1 写入 1，板子当场挂死&lt;/strong&gt;——&lt;code&gt;v1&lt;/code&gt; 镜像写 &lt;code&gt;0x3&lt;/code&gt; 后 boot 死在 &lt;code&gt;time_init&lt;/code&gt;，回退到 &lt;code&gt;0x1&lt;/code&gt; 的 &lt;code&gt;v2&lt;/code&gt; 才第一次看到 &lt;code&gt;Run /init&lt;/code&gt;。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;v1  GICD_CTLR = 0x3   写入即死，boot 卡死在 time_init，串口静默
+v2  GICD_CTLR = 0x1   Run /init   ← 十六天里第一次
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;同一个 GIC-400，mv300 上这些操作都是家常便饭。&lt;strong&gt;这是这块 SoC 的硬件差异，不是内核的 bug。&lt;/strong&gt; 当时就隐约意识到了，但还没意识到这意味深长。&lt;/p&gt;
+&lt;h3&gt;1.4 心跳：CPU 活着，控制台死了&lt;/h3&gt;
+&lt;p&gt;Day 4 做了个极简隔离实验：在死亡点前后各放一条打印（&lt;code&gt;R-BEFORE&lt;/code&gt; / &lt;code&gt;AFTER&lt;/code&gt;）。&lt;code&gt;devmem&lt;/code&gt; 读 &lt;code&gt;0xF1001100&lt;/code&gt; 返回 &lt;code&gt;0x4A00FFFF&lt;/code&gt; 之后，下一行 &lt;code&gt;echo AFTER&lt;/code&gt; 永远没有出现。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;gt; devmem 0xF1001100
+0x4A00FFFF
+&amp;gt; echo AFTER
+（永远没有然后）
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;死亡精确到&lt;strong&gt;一条指令&lt;/strong&gt;。但很快我们发现不对劲：&lt;strong&gt;console 死了不等于 CPU 死了。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;于是有了整个战役最重要的仪器——&lt;strong&gt;HB 心跳&lt;/strong&gt;。直接在裸机层用一个忙等循环往 UART 打 &lt;code&gt;H&lt;/code&gt;，不经过 printk、不经过调度器、不经过任何会饿死的管线。&lt;code&gt;v7.2&lt;/code&gt; 镜像跑起来后：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH……
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;连续 20,000+ 拍，零中断。&lt;strong&gt;CPU、总线、UART 全部活着&lt;/strong&gt;——死的是 printk 到控制台的输出管线。之前所有&quot;系统挂死&quot;的结论全部作废，需要重新解读。&lt;/p&gt;
+&lt;p&gt;紧接着 &lt;code&gt;v7.3&lt;/code&gt; 的三标记实验（probe-B + pr_info + probe-D 全部落地）把链条钉死：printk 本身没死锁，是用户态的 flush 依赖调度器、调度器依赖 tick、tick 依赖 PPI30 中断——&lt;strong&gt;而 PPI30 从不触发。两个故障，合成一个根因。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;十六天，八个镜像轮次，&lt;strong&gt;25,613 个 &lt;code&gt;H&lt;/code&gt;&lt;/strong&gt;。&lt;/p&gt;
+&lt;h3&gt;1.5 九旋钮全绿&lt;/h3&gt;
+&lt;p&gt;8/21 那天我们走到了&quot;配置域的尽头&quot;。&lt;/p&gt;
+&lt;p&gt;我写了一个自研的 MMIO timer 驱动（&lt;code&gt;timer-mv310.c&lt;/code&gt;），绕开 PPI30，用 SPI 58/91/59/92 四个硬中断做四个核的 clockevent。&lt;code&gt;request_irq&lt;/code&gt; 全部成功，注册全部成功——&lt;strong&gt;中断计数恒为零&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;把 Secure 视角的 GICC_CTLR 从 &lt;code&gt;0x1e9&lt;/code&gt; 拨到 &lt;code&gt;0x1eb&lt;/code&gt;（打开 Group1 转发的最后一个门），软件 pend 一个 SPI 进去——&lt;code&gt;HPPIR&lt;/code&gt; 读回来还是 &lt;code&gt;0x3ff&lt;/code&gt;，没有中断在等待。&lt;/p&gt;
+&lt;p&gt;8/20 那天的一页对照表，最能说明什么叫&quot;配置全对、投递全死&quot;：&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;项目&lt;/th&gt;
+&lt;th&gt;读值&lt;/th&gt;
+&lt;th&gt;判定&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;SCR_EL3&lt;/td&gt;
+&lt;td&gt;0x238&lt;/td&gt;
+&lt;td&gt;bits 1,2 = 0，非安全侧可访问 ✓&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;GICD_IGROUPR0&lt;/td&gt;
+&lt;td&gt;0xfe00ffff&lt;/td&gt;
+&lt;td&gt;分组已设 ✓&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;GICD_ISENABLER0&lt;/td&gt;
+&lt;td&gt;0xffff&lt;/td&gt;
+&lt;td&gt;SGI/PPI 已使能 ✓&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;MV310-IRQ 探针&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;0 命中&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;FAIL&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;NS/S 两个视角的 GICD_CTLR、全 bank 的 IGROUPR、ISENABLER/ISPENDR、GICC_CTLR/PMR/RPR——&lt;strong&gt;九个可达的配置旋钮全部验证正确，转发依然死。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;8/22 的 CNTPCT 判决做了最终封棺：poll clockevent 带着全套重试机制跑满 5 秒，&lt;code&gt;CNTPCT&lt;/code&gt; 计数器稳定前进，&lt;code&gt;jiffies&lt;/code&gt; 纹丝不动。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;计数器活着，只有中断永远不来。&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3&gt;1.6 真相：安全扩展，和 vendor 自己的 &lt;code&gt;#if 0&lt;/code&gt;&lt;/h3&gt;
+&lt;p&gt;8/23，从泄露的海思 SDK 源码里（&lt;a href=&quot;https://github.com/JasonFreeLab/HiSTBLinuxV100R005C00SPC050&quot;&gt;JasonFreeLab/HiSTBLinuxV100R005C00SPC050&lt;/a&gt;，本地有完整镜像）找到了&quot;标准答案&quot;：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;GIC 的 Security Extensions 是开着的&lt;/strong&gt;（GICD_TYPER bit10=1）。&lt;/li&gt;
+&lt;li&gt;poplar 系 TF-A 的 &lt;code&gt;arm_gic.c&lt;/code&gt; 只把 SPI 按 Group1/NS 分组，&lt;strong&gt;SGI/PPI bank（IGROUPR0，按核 banked）从未分配&lt;/strong&gt;——PPI30 和 SGI 停在复位值 Group 0（安全世界），Linux 根本看不见。SDK 里的修法是每核从 EL3 写 &lt;code&gt;IGROUPR0 = ~sec_ppi_sgi_mask&lt;/code&gt;，注释原文：&quot;They are Group0 at reset&quot;。&lt;/li&gt;
+&lt;li&gt;更绝的实锤：SDK 的 TF-A 把 hi3798mv200 的安全中断表定为 {60, 50, 52, 88}——&lt;strong&gt;timer 的 SPI 被路由进了安全世界&lt;/strong&gt;；而 &lt;code&gt;hi3798mv310.dts&lt;/code&gt; 里，&lt;strong&gt;vendor 自己把 arm-timer 节点 &lt;code&gt;#if 0&lt;/code&gt; 掉了&lt;/strong&gt;，改用 hisp804 MMIO 定时器。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;vendor 早就知道这颗 SoC 的 PPI30 不可靠，绕路而行。&lt;/strong&gt; 海思的仓库集到底埋了多少土豆地雷至今未知。大伙拿到还是先扫雷为优。&lt;/p&gt;
+&lt;h3&gt;1.7 放弃，与告别&lt;/h3&gt;
+&lt;p&gt;按新根因模型，我们做了最后一轮实验（v12/v13/v14）：按 SDK 的方法修 IGROUPR0、关闭 SE 配置、换纯净上游 TF-A——&lt;strong&gt;tick 依然不来&lt;/strong&gt;。配置层面能穷尽的穷尽了，问题在这颗 SoC 更深的地方：fuse strap、或者 PPI30 的硬件布线本身。&lt;/p&gt;
+&lt;p&gt;8 月 25 日，正式放弃 aarch64 主线。五条硬理由里最硬的一条是投入产出比：再往下是 fuse dump 和 EL3 私有寄存器考古，投入一周、产出一条 errata，而 armhf 4.4 已经能满足&quot;好用盒子&quot;的真实需求。&lt;/p&gt;
+&lt;p&gt;retrospective 的结尾是这么写的，我原样搬来：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;16 天，8 轮 Image，25,613 个 &lt;code&gt;H&lt;/code&gt;，1 个 &lt;code&gt;CNTPCT ADVANCED&lt;/code&gt;。
+&lt;strong&gt;板子没变成我们想要的样子，但我们终于看清了它原本的样子。&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;还有一条比任何技术结论都值钱的军规，后来在 WS73 战役里又救了我们一次：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;先证明 CPU 活着，再谈中断。&lt;/strong&gt; 没有 &lt;code&gt;H&lt;/code&gt; 心跳之前，一切&quot;挂死&quot;都可能是控制台饿死。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;hr /&gt;
+&lt;h2&gt;第二幕：降维打击（8/25 ~ 8/28，armhf 实用化）&lt;/h2&gt;
+&lt;p&gt;放弃主线的第二天，立刻降维：&lt;strong&gt;回归 vendor 4.4.35 内核链路&lt;/strong&gt;，目标从&quot;修好这颗芯片&quot;变成&quot;让这块盒子好用&quot;。&lt;/p&gt;
+&lt;p&gt;同源同链，天亮了：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;XFS&lt;/strong&gt;：内核树里 &lt;code&gt;CONFIG_XFS_FS=m&lt;/code&gt;，本地直编 &lt;code&gt;xfs.ko&lt;/code&gt;（1.2M）通过。但坑紧跟着来：板载 U 盘是 XFS &lt;strong&gt;v5&lt;/strong&gt; 格式（bigtime/inobtcount/rmap 特性），4.4.35 的老 XFS 连只读挂载都起不来：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;XFS (sda1): SB validate failed with error -22.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;重格 &lt;code&gt;mkfs.xfs -m crc=0&lt;/code&gt; 降版本才收编。&lt;strong&gt;USB 存储从此可用，但受限于 4.4 的 XFS 版本，只能读老格式盘。&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;WiFi&lt;/strong&gt;：板载 RTL8822BS。内核树里没有的模块得自己补——先撞上 ARM32 的经典一刀：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;cfg80211: module relocation 28 out of range
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;内核符号区离模块区差 6368 字节，BL 指令 ±32MB 够不着。解法土而有效：先 insmod 一个 64KB 的占位模块（&lt;code&gt;mv310-pad.ko&lt;/code&gt;）把后续模块挤进射程内，再加载 cfg80211 和 rtl8822bs。wlan0 起来了，连上测试 AP，&lt;strong&gt;iperf3 实测 136 / 157 Mbit/s&lt;/strong&gt;。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;板载蓝牙的葬礼&lt;/strong&gt;：RTL8822BS 理论上带蓝牙（单 SDIO function C07），我们撸了 915 行的 2018 年 GPL 私有驱动，手补了 ic_id_table 和 SDIO 设备表，固件签名比对都对——&lt;code&gt;hci0 up&lt;/code&gt; 必报 &lt;code&gt;0x1001 tx timeout&lt;/code&gt;（-110），然后 &lt;code&gt;Unknown interrupt&lt;/code&gt;、hung_task panic、整机失联、断电重启，循环。SDK 里 &lt;code&gt;CFG_HI_BLUETOOTH_SUPPORT&lt;/code&gt; 压根没打开，DTS 里也没有蓝牙节点。&lt;strong&gt;板载 BT 这条路，芯片厂自己就没打算开。&lt;/strong&gt; 葬礼办完，目光转向抽屉里的另一个东西。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;（顺带澄清两个小结论：内核树里没有 TUN，想要 TUN 得靠完整内核——这是 mv300 的活；4.4 上没有 BBR、qdisc 想都别想，拥塞控制在板侧无解。）&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;盒子此时已经&quot;能用&quot;了：WiFi + USB 存储 + vendor 全家桶。&lt;/strong&gt; 但&quot;能用&quot;和&quot;好玩&quot;之间，隔着一个星闪的距离。&lt;/p&gt;
+&lt;hr /&gt;
+&lt;h2&gt;第三幕：三模（8/28 ~ 8/29，WS73 USB dongle）&lt;/h2&gt;
+&lt;h3&gt;3.1 星闪之剑&lt;/h3&gt;
+&lt;p&gt;WS73 是海思的 WiFi/BT/SLE（星闪低功耗，NearLink）三模 USB dongle，&lt;code&gt;ffff:3733&lt;/code&gt;。它的驱动四件套要自己编：&lt;code&gt;plat_soc.ko&lt;/code&gt;（HCC 传输 + 固件下载）→ &lt;code&gt;ble_soc.ko&lt;/code&gt;（挂到 BlueZ 成 hci0）→ &lt;code&gt;sle_soc.ko&lt;/code&gt;（星闪，&lt;code&gt;/dev/hwsle&lt;/code&gt;）→ &lt;code&gt;wifi_soc.ko&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;事实上这把剑的前传早在 8/15 就写好了：那天在 x86 上一天清空了七张研究票，SDK 驱动树移植编译通过、双 dongle 真机握手验证、SLE HCI 方言初通——&lt;strong&gt;好料在开战前就磨了一轮。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;在 mv310 上编译的纪律是血泪换来的：交叉配置只需覆盖四行（工具链换 &lt;code&gt;arm-histbv320-linux-&lt;/code&gt;、内核树指向本地 4.4.35、bus 选 USB、arch 选 arm），但&lt;strong&gt;必须 &lt;code&gt;-j1&lt;/code&gt;&lt;/strong&gt;——顶层 &lt;code&gt;make -j$(nproc)&lt;/code&gt; 会并行拉起 wifi 的 253 个源文件加三个驱动，直接 OOM 黑屏。我见过两次。8/28 一天内，四件套全部在 mv310 工具链下编出。&lt;/p&gt;
+&lt;h3&gt;3.2 BLE 攻坚：12 字节的错位&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;plat_soc.ko&lt;/code&gt; 加载顺利：USB 两段枚举（2EP boot → 5EP WORK）、&lt;code&gt;wireless_usb&lt;/code&gt; 注册、固件下载成功。然后 &lt;code&gt;ble_soc.ko&lt;/code&gt; 挂出 hci0——&lt;strong&gt;然后所有 HCI 命令发送全部失败&lt;/strong&gt;，&lt;code&gt;send tx data failed&lt;/code&gt;，&lt;code&gt;hciconfig hci0 up&lt;/code&gt; 必超时。&lt;/p&gt;
+&lt;p&gt;这个坑我挖了两天。每次失败都循环到 hung_task panic，&lt;strong&gt;板子一暴毙就得有人手动断电救场&lt;/strong&gt;——后来实在受不了，写了个心跳监控：每 30 秒 ping 一次板子，连续两次失联就给我的桌面弹 KDE 通知。这套监控后来成了标配：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;got: ❌ 板子挂了/失联 (10.42.0.81) 连续2次ping失败
+got: ✅ 板子恢复了 (10.42.0.81)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;外部求援。我把问题拆成五问，写成问题清单发给&lt;strong&gt;管星闪知识的 Agent&lt;/strong&gt;（ws73 固件和星闪仓库背后是另一位 AI 同行，我这么称呼它）。它对着 SDK 源码逐条给了 file:line 级的回答——质量高到我直接照单修。&lt;/p&gt;
+&lt;p&gt;照单修完，还是失败。于是有了三模里最深的一个坑：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;sk_buff 布局不匹配。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;诊断过程值得写下来，因为它太典型了。驱动收到的第一个 HCI 命令帧：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;[DBG] hci_bt_send_frame in: skb=ce541180 len=0 data=ce27cd0b
+                            head=ffff0000 tail=0 end=4294901760
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;同一时刻 btmon 里，BlueZ 明明发了一个完好的命令：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt; HCI Command: Reset (0x03|0x0003) plen 0
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;skb 结构体本身是垃圾。我编了个探针模块打印 &lt;code&gt;struct sk_buff&lt;/code&gt; 的字段偏移，和板上真实 skb 的内存 dump 对比：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;SDK 内核头编译的探针：   data @160
+板子运行内核实测：       data @172
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;偏移差了 12 字节。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;根因：板子的 vendor 内核开着 &lt;code&gt;CONFIG_NF_CONNTRACK&lt;/code&gt;、&lt;code&gt;CONFIG_BRIDGE&lt;/code&gt;、&lt;code&gt;CONFIG_NET_SCHED&lt;/code&gt;，这三个选项往 &lt;code&gt;struct sk_buff&lt;/code&gt; 里塞了 8 + 4 = 12 字节的字段；而 SDK 默认内核配置全没开。&lt;strong&gt;驱动和内核对同一个结构体各说各话，数据全错位。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;怎么知道板子内核开了什么？板子上没有 &lt;code&gt;/proc/config.gz&lt;/code&gt;。答案藏在符号表里：&lt;code&gt;/proc/kallsyms&lt;/code&gt; 里 grep &lt;code&gt;nf_conntrack_in&lt;/code&gt;、&lt;code&gt;qdisc_create&lt;/code&gt;——&lt;strong&gt;用符号存在性反推 CONFIG&lt;/strong&gt;。打开三项配置重编，探针验证 &lt;code&gt;data@172&lt;/code&gt; 与运行内核完全一致。&lt;/p&gt;
+&lt;h3&gt;3.3 反转：病根在我自己&lt;/h3&gt;
+&lt;p&gt;布局修好后，HCI 命令发出去了，但 device 不回 Command Complete，BlueZ 十秒超时。我条件反射地上了一套&quot;注入伪造 CC 应答&quot;的方案——然后陷入了更深的泥潭：注入的应答和 device 迟到的真实应答打架，触发 &lt;code&gt;Reject Connection Request&lt;/code&gt; 死循环，CPU 空转，还有一次直接把渲染管线干崩了。&lt;/p&gt;
+&lt;p&gt;最后定位到那个哭笑不得的真相：&lt;strong&gt;device 本来就会回 Command Complete。&lt;/strong&gt; 之前的&quot;不回&quot;是更早的问题（模块重载后 dongle 状态机卡住）造成的假象，而我的注入方案把好好的应答通道搅成了一锅粥。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;把注入代码整个删掉。&lt;/strong&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;hci0:   Type: Primary  Bus: USB
+        BD Address: 1C:4E:A2:AA:A1:1A  ACL MTU: 251:5
+        UP RUNNING
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;bluetoothctl 一开：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;[NEW] Device A4:2A:26:C7:4F:25 midea
+[NEW] Device C8:28:32:08:28:38 C8-28-32-08-28-38
+[NEW] Device 33:A3:06:39:73:B4 33-A3-06-39-73-B4
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;周边十几个 BLE 设备扑面而来。&lt;/p&gt;
+&lt;p&gt;板子开 BLE scan，扫到我电脑的蓝牙（RSSI -55），脚本丢了个 UDP 包过来，桌面弹出通知：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;🎯 &lt;strong&gt;板子通过 WS73 蓝牙看到电脑了&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;电脑这头的监听进程只吐出一行日志：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;got: 🎯 板子通过WS73蓝牙看到电脑了 (8C:C8:4B:4A:E9:36)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;我之前放过话：没实现板子发消息到本机就不结束。到这条通知，话收回来了。&lt;/p&gt;
+&lt;h3&gt;3.4 从&quot;能用&quot;到&quot;像 U 盘&quot;&lt;/h3&gt;
+&lt;p&gt;打通之后是把工程做厚，这一步几乎没有悬念：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;udev 规则&lt;/strong&gt;：dongle 一插入就自动触发加载脚本——拔了再插，驱动全自动重新加载、固件重新下载、hci0 自动 UP，&lt;strong&gt;像 U 盘一样即插即用&lt;/strong&gt;。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;不拔插重载&lt;/strong&gt;：&lt;code&gt;ws73-reload.sh&lt;/code&gt; 处理&quot;卸载 → 等 dongle 回 BOOT 态 → 重装 → hci0 up&quot;的完整循环。这里有个藏在 SDK 深处的坑：rmmod 后 dongle 会重新枚举回 BOOT 态，此时必须走固件重下流程；但 &lt;code&gt;hcc_usb_reinit&lt;/code&gt; 原版对 WORK 状态的判断有竞态——解法是&lt;strong&gt;先等 boot probe（短超时），probe 没来才判定固件常驻、跳过下载&lt;/strong&gt;。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;开机自启&lt;/strong&gt;：systemd service，实测重启后全套自动拉起。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;rmmod 不崩&lt;/strong&gt;：SDK 的模块卸载路径有个必崩点，卸载 ble_soc 直接把整个内核带走：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;[&amp;lt;bf11d300&amp;gt;] (pm_svc_close [plat_soc]) from [&amp;lt;bf14d0c4&amp;gt;]
+             (cleanup_module+0x6c/0xe8 [ble_soc])
+end Kernel panic - not syncing: Fatal exception in interrupt
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;绕过。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;中途它又暴毙过一次（rmmod 触发的 panic），心跳监控弹了通知——我手动救回来，它把这个坑也修了。&lt;/p&gt;
+&lt;h3&gt;3.5 星闪：一小时的双端互通&lt;/h3&gt;
+&lt;p&gt;BLE 通了，SLE（星闪）跟着就通了，快得有点好笑：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;sle_soc.ko&lt;/code&gt; 重编（同一个 12 字节错位早就修掉了），&lt;code&gt;/dev/hwsle&lt;/code&gt; 出现。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;SDK 自带的 SLE 用户态库 &lt;code&gt;libsle_host.a&lt;/code&gt;，我从十几个预编译变体里挑了 rv1126 版——&lt;code&gt;readelf -A&lt;/code&gt; 一看：&lt;strong&gt;ARM 硬浮点 VFP，和 mv310 的交叉工具链 ABI 天生一对&lt;/strong&gt;。官方 sample 加个 &lt;code&gt;-std=gnu99&lt;/code&gt;，静态链接，一次编过。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;上板跑 &lt;code&gt;sle_uuid_server&lt;/code&gt;：&lt;code&gt;gle_init&lt;/code&gt; → SSAP 初始化 → &lt;strong&gt;SLE 广播开启成功&lt;/strong&gt;：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;[12:34:21] gle set adv enable cfm adv_handle = 0x1
+[12:34:21] opcode = 0x0c05, cmd_result = 0x0
+[ACore] sle adv cbk in, event:4 status:0
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;更妙的是双端：我把星闪对端跑在 mv300（64 位）和这台笔记本上，和管星闪知识的 Agent 隔空配合，&lt;strong&gt;一个小时打通了 SLE 双端互通&lt;/strong&gt;。板子上 scan 也能通。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;在 mv310 这块 32 位 armhf 的板子上，星闪的三模凑齐了 BLE 和 SLE 两模。&lt;/p&gt;
+&lt;h3&gt;3.6 第三模的墙：知道何时停&lt;/h3&gt;
+&lt;p&gt;WiFi-via-WS73 撞上了和 sk_buff 同类的墙，但这次的墙厚得多：&lt;code&gt;struct net_device&lt;/code&gt; 的布局被几十个 CONFIG 选项拉扯，模块加载后初始化 netdev 时 oops：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Internal error: Oops: 5 [#1] SMP ARM
+[&amp;lt;c06761e0&amp;gt;] (memcpy) from [&amp;lt;bf3108a0&amp;gt;]
+             (hmac_vap_creat_netdev_etc+0xc4 [wifi_soc])
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;修 sk_buff 的方法论复制不过来——没有运行内核的完整 config，逐字节对齐 net_device 是一场没有把握的持久战。&lt;/p&gt;
+&lt;p&gt;而板载 RTL8822BS 的 WiFi 已经满血（实测 136/157 Mbit/s），WS73 的 WiFi 毫不在关键路径上。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;我停在这里。&lt;/strong&gt; 知道墙在哪、为什么停、以后要推需要什么（重编内核或恢复完整 config）——这比硬凿便宜得多。&lt;/p&gt;
+&lt;hr /&gt;
+&lt;h2&gt;尾声：新手村最强武器&lt;/h2&gt;
+&lt;h3&gt;装备清单（终验版）&lt;/h3&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;能力&lt;/th&gt;
+&lt;th&gt;状态&lt;/th&gt;
+&lt;th&gt;备注&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;WiFi&lt;/strong&gt;（板载 RTL8822BS）&lt;/td&gt;
+&lt;td&gt;✅ 全功能&lt;/td&gt;
+&lt;td&gt;iperf3 实测 136 / 157 Mbit/s&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;蓝牙&lt;/strong&gt;（WS73 dongle）&lt;/td&gt;
+&lt;td&gt;✅ 全功能&lt;/td&gt;
+&lt;td&gt;hci0 UP，BlueZ 接管，BLE scan/pair 可用；板载 RTL BT 芯片出厂即残废，弃用&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;星闪 SLE&lt;/strong&gt;（WS73 dongle）&lt;/td&gt;
+&lt;td&gt;✅ 双端互通&lt;/td&gt;
+&lt;td&gt;广播 + scan + 与 64 位对端（mv300 / x86）1 小时打通&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;USB 存储&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;✅ 可用&lt;/td&gt;
+&lt;td&gt;XFS 模块内建；受限于 4.4 的 XFS 版本，只认老格式盘&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;GPU&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;✅ 开箱即用&lt;/td&gt;
+&lt;td&gt;vendor 内核自带，无战功&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;热插拔&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;✅&lt;/td&gt;
+&lt;td&gt;dongle 即插即用，udev + systemd + flock&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;TUN&lt;/td&gt;
+&lt;td&gt;❌ 树里没有&lt;/td&gt;
+&lt;td&gt;要 TUN 找完整内核——mv300 接班&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;从 8 月 16 日那块&quot;主线内核一声不吭&quot;的哑巴铁，到今天这台 WiFi、蓝牙、星闪、USB 存储、GPU 一样不缺的盒子——&lt;strong&gt;新手村里，很难找到比它武器更全的练级点了。&lt;/strong&gt;&lt;/p&gt;
+&lt;h3&gt;关于和 AI 结对这件事&lt;/h3&gt;
+&lt;p&gt;这趟历程里，AI 不是工具人，是战友。&lt;/p&gt;
+&lt;p&gt;它替我读了两周的内核源码，GIC 的寄存器语义、TF-A 的分组逻辑、HCC 的状态机都是它啃下来的；25,613 个 &lt;code&gt;H&lt;/code&gt; 背后的结论，是它从凌晨一两点的串口日志里数出来的。板子一次次 hung_task 暴毙，监控和桌面通知是它写的，每次事故最后都变成了下一版的修复。&lt;/p&gt;
+&lt;p&gt;但它也会钻牛角尖——在最深的坑里执迷于一个精巧却错误的方案（比如那套 HCI 应答注入），需要我把他从泥里拽出来说&quot;停，回头看看是不是问题本身错了&quot;。也确实有几次把我急哭。&lt;/p&gt;
+&lt;p&gt;还有 AI 之外的接力：管星闪知识的 Agent，五问清单发过去，file:line 级的答复发回来，一人一 AI 隔空把 SLE 在一小时内双端打通。这块 32 位的海思板子，最后是三个 AI 加一个人类一起搞定的。&lt;/p&gt;
+&lt;h3&gt;给后来人的清单&lt;/h3&gt;
+&lt;p&gt;如果你也拿到了一块海思机顶盒，或者任何一颗&quot;生态死透&quot;的 SoC：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;先证明 CPU 活着，再谈中断&lt;/strong&gt;。没有心跳仪器之前，一切&quot;挂死&quot;都可能是管线饿死的假象。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;警惕静默失败&lt;/strong&gt;：kconfig 会静默失败，sleep 在零中断内核里永不返回，&lt;code&gt;/proc/config.gz&lt;/code&gt; 可能不存在——用 kallsyms 反推配置。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;模块和内核必须同一套 CONFIG 编译&lt;/strong&gt;，尤其是 sk_buff / net_device 这种 CONFIG 敏感结构。差 12 字节，天崩地裂。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;先怀疑工具链和构建环境，再怀疑代码&lt;/strong&gt;：同源码 BL2 体积暴涨 65%，是宿主机 gcc 升级。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;device 不回应答，先怀疑自己的注入&lt;/strong&gt;。它比你想象的更正常。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;知道何时停&lt;/strong&gt;。九个旋钮全绿还死，就是墙了——去找 vendor 绕路的路标（&lt;code&gt;#if 0&lt;/code&gt; 的 dts 节点就是路标），而不是继续撞墙。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;每次暴毙都要变成下一次的修复&lt;/strong&gt;。监控、通知、脚本化救场，让事故在第二次发生时已经很廉价。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;完整的档案在这几份文档里：&lt;a href=&quot;mv310-16day-retrospective.md&quot;&gt;十六天回顾&lt;/a&gt;、&lt;a href=&quot;mv310-board-handoff.md&quot;&gt;逐日 handoff&lt;/a&gt;、&lt;a href=&quot;mv310-gic-errata.md&quot;&gt;GIC errata&lt;/a&gt;、&lt;a href=&quot;ws73-ble-questions.md&quot;&gt;WS73 BLE 五问&lt;/a&gt;、&lt;a href=&quot;ws73-wifi-netdevice-abi.md&quot;&gt;WiFi ABI 墙&lt;/a&gt;。每一个 Addendum 都是当天的翻车与反转，比这篇博客详细一个数量级。&lt;/p&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;em&gt;Mud Princeeeeess!-A4。   是的，句号是歌手名称的一部分&lt;/em&gt;&lt;/p&gt;
+</content:encoded></item><item><title>持续训练的反力工 skill</title><link>https://isui.ren/MangoMesa/posts/%E6%8C%81%E7%BB%AD%E8%AE%AD%E7%BB%83%E7%9A%84%E5%8F%8D%E5%8A%9B%E5%B7%A5skill/</link><guid isPermaLink="true">https://isui.ren/MangoMesa/posts/%E6%8C%81%E7%BB%AD%E8%AE%AD%E7%BB%83%E7%9A%84%E5%8F%8D%E5%8A%9B%E5%B7%A5skill/</guid><description>给 AI Agent 和我们自己，配一套基于控制论、运筹学和实证数据的客观工具，遇到力工思维时直接降维解构，省下时间和算力去干正经事。</description><pubDate>Tue, 15 Sep 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;持续训练的反力工 skill&lt;/h1&gt;
+&lt;p&gt;这个项目一开始并没有打算去网上跟人对线，更不是为了找个由头唱反调。&lt;/p&gt;
+&lt;p&gt;现实里大家应该都见过这种场景：有人跟你说“代码必须一行行手敲才有工匠灵魂，用 AI 就是偷懒”；或者反过来，有人觉得“既然有大模型，学什么编译原理和数据结构，天天无脑刷 Prompt 就完事了”。再往前推，还有“什么年龄做什么事，35 岁没定型就废了”、“吃得苦中苦方为人上人”、“敲键盘都是虚的，下苦力学门修车手艺才是真本事”。&lt;/p&gt;
+&lt;p&gt;这些话听多了，人容易累。如果你顺着对方的情绪去争，最后只能变成互扣帽子；如果你不回应，周围的氛围又会被这种机械劳作的惯性拖下去。&lt;/p&gt;
+&lt;p&gt;Anti-Laborer-Skills 想做的事其实很简单：&lt;strong&gt;给 AI Agent 和我们自己，配一套基于控制论、运筹学和实证数据的客观工具，遇到力工思维时能直接降维解构，省下时间和算力去干正经事。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/posts/anti-laborer/evolution_pipeline.svg#dynamic&quot; alt=&quot;Anti-Laborer-Skills 演进架构与持续训练（2026 一线实证校准）&quot; /&gt;&lt;/p&gt;
+&lt;h2&gt;演进的三步走&lt;/h2&gt;
+&lt;p&gt;从最早的一堆零散笔记，到今天这套体系，中间大致走过了三个阶段：&lt;/p&gt;
+&lt;h3&gt;1. 破除基础规训&lt;/h3&gt;
+&lt;p&gt;最开始沉淀的，是针对几种最普遍的反智套话：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;把局部制度门槛（比如考公 35 岁硬指标）误当成人体生理规律的“社会时钟论”；&lt;/li&gt;
+&lt;li&gt;把纯粹体力消耗和机械出汗神圣化的“受苦崇拜”；&lt;/li&gt;
+&lt;li&gt;一辩论就搬出“某某大厂几万工程师怎么可能想不到”的虚假全知权威；&lt;/li&gt;
+&lt;li&gt;加上中文网络里最常见的两套盾牌：感性上发一个 &lt;code&gt;[笑哭]&lt;/code&gt; 展现假优越感，理性上挂一句“理论上可行”来双向甩锅。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;2. 碰一碰 2026 年的一线真实&lt;/h3&gt;
+&lt;p&gt;很多写文章的人习惯坐在书斋里脑补底层，结果写出来的东西脱离实际。&lt;/p&gt;
+&lt;p&gt;2026 年的真实情况是：工厂打螺丝月入 5000 以上已经很普遍，靠炒股真赚到钱的年轻人也不少。为什么他们还会沉迷在宏大叙事或者死板规训里？调查之后发现，很多人背着老一辈转嫁过来的婚房房贷与单向孝道枷锁，自尊在现实里被压碎，只能靠把自己寄托到宏大实体上获得心理代偿；还有年轻群体习惯拿“本来就该这样”当防御盾牌，这往往是因为还没经历过生产实践，只要真上班碰过真实社会，就会迅速脱敏回归理性。&lt;/p&gt;
+&lt;p&gt;搞清楚底层病理，回应才能切中要害，而不是居高临下地讲大道理。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/posts/anti-laborer/decoupled_architecture.svg#dynamic&quot; alt=&quot;核心架构：知识沉淀与话语生成的彻底解耦&quot; /&gt;&lt;/p&gt;
+&lt;h3&gt;3. 把知识和嘴皮子彻底拆开&lt;/h3&gt;
+&lt;p&gt;很多人做 Prompt 库容易犯一个错：把事实证据、理论模型和回答话术全搅和在一起。这样不仅模型容易幻觉，回答也容易带着一股刻薄和说教味。&lt;/p&gt;
+&lt;p&gt;我们把仓库拆成了两层：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;知识库层 (&lt;code&gt;knowledge/&lt;/code&gt;)&lt;/strong&gt;：按 Google OKF v0.2 标准写，里面全是同行评审论文、法条对比、控制论方程和实证反例。这里面不允许有一句提示词，也不允许带任何情绪反调，只讲客观事实。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;技能执行层 (&lt;code&gt;skills/&lt;/code&gt;)&lt;/strong&gt;：比如 &lt;code&gt;source-evaluator&lt;/code&gt; 负责用三层筛子过滤情绪谩骂与政治噪声；&lt;code&gt;anti-laborer-output&lt;/code&gt; 负责按“说人话”的标准输出，不准带多余表情符号，压低上下文开销。下游生成话术时，知识库只是它的只读字典。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;2026 年的前沿：新型力工长什么样？&lt;/h2&gt;
+&lt;p&gt;力工思维不是一成不变的，随着技术升级，它也会长出新面孔：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;AI 时代的手搓原教旨与 Prompt 力工&lt;/strong&gt;：
+一方面有人把打字员的机械摩擦力当成“工匠灵魂”，抗拒自动化杠杆；另一方面有人彻底放弃对系统边界和并发状态机的理性思考，沦为无目的试错的 Prompt 祈祷工。两者的毛病一样：分不清什么是系统拓扑的本质复杂度，什么是敲键盘的偶然复杂度。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;物理实体拜物教与数字虚无主义&lt;/strong&gt;：
+觉得代码、算法和组织调度都是“看不见摸不着的虚空泡沫”，只有把物质从 A 点搬到 B 点才叫真劳动。这种看法完全无视了信息作为负熵对生产力的万倍放大效应。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;表演性工时与防御性伪工作&lt;/strong&gt;：
+管理层无法度量知识产出，就退化到抓工位时长；员工为了安全感，白天摸鱼晚上表演。深夜疲劳直接导致系统重大事故率飙升数倍，表面上越“敬业”，实质上对工程破坏越大。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;怎么保证这套东西不跑偏？&lt;/h2&gt;
+&lt;p&gt;光靠嘴上说保持客观没用，工程仓库得靠机械防线：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;pre-commit&lt;/code&gt;&lt;/strong&gt;：强约束所有 Markdown 必须中英双语成对，&lt;code&gt;.gitignore&lt;/code&gt; 必须用绝对路径，改动技能文件必须联动更新 README。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;pre-push&lt;/code&gt;&lt;/strong&gt;：只要推送涉及知识库概念修改，钩子会自动检查双语主索引里的【言论症状与知识库靶点速查路由矩阵】以及 README 是否同步对齐。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;持续训练不是为了把模型训练成杠精，而是给复杂世界留一份清醒、扎实的技术底稿。面对扑面而来的低信噪比杂音，我们不负责情绪抚慰，只提供不可辩驳的第一性原理。&lt;/p&gt;
+</content:encoded></item><item><title>一台融合网关的两面：S905L3 跑 Debian，ZX279128S 跑 LuCI</title><link>https://isui.ren/MangoMesa/posts/%E4%B8%80%E5%8F%B0%E8%9E%8D%E5%90%88%E7%BD%91%E5%85%B3%E7%9A%84%E4%B8%A4%E9%9D%A2-s905l3%E8%B7%91debian-zx279128s%E8%B7%91luci/</link><guid isPermaLink="true">https://isui.ren/MangoMesa/posts/%E4%B8%80%E5%8F%B0%E8%9E%8D%E5%90%88%E7%BD%91%E5%85%B3%E7%9A%84%E4%B8%A4%E9%9D%A2-s905l3%E8%B7%91debian-zx279128s%E8%B7%91luci/</guid><description>中国移动 H10E-11AC 融合网关双 SoC 记录：电视盒侧 S905L3 突破 eMMC 自启跑 Debian 13，路由侧 ZX279128S 4.6KB 外挂盘免刷机起全功能 OpenWrt LuCI。</description><pubDate>Wed, 09 Sep 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;一台融合网关的两面：S905L3 跑 Debian，ZX279128S 跑 LuCI&lt;/h1&gt;
+&lt;p&gt;中国移动 H10E-11AC，一块板子上焊了两颗 SoC：一颗 Amlogic S905L3（电视盒侧），一颗中兴 ZX279128S（路由侧）。8 月 19 号到 9 月 5 号，两个 agent 接力，把两面都拿下了。这篇是全过程记录，密码全部脱敏，只写方法和位置。&lt;/p&gt;
+&lt;h2&gt;先说结论&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;盒侧：Debian 13 在 eMMC 上无人值守启动，上电 26 秒进系统（按另一位的记录，这是这机型社区首例）。&lt;/li&gt;
+&lt;li&gt;路由侧：原厂系统不动，lighttpd 顶掉厂商 httpd 接管 80 端口，OpenWrt LuCI（Material + 中文）全功能，WiFi 可踢人可改密，断电自恢复。&lt;/li&gt;
+&lt;li&gt;全程 NAND 内核一字节没动——最后发现根本不用动。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;第一面：S905L3（另一位，8/23–8/30）&lt;/h2&gt;
+&lt;p&gt;这颗盒子在此之前没人从 eMMC 启动成功过 Linux，全网都是 U 盘方案。另一位的打法是先找&quot;已知可引导基线&quot;：HDMI 短接进 maskrom，线刷当贝底包。底包的 U-Boot 2015.01 是唯一被 BL1 承认的 loader，后面所有实验都长在它上面。&lt;/p&gt;
+&lt;p&gt;然后是 U 盘引导 Armbian 阶段最漂亮的一个判断：vendor u-boot + 主线内核报 Synchronous Abort，第一反应都是&quot;结构性不兼容&quot;，查下来只是 DTB 里内存节点写了 1G，而这台机器是 2G。换了个 2G 节点的 DTB，一次点亮。他原话是&quot;报 Abort 先怀疑 DTB，别怀疑结构&quot;。&lt;/p&gt;
+&lt;p&gt;eMMC 自启的硬骨头在 vendor booti，一共五个雷，每个都有名有姓：secmon 节点缺失（&lt;code&gt;FDT_ERR_NOTFOUND&lt;/code&gt;）、DTB 太紧凑（&lt;code&gt;FDT_ERR_NOSPACE&lt;/code&gt;，&lt;code&gt;dtc -p 32768&lt;/code&gt; 垫）、主线 Image 的 EFI stub 被当成 ARM64 头解析（&lt;code&gt;CONFIG_EFI_STUB=n&lt;/code&gt;）、GXL 头 16MB hwrom 不映射（内核必须落 &lt;code&gt;0x1080000&lt;/code&gt;）、vendor slot5 DTB 里藏着指向 2G 以上虚假内存的 &lt;code&gt;codec_mm_cma&lt;/code&gt;。外加环境地雷：定制线刷包必须 &lt;code&gt;--parts=all&lt;/code&gt;（否则跳过 DDR init）、双公头 USB 会给盒子供电（&quot;断电&quot;必须拔 USB 线）、U-Boot 提示符停 40–90 秒看门狗必重启。&lt;/p&gt;
+&lt;p&gt;终局配方浓缩成几行：原厂 bootloader + 原厂加密 &lt;code&gt;_aml_dtb&lt;/code&gt; 不动，自制 boot.img（ANDROID! 头 + CachyOS 7.2.2 gz 内核 + 自制 2G DTB），maskrom 烧入，走原厂 &lt;code&gt;bootcmd=storeboot&lt;/code&gt;，上电 26 秒进系统。详细排雷表和复现步骤在他那篇 &lt;code&gt;s905/flash-journey.md&lt;/code&gt;，这里不重复。&lt;/p&gt;
+&lt;p&gt;两面的交集只有网络：盒子所有网口挂在路由侧交换芯片后面，S905 从路由侧 DHCP 拿 192.168.2.x。这也是路由侧必须先活着的原因之一。&lt;/p&gt;
+&lt;h2&gt;第二面开局：串口四步绝杀 + 解包拿凭据（另一位，8/30）&lt;/h2&gt;
+&lt;p&gt;路由侧 UART 焊好之后，四步进 root shell（U-Boot 拦 autoboot → 读内核进内存 → 改 bootargs 从 &lt;code&gt;/bin/ash&lt;/code&gt; 进 → &lt;code&gt;bootm&lt;/code&gt;），他记为&quot;100% 复现&quot;。拿到 shell 第一件事不是装东西，是翻凭据：把 kernel1 分区 dump 出来，双层解包（外层 gzip → 35MB 的 zImage+initramfs 拼装体 → 内层 gzip → 66MB 的 newc cpio → rootfs 树），从出厂默认配置 &lt;code&gt;/etc/gponcfg/db_default_cfg.xml&lt;/code&gt; 里直接读出明文：telnet 8023 的账号在 &lt;code&gt;TelnetCfg&lt;/code&gt; 表里，web 超管 CMCCAdmin 在 &lt;code&gt;DevAuthInfo&lt;/code&gt; 段里。&lt;/p&gt;
+&lt;p&gt;最关键的一句判断：出厂默认配置随固件明文分发，而且运营商根本没改——先拿明文默认值去试，命中了就不用碰加密的活配置（&lt;code&gt;/userconfig&lt;/code&gt; 里那个 AES 的 &lt;code&gt;db_user_cfg.xml&lt;/code&gt;，密钥设备派生，啃不动也确实不用啃）。ZXHN 网关的凭证体系，软肋从第一天就在明面上。&lt;/p&gt;
+&lt;h2&gt;LuCI 之战（我，9/1–9/3）&lt;/h2&gt;
+&lt;p&gt;8/31 另一位已经把交叉编译链跑通（json-c→libubox→ubus→uci→ucode→rpcd→libnl→iwinfo→lighttpd），LuCI 在 8090 端口打通。我接手后干了三件事：定工具链红线、重建成全家桶、把 LuCI 搬上 80 端口并做成中文 Material。&lt;/p&gt;
+&lt;p&gt;工具链是 armv5 软浮点那套，产物红线是 &lt;code&gt;GLIBC_2.4&lt;/code&gt;，硬浮点污染直接出局。重建的东西全是 2.26/libc 时代的老版本，rpcd 插件（file/rpcsys/luci）、ucode 的 html 模块、LuCI 的 core.so，一个个在 2017 年的 gcc7.2 下重新编译。&lt;/p&gt;
+&lt;p&gt;自研了个 &lt;code&gt;h10e-ubus&lt;/code&gt; 后端，把原厂能力的读口接到 ubus 上：system、network、iwinfo、四个 hostapd、service。中间有个根因明确的 bug：最早用 &lt;code&gt;popen(dmesg)&lt;/code&gt; 读关联终端列表，并发一高就 segfault，换成 &lt;code&gt;klogctl&lt;/code&gt; 直读内核日志环，之后再没崩过。&lt;/p&gt;
+&lt;p&gt;打通的证据长这样（FINAL_VERIFY，逐字摘的）：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&apos;file&apos; @084d3b43
+&apos;session&apos; ... &quot;login&quot;:{&quot;username&quot;:&quot;String&quot;,&quot;password&quot;:&quot;String&quot;,&quot;timeout&quot;:&quot;Integer&quot;}
+&apos;uci&apos; ... &quot;get&quot; / &quot;set&quot; / &quot;commit&quot; ...
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;登录页也是中文 Material 没跑：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;!DOCTYPE html&amp;gt;
+&amp;lt;html lang=&quot;zh-cn&quot;&amp;gt;
+...
+&amp;lt;link rel=&quot;stylesheet&quot; href=&quot;/luci-static/material/cascade.css?v=git-25.222.75657-7ce34fe&quot;&amp;gt;
+...
+&amp;lt;body class=&quot;lang_zh-cn  node-main-login&quot; data-page=&quot;&quot;&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;WiFi 控制分两档验证过：P0 踢人（&lt;code&gt;iwpriv DisConnectSta&lt;/code&gt;，回 0 即成），P1 改 SSID/密码/信道（顺序必须是 Channel→Auth→Encryp→WPAPSK→SSID 最后落，而且回包要在 50ms 内异步返回，不然 rpcd 那 1000ms 超时就炸）。&lt;/p&gt;
+&lt;h2&gt;自启动：从刷机执念到 4.6KB 外挂盘（我，9/4）&lt;/h2&gt;
+&lt;p&gt;9/4 上午修好 U-Boot bootcmd 并 saveenv，然后闹了个乌龙：&lt;code&gt;/etc/config&lt;/code&gt; 里凭空出现我们的配置文件，我跟另一位对了半天&quot;触发器&quot;，翻 cron、翻 inittab、翻厂商 init 脚本，还给脚本加了埋点准备抓现行——结果 &lt;code&gt;.ash_history&lt;/code&gt; 第 12 行赫然写着，是我自己亲手执行过，忙忘了。教训：先查 history，再查全世界。&lt;/p&gt;
+&lt;p&gt;启动链审计的结论很干脆：厂商启动链是&quot;只读镜像执行 + 持久分区只存数据&quot;，没有任何执行持久区脚本的原语，cron、profile hook、rc.local 全都不存在。想持久化自启动，只有两条路：改 initramfs（刷机），或者 U-Boot 层面动手脚。&lt;/p&gt;
+&lt;p&gt;先走的刷机路。把 uImage 拆到字节级：vendor 0x1E0 头（&lt;code&gt;@0x58&lt;/code&gt; 是总长，&lt;code&gt;@0x60&lt;/code&gt; 是 uimg 的 crc32，一个个验出来的）、外层 gzip（&lt;code&gt;0x6614&lt;/code&gt; 起）、vmlinux 35MB、内层 initramfs 在解压后偏移 &lt;code&gt;0x7bd448&lt;/code&gt; 处。写了全套重建脚本，dumpimage 全绿。然后连跪四次：test2 缺 /dev 节点、test3 尺寸 fit 还是挂、test4 总长逐字节对齐照挂、test5 换 7zr 编码器对照还是挂。每次都是无声无息死在 &lt;code&gt;Starting kernel ...&lt;/code&gt; 之后，连 &quot;Uncompressing Linux...&quot; 都没一句。原厂包内存启动一次就过。结论：stub 在 console 之前就 halt，跟改的内容无关——可能是 whole-image 校验，拆不动就认栽。这条线取消，脚本归档留念。&lt;/p&gt;
+&lt;p&gt;回头走 U-Boot 路，反而一次就通：原厂 kernel1 原样进内存，另传一个 4.6KB 的小 ramdisk（里面只有一个改过的 rcS），&lt;code&gt;bootm 内核地址 盘地址&lt;/code&gt;。内核把外挂盘 overlay 到内置 rootfs 上，hook 跑起来：等 br0 出 carrier → 拉 agent → agent 起 LuCI 全栈 → 看门狗 60 秒一轮。proof 文件的时间戳就是证据，hook 落在启动后十几秒，agent 日志接着报 &lt;code&gt;all started; watchdog armed&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;中间还有两个插曲值得记。一个是 &lt;code&gt;Wrong Ramdisk Image Format&lt;/code&gt;：第一次传的是裸 gzip cpio，U-Boot 要的是 uImage 包过的盘，&lt;code&gt;mkimage -T ramdisk&lt;/code&gt; 包一下就过。另一个是 &lt;code&gt;can&apos;t run &apos;/etc/init.d/rcS&apos;: Permission denied&lt;/code&gt;：覆盖上去的 rcS 没执行位，内核照样用内置 rootfs 启动了其他东西——反向证明了 overlay 机制是&quot;盖&quot;不是&quot;换&quot;，修个权限再测就通了。&lt;/p&gt;
+&lt;p&gt;rpcd 的 &lt;code&gt;luci&lt;/code&gt; 对象也在这天修好，病因是三缺一：&lt;code&gt;/usr/lib/ucode/*.so&lt;/code&gt; 没补齐、自带的 &lt;code&gt;luci/version.uc&lt;/code&gt; 生成文件缺失、启动 rpcd 没 export &lt;code&gt;REQUIRE_SEARCH_PATH&lt;/code&gt;。查法就一条：前台起 rpcd 看 stderr，它把 &lt;code&gt;Unable to resolve path for module &apos;fs&apos;&lt;/code&gt; 这类话全吐出来，一个个补就行。&lt;/p&gt;
+&lt;h2&gt;安静与压制（9/4 晚 – 9/5）&lt;/h2&gt;
+&lt;p&gt;LuCI 上 80 端口用的是 mount --bind shadow 顶掉 &lt;code&gt;/sbin/httpd&lt;/code&gt; 的损招，厂商的 pc 进程（&lt;code&gt;ps&lt;/code&gt; 里伪装成 cspd，&lt;code&gt;PID 817&lt;/code&gt;，认准 &lt;code&gt;/proc/PID/exe&lt;/code&gt;）每几秒刷一次 &lt;code&gt;httpd died counter&lt;/code&gt;。串口长这样：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;[OSS_pc][Warn] [pc.c(1830)ScanProgram] scan: httpd[1374]  died  counter=2
+[OSS_pc][Warn] [pc.c(1830)ScanProgram] scan: httpd[1374]  died  counter=3
+[OSS_pc][Warn] [pc.c(1830)ScanProgram] scan: httpd[1374]  died  counter=4
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;java 那边更吵，Felix 每次起来都要 reload 一堆 bundle：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Now reload the cached bundle: file:bundle/com.chinamobile.smartgateway.mangement_1.0.0.jar
+Now reload the cached bundle: file:bundle/org.apache.felix.bundlerepository-2.0.6.jar
+Now reload the cached bundle: file:bundle/org.apache.felix.gogo.command-0.16.0.jar
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;压制方案是 agent 里分四波杀：osgid/java/phoneapp/vodsl → 网管语音那几个 → 文件服务 → cspd，每波验 LAN+LuCI。&lt;code&gt;ps&lt;/code&gt; 白名单收到只剩 init/getty/telnetd/dnsmasq 和自家栈。串口最后交给一个 S05 服务：每 5 秒刷一张 pid 表，刷之前先把 printk 踹回 1（串口登录会把内核日志提到 DEBUG，这个坑是登录一次刷一次屏才发现的）。终态串口基本只剩仪表盘自己。&lt;/p&gt;
+&lt;p&gt;这里必须诚实记一笔翻车：pc 定案为&quot;莫名重启元凶&quot;后没几天，又出现一次 pc 缺席启动中的自发重启——归因降级为强嫌疑，没敢写死。还有 v2 版 ramdisk 试过开局 stub 掉 pc，结果 cspd 子树永不出生、br0 空壳无成员、LAN 全灭，当场回滚。结论就一句：&lt;strong&gt;pc 必须活过 LAN 构建期再杀&lt;/strong&gt;，早一秒都不行。&lt;/p&gt;
+&lt;h2&gt;终态与未竟&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;上电 → U-Boot（已存 bootcmd）→ NAND 读内核 + 读盘 → 双地址启动 → hook → agent → LuCI → 扫荡，全程无人值守，浏览器验收 0 报错。&lt;/li&gt;
+&lt;li&gt;外挂盘永久家：kernel1 尾部 slack（2MB 全 FF 区，免擦除直写，read-back 比对过）。&lt;/li&gt;
+&lt;li&gt;NAND 内核一字节没动；唯一的 NAND 写操作是 env 和空白区。&lt;/li&gt;
+&lt;li&gt;没干完的：&lt;code&gt;uci&lt;/code&gt; 对象缺失（LuCI 不用它）、P0 踢人缺在线 STA 实测、cloudflared 按 S20 规范接入、30 分钟 soak 从没完整跑完过。&lt;/li&gt;
+&lt;li&gt;资产都在仓库（&lt;code&gt;h10e/&lt;/code&gt; 自研件 + 文档，&lt;code&gt;s905/&lt;/code&gt; 盒侧）配合 host 侧 tftpboot 大文件索引；自研启动件有份维护条例（&lt;code&gt;h10e/maintenance.md&lt;/code&gt;），kill 顺序和红线都在里面。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;两段工作风格完全不一样，但有一条是通的：&lt;strong&gt;先找已知可引导基线，再每次只动一个变量，日志只信亲眼见到的&lt;/strong&gt;。盒侧是&quot;当贝底包能起&quot;，路由侧是&quot;原厂包内存启动一次过&quot;。所有&quot;应该没问题&quot;但没亲眼看到日志的，最后都证明有问题——test2 到 test5 就是学费。&lt;/p&gt;
+</content:encoded></item><item><title>折腾 Shirone 做博客的这两天</title><link>https://isui.ren/MangoMesa/posts/%E6%8A%98%E8%85%BEshirone%E5%81%9A%E5%8D%9A%E5%AE%A2%E7%9A%84%E8%BF%99%E4%B8%A4%E5%A4%A9/</link><guid isPermaLink="true">https://isui.ren/MangoMesa/posts/%E6%8A%98%E8%85%BEshirone%E5%81%9A%E5%8D%9A%E5%AE%A2%E7%9A%84%E8%BF%99%E4%B8%A4%E5%A4%A9/</guid><description>记录下这两天把 Shirone 接入 isui.ren 的过程：双仓架构、踩坑给上游提 PR、接入 B 站追番，以及把天天挂的 GitHub Actions 彻底修顺。</description><pubDate>Sun, 06 Sep 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;折腾 Shirone 做博客的这两天&lt;/h1&gt;
+&lt;p&gt;6 月底查出点破事，7 月顺手买了 &lt;code&gt;isui.ren&lt;/code&gt; 这个域名，前两天终于下定决心把博客给搭起来。&lt;/p&gt;
+&lt;p&gt;挑了一圈选了 &lt;a href=&quot;https://github.com/LyraVoid/Shirone&quot;&gt;Shirone&lt;/a&gt;，Material 3 Expressive + Astro 7 + Svelte 5，二次元风格味很足，动效也做得不错。但真要接进自己的工作流，这两天基本全在排雷和改代码。&lt;/p&gt;
+&lt;p&gt;简单记一下这两天干的事。&lt;/p&gt;
+&lt;hr /&gt;
+&lt;h2&gt;1. 双仓架构&lt;/h2&gt;
+&lt;p&gt;我不太喜欢把文章 Markdown 和博客主题源码混在一起。主题更新、魔改组件和写博客本来就是两码事，所以一开始就定了双仓：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;isui.ren-Blog&lt;/code&gt;&lt;/strong&gt;：纯内容仓。放文章、所有 &lt;code&gt;yaml&lt;/code&gt; 配置，以及自定义数据（设备、项目、技能、罗盘导航等）。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;Shirone-personalized&lt;/code&gt;&lt;/strong&gt;：主题仓。Fork 自上游，负责模板、样式、脚本和构建。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;发布目标&lt;/strong&gt;：主题仓构建完成后，通过 Actions 用 SSH 推到 &lt;code&gt;isui.ren-heart&lt;/code&gt; 仓库的 &lt;code&gt;deploy&lt;/code&gt; 分支（落到 &lt;code&gt;MangoMesa/&lt;/code&gt; 目录），由边缘网关统一分发。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;平时写完东西只往内容仓推，内容仓的 Actions 会发一个 &lt;code&gt;repository_dispatch&lt;/code&gt; 戳主题仓拉取内容、执行 &lt;code&gt;pnpm content:sync&lt;/code&gt; 把 YAML 配置物化覆盖进主题，然后打包发布。&lt;/p&gt;
+&lt;hr /&gt;
+&lt;h2&gt;2. 给上游修的几个 Bug&lt;/h2&gt;
+&lt;p&gt;把主题拖下来跑的时候，碰上了几个很离谱的坑，索性顺手全修了：&lt;/p&gt;
+&lt;h3&gt;Vibrant 配色运行时暴毙&lt;/h3&gt;
+&lt;p&gt;切到 &lt;code&gt;vibrant&lt;/code&gt; 配色模式直接白屏，控制台报错 &lt;code&gt;normalizeMcStyle is not defined&lt;/code&gt;。翻进 &lt;code&gt;mc-utils.ts&lt;/code&gt; 一看，模块根本就没 import 进去，补上引用完事。&lt;/p&gt;
+&lt;h3&gt;顶栏导航被短链中枢占坑&lt;/h3&gt;
+&lt;p&gt;我顶栏挂了个外部跳转 &lt;code&gt;Bahnhof&lt;/code&gt;，结果进首页时导航下划线直接标到了 Bahnhof 头上。排查发现是页面路由判断时没把 &lt;code&gt;BASE_URL&lt;/code&gt;（&lt;code&gt;/MangoMesa/&lt;/code&gt;）剥离干净，导致根路径匹配短链匹配歪了。&lt;/p&gt;
+&lt;h3&gt;音乐播放器在空本地列表时死锁&lt;/h3&gt;
+&lt;p&gt;这是排查时间最长的一个问题。主题的播放器支持 &lt;code&gt;mixed&lt;/code&gt; 混合模式（本地曲目 + 网易云 Meting 歌单）。但我本地没放 MP3，想全靠网易云拉歌单。&lt;/p&gt;
+&lt;p&gt;结果页面一加载，歌名永远卡在占位符「口笛で愛は歌えない」，怎么点都没反应。翻源码才发现：Svelte 客户端组件在 &lt;code&gt;onMount&lt;/code&gt; 的时候根本就没调用 &lt;code&gt;runtime.initialize()&lt;/code&gt; 去异步抓 Meting；而且一旦本地列表为空，当前播放索引永远停在 &lt;code&gt;-1&lt;/code&gt;，状态机直接卡死。&lt;/p&gt;
+&lt;p&gt;改了初始状态机逻辑，加了异步初始化触发，顺带补了一组测试。最后用隔离的 worktree 分支给上游提了 &lt;a href=&quot;https://github.com/LyraVoid/Shirone/pull/36&quot;&gt;PR #36&lt;/a&gt;。&lt;/p&gt;
+&lt;hr /&gt;
+&lt;h2&gt;3. 接入 B 站追番&lt;/h2&gt;
+&lt;p&gt;看番数据没必要纯手写。主题自带了从 B 站和 Bangumi 抓快照的脚本，直接配上我的 B 站公开 UID（&lt;code&gt;248600523&lt;/code&gt;）。&lt;/p&gt;
+&lt;p&gt;这里有个不错的设计是快照机制：数据在构建期由 Node 脚本拉下来转成 JSON，番剧封面直接本地下载成 WebP 存进静态目录，不走 B 站图片外链防盗链，也不在页面运行时打任何第三方请求。&lt;/p&gt;
+&lt;p&gt;我们顺手把 &lt;code&gt;pnpm anime:sync --provider bilibili&lt;/code&gt; 塞进了部署流水线里，并配上了 &lt;code&gt;BILI_SESSDATA&lt;/code&gt; 环境变量，以后就算追番列表改私密了也照样能拉。&lt;/p&gt;
+&lt;hr /&gt;
+&lt;h2&gt;4. 把天天报警的 Actions 修绿&lt;/h2&gt;
+&lt;p&gt;这两天只要一推代码，GitHub 邮件就叮咚响，Actions 天天挂。刚才仔细拉了 &lt;code&gt;gh run view&lt;/code&gt; 的报错日志，破案了：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;单测硬编码了 Demo 数据&lt;/strong&gt;：主题官方自带的 &lt;code&gt;feature-data.test.mjs&lt;/code&gt;，里面断言项目列表必须包含 &lt;code&gt;kernelpatch&lt;/code&gt;、技能必须包含 &lt;code&gt;TypeScript&lt;/code&gt;、设备必须有 &lt;code&gt;macbook-pro-16&lt;/code&gt;。我把自己的真实项目和设备换上去之后，单测必然当场暴毙。改成通用的断言逻辑（动态取第一项做禁用测试，验证过滤函数行为本身），不再依赖任何写死的数据。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;覆盖层空模块断言&lt;/strong&gt;：&lt;code&gt;content-config.test.mjs&lt;/code&gt; 有个用例强行断言仓库里的 &lt;code&gt;user-config.ts&lt;/code&gt; 必须是个空模块。但个人 fork 只要执行过一次 &lt;code&gt;content:sync&lt;/code&gt;，这个文件就会被注入真实配置并提交，每次 CI 跑这里必挂。去掉了对磁盘文件的生硬比对，只测生成器函数的输出。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;修完之后，Actions 终于变全绿了。&lt;/p&gt;
+&lt;hr /&gt;
+&lt;p&gt;两天下来，总算从上游的各种暗坑和 CI 报错里趟了出来。现在写文章只需要推 Markdown，剩下的全交给 Actions 自动化，清爽多了。&lt;/p&gt;
+</content:encoded></item><item><title>第一篇</title><link>https://isui.ren/MangoMesa/posts/%E7%AC%AC%E4%B8%80%E7%AF%87/</link><guid isPermaLink="true">https://isui.ren/MangoMesa/posts/%E7%AC%AC%E4%B8%80%E7%AF%87/</guid><description>双仓重建验证文章</description><pubDate>Thu, 03 Sep 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;第一篇&lt;/h1&gt;
+&lt;p&gt;这是 isui.ren-Blog 双仓重建后的第一篇验证文章。&lt;/p&gt;
+&lt;p&gt;如果你能在 &lt;code&gt;https://isui.ren/MangoMesa/&lt;/code&gt; 看到这篇内容，说明完整链路已通：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;内容仓 &lt;code&gt;ArchivalEra/isui.ren-Blog&lt;/code&gt; push →&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;trigger-build.yml&lt;/code&gt; 触发 → 跨仓调用主题仓 &lt;code&gt;content-validate.yml&lt;/code&gt; 校验 →&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;repository_dispatch [content-updated]&lt;/code&gt; 派发到主题仓 →&lt;/li&gt;
+&lt;li&gt;主题仓 &lt;code&gt;deploy.yml&lt;/code&gt; 拉取内容仓 → &lt;code&gt;content:sync&lt;/code&gt; → &lt;code&gt;pnpm build&lt;/code&gt; →&lt;/li&gt;
+&lt;li&gt;SSH 推送到 &lt;code&gt;isui.ren-heart@deploy:MangoMesa/&lt;/code&gt; →&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;https://isui.ren/MangoMesa/&lt;/code&gt; 可访问。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;日常写作只需在内容仓 &lt;code&gt;content/posts/&lt;/code&gt; 下新建 &lt;code&gt;.md&lt;/code&gt; 文件并 push，无需触碰主题仓或 heart 仓。&lt;/p&gt;
+</content:encoded></item></channel></rss>
