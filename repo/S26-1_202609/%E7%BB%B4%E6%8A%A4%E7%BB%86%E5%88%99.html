@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-depth="0">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -314,11 +314,31 @@
             </div>
           </div>
 
+          <button class="m3-icon-btn" id="search-toggle" aria-label="全站搜索" title="全站搜索">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+          </button>
+
           <button class="m3-icon-btn" id="theme-toggle" aria-label="切换昼夜主题">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
           </button>
         </div>
       </header>
+
+      <!-- 全站搜索面板（点击顶栏放大镜展开；ESC 或点外部关闭） -->
+      <div class="search-panel" id="search-panel" hidden>
+        <div class="search-panel-inner" role="dialog" aria-modal="true" aria-label="全站搜索">
+          <div class="search-panel-head">
+            <svg class="search-panel-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+            <input type="search" id="search-input" class="search-panel-input" placeholder="搜索知识点、例题、习题…" autocomplete="off" spellcheck="false">
+            <button class="m3-icon-btn" id="search-close" aria-label="关闭搜索" title="关闭（ESC）">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
+          </div>
+          <div class="search-panel-body" id="search-results" data-pagefind-ignore>
+            <p class="search-hint">输入关键词开始搜索。支持中文词组与公式外的正文；结果按相关度排序，回车打开第一条。</p>
+          </div>
+        </div>
+      </div>
 
       <div class="layout-container">
         <!-- Content Area -->
@@ -331,7 +351,7 @@
 
             <div class="meta-chip-bar"><span class="meta-chip">⚡ 状态: active</span><span class="meta-chip">📅 更新: 2026-09-17</span></div>
 
-            <div class="article-content">
+            <div class="article-content" data-pagefind-body>
               <h1 id="仓库维护细则">仓库维护细则</h1><p>本细则适用于<strong>任意数量课程</strong>的学习仓库：增加课程、增加资料类别、迁移目录都不需要改写本细则，只需要按下面的固定动作执行。原则性规定见<a href="./%E7%BB%B4%E6%8A%A4%E6%9D%A1%E4%BE%8B.html">仓库维护条例</a>；两者冲突时以条例为准，并同步修订本细则。</p>
 <p><strong>与 README 的关系</strong>：README 的课程目录和本文件的「仓库状态」都是<strong>自动区块</strong>，由 <code>.githooks/hook_lib.py</code> 在每次提交时从暂存内容重新生成，推送前校验一致性。手工改动会被覆盖；要改内容，改自动区块之外的正文。</p>
 <h2 id="1-每次编辑后的固定动作-强制">1. 每次编辑后的固定动作（强制）</h2><p>任何一次新增、修改、移动或删除资料之后，按顺序执行：</p>
@@ -441,8 +461,8 @@ git diff --check                                # 空白与冲突标记</code></
 </blockquote>
 <ul>
 <li>课程 <strong>1</strong> 门；正式资料 <strong>13</strong> 份（不含索引、模板和历史入口）。</li>
-<li>精确白名单 <strong>76</strong> 条逐文件路径（无通配符），仓库共 <strong>76</strong> 个受管文件。</li>
-<li>暂存内容摘要（不含本文件与 README）：<code>4f00733769701b920064bfa24c5aa7679e4e77d5c9df931bfac84d89e70d39a3</code>。任何正文改动都会改变这一行。</li>
+<li>精确白名单 <strong>78</strong> 条逐文件路径（无通配符），仓库共 <strong>78</strong> 个受管文件。</li>
+<li>暂存内容摘要（不含本文件与 README）：<code>a263cb5153fd21b5d67a0945159523361d4526ede49d60d8dcaac3f3a05d6113</code>。任何正文改动都会改变这一行。</li>
 </ul>
 <h3 id="课程分类一览">课程分类一览</h3><div class="table-scroll-container"><table>
 <thead>

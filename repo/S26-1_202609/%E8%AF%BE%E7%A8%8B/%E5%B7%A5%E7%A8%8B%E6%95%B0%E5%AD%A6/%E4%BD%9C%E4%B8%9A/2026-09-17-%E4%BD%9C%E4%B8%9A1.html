@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-depth="3">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -314,11 +314,31 @@
             </div>
           </div>
 
+          <button class="m3-icon-btn" id="search-toggle" aria-label="全站搜索" title="全站搜索">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+          </button>
+
           <button class="m3-icon-btn" id="theme-toggle" aria-label="切换昼夜主题">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
           </button>
         </div>
       </header>
+
+      <!-- 全站搜索面板（点击顶栏放大镜展开；ESC 或点外部关闭） -->
+      <div class="search-panel" id="search-panel" hidden>
+        <div class="search-panel-inner" role="dialog" aria-modal="true" aria-label="全站搜索">
+          <div class="search-panel-head">
+            <svg class="search-panel-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+            <input type="search" id="search-input" class="search-panel-input" placeholder="搜索知识点、例题、习题…" autocomplete="off" spellcheck="false">
+            <button class="m3-icon-btn" id="search-close" aria-label="关闭搜索" title="关闭（ESC）">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
+          </div>
+          <div class="search-panel-body" id="search-results" data-pagefind-ignore>
+            <p class="search-hint">输入关键词开始搜索。支持中文词组与公式外的正文；结果按相关度排序，回车打开第一条。</p>
+          </div>
+        </div>
+      </div>
 
       <div class="layout-container">
         <!-- Content Area -->
@@ -331,7 +351,7 @@
 
             <div class="meta-chip-bar"><span class="meta-chip primary">📚 工程数学</span><span class="meta-chip">🏷️ 作业</span><span class="meta-chip">⚡ 状态: 整理中</span><span class="meta-chip">📅 更新: 2026-09-18</span><span class="meta-chip">📖 来源: 教师口头布置（2026-09-17 课堂）；正式题号以学习通发布为准, 教材《工程数学基础》第 1 章，原书习题 1.1 / 1.2 / 1.3</span></div>
 
-            <div class="article-content">
+            <div class="article-content" data-pagefind-body>
               <h1 id="作业1">作业1</h1><p><strong>题目范围</strong>：习题 1.1 第 1 题的 (1)(6)、习题 1.2 第 1 题的 (2)(3) 与第 2 题的 (3)、习题 1.3 第 1 题的 (1) 与第 3 题的 (2)。
 对应<a href="../%E6%95%99%E6%9D%90%E8%A7%A3%E6%9E%90/%E7%AC%AC01%E7%AB%A0-%E8%A1%8C%E5%88%97%E5%BC%8F/%E7%AC%AC01%E7%AB%A0-1.1-%E4%BA%8C%E9%98%B6%E4%B8%8E%E4%B8%89%E9%98%B6%E8%A1%8C%E5%88%97%E5%BC%8F.html">教材解析·第 1 章</a>（1.1、1.2、1.3 节）。</p>
 <blockquote>
