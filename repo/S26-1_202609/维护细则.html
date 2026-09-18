@@ -170,11 +170,27 @@
           </li></ul>
             </div>
           </div>
-        </li><li class="drawer-nav-item ">
-            <a href="./课程/工程数学/作业/index.html" class="drawer-nav-link">
-              <span>作业 (索引)</span>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="./课程/工程数学/作业/index.html" class="drawer-nav-link ">
+                <span>作业</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 作业" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="./课程/工程数学/作业/2026-09-17-作业1.html" class="drawer-nav-link">
+              <span>作业1</span>
             </a>
-          </li><li class="drawer-nav-item ">
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-item ">
             <a href="./课程/工程数学/原始资料/index.html" class="drawer-nav-link">
               <span>原始资料 (索引)</span>
             </a>
@@ -367,6 +383,7 @@ git diff --check                                # 空白与冲突标记</code></
 <li>例题与习题的数值结果要用<strong>精确算术独立验算</strong>（有理数或整数运算），不照抄书上手写过程；验算发现的差异要写进解析并在文件末尾说明。</li>
 <li>每个文件末尾写「本节完成边界」：已抄录、已解析、〔待核对〕、未完成，不夸大进度。</li>
 </ul>
+<h3 id="3-4-资料与索引同进同出-hook-强制">3.4 资料与索引同进同出（hook 强制）</h3><p><code>课程/&lt;课程&gt;/&lt;类别&gt;/</code> 下任何资料（不含 <code>index.md</code>）<strong>新增、删除或修改</strong>，同一次提交必须同时改对应类别的 <code>index.md</code>（含其中 <code>last_updated</code>），否则 pre-commit 直接拒绝。索引是资料的登记处；资料变了索引不动，索引就已过期。作业记录照此办理：新增作业要登记进 <code>作业/index.md</code>，改正文要同步索引里的状态与时间。</p>
 <h2 id="4-命名与目录速查">4. 命名与目录速查</h2><div class="table-scroll-container"><table>
 <thead>
 <tr>
@@ -423,9 +440,9 @@ git diff --check                                # 空白与冲突标记</code></
 <p>本区块由 <code>.githooks/hook_lib.py</code> 在<strong>每次提交时从暂存内容重新生成</strong>，推送前校验一致性；手工修改会在下次提交时被覆盖。要改内容请改这一节之外的正文。</p>
 </blockquote>
 <ul>
-<li>课程 <strong>1</strong> 门；正式资料 <strong>12</strong> 份（不含索引、模板和历史入口）。</li>
-<li>精确白名单 <strong>75</strong> 条逐文件路径（无通配符），仓库共 <strong>75</strong> 个受管文件。</li>
-<li>暂存内容摘要（不含本文件与 README）：<code>ab95dd8724e3c029bf15adede15501b83f27ee2fb85817c16ee9f516c79dc411</code>。任何正文改动都会改变这一行。</li>
+<li>课程 <strong>1</strong> 门；正式资料 <strong>13</strong> 份（不含索引、模板和历史入口）。</li>
+<li>精确白名单 <strong>76</strong> 条逐文件路径（无通配符），仓库共 <strong>76</strong> 个受管文件。</li>
+<li>暂存内容摘要（不含本文件与 README）：<code>4f00733769701b920064bfa24c5aa7679e4e77d5c9df931bfac84d89e70d39a3</code>。任何正文改动都会改变这一行。</li>
 </ul>
 <h3 id="课程分类一览">课程分类一览</h3><div class="table-scroll-container"><table>
 <thead>
@@ -441,7 +458,7 @@ git diff --check                                # 空白与冲突标记</code></
 </thead>
 <tbody><tr>
 <td align="left">工程数学</td>
-<td align="right">0</td>
+<td align="right">1</td>
 <td align="right">9</td>
 <td align="right">2</td>
 <td align="right">1</td>
@@ -474,7 +491,6 @@ git diff --check                                # 空白与冲突标记</code></
 </tr>
 </tbody></table></div>
 <h3 id="待补提示-自动列出-非错误">待补提示（自动列出，非错误）</h3><ul>
-<li>工程数学：作业目录尚无记录，待正式通知或链接，登记前不得编造。</li>
 <li>工程数学：音频目录尚无记录，待正式通知或链接，登记前不得编造。</li>
 </ul>
 <h3 id="验证基线">验证基线</h3><ul>
@@ -495,7 +511,7 @@ git diff --check                                # 空白与冲突标记</code></
         <aside class="m3-toc">
       <div class="toc-title">目录</div>
       <ul class="toc-list">
-        <li class="toc-item level-2"><a href="#1-每次编辑后的固定动作-强制">1. 每次编辑后的固定动作（强制）</a></li><li class="toc-item level-2"><a href="#2-新增一门课程">2. 新增一门课程</a></li><li class="toc-item level-2"><a href="#3-教材照片归档与读图">3. 教材照片归档与读图</a></li><li class="toc-item level-3"><a href="#3-1-归档">3.1 归档</a></li><li class="toc-item level-3"><a href="#3-2-读图-强制交给子代理">3.2 读图（强制交给子代理）</a></li><li class="toc-item level-3"><a href="#3-3-教材解析写作-先抄后析">3.3 教材解析写作（先抄后析）</a></li><li class="toc-item level-2"><a href="#4-命名与目录速查">4. 命名与目录速查</a></li><li class="toc-item level-2"><a href="#5-白名单与提交">5. 白名单与提交</a></li><li class="toc-item level-2"><a href="#6-禁止事项">6. 禁止事项</a></li><li class="toc-item level-2"><a href="#7-故障处理">7. 故障处理</a></li><li class="toc-item level-2"><a href="#仓库状态-自动生成">仓库状态（自动生成）</a></li><li class="toc-item level-3"><a href="#课程分类一览">课程分类一览</a></li><li class="toc-item level-3"><a href="#教材解析进度">教材解析进度</a></li><li class="toc-item level-3"><a href="#原始资料构成">原始资料构成</a></li><li class="toc-item level-3"><a href="#待补提示-自动列出-非错误">待补提示（自动列出，非错误）</a></li><li class="toc-item level-3"><a href="#验证基线">验证基线</a></li>
+        <li class="toc-item level-2"><a href="#1-每次编辑后的固定动作-强制">1. 每次编辑后的固定动作（强制）</a></li><li class="toc-item level-2"><a href="#2-新增一门课程">2. 新增一门课程</a></li><li class="toc-item level-2"><a href="#3-教材照片归档与读图">3. 教材照片归档与读图</a></li><li class="toc-item level-3"><a href="#3-1-归档">3.1 归档</a></li><li class="toc-item level-3"><a href="#3-2-读图-强制交给子代理">3.2 读图（强制交给子代理）</a></li><li class="toc-item level-3"><a href="#3-3-教材解析写作-先抄后析">3.3 教材解析写作（先抄后析）</a></li><li class="toc-item level-3"><a href="#3-4-资料与索引同进同出-hook-强制">3.4 资料与索引同进同出（hook 强制）</a></li><li class="toc-item level-2"><a href="#4-命名与目录速查">4. 命名与目录速查</a></li><li class="toc-item level-2"><a href="#5-白名单与提交">5. 白名单与提交</a></li><li class="toc-item level-2"><a href="#6-禁止事项">6. 禁止事项</a></li><li class="toc-item level-2"><a href="#7-故障处理">7. 故障处理</a></li><li class="toc-item level-2"><a href="#仓库状态-自动生成">仓库状态（自动生成）</a></li><li class="toc-item level-3"><a href="#课程分类一览">课程分类一览</a></li><li class="toc-item level-3"><a href="#教材解析进度">教材解析进度</a></li><li class="toc-item level-3"><a href="#原始资料构成">原始资料构成</a></li><li class="toc-item level-3"><a href="#待补提示-自动列出-非错误">待补提示（自动列出，非错误）</a></li><li class="toc-item level-3"><a href="#验证基线">验证基线</a></li>
       </ul>
     </aside>
       </div>

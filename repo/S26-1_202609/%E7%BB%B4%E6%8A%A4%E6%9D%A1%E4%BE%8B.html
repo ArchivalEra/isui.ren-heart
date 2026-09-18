@@ -170,11 +170,27 @@
           </li></ul>
             </div>
           </div>
-        </li><li class="drawer-nav-item ">
-            <a href="./课程/工程数学/作业/index.html" class="drawer-nav-link">
-              <span>作业 (索引)</span>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="./课程/工程数学/作业/index.html" class="drawer-nav-link ">
+                <span>作业</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 作业" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="./课程/工程数学/作业/2026-09-17-作业1.html" class="drawer-nav-link">
+              <span>作业1</span>
             </a>
-          </li><li class="drawer-nav-item ">
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-item ">
             <a href="./课程/工程数学/原始资料/index.html" class="drawer-nav-link">
               <span>原始资料 (索引)</span>
             </a>
@@ -343,6 +359,7 @@
 <li><strong>每次编辑教材解析（或任何资料）后</strong>：运行 <code>python3 .githooks/update-readme.py --worktree</code> 同步 README 课程目录与维护细则状态区块，再 <code>git status</code> 确认无意外改动。</li>
 <li><strong>提交前自检</strong>：<code>python3 .githooks/test-update-readme.py</code> 全绿；<code>python3 .githooks/check-markdown.py</code> 无错误；<code>git diff --check</code> 干净；真实暂存区保持为空直到正式提交。</li>
 <li>迁移、移动文件必须保持链接有效（hook 会拒绝断链），删除资料时同步更新分类索引。</li>
+<li><strong>资料与索引同进同出</strong>：<code>课程/&lt;课程&gt;/&lt;类别&gt;/</code> 下任何资料（不含 index.md）有变动——新增、删除、修改都算——必须在<strong>同一次提交</strong>更新对应类别的 <code>index.md</code>（含其中的 <code>last_updated</code>），否则 pre-commit 拒绝提交。索引是资料的登记处，资料动了索引不动即为过期。</li>
 <li><strong>图片阅读交给子代理</strong>：主对话每对话最多 60 张图片，批量读图必须派子代理完成；禁止用 OCR 结果代替读图。子代理只许用 Read 工具看图，禁止自建 OCR／文字识别管线（含安装识别工具、对图片做旋转裁剪缩放等加工）；看不清就停下如实报告，不得另寻替代方案，报告须先列实际打开的文件清单。</li>
 </ol>
 <h2 id="5-音频与外部材料">5. 音频与外部材料</h2><ul>
