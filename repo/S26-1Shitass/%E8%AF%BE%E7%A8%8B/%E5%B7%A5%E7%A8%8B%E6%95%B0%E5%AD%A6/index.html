@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>工程数学课程索引 | S26-1 课程知识库 - isui.ren</title>
+  <link rel="stylesheet" href="../../assets/katex/katex.min.css">
+  <link rel="stylesheet" href="../../assets/theme/shirone-reader.css">
+</head>
+<body>
+  <!-- Top App Bar -->
+  <header class="m3-top-app-bar">
+    <div class="top-bar-left">
+      <button class="m3-icon-btn" id="drawer-toggle" aria-label="打开菜单">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+      </button>
+      <a href="../../index.html" class="site-title">
+        <span>S26-1 课程知识库</span>
+      </a>
+    </div>
+    <div class="top-bar-right">
+      <button class="m3-icon-btn" id="palette-toggle" aria-label="调色盘" title="自定义主题强调色">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/>
+          <circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/>
+          <circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/>
+          <circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/>
+          <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/>
+        </svg>
+      </button>
+
+      <!-- Palette Popover -->
+      <div class="palette-popover" id="palette-popover">
+        <div class="palette-header">
+          <span class="palette-title">主题强调色调色盘</span>
+          <button class="palette-reset-btn" id="palette-reset-btn" title="重置为默认色">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+          </button>
+        </div>
+        <div class="palette-current-row">
+          <span class="palette-hue-badge" id="palette-hue-badge">Hue 248°</span>
+          <div class="palette-color-dot" id="palette-color-dot"></div>
+        </div>
+        <div class="palette-slider-container">
+          <span class="palette-slider-label">色相微调 (0° - 360°)</span>
+          <input type="range" min="0" max="360" value="248" class="palette-slider" id="hue-slider">
+        </div>
+        <div>
+          <div class="palette-swatches-title">预设配色</div>
+          <div class="palette-swatches-grid">
+            <button class="palette-swatch-item" data-hue="315" title="经典粉紫">
+              <span class="palette-swatch-dot" style="background: hsl(315, 75%, 45%);"></span>
+              <span class="palette-swatch-name">粉紫</span>
+            </button>
+            <button class="palette-swatch-item" data-hue="280" title="紫罗兰">
+              <span class="palette-swatch-dot" style="background: hsl(280, 75%, 45%);"></span>
+              <span class="palette-swatch-name">紫罗兰</span>
+            </button>
+            <button class="palette-swatch-item active" data-hue="248" title="学术深蓝">
+              <span class="palette-swatch-dot" style="background: hsl(248, 75%, 45%);"></span>
+              <span class="palette-swatch-name">深蓝</span>
+            </button>
+            <button class="palette-swatch-item" data-hue="205" title="天青蓝">
+              <span class="palette-swatch-dot" style="background: hsl(205, 75%, 45%);"></span>
+              <span class="palette-swatch-name">天青</span>
+            </button>
+            <button class="palette-swatch-item" data-hue="150" title="翡翠绿">
+              <span class="palette-swatch-dot" style="background: hsl(150, 75%, 40%);"></span>
+              <span class="palette-swatch-name">翡翠</span>
+            </button>
+            <button class="palette-swatch-item" data-hue="75" title="琥珀黄">
+              <span class="palette-swatch-dot" style="background: hsl(75, 75%, 40%);"></span>
+              <span class="palette-swatch-name">琥珀</span>
+            </button>
+            <button class="palette-swatch-item" data-hue="30" title="晚霞橙">
+              <span class="palette-swatch-dot" style="background: hsl(30, 80%, 48%);"></span>
+              <span class="palette-swatch-name">晚霞</span>
+            </button>
+            <button class="palette-swatch-item" data-hue="355" title="绯红">
+              <span class="palette-swatch-dot" style="background: hsl(355, 75%, 45%);"></span>
+              <span class="palette-swatch-name">绯红</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <button class="m3-icon-btn" id="theme-toggle" aria-label="切换昼夜主题">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="drawer-backdrop" id="drawer-backdrop"></div>
+
+  <div class="layout-container">
+    <!-- Sidebar Drawer -->
+    <nav class="m3-drawer" id="m3-drawer">
+      <div class="drawer-section-title">课程导航目录</div>
+      <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+          <a href="../../index.html">
+            <span>首页</span>
+          </a>
+        </li><li class="drawer-nav-item ">
+          <a href="../../课程/index.html">
+            <span>课程总览</span>
+          </a>
+        </li><div class="nav-nested"><ul class="drawer-nav-list"><li class="drawer-nav-item active">
+          <a href="../../课程/工程数学/index.html">
+            <span>工程数学</span>
+          </a>
+        </li><div class="nav-nested"><ul class="drawer-nav-list"><li class="drawer-nav-item ">
+          <a href="../../课程/工程数学/教材解析/index.html">
+            <span>教材解析</span>
+          </a>
+        </li><div class="nav-nested"><ul class="drawer-nav-list"><li class="drawer-section-title">第01章 行列式</li><div class="nav-nested"><ul class="drawer-nav-list"><li class="drawer-nav-item ">
+          <a href="../../课程/工程数学/教材解析/第01章-行列式/第01章-1.1-二阶与三阶行列式.html">
+            <span>1.1 二阶与三阶行列式</span>
+          </a>
+        </li><li class="drawer-nav-item ">
+          <a href="../../课程/工程数学/教材解析/第01章-行列式/第01章-1.2-n阶行列式.html">
+            <span>1.2 n阶行列式</span>
+          </a>
+        </li><li class="drawer-nav-item ">
+          <a href="../../课程/工程数学/教材解析/第01章-行列式/第01章-1.3-克莱姆法则.html">
+            <span>1.3 克莱姆法则</span>
+          </a>
+        </li><li class="drawer-nav-item ">
+          <a href="../../课程/工程数学/教材解析/第01章-行列式/第01章-1.4-用MATLAB计算行列式.html">
+            <span>1.4 用MATLAB计算行列式</span>
+          </a>
+        </li></ul></div><li class="drawer-section-title">第02章 矩阵</li><div class="nav-nested"><ul class="drawer-nav-list"><li class="drawer-nav-item ">
+          <a href="../../课程/工程数学/教材解析/第02章-矩阵/第02章-2.1-矩阵的概念及运算.html">
+            <span>2.1 矩阵的概念及运算</span>
+          </a>
+        </li><li class="drawer-nav-item ">
+          <a href="../../课程/工程数学/教材解析/第02章-矩阵/第02章-2.2-逆矩阵.html">
+            <span>2.2 逆矩阵</span>
+          </a>
+        </li><li class="drawer-nav-item ">
+          <a href="../../课程/工程数学/教材解析/第02章-矩阵/第02章-2.3-矩阵的初等变换与初等矩阵.html">
+            <span>2.3 初等变换与初等矩阵</span>
+          </a>
+        </li><li class="drawer-nav-item ">
+          <a href="../../课程/工程数学/教材解析/第02章-矩阵/第02章-2.4-矩阵的秩.html">
+            <span>2.4 矩阵的秩</span>
+          </a>
+        </li><li class="drawer-nav-item ">
+          <a href="../../课程/工程数学/教材解析/第02章-矩阵/第02章-2.5-用MATLAB进行矩阵运算.html">
+            <span>2.5 用MATLAB进行矩阵运算</span>
+          </a>
+        </li></ul></div></ul></div><li class="drawer-nav-item ">
+          <a href="../../课程/工程数学/课堂笔记/index.html">
+            <span>课堂笔记</span>
+          </a>
+        </li><div class="nav-nested"><ul class="drawer-nav-list"><li class="drawer-nav-item ">
+          <a href="../../课程/工程数学/课堂笔记/2026-09-17-determinants-order-2-3.html">
+            <span>09-17 行列式与沙路法则</span>
+          </a>
+        </li><li class="drawer-nav-item ">
+          <a href="../../课程/工程数学/课堂笔记/2026-09-17-determinants-transcript-notes.html">
+            <span>09-17 课堂听课整理</span>
+          </a>
+        </li></ul></div><li class="drawer-nav-item ">
+          <a href="../../课程/工程数学/作业/index.html">
+            <span>作业 (索引)</span>
+          </a>
+        </li><li class="drawer-nav-item ">
+          <a href="../../课程/工程数学/原始资料/index.html">
+            <span>原始资料 (索引)</span>
+          </a>
+        </li><li class="drawer-nav-item ">
+          <a href="../../课程/工程数学/音频/index.html">
+            <span>音频 (索引)</span>
+          </a>
+        </li></ul></div></ul></div><li class="drawer-section-title">仓库规约</li><div class="nav-nested"><ul class="drawer-nav-list"><li class="drawer-nav-item ">
+          <a href="../../维护条例.html">
+            <span>维护条例</span>
+          </a>
+        </li><li class="drawer-nav-item ">
+          <a href="../../维护细则.html">
+            <span>维护细则</span>
+          </a>
+        </li></ul></div></ul>
+    </nav>
+
+    <!-- Content Area -->
+    <main class="content-wrapper">
+      <article class="article-container">
+        <!-- Breadcrumb -->
+        <nav class="m3-breadcrumb">
+          <a href="../../index.html">首页</a><span class="m3-breadcrumb-sep">/</span><a href="../../课程/index.html">课程总览</a><span class="m3-breadcrumb-sep">/</span><a href="../../课程/工程数学/index.html">工程数学</a><span class="m3-breadcrumb-sep">/</span><span>工程数学课程索引</span>
+        </nav>
+
+        <div class="meta-chip-bar"><span class="meta-chip primary">📚 工程数学</span><span class="meta-chip">🏷️ 课程索引</span><span class="meta-chip">⚡ 状态: active</span><span class="meta-chip">📅 更新: 2026-09-17</span><span class="meta-chip">📖 来源: 原始资料/20260917_13301545-原文.doc</span></div>
+
+        <div class="article-content">
+          <h1 id="工程数学">工程数学</h1><p><a href="../index.html">返回课程总索引</a></p>
+<p>已确认课程开课日期为 <strong>2026-09-17</strong>。教师、教学安排、教材版本及正式考核文件待提供；转写中的口头安排不能替代正式通知。</p>
+<h2 id="资料入口">资料入口</h2><div class="table-scroll-container"><table>
+<thead>
+<tr>
+<th align="left">类别</th>
+<th align="left">内容与状态</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><a href="./%E4%BD%9C%E4%B8%9A/index.html">作业</a></td>
+<td align="left">正式题号、截止时间和布置来源待确认；不将旧习题认定为正式作业</td>
+</tr>
+<tr>
+<td align="left"><a href="./%E6%95%99%E6%9D%90%E8%A7%A3%E6%9E%90/index.html">教材解析</a></td>
+<td align="left">教材《工程数学基础》目录已确认；第 1 章、第 2 章矩阵均已按小节分文件完成抄录与解析；第 3–4 章目录已登记、解析未开始</td>
+</tr>
+<tr>
+<td align="left"><a href="./%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0/index.html">课堂笔记</a></td>
+<td align="left">已迁入两篇 2026-09-17 行列式笔记，保持原正文及稳定 ID</td>
+</tr>
+<tr>
+<td align="left"><a href="./%E5%8E%9F%E5%A7%8B%E8%B5%84%E6%96%99/index.html">原始资料</a></td>
+<td align="left">一份原始课堂转写；《工程数学基础》教材照片 60 张，只登记文件名、页码与 SHA-256，原件不入库</td>
+</tr>
+<tr>
+<td align="left"><a href="./%E9%9F%B3%E9%A2%91/index.html">音频</a></td>
+<td align="left">仅建立链接记录入口，尚无音频链接</td>
+</tr>
+</tbody></table></div>
+<h2 id="教材版本">教材版本</h2><p>教材为《工程数学基础》，分为线性代数、多元微积分、概率论与数理统计三部分。目录页（教材照片 p1–p8）已确认第一部分线性代数的章节目录，并已登记到<a href="./%E6%95%99%E6%9D%90%E8%A7%A3%E6%9E%90/index.html">教材解析索引</a>；第二部分、第三部分目录待逐条整理。作者、出版社、版次、ISBN 仍待版权页等正式资料，不据前言落款月份推断。</p>
+<h2 id="课次总表">课次总表</h2><div class="table-scroll-container"><table>
+<thead>
+<tr>
+<th align="left">日期</th>
+<th align="left">准确课次/节次</th>
+<th align="left">主题</th>
+<th align="left">课堂笔记</th>
+<th align="left">原始转写</th>
+<th align="left">音频</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">2026-09-17</td>
+<td align="left">待核实；不由开课日或文件名推算编号</td>
+<td align="left">行列式入门、计算、展开与基本性质</td>
+<td align="left"><a href="./%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0/2026-09-17-determinants-order-2-3.html">计算与书写</a>、<a href="./%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0/2026-09-17-determinants-transcript-notes.html">转写整理</a></td>
+<td align="left"><span class="res-degrade-badge">📄 原件: 20260917_13301545-原文.doc (原件不入库，网页不提供)</span></td>
+<td align="left">待提供</td>
+</tr>
+</tbody></table></div>
+<p>本轮仅进行结构迁移，不代表完整数学审计；旧笔记中的疑点、缺失题目和来源待核实事项继续保留。</p>
+
+        </div>
+
+        
+      </article>
+    </main>
+
+    <!-- Table of Contents -->
+    <aside class="m3-toc">
+      <div class="toc-title">目录</div>
+      <ul class="toc-list">
+        <li class="toc-item level-2"><a href="#资料入口">资料入口</a></li><li class="toc-item level-2"><a href="#教材版本">教材版本</a></li><li class="toc-item level-2"><a href="#课次总表">课次总表</a></li>
+      </ul>
+    </aside>
+  </div>
+
+  <script src="../../assets/katex/katex.min.js"></script>
+  <script src="../../assets/theme/shirone-reader.js"></script>
+</body>
+</html>

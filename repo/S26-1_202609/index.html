@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>学期学习仓库总入口 | S26-1 课程知识库 - isui.ren</title>
+  <link rel="stylesheet" href="./assets/katex/katex.min.css">
+  <link rel="stylesheet" href="./assets/theme/shirone-reader.css">
+</head>
+<body>
+  <!-- Top App Bar -->
+  <header class="m3-top-app-bar">
+    <div class="top-bar-left">
+      <button class="m3-icon-btn" id="drawer-toggle" aria-label="打开菜单">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+      </button>
+      <a href="./index.html" class="site-title">
+        <span>S26-1 课程知识库</span>
+      </a>
+    </div>
+    <div class="top-bar-right">
+      <button class="m3-icon-btn" id="palette-toggle" aria-label="调色盘" title="自定义主题强调色">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/>
+          <circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/>
+          <circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/>
+          <circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/>
+          <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/>
+        </svg>
+      </button>
+
+      <!-- Palette Popover -->
+      <div class="palette-popover" id="palette-popover">
+        <div class="palette-header">
+          <span class="palette-title">主题强调色调色盘</span>
+          <button class="palette-reset-btn" id="palette-reset-btn" title="重置为默认色">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+          </button>
+        </div>
+        <div class="palette-current-row">
+          <span class="palette-hue-badge" id="palette-hue-badge">Hue 248°</span>
+          <div class="palette-color-dot" id="palette-color-dot"></div>
+        </div>
+        <div class="palette-slider-container">
+          <span class="palette-slider-label">色相微调 (0° - 360°)</span>
+          <input type="range" min="0" max="360" value="248" class="palette-slider" id="hue-slider">
+        </div>
+        <div>
+          <div class="palette-swatches-title">预设配色</div>
+          <div class="palette-swatches-grid">
+            <button class="palette-swatch-item" data-hue="315" title="经典粉紫">
+              <span class="palette-swatch-dot" style="background: hsl(315, 75%, 45%);"></span>
+              <span class="palette-swatch-name">粉紫</span>
+            </button>
+            <button class="palette-swatch-item" data-hue="280" title="紫罗兰">
+              <span class="palette-swatch-dot" style="background: hsl(280, 75%, 45%);"></span>
+              <span class="palette-swatch-name">紫罗兰</span>
+            </button>
+            <button class="palette-swatch-item active" data-hue="248" title="学术深蓝">
+              <span class="palette-swatch-dot" style="background: hsl(248, 75%, 45%);"></span>
+              <span class="palette-swatch-name">深蓝</span>
+            </button>
+            <button class="palette-swatch-item" data-hue="205" title="天青蓝">
+              <span class="palette-swatch-dot" style="background: hsl(205, 75%, 45%);"></span>
+              <span class="palette-swatch-name">天青</span>
+            </button>
+            <button class="palette-swatch-item" data-hue="150" title="翡翠绿">
+              <span class="palette-swatch-dot" style="background: hsl(150, 75%, 40%);"></span>
+              <span class="palette-swatch-name">翡翠</span>
+            </button>
+            <button class="palette-swatch-item" data-hue="75" title="琥珀黄">
+              <span class="palette-swatch-dot" style="background: hsl(75, 75%, 40%);"></span>
+              <span class="palette-swatch-name">琥珀</span>
+            </button>
+            <button class="palette-swatch-item" data-hue="30" title="晚霞橙">
+              <span class="palette-swatch-dot" style="background: hsl(30, 80%, 48%);"></span>
+              <span class="palette-swatch-name">晚霞</span>
+            </button>
+            <button class="palette-swatch-item" data-hue="355" title="绯红">
+              <span class="palette-swatch-dot" style="background: hsl(355, 75%, 45%);"></span>
+              <span class="palette-swatch-name">绯红</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <button class="m3-icon-btn" id="theme-toggle" aria-label="切换昼夜主题">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="drawer-backdrop" id="drawer-backdrop"></div>
+
+  <div class="layout-container">
+    <!-- Sidebar Drawer -->
+    <nav class="m3-drawer" id="m3-drawer">
+      <div class="drawer-section-title">课程导航目录</div>
+      <ul class="drawer-nav-list"><li class="drawer-nav-item active">
+          <a href="./index.html">
+            <span>首页</span>
+          </a>
+        </li><li class="drawer-nav-item ">
+          <a href="./课程/index.html">
+            <span>课程总览</span>
+          </a>
+        </li><div class="nav-nested"><ul class="drawer-nav-list"><li class="drawer-nav-item ">
+          <a href="./课程/工程数学/index.html">
+            <span>工程数学</span>
+          </a>
+        </li><div class="nav-nested"><ul class="drawer-nav-list"><li class="drawer-nav-item ">
+          <a href="./课程/工程数学/教材解析/index.html">
+            <span>教材解析</span>
+          </a>
+        </li><div class="nav-nested"><ul class="drawer-nav-list"><li class="drawer-section-title">第01章 行列式</li><div class="nav-nested"><ul class="drawer-nav-list"><li class="drawer-nav-item ">
+          <a href="./课程/工程数学/教材解析/第01章-行列式/第01章-1.1-二阶与三阶行列式.html">
+            <span>1.1 二阶与三阶行列式</span>
+          </a>
+        </li><li class="drawer-nav-item ">
+          <a href="./课程/工程数学/教材解析/第01章-行列式/第01章-1.2-n阶行列式.html">
+            <span>1.2 n阶行列式</span>
+          </a>
+        </li><li class="drawer-nav-item ">
+          <a href="./课程/工程数学/教材解析/第01章-行列式/第01章-1.3-克莱姆法则.html">
+            <span>1.3 克莱姆法则</span>
+          </a>
+        </li><li class="drawer-nav-item ">
+          <a href="./课程/工程数学/教材解析/第01章-行列式/第01章-1.4-用MATLAB计算行列式.html">
+            <span>1.4 用MATLAB计算行列式</span>
+          </a>
+        </li></ul></div><li class="drawer-section-title">第02章 矩阵</li><div class="nav-nested"><ul class="drawer-nav-list"><li class="drawer-nav-item ">
+          <a href="./课程/工程数学/教材解析/第02章-矩阵/第02章-2.1-矩阵的概念及运算.html">
+            <span>2.1 矩阵的概念及运算</span>
+          </a>
+        </li><li class="drawer-nav-item ">
+          <a href="./课程/工程数学/教材解析/第02章-矩阵/第02章-2.2-逆矩阵.html">
+            <span>2.2 逆矩阵</span>
+          </a>
+        </li><li class="drawer-nav-item ">
+          <a href="./课程/工程数学/教材解析/第02章-矩阵/第02章-2.3-矩阵的初等变换与初等矩阵.html">
+            <span>2.3 初等变换与初等矩阵</span>
+          </a>
+        </li><li class="drawer-nav-item ">
+          <a href="./课程/工程数学/教材解析/第02章-矩阵/第02章-2.4-矩阵的秩.html">
+            <span>2.4 矩阵的秩</span>
+          </a>
+        </li><li class="drawer-nav-item ">
+          <a href="./课程/工程数学/教材解析/第02章-矩阵/第02章-2.5-用MATLAB进行矩阵运算.html">
+            <span>2.5 用MATLAB进行矩阵运算</span>
+          </a>
+        </li></ul></div></ul></div><li class="drawer-nav-item ">
+          <a href="./课程/工程数学/课堂笔记/index.html">
+            <span>课堂笔记</span>
+          </a>
+        </li><div class="nav-nested"><ul class="drawer-nav-list"><li class="drawer-nav-item ">
+          <a href="./课程/工程数学/课堂笔记/2026-09-17-determinants-order-2-3.html">
+            <span>09-17 行列式与沙路法则</span>
+          </a>
+        </li><li class="drawer-nav-item ">
+          <a href="./课程/工程数学/课堂笔记/2026-09-17-determinants-transcript-notes.html">
+            <span>09-17 课堂听课整理</span>
+          </a>
+        </li></ul></div><li class="drawer-nav-item ">
+          <a href="./课程/工程数学/作业/index.html">
+            <span>作业 (索引)</span>
+          </a>
+        </li><li class="drawer-nav-item ">
+          <a href="./课程/工程数学/原始资料/index.html">
+            <span>原始资料 (索引)</span>
+          </a>
+        </li><li class="drawer-nav-item ">
+          <a href="./课程/工程数学/音频/index.html">
+            <span>音频 (索引)</span>
+          </a>
+        </li></ul></div></ul></div><li class="drawer-section-title">仓库规约</li><div class="nav-nested"><ul class="drawer-nav-list"><li class="drawer-nav-item ">
+          <a href="./维护条例.html">
+            <span>维护条例</span>
+          </a>
+        </li><li class="drawer-nav-item ">
+          <a href="./维护细则.html">
+            <span>维护细则</span>
+          </a>
+        </li></ul></div></ul>
+    </nav>
+
+    <!-- Content Area -->
+    <main class="content-wrapper">
+      <article class="article-container">
+        <!-- Breadcrumb -->
+        <nav class="m3-breadcrumb">
+          <a href="./index.html">首页</a><span class="m3-breadcrumb-sep">/</span><span>学期学习仓库总入口</span>
+        </nav>
+
+        
+
+        <div class="article-content">
+          <h1 id="学期学习仓库总入口">学期学习仓库总入口</h1><p>本仓库是 <strong>2026 年秋季学期统一学习仓库</strong>，以中文课程名作为主分类，每门课独立管理作业、教材解析、课堂笔记、原始资料和音频下载记录。资料沿用 <strong>Open Knowledge Format（OKF v0.2）</strong> 元数据结构，中文优先，不强行更改已有稳定 ID。目前<strong>只有“工程数学”课程已确认</strong>，其他课程待课程表或正式资料提供后按模板扩展；历史领域目录不是真实课程清单。</p>
+<h2 id="仓库结构">仓库结构</h2><ul>
+<li><code>课程/</code>：本学期正式课程资料，入口为<a href="./%E8%AF%BE%E7%A8%8B/index.html">课程总索引</a>。<ul>
+<li><code>课程/&lt;中文课名&gt;/</code>：一门已确认课程，含五类固定子目录：<ul>
+<li><code>作业/</code>：正式布置的作业记录；</li>
+<li><code>教材解析/</code>：按“版本—章—节”组织的整本教材解析；</li>
+<li><code>课堂笔记/</code>：按上课日期整理的课堂笔记；</li>
+<li><code>原始资料/</code>：原始转写与讲义等原始文件；<strong>教材照片原件不入库</strong>，只登记文件名与 SHA-256；</li>
+<li><code>音频/</code>：音频下载链接与元数据记录。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>维护条例.md</code> / <code>维护细则.md</code>：原则性规定与操作规程。<strong>维护细则里的「仓库状态」区块和下方课程目录一样，每次提交自动重算、推送前校验</strong>。</li>
+<li><code>.agents/skills/repo-maintenance/SKILL.md</code>：给 AI 助手用的维护流程 skill，含「批量读图必须派子代理」的强制规则（主对话每对话仅 60 张图片）。</li>
+<li><code>模板/</code>：各类资料的 <span class="res-degrade-badge">📋 OKF 模板 (模板不随站点发布)</span>（课程索引、作业、教材章节解析、课堂笔记、音频记录）。</li>
+<li><code>knowledge/</code>：改版前的知识库入口，仅保留<a href="./knowledge/index.html">迁移说明</a>供旧链接兼容；正文已迁入课程目录，不再平行维护。</li>
+<li><code>.githooks/</code>：提交检查、README 与维护细则自动同步、推送检查；<code>prepare-photos.py</code> 从仓库外原件生成 <code>/tmp</code> 阅读副本供读图。</li>
+<li><code>站点/</code>：静态阅读站的前端<a href="./%E7%AB%99%E7%82%B9/%E5%89%8D%E7%AB%AF%E5%AE%9E%E7%8E%B0%E8%AE%A1%E5%88%92%E4%B9%A6.html">实现计划书</a>（纯文本＋公式，不含图片）；站点构建产物不入库。</li>
+<li><code>Original/</code>：旧仓库原始资料根目录的历史位置；新原始资料一律放对应课程目录。</li>
+</ul>
+<h2 id="整理与命名约定">整理与命名约定</h2><ol>
+<li>课程目录使用 <code>课程/&lt;中文课名&gt;/&lt;类别&gt;</code>；日期类资料（作业、课堂笔记、音频记录）命名为 <code>YYYY-MM-DD-名称.md</code>；<strong>教材解析一节一个文件</strong>，放在章目录 <code>教材解析/第NN章-章名/</code> 下，命名为 <code>第NN章-&lt;节号&gt;-&lt;节名&gt;.md</code>，不把整章塞进一个 md；各类目录入口为 <code>index.md</code>。</li>
+<li>笔记保留 OKF v0.2 元数据与稳定 ID，中文记录，不要求中英双语成对；新增模板补充课程、资料类别及来源信息。</li>
+<li>原始资料不等于知识笔记：筛选、合并、规范化后沉淀概念、方法和易错点；转写口误、缺失板书与题目条件不猜补，整理者补充与原文陈述明确区分。</li>
+<li>教材解析按“教材版本—章—节”组织，不按课堂日期拆散教材体系。每个解析文件先写<strong>原书抄录</strong>（按原书页码抄录印刷正文与原编号），紧跟<strong>解析</strong>（概念、条件、推导、例题解法、易错点、验算），先抄后析。目录已确认的章节才登记，看不清的照片处标“待核对”，不得虚构书名、章节或解析进度。</li>
+<li>作业只登记经正式通知确认的题目；课堂例题、旧笔记中的教材习题不自动认定为正式作业，题号与截止时间以学习通等正式来源为准。</li>
+<li>原始资料与课堂发言可能包含个人信息，提交或推送前检查是否适合公开；不把登录令牌、密码、Cookie 等凭据写入仓库。</li>
+</ol>
+<h2 id="音频资料边界">音频资料边界</h2><p>音频目录默认<strong>只保存链接与元数据</strong>：不自动下载、不提交音频二进制、不向外部服务上传课堂内容。每条记录必须包含课程、上课日期、准确课次/节次（附核实来源）、主题、下载链接及其来源与有效期、关联课堂笔记和原始转写；同一课多个片段分别登记起止时间与时间基准。尚未提供的链接标为“待提供”，不编造地址，不凭日期或文件名推断课次。</p>
+<h2 id="新增课程与资料流程">新增课程与资料流程</h2><ol>
+<li>从<span class="res-degrade-badge">📋 课程索引模板 (模板不随站点发布)</span>创建 <code>课程/&lt;中文课名&gt;/index.md</code>，并按模板建立五类 <code>index.md</code>。</li>
+<li>每个新文件复制对应模板，填写唯一稳定 ID、课程、类别与来源，保持相对链接互链。</li>
+<li>在 <code>.gitignore</code> 的精确白名单中为<strong>每个新文件</strong>添加 <code>!/完整相对路径</code>（不得使用通配符）。</li>
+<li>更新课程总索引与课程入口；运行下方 CLI 验证命令确认 README 目录可正常同步。</li>
+<li>提交前由 hook 校验命名与白名单，README 自动区块由 hook 从暂存区生成；正式提交、推送由主流程执行。</li>
+</ol>
+<h2 id="提交时自动同步-readme-与维护细则">提交时自动同步 README 与维护细则</h2><p>新克隆仓库后执行一次 <code>git config core.hooksPath .githooks</code>，并确保安装 Python 3。当前本地仓库已启用该配置。</p>
+<p>每次正常 <code>git commit</code>，<code>pre-commit</code> 先检查命名、白名单、链接与索引，再从<strong>暂存区</strong>生成下方自动目录和<a href="./%E7%BB%B4%E6%8A%A4%E7%BB%86%E5%88%99.html">维护细则</a>里的仓库状态区块，并自动暂存这两个文件。任一文件若有未暂存修改，提交会停止，需先自行暂存或保存。<code>--no-verify</code> 可绕过本地 hook，因此它不等同于服务端强制规则；<code>pre-push</code> 仍会校验待推送提交里的两处区块。</p>
+<p>常用 CLI 验证命令：</p>
+<p><div class="code-fence-wrapper">
+      <div class="code-fence-header">
+        <span>bash</span>
+        <button class="copy-btn">复制</button>
+      </div>
+      <pre><code>python3 .githooks/test-update-readme.py
+python3 .githooks/update-readme.py --worktree   # 同步工作区 README 与维护细则，不自动暂存
+python3 .githooks/check-markdown.py              # Markdown 美观度与可读性检查
+git fsck --no-progress                           # 仓库对象完整性
+git config core.hooksPath .githooks</code></pre>
+    </div></p>
+<p><code>--worktree</code> 只更新工作区文件，不自动暂存；推送时仍要求两处区块同步。新克隆仓库需先执行 <code>git config core.hooksPath .githooks</code> 启用钩子，再运行上述验证命令。</p>
+<h2 id="按课程浏览">按课程浏览</h2><h3 id="工程数学-e8-af-be-e7-a8-8b-e5-b7-a5-e7-a8-8b-e6-95-b0-e5-ad-a6-index-html">[工程数学](./%E8%AF%BE%E7%A8%8B/%E5%B7%A5%E7%A8%8B%E6%95%B0%E5%AD%A6/index.html)</h3><h4 id="作业-0-份">作业（0 份）</h4><p>暂无已归档资料。</p>
+<h4 id="教材解析-9-份">教材解析（9 份）</h4><ul>
+<li><a href="./%E8%AF%BE%E7%A8%8B/%E5%B7%A5%E7%A8%8B%E6%95%B0%E5%AD%A6/%E6%95%99%E6%9D%90%E8%A7%A3%E6%9E%90/%E7%AC%AC01%E7%AB%A0-%E8%A1%8C%E5%88%97%E5%BC%8F/%E7%AC%AC01%E7%AB%A0-1.1-%E4%BA%8C%E9%98%B6%E4%B8%8E%E4%B8%89%E9%98%B6%E8%A1%8C%E5%88%97%E5%BC%8F.html">第1章 1.1 二阶、三阶行列式（原书 p1–p5）</a></li>
+<li><a href="./%E8%AF%BE%E7%A8%8B/%E5%B7%A5%E7%A8%8B%E6%95%B0%E5%AD%A6/%E6%95%99%E6%9D%90%E8%A7%A3%E6%9E%90/%E7%AC%AC01%E7%AB%A0-%E8%A1%8C%E5%88%97%E5%BC%8F/%E7%AC%AC01%E7%AB%A0-1.2-n%E9%98%B6%E8%A1%8C%E5%88%97%E5%BC%8F.html">第1章 1.2 n 阶行列式（原书 p6–p15）</a></li>
+<li><a href="./%E8%AF%BE%E7%A8%8B/%E5%B7%A5%E7%A8%8B%E6%95%B0%E5%AD%A6/%E6%95%99%E6%9D%90%E8%A7%A3%E6%9E%90/%E7%AC%AC01%E7%AB%A0-%E8%A1%8C%E5%88%97%E5%BC%8F/%E7%AC%AC01%E7%AB%A0-1.3-%E5%85%8B%E8%8E%B1%E5%A7%86%E6%B3%95%E5%88%99.html">第1章 1.3 克莱姆法则（原书 p15–p20）</a></li>
+<li><a href="./%E8%AF%BE%E7%A8%8B/%E5%B7%A5%E7%A8%8B%E6%95%B0%E5%AD%A6/%E6%95%99%E6%9D%90%E8%A7%A3%E6%9E%90/%E7%AC%AC01%E7%AB%A0-%E8%A1%8C%E5%88%97%E5%BC%8F/%E7%AC%AC01%E7%AB%A0-1.4-%E7%94%A8MATLAB%E8%AE%A1%E7%AE%97%E8%A1%8C%E5%88%97%E5%BC%8F.html">第1章 1.4 用 MATLAB 进行行列式的计算（原书 p20–p21）</a></li>
+<li><a href="./%E8%AF%BE%E7%A8%8B/%E5%B7%A5%E7%A8%8B%E6%95%B0%E5%AD%A6/%E6%95%99%E6%9D%90%E8%A7%A3%E6%9E%90/%E7%AC%AC02%E7%AB%A0-%E7%9F%A9%E9%98%B5/%E7%AC%AC02%E7%AB%A0-2.1-%E7%9F%A9%E9%98%B5%E7%9A%84%E6%A6%82%E5%BF%B5%E5%8F%8A%E8%BF%90%E7%AE%97.html">第2章 2.1 矩阵的概念及运算（原书 p22–p33）</a></li>
+<li><a href="./%E8%AF%BE%E7%A8%8B/%E5%B7%A5%E7%A8%8B%E6%95%B0%E5%AD%A6/%E6%95%99%E6%9D%90%E8%A7%A3%E6%9E%90/%E7%AC%AC02%E7%AB%A0-%E7%9F%A9%E9%98%B5/%E7%AC%AC02%E7%AB%A0-2.2-%E9%80%86%E7%9F%A9%E9%98%B5.html">第2章 2.2 逆矩阵（原书 p33–p38）</a></li>
+<li><a href="./%E8%AF%BE%E7%A8%8B/%E5%B7%A5%E7%A8%8B%E6%95%B0%E5%AD%A6/%E6%95%99%E6%9D%90%E8%A7%A3%E6%9E%90/%E7%AC%AC02%E7%AB%A0-%E7%9F%A9%E9%98%B5/%E7%AC%AC02%E7%AB%A0-2.3-%E7%9F%A9%E9%98%B5%E7%9A%84%E5%88%9D%E7%AD%89%E5%8F%98%E6%8D%A2%E4%B8%8E%E5%88%9D%E7%AD%89%E7%9F%A9%E9%98%B5.html">第2章 2.3 矩阵的初等变换与初等矩阵（原书 p38–p43）</a></li>
+<li><a href="./%E8%AF%BE%E7%A8%8B/%E5%B7%A5%E7%A8%8B%E6%95%B0%E5%AD%A6/%E6%95%99%E6%9D%90%E8%A7%A3%E6%9E%90/%E7%AC%AC02%E7%AB%A0-%E7%9F%A9%E9%98%B5/%E7%AC%AC02%E7%AB%A0-2.4-%E7%9F%A9%E9%98%B5%E7%9A%84%E7%A7%A9.html">第2章 2.4 矩阵的秩（原书 p43–p46）</a></li>
+<li><a href="./%E8%AF%BE%E7%A8%8B/%E5%B7%A5%E7%A8%8B%E6%95%B0%E5%AD%A6/%E6%95%99%E6%9D%90%E8%A7%A3%E6%9E%90/%E7%AC%AC02%E7%AB%A0-%E7%9F%A9%E9%98%B5/%E7%AC%AC02%E7%AB%A0-2.5-%E7%94%A8MATLAB%E8%BF%9B%E8%A1%8C%E7%9F%A9%E9%98%B5%E8%BF%90%E7%AE%97.html">第2章 2.5 用 MATLAB 进行矩阵运算（原书 p46–p51）</a></li>
+</ul>
+<h4 id="课堂笔记-2-份">课堂笔记（2 份）</h4><ul>
+<li><a href="./%E8%AF%BE%E7%A8%8B/%E5%B7%A5%E7%A8%8B%E6%95%B0%E5%AD%A6/%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0/2026-09-17-determinants-order-2-3.html">二阶与三阶行列式计算、沙路法则与手算书写规范 (2026-09-17)</a></li>
+<li><a href="./%E8%AF%BE%E7%A8%8B/%E5%B7%A5%E7%A8%8B%E6%95%B0%E5%AD%A6/%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0/2026-09-17-determinants-transcript-notes.html">工程数学开课转写整理：行列式入门、展开与基本性质（2026-09-17）</a></li>
+</ul>
+<h4 id="原始资料-1-份">原始资料（1 份）</h4><ul>
+<li><span class="res-degrade-badge">📄 原件: 20260917_13301545-%E5%8E%9F%E6%96%87.doc (原件不入库，网页不提供)</span></li>
+</ul>
+<h4 id="音频-0-份">音频（0 份）</h4><p>暂无已归档资料。</p>
+<p>已登记 <strong>1</strong> 门课程、<strong>12</strong> 份资料（不含索引、模板和历史入口）。</p>
+
+        </div>
+
+        
+      </article>
+    </main>
+
+    <!-- Table of Contents -->
+    <aside class="m3-toc">
+      <div class="toc-title">目录</div>
+      <ul class="toc-list">
+        <li class="toc-item level-2"><a href="#仓库结构">仓库结构</a></li><li class="toc-item level-2"><a href="#整理与命名约定">整理与命名约定</a></li><li class="toc-item level-2"><a href="#音频资料边界">音频资料边界</a></li><li class="toc-item level-2"><a href="#新增课程与资料流程">新增课程与资料流程</a></li><li class="toc-item level-2"><a href="#提交时自动同步-readme-与维护细则">提交时自动同步 README 与维护细则</a></li><li class="toc-item level-2"><a href="#按课程浏览">按课程浏览</a></li><li class="toc-item level-3"><a href="#工程数学-e8-af-be-e7-a8-8b-e5-b7-a5-e7-a8-8b-e6-95-b0-e5-ad-a6-index-html">[工程数学](./%E8%AF%BE%E7%A8%8B/%E5%B7%A5%E7%A8%8B%E6%95%B0%E5%AD%A6/index.html)</a></li>
+      </ul>
+    </aside>
+  </div>
+
+  <script src="./assets/katex/katex.min.js"></script>
+  <script src="./assets/theme/shirone-reader.js"></script>
+</body>
+</html>

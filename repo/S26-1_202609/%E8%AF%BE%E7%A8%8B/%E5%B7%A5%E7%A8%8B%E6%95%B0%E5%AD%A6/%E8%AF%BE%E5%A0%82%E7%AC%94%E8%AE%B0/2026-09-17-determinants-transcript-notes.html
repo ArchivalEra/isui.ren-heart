@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>工程数学开课转写整理：行列式入门、展开与基本性质 | S26-1 课程知识库 - isui.ren</title>
+  <link rel="stylesheet" href="../../../assets/katex/katex.min.css">
+  <link rel="stylesheet" href="../../../assets/theme/shirone-reader.css">
+</head>
+<body>
+  <!-- Top App Bar -->
+  <header class="m3-top-app-bar">
+    <div class="top-bar-left">
+      <button class="m3-icon-btn" id="drawer-toggle" aria-label="打开菜单">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+      </button>
+      <a href="../../../index.html" class="site-title">
+        <span>S26-1 课程知识库</span>
+      </a>
+    </div>
+    <div class="top-bar-right">
+      <button class="m3-icon-btn" id="palette-toggle" aria-label="调色盘" title="自定义主题强调色">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/>
+          <circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/>
+          <circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/>
+          <circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/>
+          <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/>
+        </svg>
+      </button>
+
+      <!-- Palette Popover -->
+      <div class="palette-popover" id="palette-popover">
+        <div class="palette-header">
+          <span class="palette-title">主题强调色调色盘</span>
+          <button class="palette-reset-btn" id="palette-reset-btn" title="重置为默认色">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+          </button>
+        </div>
+        <div class="palette-current-row">
+          <span class="palette-hue-badge" id="palette-hue-badge">Hue 248°</span>
+          <div class="palette-color-dot" id="palette-color-dot"></div>
+        </div>
+        <div class="palette-slider-container">
+          <span class="palette-slider-label">色相微调 (0° - 360°)</span>
+          <input type="range" min="0" max="360" value="248" class="palette-slider" id="hue-slider">
+        </div>
+        <div>
+          <div class="palette-swatches-title">预设配色</div>
+          <div class="palette-swatches-grid">
+            <button class="palette-swatch-item" data-hue="315" title="经典粉紫">
+              <span class="palette-swatch-dot" style="background: hsl(315, 75%, 45%);"></span>
+              <span class="palette-swatch-name">粉紫</span>
+            </button>
+            <button class="palette-swatch-item" data-hue="280" title="紫罗兰">
+              <span class="palette-swatch-dot" style="background: hsl(280, 75%, 45%);"></span>
+              <span class="palette-swatch-name">紫罗兰</span>
+            </button>
+            <button class="palette-swatch-item active" data-hue="248" title="学术深蓝">
+              <span class="palette-swatch-dot" style="background: hsl(248, 75%, 45%);"></span>
+              <span class="palette-swatch-name">深蓝</span>
+            </button>
+            <button class="palette-swatch-item" data-hue="205" title="天青蓝">
+              <span class="palette-swatch-dot" style="background: hsl(205, 75%, 45%);"></span>
+              <span class="palette-swatch-name">天青</span>
+            </button>
+            <button class="palette-swatch-item" data-hue="150" title="翡翠绿">
+              <span class="palette-swatch-dot" style="background: hsl(150, 75%, 40%);"></span>
+              <span class="palette-swatch-name">翡翠</span>
+            </button>
+            <button class="palette-swatch-item" data-hue="75" title="琥珀黄">
+              <span class="palette-swatch-dot" style="background: hsl(75, 75%, 40%);"></span>
+              <span class="palette-swatch-name">琥珀</span>
+            </button>
+            <button class="palette-swatch-item" data-hue="30" title="晚霞橙">
+              <span class="palette-swatch-dot" style="background: hsl(30, 80%, 48%);"></span>
+              <span class="palette-swatch-name">晚霞</span>
+            </button>
+            <button class="palette-swatch-item" data-hue="355" title="绯红">
+              <span class="palette-swatch-dot" style="background: hsl(355, 75%, 45%);"></span>
+              <span class="palette-swatch-name">绯红</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <button class="m3-icon-btn" id="theme-toggle" aria-label="切换昼夜主题">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="drawer-backdrop" id="drawer-backdrop"></div>
+
+  <div class="layout-container">
+    <!-- Sidebar Drawer -->
+    <nav class="m3-drawer" id="m3-drawer">
+      <div class="drawer-section-title">课程导航目录</div>
+      <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+          <a href="../../../index.html">
+            <span>首页</span>
+          </a>
+        </li><li class="drawer-nav-item ">
+          <a href="../../../课程/index.html">
+            <span>课程总览</span>
+          </a>
+        </li><div class="nav-nested"><ul class="drawer-nav-list"><li class="drawer-nav-item ">
+          <a href="../../../课程/工程数学/index.html">
+            <span>工程数学</span>
+          </a>
+        </li><div class="nav-nested"><ul class="drawer-nav-list"><li class="drawer-nav-item ">
+          <a href="../../../课程/工程数学/教材解析/index.html">
+            <span>教材解析</span>
+          </a>
+        </li><div class="nav-nested"><ul class="drawer-nav-list"><li class="drawer-section-title">第01章 行列式</li><div class="nav-nested"><ul class="drawer-nav-list"><li class="drawer-nav-item ">
+          <a href="../../../课程/工程数学/教材解析/第01章-行列式/第01章-1.1-二阶与三阶行列式.html">
+            <span>1.1 二阶与三阶行列式</span>
+          </a>
+        </li><li class="drawer-nav-item ">
+          <a href="../../../课程/工程数学/教材解析/第01章-行列式/第01章-1.2-n阶行列式.html">
+            <span>1.2 n阶行列式</span>
+          </a>
+        </li><li class="drawer-nav-item ">
+          <a href="../../../课程/工程数学/教材解析/第01章-行列式/第01章-1.3-克莱姆法则.html">
+            <span>1.3 克莱姆法则</span>
+          </a>
+        </li><li class="drawer-nav-item ">
+          <a href="../../../课程/工程数学/教材解析/第01章-行列式/第01章-1.4-用MATLAB计算行列式.html">
+            <span>1.4 用MATLAB计算行列式</span>
+          </a>
+        </li></ul></div><li class="drawer-section-title">第02章 矩阵</li><div class="nav-nested"><ul class="drawer-nav-list"><li class="drawer-nav-item ">
+          <a href="../../../课程/工程数学/教材解析/第02章-矩阵/第02章-2.1-矩阵的概念及运算.html">
+            <span>2.1 矩阵的概念及运算</span>
+          </a>
+        </li><li class="drawer-nav-item ">
+          <a href="../../../课程/工程数学/教材解析/第02章-矩阵/第02章-2.2-逆矩阵.html">
+            <span>2.2 逆矩阵</span>
+          </a>
+        </li><li class="drawer-nav-item ">
+          <a href="../../../课程/工程数学/教材解析/第02章-矩阵/第02章-2.3-矩阵的初等变换与初等矩阵.html">
+            <span>2.3 初等变换与初等矩阵</span>
+          </a>
+        </li><li class="drawer-nav-item ">
+          <a href="../../../课程/工程数学/教材解析/第02章-矩阵/第02章-2.4-矩阵的秩.html">
+            <span>2.4 矩阵的秩</span>
+          </a>
+        </li><li class="drawer-nav-item ">
+          <a href="../../../课程/工程数学/教材解析/第02章-矩阵/第02章-2.5-用MATLAB进行矩阵运算.html">
+            <span>2.5 用MATLAB进行矩阵运算</span>
+          </a>
+        </li></ul></div></ul></div><li class="drawer-nav-item ">
+          <a href="../../../课程/工程数学/课堂笔记/index.html">
+            <span>课堂笔记</span>
+          </a>
+        </li><div class="nav-nested"><ul class="drawer-nav-list"><li class="drawer-nav-item ">
+          <a href="../../../课程/工程数学/课堂笔记/2026-09-17-determinants-order-2-3.html">
+            <span>09-17 行列式与沙路法则</span>
+          </a>
+        </li><li class="drawer-nav-item active">
+          <a href="../../../课程/工程数学/课堂笔记/2026-09-17-determinants-transcript-notes.html">
+            <span>09-17 课堂听课整理</span>
+          </a>
+        </li></ul></div><li class="drawer-nav-item ">
+          <a href="../../../课程/工程数学/作业/index.html">
+            <span>作业 (索引)</span>
+          </a>
+        </li><li class="drawer-nav-item ">
+          <a href="../../../课程/工程数学/原始资料/index.html">
+            <span>原始资料 (索引)</span>
+          </a>
+        </li><li class="drawer-nav-item ">
+          <a href="../../../课程/工程数学/音频/index.html">
+            <span>音频 (索引)</span>
+          </a>
+        </li></ul></div></ul></div><li class="drawer-section-title">仓库规约</li><div class="nav-nested"><ul class="drawer-nav-list"><li class="drawer-nav-item ">
+          <a href="../../../维护条例.html">
+            <span>维护条例</span>
+          </a>
+        </li><li class="drawer-nav-item ">
+          <a href="../../../维护细则.html">
+            <span>维护细则</span>
+          </a>
+        </li></ul></div></ul>
+    </nav>
+
+    <!-- Content Area -->
+    <main class="content-wrapper">
+      <article class="article-container">
+        <!-- Breadcrumb -->
+        <nav class="m3-breadcrumb">
+          <a href="../../../index.html">首页</a><span class="m3-breadcrumb-sep">/</span><a href="../../../课程/index.html">课程总览</a><span class="m3-breadcrumb-sep">/</span><a href="../../../课程/工程数学/index.html">工程数学</a><span class="m3-breadcrumb-sep">/</span><a href="../../../课程/工程数学/课堂笔记/index.html">课堂笔记</a><span class="m3-breadcrumb-sep">/</span><span>工程数学开课转写整理：行列式入门、展开与基本性质</span>
+        </nav>
+
+        <div class="meta-chip-bar"><span class="meta-chip">⚡ 状态: active</span><span class="meta-chip">📅 更新: 2026-09-17</span></div>
+
+        <div class="article-content">
+          <h1 id="工程数学开课转写整理-行列式入门-展开与基本性质-2026-09-17">工程数学开课转写整理：行列式入门、展开与基本性质（2026-09-17）</h1><h2 id="1-来源与使用边界">1. 来源与使用边界</h2><ul>
+<li><strong>课程日期</strong>：2026-09-17，工程数学开课日（按本次归档要求记录）。</li>
+<li><strong>原始来源</strong>：<span class="res-degrade-badge">📄 原件: 20260917_13301545-原文.doc (原件不入库，网页不提供)</span>。</li>
+<li><strong>原文性质</strong>：课堂原始转写，不是经教师审定的讲义；本笔记是来源整理，不是逐字全文副本。</li>
+<li><strong>实际格式</strong>：扩展名为 <code>.doc</code>，内容实际是 UTF-8 HTML 文本，并非 Word 二进制文档。本次直接在本地去除 HTML 标记、保留文字与时间戳，提取并通读全文，没有依赖在线转换。</li>
+<li><strong>转写元信息</strong>：标题/主题为 <code>20260917_13301545</code>；文内时间为 <code>2026年9月17日 13:37:42</code>；标有“讲话人 1、2、3”。这些是转写标签，不据此确认人物身份。</li>
+<li><strong>记录范围</strong>：相对时间戳 <code>00:00–1:52:09</code>，开头已经在讲考核要求，结尾停在四阶行列式变换示范中。不能据此认定整次课堂或例题均记录完整。</li>
+</ul>
+<blockquote>
+<p><strong>可信度说明</strong>：原文存在大量口语重复、同音误识别、师生插话和依赖板书的“这个/这里”。原始转写中的口语噪声、不确定信息及孤立数字不能当作数学事实。下文只对上下文清楚的内容作规范化文字整理；缺失的公式、矩阵、例题条件和结果不补写。术语校正与数学边界说明属于整理者说明，不声称是教师逐字原话。</p>
+</blockquote>
+<h2 id="2-与既有笔记的关系">2. 与既有笔记的关系</h2><p>已有<a href="./2026-09-17-determinants-order-2-3.html">二阶与三阶行列式计算、沙路法则与手算书写规范</a>收录二、三阶行列式公式、沙路法则、克莱姆法则应用以及例题和习题解答。</p>
+<p>本转写前半段与其重合，因此<strong>不重复录入公式和例题答案</strong>。本笔记保留来源定位、课程学习要求，并补充原文后半段涉及的余子式、按行列展开、三角行列式与基本性质的学习线索。既有笔记中的题目数据并不因此获得本转写的独立验证；本次也未修改或逐题复核既有笔记。</p>
+<h2 id="3-全文内容导览">3. 全文内容导览</h2><p>下表时间均为转写中的相对时间，可用于回查原始来源。</p>
+<div class="table-scroll-container"><table>
+<thead>
+<tr>
+<th align="left">时间段</th>
+<th align="left">可识别内容</th>
+<th align="left">整理用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">00:00–08:10</td>
+<td align="left">考核、考勤、课堂纪律、作业提交、教材与配套微课</td>
+<td align="left">课程管理背景，与数学知识分开记录</td>
+</tr>
+<tr>
+<td align="left">09:11–19:27</td>
+<td align="left">线性方程组背景；从二元一次方程组的消元法入手</td>
+<td align="left">解释引入行列式的教学动机</td>
+</tr>
+<tr>
+<td align="left">20:06–32:15</td>
+<td align="left">符号系数消元、共同分母、二阶行列式、元素下标、主副对角线</td>
+<td align="left">关联既有二阶行列式概念，不重录推导</td>
+</tr>
+<tr>
+<td align="left">33:15–34:53</td>
+<td align="left">数学竞赛与数学建模竞赛交流</td>
+<td align="left">课外学习线索，具体赛事与获奖信息未核实</td>
+</tr>
+<tr>
+<td align="left">35:24–45:09</td>
+<td align="left">用常数列替换相应系数列；交换两列变号；二元方程组示范及抄写符号纠错</td>
+<td align="left">强调列的位置、负号和解题过程</td>
+</tr>
+<tr>
+<td align="left">45:17–1:02:11</td>
+<td align="left">三阶行列式六项展开、沙路法则、例 1.3；三元方程组的行列式表示</td>
+<td align="left">关联既有三阶行列式与克莱姆法则内容</td>
+</tr>
+<tr>
+<td align="left">1:02:32–1:03:12</td>
+<td align="left">作业布置</td>
+<td align="left">题号存在歧义，须以学习通为准</td>
+</tr>
+<tr>
+<td align="left">1:03:23–1:15:02</td>
+<td align="left">高阶行列式、余子式和代数余子式、按行或列展开；例 1.6</td>
+<td align="left">新增学习线索，见第 4 节</td>
+</tr>
+<tr>
+<td align="left">1:15:44–1:24:48</td>
+<td align="left">例 1.7 改按第三行展开；含零较多时继续降阶</td>
+<td align="left">计算方法选择与书写规范</td>
+</tr>
+<tr>
+<td align="left">1:25:08–1:36:22</td>
+<td align="left">例 1.8；上三角、下三角与对角行列式</td>
+<td align="left">结构识别与逐阶展开思路</td>
+</tr>
+<tr>
+<td align="left">1:36:39–1:50:18</td>
+<td align="left">转置、互换行列、数乘、成比例、拆分与倍加性质</td>
+<td align="left">基本性质及证明思路</td>
+</tr>
+<tr>
+<td align="left">1:50:18–1:52:09</td>
+<td align="left">四阶行列式交换列、行倍加制造零元素</td>
+<td align="left">原文未给出可可靠复原的完整题目与最终结果</td>
+</tr>
+</tbody></table></div>
+<h2 id="4-后半段的新增学习线索">4. 后半段的新增学习线索</h2><p>以下为可辨识授课内容的规范化概括，不用于替代完整教材定义与证明。</p>
+<h3 id="4-1-余子式与代数余子式-1-03-23-1-15-02">4.1 余子式与代数余子式（1:03:23–1:15:02）</h3><ul>
+<li>原文明确指出，高阶行列式不能直接照搬二、三阶对角线法则；随后转入按行或列展开。</li>
+<li><strong>余子式</strong>的辨识操作是：定位一个元素，划去它所在的整行与整列，余下元素保持原有相对顺序，构成低一阶的行列式。例 1.6 以四阶行列式中的第三行第四列元素为讨论对象。</li>
+<li><strong>代数余子式</strong>还需结合位置确定符号，不能与余子式混用。原文在一般符号表达处多次误识别下标和指数，因此本笔记不据此重建公式。</li>
+<li><strong>整理者的符号边界提醒</strong>：位置指标之和为偶数时取正号、为奇数时取负号。原文 <code>1:14:13</code> 把奇偶情况都转成了“−1”，不能照录为结论。</li>
+<li>按某一行或某一列展开时，将该行或列的各元素与<strong>各自对应的代数余子式</strong>相乘，再把各项相加。不要把某元素与另一个位置的代数余子式随意配对。</li>
+</ul>
+<h3 id="4-2-展开方法与零元素-1-15-44-1-24-48">4.2 展开方法与零元素（1:15:44–1:24:48）</h3><ul>
+<li>例 1.7 要求改按第三行展开，而非照抄书上第一行的做法，用来理解不同展开位置给出同一行列式值。</li>
+<li>实际计算时，优先观察零元素较多的行或列；零元素所对应的乘积项为零，可以省去对该余子式的计算。</li>
+<li>降成三阶后不必机械使用沙路法则。若仍有较多零，继续按行或列展开可能更省算。</li>
+<li>规范书写顺序：确定展开行/列 → 定位元素 → 确定代数余子式的符号 → 删除对应行列并保持剩余顺序 → 计算低阶行列式。</li>
+<li><strong>局部编号提醒（整理者补充）</strong>：继续展开新得到的子行列式时，应按当前子行列式的位置判断符号，不能混用原行列式与子行列式的行列编号。</li>
+</ul>
+<h3 id="4-3-三角结构-1-25-08-1-36-22">4.3 三角结构（1:25:08–1:36:22）</h3><ul>
+<li>上三角行列式的主对角线下方元素全为零；下三角行列式的主对角线上方元素全为零。</li>
+<li>对角行列式在主对角线两侧的元素都为零，同时具有上三角和下三角结构；主对角线上的元素<strong>允许为零</strong>，并非必须全都非零。</li>
+<li>上述结构的行列式值都是主对角线上元素的乘积。这里不是“所有元素的乘积”，也不是任意方阵都能这样算。</li>
+<li>原文以沿上三角行列式第一列反复展开的方式说明结果：每次只剩一个可能非零的贡献，余下部分仍保留上三角结构。</li>
+<li>教学重点是把证明步骤写出来，不能只写“非零项只有对角线上的项”而省略展开依据。</li>
+</ul>
+<h3 id="4-4-行列式基本性质及边界-1-36-39-1-50-18">4.4 行列式基本性质及边界（1:36:39–1:50:18）</h3><p>以下以通常实数系数的课堂情境表述；“行”的表述也适用于“列”。</p>
+<div class="table-scroll-container"><table>
+<thead>
+<tr>
+<th align="left">性质</th>
+<th align="left">可采用的规范化理解</th>
+<th align="left">易错边界</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">转置</td>
+<td align="left">将对应的行列互换，行列式值不变</td>
+<td align="left">转置与仅交换两行是不同操作</td>
+</tr>
+<tr>
+<td align="left">交换两行或两列</td>
+<td align="left">行列式变号</td>
+<td align="left">两行（或两列）对应元素完全相同，则行列式为零</td>
+</tr>
+<tr>
+<td align="left">某一行的数乘</td>
+<td align="left">将某一行所有元素乘同一个数，行列式值也乘该数；反向可提取该行公因子</td>
+<td align="left">不是把全体元素同时乘该数却只在外面记一次因子</td>
+</tr>
+<tr>
+<td align="left">零行与成比例</td>
+<td align="left">有一行全零，或两行对应成比例，行列式为零</td>
+<td align="left">要检查整行的对应关系，不能只看几个相同元素</td>
+</tr>
+<tr>
+<td align="left">某一行拆分</td>
+<td align="left">固定其他行，将一行逐项表示成两部分之和，可拆为两个相应行列式之和</td>
+<td align="left">线性性针对固定其他行后的一行，不等于任意两个矩阵相加后行列式也直接相加</td>
+</tr>
+<tr>
+<td align="left">某一行的倍数加到另一行</td>
+<td align="left">目标行加上另一行的同一个倍数，行列式值不变</td>
+<td align="left">来源行保持不变；不要误记成“单独把一行乘倍数也不变”</td>
+</tr>
+</tbody></table></div>
+<p>原文给出两条有用的论证思路：</p>
+<ol>
+<li><strong>相同行判零</strong>：交换相同的两行，排列没有变化，但按交换性质行列式应变号，因此在当前实数情境下只能为零。</li>
+<li><strong>倍加不变</strong>：沿被修改的行拆成两个行列式；一个是原行列式，另一个具有成比例的两行，因而为零。</li>
+</ol>
+<p>结尾的四阶示范旨在利用交换列和行倍加制造更多零，再简化展开。应分别记录交换引入的负号与倍加时的值不变，不能把所有变换统称为“不改变值”。原始四阶矩阵不完整，本笔记不补写运算链或答案。</p>
+<h2 id="5-课程要求与待核实事项-非数学结论">5. 课程要求与待核实事项（非数学结论）</h2><ul>
+<li><code>01:39</code>、<code>06:36</code>：要求作业拍照上传学习通；<code>14:20–15:38</code> 强调写出计算过程，而不是只抄书后答案。这是本次记录中可直接用于学习安排的信息。</li>
+<li><code>00:19–01:24</code>：涉及课堂手机使用、零食饮料、离开教室告知、签到后早退等纪律要求。属于当次课堂口头要求，不外推为学校统一制度。</li>
+<li><code>02:19</code>：出现“80% 和 20%”，同时说只是初始安排、最终可能依文件调整；没有可靠识别两项所指，不能写成确定的成绩计算式。</li>
+<li><code>02:43</code>：出现“好像是 30%”的考勤相关话语，口径与计量范围不明，不能当作正式缺勤上限。</li>
+<li><code>02:53–03:47</code>：教师口头强调期末卷面至少 46 分的通过门槛及教考分离。应查课程正式考核文件确认，不据此推断“达到 46 分就必然通过”；其余考核条件仍需核实。</li>
+<li><code>01:49–02:01</code>：有“实交的话扣十分”、抄袭与未交作业处理的破碎转写，不能据此确定扣分制度。</li>
+<li><code>1:02:32</code>：作业被转为“1 和 6”，随后说两个行列式、一个二阶一个三阶。<strong>不能唯一确定是哪些题</strong>，以学习通正式发布的题号、截止时间及要求为准。</li>
+<li><code>08:10</code>：提到教材二维码配套微课；<code>33:15–34:53</code> 鼓励参与数学竞赛与数学建模竞赛。教材书名版本、赛事正式名称与报名安排均未完整给出。</li>
+</ul>
+<h2 id="6-无法可靠识别或需要回查的部分">6. 无法可靠识别或需要回查的部分</h2><div class="table-scroll-container"><table>
+<thead>
+<tr>
+<th align="left">位置</th>
+<th align="left">问题</th>
+<th align="left">处理方式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">全文多处</td>
+<td align="left">“行业是”“杀戮法则”“鱼子式/代数离子式”“转制”等同音误识别，以及无关英文插话</td>
+<td align="left">仅在上下文明确时规范为行列式、沙路法则、余子式/代数余子式、转置；不把噪声当术语</td>
+</tr>
+<tr>
+<td align="left">10:45–19:27；41:01–44:36</td>
+<td align="left">二元方程组系数、常数项、答案转写不全；后段另有负号抄写纠错，且教师指出与书上题不同</td>
+<td align="left">不拼接不同例子的数字，不恢复完整方程组或答案</td>
+</tr>
+<tr>
+<td align="left">39:56–40:14</td>
+<td align="left">以极大量未知数说明行列式的作用</td>
+<td align="left">仅保留教学动机；不能据此推出行列式商法适合大规模数值求解或一定优于消元法</td>
+</tr>
+<tr>
+<td align="left">47:44–51:55；57:36–1:00:37</td>
+<td align="left">三阶展开中下标、乘除词与项数存在误识别</td>
+<td align="left">公式与规范方法见既有概念笔记，不逐字还原这段公式</td>
+</tr>
+<tr>
+<td align="left">1:05:57–1:07:12；1:14:13</td>
+<td align="left">代数余子式的一般符号、指数被转成不同说法，奇偶符号矛盾</td>
+<td align="left">不采纳为原始公式；回查教材定义或板书</td>
+</tr>
+<tr>
+<td align="left">1:09:49–1:10:38</td>
+<td align="left">例 1.6 一边说第三行第四列，一边出现“第三行第一列”；元素值与余下数字不清</td>
+<td align="left">保留删去所在行列的操作，不重构矩阵</td>
+</tr>
+<tr>
+<td align="left">1:19:35–1:24:35</td>
+<td align="left">例 1.7 的矩阵与各余子式数字串缺乏可靠分行分列</td>
+<td align="left">保留改按第三行展开与择零降阶的思路，不写题目数据或答案</td>
+</tr>
+<tr>
+<td align="left">1:33:08–1:35:19</td>
+<td align="left">展开中的原位置/局部位置混说；对角元素与“所有元素乘积”的口语表述不严谨</td>
+<td align="left">只采用第 4.3 节的结构限定与主对角线乘积表述</td>
+</tr>
+<tr>
+<td align="left">1:42:59–1:45:11；1:50:18–1:52:09</td>
+<td align="left">性质示例和最后四阶变换依赖未附板书，原始矩阵缺失，末尾未见完整结论</td>
+<td align="left">不补矩阵、不猜结果，待教材或课堂板书补证</td>
+</tr>
+</tbody></table></div>
+<h2 id="7-后续复习顺序">7. 后续复习顺序</h2><ol>
+<li>先使用<a href="./2026-09-17-determinants-order-2-3.html">既有二、三阶行列式笔记</a>复习公式、负号与分步书写；用行列式商求解时注意系数行列式非零的条件。</li>
+<li>对照教材核实余子式与代数余子式的定义和符号，再练习同一行列式按不同行或列展开。</li>
+<li>遇到高阶题先观察零元素、相同行或成比例行、三角结构与可用公因子，再决定展开或变换方案。</li>
+<li>回查学习通确认作业题号与课程正式考核要求；补到原始题图后再独立整理例 1.6、1.7、1.8 及四阶变换题，避免从转写数字串猜题。</li>
+</ol>
+
+        </div>
+
+        <div class="m3-paging-container"><a class="paging-card paging-prev" href="../../../课程/工程数学/课堂笔记/2026-09-17-determinants-order-2-3.html">
+        <span class="paging-label">← 上一节</span>
+        <span class="paging-title">二阶与三阶行列式计算、沙路法则与手算书写规范</span>
+      </a></div>
+      </article>
+    </main>
+
+    <!-- Table of Contents -->
+    <aside class="m3-toc">
+      <div class="toc-title">目录</div>
+      <ul class="toc-list">
+        <li class="toc-item level-2"><a href="#1-来源与使用边界">1. 来源与使用边界</a></li><li class="toc-item level-2"><a href="#2-与既有笔记的关系">2. 与既有笔记的关系</a></li><li class="toc-item level-2"><a href="#3-全文内容导览">3. 全文内容导览</a></li><li class="toc-item level-2"><a href="#4-后半段的新增学习线索">4. 后半段的新增学习线索</a></li><li class="toc-item level-3"><a href="#4-1-余子式与代数余子式-1-03-23-1-15-02">4.1 余子式与代数余子式（1:03:23–1:15:02）</a></li><li class="toc-item level-3"><a href="#4-2-展开方法与零元素-1-15-44-1-24-48">4.2 展开方法与零元素（1:15:44–1:24:48）</a></li><li class="toc-item level-3"><a href="#4-3-三角结构-1-25-08-1-36-22">4.3 三角结构（1:25:08–1:36:22）</a></li><li class="toc-item level-3"><a href="#4-4-行列式基本性质及边界-1-36-39-1-50-18">4.4 行列式基本性质及边界（1:36:39–1:50:18）</a></li><li class="toc-item level-2"><a href="#5-课程要求与待核实事项-非数学结论">5. 课程要求与待核实事项（非数学结论）</a></li><li class="toc-item level-2"><a href="#6-无法可靠识别或需要回查的部分">6. 无法可靠识别或需要回查的部分</a></li><li class="toc-item level-2"><a href="#7-后续复习顺序">7. 后续复习顺序</a></li>
+      </ul>
+    </aside>
+  </div>
+
+  <script src="../../../assets/katex/katex.min.js"></script>
+  <script src="../../../assets/theme/shirone-reader.js"></script>
+</body>
+</html>

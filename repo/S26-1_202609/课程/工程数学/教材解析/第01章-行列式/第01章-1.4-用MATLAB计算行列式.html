@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第1章 1.4 用 MATLAB 进行行列式的计算（原书 p20–p21） | S26-1 课程知识库 - isui.ren</title>
+  <link rel="stylesheet" href="../../../../assets/katex/katex.min.css">
+  <link rel="stylesheet" href="../../../../assets/theme/shirone-reader.css">
+</head>
+<body>
+  <!-- Top App Bar -->
+  <header class="m3-top-app-bar">
+    <div class="top-bar-left">
+      <button class="m3-icon-btn" id="drawer-toggle" aria-label="打开菜单">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+      </button>
+      <a href="../../../../index.html" class="site-title">
+        <span>S26-1 课程知识库</span>
+      </a>
+    </div>
+    <div class="top-bar-right">
+      <button class="m3-icon-btn" id="palette-toggle" aria-label="调色盘" title="自定义主题强调色">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/>
+          <circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/>
+          <circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/>
+          <circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/>
+          <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/>
+        </svg>
+      </button>
+
+      <!-- Palette Popover -->
+      <div class="palette-popover" id="palette-popover">
+        <div class="palette-header">
+          <span class="palette-title">主题强调色调色盘</span>
+          <button class="palette-reset-btn" id="palette-reset-btn" title="重置为默认色">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+          </button>
+        </div>
+        <div class="palette-current-row">
+          <span class="palette-hue-badge" id="palette-hue-badge">Hue 248°</span>
+          <div class="palette-color-dot" id="palette-color-dot"></div>
+        </div>
+        <div class="palette-slider-container">
+          <span class="palette-slider-label">色相微调 (0° - 360°)</span>
+          <input type="range" min="0" max="360" value="248" class="palette-slider" id="hue-slider">
+        </div>
+        <div>
+          <div class="palette-swatches-title">预设配色</div>
+          <div class="palette-swatches-grid">
+            <button class="palette-swatch-item" data-hue="315" title="经典粉紫">
+              <span class="palette-swatch-dot" style="background: hsl(315, 75%, 45%);"></span>
+              <span class="palette-swatch-name">粉紫</span>
+            </button>
+            <button class="palette-swatch-item" data-hue="280" title="紫罗兰">
+              <span class="palette-swatch-dot" style="background: hsl(280, 75%, 45%);"></span>
+              <span class="palette-swatch-name">紫罗兰</span>
+            </button>
+            <button class="palette-swatch-item active" data-hue="248" title="学术深蓝">
+              <span class="palette-swatch-dot" style="background: hsl(248, 75%, 45%);"></span>
+              <span class="palette-swatch-name">深蓝</span>
+            </button>
+            <button class="palette-swatch-item" data-hue="205" title="天青蓝">
+              <span class="palette-swatch-dot" style="background: hsl(205, 75%, 45%);"></span>
+              <span class="palette-swatch-name">天青</span>
+            </button>
+            <button class="palette-swatch-item" data-hue="150" title="翡翠绿">
+              <span class="palette-swatch-dot" style="background: hsl(150, 75%, 40%);"></span>
+              <span class="palette-swatch-name">翡翠</span>
+            </button>
+            <button class="palette-swatch-item" data-hue="75" title="琥珀黄">
+              <span class="palette-swatch-dot" style="background: hsl(75, 75%, 40%);"></span>
+              <span class="palette-swatch-name">琥珀</span>
+            </button>
+            <button class="palette-swatch-item" data-hue="30" title="晚霞橙">
+              <span class="palette-swatch-dot" style="background: hsl(30, 80%, 48%);"></span>
+              <span class="palette-swatch-name">晚霞</span>
+            </button>
+            <button class="palette-swatch-item" data-hue="355" title="绯红">
+              <span class="palette-swatch-dot" style="background: hsl(355, 75%, 45%);"></span>
+              <span class="palette-swatch-name">绯红</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <button class="m3-icon-btn" id="theme-toggle" aria-label="切换昼夜主题">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="drawer-backdrop" id="drawer-backdrop"></div>
+
+  <div class="layout-container">
+    <!-- Sidebar Drawer -->
+    <nav class="m3-drawer" id="m3-drawer">
+      <div class="drawer-section-title">课程导航目录</div>
+      <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+          <a href="../../../../index.html">
+            <span>首页</span>
+          </a>
+        </li><li class="drawer-nav-item ">
+          <a href="../../../../课程/index.html">
+            <span>课程总览</span>
+          </a>
+        </li><div class="nav-nested"><ul class="drawer-nav-list"><li class="drawer-nav-item ">
+          <a href="../../../../课程/工程数学/index.html">
+            <span>工程数学</span>
+          </a>
+        </li><div class="nav-nested"><ul class="drawer-nav-list"><li class="drawer-nav-item ">
+          <a href="../../../../课程/工程数学/教材解析/index.html">
+            <span>教材解析</span>
+          </a>
+        </li><div class="nav-nested"><ul class="drawer-nav-list"><li class="drawer-section-title">第01章 行列式</li><div class="nav-nested"><ul class="drawer-nav-list"><li class="drawer-nav-item ">
+          <a href="../../../../课程/工程数学/教材解析/第01章-行列式/第01章-1.1-二阶与三阶行列式.html">
+            <span>1.1 二阶与三阶行列式</span>
+          </a>
+        </li><li class="drawer-nav-item ">
+          <a href="../../../../课程/工程数学/教材解析/第01章-行列式/第01章-1.2-n阶行列式.html">
+            <span>1.2 n阶行列式</span>
+          </a>
+        </li><li class="drawer-nav-item ">
+          <a href="../../../../课程/工程数学/教材解析/第01章-行列式/第01章-1.3-克莱姆法则.html">
+            <span>1.3 克莱姆法则</span>
+          </a>
+        </li><li class="drawer-nav-item active">
+          <a href="../../../../课程/工程数学/教材解析/第01章-行列式/第01章-1.4-用MATLAB计算行列式.html">
+            <span>1.4 用MATLAB计算行列式</span>
+          </a>
+        </li></ul></div><li class="drawer-section-title">第02章 矩阵</li><div class="nav-nested"><ul class="drawer-nav-list"><li class="drawer-nav-item ">
+          <a href="../../../../课程/工程数学/教材解析/第02章-矩阵/第02章-2.1-矩阵的概念及运算.html">
+            <span>2.1 矩阵的概念及运算</span>
+          </a>
+        </li><li class="drawer-nav-item ">
+          <a href="../../../../课程/工程数学/教材解析/第02章-矩阵/第02章-2.2-逆矩阵.html">
+            <span>2.2 逆矩阵</span>
+          </a>
+        </li><li class="drawer-nav-item ">
+          <a href="../../../../课程/工程数学/教材解析/第02章-矩阵/第02章-2.3-矩阵的初等变换与初等矩阵.html">
+            <span>2.3 初等变换与初等矩阵</span>
+          </a>
+        </li><li class="drawer-nav-item ">
+          <a href="../../../../课程/工程数学/教材解析/第02章-矩阵/第02章-2.4-矩阵的秩.html">
+            <span>2.4 矩阵的秩</span>
+          </a>
+        </li><li class="drawer-nav-item ">
+          <a href="../../../../课程/工程数学/教材解析/第02章-矩阵/第02章-2.5-用MATLAB进行矩阵运算.html">
+            <span>2.5 用MATLAB进行矩阵运算</span>
+          </a>
+        </li></ul></div></ul></div><li class="drawer-nav-item ">
+          <a href="../../../../课程/工程数学/课堂笔记/index.html">
+            <span>课堂笔记</span>
+          </a>
+        </li><div class="nav-nested"><ul class="drawer-nav-list"><li class="drawer-nav-item ">
+          <a href="../../../../课程/工程数学/课堂笔记/2026-09-17-determinants-order-2-3.html">
+            <span>09-17 行列式与沙路法则</span>
+          </a>
+        </li><li class="drawer-nav-item ">
+          <a href="../../../../课程/工程数学/课堂笔记/2026-09-17-determinants-transcript-notes.html">
+            <span>09-17 课堂听课整理</span>
+          </a>
+        </li></ul></div><li class="drawer-nav-item ">
+          <a href="../../../../课程/工程数学/作业/index.html">
+            <span>作业 (索引)</span>
+          </a>
+        </li><li class="drawer-nav-item ">
+          <a href="../../../../课程/工程数学/原始资料/index.html">
+            <span>原始资料 (索引)</span>
+          </a>
+        </li><li class="drawer-nav-item ">
+          <a href="../../../../课程/工程数学/音频/index.html">
+            <span>音频 (索引)</span>
+          </a>
+        </li></ul></div></ul></div><li class="drawer-section-title">仓库规约</li><div class="nav-nested"><ul class="drawer-nav-list"><li class="drawer-nav-item ">
+          <a href="../../../../维护条例.html">
+            <span>维护条例</span>
+          </a>
+        </li><li class="drawer-nav-item ">
+          <a href="../../../../维护细则.html">
+            <span>维护细则</span>
+          </a>
+        </li></ul></div></ul>
+    </nav>
+
+    <!-- Content Area -->
+    <main class="content-wrapper">
+      <article class="article-container">
+        <!-- Breadcrumb -->
+        <nav class="m3-breadcrumb">
+          <a href="../../../../index.html">首页</a><span class="m3-breadcrumb-sep">/</span><a href="../../../../课程/index.html">课程总览</a><span class="m3-breadcrumb-sep">/</span><a href="../../../../课程/工程数学/index.html">工程数学</a><span class="m3-breadcrumb-sep">/</span><a href="../../../../课程/工程数学/教材解析/index.html">教材解析</a><span class="m3-breadcrumb-sep">/</span><a href="#">第01章 行列式</a><span class="m3-breadcrumb-sep">/</span><span>第1章 1.4 用 MATLAB 进行行列式的计算（原书 p20–p21）</span>
+        </nav>
+
+        <div class="meta-chip-bar"><span class="meta-chip primary">📚 工程数学</span><span class="meta-chip">🏷️ 教材解析</span><span class="meta-chip">⚡ 状态: 整理中</span><span class="meta-chip">📅 更新: 2026-09-17</span><span class="meta-chip">📖 来源: 原始资料/教材照片/IMG20260917200831–IMG20260917200833（原书 p20–p21）</span></div>
+
+        <div class="article-content">
+          <h1 id="第1章-1-4-用-matlab-进行行列式的计算-原书-p20-p21">第1章 1.4 用 MATLAB 进行行列式的计算（原书 p20–p21）</h1><blockquote>
+<p>本文件同时保存<strong>原书抄录</strong>与<strong>解析</strong>。教材输出按书页登记；本轮<strong>没有</strong>在本机运行 MATLAB，命令与输出不表示已在本机复现。</p>
+</blockquote>
+<h2 id="原书抄录">原书抄录</h2><p>〔原书 p20〕</p>
+<p>采用 <code>det</code> 函数来求行列式的值，一般格式为：<code>D=det(A)</code>，其中 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">A</span></span></span></span> 为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>×</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">n\times n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> 个数按一定顺序排成的一个 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> 行 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> 列的数表。</p>
+<p><strong>【例 1.18】</strong> 求行列式</p>
+<p><div class="katex-scroll-container"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mo fence="true">∣</mo><mtable rowspacing="0.16em" columnalign="center center center" columnspacing="1em"><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>1</mn></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mo>−</mo><mn>2</mn></mrow></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>4</mn></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mo>−</mo><mn>5</mn></mrow></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>2</mn></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>0</mn></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>1</mn></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>0</mn></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>3</mn></mstyle></mtd></mtr></mtable><mo fence="true">∣</mo></mrow><annotation encoding="application/x-tex">\begin{vmatrix}1&amp;-2&amp;4\\-5&amp;2&amp;0\\1&amp;0&amp;3\end{vmatrix}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:3.6em;vertical-align:-1.55em;"></span><span class="minner"><span class="mopen"><span class="delimsizing mult"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.05em;"><span style="top:-4.05em;"><span class="pstrut" style="height:5.6em;"></span><span style="width:0.333em;height:3.6em;"><svg xmlns="http://www.w3.org/2000/svg" width="0.333em" height="3.6em" viewBox="0 0 333 3600"><path d="M145 15 v585 v2400 v585 c2.667,10,9.667,15,21,15
+c10,0,16.667,-5,20,-15 v-585 v-2400 v-585 c-2.667,-10,-9.667,-15,-21,-15
+c-10,0,-16.667,5,-20,15z M188 15 H145 v585 v2400 v585 h43z"/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.55em;"><span></span></span></span></span></span></span><span class="mord"><span class="mtable"><span class="col-align-c"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.05em;"><span style="top:-4.21em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span><span style="top:-3.01em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">−</span><span class="mord">5</span></span></span><span style="top:-1.81em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.55em;"><span></span></span></span></span></span><span class="arraycolsep" style="width:0.5em;"></span><span class="arraycolsep" style="width:0.5em;"></span><span class="col-align-c"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.05em;"><span style="top:-4.21em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">−</span><span class="mord">2</span></span></span><span style="top:-3.01em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">2</span></span></span><span style="top:-1.81em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.55em;"><span></span></span></span></span></span><span class="arraycolsep" style="width:0.5em;"></span><span class="arraycolsep" style="width:0.5em;"></span><span class="col-align-c"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.05em;"><span style="top:-4.21em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">4</span></span></span><span style="top:-3.01em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">0</span></span></span><span style="top:-1.81em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">3</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.55em;"><span></span></span></span></span></span></span></span><span class="mclose"><span class="delimsizing mult"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.05em;"><span style="top:-4.05em;"><span class="pstrut" style="height:5.6em;"></span><span style="width:0.333em;height:3.6em;"><svg xmlns="http://www.w3.org/2000/svg" width="0.333em" height="3.6em" viewBox="0 0 333 3600"><path d="M145 15 v585 v2400 v585 c2.667,10,9.667,15,21,15
+c10,0,16.667,-5,20,-15 v-585 v-2400 v-585 c-2.667,-10,-9.667,-15,-21,-15
+c-10,0,-16.667,5,-20,15z M188 15 H145 v585 v2400 v585 h43z"/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.55em;"><span></span></span></span></span></span></span></span></span></span></span></span></div></p>
+<p>的值。</p>
+<p>解</p>
+<p><div class="code-fence-wrapper">
+      <div class="code-fence-header">
+        <span>matlab</span>
+        <button class="copy-btn">复制</button>
+      </div>
+      <pre><code>&gt;&gt; A=[1 -2 4;-5 2 0;1 0 3]
+A=
+     1    -2     4
+    -5     2     0
+     1     0     3
+&gt;&gt; D=det(A)
+D=
+   -32</code></pre>
+    </div></p>
+<p><strong>【例 1.19】</strong> 求行列式</p>
+<p><div class="katex-scroll-container"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mo fence="true">∣</mo><mtable rowspacing="0.16em" columnalign="center center center center" columnspacing="1em"><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>1</mn></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>2</mn></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>3</mn></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>2</mn></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>1</mn></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>2</mn></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>0</mn></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mo>−</mo><mn>5</mn></mrow></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>1</mn></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>0</mn></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>1</mn></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>2</mn></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>4</mn></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>3</mn></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>1</mn></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>2</mn></mstyle></mtd></mtr></mtable><mo fence="true">∣</mo></mrow><annotation encoding="application/x-tex">\begin{vmatrix}
+1&amp;2&amp;3&amp;2\\
+1&amp;2&amp;0&amp;-5\\
+1&amp;0&amp;1&amp;2\\
+4&amp;3&amp;1&amp;2
+\end{vmatrix}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:4.8em;vertical-align:-2.15em;"></span><span class="minner"><span class="mopen"><span class="delimsizing mult"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.65em;"><span style="top:-4.65em;"><span class="pstrut" style="height:6.8em;"></span><span style="width:0.333em;height:4.8em;"><svg xmlns="http://www.w3.org/2000/svg" width="0.333em" height="4.8em" viewBox="0 0 333 4800"><path d="M145 15 v585 v3600 v585 c2.667,10,9.667,15,21,15
+c10,0,16.667,-5,20,-15 v-585 v-3600 v-585 c-2.667,-10,-9.667,-15,-21,-15
+c-10,0,-16.667,5,-20,15z M188 15 H145 v585 v3600 v585 h43z"/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:2.15em;"><span></span></span></span></span></span></span><span class="mord"><span class="mtable"><span class="col-align-c"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.65em;"><span style="top:-4.81em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span><span style="top:-3.61em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span><span style="top:-2.41em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span><span style="top:-1.21em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">4</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:2.15em;"><span></span></span></span></span></span><span class="arraycolsep" style="width:0.5em;"></span><span class="arraycolsep" style="width:0.5em;"></span><span class="col-align-c"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.65em;"><span style="top:-4.81em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">2</span></span></span><span style="top:-3.61em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">2</span></span></span><span style="top:-2.41em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">0</span></span></span><span style="top:-1.21em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">3</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:2.15em;"><span></span></span></span></span></span><span class="arraycolsep" style="width:0.5em;"></span><span class="arraycolsep" style="width:0.5em;"></span><span class="col-align-c"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.65em;"><span style="top:-4.81em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">3</span></span></span><span style="top:-3.61em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">0</span></span></span><span style="top:-2.41em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span><span style="top:-1.21em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:2.15em;"><span></span></span></span></span></span><span class="arraycolsep" style="width:0.5em;"></span><span class="arraycolsep" style="width:0.5em;"></span><span class="col-align-c"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.65em;"><span style="top:-4.81em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">2</span></span></span><span style="top:-3.61em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">−</span><span class="mord">5</span></span></span><span style="top:-2.41em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">2</span></span></span><span style="top:-1.21em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:2.15em;"><span></span></span></span></span></span></span></span><span class="mclose"><span class="delimsizing mult"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.65em;"><span style="top:-4.65em;"><span class="pstrut" style="height:6.8em;"></span><span style="width:0.333em;height:4.8em;"><svg xmlns="http://www.w3.org/2000/svg" width="0.333em" height="4.8em" viewBox="0 0 333 4800"><path d="M145 15 v585 v3600 v585 c2.667,10,9.667,15,21,15
+c10,0,16.667,-5,20,-15 v-585 v-3600 v-585 c-2.667,-10,-9.667,-15,-21,-15
+c-10,0,-16.667,5,-20,15z M188 15 H145 v585 v3600 v585 h43z"/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:2.15em;"><span></span></span></span></span></span></span></span></span></span></span></span></div></p>
+<p>的值。</p>
+<p>解</p>
+<p><div class="code-fence-wrapper">
+      <div class="code-fence-header">
+        <span>matlab</span>
+        <button class="copy-btn">复制</button>
+      </div>
+      <pre><code>&gt;&gt; A=[1 2 3 2;1 2 0 -5;1 0 1 2;4 3 1 2]
+A=
+     1     2     3     2
+     1     2     0    -5
+     1     0     1     2
+     4     3     1     2
+&gt;&gt; D=det(A)
+D=
+   -48</code></pre>
+    </div></p>
+<p>〔原书 p21〕</p>
+<p><strong>【例 1.20】</strong> 求行列式</p>
+<p><div class="katex-scroll-container"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mo fence="true">∣</mo><mtable rowspacing="0.16em" columnalign="center center center" columnspacing="1em"><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>1</mn></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>2</mn></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>3</mn></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>4</mn></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>5</mn></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>6</mn></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>7</mn></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>8</mn></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>9</mn></mstyle></mtd></mtr></mtable><mo fence="true">∣</mo></mrow><annotation encoding="application/x-tex">\begin{vmatrix}1&amp;2&amp;3\\4&amp;5&amp;6\\7&amp;8&amp;9\end{vmatrix}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:3.6em;vertical-align:-1.55em;"></span><span class="minner"><span class="mopen"><span class="delimsizing mult"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.05em;"><span style="top:-4.05em;"><span class="pstrut" style="height:5.6em;"></span><span style="width:0.333em;height:3.6em;"><svg xmlns="http://www.w3.org/2000/svg" width="0.333em" height="3.6em" viewBox="0 0 333 3600"><path d="M145 15 v585 v2400 v585 c2.667,10,9.667,15,21,15
+c10,0,16.667,-5,20,-15 v-585 v-2400 v-585 c-2.667,-10,-9.667,-15,-21,-15
+c-10,0,-16.667,5,-20,15z M188 15 H145 v585 v2400 v585 h43z"/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.55em;"><span></span></span></span></span></span></span><span class="mord"><span class="mtable"><span class="col-align-c"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.05em;"><span style="top:-4.21em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span><span style="top:-3.01em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">4</span></span></span><span style="top:-1.81em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">7</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.55em;"><span></span></span></span></span></span><span class="arraycolsep" style="width:0.5em;"></span><span class="arraycolsep" style="width:0.5em;"></span><span class="col-align-c"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.05em;"><span style="top:-4.21em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">2</span></span></span><span style="top:-3.01em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">5</span></span></span><span style="top:-1.81em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">8</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.55em;"><span></span></span></span></span></span><span class="arraycolsep" style="width:0.5em;"></span><span class="arraycolsep" style="width:0.5em;"></span><span class="col-align-c"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.05em;"><span style="top:-4.21em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">3</span></span></span><span style="top:-3.01em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">6</span></span></span><span style="top:-1.81em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">9</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.55em;"><span></span></span></span></span></span></span></span><span class="mclose"><span class="delimsizing mult"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.05em;"><span style="top:-4.05em;"><span class="pstrut" style="height:5.6em;"></span><span style="width:0.333em;height:3.6em;"><svg xmlns="http://www.w3.org/2000/svg" width="0.333em" height="3.6em" viewBox="0 0 333 3600"><path d="M145 15 v585 v2400 v585 c2.667,10,9.667,15,21,15
+c10,0,16.667,-5,20,-15 v-585 v-2400 v-585 c-2.667,-10,-9.667,-15,-21,-15
+c-10,0,-16.667,5,-20,15z M188 15 H145 v585 v2400 v585 h43z"/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.55em;"><span></span></span></span></span></span></span></span></span></span></span></span></div></p>
+<p>的值。</p>
+<p>解</p>
+<p><div class="code-fence-wrapper">
+      <div class="code-fence-header">
+        <span>matlab</span>
+        <button class="copy-btn">复制</button>
+      </div>
+      <pre><code>&gt;&gt; A=[1 2 3;4 5 6;7 8 9]
+A=
+     1     2     3
+     4     5     6
+     7     8     9
+&gt;&gt; D=det(A)
+D=
+   -9.5162e-16</code></pre>
+    </div></p>
+<h2 id="解析">解析</h2><p><strong>教材用法</strong>：<code>D=det(A)</code>，<code>A</code> 为方阵；同一行元素用空格或逗号分隔，分号分隔行。</p>
+<p><strong>例 1.18–1.19</strong>：教材输出分别与整数精确值 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>−</mo><mn>32</mn></mrow><annotation encoding="application/x-tex">-32</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">−</span><span class="mord">32</span></span></span></span>、<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>−</mo><mn>48</mn></mrow><annotation encoding="application/x-tex">-48</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">−</span><span class="mord">48</span></span></span></span> 一致。例 1.19 就是 1.2 节例 1.10 的同一行列式，手工降阶法与 <code>det</code> 互相印证。</p>
+<p><strong>例 1.20（浮点残差）</strong>：</p>
+<p><div class="code-fence-wrapper">
+      <div class="code-fence-header">
+        <span>matlab</span>
+        <button class="copy-btn">复制</button>
+      </div>
+      <pre><code>A=[1 2 3;4 5 6;7 8 9];
+D=det(A)      % 教材输出 -9.5162e-16</code></pre>
+    </div></p>
+<p>精确值为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn></mrow><annotation encoding="application/x-tex">0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span>，因为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>r</mi><mn>3</mn></msub><mo>=</mo><mn>2</mn><msub><mi>r</mi><mn>2</mn></msub><mo>−</mo><msub><mi>r</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">r_3=2r_2-r_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0278em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">3</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7944em;vertical-align:-0.15em;"></span><span class="mord">2</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0278em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0278em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>，三行线性相关（第 3 行 = 第 2 行的 2 倍减第 1 行）。教材输出的是一个极小的<strong>浮点残差</strong>，不是数学上的非零值；不同 MATLAB 版本或计算环境可能给出不同的微小残差或零。</p>
+<p><strong>整理者补充的数值实践</strong>：</p>
+<ul>
+<li>不要用 <code>det(A)==0</code> 判断奇异；浮点下几乎永远不恰好为零。</li>
+<li>也不要用不考虑矩阵尺度的固定阈值；一般需结合奇异值、条件数或带容差的判据。</li>
+<li>数值求解线性方程组一般用 <code>A\b</code>，而不是重复算行列式再做除法；克莱姆法则主要用于理论推导和小规模精确计算。</li>
+<li>若要判断例 1.20 这类行列式，直接看行（列）之间的线性关系比看浮点输出更可靠。</li>
+</ul>
+<h2 id="本节完成边界">本节完成边界</h2><ul>
+<li>已抄录：p20–p21 的 <code>det</code> 用法说明与例 1.18–1.20 的命令、输出。</li>
+<li>已解析：三个例子与手工结果的对应关系、例 1.20 的浮点残差含义、数值实践建议。</li>
+<li>未复现：本机未安装或未运行 MATLAB，教材输出按书页登记；如果后续在本机复现，应记录 MATLAB 版本和实际输出，并与书页对照。</li>
+</ul>
+
+        </div>
+
+        <div class="m3-paging-container"><a class="paging-card paging-prev" href="../../../../课程/工程数学/教材解析/第01章-行列式/第01章-1.3-克莱姆法则.html">
+        <span class="paging-label">← 上一节</span>
+        <span class="paging-title">第1章 1.3 克莱姆法则（原书 p15–p20）</span>
+      </a><a class="paging-card paging-next" href="../../../../课程/工程数学/教材解析/第02章-矩阵/第02章-2.1-矩阵的概念及运算.html">
+        <span class="paging-label">下一节 →</span>
+        <span class="paging-title">第2章 2.1 矩阵的概念及运算（原书 p22–p33）</span>
+      </a></div>
+      </article>
+    </main>
+
+    <!-- Table of Contents -->
+    <aside class="m3-toc">
+      <div class="toc-title">目录</div>
+      <ul class="toc-list">
+        <li class="toc-item level-2"><a href="#原书抄录">原书抄录</a></li><li class="toc-item level-2"><a href="#解析">解析</a></li><li class="toc-item level-2"><a href="#本节完成边界">本节完成边界</a></li>
+      </ul>
+    </aside>
+  </div>
+
+  <script src="../../../../assets/katex/katex.min.js"></script>
+  <script src="../../../../assets/theme/shirone-reader.js"></script>
+</body>
+</html>
