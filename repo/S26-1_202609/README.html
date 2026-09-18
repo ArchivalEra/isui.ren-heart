@@ -8,93 +8,23 @@
   <link rel="stylesheet" href="./assets/theme/shirone-reader.css">
 </head>
 <body>
-  <!-- Top App Bar -->
-  <header class="m3-top-app-bar">
-    <div class="top-bar-left">
-      <button class="m3-icon-btn" id="drawer-toggle" aria-label="打开菜单">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
-      </button>
-      <a href="./index.html" class="site-title">
-        <span>S26-1 课程知识库</span>
-      </a>
-    </div>
-    <div class="top-bar-right">
-      <button class="m3-icon-btn" id="palette-toggle" aria-label="调色盘" title="自定义主题强调色">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/>
-          <circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/>
-          <circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/>
-          <circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/>
-          <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/>
-        </svg>
-      </button>
-
-      <!-- Palette Popover -->
-      <div class="palette-popover" id="palette-popover">
-        <div class="palette-header">
-          <span class="palette-title">主题强调色调色盘</span>
-          <button class="palette-reset-btn" id="palette-reset-btn" title="重置为默认色">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
-          </button>
-        </div>
-        <div class="palette-current-row">
-          <span class="palette-hue-badge" id="palette-hue-badge">Hue 248°</span>
-          <div class="palette-color-dot" id="palette-color-dot"></div>
-        </div>
-        <div class="palette-slider-container">
-          <span class="palette-slider-label">色相微调 (0° - 360°)</span>
-          <input type="range" min="0" max="360" value="248" class="palette-slider" id="hue-slider">
-        </div>
-        <div>
-          <div class="palette-swatches-title">预设配色</div>
-          <div class="palette-swatches-grid">
-            <button class="palette-swatch-item" data-hue="315" title="经典粉紫">
-              <span class="palette-swatch-dot" style="background: hsl(315, 75%, 45%);"></span>
-              <span class="palette-swatch-name">粉紫</span>
-            </button>
-            <button class="palette-swatch-item" data-hue="280" title="紫罗兰">
-              <span class="palette-swatch-dot" style="background: hsl(280, 75%, 45%);"></span>
-              <span class="palette-swatch-name">紫罗兰</span>
-            </button>
-            <button class="palette-swatch-item active" data-hue="248" title="学术深蓝">
-              <span class="palette-swatch-dot" style="background: hsl(248, 75%, 45%);"></span>
-              <span class="palette-swatch-name">深蓝</span>
-            </button>
-            <button class="palette-swatch-item" data-hue="205" title="天青蓝">
-              <span class="palette-swatch-dot" style="background: hsl(205, 75%, 45%);"></span>
-              <span class="palette-swatch-name">天青</span>
-            </button>
-            <button class="palette-swatch-item" data-hue="150" title="翡翠绿">
-              <span class="palette-swatch-dot" style="background: hsl(150, 75%, 40%);"></span>
-              <span class="palette-swatch-name">翡翠</span>
-            </button>
-            <button class="palette-swatch-item" data-hue="75" title="琥珀黄">
-              <span class="palette-swatch-dot" style="background: hsl(75, 75%, 40%);"></span>
-              <span class="palette-swatch-name">琥珀</span>
-            </button>
-            <button class="palette-swatch-item" data-hue="30" title="晚霞橙">
-              <span class="palette-swatch-dot" style="background: hsl(30, 80%, 48%);"></span>
-              <span class="palette-swatch-name">晚霞</span>
-            </button>
-            <button class="palette-swatch-item" data-hue="355" title="绯红">
-              <span class="palette-swatch-dot" style="background: hsl(355, 75%, 45%);"></span>
-              <span class="palette-swatch-name">绯红</span>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <button class="m3-icon-btn" id="theme-toggle" aria-label="切换昼夜主题">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
-      </button>
-    </div>
-  </header>
-
   <div class="drawer-backdrop" id="drawer-backdrop"></div>
 
-  <div class="layout-container">
-    <!-- Sidebar Drawer -->
-    <nav class="m3-drawer" id="m3-drawer">
+  <div class="site-shell">
+    <!-- Left Column: Full-Height Sidebar (整列导航栏) -->
+    <aside class="m3-drawer" id="m3-drawer">
+      <div class="drawer-header-brand">
+        <a href="./index.html" class="sidebar-brand">
+          <span class="site-title-icon">📚</span>
+          <span class="sidebar-brand-text">S26-1 课程知识库</span>
+        </a>
+        <button class="m3-icon-btn drawer-collapse-btn" id="drawer-collapse-btn" aria-label="收起侧边栏" title="收起侧边栏">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M15 18l-6-6 6-6"/>
+          </svg>
+        </button>
+      </div>
+
       <div class="drawer-header-toolbar">
         <span class="drawer-section-title">课程导航目录</span>
         <button class="drawer-action-btn" id="toggle-all-groups-btn" title="一键收起或展开所有课程分类">
@@ -104,7 +34,9 @@
           <span id="toggle-all-text">全部收起</span>
         </button>
       </div>
-      <ul class="drawer-nav-list"><li class="drawer-nav-item active">
+
+      <div class="drawer-nav-scroll-area">
+        <ul class="drawer-nav-list"><li class="drawer-nav-item active">
             <a href="./index.html" class="drawer-nav-link">
               <span>首页</span>
             </a>
@@ -279,20 +211,112 @@
             </div>
           </div>
         </li></ul>
-    </nav>
+      </div>
 
-    <!-- Content Area -->
-    <main class="content-wrapper">
-      <article class="article-container">
-        <!-- Breadcrumb -->
-        <nav class="m3-breadcrumb">
-          <a href="./index.html">首页</a><span class="m3-breadcrumb-sep">/</span><span>学期学习仓库总入口</span>
-        </nav>
+      <div class="sidebar-resizer" id="sidebar-resizer" title="按住拖拽调整侧边栏宽度，双击恢复默认宽度"></div>
+    </aside>
 
-        
+    <!-- Right Column: Main Content Column (主内容列) -->
+    <div class="main-column">
+      <!-- Top App Bar -->
+      <header class="m3-top-app-bar">
+        <div class="top-bar-left">
+          <button class="m3-icon-btn" id="drawer-toggle" aria-label="展开/收起侧边栏" title="展开/收起侧边栏">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+          </button>
+          <a href="./index.html" class="top-bar-mobile-title">
+            <span>S26-1 课程知识库</span>
+          </a>
+          <nav class="top-bar-breadcrumbs" aria-label="当前路径">
+            <a href="./index.html">首页</a><span class="m3-breadcrumb-sep">/</span><span class="current-crumb">学期学习仓库总入口</span>
+          </nav>
+        </div>
 
-        <div class="article-content">
-          <h1 id="学期学习仓库总入口">学期学习仓库总入口</h1><p><strong>2026 年秋季学期</strong>学习仓库，按中文课程名分类，每门课独立管理作业、教材解析、课堂笔记、原始资料与音频记录。当前<strong>工程数学</strong>已开课：教材为《工程数学基础》，第 1 章行列式、第 2 章矩阵已按小节完成「先抄录、后解析」，例题与习题均做过独立验算。</p>
+        <div class="top-bar-right">
+          <button class="m3-icon-btn" id="palette-toggle" aria-label="调色盘" title="自定义主题强调色">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/>
+              <circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/>
+              <circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/>
+              <circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/>
+              <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/>
+            </svg>
+          </button>
+
+          <!-- Palette Popover -->
+          <div class="palette-popover" id="palette-popover">
+            <div class="palette-header">
+              <span class="palette-title">主题强调色调色盘</span>
+              <button class="palette-reset-btn" id="palette-reset-btn" title="重置为默认色">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+              </button>
+            </div>
+            <div class="palette-current-row">
+              <span class="palette-hue-badge" id="palette-hue-badge">Hue 248°</span>
+              <div class="palette-color-dot" id="palette-color-dot"></div>
+            </div>
+            <div class="palette-slider-container">
+              <span class="palette-slider-label">色相微调 (0° - 360°)</span>
+              <input type="range" min="0" max="360" value="248" class="palette-slider" id="hue-slider">
+            </div>
+            <div>
+              <div class="palette-swatches-title">预设配色</div>
+              <div class="palette-swatches-grid">
+                <button class="palette-swatch-item" data-hue="315" title="经典粉紫">
+                  <span class="palette-swatch-dot" style="background: hsl(315, 75%, 45%);"></span>
+                  <span class="palette-swatch-name">粉紫</span>
+                </button>
+                <button class="palette-swatch-item" data-hue="280" title="紫罗兰">
+                  <span class="palette-swatch-dot" style="background: hsl(280, 75%, 45%);"></span>
+                  <span class="palette-swatch-name">紫罗兰</span>
+                </button>
+                <button class="palette-swatch-item active" data-hue="248" title="学术深蓝">
+                  <span class="palette-swatch-dot" style="background: hsl(248, 75%, 45%);"></span>
+                  <span class="palette-swatch-name">深蓝</span>
+                </button>
+                <button class="palette-swatch-item" data-hue="205" title="天青蓝">
+                  <span class="palette-swatch-dot" style="background: hsl(205, 75%, 45%);"></span>
+                  <span class="palette-swatch-name">天青</span>
+                </button>
+                <button class="palette-swatch-item" data-hue="150" title="翡翠绿">
+                  <span class="palette-swatch-dot" style="background: hsl(150, 75%, 40%);"></span>
+                  <span class="palette-swatch-name">翡翠</span>
+                </button>
+                <button class="palette-swatch-item" data-hue="75" title="琥珀黄">
+                  <span class="palette-swatch-dot" style="background: hsl(75, 75%, 40%);"></span>
+                  <span class="palette-swatch-name">琥珀</span>
+                </button>
+                <button class="palette-swatch-item" data-hue="30" title="晚霞橙">
+                  <span class="palette-swatch-dot" style="background: hsl(30, 80%, 48%);"></span>
+                  <span class="palette-swatch-name">晚霞</span>
+                </button>
+                <button class="palette-swatch-item" data-hue="355" title="绯红">
+                  <span class="palette-swatch-dot" style="background: hsl(355, 75%, 45%);"></span>
+                  <span class="palette-swatch-name">绯红</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <button class="m3-icon-btn" id="theme-toggle" aria-label="切换昼夜主题">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          </button>
+        </div>
+      </header>
+
+      <div class="layout-container">
+        <!-- Content Area -->
+        <main class="content-wrapper">
+          <article class="article-container">
+            <!-- Breadcrumb in page body -->
+            <nav class="m3-breadcrumb">
+              <a href="./index.html">首页</a><span class="m3-breadcrumb-sep">/</span><span>学期学习仓库总入口</span>
+            </nav>
+
+            
+
+            <div class="article-content">
+              <h1 id="学期学习仓库总入口">学期学习仓库总入口</h1><p><strong>2026 年秋季学期</strong>学习仓库，按中文课程名分类，每门课独立管理作业、教材解析、课堂笔记、原始资料与音频记录。当前<strong>工程数学</strong>已开课：教材为《工程数学基础》，第 1 章行列式、第 2 章矩阵已按小节完成「先抄录、后解析」，例题与习题均做过独立验算。</p>
 <p>下面直接列出课程内容；仓库的整理与提交规则见<a href="./%E7%BB%B4%E6%8A%A4%E6%9D%A1%E4%BE%8B.html">维护条例</a>与<a href="./%E7%BB%B4%E6%8A%A4%E7%BB%86%E5%88%99.html">维护细则</a>。</p>
 <h2 id="按课程浏览">按课程浏览</h2><h3 id="工程数学"><a href="./%E8%AF%BE%E7%A8%8B/%E5%B7%A5%E7%A8%8B%E6%95%B0%E5%AD%A6/index.html">工程数学</a></h3><h4 id="作业-0-份">作业（0 份）</h4><p>暂无已归档资料。</p>
 <h4 id="教材解析-9-份">教材解析（9 份）</h4><ul>
@@ -367,19 +391,21 @@ git config core.hooksPath .githooks</code></pre>
     </div></p>
 <p><code>--worktree</code> 只更新工作区文件，不自动暂存；推送时仍要求两处区块同步。新克隆仓库需先执行 <code>git config core.hooksPath .githooks</code> 启用钩子，再运行上述验证命令。</p>
 
-        </div>
+            </div>
 
-        
-      </article>
-    </main>
+            
+          </article>
+        </main>
 
-    <!-- Table of Contents -->
-    <aside class="m3-toc">
+        <!-- Table of Contents -->
+        <aside class="m3-toc">
       <div class="toc-title">目录</div>
       <ul class="toc-list">
         <li class="toc-item level-2"><a href="#按课程浏览">按课程浏览</a></li><li class="toc-item level-3"><a href="#工程数学">工程数学</a></li><li class="toc-item level-2"><a href="#仓库结构">仓库结构</a></li><li class="toc-item level-2"><a href="#整理与命名约定">整理与命名约定</a></li><li class="toc-item level-2"><a href="#音频资料边界">音频资料边界</a></li><li class="toc-item level-2"><a href="#新增课程与资料流程">新增课程与资料流程</a></li><li class="toc-item level-2"><a href="#提交时自动同步-readme-与维护细则">提交时自动同步 README 与维护细则</a></li>
       </ul>
     </aside>
+      </div>
+    </div>
   </div>
 
   <script src="./assets/katex/katex.min.js"></script>
