@@ -52,7 +52,9 @@ function () {
     current = link;
   }
   document.addEventListener("click", function (e) {
-    var link = e.target.closest ? e.target.closest("a.sym-gloss") : null;
+    var link = e.target.closest
+      ? e.target.closest("a.sym-gloss, .katex [data-term]")
+      : null;
     if (link) { e.preventDefault(); openFor(link); return; }
     if (pop && !pop.contains(e.target)) close();
   });
