@@ -353,7 +353,7 @@
 
             <div class="article-content" data-pagefind-body>
               <h1 id="第2章-2-5-用-matlab-进行矩阵运算-原书-p46-p51">第2章 2.5 用 MATLAB 进行矩阵运算（原书 p46–p51）</h1><blockquote>
-<p>本文件同时保存<strong>原书抄录</strong>与<strong>解析</strong>。教材的 MATLAB 命令与屏幕输出按书页原样登记；本轮<strong>没有</strong>在本机运行 MATLAB。</p>
+<p>本文件同时保存<strong>原书抄录</strong>与<strong>解析</strong>。教材的 MATLAB 命令与屏幕输出按书页原样登记；书页数值已在本机用 <strong>GNU Octave 11.3.0</strong> 复跑对照（见文末「本机复现」），差异逐条列明。</p>
 </blockquote>
 <h2 id="2-5-1-矩阵的直接输入-原书-p46">2.5.1 矩阵的直接输入（原书 p46）</h2><h3 id="原书抄录">原书抄录</h3><p>〔原书 p46〕</p>
 <p>最简单的建立矩阵的方法是从键盘直接输入矩阵元素，将矩阵元素用方括号括起来，逐行输入各元素，同一行各元素之间用空格或逗号分开，不同行元素之间用分号分隔。</p>
@@ -917,13 +917,50 @@ l0,-144c-2,-159.3,-10,-310.7,-24,-454c-53.3,-528,-210,-949.7,
 <li>判断奇异不要用 <code>det(A)==0</code>，也不要用固定阈值；一般结合奇异值、条件数或容差判据。</li>
 <li>解线性方程组用 <code>A\b</code>，不要写 <code>inv(A)*b</code>；后者既慢又不稳。</li>
 <li>例 2.23 这类题目在 MATLAB 里的正确读法是&quot;看警告、看 <code>RCOND</code>&quot;，而不是读 <code>B</code> 的具体数字。</li>
-<li>本仓库未安装 MATLAB，以上输出均按教材书页登记；若后续在本机复现，应记录 MATLAB 版本、实际警告文本与实际输出。</li>
+<li>书页输出已在本机用 GNU Octave 11.3.0 复跑对照（见文末「本机复现」）；Octave 与 MATLAB 的差异见下表。</li>
 </ul>
+<h2 id="本机复现-gnu-octave-11-3-0">本机复现（GNU Octave 11.3.0）</h2><p>复现脚本：<code>工具/教材复现/工程数学MATLAB复现.m</code>。环境：Debian sid，GNU Octave 11.3.0。</p>
+<p><strong>逐条一致（24 项）</strong>：例 2.16 的两个矩阵（含 <code>sin/cos/log/tanh</code> 先求值再入矩阵）、例 2.17 的 <code>zeros/ones/eye/magic/diag</code>、例 2.18 的和与差、例 2.19 的 <code>A*B</code> 与 <code>A*60</code>、例 2.20 的 <code>A\B</code>、例 2.21 的 <code>A/B</code>、例 2.22 的 <code>inv</code>、例 2.24 的 <code>rref</code> 与切片、例 2.25 的两个 <code>rank</code>。这些东西的值由精确算术唯一确定，跨实现一致。</p>
+<p><strong>三处不可跨实现复现</strong>（原书数值取决于发生器/算法/版本，登记时应标注）：</p>
+<div class="table-scroll-container"><table>
+<thead>
+<tr>
+<th align="left">位置</th>
+<th align="left">书页输出</th>
+<th align="left">本机实得</th>
+<th align="left">原因</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">例 2.17 <code>rand(2,3)</code></td>
+<td align="left"><code>0.8147 … / 0.9058 …</code></td>
+<td align="left">每次不同</td>
+<td align="left">取决于随机数发生器与种子；书页是 MATLAB 默认种子（Mersenne Twister）下的值，Octave 取不到</td>
+</tr>
+<tr>
+<td align="left">例 2.23 <code>RCOND</code></td>
+<td align="left"><code>2.202823e-18</code></td>
+<td align="left"><code>1.541976e-18</code></td>
+<td align="left">量级同为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>10</mn><mrow><mo>−</mo><mn>18</mn></mrow></msup></mrow><annotation encoding="application/x-tex">10^{-18}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mtight">18</span></span></span></span></span></span></span></span></span></span></span></span>，但数值取决于所用范数与算法</td>
+</tr>
+<tr>
+<td align="left">例 2.23 <code>inv</code> 量级</td>
+<td align="left"><code>1.0e+16 *</code></td>
+<td align="left"><code>1.80e+16</code></td>
+<td align="left">奇异矩阵的逆在数值上无意义，尺度任意</td>
+</tr>
+</tbody></table></div>
+<p><strong>例 2.23 的补充验证</strong>：虽然量级不可复现，但本机确认了结果的<strong>方向是对的</strong>——
+<code>inv(A)</code> 归一化后与伴随阵 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">adj</mi><mo>⁡</mo><mo stretchy="false">(</mo><mi>A</mi><mo stretchy="false">)</mo><mo>=</mo><mo stretchy="false">(</mo><mo>−</mo><mn>1</mn><mo separator="true">,</mo><mn>2</mn><mo separator="true">,</mo><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\operatorname{adj}(A)=(-1,2,-1)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop"><span class="mord mathrm">adj</span></span><span class="mopen">(</span><span class="mord mathnormal">A</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">−</span><span class="mord">1</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">2</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">−</span><span class="mord">1</span><span class="mclose">)</span></span></span></span> 的排布成正比（比值 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>:</mo><mo stretchy="false">(</mo><mo>−</mo><mn>2</mn><mo stretchy="false">)</mo><mo>:</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">1:(-2):1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">:</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">−</span><span class="mord">2</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">:</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span>）；
+本机 rcond 打印的警告与书页同义（书页是中文 MATLAB 的&quot;矩阵接近奇异值, 或者缩放错误&quot;，
+本机是英文 &quot;matrix singular to machine precision&quot;）。
+<strong>真正可复现的是&quot;它不可信&quot;这件事本身</strong>，而不是任何一个具体数字。</p>
 <h2 id="本节完成边界">本节完成边界</h2><ul>
 <li>已抄录：p46–p51 全部印刷正文，含 2.5.1–2.5.7、表 2.9、例 2.16–2.25 的命令与输出。</li>
 <li>已解析：输入语法、六个生成函数、加减乘的对应关系、左除/右除的方程含义、<code>inv</code> 与奇异警告、<code>rref</code> 求逆、<code>rank</code> 求秩，以及数值实践建议。</li>
 <li>未逐字复刻：页眉页脚；例 2.23 的警告语句在原书中因版面宽度折行，本文件按书页折行位置保留。</li>
-<li>未复现：本机未运行 MATLAB，所有输出按书页登记。</li>
+<li>已复现（Octave 11.3.0）：25 项比对中 22 项与书页一致；3 项（<code>rand</code>、例 2.23 的 <code>RCOND</code> 与逆的量级）属实现相关，不可跨环境逐字复现，已逐条标注原因。</li>
+<li>未做：未在<strong>真正的 MATLAB</strong> 上运行（本机无许可证）；书页的警告文本是中文 MATLAB 的本地化文案，本机只验证了同义性，未验证字面一致。</li>
 </ul>
 
             </div>
@@ -943,7 +980,7 @@ l0,-144c-2,-159.3,-10,-310.7,-24,-454c-53.3,-528,-210,-949.7,
         <aside class="m3-toc">
       <div class="toc-title">目录</div>
       <ul class="toc-list">
-        <li class="toc-item level-2"><a href="#2-5-1-矩阵的直接输入-原书-p46">2.5.1 矩阵的直接输入（原书 p46）</a></li><li class="toc-item level-3"><a href="#原书抄录">原书抄录</a></li><li class="toc-item level-3"><a href="#2-5-2-矩阵的函数生成法">2.5.2 矩阵的函数生成法</a></li><li class="toc-item level-3"><a href="#2-5-3-矩阵的加减运算">2.5.3 矩阵的加减运算</a></li><li class="toc-item level-3"><a href="#2-5-4-矩阵的乘法运算">2.5.4 矩阵的乘法运算</a></li><li class="toc-item level-3"><a href="#2-5-5-矩阵的除法运算">2.5.5 矩阵的除法运算</a></li><li class="toc-item level-3"><a href="#2-5-6-矩阵的逆">2.5.6 矩阵的逆</a></li><li class="toc-item level-3"><a href="#2-5-7-矩阵的秩">2.5.7 矩阵的秩</a></li><li class="toc-item level-3"><a href="#解析">解析</a></li><li class="toc-item level-2"><a href="#本节完成边界">本节完成边界</a></li>
+        <li class="toc-item level-2"><a href="#2-5-1-矩阵的直接输入-原书-p46">2.5.1 矩阵的直接输入（原书 p46）</a></li><li class="toc-item level-3"><a href="#原书抄录">原书抄录</a></li><li class="toc-item level-3"><a href="#2-5-2-矩阵的函数生成法">2.5.2 矩阵的函数生成法</a></li><li class="toc-item level-3"><a href="#2-5-3-矩阵的加减运算">2.5.3 矩阵的加减运算</a></li><li class="toc-item level-3"><a href="#2-5-4-矩阵的乘法运算">2.5.4 矩阵的乘法运算</a></li><li class="toc-item level-3"><a href="#2-5-5-矩阵的除法运算">2.5.5 矩阵的除法运算</a></li><li class="toc-item level-3"><a href="#2-5-6-矩阵的逆">2.5.6 矩阵的逆</a></li><li class="toc-item level-3"><a href="#2-5-7-矩阵的秩">2.5.7 矩阵的秩</a></li><li class="toc-item level-3"><a href="#解析">解析</a></li><li class="toc-item level-2"><a href="#本机复现-gnu-octave-11-3-0">本机复现（GNU Octave 11.3.0）</a></li><li class="toc-item level-2"><a href="#本节完成边界">本节完成边界</a></li>
       </ul>
     </aside>
       </div>
