@@ -515,7 +515,7 @@ function renderPortal(repos, degraded) {
 	<header class="hero">
 		<span class="badge">⚡ EdgeOne 国内加速路由</span>
 		<h1>开源仓库集群</h1>
-		<p>ArchivalEra 的全部公开仓库统一反代到 <code>isui.ren/repo/&lt;repo&gt;/</code>：有 GitHub Pages 的仓库走边缘镜像与强缓存，没有 Pages 的仓库自动生成本地 README 页面。</p>
+		<p>ArchivalEra 的全部公开原创仓库统一反代到 <code>isui.ren/repo/&lt;repo&gt;/</code>：有 GitHub Pages 的仓库走边缘镜像与强缓存，没有 Pages 的仓库自动生成本地 README 页面（上游 fork 不计入）。</p>
 		<div class="actions">
 			<a class="btn btn-primary" href="${BLOG_URL}">返回博客</a>
 			<a class="btn" href="${GITHUB_WEB}/${GITHUB_OWNER}" target="_blank" rel="noopener noreferrer">GitHub 主页 ↗</a>
@@ -525,7 +525,7 @@ function renderPortal(repos, degraded) {
 	<section class="grid">
 		${repos.map(renderRepoCard).join("\n")}
 	</section>
-	<footer class="footer">共 ${repos.length} 个公开仓库 · 由 EdgeOne 边缘节点提供国内加速与缓存</footer>
+	<footer class="footer">共 ${repos.length} 个公开原创仓库 · 由 EdgeOne 边缘节点提供国内加速与缓存</footer>
 </main>`;
 	return renderPage({
 		title: "开源仓库集群",
