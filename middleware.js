@@ -141,6 +141,20 @@ async function loadRepoMeta(repoName) {
 	};
 }
 
+function fallbackRepoMeta(repoName) {
+	const repo = FALLBACK_REPOS.find(
+		(candidate) => candidate.name.toLowerCase() === repoName.toLowerCase(),
+	);
+	if (!repo) return null;
+	return {
+		...repo,
+		defaultBranch: "main",
+		topics: [],
+		license: "",
+		htmlUrl: `${GITHUB_WEB}/${GITHUB_OWNER}/${repo.name}`,
+	};
+}
+
 async function loadRepoReadme(repoName, branch) {
 	for (const file of ["README.md", "README.en.md", "readme.md"]) {
 		const response = await fetchWithTimeout(
@@ -807,7 +821,8 @@ export async function middleware(context) {
 				const isRepoRootRequest =
 					!cleanRest || cleanRest === "index.html" || cleanRest === "";
 				if (upstreamResp.status === 404 && wantsHtml && isRepoRootRequest) {
-					const meta = await loadRepoMeta(repoName);
+					const meta =
+						(await loadRepoMeta(repoName)) || fallbackRepoMeta(repoName);
 					if (!meta) {
 						return new Response(renderRepoNotFound(repoName), {
 							status: 404,
@@ -860,7 +875,8 @@ export async function middleware(context) {
 				});
 			} catch (error) {
 				if (wantsHtml) {
-					const meta = await loadRepoMeta(repoName);
+					const meta =
+						(await loadRepoMeta(repoName)) || fallbackRepoMeta(repoName);
 					if (meta) {
 						const readme = await loadRepoReadme(repoName, meta.defaultBranch);
 						return new Response(

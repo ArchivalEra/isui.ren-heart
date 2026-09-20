@@ -19,5 +19,6 @@
 
 | 日期 | 类型 | 影响文件 | 变更要点 | 维护人 |
 | :--- | :--- | :--- | :--- | :--- |
+| 2026-09-20 | `fix` | `middleware.js` | 门户与 README 落地页在 GitHub API 不可达时改用内置仓库清单兜底，避免降级成 404 | ArchivalEra |
 | 2026-09-20 | `feat` | `middleware.js` | `/repo/` 从 302 跳转升级为 GitHub API 驱动的全仓库门户；无 Pages 的公开仓库回退渲染 README 落地页；新增路径级 404、仓库名校验与 API 降级清单 | ArchivalEra |
 | 2026-09-20 | `docs` | `middleware.js` | 门户文案明确「公开原创仓库（不含 fork）」 | ArchivalEra |
