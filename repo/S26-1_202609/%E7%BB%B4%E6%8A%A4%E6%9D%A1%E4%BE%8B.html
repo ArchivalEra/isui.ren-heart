@@ -553,7 +553,7 @@
 <h2 id="1-仓库定位与读者">1. 仓库定位与读者</h2><ul>
 <li>本仓库是给人看的学期学习仓库，不是纯机器格式库。OKF（v0.2）元数据只作轻量结构约束，不牺牲可读性；标题、正文、索引一律中文优先。</li>
 <li>仓库代表<strong>当前学期</strong>，以中文课程名为主分类；每门课默认建五类子目录：作业、教材解析、课堂笔记、原始资料、音频。课程数量可任意增加，规则不随之改写。<strong>确无某一类内容的课程可声明豁免</strong>（如形势与政策没有可整理的教材正文，不设教材解析）：豁免登记在 <code>.githooks/hook_lib.py</code> 的 <code>COURSE_SKIPPED_KINDS</code>，豁免后该课不建该类目录、课程入口也不必链接它；一旦该课又出现该类资料，仍须照常建目录与索引。</li>
-<li>操作规程见<a href="./%E7%BB%B4%E6%8A%A4%E7%BB%86%E5%88%99.html">维护细则</a>（含随每次提交自动重算的仓库状态区块）；给 AI 助手用的执行流程见 <a href="./.agents/skills/repo-maintenance/SKILL.html"><code>.agents/skills/repo-maintenance/SKILL.md</code></a>。</li>
+<li>操作规程见<a href="./%E7%BB%B4%E6%8A%A4%E7%BB%86%E5%88%99.html">维护细则</a>（含随每次提交自动重算的仓库状态区块）；给 AI 助手用的执行流程见 <a href="./.agents/skills/repo-maintenance/SKILL.html"><code>.agents/skills/repo-maintenance/SKILL.md</code></a>，常驻路由与硬约束见 <a href="./AGENTS.html"><code>AGENTS.md</code></a>（skill 正文不会自动加载，须按该表主动调用）。</li>
 </ul>
 <h2 id="2-真实性与溯源-最高优先级">2. 真实性与溯源（最高优先级）</h2><ol>
 <li><strong>不猜补</strong>：教材题面、数值、下标、口误、缺失板书一律不猜；看不清就标注&quot;待核对&quot;并写明照片来源，后续重读修正。</li>
