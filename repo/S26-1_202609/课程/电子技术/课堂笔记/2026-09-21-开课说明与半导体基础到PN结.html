@@ -1,0 +1,1321 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-depth="3">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>电子技术 2026-09-21：开课说明与半导体基础到 PN 结 | S26-1 课程知识库 - isui.ren</title>
+  <script>
+  /* 首帧前应用已保存的主题色与明暗，避免先用默认色渲染再变色（闪光弹 + 二次全量重绘） */
+  (function () {
+    try {
+      var root = document.documentElement;
+      var m = localStorage.getItem("theme") ||
+        (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      root.setAttribute("data-theme", m === "dark" ? "dark" : "light");
+      var hue = localStorage.getItem("theme-hue");
+      if (hue !== null && /^\d+$/.test(hue)) {
+        root.style.setProperty("--hue", hue);
+        root.style.setProperty("--primary-h", hue);
+      }
+    } catch (e) { /* 隐私模式下 localStorage 可能抛错，忽略 */ }
+  })();
+  </script>
+  <link rel="stylesheet" href="../../../assets/katex/katex.min.css">
+  <link rel="stylesheet" href="../../../assets/theme/shirone-reader.css">
+  <link rel="stylesheet" href="../../../assets/plugins/site-search.css">
+</head>
+<body>
+  <div class="drawer-backdrop" id="drawer-backdrop"></div>
+
+  <div class="site-shell">
+    <!-- Left Column: Full-Height Sidebar (整列导航栏) -->
+    <aside class="m3-drawer" id="m3-drawer">
+      <div class="drawer-header-brand">
+        <a href="../../../index.html" class="sidebar-brand">
+          <span class="site-title-icon">📚</span>
+          <span class="sidebar-brand-text">S26-1 课程知识库</span>
+        </a>
+        <button class="m3-icon-btn drawer-collapse-btn" id="drawer-collapse-btn" aria-label="收起侧边栏" title="收起侧边栏">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M15 18l-6-6 6-6"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="drawer-header-toolbar">
+        <span class="drawer-section-title">课程导航目录</span>
+        <button class="drawer-action-btn" id="toggle-all-groups-btn" title="一键收起或展开所有课程分类">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M7 15l5 5 5-5M7 9l5-5 5 5"/>
+          </svg>
+          <span id="toggle-all-text">全部收起</span>
+        </button>
+      </div>
+
+      <div class="drawer-nav-scroll-area">
+        <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../index.html" class="drawer-nav-link">
+              <span>首页</span>
+            </a>
+          </li><li class="drawer-nav-group expanded">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/index.html" class="drawer-nav-link ">
+                <span>课程总览</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 课程总览" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/工程数学/index.html" class="drawer-nav-link ">
+                <span>工程数学</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 工程数学" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/工程数学/教材解析/index.html" class="drawer-nav-link ">
+                <span>教材解析</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 教材解析" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/教材解析/0.0-符号入门.html" class="drawer-nav-link">
+              <span>符号入门</span>
+            </a>
+          </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/index.html" class="drawer-nav-link ">
+                <span>第一部分 线性代数</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 第一部分 线性代数" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header nav-header-clickable">
+            
+              <span class="drawer-section-title-text">第01章 行列式</span>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 第01章 行列式" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.0-本章通关攻略.html" class="drawer-nav-link">
+              <span>★ 通关攻略</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.1-二阶与三阶行列式.html" class="drawer-nav-link">
+              <span>1.1 二阶与三阶行列式</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.2-n阶行列式.html" class="drawer-nav-link">
+              <span>1.2 n阶行列式</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.3-克莱姆法则.html" class="drawer-nav-link">
+              <span>1.3 克莱姆法则</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.4-用MATLAB计算行列式.html" class="drawer-nav-link">
+              <span>1.4 用MATLAB计算行列式</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header nav-header-clickable">
+            
+              <span class="drawer-section-title-text">第02章 矩阵</span>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 第02章 矩阵" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.0-本章通关攻略.html" class="drawer-nav-link">
+              <span>★ 通关攻略</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.1-矩阵的概念及运算.html" class="drawer-nav-link">
+              <span>2.1 矩阵的概念及运算</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.2-逆矩阵.html" class="drawer-nav-link">
+              <span>2.2 逆矩阵</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.3-矩阵的初等变换与初等矩阵.html" class="drawer-nav-link">
+              <span>2.3 初等变换与初等矩阵</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.4-矩阵的秩.html" class="drawer-nav-link">
+              <span>2.4 矩阵的秩</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.5-用MATLAB进行矩阵运算.html" class="drawer-nav-link">
+              <span>2.5 用MATLAB进行矩阵运算</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li></ul>
+            </div>
+          </div>
+        </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/工程数学/课堂笔记/index.html" class="drawer-nav-link ">
+                <span>课堂笔记</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 课堂笔记" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/课堂笔记/2026-09-17-determinants-order-2-3.html" class="drawer-nav-link">
+              <span>09-17 行列式与沙路法则</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/课堂笔记/2026-09-17-determinants-transcript-notes.html" class="drawer-nav-link">
+              <span>09-17 课堂听课整理</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/工程数学/作业/index.html" class="drawer-nav-link ">
+                <span>作业</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 作业" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/作业/2026-09-17-作业1.html" class="drawer-nav-link">
+              <span>作业1</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/原始资料/index.html" class="drawer-nav-link">
+              <span>原始资料</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/音频/index.html" class="drawer-nav-link">
+              <span>音频</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/大电网安全稳定智能分析与控制/index.html" class="drawer-nav-link ">
+                <span>大电网安全稳定智能分析与控制</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 大电网安全稳定智能分析与控制" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/大电网安全稳定智能分析与控制/作业/index.html" class="drawer-nav-link">
+              <span>作业</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/大电网安全稳定智能分析与控制/教材解析/index.html" class="drawer-nav-link">
+              <span>教材解析</span>
+            </a>
+          </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/大电网安全稳定智能分析与控制/课堂笔记/index.html" class="drawer-nav-link ">
+                <span>课堂笔记</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 课堂笔记" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/大电网安全稳定智能分析与控制/课堂笔记/2026-09-20-课程定位与考核要求.html" class="drawer-nav-link">
+              <span>09-20 开课第一讲</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-item ">
+            <a href="../../../课程/大电网安全稳定智能分析与控制/原始资料/index.html" class="drawer-nav-link">
+              <span>原始资料</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/大电网安全稳定智能分析与控制/音频/index.html" class="drawer-nav-link">
+              <span>音频</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/形势与政策/index.html" class="drawer-nav-link ">
+                <span>形势与政策</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 形势与政策" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/形势与政策/作业/index.html" class="drawer-nav-link">
+              <span>作业</span>
+            </a>
+          </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/形势与政策/课堂笔记/index.html" class="drawer-nav-link ">
+                <span>课堂笔记</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 课堂笔记" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/形势与政策/课堂笔记/2026-09-21-经济热点专题与考试安排.html" class="drawer-nav-link">
+              <span>09-21 经济热点专题与考试安排</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-item ">
+            <a href="../../../课程/形势与政策/原始资料/index.html" class="drawer-nav-link">
+              <span>原始资料</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/形势与政策/音频/index.html" class="drawer-nav-link">
+              <span>音频</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/电路原理/index.html" class="drawer-nav-link ">
+                <span>电路原理</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 电路原理" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/电路原理/作业/index.html" class="drawer-nav-link">
+              <span>作业</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电路原理/教材解析/index.html" class="drawer-nav-link">
+              <span>教材解析</span>
+            </a>
+          </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/电路原理/课堂笔记/index.html" class="drawer-nav-link ">
+                <span>课堂笔记</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 课堂笔记" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/电路原理/课堂笔记/2026-09-21-开课说明与电路的基本概念.html" class="drawer-nav-link">
+              <span>09-21 开课说明与电路的基本概念</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电路原理/原始资料/index.html" class="drawer-nav-link">
+              <span>原始资料</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电路原理/音频/index.html" class="drawer-nav-link">
+              <span>音频</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group expanded">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/电子技术/index.html" class="drawer-nav-link ">
+                <span>电子技术</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 电子技术" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/电子技术/作业/index.html" class="drawer-nav-link">
+              <span>作业</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电子技术/教材解析/index.html" class="drawer-nav-link">
+              <span>教材解析</span>
+            </a>
+          </li><li class="drawer-nav-group expanded">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/电子技术/课堂笔记/index.html" class="drawer-nav-link ">
+                <span>课堂笔记</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 课堂笔记" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item active">
+            <a href="../../../课程/电子技术/课堂笔记/2026-09-21-开课说明与半导体基础到PN结.html" class="drawer-nav-link">
+              <span>09-21 开课说明与半导体基础到 PN 结</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电子技术/原始资料/index.html" class="drawer-nav-link">
+              <span>原始资料</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电子技术/音频/index.html" class="drawer-nav-link">
+              <span>音频</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header nav-header-clickable">
+            
+              <span class="drawer-section-title-text">仓库规约</span>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 仓库规约" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../维护条例.html" class="drawer-nav-link">
+              <span>维护条例</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../维护细则.html" class="drawer-nav-link">
+              <span>维护细则</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li></ul>
+      </div>
+
+      <div class="sidebar-resizer" id="sidebar-resizer" title="按住拖拽调整侧边栏宽度，双击恢复默认宽度"></div>
+    </aside>
+
+    <!-- Right Column: Main Content Column (主内容列) -->
+    <div class="main-column">
+      <!-- Top App Bar -->
+      <header class="m3-top-app-bar">
+        <div class="top-bar-left">
+          <button class="m3-icon-btn" id="drawer-toggle" aria-label="展开/收起侧边栏" title="展开/收起侧边栏">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+          </button>
+          <a href="../../../index.html" class="top-bar-mobile-title">
+            <span>S26-1 课程知识库</span>
+          </a>
+          <nav class="top-bar-breadcrumbs" aria-label="当前路径">
+            <a href="../../../index.html">首页</a><span class="m3-breadcrumb-sep">/</span><span class="current-crumb">电子技术 2026-09-21：开课说明与半导体基础到 PN 结</span>
+          </nav>
+        </div>
+
+        <div class="top-bar-right">
+          <button class="m3-icon-btn" id="palette-toggle" aria-label="调色盘" title="自定义主题强调色">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/>
+              <circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/>
+              <circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/>
+              <circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/>
+              <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/>
+            </svg>
+          </button>
+
+          <!-- Palette Popover -->
+          <div class="palette-popover" id="palette-popover">
+            <div class="palette-header">
+              <span class="palette-title">主题强调色调色盘</span>
+              <button class="palette-reset-btn" id="palette-reset-btn" title="重置为默认色">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+              </button>
+            </div>
+            <div class="palette-current-row">
+              <span class="palette-hue-badge" id="palette-hue-badge">Hue 248°</span>
+              <div class="palette-color-dot" id="palette-color-dot"></div>
+            </div>
+            <div class="palette-slider-container">
+              <span class="palette-slider-label">色相微调 (0° - 360°)</span>
+              <input type="range" min="0" max="360" value="248" class="palette-slider" id="hue-slider">
+            </div>
+            <div>
+              <div class="palette-swatches-title">预设配色</div>
+              <div class="palette-swatches-grid">
+                <button class="palette-swatch-item" data-hue="315" title="经典粉紫">
+                  <span class="palette-swatch-dot" style="background: hsl(315, 75%, 45%);"></span>
+                  <span class="palette-swatch-name">粉紫</span>
+                </button>
+                <button class="palette-swatch-item" data-hue="280" title="紫罗兰">
+                  <span class="palette-swatch-dot" style="background: hsl(280, 75%, 45%);"></span>
+                  <span class="palette-swatch-name">紫罗兰</span>
+                </button>
+                <button class="palette-swatch-item active" data-hue="248" title="学术深蓝">
+                  <span class="palette-swatch-dot" style="background: hsl(248, 75%, 45%);"></span>
+                  <span class="palette-swatch-name">深蓝</span>
+                </button>
+                <button class="palette-swatch-item" data-hue="205" title="天青蓝">
+                  <span class="palette-swatch-dot" style="background: hsl(205, 75%, 45%);"></span>
+                  <span class="palette-swatch-name">天青</span>
+                </button>
+                <button class="palette-swatch-item" data-hue="150" title="翡翠绿">
+                  <span class="palette-swatch-dot" style="background: hsl(150, 75%, 40%);"></span>
+                  <span class="palette-swatch-name">翡翠</span>
+                </button>
+                <button class="palette-swatch-item" data-hue="75" title="琥珀黄">
+                  <span class="palette-swatch-dot" style="background: hsl(75, 75%, 40%);"></span>
+                  <span class="palette-swatch-name">琥珀</span>
+                </button>
+                <button class="palette-swatch-item" data-hue="30" title="晚霞橙">
+                  <span class="palette-swatch-dot" style="background: hsl(30, 80%, 48%);"></span>
+                  <span class="palette-swatch-name">晚霞</span>
+                </button>
+                <button class="palette-swatch-item" data-hue="355" title="绯红">
+                  <span class="palette-swatch-dot" style="background: hsl(355, 75%, 45%);"></span>
+                  <span class="palette-swatch-name">绯红</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <button class="m3-icon-btn" id="search-toggle" aria-label="全站搜索" title="全站搜索">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+          </button>
+
+          <button class="m3-icon-btn" id="theme-toggle" aria-label="切换昼夜主题">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          </button>
+        </div>
+      </header>
+
+      <!-- 全站搜索面板（点击顶栏放大镜展开；ESC 或点外部关闭） -->
+      <div class="search-panel" id="search-panel" hidden>
+        <div class="search-panel-inner" role="dialog" aria-modal="true" aria-label="全站搜索">
+          <div class="search-panel-head">
+            <svg class="search-panel-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+            <input type="search" id="search-input" class="search-panel-input" placeholder="搜索知识点、例题、习题…" autocomplete="off" spellcheck="false">
+            <button class="m3-icon-btn" id="search-close" aria-label="关闭搜索" title="关闭（ESC）">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
+          </div>
+          <div class="search-panel-body" id="search-results">
+            <p class="search-hint">输入关键词开始搜索。中文按字面子串匹配——搜「沙路法则」只出真正连着出现这四个字的地方；结果按相关度排序，回车打开第一条。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="layout-container">
+        <!-- Content Area -->
+        <main class="content-wrapper">
+          <article class="article-container">
+            <!-- Breadcrumb in page body -->
+            <nav class="m3-breadcrumb">
+              <a href="../../../index.html">首页</a><span class="m3-breadcrumb-sep">/</span><span>电子技术 2026-09-21：开课说明与半导体基础到 PN 结</span>
+            </nav>
+
+            <div class="meta-chip-bar"><span class="meta-chip primary">📚 电子技术</span><span class="meta-chip">🏷️ 课堂笔记</span><span class="meta-chip">⚡ 状态: active</span><span class="meta-chip">📅 更新: 2026-09-21</span><span class="meta-chip">📖 来源: 原始资料/20260921_18001930-原文.doc</span></div>
+
+            <div class="article-content">
+              <h1 id="电子技术-2026-09-21-开课说明与半导体基础到-pn-结">电子技术 2026-09-21：开课说明与半导体基础到 PN 结</h1><h2 id="1-来源与使用边界">1. 来源与使用边界</h2><ul>
+<li><strong>课程</strong>：电子技术（模电与数电合一的专业基础课）。<strong>日期</strong>：2026-09-21（星期一）。<strong>上课时段</strong>：文件名标注录音时段 <strong>18:00–19:30</strong>（晚间课）；<strong>课次</strong>：本课程第一次课；课次编号待正式通知确认。</li>
+<li><strong>原始来源</strong>：<span class="res-degrade-badge">📄 原件: 20260921_18001930-原文.doc (原件不入库，网页不提供)</span>（<code>f3fdf482…73ddc3b</code>），相对时间 <code>00:00–1:24:43</code>。</li>
+<li><strong>实际格式</strong>：扩展名 <code>.doc</code>，内容实为 UTF-8 HTML 文本，本地去标签提取，未经在线转换。</li>
+<li><strong>录音与文件名的关系</strong>：文件名后 8 位 <code>18001930</code> 即 18:00–19:30，录音长 <code>1:24:43</code>，与标注时段吻合（前 11 分钟是开课前的工具说明）。文件内页另标 <code>18:02:21</code>，那是转写服务自己的时间，<strong>不是上课时间</strong>。</li>
+<li><strong>没有说话人分离</strong>：全篇是连续文本加相对时间戳，师生问答只能按语义区分。<code>1:17:05</code> 教师已说「今天的课我们就完全上到这里了」，其后到 <code>1:22:24</code> 是答疑与工具说明，<code>1:22:24</code> 之后是课后闲聊。</li>
+</ul>
+<blockquote>
+<p><strong>可信度说明</strong>：原文是课堂口语转写，同音误识别密集（半导体术语尤甚，如「本征半导体」被转成「本身半导体」）。
+<strong>考核类信息</strong>（学时、成绩构成、实验与作业规则）在课堂上成段讲述、前后一致，可靠度较高，但个别数字残缺或自相矛盾，已逐条进第 11 节；
+<strong>教学正文只写教师确实讲过且语义完整的内容</strong>，缺口列在第 10 节；<strong>实验时间地点、作业题号、教材书名一律不猜</strong>。
+<strong>学生姓名、教师姓名、课后闲聊一律不复录</strong>（任课教师情况登记在<a href="../index.html">课程索引</a>）。</p>
+</blockquote>
+<h3 id="时间导览-相对时间-便于回查原文">时间导览（相对时间，便于回查原文）</h3><div class="table-scroll-container"><table>
+<thead>
+<tr>
+<th align="left">时间段</th>
+<th align="left">内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">00:00–04:57</td>
+<td align="left">开课前：课程 AI 智能体（知识库 = 课本 + 上课 PPT）、PPT 与知识点在学习通、作业与 AI 使用边界</td>
+</tr>
+<tr>
+<td align="left">04:57–05:40</td>
+<td align="left">教师自我介绍与课程定位</td>
+</tr>
+<tr>
+<td align="left">05:40–11:54</td>
+<td align="left"><strong>学时与成绩</strong>：52 理论 + 12 实验、过程性 50% + 终结性 50%、学习表现 100 分拆解、六个实验与验收排名</td>
+</tr>
+<tr>
+<td align="left">12:06–24:26</td>
+<td align="left"><strong>什么是电子技术</strong>：定义、两大分支、模拟与数字、四种处理方式、应用领域、基本单元</td>
+</tr>
+<tr>
+<td align="left">24:56–33:25</td>
+<td align="left">集成芯片与产业：特征尺寸、光刻机、代工厂、学习意义；教材性质与考研扩展</td>
+</tr>
+<tr>
+<td align="left">33:25–35:49</td>
+<td align="left">第一章的地位、学习顺序与重点</td>
+</tr>
+<tr>
+<td align="left">35:49–47:28</td>
+<td align="left"><strong>本征半导体</strong>：定义、四价元素、共价键、本征激发、自由电子与空穴、热敏性与光敏性</td>
+</tr>
+<tr>
+<td align="left">47:28–51:06</td>
+<td align="left">外电场下两种载流子的运动；电流方向的规定与参考方向</td>
+</tr>
+<tr>
+<td align="left">51:06–56:46</td>
+<td align="left"><strong>掺杂性</strong>、P 型与 N 型半导体</td>
+</tr>
+<tr>
+<td align="left">56:46–1:01:01</td>
+<td align="left"><strong>载流子、多子与少子</strong>（P 型 / N 型对照）</td>
+</tr>
+<tr>
+<td align="left">1:01:01–1:09:20</td>
+<td align="left"><strong>PN 结的形成</strong>：扩散、复合、内电场、漂移、动态平衡、空间电荷区</td>
+</tr>
+<tr>
+<td align="left">1:09:20–1:17:05</td>
+<td align="left"><strong>PN 结的单向导电性</strong>：正向偏置、反向偏置、应用意义</td>
+</tr>
+<tr>
+<td align="left">1:17:05–1:22:24</td>
+<td align="left">课后答疑：章节任务与测试、仿真软件下载、AI 小助手、平时成绩与知识图谱</td>
+</tr>
+<tr>
+<td align="left">1:22:24 起</td>
+<td align="left">课后闲聊，不入笔记</td>
+</tr>
+</tbody></table></div>
+<h2 id="2-考核与课堂管理-教师当堂口头说明-以学院正式文件为准">2. 考核与课堂管理（教师当堂口头说明，以学院正式文件为准）</h2><p>这一节是本篇最实用的部分：本课成绩一半来自过程，而过程的规则相当具体。</p>
+<h3 id="2-1-学时与成绩构成">2.1 学时与成绩构成</h3><ul>
+<li><strong>学时</strong>：<strong>52 学时理论</strong>，集中在本教室上课；另有 <strong>12 学时实验</strong>，到实验室完成。教师说实验共 <strong>6 个</strong>。</li>
+<li><strong>成绩</strong>：<strong>过程性评价 50%</strong> + <strong>终结性评价 50%</strong>（教师说终结性就是「传统意义上的期末考试」，<strong>闭卷</strong>）。</li>
+</ul>
+<h3 id="2-2-过程性评价之一-学习表现-按-100-分记">2.2 过程性评价之一：学习表现（按 100 分记）</h3><p>教师把这一块按百分制拆开讲：</p>
+<div class="table-scroll-container"><table>
+<thead>
+<tr>
+<th align="left">项目</th>
+<th align="left">教师给出的口径</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">平时作业</td>
+<td align="left"><strong>50 分</strong></td>
+<td align="left">每次布置的作业<strong>按时完成且能做对</strong>即可拿到</td>
+</tr>
+<tr>
+<td align="left">出勤</td>
+<td align="left">全勤 → <strong>折 30 分</strong></td>
+<td align="left">教师原话：每次课都来、每次签到都到，出勤率 100%，「这个 60%……折合到大的那个来说，学习表现这 100 分里头你就可以拿到 30 分」</td>
+</tr>
+<tr>
+<td align="left">课堂表现</td>
+<td align="left"><strong>教师未给出明确分值</strong></td>
+<td align="left">课堂随机提问、或由 AI 助教随机出题点名回答，<strong>答对记录加分</strong></td>
+</tr>
+</tbody></table></div>
+<blockquote>
+<p><strong>不要替教师补数字</strong>：出勤那 60% 与 30 分的对应关系是从原话直接得到的；余下部分教师<strong>没有说明</strong>（见第 11 节）。这一块的完整口径以学院正式考核文件为准。</p>
+</blockquote>
+<h3 id="2-3-过程性评价之二-实验-6-个">2.3 过程性评价之二：实验（6 个）</h3><ul>
+<li><strong>两块成绩</strong>：<strong>实验操作过程</strong>与<strong>实验报告</strong>。教师明确说报告占 <strong>40%</strong>（原话「剩下的这个百分之 40 就是你的实验报告的那个成绩」），并说「两部分都很重要」。</li>
+<li><strong>操作分怎么给：按验收排名递减</strong>（这是本课最需要注意的一条）：<ul>
+<li>每组做完实验，教师<strong>验收</strong>；<strong>完成得又快又好、最快被验收通过的排在前面，分数最高</strong>——「最快被我验收通过的，肯定是满分」；</li>
+<li>依次递减，「第二名的酌情扣个两分」，<strong>最后一名验收通过的分数最低</strong>。</li>
+<li>因此教师的建议是：<strong>每次做实验前先认真看实验指导书</strong>，先弄清要做哪些内容，做的时候「又快又准」。</li>
+</ul>
+</li>
+<li><strong>教师对实验难度的说法</strong>：「这几个实验其实都不难，还是比较简单的」。</li>
+<li><strong>时间与材料</strong>：实验的时间、地点、内容，教师与实验室老师沟通后<strong>提前通知</strong>；会有<strong>详细的实验指导书和实验报告模板</strong>发下来（这些都<strong>尚未提供</strong>，见第 10 节）。</li>
+</ul>
+<h3 id="2-4-作业">2.4 作业</h3><ul>
+<li><strong>发布渠道</strong>：<strong>学习通</strong>。教师说「每节课上完」，<strong>第一节课可能没有作业，第二节上完以后就会布置作业</strong>。</li>
+<li><strong>题型性质决定要准备作业本</strong>：本课作业「会有很多那种计算的」，还有<strong>写分析的、写设计内容的、画表的、画图的、画波形图的</strong>。教师原话是要「弄一个作业本」。</li>
+<li><strong>提交方式</strong>：作业本写完后<strong>自己拍照，直接上传到学习通</strong>（不收纸质本）。</li>
+<li><strong>答案对照</strong>：教师说如果提交后能看到标准答案，希望同学<strong>自己对照分析</strong>做出来的答案与参考答案「出入在哪里」。</li>
+</ul>
+<h3 id="2-5-工具与-ai-教师鼓励用-但划了边界">2.5 工具与 AI（教师鼓励用，但划了边界）</h3><ul>
+<li><strong>学习通</strong>：所有 <strong>PPT 都在「章节内容」里</strong>，并配了知识点，想提前学的同学可以顺着知识点自学；各章有<strong>章节任务与测试</strong>，教师明确说<strong>这些任务与测试也算平时成绩里的课堂表现</strong>（「相当于课堂表现的一个小环节」），所以<strong>不一定会专门点名</strong>。第一章第一讲之后就有一次测试任务，用来复习巩固概念。</li>
+<li><strong>知识图谱</strong>：学习通里有本课的知识图谱，复习时点某个知识点会<strong>直接跳到对应的那一页 PPT</strong>。</li>
+<li><strong>课程 AI 智能体</strong>：教师暑假自建的智能体，把<strong>课本与上课 PPT 全放进知识库</strong>，与课程里的「AI 助教」同类。教师强调它与豆包、元宝这类通用智能体不同——后者「从网上去大范围地搜」，<strong>答案靠不靠谱不知道</strong>；本课智能体<strong>框定在课程知识范围内</strong>回答。另外还有一个「电子技术小助手」AI 平台，可对话、让 AI 出题检验或解释知识点。</li>
+<li><strong>仿真软件</strong>：教师在学习通（提到也放了百度网盘链接）提供了<strong>电路仿真软件</strong>，后面做<strong>仿真实验</strong>要用，让同学先下载、先熟悉界面；下载不了就找教师重新分享。</li>
+<li><strong>教师划的边界</strong>：原话是「现在是 AI 时代，可以尝试一下这个 AI 来辅助我们学习，<strong>那当然做作业还得要自己做</strong>」。</li>
+</ul>
+<h2 id="3-课程地图">3. 课程地图</h2><ul>
+<li><strong>第一章的地位</strong>：教师说第一章是「最最基础的也是最重要的」一章，是<strong>后面几章的知识铺垫</strong>。</li>
+<li><strong>第一章的学习顺序</strong>（由浅入深）：<strong>半导体基础知识 → 半导体器件</strong>——二极管 → <strong>特殊二极管</strong> → 晶体管 → 场效应管 → 光电类器件。</li>
+<li><strong>第一章的重点</strong>（教师逐条点出）：<ol>
+<li><strong>PN 结的工作原理与单向导电性</strong>；</li>
+<li>三极管的<strong>电流分配</strong>与<strong>电流放大作用</strong>（教师先说「电流分配」，随即补一句「这里少了一个电」，把「放大作用」补全）；</li>
+<li>二极管、稳压管、三极管、场效应管的<strong>构造、工作原理、特性曲线</strong>，以及<strong>主要参数的意义</strong>；</li>
+<li>学会分析<strong>含有二极管的电路</strong>。</li>
+</ol>
+</li>
+<li><strong>教材的性质与局限</strong>：教师说本课教材把<strong>模拟电子技术</strong>与<strong>数字电子技术</strong>两门课<strong>合成一门</strong>，「讲的课时也有限，水平能力也有限，不可能方方面面都讲得很深」。<strong>打算考研考电子方向的同学</strong>，要另外找经典教材、慕课与在线平台，也可以看 B 站等平台的课程视频。</li>
+<li><strong>与<a href="../../%E7%94%B5%E8%B7%AF%E5%8E%9F%E7%90%86/index.html">《电路原理》</a>的关系</strong>：教师知道两门课<strong>同步开设</strong>，并说这堂课讲到需要时会「把电路的一些知识穿插一点进来」，尽量让还没学过电路的同学听得懂。</li>
+</ul>
+<h2 id="4-什么是电子技术">4. 什么是电子技术</h2><h3 id="4-1-定义与四个要素">4.1 定义与四个要素</h3><p>教师说明这个定义是从百度百科提取的（<strong>属引用，非教师自拟</strong>）：电子技术是<strong>根据电子学的原理，运用电子元器件来设计和制造具有某种特定功能的电路，以解决实际问题</strong>的一门课题。把关键词串起来就是它的内涵：</p>
+<div class="table-scroll-container"><table>
+<thead>
+<tr>
+<th align="left">要素</th>
+<th align="left">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">电子学的原理</td>
+<td align="left">依据是什么</td>
+</tr>
+<tr>
+<td align="left">电子元器件</td>
+<td align="left">用什么搭</td>
+</tr>
+<tr>
+<td align="left">某种特定功能的电路</td>
+<td align="left">做出什么</td>
+</tr>
+<tr>
+<td align="left">解决实际问题</td>
+<td align="left">为了什么</td>
+</tr>
+</tbody></table></div>
+<h3 id="4-2-两大分支">4.2 两大分支</h3><ul>
+<li><strong>信息电子技术</strong>：典型应用是<strong>手机</strong>（教师课上提问，学生答「手机」，教师确认这是信息电子技术的典型应用）。它再往下分两支：<ul>
+<li><strong>模拟电子技术</strong>：处理<strong>模拟信号</strong>，即<strong>连续变化</strong>的信号——电路中的信号绝大多数以<strong>电压和电流</strong>的波形形式出现，处理这类连续信号的电子电路叫模拟电子电路。</li>
+<li><strong>数字电子技术</strong>：处理<strong>数字信号</strong>，即<strong>只有高低电平两种状态</strong>的信号。教师举例说低电平例如 <strong>0.7 V 以下</strong>（同一段又说「或者说 0.3 V 以下」，两个数字都记，见第 11 节），对应计算机里表示开关状态的 <strong>0 和 1</strong>；计算机、手机内部用的这些 0/1 信息就属于数字电子技术。</li>
+</ul>
+</li>
+<li><strong>电力电子技术</strong>：处理<strong>电能形式转换</strong>。教师从电能的传输形式讲起：<ul>
+<li>电能传输有<strong>交流电</strong>与<strong>直流电</strong>两种形式；<strong>大多数输电线路传的是交流电</strong>，只有<strong>特高压直流输电</strong>这类<strong>极个别</strong>线路是直流。</li>
+<li>而<strong>手机用的是直流电</strong>（电池）。要把输电线上的交流电变成电子设备要用的直流电，就要用<strong>电力电子技术</strong>——用电力电子元器件组成具有相应功能的电路，<strong>把交流电变成直流电、把直流电变成交流电</strong>。</li>
+</ul>
+</li>
+</ul>
+<p><strong>一句话总结</strong>（教师原话意思）：电子技术主要是<strong>对电子信号进行处理</strong>的技术，学的是怎么运用电子学原理来处理这些电子信号。</p>
+<h3 id="4-3-四种主要的处理方式">4.3 四种主要的处理方式</h3><div class="table-scroll-container"><table>
+<thead>
+<tr>
+<th align="left">处理方式</th>
+<th align="left">教师讲的道理与例子</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>信号的产生（发生）</strong></td>
+<td align="left">要先有信号。打电话拨号后要先产生一个信号去呼叫（发到转接中心）；这个信号在手机内部刚产生时<strong>很微弱</strong></td>
+</tr>
+<tr>
+<td align="left"><strong>放大</strong></td>
+<td align="left">信号在传输中会<strong>衰减</strong>，要传得够远、够久就得放大，才能被设备接收。在电力电子领域，放大相当于<strong>升压或增大电流</strong>（增大驱动）；在信息电子里是<strong>增强信号能量</strong></td>
+</tr>
+<tr>
+<td align="left"><strong>滤波</strong></td>
+<td align="left">接收端收到的信号里含很多<strong>杂波</strong>，要滤出所需信息。电力电子里把交流变直流的环节也要滤波，作用是把原来<strong>抖动的信号变平稳</strong></td>
+</tr>
+<tr>
+<td align="left"><strong>转换</strong></td>
+<td align="left">模拟信号与数字信号在很多场合要互相转换。例：用麦克风讲话产生的是<strong>连续变化的模拟信号</strong>，计算机要用它就得做<strong>模数转换</strong>，转成数字信号后先存内存、再存到存储器；播放时从存储读出数据，通过<strong>扬声器</strong>——扬声器就是让一层膜随不同电流不停震动，震动产生连续的声音</td>
+</tr>
+</tbody></table></div>
+<h3 id="4-4-应用领域与基本单元">4.4 应用领域与基本单元</h3><ul>
+<li><strong>应用领域</strong>（教师列举）：<strong>电力系统</strong>、<strong>工业领域</strong>——「但凡带有控制设备、信号设备的都离不开电子技术」，还有<strong>交通、医疗、广播</strong>等。</li>
+<li><strong>基本单元</strong>：要实现这些功能、组成庞大的控制系统，最基本的单元就是接下来要学的<strong>元器件</strong>——<strong>二极管、三极管</strong>（以及场效应管一类器件）。这些是本课程的主要内容。</li>
+</ul>
+<h2 id="5-从单体器件到集成芯片">5. 从单体器件到集成芯片</h2><p>这一段是教师结合实际产业讲的，属于<strong>课程动机</strong>，其中的产业判断按教师叙述记录。</p>
+<ul>
+<li><strong>现实中单体器件用得少</strong>：单个的二极管、晶体管、三极管「用是用得到，但是几乎比较少」，实际系统中的器件基本都做成了<strong>集成芯片</strong>。</li>
+<li><strong>集成芯片怎么做</strong>：在一块<strong>硅片</strong>上用<strong>光刻机</strong>刻出 <strong>MOS 管的沟道</strong>（一条一条沟道）。</li>
+<li><strong>特征尺寸</strong>：高端芯片目前可以做到 <strong>3 纳米以下</strong>（教师估计，见第 11 节）。所谓 3 纳米指的是<strong>特征尺寸</strong>——半导体工艺中<strong>最小的尺寸</strong>，也就是 CMOS 工艺里<strong>沟道（通道）的长度</strong>。</li>
+<li><strong>为什么要把尺寸做小</strong>：特征尺寸越小，<strong>集成度越高</strong>——单位面积里能装的晶体管个数越多，意味着<strong>处理能力或存储能力越强</strong>。</li>
+<li><strong>产业背景</strong>（教师课堂叙述）：美国对我国芯片封锁，卡的主要是<strong>光刻机</strong>，使高端芯片难以生产；教师提到华为 Mate 40 之后 <strong>5 nm 以下</strong>芯片被断供；说到真正能做小特征尺寸的<strong>还不是大陆企业</strong>，最大的代工厂是<strong>台积电</strong>，全球集成电路生产厂排在前面的<strong>以欧美企业为主</strong>，个别日本企业也生产。</li>
+<li><strong>教师的学习动员</strong>：作为工科同学，学这门课不一定能立刻改变芯片技术落后的状态，但应该抱着决心和信心把知识学好，「哪怕对这个行业能产生那么一点点贡献」；顶尖的高端攻关有科学家在前面努力，我们可以在<strong>配套的生产与研发岗位上</strong>起作用。</li>
+<li><strong>教材与考研的再次提醒</strong>：本课教材是两门课合一，<strong>光学这本不够</strong>；考研考电子方向要另找经典教材与线上课程（慕课、在线平台、B 站等）扩展学习面。</li>
+</ul>
+<h2 id="6-半导体基础-一-本征半导体">6. 半导体基础（一）：本征半导体</h2><h3 id="6-1-半导体是什么">6.1 半导体是什么</h3><ul>
+<li>初中就学过<strong>导体</strong>（电阻率非常低）与<strong>绝缘体</strong>（电阻率非常高）。</li>
+<li><strong>半导体</strong>的电阻率<strong>介于两者之间</strong>：在某些条件下可以扮演<strong>导体</strong>的角色，条件改变时又可能呈现<strong>绝缘体</strong>的状态。具有这种特性的材料叫半导体。</li>
+</ul>
+<h3 id="6-2-本征半导体的定义">6.2 本征半导体的定义</h3><p>书上给的定义（教师让学生看书上定义）：<strong>完全纯净的、具有晶体结构的半导体</strong>，叫本征半导体。</p>
+<blockquote>
+<p><strong>两个关键词，缺一不可</strong>（教师反复强调）：<strong>完全纯净</strong>、<strong>具有晶体结构</strong>。</p>
+</blockquote>
+<ul>
+<li><strong>什么叫晶体结构</strong>：原子核与电子之间排列成一个<strong>立体的、非常整齐有规律的</strong>结构。</li>
+<li><strong>有哪些材料</strong>：教材里讲到的本征半导体材料，教师提到<strong>硅</strong>与<strong>砷化镓</strong>等（材料名在转写中失真，见第 11 节）；常用的纯净半导体是<strong>硅</strong>。</li>
+<li><strong>硅是四价元素</strong>：外层有<strong>四个电子</strong>。教师顺带提到与之并列的另一种四价元素（转写为「硅和子」，疑为<strong>锗</strong>，见第 11 节）。</li>
+</ul>
+<h3 id="6-3-共价键">6.3 共价键</h3><ul>
+<li>以硅为例：中间是一个硅原子，外围有四个电子；<strong>相邻的</strong>一个硅原子也出一个电子，两个硅原子<strong>各出一个电子、两两配对</strong>，形成<strong>共价键</strong>。</li>
+<li>也就是说，每个硅原子与它周围的<strong>四个</strong>硅原子，都以<strong>共用两个电子</strong>的形式结合成共价键。</li>
+<li>共价键「在学化学的时候是相当牢固的」，要改变它需要<strong>很大的能量</strong>才能破坏，所以是相当稳定的一种晶体结构。</li>
+<li>结构形状：每个原子处于一个<strong>四面体的中心</strong>，四个相邻原子位于四面体的<strong>顶点</strong>。</li>
+</ul>
+<h3 id="6-4-本征激发-自由电子与空穴">6.4 本征激发：自由电子与空穴</h3><ul>
+<li>要让<strong>价电子</strong>从共价键里挣脱出来，一般要给它提供<strong>能量</strong>；教师问能量用什么形式提供，答案是<strong>光照</strong>或<strong>加热</strong>。</li>
+<li>温度升高或用光照射时，价电子获得足够能量，挣脱原子核（共价键）的束缚跑出来——这叫<strong>本征激发</strong>。</li>
+<li>跑出来的电子叫<strong>自由电子</strong>，定义它<strong>带负电荷</strong>；它原来在共价键里留下的那个空位置，<strong>带正电荷</strong>，叫<strong>空穴</strong>。</li>
+</ul>
+<blockquote>
+<p><strong>教师明确说这里是考点</strong>：在半导体中<strong>自由电子带负电荷、空穴带正电荷</strong>。这个概念后面讲单向导电性等都要用到，务必记牢。</p>
+</blockquote>
+<ul>
+<li>自由电子的「活跃度」与<strong>温度成正比</strong>，因此本征半导体具有<strong>热敏性</strong>与<strong>光敏性</strong>——导电特性与光和热相关。这是半导体<strong>三大特性中的两个</strong>。</li>
+</ul>
+<h3 id="6-5-载流子的运动与电流方向">6.5 载流子的运动与电流方向</h3><ul>
+<li><strong>没有外加电场</strong>时，本征激发出来的自由电子只是在做<strong>杂乱无章</strong>的运动。</li>
+<li><strong>加了外电场</strong>以后：<ul>
+<li><strong>空穴</strong>会吸引相邻原子的价电子来填补自己这个空位，填补的过程<strong>等效于空穴在移动</strong>（相当于带正电的载流子在移动）；</li>
+<li><strong>自由电子</strong>则沿一定方向移动（外电场作用下的定向移动）。</li>
+</ul>
+</li>
+<li><strong>半导体的电流由两部分组成</strong>：<strong>自由电子的移动</strong>与<strong>空穴的移动</strong>之和。</li>
+<li>关键辨析（教师说这是最容易糊涂的点）：两者的<strong>移动方向相反</strong>，但<strong>电流方向相同</strong>。原因是电路中的规定——<strong>规定正电荷的移动方向为电流的参考正方向</strong>，因此<strong>自由电子的移动方向与电流方向相反</strong>。</li>
+<li><strong>关于参考方向</strong>：具体分析电路时会先<strong>假设一个参考方向</strong>；如果按假设方向算出的<strong>代数值为负</strong>，说明假设的方向反了。教师提醒「学电路的时候、包括学电子技术的时候」都要注意这个问题。</li>
+</ul>
+<h2 id="7-半导体基础-二-掺杂半导体与载流子">7. 半导体基础（二）：掺杂半导体与载流子</h2><h3 id="7-1-第三个特性-掺杂性">7.1 第三个特性：掺杂性</h3><p>半导体的<strong>三大特性</strong>至此讲全：<strong>热敏性、光敏性、掺杂性</strong>。</p>
+<ul>
+<li><strong>为什么必须掺杂</strong>：实际使用的半导体<strong>一般不用本征半导体</strong>，因为它的导电特性（半导体呈现出来的特性）<strong>太弱</strong>，教师说也叫「<strong>带负载的能力太弱</strong>」。</li>
+<li>做法是往本征半导体里掺入<strong>微量的</strong>其他元素。教师强调掺入的量相对本征半导体是<strong>微量</strong>的，所以整体仍呈现本征半导体的特性，只是<strong>提高了导电性能</strong>。</li>
+</ul>
+<h3 id="7-2-p-型半导体-掺三价元素">7.2 P 型半导体（掺三价元素）</h3><ul>
+<li>在硅晶体中掺入<strong>三价元素</strong>（教师举例<strong>硼</strong>），让它<strong>取代晶格中原来的硅原子</strong>。</li>
+<li>硅原子最外层有 4 个电子，三价元素最外层只有 <strong>3 个</strong>，<strong>少了一个电子</strong>——相当于<strong>多了一个空穴</strong>，即向本征半导体中「掺了空穴」。</li>
+<li>这种以空穴为主的半导体叫 <strong>P 型半导体</strong>；P 是英文里「正」那个词的缩写（<strong>positive</strong>），因为<strong>相对 N 型</strong>而言它相当于带正电。</li>
+</ul>
+<blockquote>
+<p><strong>重要澄清</strong>：半导体材料<strong>本身是呈电中性的</strong>——在没有外加电场的情况下，它<strong>不带电荷</strong>。因为原子核与电子数仍然一一配对，既没有多出电子也没有少掉电子。所谓「带正电」只是相对本征半导体、相对 N 型而言的说法。</p>
+</blockquote>
+<h3 id="7-3-n-型半导体-掺五价元素">7.3 N 型半导体（掺五价元素）</h3><ul>
+<li>在硅晶体中掺入<strong>五价元素</strong>（教师举例<strong>磷</strong>）。五价元素最外层有 <strong>5 个电子</strong>，比硅<strong>多一个电子</strong>。</li>
+<li>这种掺杂后<strong>电子偏多</strong>的半导体叫 <strong>N 型半导体</strong>（N 取 <strong>negative</strong> 之意）。</li>
+<li>N 型里的空穴从哪来？<strong>本征激发</strong>——本征激发的特性仍然存在，受光、受热时仍会产生少量空穴。</li>
+</ul>
+<h3 id="7-4-载流子-多子与少子-教师点明是考点">7.4 载流子、多子与少子（教师点明是考点）</h3><ul>
+<li><strong>载流子</strong>的定义：运输正电荷和负电荷的<strong>微粒</strong>。<strong>空穴</strong>是带正电荷的载流子，<strong>自由电子</strong>是带负电荷的载流子。</li>
+<li>在掺杂半导体中，两种载流子的数量<strong>不对等</strong>，于是有多数与少数之分，简称<strong>多子和少子</strong>：</li>
+</ul>
+<div class="table-scroll-container"><table>
+<thead>
+<tr>
+<th align="left">半导体</th>
+<th align="left">多数载流子（多子）</th>
+<th align="left">少数载流子（少子）</th>
+<th align="left">少子从哪来</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>P 型</strong></td>
+<td align="left"><strong>空穴</strong>（掺杂掺进来的）</td>
+<td align="left">自由电子</td>
+<td align="left"><strong>本征激发</strong>（掺杂后本征激发的特性仍在）</td>
+</tr>
+<tr>
+<td align="left"><strong>N 型</strong></td>
+<td align="left"><strong>自由电子</strong></td>
+<td align="left">空穴</td>
+<td align="left"><strong>本征激发</strong></td>
+</tr>
+</tbody></table></div>
+<ul>
+<li>教师要求<strong>在讲 PN 结形成之前把这对概念弄清楚</strong>。</li>
+</ul>
+<h2 id="8-pn-结的形成">8. PN 结的形成</h2><h3 id="8-1-为什么要做出-p-型和-n-型">8.1 为什么要做出 P 型和 N 型</h3><p>教师先问「为什么要搞一个 P 型、搞一个 N 型」——目的就是<strong>让它形成一个单向导电的效果</strong>。做法是把 <strong>N 型与 P 型两种半导体材料接触在一起</strong>（教师口语说「焊在一起」「接触在一起」），形成一个<strong>交界面</strong>。</p>
+<h3 id="8-2-形成过程-扩散-复合-内电场-漂移-动态平衡">8.2 形成过程：扩散 → 复合 → 内电场 → 漂移 → 动态平衡</h3><ol>
+<li><strong>多子扩散</strong>：交界面左边是 P 型（<strong>多空穴</strong>），右边是 N 型（<strong>多自由电子</strong>）。本着「异性相吸」，左边的空穴往右边跑、右边的自由电子往左边跑——这叫<strong>多子扩散运动</strong>。</li>
+<li><strong>复合耗尽</strong>：跑到对面的载流子相遇，因为电荷相反，<strong>成双成对地复合</strong>（互相抵消、消耗掉）。</li>
+<li><strong>形成内电场</strong>：复合后留下来的是<strong>不能移动的原子核离子</strong>——右边（N 侧）<strong>带正电</strong>、左边（P 侧）<strong>带负电</strong>，于是在内部形成了一个<strong>内电场</strong>，方向由<strong>正电指向负电，即从 N 侧指向 P 侧</strong>。</li>
+<li><strong>少子漂移</strong>：内电场一形成，又<strong>促进少子的漂移运动</strong>——N 区的少子空穴往左边走、P 区的少子自由电子往右边走。<strong>漂移的方向与多子扩散的方向相反</strong>。</li>
+<li><strong>动态平衡</strong>：内电场增强后，多子扩散的量与少子漂移的量最终相等，成为<strong>动态平衡</strong>。此时该区域内<strong>没有净的电荷运动</strong>，<strong>空间电荷区的宽度固定不变</strong>。</li>
+</ol>
+<h3 id="8-3-两个名称与两条方向">8.3 两个名称与两条方向</h3><ul>
+<li><strong>名称</strong>：这一段区域叫 <strong>PN 结</strong>；也叫<strong>空间电荷区</strong>，或<strong>耗尽层</strong>。</li>
+<li><strong>方向关系（务必记牢）</strong>：</li>
+</ul>
+<div class="table-scroll-container"><table>
+<thead>
+<tr>
+<th align="left">运动</th>
+<th align="left">对空间电荷区的作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>多子扩散运动</strong></td>
+<td align="left">使空间电荷区<strong>加宽</strong>，内电场增强</td>
+</tr>
+<tr>
+<td align="left"><strong>少子漂移运动</strong></td>
+<td align="left">使空间电荷区<strong>变窄（缩窄）</strong></td>
+</tr>
+</tbody></table></div>
+<ul>
+<li><strong>内电场的作用</strong>：<strong>阻碍</strong> P 区空穴、N 区电子向对方方向<strong>扩散</strong>；<strong>促进少子漂移</strong>。</li>
+<li><strong>空间电荷区里没有载流子</strong>（已耗尽）——这一点教师单独提了一句。</li>
+<li><strong>不加外加电压时的表现</strong>：虽然内电场促进了少子漂移，但少子<strong>量很小</strong>，漂移形成的电流<strong>几乎为零</strong>。所以 PN 结形成后，在<strong>不外加偏置电压</strong>的情况下对外呈现<strong>不导电</strong>的状态。</li>
+</ul>
+<h2 id="9-pn-结的单向导电性">9. PN 结的单向导电性</h2><p>教师说这是本节<strong>最重要的特性</strong>，也是后面电路应用的基础。</p>
+<h3 id="9-1-正向偏置-加正向电压-导通">9.1 正向偏置（加正向电压）→ 导通</h3><ul>
+<li><strong>接法</strong>：外接电源的<strong>正极接 P 区</strong>、<strong>负极接 N 区</strong>。</li>
+<li><strong>电场方向</strong>：外电场由 <strong>P 指向 N</strong>；而内电场是由 <strong>N 指向 P</strong>——<strong>两者方向相反</strong>。</li>
+<li><strong>结果</strong>：</li>
+</ul>
+<div class="table-scroll-container"><table>
+<thead>
+<tr>
+<th align="left">环节</th>
+<th align="left">变化</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">内电场</td>
+<td align="left">被外电场<strong>削弱</strong></td>
+</tr>
+<tr>
+<td align="left">多子扩散运动</td>
+<td align="left">被<strong>促进/加强</strong>，扩散电流增大</td>
+</tr>
+<tr>
+<td align="left">空间电荷区（耗尽层）</td>
+<td align="left"><strong>变窄（变薄）</strong></td>
+</tr>
+<tr>
+<td align="left">电阻</td>
+<td align="left"><strong>正向电阻变小</strong></td>
+</tr>
+<tr>
+<td align="left">状态</td>
+<td align="left"><strong>正向导通</strong>，形成较大的正向电流</td>
+</tr>
+</tbody></table></div>
+<ul>
+<li>教师补充两点：一是当<strong>外电场大过内电场</strong>时，「耗尽层相当于不存在了」，电流就可畅通通过 PN 结；二是外电压<strong>从零逐渐增大</strong>时，必须<strong>增大到内电场的强度</strong>，导通状态才明显——这就对应一个<strong>死区电压</strong>的概念，是<strong>下节课讲伏安特性曲线</strong>时会体现出来的特征。</li>
+</ul>
+<h3 id="9-2-反向偏置-加反向电压-截止">9.2 反向偏置（加反向电压）→ 截止</h3><ul>
+<li><strong>接法</strong>：外接电源的<strong>正极接 N 区</strong>、<strong>负极接 P 区</strong>。</li>
+<li><strong>电场方向</strong>：外电场仍然由 <strong>N 指向 P</strong>，与内电场<strong>同向</strong>——两者<strong>叠加</strong>，等于<strong>加强了内电场</strong>。</li>
+<li><strong>结果</strong>：</li>
+</ul>
+<div class="table-scroll-container"><table>
+<thead>
+<tr>
+<th align="left">环节</th>
+<th align="left">变化</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">内电场</td>
+<td align="left">被<strong>加强</strong></td>
+</tr>
+<tr>
+<td align="left">多子扩散运动</td>
+<td align="left">被<strong>狠狠抑制</strong></td>
+</tr>
+<tr>
+<td align="left">少子漂移运动</td>
+<td align="left">被加强，但<strong>少子量很少</strong>，形不成大电流</td>
+</tr>
+<tr>
+<td align="left">空间电荷区（耗尽层）</td>
+<td align="left"><strong>变宽</strong></td>
+</tr>
+<tr>
+<td align="left">电阻</td>
+<td align="left">反向电流很小、电压一定时<strong>反向电阻很大</strong></td>
+</tr>
+<tr>
+<td align="left">状态</td>
+<td align="left"><strong>截止</strong></td>
+</tr>
+</tbody></table></div>
+<h3 id="9-3-这个特性有什么用">9.3 这个特性有什么用</h3><ul>
+<li>通过<strong>改变加在 PN 结两端的电压</strong>，就能改变电路<strong>通断的状态</strong>：<ul>
+<li>既可用于<strong>数字开关</strong>的作用；</li>
+<li>也可用于模拟信号的<strong>滤波、斩波</strong>等作用。</li>
+</ul>
+</li>
+<li>教师说这些都是<strong>基于 PN 结的单向导电性</strong>，并强调「这个部分务必请大家一定要去……静下心来给它捋一遍」，因为<strong>这个特性不掌握，后面学起来会更吃力</strong>。</li>
+</ul>
+<h2 id="10-本篇明确没有的内容-不要脑补">10. 本篇明确没有的内容（不要脑补）</h2><p>本讲是第一讲，前 12 分钟讲工具、其后 6 分钟讲考核，<strong>教学正文只推进到第一章第 1 节的 PN 结单向导电性</strong>。以下内容本录音里<strong>完全没有</strong>（已逐词确认），须等后续课次：</p>
+<div class="table-scroll-container"><table>
+<thead>
+<tr>
+<th align="left">缺口</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>二极管的伏安特性曲线</strong></td>
+<td align="left">教师只说「下节课会讲到 PN 结的伏安特性曲线」，本次<strong>没有曲线、没有坐标、没有数值</strong></td>
+</tr>
+<tr>
+<td align="left"><strong>死区电压的具体数值</strong></td>
+<td align="left">只作为概念预告出现（「等一下会有一个死区电压的概念」），<strong>没有给出数值</strong></td>
+</tr>
+<tr>
+<td align="left"><strong>二极管的结构与型号</strong></td>
+<td align="left">完全未讲</td>
+</tr>
+<tr>
+<td align="left"><strong>特殊二极管（稳压管等）</strong></td>
+<td align="left">只在第一章目录中列出，未展开</td>
+</tr>
+<tr>
+<td align="left"><strong>晶体管（三极管）</strong></td>
+<td align="left">只有第一章重点里的「电流分配与电流放大作用」一句预告；<strong>无结构、无放大原理、无特性曲线</strong></td>
+</tr>
+<tr>
+<td align="left"><strong>场效应管、光电类器件</strong></td>
+<td align="left">只在目录与重点里被提到名字，<strong>无内容</strong></td>
+</tr>
+<tr>
+<td align="left"><strong>含二极管电路的分析</strong></td>
+<td align="left">教师列为第一章要学会的内容，本次<strong>没有一道例题、没有分析方法</strong></td>
+</tr>
+<tr>
+<td align="left"><strong>第一章第 2 节及以后</strong></td>
+<td align="left">完全未涉及</td>
+</tr>
+<tr>
+<td align="left"><strong>实验时间、地点、内容、指导书与报告模板</strong></td>
+<td align="left">教师说与实验室老师沟通后<strong>再提前通知</strong>，本次没有</td>
+</tr>
+<tr>
+<td align="left"><strong>作业题号与截止时间</strong></td>
+<td align="left">教师说第二节起在学习通发布，本次<strong>未布置具体题目</strong></td>
+</tr>
+<tr>
+<td align="left"><strong>教材书名、作者、版次与章节目录</strong></td>
+<td align="left">转写中<strong>未出现</strong>书名；只知道它是模电 + 数电合一的教材</td>
+</tr>
+<tr>
+<td align="left"><strong>下课后件的下载情况</strong></td>
+<td align="left">教师让同学先试下载仿真软件，结果未记录</td>
+</tr>
+</tbody></table></div>
+<h2 id="11-待核实与不可靠识别">11. 待核实与不可靠识别</h2><h3 id="11-1-术语被转写读错-复习时注意别跟着错">11.1 术语被转写读错（复习时注意别跟着错）</h3><div class="table-scroll-container"><table>
+<thead>
+<tr>
+<th align="left">转写原文</th>
+<th align="left">应为</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">「本身半导体」「本真半导体」</td>
+<td align="left"><strong>本征半导体</strong></td>
+<td align="left">全篇最高频的概念名，同段也写对过</td>
+</tr>
+<tr>
+<td align="left">「这个规则」（两处）</td>
+<td align="left"><strong>硅</strong></td>
+<td align="left">「纯净的是不是就是这个规则」指硅；「这个规则是吧，还有生化镓」是列举材料</td>
+</tr>
+<tr>
+<td align="left">「生化镓」</td>
+<td align="left"><strong>砷化镓</strong></td>
+<td align="left">教师列举的常用半导体材料之一</td>
+</tr>
+<tr>
+<td align="left">「硅和子」</td>
+<td align="left"><strong>硅和锗</strong>（疑）</td>
+<td align="left">讲「最外层四个电子、四价元素」时的两种材料；锗属推断</td>
+</tr>
+<tr>
+<td align="left">「盆」「铜原子」</td>
+<td align="left"><strong>硼</strong>（及其原子）</td>
+<td align="left">「掺入三价的元素，比如说盆」「铜原子最外层带三个电子」——上下文都是硼</td>
+</tr>
+<tr>
+<td align="left">「骨架」</td>
+<td align="left"><strong>五价（元素）</strong></td>
+<td align="left">「给它掺入一个骨架」＝掺入五价元素</td>
+</tr>
+<tr>
+<td align="left">「广广辉」</td>
+<td align="left"><strong>硅</strong></td>
+<td align="left">「在我们这个广广辉的晶体当中掺入磷元素」</td>
+</tr>
+<tr>
+<td align="left">「零元素」</td>
+<td align="left"><strong>磷元素</strong></td>
+<td align="left">五价掺杂元素</td>
+</tr>
+<tr>
+<td align="left">「更新半导体」</td>
+<td align="left"><strong>N 型半导体</strong></td>
+<td align="left">同段前文写对过 N 型</td>
+</tr>
+<tr>
+<td align="left">「梯形半导体」</td>
+<td align="left"><strong>P 型半导体</strong></td>
+<td align="left">讨论 P 型里的空穴与自由电子数量</td>
+</tr>
+<tr>
+<td align="left">「电通信号来的」</td>
+<td align="left"><strong>（呈）电中性</strong></td>
+<td align="left">原句应是「半导体材料本身呈现电中性，不带电荷」</td>
+</tr>
+<tr>
+<td align="left">「空压机」</td>
+<td align="left"><strong>共价键</strong></td>
+<td align="left">「要用很大的能量才能破坏这个空压机」</td>
+</tr>
+<tr>
+<td align="left">「乐敏性」「乐民性」</td>
+<td align="left"><strong>热敏性</strong></td>
+<td align="left">半导体三大特性之一</td>
+</tr>
+<tr>
+<td align="left">「光明性」</td>
+<td align="left"><strong>光敏性</strong></td>
+<td align="left">同上</td>
+</tr>
+<tr>
+<td align="left">「威力」</td>
+<td align="left"><strong>微粒</strong></td>
+<td align="left">讲载流子定义处</td>
+</tr>
+<tr>
+<td align="left">「拼接」「PPN 姐」</td>
+<td align="left"><strong>PN 结</strong></td>
+<td align="left">同一处先说「中间的这一个截面，我们就叫拼接」，又说「这个 PPN 姐」</td>
+</tr>
+<tr>
+<td align="left">「绑定」</td>
+<td align="left"><strong>不确定</strong>（疑为「导通」）</td>
+<td align="left">「这个 PN 结它绑定没有」——语义应在问导通与否</td>
+</tr>
+<tr>
+<td align="left">「金刚馆」</td>
+<td align="left"><strong>不确定</strong>（疑为<strong>晶闸管</strong>或<strong>场效应管</strong>）</td>
+<td align="left">与「二极管、三极管」并列列举的第三种器件，<strong>两个候选都不能断定</strong></td>
+</tr>
+<tr>
+<td align="left">「光电流不管」</td>
+<td align="left"><strong>不确定</strong>（疑为光电耦合器一类器件）</td>
+<td align="left">与「光电三极管」并列列举</td>
+</tr>
+<tr>
+<td align="left">「磨光了」</td>
+<td align="left"><strong>不确定</strong>（疑为贴合/键合一类工艺词）</td>
+<td align="left">「把 N 型的跟 P 型的……焊在一起，给它磨光了，接触在一起」</td>
+</tr>
+<tr>
+<td align="left">「BB 站」</td>
+<td align="left"><strong>B 站</strong></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">「百分之4 40」</td>
+<td align="left">百分之 <strong>40</strong></td>
+<td align="left">讲实验报告占比</td>
+</tr>
+</tbody></table></div>
+<h3 id="11-2-数字与说法需要确认-不择一断言">11.2 数字与说法需要确认（不择一断言）</h3><div class="table-scroll-container"><table>
+<thead>
+<tr>
+<th align="left">项</th>
+<th align="left">情况</th>
+<th align="left">处理</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>学习表现 100 分的构成</strong></td>
+<td align="left">作业 50 分；出勤「100%」对应「60%」折成「30 分」；<strong>余下的分值教师没有说明</strong></td>
+<td align="left">只记教师给出的 50 分与 30 分，<strong>不替教师补出余下部分</strong>；以学院正式考核文件为准</td>
+</tr>
+<tr>
+<td align="left"><strong>实验成绩构成</strong></td>
+<td align="left">教师明确「剩下的这个百分之 40 是实验报告的成绩」，但前一句「平时操作的过程是有丰富的」<strong>转写残缺</strong></td>
+<td align="left">只写「实验报告占 40%」；<strong>操作占 60% 属推算，不作为结论</strong></td>
+</tr>
+<tr>
+<td align="left"><strong>低电平电压</strong></td>
+<td align="left">同一段先说「0.7 伏以下」，马上又说「或者说 0.3 伏以下」</td>
+<td align="left">两个数字都记，<strong>不择一断言</strong>；实际阈值随器件与工艺不同，以教材为准</td>
+</tr>
+<tr>
+<td align="left"><strong>特征尺寸 3 纳米</strong></td>
+<td align="left">「现在应该可以做到三纳米以下」</td>
+<td align="left">标为<strong>教师的课堂叙述</strong>，不作为技术结论</td>
+</tr>
+<tr>
+<td align="left"><strong>产业叙述</strong>（光刻机封锁、Mate 40 后 5 nm 断供、台积电最大代工厂、欧美企业为主）</td>
+<td align="left">属教师课堂举例与时事评述</td>
+<td align="left">按「课堂举例、未核实」处理，不作为事实引用</td>
+</tr>
+<tr>
+<td align="left"><strong>「50 到 25 下课」</strong></td>
+<td align="left"><code>1:18:46</code> 一句语义不明的碎片</td>
+<td align="left"><strong>不用它推断下课时间</strong>；上课时段取文件名标注的 18:00–19:30</td>
+</tr>
+</tbody></table></div>
+<h3 id="11-3-隐私与不宜转载的内容-本笔记已剔除">11.3 隐私与不宜转载的内容（本笔记已剔除）</h3><div class="table-scroll-container"><table>
+<thead>
+<tr>
+<th align="left">位置</th>
+<th align="left">内容</th>
+<th align="left">处理</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">04:57–05:11</td>
+<td align="left">任课教师<strong>姓名的自我介绍</strong></td>
+<td align="left">不复录姓名（教师情况登记在<a href="../index.html">课程索引</a>，笔记中一律写「教师」）</td>
+</tr>
+<tr>
+<td align="left">1:17:05 附近</td>
+<td align="left">教师核对未到课情况，<strong>点到学生姓名</strong></td>
+<td align="left">不复录姓名；只保留「教师课末核对了未到课情况」这一条行政事实</td>
+</tr>
+<tr>
+<td align="left">1:22:24 起</td>
+<td align="left">课后闲聊（与教学无关）</td>
+<td align="left">不入笔记</td>
+</tr>
+<tr>
+<td align="left">多处</td>
+<td align="left">学生课堂应答（「手机」「直流电」等）</td>
+<td align="left">只保留问答所确认的知识点，不记是哪位同学</td>
+</tr>
+</tbody></table></div>
+<h2 id="12-给同学的复习顺序">12. 给同学的复习顺序</h2><ol>
+<li><strong>先把规则记死</strong>（第 2 节）：<strong>52 学时理论 + 12 学时实验（6 个实验）</strong>；<strong>过程性 50% + 闭卷期末 50%</strong>；过程性＝学习表现（作业 50 分 + 出勤等）＋实验；<strong>实验按验收速度排名给分，做之前先看指导书</strong>；作业在<strong>学习通</strong>发布、<strong>拍照上传作业本</strong>。</li>
+<li><strong>把工具用起来</strong>（第 2 节）：PPT 与知识点、章节任务与测试、知识图谱都在<strong>学习通</strong>；章节测试<strong>算课堂表现分</strong>；仿真软件先下载装好；AI 智能体可以问知识点，但「<strong>做作业还得要自己做</strong>」。</li>
+<li><strong>记住电子技术的定义与两大分支</strong>（第 4 节）：四个要素（原理、元器件、特定功能的电路、解决实际问题）；信息电子技术（再分模拟、数字）与电力电子技术，能各举一例（手机 / 交流变直流）。</li>
+<li><strong>背下四种处理方式</strong>（第 4 节）：<strong>产生 → 放大 → 滤波 → 转换</strong>，每种能说出一个例子（打电话呼叫、信号衰减要放大、接收端滤杂波、麦克风录音模数转换）。</li>
+<li><strong>背半导体三大特性</strong>（第 6、7 节）：<strong>热敏性、光敏性、掺杂性</strong>。</li>
+<li><strong>分清三种半导体</strong>（第 6、7 节）：本征半导体两个关键词（<strong>完全纯净、晶体结构</strong>）；掺杂的目的（本征的导电能力太弱）与两个方向（三价→P 型多空穴、五价→N 型多电子）；<strong>自由电子带负电、空穴带正电</strong>（教师点名的考点）；<strong>P 型多子是空穴、N 型多子是自由电子</strong>，少子都来自本征激发；<strong>半导体整体呈电中性</strong>。</li>
+<li><strong>把 PN 结的形成过程默写一遍</strong>（第 8 节）：多子扩散 → 相遇复合 → 留下离子形成内电场（N 指向 P）→ 促进少子漂移 → 动态平衡；记住两个名字（空间电荷区、耗尽层）与两条方向（<strong>扩散加宽、漂移变窄</strong>）；不加电压时<strong>不导电</strong>。</li>
+<li><strong>正偏与反偏做成对照表背下来</strong>（第 9 节）：外电场方向、内电场是被削弱还是加强、耗尽层变宽还是变窄、电阻大小、导通还是截止；并记住<strong>死区电压</strong>这个名字——下节课讲伏安特性曲线时会用到。</li>
+<li><strong>别提前背后面章节</strong>（第 10 节）：二极管的伏安特性曲线、稳压管、三极管、场效应管、含二极管电路分析本次都没有讲；等到对应课次再整理，避免照抄不存在的板书。</li>
+</ol>
+
+            </div>
+
+            
+
+            <footer class="site-footer">
+              <p class="site-footer__legal">
+                © 2026 ArchivalEra · 本站自研代码与解析文字以
+                <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank" rel="license noopener">AGPL-3.0</a>
+                许可发布 · <a href="https://github.com/ArchivalEra/S26-1_202609" target="_blank" rel="noopener">仓库源码</a>
+              </p>
+              <p class="site-footer__disclaimer">
+                教材《工程数学基础》的题目原文与章节结构版权归原书作者与出版社所有，本站解析为个人学习笔记；
+                页面主题样式来自 Shirone Material 3 Reader（MIT）；KaTeX、marked 等第三方库依其自身许可证分发。
+              </p>
+            </footer>
+          </article>
+        </main>
+
+        <!-- Table of Contents -->
+        <aside class="m3-toc">
+      <div class="toc-title">目录</div>
+      <ul class="toc-list">
+        <li class="toc-item level-2"><a href="#1-来源与使用边界">1. 来源与使用边界</a></li><li class="toc-item level-3"><a href="#时间导览-相对时间-便于回查原文">时间导览（相对时间，便于回查原文）</a></li><li class="toc-item level-2"><a href="#2-考核与课堂管理-教师当堂口头说明-以学院正式文件为准">2. 考核与课堂管理（教师当堂口头说明，以学院正式文件为准）</a></li><li class="toc-item level-3"><a href="#2-1-学时与成绩构成">2.1 学时与成绩构成</a></li><li class="toc-item level-3"><a href="#2-2-过程性评价之一-学习表现-按-100-分记">2.2 过程性评价之一：学习表现（按 100 分记）</a></li><li class="toc-item level-3"><a href="#2-3-过程性评价之二-实验-6-个">2.3 过程性评价之二：实验（6 个）</a></li><li class="toc-item level-3"><a href="#2-4-作业">2.4 作业</a></li><li class="toc-item level-3"><a href="#2-5-工具与-ai-教师鼓励用-但划了边界">2.5 工具与 AI（教师鼓励用，但划了边界）</a></li><li class="toc-item level-2"><a href="#3-课程地图">3. 课程地图</a></li><li class="toc-item level-2"><a href="#4-什么是电子技术">4. 什么是电子技术</a></li><li class="toc-item level-3"><a href="#4-1-定义与四个要素">4.1 定义与四个要素</a></li><li class="toc-item level-3"><a href="#4-2-两大分支">4.2 两大分支</a></li><li class="toc-item level-3"><a href="#4-3-四种主要的处理方式">4.3 四种主要的处理方式</a></li><li class="toc-item level-3"><a href="#4-4-应用领域与基本单元">4.4 应用领域与基本单元</a></li><li class="toc-item level-2"><a href="#5-从单体器件到集成芯片">5. 从单体器件到集成芯片</a></li><li class="toc-item level-2"><a href="#6-半导体基础-一-本征半导体">6. 半导体基础（一）：本征半导体</a></li><li class="toc-item level-3"><a href="#6-1-半导体是什么">6.1 半导体是什么</a></li><li class="toc-item level-3"><a href="#6-2-本征半导体的定义">6.2 本征半导体的定义</a></li><li class="toc-item level-3"><a href="#6-3-共价键">6.3 共价键</a></li><li class="toc-item level-3"><a href="#6-4-本征激发-自由电子与空穴">6.4 本征激发：自由电子与空穴</a></li><li class="toc-item level-3"><a href="#6-5-载流子的运动与电流方向">6.5 载流子的运动与电流方向</a></li><li class="toc-item level-2"><a href="#7-半导体基础-二-掺杂半导体与载流子">7. 半导体基础（二）：掺杂半导体与载流子</a></li><li class="toc-item level-3"><a href="#7-1-第三个特性-掺杂性">7.1 第三个特性：掺杂性</a></li><li class="toc-item level-3"><a href="#7-2-p-型半导体-掺三价元素">7.2 P 型半导体（掺三价元素）</a></li><li class="toc-item level-3"><a href="#7-3-n-型半导体-掺五价元素">7.3 N 型半导体（掺五价元素）</a></li><li class="toc-item level-3"><a href="#7-4-载流子-多子与少子-教师点明是考点">7.4 载流子、多子与少子（教师点明是考点）</a></li><li class="toc-item level-2"><a href="#8-pn-结的形成">8. PN 结的形成</a></li><li class="toc-item level-3"><a href="#8-1-为什么要做出-p-型和-n-型">8.1 为什么要做出 P 型和 N 型</a></li><li class="toc-item level-3"><a href="#8-2-形成过程-扩散-复合-内电场-漂移-动态平衡">8.2 形成过程：扩散 → 复合 → 内电场 → 漂移 → 动态平衡</a></li><li class="toc-item level-3"><a href="#8-3-两个名称与两条方向">8.3 两个名称与两条方向</a></li><li class="toc-item level-2"><a href="#9-pn-结的单向导电性">9. PN 结的单向导电性</a></li><li class="toc-item level-3"><a href="#9-1-正向偏置-加正向电压-导通">9.1 正向偏置（加正向电压）→ 导通</a></li><li class="toc-item level-3"><a href="#9-2-反向偏置-加反向电压-截止">9.2 反向偏置（加反向电压）→ 截止</a></li><li class="toc-item level-3"><a href="#9-3-这个特性有什么用">9.3 这个特性有什么用</a></li><li class="toc-item level-2"><a href="#10-本篇明确没有的内容-不要脑补">10. 本篇明确没有的内容（不要脑补）</a></li><li class="toc-item level-2"><a href="#11-待核实与不可靠识别">11. 待核实与不可靠识别</a></li><li class="toc-item level-3"><a href="#11-1-术语被转写读错-复习时注意别跟着错">11.1 术语被转写读错（复习时注意别跟着错）</a></li><li class="toc-item level-3"><a href="#11-2-数字与说法需要确认-不择一断言">11.2 数字与说法需要确认（不择一断言）</a></li><li class="toc-item level-3"><a href="#11-3-隐私与不宜转载的内容-本笔记已剔除">11.3 隐私与不宜转载的内容（本笔记已剔除）</a></li><li class="toc-item level-2"><a href="#12-给同学的复习顺序">12. 给同学的复习顺序</a></li>
+      </ul>
+    </aside>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../../assets/theme/shirone-reader.js" defer></script>
+  <script src="../../../assets/plugins/disclosure-anchor.js" defer></script>
+  <script type="application/json" id="sym-glossary-json">{"terms":{"sym-det":{"title":"行列式的名字","text":"D 是它的常用代号；det A 与 |A| 都读「A 的行列式」，名字不同同一个东西。竖线与方括号要分清：竖线里是一个数，方括号里只是一张数表（矩阵），还没有值。","href":"../../%E5%B7%A5%E7%A8%8B%E6%95%B0%E5%AD%A6/%E6%95%99%E6%9D%90%E8%A7%A3%E6%9E%90/0.0-%E7%AC%A6%E5%8F%B7%E5%85%A5%E9%97%A8.html"},"sym-index":{"title":"下标：门牌号","text":"下标是坐标，规则只有一句：前行后列——a₂₃ 就是第 2 行第 3 列上的数。门牌号从 1 数起，a₁₁ 读「a 一一」不是「a 十一」。","href":"../../%E5%B7%A5%E7%A8%8B%E6%95%B0%E5%AD%A6/%E6%95%99%E6%9D%90%E8%A7%A3%E6%9E%90/0.0-%E7%AC%A6%E5%8F%B7%E5%85%A5%E9%97%A8.html"},"sym-power":{"title":"上标：乘方","text":"右上角是乘方。上标位置可以放一整段式子，如 (−1)^{i+j}——它只管正负号：i+j 是偶数取 +，奇数取 −。","href":"../../%E5%B7%A5%E7%A8%8B%E6%95%B0%E5%AD%A6/%E6%95%99%E6%9D%90%E8%A7%A3%E6%9E%90/0.0-%E7%AC%A6%E5%8F%B7%E5%85%A5%E9%97%A8.html"},"sym-rowcol":{"title":"行与列：r、c","text":"r₁ 是第 1 行（row），c₂ 是第 2 列（column）。r₂−3r₁ 读作「第 2 行换成：第 2 行 − 第 1 行的 3 倍」——写在前面的被改，式子里没出现的行不动。","href":"../../%E5%B7%A5%E7%A8%8B%E6%95%B0%E5%AD%A6/%E6%95%99%E6%9D%90%E8%A7%A3%E6%9E%90/0.0-%E7%AC%A6%E5%8F%B7%E5%85%A5%E9%97%A8.html"},"sym-matrix":{"title":"矩阵的新符号","text":"E 是单位矩阵（乘法里的「1」）；Aᵀ 转置（行列互换，(AB)ᵀ=BᵀAᵀ 要反序）；A⁻¹ 是逆——AA⁻¹=E，「撤销 A」，不是 1/A；A* 伴随（代数余子式下标转置排列）；R(A) 秩（非零子式最高阶数）。","href":"../../%E5%B7%A5%E7%A8%8B%E6%95%B0%E5%AD%A6/%E6%95%99%E6%9D%90%E8%A7%A3%E6%9E%90/0.0-%E7%AC%A6%E5%8F%B7%E5%85%A5%E9%97%A8.html"},"sym-misc":{"title":"Σ 与 ⟺","text":"Σ（西格玛）是求和打包：下标轮流取 1…n 全加起来。⟺ 读「当且仅当」，两边同真同假；⟶ 上方写字是变换记号，见 r/c 一族。","href":"../../%E5%B7%A5%E7%A8%8B%E6%95%B0%E5%AD%A6/%E6%95%99%E6%9D%90%E8%A7%A3%E6%9E%90/0.0-%E7%AC%A6%E5%8F%B7%E5%85%A5%E9%97%A8.html"}}}</script>
+  <script src="../../../assets/plugins/math-glossary.js" defer></script>
+  <script src="../../../assets/plugins/site-search.js" defer></script>
+</body>
+</html>
