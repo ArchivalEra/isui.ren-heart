@@ -282,6 +282,54 @@
           </li></ul>
             </div>
           </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="./课程/形势与政策/index.html" class="drawer-nav-link ">
+                <span>形势与政策</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 形势与政策" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="./课程/形势与政策/作业/index.html" class="drawer-nav-link">
+              <span>作业</span>
+            </a>
+          </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="./课程/形势与政策/课堂笔记/index.html" class="drawer-nav-link ">
+                <span>课堂笔记</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 课堂笔记" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="./课程/形势与政策/课堂笔记/2026-09-21-经济热点专题与考试安排.html" class="drawer-nav-link">
+              <span>09-21 经济热点专题与考试安排</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-item ">
+            <a href="./课程/形势与政策/原始资料/index.html" class="drawer-nav-link">
+              <span>原始资料</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="./课程/形势与政策/音频/index.html" class="drawer-nav-link">
+              <span>音频</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
         </li></ul>
             </div>
           </div>
@@ -505,10 +553,19 @@
 <li><span class="res-degrade-badge">📄 原件: 20260917_13301545-%E5%8E%9F%E6%96%87.doc (原件不入库，网页不提供)</span></li>
 </ul>
 <h4 id="音频-0-份-2">音频（0 份）</h4><p>暂无已归档资料。</p>
-<p>已登记 <strong>2</strong> 门课程、<strong>18</strong> 份资料（不含索引、模板和历史入口）。</p>
+<h3 id="形势与政策"><a href="./%E8%AF%BE%E7%A8%8B/%E5%BD%A2%E5%8A%BF%E4%B8%8E%E6%94%BF%E7%AD%96/index.html">形势与政策</a></h3><h4 id="作业-0-份-2">作业（0 份）</h4><p>暂无已归档资料。</p>
+<h4 id="课堂笔记-1-份-2">课堂笔记（1 份）</h4><ul>
+<li><a href="./%E8%AF%BE%E7%A8%8B/%E5%BD%A2%E5%8A%BF%E4%B8%8E%E6%94%BF%E7%AD%96/%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0/2026-09-21-%E7%BB%8F%E6%B5%8E%E7%83%AD%E7%82%B9%E4%B8%93%E9%A2%98%E4%B8%8E%E8%80%83%E8%AF%95%E5%AE%89%E6%8E%92.html">形势与政策 2026-09-21：经济热点专题（专题二）与考试安排</a></li>
+</ul>
+<h4 id="原始资料-2-份">原始资料（2 份）</h4><ul>
+<li><span class="res-degrade-badge">📄 原件: 20260921_13301410-%E5%8E%9F%E6%96%87.doc (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: 20260921_14151455-%E5%8E%9F%E6%96%87.doc (原件不入库，网页不提供)</span></li>
+</ul>
+<h4 id="音频-0-份-3">音频（0 份）</h4><p>暂无已归档资料。</p>
+<p>已登记 <strong>3</strong> 门课程、<strong>21</strong> 份资料（不含索引、模板和历史入口）。</p>
 <h2 id="仓库结构">仓库结构</h2><ul>
 <li><code>课程/</code>：本学期正式课程资料，入口为<a href="./%E8%AF%BE%E7%A8%8B/index.html">课程总索引</a>。<ul>
-<li><code>课程/&lt;中文课名&gt;/</code>：一门已确认课程，含五类固定子目录：<ul>
+<li><code>课程/&lt;中文课名&gt;/</code>：一门已确认课程，默认含五类子目录（确无某一类内容的课程可在 <code>.githooks/hook_lib.py</code> 的 <code>COURSE_SKIPPED_KINDS</code> 声明豁免，如形势与政策不建教材解析）：<ul>
 <li><code>作业/</code>：正式布置的作业记录；</li>
 <li><code>教材解析/</code>：按“版本—章—节”组织的整本教材解析；</li>
 <li><code>课堂笔记/</code>：按上课日期整理的课堂笔记；</li>
@@ -536,7 +593,7 @@
 </ol>
 <h2 id="音频资料边界">音频资料边界</h2><p>音频目录默认<strong>只保存链接与元数据</strong>：不自动下载、不提交音频二进制、不向外部服务上传课堂内容。每条记录必须包含课程、上课日期、准确课次/节次（附核实来源）、主题、下载链接及其来源与有效期、关联课堂笔记和原始转写；同一课多个片段分别登记起止时间与时间基准。尚未提供的链接标为“待提供”，不编造地址，不凭日期或文件名推断课次。</p>
 <h2 id="新增课程与资料流程">新增课程与资料流程</h2><ol>
-<li>从<span class="res-degrade-badge">📋 课程索引模板 (模板不随站点发布)</span>创建 <code>课程/&lt;中文课名&gt;/index.md</code>，并按模板建立五类 <code>index.md</code>。</li>
+<li>从<span class="res-degrade-badge">📋 课程索引模板 (模板不随站点发布)</span>创建 <code>课程/&lt;中文课名&gt;/index.md</code>，并按模板建立各类 <code>index.md</code>（默认五类；需豁免的类别先在 <code>.githooks/hook_lib.py</code> 的 <code>COURSE_SKIPPED_KINDS</code> 声明）。</li>
 <li>每个新文件复制对应模板，填写唯一稳定 ID、课程、类别与来源，保持相对链接互链。</li>
 <li>在 <code>.gitignore</code> 的精确白名单中为<strong>每个新文件</strong>添加 <code>!/完整相对路径</code>（不得使用通配符）。</li>
 <li>更新课程总索引与课程入口；运行下方 CLI 验证命令确认 README 目录可正常同步。</li>
@@ -585,7 +642,7 @@ git config core.hooksPath .githooks</code></pre>
         <aside class="m3-toc">
       <div class="toc-title">目录</div>
       <ul class="toc-list">
-        <li class="toc-item level-2"><a href="#按课程浏览">按课程浏览</a></li><li class="toc-item level-3"><a href="#大电网安全稳定智能分析与控制">大电网安全稳定智能分析与控制</a></li><li class="toc-item level-3"><a href="#工程数学">工程数学</a></li><li class="toc-item level-2"><a href="#仓库结构">仓库结构</a></li><li class="toc-item level-2"><a href="#整理与命名约定">整理与命名约定</a></li><li class="toc-item level-2"><a href="#音频资料边界">音频资料边界</a></li><li class="toc-item level-2"><a href="#新增课程与资料流程">新增课程与资料流程</a></li><li class="toc-item level-2"><a href="#提交时自动同步-readme-与维护细则">提交时自动同步 README 与维护细则</a></li><li class="toc-item level-2"><a href="#许可证与内容归属">许可证与内容归属</a></li>
+        <li class="toc-item level-2"><a href="#按课程浏览">按课程浏览</a></li><li class="toc-item level-3"><a href="#大电网安全稳定智能分析与控制">大电网安全稳定智能分析与控制</a></li><li class="toc-item level-3"><a href="#工程数学">工程数学</a></li><li class="toc-item level-3"><a href="#形势与政策">形势与政策</a></li><li class="toc-item level-2"><a href="#仓库结构">仓库结构</a></li><li class="toc-item level-2"><a href="#整理与命名约定">整理与命名约定</a></li><li class="toc-item level-2"><a href="#音频资料边界">音频资料边界</a></li><li class="toc-item level-2"><a href="#新增课程与资料流程">新增课程与资料流程</a></li><li class="toc-item level-2"><a href="#提交时自动同步-readme-与维护细则">提交时自动同步 README 与维护细则</a></li><li class="toc-item level-2"><a href="#许可证与内容归属">许可证与内容归属</a></li>
       </ul>
     </aside>
       </div>

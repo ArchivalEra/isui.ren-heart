@@ -282,6 +282,54 @@
           </li></ul>
             </div>
           </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="./课程/形势与政策/index.html" class="drawer-nav-link ">
+                <span>形势与政策</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 形势与政策" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="./课程/形势与政策/作业/index.html" class="drawer-nav-link">
+              <span>作业</span>
+            </a>
+          </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="./课程/形势与政策/课堂笔记/index.html" class="drawer-nav-link ">
+                <span>课堂笔记</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 课堂笔记" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="./课程/形势与政策/课堂笔记/2026-09-21-经济热点专题与考试安排.html" class="drawer-nav-link">
+              <span>09-21 经济热点专题与考试安排</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-item ">
+            <a href="./课程/形势与政策/原始资料/index.html" class="drawer-nav-link">
+              <span>原始资料</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="./课程/形势与政策/音频/index.html" class="drawer-nav-link">
+              <span>音频</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
         </li></ul>
             </div>
           </div>
@@ -436,7 +484,7 @@
               <h1 id="仓库维护条例">仓库维护条例</h1><p>本条列对仓库任何时期的任何改动都适用；与 README 冲突时以本条例为准并同步修订 README。</p>
 <h2 id="1-仓库定位与读者">1. 仓库定位与读者</h2><ul>
 <li>本仓库是给人看的学期学习仓库，不是纯机器格式库。OKF（v0.2）元数据只作轻量结构约束，不牺牲可读性；标题、正文、索引一律中文优先。</li>
-<li>仓库代表<strong>当前学期</strong>，以中文课程名为主分类；每门课固定五类子目录：作业、教材解析、课堂笔记、原始资料、音频。课程数量可任意增加，规则不随之改写。</li>
+<li>仓库代表<strong>当前学期</strong>，以中文课程名为主分类；每门课默认建五类子目录：作业、教材解析、课堂笔记、原始资料、音频。课程数量可任意增加，规则不随之改写。<strong>确无某一类内容的课程可声明豁免</strong>（如形势与政策没有可整理的教材正文，不设教材解析）：豁免登记在 <code>.githooks/hook_lib.py</code> 的 <code>COURSE_SKIPPED_KINDS</code>，豁免后该课不建该类目录、课程入口也不必链接它；一旦该课又出现该类资料，仍须照常建目录与索引。</li>
 <li>操作规程见<a href="./%E7%BB%B4%E6%8A%A4%E7%BB%86%E5%88%99.html">维护细则</a>（含随每次提交自动重算的仓库状态区块）；给 AI 助手用的执行流程见 <a href="./.agents/skills/repo-maintenance/SKILL.html"><code>.agents/skills/repo-maintenance/SKILL.md</code></a>。</li>
 </ul>
 <h2 id="2-真实性与溯源-最高优先级">2. 真实性与溯源（最高优先级）</h2><ol>
@@ -451,7 +499,7 @@
 <li>日期类资料（作业、课堂笔记、音频记录）：<code>YYYY-MM-DD-名称.md</code>。</li>
 <li><strong>教材解析：一节一个文件</strong>，放在章目录 <code>教材解析/第NN章-章名/</code> 下，文件名为 <code>第NN章-&lt;节号&gt;-&lt;节名&gt;.md</code>；一节内容过多时在该文件内按二级小节继续拆。<strong>不把整章塞进一个 md。</strong></li>
 <li>每个教材解析文件内部固定先写<strong>原书抄录</strong>（按原书页码抄录印刷正文与原编号），紧跟<strong>解析</strong>（概念、条件、推导、例题解法、易错点、验算）。抄录与解析同文件、分小节呈现，先抄后析，便于逐句对照。</li>
-<li>新建课程：复制 <code>模板/</code> 下五个模板建立五类 <code>index.md</code>，并同步登记课程总索引与课程入口。</li>
+<li>新建课程：复制 <code>模板/</code> 下对应模板建立各类 <code>index.md</code>（默认五类，确有豁免则建剩余各类），并同步登记课程总索引与课程入口。</li>
 <li><code>knowledge/</code> 是历史兼容入口，只放迁移说明，不再新增正文。</li>
 </ul>
 <h2 id="4-git-流程">4. Git 流程</h2><ol>
