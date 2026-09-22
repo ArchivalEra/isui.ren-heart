@@ -1,0 +1,1260 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-depth="3">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>暂态稳定评估方法与紧急控制决策 | S26-1 课程知识库 - isui.ren</title>
+  <script>
+  /* 首帧前应用已保存的主题色与明暗，避免先用默认色渲染再变色（闪光弹 + 二次全量重绘） */
+  (function () {
+    try {
+      var root = document.documentElement;
+      var m = localStorage.getItem("theme") ||
+        (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      root.setAttribute("data-theme", m === "dark" ? "dark" : "light");
+      var hue = localStorage.getItem("theme-hue");
+      if (hue !== null && /^\d+$/.test(hue)) {
+        root.style.setProperty("--hue", hue);
+        root.style.setProperty("--primary-h", hue);
+      }
+    } catch (e) { /* 隐私模式下 localStorage 可能抛错，忽略 */ }
+  })();
+  </script>
+  <link rel="stylesheet" href="../../../assets/katex/katex.min.css">
+  <link rel="stylesheet" href="../../../assets/theme/shirone-reader.css">
+  <link rel="stylesheet" href="../../../assets/plugins/site-search.css">
+</head>
+<body>
+  <div class="drawer-backdrop" id="drawer-backdrop"></div>
+
+  <div class="site-shell">
+    <!-- Left Column: Full-Height Sidebar (整列导航栏) -->
+    <aside class="m3-drawer" id="m3-drawer">
+      <div class="drawer-header-brand">
+        <a href="../../../index.html" class="sidebar-brand">
+          <span class="site-title-icon">📚</span>
+          <span class="sidebar-brand-text">S26-1 课程知识库</span>
+        </a>
+        <button class="m3-icon-btn drawer-collapse-btn" id="drawer-collapse-btn" aria-label="收起侧边栏" title="收起侧边栏">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M15 18l-6-6 6-6"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="drawer-header-toolbar">
+        <span class="drawer-section-title">课程导航目录</span>
+        <button class="drawer-action-btn" id="toggle-all-groups-btn" title="一键收起或展开所有课程分类">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M7 15l5 5 5-5M7 9l5-5 5 5"/>
+          </svg>
+          <span id="toggle-all-text">全部收起</span>
+        </button>
+      </div>
+
+      <div class="drawer-nav-scroll-area">
+        <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../index.html" class="drawer-nav-link">
+              <span>首页</span>
+            </a>
+          </li><li class="drawer-nav-group expanded">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/index.html" class="drawer-nav-link ">
+                <span>课程总览</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 课程总览" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/工程数学/index.html" class="drawer-nav-link ">
+                <span>工程数学</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 工程数学" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/工程数学/教材解析/index.html" class="drawer-nav-link ">
+                <span>教材解析</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 教材解析" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/教材解析/0.0-符号入门.html" class="drawer-nav-link">
+              <span>符号入门</span>
+            </a>
+          </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/index.html" class="drawer-nav-link ">
+                <span>第一部分 线性代数</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 第一部分 线性代数" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header nav-header-clickable">
+            
+              <span class="drawer-section-title-text">第01章 行列式</span>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 第01章 行列式" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.0-本章通关攻略.html" class="drawer-nav-link">
+              <span>★ 通关攻略</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.1-二阶与三阶行列式.html" class="drawer-nav-link">
+              <span>1.1 二阶与三阶行列式</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.2-n阶行列式.html" class="drawer-nav-link">
+              <span>1.2 n阶行列式</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.3-克莱姆法则.html" class="drawer-nav-link">
+              <span>1.3 克莱姆法则</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.4-用MATLAB计算行列式.html" class="drawer-nav-link">
+              <span>1.4 用MATLAB计算行列式</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header nav-header-clickable">
+            
+              <span class="drawer-section-title-text">第02章 矩阵</span>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 第02章 矩阵" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.0-本章通关攻略.html" class="drawer-nav-link">
+              <span>★ 通关攻略</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.1-矩阵的概念及运算.html" class="drawer-nav-link">
+              <span>2.1 矩阵的概念及运算</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.2-逆矩阵.html" class="drawer-nav-link">
+              <span>2.2 逆矩阵</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.3-矩阵的初等变换与初等矩阵.html" class="drawer-nav-link">
+              <span>2.3 初等变换与初等矩阵</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.4-矩阵的秩.html" class="drawer-nav-link">
+              <span>2.4 矩阵的秩</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.5-用MATLAB进行矩阵运算.html" class="drawer-nav-link">
+              <span>2.5 用MATLAB进行矩阵运算</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li></ul>
+            </div>
+          </div>
+        </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/工程数学/课堂笔记/index.html" class="drawer-nav-link ">
+                <span>课堂笔记</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 课堂笔记" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/课堂笔记/2026-09-17-determinants-order-2-3.html" class="drawer-nav-link">
+              <span>09-17 行列式与沙路法则</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/课堂笔记/2026-09-17-determinants-transcript-notes.html" class="drawer-nav-link">
+              <span>09-17 课堂听课整理</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/工程数学/作业/index.html" class="drawer-nav-link ">
+                <span>作业</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 作业" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/作业/2026-09-17-作业1.html" class="drawer-nav-link">
+              <span>作业1</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/原始资料/index.html" class="drawer-nav-link">
+              <span>原始资料</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/音频/index.html" class="drawer-nav-link">
+              <span>音频</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group expanded">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/电力大数据与人工智能/index.html" class="drawer-nav-link ">
+                <span>电力大数据与人工智能</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 电力大数据与人工智能" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/电力大数据与人工智能/作业/index.html" class="drawer-nav-link">
+              <span>作业</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电力大数据与人工智能/教材解析/index.html" class="drawer-nav-link">
+              <span>教材解析</span>
+            </a>
+          </li><li class="drawer-nav-group expanded">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/电力大数据与人工智能/课堂笔记/index.html" class="drawer-nav-link ">
+                <span>课堂笔记</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 课堂笔记" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/电力大数据与人工智能/课堂笔记/2026-09-20-课程定位与考核要求.html" class="drawer-nav-link">
+              <span>09-20 开课第一讲</span>
+            </a>
+          </li><li class="drawer-nav-item active">
+            <a href="../../../课程/电力大数据与人工智能/课堂笔记/2026-09-22-暂态稳定评估方法与紧急控制.html" class="drawer-nav-link">
+              <span>09-22 暂态稳定评估与紧急控制</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电力大数据与人工智能/原始资料/index.html" class="drawer-nav-link">
+              <span>原始资料</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电力大数据与人工智能/音频/index.html" class="drawer-nav-link">
+              <span>音频</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/形势与政策/index.html" class="drawer-nav-link ">
+                <span>形势与政策</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 形势与政策" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/形势与政策/作业/index.html" class="drawer-nav-link">
+              <span>作业</span>
+            </a>
+          </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/形势与政策/课堂笔记/index.html" class="drawer-nav-link ">
+                <span>课堂笔记</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 课堂笔记" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/形势与政策/课堂笔记/2026-09-21-经济热点专题与考试安排.html" class="drawer-nav-link">
+              <span>09-21 经济热点专题与考试安排</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-item ">
+            <a href="../../../课程/形势与政策/原始资料/index.html" class="drawer-nav-link">
+              <span>原始资料</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/形势与政策/音频/index.html" class="drawer-nav-link">
+              <span>音频</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/电路原理/index.html" class="drawer-nav-link ">
+                <span>电路原理</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 电路原理" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/电路原理/作业/index.html" class="drawer-nav-link">
+              <span>作业</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电路原理/教材解析/index.html" class="drawer-nav-link">
+              <span>教材解析</span>
+            </a>
+          </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/电路原理/课堂笔记/index.html" class="drawer-nav-link ">
+                <span>课堂笔记</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 课堂笔记" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/电路原理/课堂笔记/2026-09-21-开课说明与电路的基本概念.html" class="drawer-nav-link">
+              <span>09-21 开课说明与电路的基本概念</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电路原理/原始资料/index.html" class="drawer-nav-link">
+              <span>原始资料</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电路原理/音频/index.html" class="drawer-nav-link">
+              <span>音频</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/电子技术/index.html" class="drawer-nav-link ">
+                <span>电子技术</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 电子技术" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/电子技术/作业/index.html" class="drawer-nav-link">
+              <span>作业</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电子技术/教材解析/index.html" class="drawer-nav-link">
+              <span>教材解析</span>
+            </a>
+          </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/电子技术/课堂笔记/index.html" class="drawer-nav-link ">
+                <span>课堂笔记</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 课堂笔记" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/电子技术/课堂笔记/2026-09-21-开课说明与半导体基础到PN结.html" class="drawer-nav-link">
+              <span>09-21 开课说明与半导体基础到 PN 结</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电子技术/原始资料/index.html" class="drawer-nav-link">
+              <span>原始资料</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电子技术/音频/index.html" class="drawer-nav-link">
+              <span>音频</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header nav-header-clickable">
+            
+              <span class="drawer-section-title-text">仓库规约</span>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 仓库规约" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../维护条例.html" class="drawer-nav-link">
+              <span>维护条例</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../维护细则.html" class="drawer-nav-link">
+              <span>维护细则</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li></ul>
+      </div>
+
+      <div class="sidebar-resizer" id="sidebar-resizer" title="按住拖拽调整侧边栏宽度，双击恢复默认宽度"></div>
+    </aside>
+
+    <!-- Right Column: Main Content Column (主内容列) -->
+    <div class="main-column">
+      <!-- Top App Bar -->
+      <header class="m3-top-app-bar">
+        <div class="top-bar-left">
+          <button class="m3-icon-btn" id="drawer-toggle" aria-label="展开/收起侧边栏" title="展开/收起侧边栏">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+          </button>
+          <a href="../../../index.html" class="top-bar-mobile-title">
+            <span>S26-1 课程知识库</span>
+          </a>
+          <nav class="top-bar-breadcrumbs" aria-label="当前路径">
+            <a href="../../../index.html">首页</a><span class="m3-breadcrumb-sep">/</span><span class="current-crumb">暂态稳定评估方法与紧急控制决策</span>
+          </nav>
+        </div>
+
+        <div class="top-bar-right">
+          <button class="m3-icon-btn" id="palette-toggle" aria-label="调色盘" title="自定义主题强调色">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/>
+              <circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/>
+              <circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/>
+              <circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/>
+              <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/>
+            </svg>
+          </button>
+
+          <!-- Palette Popover -->
+          <div class="palette-popover" id="palette-popover">
+            <div class="palette-header">
+              <span class="palette-title">主题强调色调色盘</span>
+              <button class="palette-reset-btn" id="palette-reset-btn" title="重置为默认色">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+              </button>
+            </div>
+            <div class="palette-current-row">
+              <span class="palette-hue-badge" id="palette-hue-badge">Hue 248°</span>
+              <div class="palette-color-dot" id="palette-color-dot"></div>
+            </div>
+            <div class="palette-slider-container">
+              <span class="palette-slider-label">色相微调 (0° - 360°)</span>
+              <input type="range" min="0" max="360" value="248" class="palette-slider" id="hue-slider">
+            </div>
+            <div>
+              <div class="palette-swatches-title">预设配色</div>
+              <div class="palette-swatches-grid">
+                <button class="palette-swatch-item" data-hue="315" title="经典粉紫">
+                  <span class="palette-swatch-dot" style="background: hsl(315, 75%, 45%);"></span>
+                  <span class="palette-swatch-name">粉紫</span>
+                </button>
+                <button class="palette-swatch-item" data-hue="280" title="紫罗兰">
+                  <span class="palette-swatch-dot" style="background: hsl(280, 75%, 45%);"></span>
+                  <span class="palette-swatch-name">紫罗兰</span>
+                </button>
+                <button class="palette-swatch-item active" data-hue="248" title="学术深蓝">
+                  <span class="palette-swatch-dot" style="background: hsl(248, 75%, 45%);"></span>
+                  <span class="palette-swatch-name">深蓝</span>
+                </button>
+                <button class="palette-swatch-item" data-hue="205" title="天青蓝">
+                  <span class="palette-swatch-dot" style="background: hsl(205, 75%, 45%);"></span>
+                  <span class="palette-swatch-name">天青</span>
+                </button>
+                <button class="palette-swatch-item" data-hue="150" title="翡翠绿">
+                  <span class="palette-swatch-dot" style="background: hsl(150, 75%, 40%);"></span>
+                  <span class="palette-swatch-name">翡翠</span>
+                </button>
+                <button class="palette-swatch-item" data-hue="75" title="琥珀黄">
+                  <span class="palette-swatch-dot" style="background: hsl(75, 75%, 40%);"></span>
+                  <span class="palette-swatch-name">琥珀</span>
+                </button>
+                <button class="palette-swatch-item" data-hue="30" title="晚霞橙">
+                  <span class="palette-swatch-dot" style="background: hsl(30, 80%, 48%);"></span>
+                  <span class="palette-swatch-name">晚霞</span>
+                </button>
+                <button class="palette-swatch-item" data-hue="355" title="绯红">
+                  <span class="palette-swatch-dot" style="background: hsl(355, 75%, 45%);"></span>
+                  <span class="palette-swatch-name">绯红</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <button class="m3-icon-btn" id="search-toggle" aria-label="全站搜索" title="全站搜索">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+          </button>
+
+          <button class="m3-icon-btn" id="theme-toggle" aria-label="切换昼夜主题">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          </button>
+        </div>
+      </header>
+
+      <!-- 全站搜索面板（点击顶栏放大镜展开；ESC 或点外部关闭） -->
+      <div class="search-panel" id="search-panel" hidden>
+        <div class="search-panel-inner" role="dialog" aria-modal="true" aria-label="全站搜索">
+          <div class="search-panel-head">
+            <svg class="search-panel-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+            <input type="search" id="search-input" class="search-panel-input" placeholder="搜索知识点、例题、习题…" autocomplete="off" spellcheck="false">
+            <button class="m3-icon-btn" id="search-close" aria-label="关闭搜索" title="关闭（ESC）">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
+          </div>
+          <div class="search-panel-body" id="search-results">
+            <p class="search-hint">输入关键词开始搜索。中文按字面子串匹配——搜「沙路法则」只出真正连着出现这四个字的地方；结果按相关度排序，回车打开第一条。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="layout-container">
+        <!-- Content Area -->
+        <main class="content-wrapper">
+          <article class="article-container">
+            <!-- Breadcrumb in page body -->
+            <nav class="m3-breadcrumb">
+              <a href="../../../index.html">首页</a><span class="m3-breadcrumb-sep">/</span><span>暂态稳定评估方法与紧急控制决策</span>
+            </nav>
+
+            <div class="meta-chip-bar"><span class="meta-chip primary">📚 电力大数据与人工智能</span><span class="meta-chip">🏷️ 课堂笔记</span><span class="meta-chip">⚡ 状态: active</span><span class="meta-chip">📅 更新: 2026-09-22</span><span class="meta-chip">📖 来源: 原始资料/20260922_13301455-原文.doc</span></div>
+
+            <div class="article-content">
+              <h1 id="暂态稳定评估方法与紧急控制决策-2026-09-22">暂态稳定评估方法与紧急控制决策（2026-09-22）</h1><h2 id="1-来源与使用边界">1. 来源与使用边界</h2><ul>
+<li><strong>课程</strong>：电力大数据与人工智能（仓内首次登记时曾用名「大电网安全稳定智能分析与控制」，2026-09-22 更正）。<strong>日期</strong>：2026-09-22（星期二）。<strong>上课时段</strong>：文件名标注录音时段 <strong>13:30–14:55</strong>；<strong>课次</strong>：本课程第二次课（不由日期推断课时编号）。</li>
+<li><strong>原始来源</strong>：<span class="res-degrade-badge">📄 原件: 20260922_13301455-原文.doc (原件不入库，网页不提供)</span>（<code>15205ffa…1747e8ea</code>），相对时间 <code>00:00–1:16:41</code>。</li>
+<li><strong>实际格式</strong>：扩展名 <code>.doc</code>，内容实为 UTF-8 HTML 文本，本地去标签提取，未经在线转换。</li>
+<li><strong>录音与文件名的关系</strong>：录音 <code>1:16:41</code>，短于文件名标注的 85 分钟，<strong>两端可能都有缺失</strong>（开头已在讲名词解释的答法，结尾停在「创新点是第三章」处）。文件内页另标 <code>13:33:39</code>，那是转写服务自己的时间，<strong>不是上课时间</strong>。<code>36:35</code> 处教师宣布课间休息。</li>
+<li><strong>没有说话人分离</strong>：全篇为连续文本加相对时间戳，师生问答按语义区分；本讲以教师讲授为主，学生应答很少。</li>
+</ul>
+<blockquote>
+<p><strong>可信度说明</strong>：原文是课堂口语转写，同音误识别极多，而且集中在<strong>核心术语</strong>上（「暂态」被转成「展开/展态/站台」、「李雅普诺夫」有六种写法、「扰动」被转成「劳动/脑洞」、「雅可比矩阵」被转成「压缩机」）。本笔记只在上下文明确时规范化，逐条对照表在第 12 节；<strong>照转写原文抄概念会抄出错术语</strong>。
+<strong>考试与考核信息</strong>（考试提示、题型提醒）按教师原话记录并标注不确定处；<strong>教学正文只写教师确实讲过且语义完整的内容</strong>，缺口在第 11 节。
+<strong>学生姓名、其他教师姓氏、课后闲聊一律不复录</strong>（任课教师情况登记在<a href="../index.html">课程索引</a>）。</p>
+</blockquote>
+<h3 id="时间导览-相对时间-便于回查原文">时间导览（相对时间，便于回查原文）</h3><div class="table-scroll-container"><table>
+<thead>
+<tr>
+<th align="left">时间段</th>
+<th align="left">内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">00:00–02:11</td>
+<td align="left">名词解释的答法（先英文全称后中文）；点到广域测量系统与安全域</td>
+</tr>
+<tr>
+<td align="left">02:11–03:11</td>
+<td align="left">安全域的静态与动态之分；描述它们分别需要哪类方程</td>
+</tr>
+<tr>
+<td align="left">03:11–07:21</td>
+<td align="left"><strong>物理参数与状态参数</strong>；储能元件的能量由两类参数表示</td>
+</tr>
+<tr>
+<td align="left">07:21–10:02</td>
+<td align="left">线性系统的叠加性；动态安全域的几个性质；特征根判稳</td>
+</tr>
+<tr>
+<td align="left">10:02–13:19</td>
+<td align="left">出力（发电功率）的含义；平衡点处的局部线性化</td>
+</tr>
+<tr>
+<td align="left">13:19–15:02</td>
+<td align="left">特征根、行列式、维度太高算不动 → 引出人工智能</td>
+</tr>
+<tr>
+<td align="left">15:02–19:24</td>
+<td align="left">动态安全域求解的两条路：数值仿真法与解析法（能量函数）</td>
+</tr>
+<tr>
+<td align="left">19:24–22:34</td>
+<td align="left"><strong>时域仿真法</strong>：建模到判稳的完整链条、优点与致命缺陷</td>
+</tr>
+<tr>
+<td align="left">22:52–25:10</td>
+<td align="left"><strong>直接法（能量函数）</strong>：充分非必要、优缺点</td>
+</tr>
+<tr>
+<td align="left">25:10–28:55</td>
+<td align="left">暂态稳定与稳态稳定的区别；第三、第四类评估方法</td>
+</tr>
+<tr>
+<td align="left">29:57–36:35</td>
+<td align="left">时域仿真法的方程结构（微分方程 + 代数方程）；原动机与旋转机械</td>
+</tr>
+<tr>
+<td align="left">36:35–36:43</td>
+<td align="left">课间休息</td>
+</tr>
+<tr>
+<td align="left">37:09–40:55</td>
+<td align="left"><strong>分布式并行计算</strong>：三个研究方向、云计算</td>
+</tr>
+<tr>
+<td align="left">40:55–53:00</td>
+<td align="left">直接法细讲：自治系统、平衡点、李雅普诺夫与拉萨尔定理、临界能量</td>
+</tr>
+<tr>
+<td align="left">53:00–58:44</td>
+<td align="left">能量函数法的缺点；BCU；基于拓扑的稳定边界方法</td>
+</tr>
+<tr>
+<td align="left">58:44–1:00:24</td>
+<td align="left">不稳定平衡点的求解困难与近似手段</td>
+</tr>
+<tr>
+<td align="left">59:59–1:03:59</td>
+<td align="left"><strong>基于故障后系统响应</strong>与<strong>数据挖掘/机器学习</strong>的方法</td>
+</tr>
+<tr>
+<td align="left">1:03:59–1:15:15</td>
+<td align="left"><strong>紧急控制决策方法</strong>：启发式、基于响应、基于安全域/稳定域</td>
+</tr>
+<tr>
+<td align="left">1:15:15–1:16:41</td>
+<td align="left">收束：第一章为什么要用大数据（计算规模不现实）</td>
+</tr>
+</tbody></table></div>
+<h2 id="2-承接第一讲-这一讲要回答什么">2. 承接第一讲：这一讲要回答什么</h2><ul>
+<li>第一讲交代了<strong>课程定位与考核要求</strong>，并铺开安全稳定的一组基本概念（平衡态、扰动、特征值判据、安全域）。</li>
+<li>本讲把这些概念推到<strong>怎么算</strong>：静态/动态安全域用什么方程描述、稳定性用什么判据、经典的两类计算方法各有什么死穴。</li>
+<li>教师明确说这两次课的主线：<strong>「这两次就是重点就是围绕……围绕第一章，哪些问题要用到这个大数据」</strong>——即大数据与人工智能不是外加的花样，而是因为传统算法在<strong>规模</strong>面前算不动才必须上的。</li>
+<li>结尾收束时又说了一遍：设备越多 → 节点越多 → 方程阶数越高 → <strong>用解析计算「是不现实的，也是不可能的」</strong>，只能用数字计算；而数字计算算出的分界点还要再加工、简化复杂度。</li>
+</ul>
+<h3 id="考试提示-教师当堂口头说明-原句有残缺">考试提示（教师当堂口头说明，原句有残缺）</h3><ul>
+<li>课间前教师说：<strong>「这个考试考一些选择题……选择题的地方要多算一点」</strong>——选择题不是背概念题，要动笔算。</li>
+<li>讲完紧急控制的三类方法后，教师特意提醒：<strong>前面用于「稳定性评估」的三个方法与这三个「紧急控制」方法要区分开来</strong>，「到时候考试的时候很容易」混；并说这三类方法「也是……我们不考主体」——<strong>原句残缺</strong>，「不考主体」疑为「不考大题」，<strong>不作结论</strong>（见第 12 节）。</li>
+</ul>
+<h2 id="3-安全域-静态与动态">3. 安全域：静态与动态</h2><ul>
+<li><strong>安全域是什么</strong>：约束条件由<strong>数学方程定义的一个范围</strong>——安全范围（也用于描述可靠性）。教师说现阶段<strong>不要求</strong>用数学去求解它，「知道安全是怎么回事」即可。</li>
+<li><strong>按描述它的方程分类</strong>：</li>
+</ul>
+<div class="table-scroll-container"><table>
+<thead>
+<tr>
+<th align="left">类型</th>
+<th align="left">用什么方程描述</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>静态安全域</strong></td>
+<td align="left"><strong>代数方程</strong>（组）</td>
+<td align="left">描述<strong>平衡态</strong>，完全没有动态的微分方程或差分方程</td>
+</tr>
+<tr>
+<td align="left"><strong>动态安全域</strong></td>
+<td align="left"><strong>两类方程</strong></td>
+<td align="left">动态的<strong>微分方程或差分方程</strong>（状态参数描述）＋代数方程</td>
+</tr>
+</tbody></table></div>
+<ul>
+<li><strong>动态安全域的性质</strong>（教师列举）：内部<strong>连通</strong>、没有空洞、<strong>可微</strong>（边界连续）、安全域与边界不会缠绕交错、不存在扭曲；在<strong>同一种失稳模式下</strong>对应的局部边界是连续的——教师说这是专业性概念，「由有限的失稳子模式表面的定义共同决定」。</li>
+<li><strong>线性系统的叠加性</strong>：安全边界具有<strong>线性叠加性</strong>，「所有线性系统都满足」；判定一个系统是否线性，看它是否满足<strong>叠加原理</strong>——满足即线性，不满足即非线性。教师举的例子是简单线性电路（电阻 + 电容/电感）。</li>
+<li><strong>稳定性判据（复习第一讲）</strong>：用状态空间模型的特征方程，看<strong>特征根</strong>——<ul>
+<li>所有特征根的<strong>实部都小于 0</strong> → 稳定；</li>
+<li>只要存在一个特征根实部<strong>不小于 0</strong> → <strong>失稳</strong>（失去稳定）。</li>
+</ul>
+</li>
+<li><strong>局部线性化</strong>：电力系统是非线性系统，但在平衡点的<strong>无穷小邻域</strong>内可以线性化——教师用圆周运动打比方：在轨道上某点作<strong>切线</strong>，局部就是线性的；于是可写出该点处的线性状态空间方程，再判这个微小扰动是否稳定（同样看矩阵特征根）。</li>
+<li><strong>规模问题（本讲反复出现的引子）</strong>：电力系统维数高、节点多（教师用「一个宿舍楼就是一个节点」打比方），特征根数量多到<strong>无法手算</strong>——「怎么办？人工智能」。</li>
+</ul>
+<h2 id="4-物理参数与状态参数">4. 物理参数与状态参数</h2><p>教师说这一块**「有个认识就可以了，不用深究」**，但它解释了数据从哪来。</p>
+<ul>
+<li>电力系统本质上是一个<strong>非线性的动力系统</strong>、一个物理系统；分析它时用到的参数分两类：</li>
+</ul>
+<div class="table-scroll-container"><table>
+<thead>
+<tr>
+<th align="left">类别</th>
+<th align="left">又叫</th>
+<th align="left">内容</th>
+<th align="left">来源</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>物理参数</strong></td>
+<td align="left">结构参数</td>
+<td align="left">描述物理结构的参数，如交流电机的电感、电抗、互感，铁心的磁性能</td>
+<td align="left">各类<strong>传感器</strong>测得（声、光、温等）——教师原话：这些数据「我们都是大数据」</td>
+</tr>
+<tr>
+<td align="left"><strong>状态参数</strong></td>
+<td align="left">状态变量</td>
+<td align="left">描述状态连续变化的量：<strong>电流、电压、功率、频率</strong>等</td>
+<td align="left">由系统运行状态决定</td>
+</tr>
+</tbody></table></div>
+<ul>
+<li><strong>两类参数共同表示能量</strong>（教师用线性电路举例，元件是电阻、电容、电感）：<ul>
+<li>电感储能：<code>(1/2)·L·i²</code>；电容储能：<code>(1/2)·C·u²</code>；</li>
+<li>也就是说，一个能量由<strong>物理结构参数</strong>与<strong>状态参数</strong>两类参数共同表达。</li>
+</ul>
+</li>
+<li>教师提示：这一周会有另一位专业老师把结构建模等相关内容上线到学习平台（<strong>教师姓名不登记</strong>），此处的结构参数、等效模型、状态分布等内容届时再补。</li>
+</ul>
+<h2 id="5-潮流与雅可比矩阵">5. 潮流与雅可比矩阵</h2><ul>
+<li><strong>潮流</strong>＝<strong>功率分配</strong>。教师强调不要被「潮流」这个词吓住：本课程里的潮流就是功率，网络与发电机之间有<strong>潮流交换</strong>。</li>
+<li><strong>雅可比矩阵</strong>：潮流计算里用到的矩阵（转写作「压缩机」，见第 12 节），教师说这只是专业概念，知道它在潮流/节点电压计算里出现即可；<strong>简化节点电压计算</strong>是它的用途之一。</li>
+</ul>
+<h2 id="6-时域仿真法-数值仿真法">6. 时域仿真法（数值仿真法）</h2><p>这是教师讲的<strong>第一类经典方法</strong>，讲得最细，也是「检验其他方法的标准」。</p>
+<h3 id="6-1-做法-一条完整的链条">6.1 做法（一条完整的链条）</h3><ol>
+<li>建立电力系统<strong>所有元件</strong>的模型：原动机（驱动发电机的旋转机械）、发电机、电力网络、负荷；</li>
+<li>由<strong>物理定律</strong>写出等效物理模型——教师点名的定律是<strong>基尔霍夫电流定律与电压定律</strong>；</li>
+<li>由等效物理模型写出<strong>数学模型</strong>：一组<strong>微分代数方程组</strong>；</li>
+<li>用数字计算工具<strong>求解大规模微分代数方程组</strong>；</li>
+<li>得到故障前后<strong>状态变量与代数变量的时间响应</strong>；</li>
+<li>由<strong>发电机相对功角曲线</strong>的收敛性或发散性判断系统稳定性；若某台或多台机组与系统中其余机组的功率差超过一定<strong>阈值</strong>，就是失稳（教师说阈值的选取「由研究人员的经验判断」）。</li>
+</ol>
+<h3 id="6-2-方程结构-教师特别强调的一处">6.2 方程结构（教师特别强调的一处）</h3><div class="table-scroll-container"><table>
+<thead>
+<tr>
+<th align="left">方程</th>
+<th align="left">性质</th>
+<th align="left">角色</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>微分方程 / 差分方程</strong></td>
+<td align="left">微分是连续的，差分是离散的</td>
+<td align="left">描述动态，是<strong>目标（函数）</strong></td>
+</tr>
+<tr>
+<td align="left"><strong>代数方程</strong></td>
+<td align="left">—</td>
+<td align="left">描述<strong>平衡态</strong>，是<strong>约束条件</strong></td>
+</tr>
+</tbody></table></div>
+<p>两类方程组合起来，才构成电力系统这个复杂系统的求解问题。</p>
+<h3 id="6-3-判稳的时间区间">6.3 判稳的时间区间</h3><ul>
+<li>研究暂态稳定的时间区间通常是<strong>扰动结束后 3–5 秒内</strong>；</li>
+<li>对于有<strong>潜在区间震荡模式</strong>的大型系统，时间区间可以延长到 <strong>15–20 秒</strong>（转写把单位写成了「年」，见第 12 节）。</li>
+</ul>
+<h3 id="6-4-优点与致命缺陷">6.4 优点与致命缺陷</h3><ul>
+<li><strong>优点</strong>：<strong>计算精度高</strong>，因此长期以来是检验其他暂态稳定判据的<strong>标准</strong>。</li>
+<li><strong>缺陷</strong>：<ul>
+<li><strong>计算量巨大</strong>——节点规模一大，「在有限的时间内算不出结果」，甚至直接卡死；</li>
+<li>更要命的是<strong>不能在线</strong>：只能在<strong>离线</strong>情况下算好结果，<strong>不满足在线暂态评估的要求</strong>——教师称之为「致命缺陷」。</li>
+</ul>
+</li>
+<li>由此引出两件事：<ol>
+<li><strong>数据中心</strong>：发电站、变电站、换流站都要建数据中心，目的是<strong>提高响应速度与计算速度</strong>（因为在线评估要求快）；</li>
+<li><strong>两条提速路线</strong>（见 6.5）。</li>
+</ol>
+</li>
+</ul>
+<h3 id="6-5-提速的两条路线">6.5 提速的两条路线</h3><ul>
+<li><strong>路线一：在损失一部分精度的前提下用简化模型。</strong> 教师提醒不能一味追求简单——「你一味地追求简单……求解出来了跟实际的系统相差十万八千里，没有指导意义」。要在<strong>逼近真实物理系统</strong>与<strong>保证快速性</strong>之间折中。</li>
+<li><strong>路线二：分布式并行计算</strong>（最高级的形式是<strong>云计算</strong>）。<ul>
+<li>云计算为什么快：不卖服务器、不卖资源，<strong>只卖服务</strong>；可以分解单个节点的复杂度与压力，从而提高运算速度。</li>
+<li><strong>三个研究方向（教师要求记住）</strong>：</li>
+</ul>
+</li>
+</ul>
+<div class="table-scroll-container"><table>
+<thead>
+<tr>
+<th align="left">方向</th>
+<th align="left">做法</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>时间并行算法</strong></td>
+<td align="left">把<strong>微分方程差分化（离散化）<strong>后与代数方程</strong>联立求解</strong>，可保持严格<strong>牛顿法</strong>的收敛性</td>
+</tr>
+<tr>
+<td align="left"><strong>空间并行算法</strong></td>
+<td align="left">把大的电力系统按物理分布<strong>分成若干子网</strong>，各子网分别单独计算</td>
+</tr>
+<tr>
+<td align="left"><strong>波形松弛算法</strong></td>
+<td align="left">把大系统拆成若干小系统，利用<strong>不同子系统间的交替迭代</strong>计算，每个子系统可以多次计算</td>
+</tr>
+</tbody></table></div>
+<ul>
+<li>结论（教师原话的意思）：随着算法改进与计算设备性能提升，时域仿真法的计算速度已有较大提升，<strong>但规模庞大时仍不能满足实时要求</strong>——所以「只能说用 AI 了」「只能采用云计算和人工智能」。</li>
+</ul>
+<h2 id="7-直接法-能量函数-李雅普诺夫方法">7. 直接法（能量函数 / 李雅普诺夫方法）</h2><p>这是教师讲的<strong>第二类经典方法</strong>：不求全部特征根，而是<strong>构造一个能量函数</strong>来判断稳定。</p>
+<h3 id="7-1-基本思想与-充分非必要">7.1 基本思想与「充分非必要」</h3><ul>
+<li>构造一个<strong>能量函数</strong>来反映电力系统的暂态特征，用它判断暂态稳定。</li>
+<li><strong>关键性质</strong>：找到这样的能量函数，<strong>可以证明系统稳定</strong>；但<strong>找不到，不能说明系统就不稳定</strong>——所以它是<strong>充分条件，不是必要条件</strong>。教师反复强调了三遍这个「充分但非必要」。</li>
+<li>判据形式（教师口述）：若存在一个<strong>正定</strong>的函数，且沿轨线的<strong>导函数非正定（半负定）</strong>，则系统稳定；这样的函数称为<strong>李雅普诺夫函数</strong>。</li>
+</ul>
+<h3 id="7-2-正定与负定的直观含义">7.2 正定与负定的直观含义</h3><ul>
+<li><strong>正定</strong>（教师用系数打比方）：无论哪个分量增大或变化，能量都<strong>逐渐增大</strong>（发散）；</li>
+<li><strong>负定</strong>：无论哪个分量怎么变，总能量都在<strong>减少</strong>（耗散）——这正是稳定系统该有的样子。</li>
+</ul>
+<h3 id="7-3-李雅普诺夫与拉萨尔">7.3 李雅普诺夫与拉萨尔</h3><div class="table-scroll-container"><table>
+<thead>
+<tr>
+<th align="left">定理</th>
+<th align="left">要求</th>
+<th align="left">差别</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>李雅普诺夫定理</strong></td>
+<td align="left">函数正定（各项系数都<strong>大于 0</strong>）</td>
+<td align="left">条件更<strong>保守</strong></td>
+</tr>
+<tr>
+<td align="left"><strong>拉萨尔（LaSalle）定理</strong></td>
+<td align="left">只要求<strong>非负定</strong>（各项系数<strong>大于等于 0</strong>）</td>
+<td align="left">在李雅普诺夫基础上<strong>放宽</strong>了正定要求</td>
+</tr>
+</tbody></table></div>
+<h3 id="7-4-稳定域与临界能量">7.4 稳定域与临界能量</h3><ul>
+<li>求解<strong>稳定域</strong> ⟺ 构造满足该原理的<strong>能量函数</strong>；求解<strong>稳定边界</strong> ⟺ 确定该能量函数的<strong>临界能量</strong>。</li>
+<li><strong>临界能量的取法</strong>：最初取<strong>稳定平衡点周围所有不稳定平衡点中能量最低点</strong>的能量作为临界能量。缺点：平衡点多时<strong>计算量最大</strong>，而且分析结果<strong>非常保守</strong>。</li>
+<li>后来的发展方向：考虑故障与系统实际（故障前后比例、转移电导的变化）→ <strong>主导不稳定平衡点法（BCU）</strong>，被认为是最有效的暂态能量函数方法之一；还有结合四种界面法等方法。</li>
+<li><strong>另一条路线：基于非线性动力学稳定边界的拓扑方法</strong>——把稳定域边界描述为<strong>所有不稳定平衡点的稳定流形的并</strong>，不依赖能量函数、通用性强，适用于一般非线性动力系统。</li>
+</ul>
+<h3 id="7-5-这个方法的缺点-教师逐条列">7.5 这个方法的缺点（教师逐条列）</h3><ul>
+<li>能量函数的形式<strong>非常复杂</strong>，目前<strong>没有统一的构造方法</strong>；因此只能用于一些<strong>较简单的系统</strong>，复杂系统很难找到满足条件的能量函数。</li>
+<li>早期能量函数里发电机一般用<strong>经典二阶模型</strong>，且<strong>不考虑调速器的动态</strong>；随着研究推进，高压直流输电模型、带调控器的三级发电机模型、考虑负荷动态的模型等被逐个加进能量函数——<strong>每加一个新模型都要构造一个相应的能量函数</strong>，难度剧增，这「限制了能量法则的发展」。</li>
+<li>教师由此再次回到主线：<strong>发展人工智能与云计算是必由之路</strong>。</li>
+</ul>
+<h3 id="7-6-顺带讲清的几个概念">7.6 顺带讲清的几个概念</h3><ul>
+<li><strong>自治系统</strong>：控制理论里的概念——<strong>没有输入、没有输出的系统</strong>，是一个理想化的系统；用数学表示就是对应<strong>齐次</strong>的微分方程。教师打的比方是：一个没有外界干扰、没有激励、完全<strong>自发</strong>行为的人。加了输入/激励就不是自治系统了。<strong>电力系统经过适当假设与建模，可以看成一个非线性自治系统</strong>。</li>
+<li><strong>平衡点与平衡集</strong>：动态过程分三个阶段——<ol>
+<li><strong>故障前</strong>：系统运行于<strong>稳定平衡</strong>（所有运行点构成的集合叫稳态平衡点，简称平衡集）；</li>
+<li><strong>扰动过程中</strong>：离扰动近的发电机组<strong>电磁功率突然减少</strong>，而<strong>机械功率基本不变</strong>，于是机械功率与电磁功率不平衡，<strong>转子开始加速</strong>；</li>
+<li><strong>扰动后（故障切除后）</strong>：作用于系统的外力消失，系统重新成为封闭系统，扰动过程中积累的能量开始释放。</li>
+</ol>
+<ul>
+<li>因此，<strong>判断扰动后系统是否稳定的本质，是判断最后一次扰动清除后系统状态能否回到稳定平衡点</strong>。</li>
+</ul>
+</li>
+<li><strong>局部线性化与特征根</strong>（与第 3 节呼应）：在平衡点处做局部线性化得到线性状态空间方程，再求其矩阵的特征根来判稳。</li>
+</ul>
+<h2 id="8-第三类-基于故障后系统响应的方法">8. 第三类：基于故障后系统响应的方法</h2><ul>
+<li><strong>思路</strong>：直接用<strong>故障后系统的实际轨迹/时间响应</strong>判断稳定性，例如看<strong>故障电流</strong>是衰减还是发散。</li>
+<li><strong>成熟条件</strong>：随着<strong>广域测量系统</strong>（WAMS）日益成熟，利用故障后的实际量测信息，可以与仿真法、直接法<strong>结合</strong>改进传统方法：<ul>
+<li>用<strong>故障切除时刻的量测量</strong>替代故障的数值计算点，既省下巨大成本，又让数据更接近真实；</li>
+<li>广域信息包含全局、实时的海量信息，从中<strong>选取能反映暂态稳定特性的量测信息</strong>，再结合事先设定的<strong>稳定判据</strong>判别。</li>
+</ul>
+</li>
+<li><strong>可用于判稳的曲线</strong>（教师列举）：功率特性曲线、发电机转速曲线、转速差与功率差的变化曲线等。</li>
+</ul>
+<h2 id="9-第四类-数据挖掘与机器学习-大数据-人工智能">9. 第四类：数据挖掘与机器学习（大数据、人工智能）</h2><ul>
+<li><strong>为什么走这条路</strong>（教师把前两条路一起否了）：时域仿真法<strong>太慢、不利于在线</strong>；直接法只能判断平衡点附近，也很困难。「那怎么办？靠信息技术了。」</li>
+<li><strong>技术条件已经具备</strong>：电力系统已积累<strong>海量的一线仿真数据</strong>，计算机性能大幅提升；机器学习、神经网络、专家系统属于人工智能的高层次发展阶段。</li>
+<li><strong>典型流程</strong>（对应教材第 9 页图 1-1，图未附）：<strong>离线仿真 → 实时评估</strong>——把离线仿真的计算结果与系统实测数据一起构成数据库，做<strong>特征分析</strong>与<strong>模型</strong>训练，得到<strong>稳定判别模型/预测模型</strong>，最后给出评估结果。<strong>优点是不占用在线计算</strong>。</li>
+<li>20 世纪 80 年代起研究者在该领域做了大量工作：输入特征选择、特征分析算法、评估模型算法、输出等环节。</li>
+<li><strong>教师对 AI 的清醒提醒（本讲出现两次）</strong>：人工智能算法<strong>都是近似计算，不是精确的</strong>，有时算出来的解<strong>根本不对</strong>（异常模式）；因此算完可能还要<strong>筛选</strong>。「这也是为什么必须发展人工智能和云计算」——是必由之路，但不是万能。</li>
+<li>教师把<strong>基于数据挖掘</strong>的方法划为<strong>当前研究热点</strong>，前面几种（仿真、直接法、基于响应）都是<strong>经典方法</strong>。</li>
+</ul>
+<h2 id="10-紧急控制决策方法">10. 紧急控制决策方法</h2><p>教师说，<strong>评估的目的是用于控制</strong>。</p>
+<ul>
+<li><strong>集中式控制决策</strong>：由<strong>控制中心下发</strong>紧急控制措施，以<strong>尽可能小的代价</strong>使故障后的系统<strong>尽快恢复稳定</strong>。教师顺带讲到我国的停电时间在全世界属于最短、可靠性最高（<strong>课堂叙述，未核实</strong>）。</li>
+<li>离线决策 vs 实时紧急控制决策：实时决策对<strong>计算速度</strong>的要求更高，于是有了下面三类「可行研究方向」。</li>
+</ul>
+<div class="table-scroll-container"><table>
+<thead>
+<tr>
+<th align="left">方法</th>
+<th align="left">做法要点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>启发式方法</strong></td>
+<td align="left">通过<strong>少量仿真</strong>寻找控制方案，避免大量的仿真搜索；用指标排序（如切机切负荷的有效性指标）来决定控制动作，显著降低空间复杂度</td>
+</tr>
+<tr>
+<td align="left"><strong>基于响应的方法</strong></td>
+<td align="left">直接利用 <strong>PMU</strong> 采集的故障后动态量测，避免复杂的时域计算；例如用发电机转速轨迹预测稳定性，若判为不稳定，先把系统<strong>等效为两机模型</strong>，用<strong>加速面积与减速面积</strong>计算切机/切负荷量。教师强调它<strong>不需要复杂的计算</strong>，可直接在线计算</td>
+</tr>
+<tr>
+<td align="left"><strong>基于安全域/稳定域的方法</strong></td>
+<td align="left">通过<strong>切机、切负荷</strong>等措施<strong>改变稳定边界</strong>，把运行点从域外移回域内；控制措施引起的<strong>边界移动可近似线性叠加</strong>；研究过切机切负荷<strong>时刻</strong>对边界外移距离的影响，并对多摆系统提出<strong>最优时间切机控制策略</strong></td>
+</tr>
+</tbody></table></div>
+<ul>
+<li><strong>局限</strong>（教师指出的）：基于响应的方法效果与「简化、等值」的过程关系很大；基于安全域/稳定域的方法，效果<strong>很大程度上依赖算法对安全域/稳定域描述的准确程度</strong>。</li>
+<li><strong>灵敏度</strong>：即<strong>参数的一阶导</strong>（教师举例：电流对负载电阻的灵敏度，衡量电流受该电阻影响的大小）。利用灵敏度建立<strong>优化模型</strong>（目标函数最小，属动态规划），<strong>计算量与备选控制措施的数量无关</strong>——只需<strong>两次积分/两次仿真</strong>即可求得，因此可以大幅减少仿真搜索。</li>
+<li><strong>切机与切负荷是什么</strong>：切机＝切除发电机（不让它发电），切负荷＝把负荷摘掉；教师说这两件事本质上是<strong>调频</strong>手段——用电高峰或低谷时发电机要投入或切除。</li>
+</ul>
+<h2 id="11-本篇明确没有的内容-不要脑补">11. 本篇明确没有的内容（不要脑补）</h2><div class="table-scroll-container"><table>
+<thead>
+<tr>
+<th align="left">缺口</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>教材章节与页码</strong></td>
+<td align="left">只出现「第一章」「图 1-1」「式 1-3、1-4」「第三章」这类指代，<strong>没有给出教材名称</strong>，无法定位页面</td>
+</tr>
+<tr>
+<td align="left"><strong>李雅普诺夫定理的严格表述与证明</strong></td>
+<td align="left">只有口述版判据（正定 + 导函数非正定），<strong>没有数学证明与符号定义</strong></td>
+</tr>
+<tr>
+<td align="left"><strong>能量函数的构造方法</strong></td>
+<td align="left">明确说「没有统一的构造方法」，本次<strong>没给任何一个具体能量函数</strong></td>
+</tr>
+<tr>
+<td align="left"><strong>BCU 的算法细节</strong></td>
+<td align="left">只给了名字与地位（最有效之一），<strong>无步骤</strong></td>
+</tr>
+<tr>
+<td align="left"><strong>等面积法则与扩展等面积法则的推导</strong></td>
+<td align="left">只提到用途，<strong>无公式、无推导</strong></td>
+</tr>
+<tr>
+<td align="left"><strong>拓扑法涉及的数学</strong></td>
+<td align="left">「规范形理论」「稳定流形」只提到名词，<strong>无定义</strong></td>
+</tr>
+<tr>
+<td align="left"><strong>PMU/WAMS 的技术细节</strong></td>
+<td align="left">只说采集故障后动态量测，<strong>无装置原理、采样率、数据格式</strong></td>
+</tr>
+<tr>
+<td align="left"><strong>第二、三章及以后的内容</strong></td>
+<td align="left">结尾提到「创新点是第三章」，但<strong>本次没有实质讲解</strong></td>
+</tr>
+<tr>
+<td align="left"><strong>作业与实验</strong></td>
+<td align="left">本讲<strong>未布置作业</strong>，也没有实验安排</td>
+</tr>
+<tr>
+<td align="left"><strong>公式与板书</strong></td>
+<td align="left">转录中的「式 1-3、1-4」「X 点」「矩阵方程」等<strong>依赖课件</strong>，本次无课件可核</td>
+</tr>
+</tbody></table></div>
+<h2 id="12-待核实与不可靠识别">12. 待核实与不可靠识别</h2><h3 id="12-1-术语被转写读错-本讲尤其严重-复习时别跟着错">12.1 术语被转写读错（本讲尤其严重，复习时别跟着错）</h3><div class="table-scroll-container"><table>
+<thead>
+<tr>
+<th align="left">转写原文</th>
+<th align="left">应为</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">「展开」「展态」「展现」「展叹」「站台问题」</td>
+<td align="left"><strong>暂态</strong></td>
+<td align="left">全篇最高频的误识：「暂态稳定」「暂态评估」「暂态分析」</td>
+</tr>
+<tr>
+<td align="left">「实域仿真法」「十一仿真法」「持续保护法」「10 1仿真法」「十一纺织法」</td>
+<td align="left"><strong>时域仿真法</strong></td>
+<td align="left">同一篇里也写对过「基于时域仿真的……」</td>
+</tr>
+<tr>
+<td align="left">「里亚普诺夫」「比亚托夫」「里亚布图里」「尼亚普洛夫」「里亚霍夫」「李亚东」</td>
+<td align="left"><strong>李雅普诺夫</strong></td>
+<td align="left">六种写法指同一个人</td>
+</tr>
+<tr>
+<td align="left">「拉塞尔」「拉塞尔古典籍理论」</td>
+<td align="left"><strong>拉萨尔（LaSalle）</strong></td>
+<td align="left">放宽正定要求的那个定理</td>
+</tr>
+<tr>
+<td align="left">「安全率」</td>
+<td align="left"><strong>安全域</strong></td>
+<td align="left">与同篇的「静态安全域/动态安全域」混用</td>
+</tr>
+<tr>
+<td align="left">「广义测量系统」</td>
+<td align="left"><strong>广域测量系统（WAMS）</strong></td>
+<td align="left">「广义」是误识</td>
+</tr>
+<tr>
+<td align="left">「压缩机」「这个压」</td>
+<td align="left"><strong>雅可比矩阵</strong></td>
+<td align="left">原句「我们叫这个矩阵叫什么呀？叫压缩机」</td>
+</tr>
+<tr>
+<td align="left">「机械霍夫的电流定律」「机械霍夫电压定律」</td>
+<td align="left"><strong>基尔霍夫电流/电压定律</strong></td>
+<td align="left">即 KCL / KVL</td>
+</tr>
+<tr>
+<td align="left">「储能鼠标器件」</td>
+<td align="left"><strong>储能元件</strong></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">「劳动前」「脑洞之后」「劳动过程中」「脑洞」</td>
+<td align="left"><strong>扰动前 / 扰动后 / 扰动过程中 / 扰动</strong></td>
+<td align="left">关键概念，全篇误识</td>
+</tr>
+<tr>
+<td align="left">「政治系统」「支持系统」「知识系统」「自己行为」</td>
+<td align="left"><strong>自治系统</strong></td>
+<td align="left">「没有输入、没有输出」的系统</td>
+</tr>
+<tr>
+<td align="left">「非歧视」「有精神」</td>
+<td align="left"><strong>非齐次（方程）</strong>（疑）</td>
+<td align="left">「自治系统用数学来表示就是非齐次」——语义存疑，仅作参考</td>
+</tr>
+<tr>
+<td align="left">「攻角曲线」</td>
+<td align="left"><strong>功角曲线</strong></td>
+<td align="left">「发电机相对功角曲线」</td>
+</tr>
+<tr>
+<td align="left">「电池功率」「电流功率」</td>
+<td align="left"><strong>电磁功率</strong></td>
+<td align="left">「电磁功率突然减少，而机械功率基本不变」</td>
+</tr>
+<tr>
+<td align="left">「实验运行算法」</td>
+<td align="left"><strong>时间并行算法</strong>（疑）</td>
+<td align="left">与另外两个研究方向并列出现</td>
+</tr>
+<tr>
+<td align="left">「波形初始算法」「波形峰值算法」「波形控制算法」</td>
+<td align="left"><strong>波形松弛算法</strong></td>
+<td align="left">并行计算的第三个方向</td>
+</tr>
+<tr>
+<td align="left">「牛顿和拉顿流程」「牛顿拉斯公式」</td>
+<td align="left"><strong>牛顿-拉夫逊法</strong></td>
+<td align="left">数字计算常用方法</td>
+</tr>
+<tr>
+<td align="left">「切机切换」「剪切」「切几」</td>
+<td align="left"><strong>切机切负荷</strong></td>
+<td align="left">紧急控制动作</td>
+</tr>
+<tr>
+<td align="left">「稳定率」「稳定图」</td>
+<td align="left"><strong>稳定域 / 稳定判别</strong></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">「错误理论」</td>
+<td align="left"><strong>拓扑理论</strong>（疑）</td>
+<td align="left">同篇也写对过「基于拓扑理论」</td>
+</tr>
+<tr>
+<td align="left">「平衡级」「几相管」</td>
+<td align="left"><strong>平衡集 / 平衡点</strong>（疑）</td>
+<td align="left">讲平衡点集合时的两处误识</td>
+</tr>
+<tr>
+<td align="left">「power 于」「A lot」等英文碎片</td>
+<td align="left">噪声</td>
+<td align="left">不采</td>
+</tr>
+<tr>
+<td align="left">「思密达」「9块钱」「10块钱」「我操」等</td>
+<td align="left">噪声/口语</td>
+<td align="left">不采</td>
+</tr>
+</tbody></table></div>
+<h3 id="12-2-数字与说法需要确认-不择一断言">12.2 数字与说法需要确认（不择一断言）</h3><div class="table-scroll-container"><table>
+<thead>
+<tr>
+<th align="left">项</th>
+<th align="left">情况</th>
+<th align="left">处理</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">暂态研究的时间区间</td>
+<td align="left">正文说 <strong>3–5 秒</strong>，紧接着说大型系统可延长到「15 到 20 <strong>年</strong>」</td>
+<td align="left">「年」显然是<strong>秒</strong>的误识，但<strong>具体秒数不代为改写</strong>，两种写法都留痕</td>
+</tr>
+<tr>
+<td align="left">选择题的考试要求</td>
+<td align="left">「考试考一些选择题……要多算一点」</td>
+<td align="left">只能确认「要算」，<strong>具体题型与分值未给</strong></td>
+</tr>
+<tr>
+<td align="left">「不考主体」</td>
+<td align="left">讲完紧急控制三类方法后的一句</td>
+<td align="left">疑为「不考大题」，<strong>原句残缺、不作结论</strong></td>
+</tr>
+<tr>
+<td align="left">「我国停电时间全球最短」</td>
+<td align="left">教师课堂叙述</td>
+<td align="left">标为<strong>课堂举例、未核实</strong></td>
+</tr>
+<tr>
+<td align="left">特征尺寸式「三纳米以下」等产业叙述</td>
+<td align="left">第一讲出现</td>
+<td align="left">本讲未重复，见第一讲笔记的处理方式</td>
+</tr>
+<tr>
+<td align="left">「第一章」与「第三章」</td>
+<td align="left">结尾提到「创新点是第三章」</td>
+<td align="left">教材章节结构<strong>未提供</strong>，不据此推断章节内容</td>
+</tr>
+<tr>
+<td align="left">名词解释的两个名称</td>
+<td align="left">开头在讲名词解释的答法时提到「数据产品」等</td>
+<td align="left">转写不清，<strong>不写成确定考点</strong>；可确认的是：答法要求「先写英文全称，再写中文」</td>
+</tr>
+</tbody></table></div>
+<h3 id="12-3-隐私与不宜转载的内容-本笔记已剔除">12.3 隐私与不宜转载的内容（本笔记已剔除）</h3><div class="table-scroll-container"><table>
+<thead>
+<tr>
+<th align="left">位置</th>
+<th align="left">内容</th>
+<th align="left">处理</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">03:11–04:05</td>
+<td align="left">另一位专业老师的<strong>姓氏</strong>与该周上线安排</td>
+<td align="left">只写「另一位专业老师」，<strong>不登记姓名</strong></td>
+</tr>
+<tr>
+<td align="left">全篇</td>
+<td align="left">教师个人求学经历（旧电脑、死机等课堂插话）</td>
+<td align="left">不转载</td>
+</tr>
+<tr>
+<td align="left">多处</td>
+<td align="left">教师用班级、宿舍楼打的比方</td>
+<td align="left">只保留类比意图，不复述具体指涉</td>
+</tr>
+<tr>
+<td align="left">25:10–29:00 等</td>
+<td align="left">学生课堂应答与其他杂音</td>
+<td align="left">只保留问答所确认的知识点</td>
+</tr>
+</tbody></table></div>
+<h2 id="13-给同学的复习顺序">13. 给同学的复习顺序</h2><ol>
+<li><strong>先分清两组「三个方法」</strong>（第 2、10 节，教师点名说考试易混）：<strong>稳定性评估</strong>——时域仿真法、直接法（能量函数/李雅普诺夫）、基于故障后响应、数据挖掘（后两类是发展中的方向）；<strong>紧急控制决策</strong>——启发式、基于响应、基于安全域/稳定域。<strong>两组不要串</strong>。</li>
+<li><strong>安全域的两种类型</strong>（第 3 节）：静态→代数方程（平衡态）；动态→微分/差分方程 + 代数方程。记住动态安全域的性质（连通、无空洞、边界连续可微、不缠绕交错）与线性系统的<strong>叠加性判据</strong>。</li>
+<li><strong>判稳的工具箱</strong>（第 3、7 节）：特征根实部是否全为负；局部线性化在平衡点处做；平衡点/平衡集三个阶段的物理图像（故障前、扰动中转子加速、扰动后能量释放）。</li>
+<li><strong>时域仿真法</strong>（第 6 节）：把链条背下来——元件模型 → 等效物理模型（基尔霍夫定律）→ 微分代数方程组 → 数值求解 → 时间响应 → 功角曲线判稳；记牢<strong>精度高但不能在线</strong>，以及<strong>3–5 秒 / 15–20 秒</strong>的时间区间；记住<strong>数据中心</strong>的意义。</li>
+<li><strong>分布式并行计算的三个方向</strong>（第 6.5 节）：时间并行、空间并行、波形松弛——教师明确要求记住。</li>
+<li><strong>直接法</strong>（第 7 节）：能量函数的<strong>充分非必要</strong>；李雅普诺夫（正定）与拉萨尔（非负定）的差别；临界能量的取法与其保守性；BCU 与拓扑法各自的思路；以及<strong>每加一个模型就要重造能量函数</strong>这个致命短板。</li>
+<li><strong>为什么必须上大数据与 AI</strong>（第 6.4、9 节）：仿真法慢且不能在线、直接法只能用于简单系统且难构造 → 离线仿真数据 + 机器学习做实时评估；同时记住教师两次强调的「<strong>AI 是近似计算，可能算错，还要筛选</strong>」。</li>
+<li><strong>紧急控制</strong>（第 10 节）：三类方法各自的做法；<strong>灵敏度＝参数的一阶导</strong>，用它能只用两次仿真就建优化模型；切机/切负荷是什么、为什么要动边界。</li>
+<li><strong>别提前背第二章及以后</strong>（第 11 节）：本讲没有教材页面、没有公式推导、没有作业；等材料到了再整理，避免照抄不存在的板书。</li>
+</ol>
+<h2 id="完成边界">完成边界</h2><ul>
+<li><strong>已整理</strong>：考核提示与会话结构、安全域静态/动态、物理参数与状态参数、潮流与雅可比、时域仿真法（链条/方程结构/优缺点/并行计算三方向）、直接法（充分非必要/李雅普诺夫与拉萨尔/临界能量/BCU/拓扑法/缺点）、基于响应的评估、数据挖掘与机器学习、紧急控制三类方法与灵敏度。</li>
+<li><strong>〔待核对〕</strong>：时间区间单位、选择题与「不考主体」的原意、名词解释的具体条目、教材页码与图号、以及第 12.1 节列出的全部术语（均以转写上下文推断，未经教材或课件核对）。</li>
+<li><strong>未完成</strong>：本讲无作业、无实验；教材未到，故无教材解析；第二章及以后内容未讲。</li>
+</ul>
+
+            </div>
+
+            
+
+            <footer class="site-footer">
+              <p class="site-footer__legal">
+                © 2026 ArchivalEra · 本站自研代码与解析文字以
+                <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank" rel="license noopener">AGPL-3.0</a>
+                许可发布 · <a href="https://github.com/ArchivalEra/S26-1_202609" target="_blank" rel="noopener">仓库源码</a>
+              </p>
+              <p class="site-footer__disclaimer">
+                教材《工程数学基础》的题目原文与章节结构版权归原书作者与出版社所有，本站解析为个人学习笔记；
+                页面主题样式来自 Shirone Material 3 Reader（MIT）；KaTeX、marked 等第三方库依其自身许可证分发。
+              </p>
+            </footer>
+          </article>
+        </main>
+
+        <!-- Table of Contents -->
+        <aside class="m3-toc">
+      <div class="toc-title">目录</div>
+      <ul class="toc-list">
+        <li class="toc-item level-2"><a href="#1-来源与使用边界">1. 来源与使用边界</a></li><li class="toc-item level-3"><a href="#时间导览-相对时间-便于回查原文">时间导览（相对时间，便于回查原文）</a></li><li class="toc-item level-2"><a href="#2-承接第一讲-这一讲要回答什么">2. 承接第一讲：这一讲要回答什么</a></li><li class="toc-item level-3"><a href="#考试提示-教师当堂口头说明-原句有残缺">考试提示（教师当堂口头说明，原句有残缺）</a></li><li class="toc-item level-2"><a href="#3-安全域-静态与动态">3. 安全域：静态与动态</a></li><li class="toc-item level-2"><a href="#4-物理参数与状态参数">4. 物理参数与状态参数</a></li><li class="toc-item level-2"><a href="#5-潮流与雅可比矩阵">5. 潮流与雅可比矩阵</a></li><li class="toc-item level-2"><a href="#6-时域仿真法-数值仿真法">6. 时域仿真法（数值仿真法）</a></li><li class="toc-item level-3"><a href="#6-1-做法-一条完整的链条">6.1 做法（一条完整的链条）</a></li><li class="toc-item level-3"><a href="#6-2-方程结构-教师特别强调的一处">6.2 方程结构（教师特别强调的一处）</a></li><li class="toc-item level-3"><a href="#6-3-判稳的时间区间">6.3 判稳的时间区间</a></li><li class="toc-item level-3"><a href="#6-4-优点与致命缺陷">6.4 优点与致命缺陷</a></li><li class="toc-item level-3"><a href="#6-5-提速的两条路线">6.5 提速的两条路线</a></li><li class="toc-item level-2"><a href="#7-直接法-能量函数-李雅普诺夫方法">7. 直接法（能量函数 / 李雅普诺夫方法）</a></li><li class="toc-item level-3"><a href="#7-1-基本思想与-充分非必要">7.1 基本思想与「充分非必要」</a></li><li class="toc-item level-3"><a href="#7-2-正定与负定的直观含义">7.2 正定与负定的直观含义</a></li><li class="toc-item level-3"><a href="#7-3-李雅普诺夫与拉萨尔">7.3 李雅普诺夫与拉萨尔</a></li><li class="toc-item level-3"><a href="#7-4-稳定域与临界能量">7.4 稳定域与临界能量</a></li><li class="toc-item level-3"><a href="#7-5-这个方法的缺点-教师逐条列">7.5 这个方法的缺点（教师逐条列）</a></li><li class="toc-item level-3"><a href="#7-6-顺带讲清的几个概念">7.6 顺带讲清的几个概念</a></li><li class="toc-item level-2"><a href="#8-第三类-基于故障后系统响应的方法">8. 第三类：基于故障后系统响应的方法</a></li><li class="toc-item level-2"><a href="#9-第四类-数据挖掘与机器学习-大数据-人工智能">9. 第四类：数据挖掘与机器学习（大数据、人工智能）</a></li><li class="toc-item level-2"><a href="#10-紧急控制决策方法">10. 紧急控制决策方法</a></li><li class="toc-item level-2"><a href="#11-本篇明确没有的内容-不要脑补">11. 本篇明确没有的内容（不要脑补）</a></li><li class="toc-item level-2"><a href="#12-待核实与不可靠识别">12. 待核实与不可靠识别</a></li><li class="toc-item level-3"><a href="#12-1-术语被转写读错-本讲尤其严重-复习时别跟着错">12.1 术语被转写读错（本讲尤其严重，复习时别跟着错）</a></li><li class="toc-item level-3"><a href="#12-2-数字与说法需要确认-不择一断言">12.2 数字与说法需要确认（不择一断言）</a></li><li class="toc-item level-3"><a href="#12-3-隐私与不宜转载的内容-本笔记已剔除">12.3 隐私与不宜转载的内容（本笔记已剔除）</a></li><li class="toc-item level-2"><a href="#13-给同学的复习顺序">13. 给同学的复习顺序</a></li><li class="toc-item level-2"><a href="#完成边界">完成边界</a></li>
+      </ul>
+    </aside>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../../assets/theme/shirone-reader.js" defer></script>
+  <script src="../../../assets/plugins/disclosure-anchor.js" defer></script>
+  <script type="application/json" id="sym-glossary-json">{"terms":{"sym-det":{"title":"行列式的名字","text":"D 是它的常用代号；det A 与 |A| 都读「A 的行列式」，名字不同同一个东西。竖线与方括号要分清：竖线里是一个数，方括号里只是一张数表（矩阵），还没有值。","href":"../../%E5%B7%A5%E7%A8%8B%E6%95%B0%E5%AD%A6/%E6%95%99%E6%9D%90%E8%A7%A3%E6%9E%90/0.0-%E7%AC%A6%E5%8F%B7%E5%85%A5%E9%97%A8.html"},"sym-index":{"title":"下标：门牌号","text":"下标是坐标，规则只有一句：前行后列——a₂₃ 就是第 2 行第 3 列上的数。门牌号从 1 数起，a₁₁ 读「a 一一」不是「a 十一」。","href":"../../%E5%B7%A5%E7%A8%8B%E6%95%B0%E5%AD%A6/%E6%95%99%E6%9D%90%E8%A7%A3%E6%9E%90/0.0-%E7%AC%A6%E5%8F%B7%E5%85%A5%E9%97%A8.html"},"sym-power":{"title":"上标：乘方","text":"右上角是乘方。上标位置可以放一整段式子，如 (−1)^{i+j}——它只管正负号：i+j 是偶数取 +，奇数取 −。","href":"../../%E5%B7%A5%E7%A8%8B%E6%95%B0%E5%AD%A6/%E6%95%99%E6%9D%90%E8%A7%A3%E6%9E%90/0.0-%E7%AC%A6%E5%8F%B7%E5%85%A5%E9%97%A8.html"},"sym-rowcol":{"title":"行与列：r、c","text":"r₁ 是第 1 行（row），c₂ 是第 2 列（column）。r₂−3r₁ 读作「第 2 行换成：第 2 行 − 第 1 行的 3 倍」——写在前面的被改，式子里没出现的行不动。","href":"../../%E5%B7%A5%E7%A8%8B%E6%95%B0%E5%AD%A6/%E6%95%99%E6%9D%90%E8%A7%A3%E6%9E%90/0.0-%E7%AC%A6%E5%8F%B7%E5%85%A5%E9%97%A8.html"},"sym-matrix":{"title":"矩阵的新符号","text":"E 是单位矩阵（乘法里的「1」）；Aᵀ 转置（行列互换，(AB)ᵀ=BᵀAᵀ 要反序）；A⁻¹ 是逆——AA⁻¹=E，「撤销 A」，不是 1/A；A* 伴随（代数余子式下标转置排列）；R(A) 秩（非零子式最高阶数）。","href":"../../%E5%B7%A5%E7%A8%8B%E6%95%B0%E5%AD%A6/%E6%95%99%E6%9D%90%E8%A7%A3%E6%9E%90/0.0-%E7%AC%A6%E5%8F%B7%E5%85%A5%E9%97%A8.html"},"sym-misc":{"title":"Σ 与 ⟺","text":"Σ（西格玛）是求和打包：下标轮流取 1…n 全加起来。⟺ 读「当且仅当」，两边同真同假；⟶ 上方写字是变换记号，见 r/c 一族。","href":"../../%E5%B7%A5%E7%A8%8B%E6%95%B0%E5%AD%A6/%E6%95%99%E6%9D%90%E8%A7%A3%E6%9E%90/0.0-%E7%AC%A6%E5%8F%B7%E5%85%A5%E9%97%A8.html"}}}</script>
+  <script src="../../../assets/plugins/math-glossary.js" defer></script>
+  <script src="../../../assets/plugins/site-search.js" defer></script>
+</body>
+</html>
