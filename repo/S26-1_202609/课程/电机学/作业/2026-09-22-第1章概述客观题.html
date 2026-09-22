@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-depth="3">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第 1 章 概述 · 学习通客观题（25 题） | S26-1 课程知识库 - isui.ren</title>
+  <script>
+  /* 首帧前应用已保存的主题色与明暗，避免先用默认色渲染再变色（闪光弹 + 二次全量重绘） */
+  (function () {
+    try {
+      var root = document.documentElement;
+      var m = localStorage.getItem("theme") ||
+        (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      root.setAttribute("data-theme", m === "dark" ? "dark" : "light");
+      var hue = localStorage.getItem("theme-hue");
+      if (hue !== null && /^\d+$/.test(hue)) {
+        root.style.setProperty("--hue", hue);
+        root.style.setProperty("--primary-h", hue);
+      }
+    } catch (e) { /* 隐私模式下 localStorage 可能抛错，忽略 */ }
+  })();
+  </script>
+  <link rel="stylesheet" href="../../../assets/katex/katex.min.css">
+  <link rel="stylesheet" href="../../../assets/theme/shirone-reader.css">
+  <link rel="stylesheet" href="../../../assets/plugins/site-search.css">
+</head>
+<body>
+  <div class="drawer-backdrop" id="drawer-backdrop"></div>
+
+  <div class="site-shell">
+    <!-- Left Column: Full-Height Sidebar (整列导航栏) -->
+    <aside class="m3-drawer" id="m3-drawer">
+      <div class="drawer-header-brand">
+        <a href="../../../index.html" class="sidebar-brand">
+          <span class="site-title-icon">📚</span>
+          <span class="sidebar-brand-text">S26-1 课程知识库</span>
+        </a>
+        <button class="m3-icon-btn drawer-collapse-btn" id="drawer-collapse-btn" aria-label="收起侧边栏" title="收起侧边栏">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M15 18l-6-6 6-6"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="drawer-header-toolbar">
+        <span class="drawer-section-title">课程导航目录</span>
+        <button class="drawer-action-btn" id="toggle-all-groups-btn" title="一键收起或展开所有课程分类">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M7 15l5 5 5-5M7 9l5-5 5 5"/>
+          </svg>
+          <span id="toggle-all-text">全部收起</span>
+        </button>
+      </div>
+
+      <div class="drawer-nav-scroll-area">
+        <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../index.html" class="drawer-nav-link">
+              <span>首页</span>
+            </a>
+          </li><li class="drawer-nav-group expanded">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/index.html" class="drawer-nav-link ">
+                <span>课程总览</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 课程总览" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/工程数学/index.html" class="drawer-nav-link ">
+                <span>工程数学</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 工程数学" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/工程数学/教材解析/index.html" class="drawer-nav-link ">
+                <span>教材解析</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 教材解析" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/教材解析/0.0-符号入门.html" class="drawer-nav-link">
+              <span>符号入门</span>
+            </a>
+          </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/index.html" class="drawer-nav-link ">
+                <span>第一部分 线性代数</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 第一部分 线性代数" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header nav-header-clickable">
+            
+              <span class="drawer-section-title-text">第01章 行列式</span>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 第01章 行列式" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.0-本章通关攻略.html" class="drawer-nav-link">
+              <span>★ 通关攻略</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.1-二阶与三阶行列式.html" class="drawer-nav-link">
+              <span>1.1 二阶与三阶行列式</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.2-n阶行列式.html" class="drawer-nav-link">
+              <span>1.2 n阶行列式</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.3-克莱姆法则.html" class="drawer-nav-link">
+              <span>1.3 克莱姆法则</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.4-用MATLAB计算行列式.html" class="drawer-nav-link">
+              <span>1.4 用MATLAB计算行列式</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header nav-header-clickable">
+            
+              <span class="drawer-section-title-text">第02章 矩阵</span>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 第02章 矩阵" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.0-本章通关攻略.html" class="drawer-nav-link">
+              <span>★ 通关攻略</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.1-矩阵的概念及运算.html" class="drawer-nav-link">
+              <span>2.1 矩阵的概念及运算</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.2-逆矩阵.html" class="drawer-nav-link">
+              <span>2.2 逆矩阵</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.3-矩阵的初等变换与初等矩阵.html" class="drawer-nav-link">
+              <span>2.3 初等变换与初等矩阵</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.4-矩阵的秩.html" class="drawer-nav-link">
+              <span>2.4 矩阵的秩</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.5-用MATLAB进行矩阵运算.html" class="drawer-nav-link">
+              <span>2.5 用MATLAB进行矩阵运算</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li></ul>
+            </div>
+          </div>
+        </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/工程数学/课堂笔记/index.html" class="drawer-nav-link ">
+                <span>课堂笔记</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 课堂笔记" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/课堂笔记/2026-09-17-determinants-order-2-3.html" class="drawer-nav-link">
+              <span>09-17 行列式与沙路法则</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/课堂笔记/2026-09-17-determinants-transcript-notes.html" class="drawer-nav-link">
+              <span>09-17 课堂听课整理</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/工程数学/作业/index.html" class="drawer-nav-link ">
+                <span>作业</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 作业" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/作业/2026-09-17-作业1.html" class="drawer-nav-link">
+              <span>作业1</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/原始资料/index.html" class="drawer-nav-link">
+              <span>原始资料</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/音频/index.html" class="drawer-nav-link">
+              <span>音频</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/电力大数据与人工智能/index.html" class="drawer-nav-link ">
+                <span>电力大数据与人工智能</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 电力大数据与人工智能" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/电力大数据与人工智能/作业/index.html" class="drawer-nav-link">
+              <span>作业</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电力大数据与人工智能/教材解析/index.html" class="drawer-nav-link">
+              <span>教材解析</span>
+            </a>
+          </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/电力大数据与人工智能/课堂笔记/index.html" class="drawer-nav-link ">
+                <span>课堂笔记</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 课堂笔记" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/电力大数据与人工智能/课堂笔记/2026-09-20-课程定位与考核要求.html" class="drawer-nav-link">
+              <span>09-20 开课第一讲</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电力大数据与人工智能/课堂笔记/2026-09-22-暂态稳定评估方法与紧急控制.html" class="drawer-nav-link">
+              <span>09-22 暂态稳定评估与紧急控制</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电力大数据与人工智能/原始资料/index.html" class="drawer-nav-link">
+              <span>原始资料</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电力大数据与人工智能/音频/index.html" class="drawer-nav-link">
+              <span>音频</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/形势与政策/index.html" class="drawer-nav-link ">
+                <span>形势与政策</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 形势与政策" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/形势与政策/作业/index.html" class="drawer-nav-link">
+              <span>作业</span>
+            </a>
+          </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/形势与政策/课堂笔记/index.html" class="drawer-nav-link ">
+                <span>课堂笔记</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 课堂笔记" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/形势与政策/课堂笔记/2026-09-21-经济热点专题与考试安排.html" class="drawer-nav-link">
+              <span>09-21 经济热点专题与考试安排</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-item ">
+            <a href="../../../课程/形势与政策/原始资料/index.html" class="drawer-nav-link">
+              <span>原始资料</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/形势与政策/音频/index.html" class="drawer-nav-link">
+              <span>音频</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/电路原理/index.html" class="drawer-nav-link ">
+                <span>电路原理</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 电路原理" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/电路原理/作业/index.html" class="drawer-nav-link">
+              <span>作业</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电路原理/教材解析/index.html" class="drawer-nav-link">
+              <span>教材解析</span>
+            </a>
+          </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/电路原理/课堂笔记/index.html" class="drawer-nav-link ">
+                <span>课堂笔记</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 课堂笔记" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/电路原理/课堂笔记/2026-09-21-开课说明与电路的基本概念.html" class="drawer-nav-link">
+              <span>09-21 开课说明与电路的基本概念</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电路原理/原始资料/index.html" class="drawer-nav-link">
+              <span>原始资料</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电路原理/音频/index.html" class="drawer-nav-link">
+              <span>音频</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/电子技术/index.html" class="drawer-nav-link ">
+                <span>电子技术</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 电子技术" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/电子技术/作业/index.html" class="drawer-nav-link">
+              <span>作业</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电子技术/教材解析/index.html" class="drawer-nav-link">
+              <span>教材解析</span>
+            </a>
+          </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/电子技术/课堂笔记/index.html" class="drawer-nav-link ">
+                <span>课堂笔记</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 课堂笔记" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/电子技术/课堂笔记/2026-09-21-开课说明与半导体基础到PN结.html" class="drawer-nav-link">
+              <span>09-21 开课说明与半导体基础到 PN 结</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电子技术/原始资料/index.html" class="drawer-nav-link">
+              <span>原始资料</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电子技术/音频/index.html" class="drawer-nav-link">
+              <span>音频</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group expanded">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/电机学/index.html" class="drawer-nav-link ">
+                <span>电机学</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 电机学" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-group expanded">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/电机学/作业/index.html" class="drawer-nav-link ">
+                <span>作业</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 作业" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item active">
+            <a href="../../../课程/电机学/作业/2026-09-22-第1章概述客观题.html" class="drawer-nav-link">
+              <span>09-22 第1章概述客观题（25题）</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电机学/教材解析/index.html" class="drawer-nav-link">
+              <span>教材解析</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电机学/课堂笔记/index.html" class="drawer-nav-link">
+              <span>课堂笔记</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电机学/原始资料/index.html" class="drawer-nav-link">
+              <span>原始资料</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电机学/音频/index.html" class="drawer-nav-link">
+              <span>音频</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header nav-header-clickable">
+            
+              <span class="drawer-section-title-text">仓库规约</span>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 仓库规约" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../维护条例.html" class="drawer-nav-link">
+              <span>维护条例</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../维护细则.html" class="drawer-nav-link">
+              <span>维护细则</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li></ul>
+      </div>
+
+      <div class="sidebar-resizer" id="sidebar-resizer" title="按住拖拽调整侧边栏宽度，双击恢复默认宽度"></div>
+    </aside>
+
+    <!-- Right Column: Main Content Column (主内容列) -->
+    <div class="main-column">
+      <!-- Top App Bar -->
+      <header class="m3-top-app-bar">
+        <div class="top-bar-left">
+          <button class="m3-icon-btn" id="drawer-toggle" aria-label="展开/收起侧边栏" title="展开/收起侧边栏">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+          </button>
+          <a href="../../../index.html" class="top-bar-mobile-title">
+            <span>S26-1 课程知识库</span>
+          </a>
+          <nav class="top-bar-breadcrumbs" aria-label="当前路径">
+            <a href="../../../index.html">首页</a><span class="m3-breadcrumb-sep">/</span><span class="current-crumb">第 1 章 概述 · 学习通客观题（25 题）</span>
+          </nav>
+        </div>
+
+        <div class="top-bar-right">
+          <button class="m3-icon-btn" id="palette-toggle" aria-label="调色盘" title="自定义主题强调色">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/>
+              <circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/>
+              <circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/>
+              <circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/>
+              <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/>
+            </svg>
+          </button>
+
+          <!-- Palette Popover -->
+          <div class="palette-popover" id="palette-popover">
+            <div class="palette-header">
+              <span class="palette-title">主题强调色调色盘</span>
+              <button class="palette-reset-btn" id="palette-reset-btn" title="重置为默认色">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+              </button>
+            </div>
+            <div class="palette-current-row">
+              <span class="palette-hue-badge" id="palette-hue-badge">Hue 248°</span>
+              <div class="palette-color-dot" id="palette-color-dot"></div>
+            </div>
+            <div class="palette-slider-container">
+              <span class="palette-slider-label">色相微调 (0° - 360°)</span>
+              <input type="range" min="0" max="360" value="248" class="palette-slider" id="hue-slider">
+            </div>
+            <div>
+              <div class="palette-swatches-title">预设配色</div>
+              <div class="palette-swatches-grid">
+                <button class="palette-swatch-item" data-hue="315" title="经典粉紫">
+                  <span class="palette-swatch-dot" style="background: hsl(315, 75%, 45%);"></span>
+                  <span class="palette-swatch-name">粉紫</span>
+                </button>
+                <button class="palette-swatch-item" data-hue="280" title="紫罗兰">
+                  <span class="palette-swatch-dot" style="background: hsl(280, 75%, 45%);"></span>
+                  <span class="palette-swatch-name">紫罗兰</span>
+                </button>
+                <button class="palette-swatch-item active" data-hue="248" title="学术深蓝">
+                  <span class="palette-swatch-dot" style="background: hsl(248, 75%, 45%);"></span>
+                  <span class="palette-swatch-name">深蓝</span>
+                </button>
+                <button class="palette-swatch-item" data-hue="205" title="天青蓝">
+                  <span class="palette-swatch-dot" style="background: hsl(205, 75%, 45%);"></span>
+                  <span class="palette-swatch-name">天青</span>
+                </button>
+                <button class="palette-swatch-item" data-hue="150" title="翡翠绿">
+                  <span class="palette-swatch-dot" style="background: hsl(150, 75%, 40%);"></span>
+                  <span class="palette-swatch-name">翡翠</span>
+                </button>
+                <button class="palette-swatch-item" data-hue="75" title="琥珀黄">
+                  <span class="palette-swatch-dot" style="background: hsl(75, 75%, 40%);"></span>
+                  <span class="palette-swatch-name">琥珀</span>
+                </button>
+                <button class="palette-swatch-item" data-hue="30" title="晚霞橙">
+                  <span class="palette-swatch-dot" style="background: hsl(30, 80%, 48%);"></span>
+                  <span class="palette-swatch-name">晚霞</span>
+                </button>
+                <button class="palette-swatch-item" data-hue="355" title="绯红">
+                  <span class="palette-swatch-dot" style="background: hsl(355, 75%, 45%);"></span>
+                  <span class="palette-swatch-name">绯红</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <button class="m3-icon-btn" id="search-toggle" aria-label="全站搜索" title="全站搜索">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+          </button>
+
+          <button class="m3-icon-btn" id="theme-toggle" aria-label="切换昼夜主题">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          </button>
+        </div>
+      </header>
+
+      <!-- 全站搜索面板（点击顶栏放大镜展开；ESC 或点外部关闭） -->
+      <div class="search-panel" id="search-panel" hidden>
+        <div class="search-panel-inner" role="dialog" aria-modal="true" aria-label="全站搜索">
+          <div class="search-panel-head">
+            <svg class="search-panel-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+            <input type="search" id="search-input" class="search-panel-input" placeholder="搜索知识点、例题、习题…" autocomplete="off" spellcheck="false">
+            <button class="m3-icon-btn" id="search-close" aria-label="关闭搜索" title="关闭（ESC）">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
+          </div>
+          <div class="search-panel-body" id="search-results">
+            <p class="search-hint">输入关键词开始搜索。中文按字面子串匹配——搜「沙路法则」只出真正连着出现这四个字的地方；结果按相关度排序，回车打开第一条。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="layout-container">
+        <!-- Content Area -->
+        <main class="content-wrapper">
+          <article class="article-container">
+            <!-- Breadcrumb in page body -->
+            <nav class="m3-breadcrumb">
+              <a href="../../../index.html">首页</a><span class="m3-breadcrumb-sep">/</span><span>第 1 章 概述 · 学习通客观题（25 题）</span>
+            </nav>
+
+            <div class="meta-chip-bar"><span class="meta-chip primary">📚 电机学</span><span class="meta-chip">🏷️ 作业</span><span class="meta-chip">⚡ 状态: active</span><span class="meta-chip">📅 更新: 2026-09-22</span><span class="meta-chip">📖 来源: 原始资料/学习通作业截图 25 张（登记见 原始资料/index.md，逐张含 SHA-256）</span></div>
+
+            <div class="article-content">
+              <h1 id="第-1-章-概述-学习通客观题-25-题">第 1 章 概述 · 学习通客观题（25 题）</h1><h2 id="1-来源与边界">1. 来源与边界</h2><ul>
+<li><strong>来源</strong>：<strong>学习通</strong>上的第 1 章作业，平台显示的任务名是「<strong>1概述（客观题-课前预习测试）</strong>」；共 <strong>25 题</strong>：单选 1–12、判断 13–24、多选 25（多选在第 25 题，界面按钮为「提交」）。</li>
+<li><strong>题面来源</strong>：用户提供的 <strong>25 张答题页截图</strong>逐字转抄；截图<strong>原件不入库</strong>，逐张文件名与 SHA-256 登记在<a href="../%E5%8E%9F%E5%A7%8B%E8%B5%84%E6%96%99/index.html">原始资料索引</a>。配图题（第 4、6、9、11 题）的图只能看截图，本页把图里可辨的箭头与标注写在题面里。</li>
+<li><strong>答案来源</strong>：<strong>平台没有给参考答案</strong>（截图里看不到正误与解析）。本页答案是<strong>独立重算</strong>的结果——由「只拿题面、禁读仓库文档」的独立子代理先算一遍，再与整理者自己的结果逐题对照，全部一致（见文末完成边界）。</li>
+<li><strong>布置日期与截止时间</strong>：<strong>待提供</strong>（本页日期取材料到手日 2026-09-22，不是平台上的布置日）。</li>
+<li><strong>本课尚未开课</strong>，教材未提供，所以本页<strong>不引用任何教材页码</strong>；判断题与选择题的判据都写在「提示」与「完整解答」里，不需要别的资料也能看。</li>
+</ul>
+<blockquote>
+<p><strong>怎么用这份作业</strong>：每题拆成「提示 → 完整解答 → 复盘」三层，<strong>默认全部收起</strong>——先自己作答（选择题在纸上写下选项），再逐层展开。25 题都是概念题，看一眼答案再做等于白做。</p>
+</blockquote>
+<h2 id="2-依赖-做之前该会的事">2. 依赖：做之前该会的事</h2><div class="table-scroll-container"><table>
+<thead>
+<tr>
+<th align="left">题组</th>
+<th align="left">用到的知识</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">第 1、5、17、19 题</td>
+<td align="left"><strong>磁介质的分类与磁导率</strong></td>
+<td align="left">顺磁/抗磁/铁磁；相对磁导率 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>μ</mi><mi>r</mi></msub><mo>=</mo><mi>μ</mi><mi mathvariant="normal">/</mi><msub><mi>μ</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">\mu_r=\mu/\mu_0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathnormal">μ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0278em;">r</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">μ</span><span class="mord">/</span><span class="mord"><span class="mord mathnormal">μ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>，真空 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>μ</mi><mi>r</mi></msub><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\mu_r=1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathnormal">μ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0278em;">r</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span>，铁磁材料可达数百至数万；软磁、硬磁、矩磁的用途差别</td>
+</tr>
+<tr>
+<td align="left">第 2、13、14、22、23 题</td>
+<td align="left"><strong>磁滞回线与铁耗</strong></td>
+<td align="left">磁滞现象、极限磁滞回线、剩磁 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>B</mi><mi>r</mi></msub></mrow><annotation encoding="application/x-tex">B_r</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0502em;">B</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0502em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0278em;">r</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 与矫顽力 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>H</mi><mi>c</mi></msub></mrow><annotation encoding="application/x-tex">H_c</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0813em;">H</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0813em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">c</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>；铁耗＝磁滞损耗＋涡流损耗；磁滞损耗正比于回线面积</td>
+</tr>
+<tr>
+<td align="left">第 7、18、20 题</td>
+<td align="left"><strong>三个基本量的关系</strong></td>
+<td align="left"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo>=</mo><mi>μ</mi><mi>H</mi></mrow><annotation encoding="application/x-tex">B=\mu H</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0502em;">B</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">μ</span><span class="mord mathnormal" style="margin-right:0.0813em;">H</span></span></span></span>；<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi></mrow><annotation encoding="application/x-tex">H</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0813em;">H</span></span></span></span> 只由电流与几何决定；磁通 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Φ</mi></mrow><annotation encoding="application/x-tex">\Phi</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">Φ</span></span></span></span>、磁链 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Ψ</mi></mrow><annotation encoding="application/x-tex">\Psi</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">Ψ</span></span></span></span>、磁阻 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>R</mi><mi>m</mi></msub></mrow><annotation encoding="application/x-tex">R_m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0077em;">R</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0077em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">m</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 的定义</td>
+</tr>
+<tr>
+<td align="left">第 3、8、21 题</td>
+<td align="left"><strong>电磁感应与电流的磁效应</strong></td>
+<td align="left">电机的能量转换依据；奥斯特实验；平行电流的相互作用</td>
+</tr>
+<tr>
+<td align="left">第 4、11、12、24 题</td>
+<td align="left"><strong>三个定则的分工</strong></td>
+<td align="left">右手螺旋法则（电流生磁）、左手定则（电流在磁场中受力）、右手定则（导体切割磁感线产生电动势）；楞次定律管感应电流方向</td>
+</tr>
+<tr>
+<td align="left">第 6、9、10、16 题</td>
+<td align="left"><strong>磁通量与叠加、磁链</strong></td>
+<td align="left">磁通量的有向性（磁力线闭合，环内环外方向相反）；磁场矢量的合成；磁链与电感</td>
+</tr>
+</tbody></table></div>
+<blockquote>
+<p><strong>本仓目前没有本课的教材解析</strong>（教材待提供）。所以上表只写「要会什么」，不给你可以点进去的详解页；好在 25 题都是概念判断，各题的提示已把判据写全。</p>
+</blockquote>
+<hr>
+<h2 id="3-单选题-第-1-12-题">3. 单选题（第 1–12 题）</h2><h3 id="第-1-题">第 1 题</h3><p>铁、钴、镍及其合金的相对磁导率（　）真空磁导率。A 远大于　B 略小于　C 略大于　D 等于</p>
+<details class="m3-disclosure" name="collapse-33-33">
+<summary class="m3-disclosure__summary"><span class="m3-disclosure__indicator" aria-hidden="true"></span><span class="m3-disclosure__title">提示：相对磁导率是在跟谁比</span></summary><p><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>μ</mi><mi>r</mi></msub><mo>=</mo><mi>μ</mi><mi mathvariant="normal">/</mi><msub><mi>μ</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">\mu_r=\mu/\mu_0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathnormal">μ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0278em;">r</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">μ</span><span class="mord">/</span><span class="mord"><span class="mord mathnormal">μ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>，真空的 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>μ</mi><mi>r</mi></msub></mrow><annotation encoding="application/x-tex">\mu_r</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathnormal">μ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0278em;">r</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 就是 1。所以问题等价于：铁磁材料的磁导率比真空大多少？</p>
+</details><details class="m3-disclosure" name="collapse-33-33">
+<summary class="m3-disclosure__summary"><span class="m3-disclosure__indicator" aria-hidden="true"></span><span class="m3-disclosure__title">完整解答</span></summary><p><strong>答案：A 远大于。</strong> 铁、钴、镍是典型的<strong>铁磁性材料</strong>，其 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>μ</mi><mi>r</mi></msub></mrow><annotation encoding="application/x-tex">\mu_r</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathnormal">μ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0278em;">r</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 可达数百到数万，比真空中大好几个数量级，所以是「远大于」，不是「略大于」。</p>
+</details><details class="m3-disclosure" name="collapse-33-33">
+<summary class="m3-disclosure__summary"><span class="m3-disclosure__indicator" aria-hidden="true"></span><span class="m3-disclosure__title">复盘：别把「大」写成「略大」</span></summary><p>「略大于」是顺磁材料的量级（<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>μ</mi><mi>r</mi></msub></mrow><annotation encoding="application/x-tex">\mu_r</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathnormal">μ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0278em;">r</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 比 1 大一点点）；铁磁材料是<strong>量级上的差别</strong>，这是两类材料最本质的区别。</p>
+</details><h3 id="第-2-题">第 2 题</h3><p>铁磁性物质的磁滞损耗与磁滞回线面积的关系是（　）。A 面积越小，损耗越大　B 以上答案均不正确　C 面积越大，损耗越大　D 面积大小与损耗无关</p>
+<details class="m3-disclosure" name="collapse-59-46">
+<summary class="m3-disclosure__summary"><span class="m3-disclosure__indicator" aria-hidden="true"></span><span class="m3-disclosure__title">提示：磁滞损耗是每周期「绕回线一圈」浪费的能量</span></summary><p>沿磁滞回线绕一圈所消耗的能量，就等于<strong>回线所围的面积</strong>；交变磁化每周期绕一圈，所以损耗与面积成正比。</p>
+</details><details class="m3-disclosure" name="collapse-59-46">
+<summary class="m3-disclosure__summary"><span class="m3-disclosure__indicator" aria-hidden="true"></span><span class="m3-disclosure__title">完整解答</span></summary><p><strong>答案：C 磁滞回线包围的面积越大，磁滞损耗也越大。</strong> 单位体积、每周期磁滞损耗 = 回线面积；面积越大（矫顽力越大），反复磁化的损耗越大。</p>
+</details><details class="m3-disclosure" name="collapse-59-46">
+<summary class="m3-disclosure__summary"><span class="m3-disclosure__indicator" aria-hidden="true"></span><span class="m3-disclosure__title">复盘：一个等式记住这条</span></summary><p><strong>磁滞损耗 ∝ 回线面积</strong>。推论：要省铁耗，就选回线<strong>窄</strong>的材料——这正是软磁材料的定义性特征（第 17 题）。</p>
+</details><h3 id="第-3-题">第 3 题</h3><p>电机是指依据（　）定律实现能量转换或信号传递的一种电磁装置。A 电磁感应　B 牛顿运动　C 热力学　D 欧姆</p>
+<details class="m3-disclosure" name="collapse-85-59">
+<summary class="m3-disclosure__summary"><span class="m3-disclosure__indicator" aria-hidden="true"></span><span class="m3-disclosure__title">提示：电机里发生的是什么</span></summary><p>电机里是「电」与「磁」的相互作用：线圈与磁场相对运动或磁场变化时，线圈中产生感应电动势。这条规律就是<strong>电磁感应定律</strong>（法拉第定律），再加上电流在磁场中受力，合起来实现机电能量转换。</p>
+</details><details class="m3-disclosure" name="collapse-85-59">
+<summary class="m3-disclosure__summary"><span class="m3-disclosure__indicator" aria-hidden="true"></span><span class="m3-disclosure__title">完整解答</span></summary><p><strong>答案：A 电磁感应。</strong> 电机实现能量转换或信号传递所依据的是<strong>电磁感应定律</strong>。牛顿运动定律管的是转子的机械运动，热力学管的是发热与效率，欧姆定律只管电阻上的电压电流关系，都不是「电机之所以是电机」的那条依据。</p>
+</details><details class="m3-disclosure" name="collapse-85-59">
+<summary class="m3-disclosure__summary"><span class="m3-disclosure__indicator" aria-hidden="true"></span><span class="m3-disclosure__title">复盘：一句话的电机定义</span></summary><p>电机 = 依据<strong>电磁感应</strong>实现能量转换或信号传递的<strong>电磁装置</strong>。这句话就是本课程的第一句定义，也解释了为什么本课先讲磁场与磁介质。</p>
+</details><h3 id="第-4-题">第 4 题</h3><p>如图所示，直线电流与通电矩形线圈同在纸面内，线框所受磁场力合力的方向为（　）。A 水平向右　B 垂直向下　C 垂直向上　D 水平向左</p>
+<p>〔题面配图〕左侧竖直线电流 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">I_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0785em;">I</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0785em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 箭头向上；右侧矩形线框内电流 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">I_2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0785em;">I</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0785em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 沿顺时针：上边向右、右边向下、下边向左、左边向上。</p>
+<details class="m3-disclosure" name="collapse-113-74">
+<summary class="m3-disclosure__summary"><span class="m3-disclosure__indicator" aria-hidden="true"></span><span class="m3-disclosure__title">提示：四条边一分为二，先看哪两条会抵消</span></summary><p>直线电流产生的磁场穿过线框平面。<strong>上边和下边</strong>处在同样的水平位置范围，受力大小相等、方向相反 → 抵消；<strong>左边和右边</strong>离导线远近不同，磁场强弱不同 → 抵消不掉，合力由这一对决定。</p>
+</details><details class="m3-disclosure" name="collapse-113-74">
+<summary class="m3-disclosure__summary"><span class="m3-disclosure__indicator" aria-hidden="true"></span><span class="m3-disclosure__title">完整解答</span></summary><p><strong>答案：D 水平向左。</strong></p>
+<ol>
+<li>无限长直导线通向上电流，在其<strong>右侧</strong>产生的磁场<strong>垂直纸面向里</strong>，且离导线越远越弱（<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo>∝</mo><mn>1</mn><mi mathvariant="normal">/</mi><mi>r</mi></mrow><annotation encoding="application/x-tex">B\propto 1/r</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0502em;">B</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∝</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1/</span><span class="mord mathnormal" style="margin-right:0.0278em;">r</span></span></span></span>）。</li>
+<li>线框四边受力用 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo>=</mo><mi>B</mi><mi>I</mi><mi>L</mi></mrow><annotation encoding="application/x-tex">F=BIL</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.1389em;">F</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0502em;">B</span><span class="mord mathnormal" style="margin-right:0.0785em;">I</span><span class="mord mathnormal">L</span></span></span></span> 判断（也可用左手定则）：<ul>
+<li>左边（离导线近，电流向上）：与 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">I_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0785em;">I</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0785em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> <strong>同向</strong>，被<strong>吸引</strong>，受力<strong>向左</strong>（指向导线）；</li>
+<li>右边（离导线远，电流向下）：与 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">I_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0785em;">I</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0785em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> <strong>反向</strong>，被<strong>排斥</strong>，受力<strong>向右</strong>，但该处磁场更弱，力更小；</li>
+<li>上边（电流向右）受力<strong>向上</strong>，下边（电流向左）受力<strong>向下</strong>，大小相等，<strong>抵消</strong>。</li>
+</ul>
+</li>
+<li>左边受力大于右边 → 合力<strong>水平向左</strong>，指向直线电流。</li>
+</ol>
+</details><details class="m3-disclosure" name="collapse-113-74">
+<summary class="m3-disclosure__summary"><span class="m3-disclosure__indicator" aria-hidden="true"></span><span class="m3-disclosure__title">复盘：同向相吸、反向相斥</span></summary><p>两条平行电流<strong>同向相吸、反向相斥</strong>，这条结论比逐边算 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mi>I</mi><mi>L</mi></mrow><annotation encoding="application/x-tex">BIL</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0502em;">B</span><span class="mord mathnormal" style="margin-right:0.0785em;">I</span><span class="mord mathnormal">L</span></span></span></span> 快得多。再补一句：距离近的一边「嗓门更大」，所以合力总指向导线。</p>
+</details><h3 id="第-5-题">第 5 题</h3><p>为减小剩磁，电磁线圈的铁心应采用（　）。A 非磁性材料　B 软磁性材料　C 矩磁性材料　D 硬磁性材料</p>
+<details class="m3-disclosure" name="collapse-145-93">
+<summary class="m3-disclosure__summary"><span class="m3-disclosure__indicator" aria-hidden="true"></span><span class="m3-disclosure__title">提示：剩磁大小看回线落在哪个轴上</span></summary><p>去掉磁化电流后仍保留的磁感应强度就是<strong>剩磁</strong>，它在磁滞回线与纵轴的交点处读出。问「哪种材料剩磁小」，等价于问「哪种材料的回线最窄、最贴近原点」。</p>
+</details><details class="m3-disclosure" name="collapse-145-93">
+<summary class="m3-disclosure__summary"><span class="m3-disclosure__indicator" aria-hidden="true"></span><span class="m3-disclosure__title">完整解答</span></summary><p><strong>答案：B 软磁性材料。</strong> 软磁材料磁滞回线<strong>窄</strong>、矫顽力与剩磁都<strong>小</strong>，适合做电磁线圈与变压器铁心（要的是导磁好、损耗小、断电后磁性基本消失）。其余三项：硬磁材料剩磁<strong>大</strong>（正适合做永磁体）；矩磁材料回线接近<strong>矩形</strong>、剩磁也大（用于记忆元件）；非磁性材料不能导磁，做铁心没有意义。</p>
+</details><details class="m3-disclosure" name="collapse-145-93">
+<summary class="m3-disclosure__summary"><span class="m3-disclosure__indicator" aria-hidden="true"></span><span class="m3-disclosure__title">复盘：软磁 vs 硬磁，一句话记牢</span></summary><p><strong>软磁要「软」</strong>——容易磁化、也容易退磁（窄回线、小剩磁）；<strong>硬磁要「硬」</strong>——一旦磁化就顽固保留（宽回线、大剩磁，永磁体就是它）。</p>
+</details><h3 id="第-6-题">第 6 题</h3><p>如图所示，两圆环 A、B 同心放置且半径 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>R</mi><mi>A</mi></msub><mo>&gt;</mo><msub><mi>R</mi><mi>B</mi></msub></mrow><annotation encoding="application/x-tex">R_A&gt;R_B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0077em;">R</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.0077em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">A</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&gt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0077em;">R</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.0077em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0502em;">B</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>，将一条形磁铁置于两环的圆心处且与圆环平面垂直，则穿过 A、B 两环所围的面积的磁通量大小是（　）。A <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="normal">Φ</mi><mi>A</mi></msub><mo>&lt;</mo><msub><mi mathvariant="normal">Φ</mi><mi>B</mi></msub></mrow><annotation encoding="application/x-tex">\Phi_A&lt;\Phi_B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord">Φ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">A</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord">Φ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0502em;">B</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>　B 无法判断　C <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="normal">Φ</mi><mi>A</mi></msub><mo>&gt;</mo><msub><mi mathvariant="normal">Φ</mi><mi>B</mi></msub></mrow><annotation encoding="application/x-tex">\Phi_A&gt;\Phi_B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord">Φ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">A</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&gt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord">Φ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0502em;">B</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>　D <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="normal">Φ</mi><mi>A</mi></msub><mo>=</mo><msub><mi mathvariant="normal">Φ</mi><mi>B</mi></msub></mrow><annotation encoding="application/x-tex">\Phi_A=\Phi_B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord">Φ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">A</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord">Φ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0502em;">B</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></p>
+<p>〔题面配图〕条形磁铁垂直于环面、位于两环共同圆心处。</p>
+<details class="m3-disclosure" name="collapse-173-108">
+<summary class="m3-disclosure__summary"><span class="m3-disclosure__indicator" aria-hidden="true"></span><span class="m3-disclosure__title">提示：磁力线是闭合的，出去还要回来</span></summary><p>条形磁铁的磁力线从 N 极出来，在外部空间绕回 S 极。<strong>大环多包住的那部分（两环之间）</strong>，磁力线是从外面<strong>返回</strong>的，方向与中心区域<strong>相反</strong>。</p>
+</details><details class="m3-disclosure" name="collapse-173-108">
+<summary class="m3-disclosure__summary"><span class="m3-disclosure__indicator" aria-hidden="true"></span><span class="m3-disclosure__title">完整解答</span></summary><p><strong>答案：A <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="normal">Φ</mi><mi>A</mi></msub><mo>&lt;</mo><msub><mi mathvariant="normal">Φ</mi><mi>B</mi></msub></mrow><annotation encoding="application/x-tex">\Phi_A&lt;\Phi_B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord">Φ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">A</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord">Φ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0502em;">B</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>。</strong></p>
+<ol>
+<li>磁通量是<strong>有向</strong>的：方向相反的磁通要相减。</li>
+<li>小环 B 围住的区域里，磁力线基本是同一方向穿出（或穿入）；大环 A 等于「小环区域」<strong>加上</strong>「两环之间的环带」。</li>
+<li>环带里的磁力线是磁铁外部<strong>返回</strong>的那部分，方向与中心区域<strong>相反</strong>，于是把总磁通<strong>抵消掉一部分</strong>。</li>
+<li>所以 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="normal">Φ</mi><mi>A</mi></msub><mo>=</mo><msub><mi mathvariant="normal">Φ</mi><mtext>中心</mtext></msub><mo>−</mo><msub><mi mathvariant="normal">Φ</mi><mtext>环带</mtext></msub><mo>&lt;</mo><msub><mi mathvariant="normal">Φ</mi><mi>B</mi></msub></mrow><annotation encoding="application/x-tex">\Phi_A=\Phi_{\text{中心}}-\Phi_{\text{环带}}&lt;\Phi_B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord">Φ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">A</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord">Φ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord cjk_fallback mtight">中心</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord">Φ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord cjk_fallback mtight">环带</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord">Φ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0502em;">B</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>。</li>
+</ol>
+</details><details class="m3-disclosure" name="collapse-173-108">
+<summary class="m3-disclosure__summary"><span class="m3-disclosure__indicator" aria-hidden="true"></span><span class="m3-disclosure__title">复盘：磁通量是「净根数」</span></summary><p>磁通量数的是<strong>穿过面积的净磁力线根数</strong>，方向相反要相减。不要以为「面积大磁通就一定大」——这正是本题的陷阱（大环反而小）。</p>
+</details><h3 id="第-7-题">第 7 题</h3><p>下列与磁导率无关的物理量是（　）。A 磁场强度　B 磁通　C 磁阻　D 磁感应强度</p>
+<details class="m3-disclosure" name="collapse-203-125">
+<summary class="m3-disclosure__summary"><span class="m3-disclosure__indicator" aria-hidden="true"></span><span class="m3-disclosure__title">提示：把四个量的定义式各写一遍，看哪个式子里没有 μ</span></summary><p><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo>=</mo><mi>μ</mi><mi>H</mi></mrow><annotation encoding="application/x-tex">B=\mu H</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0502em;">B</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">μ</span><span class="mord mathnormal" style="margin-right:0.0813em;">H</span></span></span></span>、<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Φ</mi><mo>=</mo><mo>∫</mo><mi>B</mi><mtext> </mtext><mi mathvariant="normal">d</mi><mi>A</mi></mrow><annotation encoding="application/x-tex">\Phi=\int B\,\mathrm{d}A</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">Φ</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.1111em;vertical-align:-0.3061em;"></span><span class="mop op-symbol small-op" style="margin-right:0.1945em;position:relative;top:-0.0006em;">∫</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.0502em;">B</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathrm">d</span><span class="mord mathnormal">A</span></span></span></span>、<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>R</mi><mi>m</mi></msub><mo>=</mo><mi>l</mi><mi mathvariant="normal">/</mi><mo stretchy="false">(</mo><mi>μ</mi><mi>A</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">R_m=l/(\mu A)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0077em;">R</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0077em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">m</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0197em;">l</span><span class="mord">/</span><span class="mopen">(</span><span class="mord mathnormal">μ</span><span class="mord mathnormal">A</span><span class="mclose">)</span></span></span></span>、<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi><mo>=</mo><mi>N</mi><mi>I</mi><mi mathvariant="normal">/</mi><mi>l</mi></mrow><annotation encoding="application/x-tex">H=NI/l</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0813em;">H</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">N</span><span class="mord mathnormal" style="margin-right:0.0785em;">I</span><span class="mord">/</span><span class="mord mathnormal" style="margin-right:0.0197em;">l</span></span></span></span>——逐个数，哪一个是「算的时候根本不需要知道介质」的。</p>
+</details><details class="m3-disclosure" name="collapse-203-125">
+<summary class="m3-disclosure__summary"><span class="m3-disclosure__indicator" aria-hidden="true"></span><span class="m3-disclosure__title">完整解答</span></summary><p><strong>答案：A 磁场强度。</strong></p>
+<ul>
+<li><strong>磁场强度 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi></mrow><annotation encoding="application/x-tex">H</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0813em;">H</span></span></span></span></strong>：只由<strong>电流（激励）与几何尺寸</strong>决定（如 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi><mo>=</mo><mi>N</mi><mi>I</mi><mi mathvariant="normal">/</mi><mi>l</mi></mrow><annotation encoding="application/x-tex">H=NI/l</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0813em;">H</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">N</span><span class="mord mathnormal" style="margin-right:0.0785em;">I</span><span class="mord">/</span><span class="mord mathnormal" style="margin-right:0.0197em;">l</span></span></span></span>），<strong>与介质磁导率无关</strong>；</li>
+<li>磁感应强度 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo>=</mo><mi>μ</mi><mi>H</mi></mrow><annotation encoding="application/x-tex">B=\mu H</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0502em;">B</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">μ</span><span class="mord mathnormal" style="margin-right:0.0813em;">H</span></span></span></span> —— 与 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>μ</mi></mrow><annotation encoding="application/x-tex">\mu</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">μ</span></span></span></span> 有关；</li>
+<li>磁通 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Φ</mi><mo>=</mo><mo>∫</mo><mi>B</mi><mtext> </mtext><mi mathvariant="normal">d</mi><mi>A</mi></mrow><annotation encoding="application/x-tex">\Phi=\int B\,\mathrm{d}A</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">Φ</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.1111em;vertical-align:-0.3061em;"></span><span class="mop op-symbol small-op" style="margin-right:0.1945em;position:relative;top:-0.0006em;">∫</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.0502em;">B</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathrm">d</span><span class="mord mathnormal">A</span></span></span></span> —— 因 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0502em;">B</span></span></span></span> 而随 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>μ</mi></mrow><annotation encoding="application/x-tex">\mu</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">μ</span></span></span></span> 变；</li>
+<li>磁阻 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>R</mi><mi>m</mi></msub><mo>=</mo><mi>l</mi><mi mathvariant="normal">/</mi><mo stretchy="false">(</mo><mi>μ</mi><mi>A</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">R_m=l/(\mu A)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0077em;">R</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0077em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">m</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0197em;">l</span><span class="mord">/</span><span class="mopen">(</span><span class="mord mathnormal">μ</span><span class="mord mathnormal">A</span><span class="mclose">)</span></span></span></span> —— 分母里就有 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>μ</mi></mrow><annotation encoding="application/x-tex">\mu</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">μ</span></span></span></span>。</li>
+</ul>
+</details><details class="m3-disclosure" name="collapse-203-125">
+<summary class="m3-disclosure__summary"><span class="m3-disclosure__indicator" aria-hidden="true"></span><span class="m3-disclosure__title">复盘：H 是「起因」，B 是「结果」</span></summary><p><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi></mrow><annotation encoding="application/x-tex">H</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0813em;">H</span></span></span></span> 描述<strong>外因</strong>（电流怎么激励），<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0502em;">B</span></span></span></span> 描述<strong>介质中的实际响应</strong>。记住这条，第 18、20 两题一起就通了。</p>
+</details><h3 id="第-8-题">第 8 题</h3><p>1820 年 4 月，科学家（　）在一次通电演示时发现了电流的磁效应。A 法拉第　B 奥特曼　C 奥斯特　D 法拉利</p>
+<details class="m3-disclosure" name="collapse-233-142">
+<summary class="m3-disclosure__summary"><span class="m3-disclosure__indicator" aria-hidden="true"></span><span class="m3-disclosure__title">提示：这是课本上的科学史第一句</span></summary><p>1820 年，丹麦物理学家在一次课堂演示中发现通电导线能使旁边的小磁针偏转——从此「电」与「磁」被联系起来。</p>
+</details><details class="m3-disclosure" name="collapse-233-142">
+<summary class="m3-disclosure__summary"><span class="m3-disclosure__indicator" aria-hidden="true"></span><span class="m3-disclosure__title">完整解答</span></summary><p><strong>答案：C 奥斯特。</strong> 奥斯特（H. C. Ørsted）于 1820 年 4 月发现<strong>电流的磁效应</strong>（通电导线使小磁针偏转）。法拉第的贡献是<strong>电磁感应</strong>（1831 年，反向的那一步：磁生电）；「奥特曼」「法拉利」是外形相近的干扰项。</p>
+</details><details class="m3-disclosure" name="collapse-233-142">
+<summary class="m3-disclosure__summary"><span class="m3-disclosure__indicator" aria-hidden="true"></span><span class="m3-disclosure__title">复盘：两个人的方向别搞反</span></summary><p><strong>奥斯特：电 → 磁</strong>（1820）；<strong>法拉第：磁 → 电</strong>（1831）。电机能转起来，靠的正是这两步合起来。</p>
+</details><h3 id="第-9-题">第 9 题</h3><p>如图所示，两个完全一样的环形线圈相互垂直地放置，它们的圆心位于共同点 O 点，当通以相同大小的电流时，O 点处的磁感应强度与一个线圈单独产生的磁感应强度之比是（　）。A 1.414：1　B 1：1　C 2：1　D 1：1.414</p>
+<p>〔题面配图〕两个相同的环形线圈互相垂直，圆心重合于 O 点，各通电流 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>I</mi></mrow><annotation encoding="application/x-tex">I</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0785em;">I</span></span></span></span>。</p>
+<details class="m3-disclosure" name="collapse-261-157">
+<summary class="m3-disclosure__summary"><span class="m3-disclosure__indicator" aria-hidden="true"></span><span class="m3-disclosure__title">提示：两个矢量成 90°，合起来是几倍</span></summary><p>两个线圈的圆心重合、平面互相垂直 → 它们在 O 点产生的磁感应强度<strong>大小相等</strong>、<strong>方向互相垂直</strong>。两个互相垂直的等长矢量相加，模长是多少？</p>
+</details><details class="m3-disclosure" name="collapse-261-157">
+<summary class="m3-disclosure__summary"><span class="m3-disclosure__indicator" aria-hidden="true"></span><span class="m3-disclosure__title">完整解答</span></summary><p><strong>答案：A 1.414：1。</strong> 设单个线圈在 O 点产生 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>B</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">B_0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0502em;">B</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0502em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>。两线圈相同、电流相同 → 两个 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>B</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">B_0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0502em;">B</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0502em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 大小相等；两平面互相垂直 → 两个磁感应强度方向<strong>互相垂直</strong>。合成：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo>=</mo><msqrt><mrow><msubsup><mi>B</mi><mn>0</mn><mn>2</mn></msubsup><mo>+</mo><msubsup><mi>B</mi><mn>0</mn><mn>2</mn></msubsup></mrow></msqrt><mo>=</mo><msqrt><mn>2</mn></msqrt><mtext> </mtext><msub><mi>B</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">B=\sqrt{B_0^2+B_0^2}=\sqrt2\,B_0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0502em;">B</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.24em;vertical-align:-0.2902em;"></span><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.9498em;"><span class="svg-align" style="top:-3.2em;"><span class="pstrut" style="height:3.2em;"></span><span class="mord" style="padding-left:1em;"><span class="mord"><span class="mord mathnormal" style="margin-right:0.0502em;">B</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.7959em;"><span style="top:-2.4337em;margin-left:-0.0502em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span><span style="top:-3.0448em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2663em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0502em;">B</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.7959em;"><span style="top:-2.4337em;margin-left:-0.0502em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span><span style="top:-3.0448em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2663em;"><span></span></span></span></span></span></span></span></span><span style="top:-2.9098em;"><span class="pstrut" style="height:3.2em;"></span><span class="hide-tail" style="min-width:1.02em;height:1.28em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="1.28em" viewBox="0 0 400000 1296" preserveAspectRatio="xMinYMin slice"><path d="M263,681c0.7,0,18,39.7,52,119
+c34,79.3,68.167,158.7,102.5,238c34.3,79.3,51.8,119.3,52.5,120
+c340,-704.7,510.7,-1060.3,512,-1067
+l0 -0
+c4.7,-7.3,11,-11,19,-11
+H40000v40H1012.3
+s-271.3,567,-271.3,567c-38.7,80.7,-84,175,-136,283c-52,108,-89.167,185.3,-111.5,232
+c-22.3,46.7,-33.8,70.3,-34.5,71c-4.7,4.7,-12.3,7,-23,7s-12,-1,-12,-1
+s-109,-253,-109,-253c-72.7,-168,-109.3,-252,-110,-252c-10.7,8,-22,16.7,-34,26
+c-22,17.3,-33.3,26,-34,26s-26,-26,-26,-26s76,-59,76,-59s76,-60,76,-60z
+M1001 80h400000v40h-400000z"/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2902em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.0572em;vertical-align:-0.15em;"></span><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.9072em;"><span class="svg-align" style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord" style="padding-left:0.833em;">2</span></span><span style="top:-2.8672em;"><span class="pstrut" style="height:3em;"></span><span class="hide-tail" style="min-width:0.853em;height:1.08em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="1.08em" viewBox="0 0 400000 1080" preserveAspectRatio="xMinYMin slice"><path d="M95,702
+c-2.7,0,-7.17,-2.7,-13.5,-8c-5.8,-5.3,-9.5,-10,-9.5,-14
+c0,-2,0.3,-3.3,1,-4c1.3,-2.7,23.83,-20.7,67.5,-54
+c44.2,-33.3,65.8,-50.3,66.5,-51c1.3,-1.3,3,-2,5,-2c4.7,0,8.7,3.3,12,10
+s173,378,173,378c0.7,0,35.3,-71,104,-213c68.7,-142,137.5,-285,206.5,-429
+c69,-144,104.5,-217.7,106.5,-221
+l0 -0
+c5.3,-9.3,12,-14,20,-14
+H400000v40H845.2724
+s-225.272,467,-225.272,467s-235,486,-235,486c-2.7,4.7,-9,7,-19,7
+c-6,0,-10,-1,-12,-3s-194,-422,-194,-422s-65,47,-65,47z
+M834 80h400000v40h-400000z"/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.1328em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0502em;">B</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0502em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>，所以比值 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msqrt><mn>2</mn></msqrt><mo>:</mo><mn>1</mn><mo>≈</mo><mn>1.414</mn><mo>:</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\sqrt2:1\approx1.414:1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.04em;vertical-align:-0.1328em;"></span><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.9072em;"><span class="svg-align" style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord" style="padding-left:0.833em;">2</span></span><span style="top:-2.8672em;"><span class="pstrut" style="height:3em;"></span><span class="hide-tail" style="min-width:0.853em;height:1.08em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="1.08em" viewBox="0 0 400000 1080" preserveAspectRatio="xMinYMin slice"><path d="M95,702
+c-2.7,0,-7.17,-2.7,-13.5,-8c-5.8,-5.3,-9.5,-10,-9.5,-14
+c0,-2,0.3,-3.3,1,-4c1.3,-2.7,23.83,-20.7,67.5,-54
+c44.2,-33.3,65.8,-50.3,66.5,-51c1.3,-1.3,3,-2,5,-2c4.7,0,8.7,3.3,12,10
+s173,378,173,378c0.7,0,35.3,-71,104,-213c68.7,-142,137.5,-285,206.5,-429
+c69,-144,104.5,-217.7,106.5,-221
+l0 -0
+c5.3,-9.3,12,-14,20,-14
+H400000v40H845.2724
+s-225.272,467,-225.272,467s-235,486,-235,486c-2.7,4.7,-9,7,-19,7
+c-6,0,-10,-1,-12,-3s-194,-422,-194,-422s-65,47,-65,47z
+M834 80h400000v40h-400000z"/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.1328em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">:</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1.414</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">:</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span>。</p>
+</details><details class="m3-disclosure" name="collapse-261-157">
+<summary class="m3-disclosure__summary"><span class="m3-disclosure__indicator" aria-hidden="true"></span><span class="m3-disclosure__title">复盘：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>:</mo><mn>1.414</mn></mrow><annotation encoding="application/x-tex">1:1.414</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">:</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1.414</span></span></span></span> 是「反过来问」的陷阱</span></summary><p><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msqrt><mn>2</mn></msqrt><mo>≈</mo><mn>1.414</mn></mrow><annotation encoding="application/x-tex">\sqrt2\approx1.414</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.04em;vertical-align:-0.1328em;"></span><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.9072em;"><span class="svg-align" style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord" style="padding-left:0.833em;">2</span></span><span style="top:-2.8672em;"><span class="pstrut" style="height:3em;"></span><span class="hide-tail" style="min-width:0.853em;height:1.08em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="1.08em" viewBox="0 0 400000 1080" preserveAspectRatio="xMinYMin slice"><path d="M95,702
+c-2.7,0,-7.17,-2.7,-13.5,-8c-5.8,-5.3,-9.5,-10,-9.5,-14
+c0,-2,0.3,-3.3,1,-4c1.3,-2.7,23.83,-20.7,67.5,-54
+c44.2,-33.3,65.8,-50.3,66.5,-51c1.3,-1.3,3,-2,5,-2c4.7,0,8.7,3.3,12,10
+s173,378,173,378c0.7,0,35.3,-71,104,-213c68.7,-142,137.5,-285,206.5,-429
+c69,-144,104.5,-217.7,106.5,-221
+l0 -0
+c5.3,-9.3,12,-14,20,-14
+H400000v40H845.2724
+s-225.272,467,-225.272,467s-235,486,-235,486c-2.7,4.7,-9,7,-19,7
+c-6,0,-10,-1,-12,-3s-194,-422,-194,-422s-65,47,-65,47z
+M834 80h400000v40h-400000z"/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.1328em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1.414</span></span></span></span> 记住这个数。选项 D 把比值写反了（那等于问「单线圈与合磁场的比」）；B 是「同向相加」的错误（同向才是 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mo>:</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">2:1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">2</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">:</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span>，即选项 C 的情形）。</p>
+</details><h3 id="第-10-题">第 10 题</h3><p>空心线圈插入铁心后，（　）。A 磁性将大大增强　B 磁性将减弱　C 磁性基本不变　D 不能确定</p>
+<details class="m3-disclosure" name="collapse-287-170">
+<summary class="m3-disclosure__summary"><span class="m3-disclosure__indicator" aria-hidden="true"></span><span class="m3-disclosure__title">提示：同样的电流，换介质会怎样</span></summary><p>线圈的激励（安匝数）没变，但线圈内部的介质从空气换成了铁磁材料。用 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo>=</mo><mi>μ</mi><mi>H</mi></mrow><annotation encoding="application/x-tex">B=\mu H</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0502em;">B</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">μ</span><span class="mord mathnormal" style="margin-right:0.0813em;">H</span></span></span></span> 判断。</p>
+</details><details class="m3-disclosure" name="collapse-287-170">
+<summary class="m3-disclosure__summary"><span class="m3-disclosure__indicator" aria-hidden="true"></span><span class="m3-disclosure__title">完整解答</span></summary><p><strong>答案：A 磁性将大大增强。</strong> 激励不变时 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo>=</mo><mi>μ</mi><mi>H</mi></mrow><annotation encoding="application/x-tex">B=\mu H</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0502em;">B</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">μ</span><span class="mord mathnormal" style="margin-right:0.0813em;">H</span></span></span></span>，铁心的 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>μ</mi><mi>r</mi></msub></mrow><annotation encoding="application/x-tex">\mu_r</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathnormal">μ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0278em;">r</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 可达数百至数万（第 1 题），所以线圈内及其周围的磁感应强度、穿过线圈的磁通都大大增强。这正是电磁铁、变压器都装铁心的原因。</p>
+</details><details class="m3-disclosure" name="collapse-287-170">
+<summary class="m3-disclosure__summary"><span class="m3-disclosure__indicator" aria-hidden="true"></span><span class="m3-disclosure__title">复盘：铁心是「磁放大器」</span></summary><p>同样的电流，加铁心能把磁通放大几百到几万倍。反过来看第 7 题：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi></mrow><annotation encoding="application/x-tex">H</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0813em;">H</span></span></span></span> 没变，变的是 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0502em;">B</span></span></span></span>。</p>
+</details><h3 id="第-11-题">第 11 题</h3><p>如图所示，处在磁场中的载流导线，受到的磁场力的方向应为（　）。A 垂直向上　B 水平向左　C 水平向右　D 垂直向下</p>
+<p>〔题面配图〕水平方向四根平行箭头表示磁场 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0502em;">B</span></span></span></span>，<strong>由左指向右</strong>；导线用「圆圈内加叉」符号表示，即<strong>垂直于纸面、电流方向流入纸面</strong>（图右侧标 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>I</mi></mrow><annotation encoding="application/x-tex">I</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0785em;">I</span></span></span></span>）。</p>
+<details class="m3-disclosure" name="collapse-315-185">
+<summary class="m3-disclosure__summary"><span class="m3-disclosure__indicator" aria-hidden="true"></span><span class="m3-disclosure__title">提示：先认符号，再定方向</span></summary><p>「⊗」表示电流<strong>垂直纸面向里</strong>；箭头表示磁场<strong>水平向右</strong>。求受力方向有两条路：左手定则，或直接算 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo>=</mo><mi>I</mi><mi>L</mi><mo>×</mo><mi>B</mi></mrow><annotation encoding="application/x-tex">F=IL\times B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.1389em;">F</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal" style="margin-right:0.0785em;">I</span><span class="mord mathnormal">L</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0502em;">B</span></span></span></span>。</p>
+</details><details class="m3-disclosure" name="collapse-315-185">
+<summary class="m3-disclosure__summary"><span class="m3-disclosure__indicator" aria-hidden="true"></span><span class="m3-disclosure__title">完整解答</span></summary><p><strong>答案：D 垂直向下。</strong></p>
+<ul>
+<li><strong>左手定则</strong>：让磁感线穿入手心（手心朝左，磁感线向右穿入），四指指向电流方向（指向纸面里），拇指指向受力方向——拇指指向<strong>纸面内向下</strong>，即垂直向下。</li>
+<li><strong>矢量法</strong>：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo>=</mo><mi>I</mi><mtext> </mtext><mi>L</mi><mo>×</mo><mi>B</mi></mrow><annotation encoding="application/x-tex">F=I\,L\times B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.1389em;">F</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal" style="margin-right:0.0785em;">I</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">L</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0502em;">B</span></span></span></span>，取 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mi>L</mi><mo>^</mo></mover><mo>=</mo><mo>−</mo><mover accent="true"><mi>z</mi><mo>^</mo></mover></mrow><annotation encoding="application/x-tex">\hat{L}=-\hat{z}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9468em;"></span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.9468em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal">L</span></span><span style="top:-3.2523em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.2222em;"><span class="mord">^</span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7778em;vertical-align:-0.0833em;"></span><span class="mord">−</span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6944em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal" style="margin-right:0.044em;">z</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.1944em;"><span class="mord">^</span></span></span></span></span></span></span></span></span></span>（向里）、<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mi>B</mi><mo>^</mo></mover><mo>=</mo><mo>+</mo><mover accent="true"><mi>x</mi><mo>^</mo></mover></mrow><annotation encoding="application/x-tex">\hat{B}=+\hat{x}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9468em;"></span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.9468em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal" style="margin-right:0.0502em;">B</span></span><span style="top:-3.2523em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.1667em;"><span class="mord">^</span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7778em;vertical-align:-0.0833em;"></span><span class="mord">+</span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6944em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal">x</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.2222em;"><span class="mord">^</span></span></span></span></span></span></span></span></span></span>（向右），则 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mi>L</mi><mo>^</mo></mover><mo>×</mo><mover accent="true"><mi>B</mi><mo>^</mo></mover><mo>=</mo><mo stretchy="false">(</mo><mo>−</mo><mover accent="true"><mi>z</mi><mo>^</mo></mover><mo stretchy="false">)</mo><mo>×</mo><mover accent="true"><mi>x</mi><mo>^</mo></mover><mo>=</mo><mo>−</mo><mover accent="true"><mi>y</mi><mo>^</mo></mover></mrow><annotation encoding="application/x-tex">\hat{L}\times\hat{B}=(-\hat{z})\times\hat{x}=-\hat{y}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0301em;vertical-align:-0.0833em;"></span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.9468em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal">L</span></span><span style="top:-3.2523em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.2222em;"><span class="mord">^</span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.9468em;"></span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.9468em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal" style="margin-right:0.0502em;">B</span></span><span style="top:-3.2523em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.1667em;"><span class="mord">^</span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">−</span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6944em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal" style="margin-right:0.044em;">z</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.1944em;"><span class="mord">^</span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6944em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal">x</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.2222em;"><span class="mord">^</span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord">−</span><span class="mord accent"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6944em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal" style="margin-right:0.0359em;">y</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.1944em;"><span class="mord">^</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.1944em;"><span></span></span></span></span></span></span></span></span>，受力沿 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>−</mo><mover accent="true"><mi>y</mi><mo>^</mo></mover></mrow><annotation encoding="application/x-tex">-\hat{y}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord">−</span><span class="mord accent"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6944em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal" style="margin-right:0.0359em;">y</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.1944em;"><span class="mord">^</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.1944em;"><span></span></span></span></span></span></span></span></span>，即<strong>向下</strong>。</li>
+</ul>
+</details><details class="m3-disclosure" name="collapse-315-185">
+<summary class="m3-disclosure__summary"><span class="m3-disclosure__indicator" aria-hidden="true"></span><span class="m3-disclosure__title">复盘：受力三要素缺一不可</span></summary><p>判断受力必须同时知道<strong>电流方向</strong>与<strong>磁场方向</strong>，两个都是矢量；「⊗」是一种电流方向画法（向里），「⊙」则相反（向外）。</p>
+</details><h3 id="第-12-题">第 12 题</h3><p>判定通电导线或通电线圈产生磁场的方向用（　）。A 左手定则　B 欧姆定律　C 楞次定律　D 右手螺旋法则</p>
+<details class="m3-disclosure" name="collapse-343-200">
+<summary class="m3-disclosure__summary"><span class="m3-disclosure__indicator" aria-hidden="true"></span><span class="m3-disclosure__title">提示：把「电生磁」和「磁生电／受力」分开</span></summary><p>题目问的是「电流<strong>产生</strong>的磁场」方向——这是「电生磁」，属于安培定则（右手螺旋法则）那一格。</p>
+</details><details class="m3-disclosure" name="collapse-343-200">
+<summary class="m3-disclosure__summary"><span class="m3-disclosure__indicator" aria-hidden="true"></span><span class="m3-disclosure__title">完整解答</span></summary><p><strong>答案：D 右手螺旋法则。</strong> 用右手握住导线，拇指指向电流方向，四指绕向就是磁场方向；对线圈则四指沿电流绕向、拇指指向线圈内部磁场方向（也叫安培定则）。</p>
+</details><details class="m3-disclosure" name="collapse-343-200">
+<summary class="m3-disclosure__summary"><span class="m3-disclosure__indicator" aria-hidden="true"></span><span class="m3-disclosure__title">复盘：三个定则各管一段，别混</span></summary><p><strong>右手螺旋</strong>：电流→磁场（本课程反复用）；<strong>左手定则</strong>：电流＋磁场→受力（电动机）；<strong>右手定则</strong>：运动＋磁场→感应电动势（发电机）。楞次定律管的是<strong>感应电流的方向</strong>（阻碍变化），欧姆定律与本题无关。</p>
+</details><hr>
+<h2 id="4-判断题-第-13-24-题">4. 判断题（第 13–24 题）</h2><h3 id="第-13-题">第 13 题</h3><p>铁磁性物质在反复交变磁化过程中，磁感应强度 B 的变化总是滞后于磁场强度 H 的变化，称为磁滞现象。</p>
+<details class="m3-disclosure" name="collapse-373-217">
+<summary class="m3-disclosure__summary"><span class="m3-disclosure__indicator" aria-hidden="true"></span><span class="m3-disclosure__title">提示：这一句在问「磁滞」这两个字是什么意思</span></summary><p>「滞」就是滞后：B 跟不上 H 的变化。</p>
+</details><details class="m3-disclosure" name="collapse-373-217">
+<summary class="m3-disclosure__summary"><span class="m3-disclosure__indicator" aria-hidden="true"></span><span class="m3-disclosure__title">完整解答</span></summary><p><strong>答案：对。</strong> 这就是<strong>磁滞现象</strong>的定义：反复交变磁化时，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0502em;">B</span></span></span></span> 的变化<strong>滞后</strong>于 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi></mrow><annotation encoding="application/x-tex">H</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0813em;">H</span></span></span></span>，正因为滞后才形成有面积的磁滞回线。</p>
+</details><details class="m3-disclosure" name="collapse-373-217">
+<summary class="m3-disclosure__summary"><span class="m3-disclosure__indicator" aria-hidden="true"></span><span class="m3-disclosure__title">复盘：一句话串起三题</span></summary><p>定义（本题）→ 回线面积（第 2 题）→ 损耗与剩磁（第 2、5、22、23 题）。磁滞这一族题全从这句定义出发。</p>
+</details><h3 id="第-14-题">第 14 题</h3><p>非晶合金是利用超急冷技术形成的，可用来制造变压器铁芯以降低损耗。</p>
+<details class="m3-disclosure" name="collapse-399-230">
+<summary class="m3-disclosure__summary"><span class="m3-disclosure__indicator" aria-hidden="true"></span><span class="m3-disclosure__title">提示：新型软磁材料为什么省电</span></summary><p>非晶合金把熔融金属以极快速度冷却，原子来不及排成晶格，形成<strong>非晶</strong>（无序）结构；这种结构电阻率高、磁滞回线窄。</p>
+</details><details class="m3-disclosure" name="collapse-399-230">
+<summary class="m3-disclosure__summary"><span class="m3-disclosure__indicator" aria-hidden="true"></span><span class="m3-disclosure__title">完整解答</span></summary><p><strong>答案：对。</strong> 非晶合金由<strong>超急冷</strong>（快速凝固）技术制成，具有高电阻率、低矫顽力、窄磁滞回线的特点，用它做变压器铁心可以同时降低<strong>磁滞损耗</strong>与<strong>涡流损耗</strong>（铁耗），所以又称「节能变压器铁心材料」。</p>
+</details><details class="m3-disclosure" name="collapse-399-230">
+<summary class="m3-disclosure__summary"><span class="m3-disclosure__indicator" aria-hidden="true"></span><span class="m3-disclosure__title">复盘：非晶的两个好处</span></summary><p><strong>窄回线 → 磁滞损耗小</strong>；<strong>高电阻率 → 涡流损耗小</strong>。两条都指向「省铁耗」。</p>
+</details><h3 id="第-15-题">第 15 题</h3><p>一个磁体有 N 极和 S 极两个极，若该磁体截成两段，则一段只有 N 极，另一段只有 S 极。</p>
+<details class="m3-disclosure" name="collapse-425-243">
+<summary class="m3-disclosure__summary"><span class="m3-disclosure__indicator" aria-hidden="true"></span><span class="m3-disclosure__title">提示：磁力线闭合意味着什么</span></summary><p>磁力线是<strong>闭合曲线</strong>，没有起点也没有终点——这决定了磁极能不能被「单独切出来」。</p>
+</details><details class="m3-disclosure" name="collapse-425-243">
+<summary class="m3-disclosure__summary"><span class="m3-disclosure__indicator" aria-hidden="true"></span><span class="m3-disclosure__title">完整解答</span></summary><p><strong>答案：错。</strong> 磁极<strong>不能单独存在</strong>：把磁体截成两段，每一段各自都成为<strong>有 N、S 两极的完整小磁体</strong>（继续截下去同样如此）。这与电荷不同——正负电荷可以分开，磁极不行。</p>
+</details><details class="m3-disclosure" name="collapse-425-243">
+<summary class="m3-disclosure__summary"><span class="m3-disclosure__indicator" aria-hidden="true"></span><span class="m3-disclosure__title">复盘：与「电」对照记</span></summary><p><strong>电荷能分开，磁极分不开。</strong> 物理原因就是磁力线闭合（不存在磁单极）。</p>
+</details><h3 id="第-16-题">第 16 题</h3><p>一个线圈通过单位电流时所产生的磁链称为该线圈的电容 C。</p>
+<details class="m3-disclosure" name="collapse-451-256">
+<summary class="m3-disclosure__summary"><span class="m3-disclosure__indicator" aria-hidden="true"></span><span class="m3-disclosure__title">提示：磁链除以电流，得到的是什么</span></summary><p>单位电流产生的<strong>磁链</strong>——把「磁链」当分子、「电流」当分母，看这个比值叫什么，单位是什么（<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mtext> </mtext><mrow><mi mathvariant="normal">W</mi><mi mathvariant="normal">b</mi></mrow><mi mathvariant="normal">/</mi><mn>1</mn><mtext> </mtext><mi mathvariant="normal">A</mi><mo>=</mo><mn>1</mn><mtext> </mtext><mi mathvariant="normal">H</mi></mrow><annotation encoding="application/x-tex">1\,\mathrm{Wb}/1\,\mathrm{A}=1\,\mathrm{H}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathrm">Wb</span></span><span class="mord">/1</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathrm">A</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathrm">H</span></span></span></span>）。</p>
+</details><details class="m3-disclosure" name="collapse-451-256">
+<summary class="m3-disclosure__summary"><span class="m3-disclosure__indicator" aria-hidden="true"></span><span class="m3-disclosure__title">完整解答</span></summary><p><strong>答案：错。</strong> 单位电流产生的磁链是线圈的<strong>电感</strong> <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mo>=</mo><mi mathvariant="normal">Ψ</mi><mi mathvariant="normal">/</mi><mi>i</mi></mrow><annotation encoding="application/x-tex">L=\Psi/i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">L</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">Ψ/</span><span class="mord mathnormal">i</span></span></span></span>（单位：亨利 H，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mtext> </mtext><mi mathvariant="normal">H</mi><mo>=</mo><mn>1</mn><mtext> </mtext><mrow><mi mathvariant="normal">W</mi><mi mathvariant="normal">b</mi><mi mathvariant="normal">/</mi><mi mathvariant="normal">A</mi></mrow></mrow><annotation encoding="application/x-tex">1\,\mathrm{H}=1\,\mathrm{Wb/A}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathrm">H</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathrm">Wb/A</span></span></span></span></span>），不是<strong>电容</strong> <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi></mrow><annotation encoding="application/x-tex">C</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0715em;">C</span></span></span></span>。电容描述的是「储存电荷」的能力（<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi><mo>=</mo><mi>q</mi><mi mathvariant="normal">/</mi><mi>u</mi></mrow><annotation encoding="application/x-tex">C=q/u</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0715em;">C</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0359em;">q</span><span class="mord">/</span><span class="mord mathnormal">u</span></span></span></span>），对应的是电场而不是磁场。</p>
+</details><details class="m3-disclosure" name="collapse-451-256">
+<summary class="m3-disclosure__summary"><span class="m3-disclosure__indicator" aria-hidden="true"></span><span class="m3-disclosure__title">复盘：一对「对偶」概念</span></summary><p><strong>电感 L 管磁场储能</strong>（<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mstyle scriptlevel="0" displaystyle="false"><mfrac><mn>1</mn><mn>2</mn></mfrac></mstyle><mi>L</mi><msup><mi>i</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">\tfrac12Li^2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.1901em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8451em;"><span style="top:-2.655em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mord mathnormal">L</span><span class="mord"><span class="mord mathnormal">i</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span>）；<strong>电容 C 管电场储能</strong>（<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mstyle scriptlevel="0" displaystyle="false"><mfrac><mn>1</mn><mn>2</mn></mfrac></mstyle><mi>C</mi><msup><mi>u</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">\tfrac12Cu^2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.1901em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8451em;"><span style="top:-2.655em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mord mathnormal" style="margin-right:0.0715em;">C</span><span class="mord"><span class="mord mathnormal">u</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span>）。题面把「电感」写成了「电容」，这是最常见的偷换。</p>
+</details><h3 id="第-17-题">第 17 题</h3><p>与硬磁材料的磁滞回线相比，软磁材料的磁滞回线较宽。</p>
+<details class="m3-disclosure" name="collapse-477-269">
+<summary class="m3-disclosure__summary"><span class="m3-disclosure__indicator" aria-hidden="true"></span><span class="m3-disclosure__title">提示：软磁材料用来干什么，就知道回线该宽还是窄</span></summary><p>软磁材料要反复磁化（变压器、电机铁心），必须「来去自如」——回线应当<strong>窄</strong>。</p>
+</details><details class="m3-disclosure" name="collapse-477-269">
+<summary class="m3-disclosure__summary"><span class="m3-disclosure__indicator" aria-hidden="true"></span><span class="m3-disclosure__title">完整解答</span></summary><p><strong>答案：错。</strong> <strong>软磁</strong>材料的磁滞回线<strong>窄</strong>（矫顽力小、剩磁小、损耗小）；<strong>硬磁</strong>材料的磁滞回线<strong>宽</strong>（矫顽力大、剩磁大）。题面把两者说反了。</p>
+</details><details class="m3-disclosure" name="collapse-477-269">
+<summary class="m3-disclosure__summary"><span class="m3-disclosure__indicator" aria-hidden="true"></span><span class="m3-disclosure__title">复盘：宽窄对应用途</span></summary><p>回线<strong>窄</strong>→软磁→<strong>铁心</strong>（要反复磁化）；回线<strong>宽</strong>→硬磁→<strong>永磁体</strong>（要长期保持磁性）。记用途比记名词牢。</p>
+</details><h3 id="第-18-题">第 18 题</h3><p>在均匀磁介质中，磁场强度的大小与媒介质的性质无关。</p>
+<details class="m3-disclosure" name="collapse-503-282">
+<summary class="m3-disclosure__summary"><span class="m3-disclosure__indicator" aria-hidden="true"></span><span class="m3-disclosure__title">提示：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi></mrow><annotation encoding="application/x-tex">H</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0813em;">H</span></span></span></span> 与 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0502em;">B</span></span></span></span> 谁是「起因」</span></summary><p>拿出 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo>=</mo><mi>μ</mi><mi>H</mi></mrow><annotation encoding="application/x-tex">B=\mu H</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0502em;">B</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">μ</span><span class="mord mathnormal" style="margin-right:0.0813em;">H</span></span></span></span> 与 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi><mo>=</mo><mi>N</mi><mi>I</mi><mi mathvariant="normal">/</mi><mi>l</mi></mrow><annotation encoding="application/x-tex">H=NI/l</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0813em;">H</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">N</span><span class="mord mathnormal" style="margin-right:0.0785em;">I</span><span class="mord">/</span><span class="mord mathnormal" style="margin-right:0.0197em;">l</span></span></span></span> 对照：换了介质，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0502em;">B</span></span></span></span> 会变，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi></mrow><annotation encoding="application/x-tex">H</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0813em;">H</span></span></span></span> 会不会变？</p>
+</details><details class="m3-disclosure" name="collapse-503-282">
+<summary class="m3-disclosure__summary"><span class="m3-disclosure__indicator" aria-hidden="true"></span><span class="m3-disclosure__title">完整解答</span></summary><p><strong>答案：对。</strong> 磁场强度 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi></mrow><annotation encoding="application/x-tex">H</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0813em;">H</span></span></span></span> 只取决于<strong>电流激励与几何条件</strong>（如 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi><mo>=</mo><mi>N</mi><mi>I</mi><mi mathvariant="normal">/</mi><mi>l</mi></mrow><annotation encoding="application/x-tex">H=NI/l</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0813em;">H</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">N</span><span class="mord mathnormal" style="margin-right:0.0785em;">I</span><span class="mord">/</span><span class="mord mathnormal" style="margin-right:0.0197em;">l</span></span></span></span>、长直导线 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi><mo>=</mo><mi>I</mi><mi mathvariant="normal">/</mi><mo stretchy="false">(</mo><mn>2</mn><mi>π</mi><mi>r</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">H=I/(2\pi r)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0813em;">H</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0785em;">I</span><span class="mord">/</span><span class="mopen">(</span><span class="mord">2</span><span class="mord mathnormal" style="margin-right:0.0359em;">π</span><span class="mord mathnormal" style="margin-right:0.0278em;">r</span><span class="mclose">)</span></span></span></span>），与介质无关；随介质变化的是磁感应强度 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo>=</mo><mi>μ</mi><mi>H</mi></mrow><annotation encoding="application/x-tex">B=\mu H</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0502em;">B</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">μ</span><span class="mord mathnormal" style="margin-right:0.0813em;">H</span></span></span></span>。这也正是引入 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi></mrow><annotation encoding="application/x-tex">H</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0813em;">H</span></span></span></span> 的意义——把「外因」从「介质响应」里分离出来。</p>
+</details><details class="m3-disclosure" name="collapse-503-282">
+<summary class="m3-disclosure__summary"><span class="m3-disclosure__indicator" aria-hidden="true"></span><span class="m3-disclosure__title">复盘：与第 7、20 题同一条原理</span></summary><p><strong><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi></mrow><annotation encoding="application/x-tex">H</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0813em;">H</span></span></span></span> 无关介质、<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0502em;">B</span></span></span></span> 有关介质。</strong> 这一条在这份作业里考了三次（第 7、18、20 题），说明它是本课第一个要背死的结论。</p>
+</details><h3 id="第-19-题">第 19 题</h3><p>铁磁性物质的磁导率是一常数。</p>
+<details class="m3-disclosure" name="collapse-529-295">
+<summary class="m3-disclosure__summary"><span class="m3-disclosure__indicator" aria-hidden="true"></span><span class="m3-disclosure__title">提示：想一想 B–H 曲线是不是直线</span></summary><p>铁磁材料的 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0502em;">B</span></span></span></span>–<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi></mrow><annotation encoding="application/x-tex">H</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0813em;">H</span></span></span></span> 关系是不是过原点的直线？有没有饱和？同一个材料在小电流和大电流下的 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>μ</mi></mrow><annotation encoding="application/x-tex">\mu</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">μ</span></span></span></span> 一样吗？</p>
+</details><details class="m3-disclosure" name="collapse-529-295">
+<summary class="m3-disclosure__summary"><span class="m3-disclosure__indicator" aria-hidden="true"></span><span class="m3-disclosure__title">完整解答</span></summary><p><strong>答案：错。</strong> 铁磁材料的 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>μ</mi><mo>=</mo><mi>B</mi><mi mathvariant="normal">/</mi><mi>H</mi></mrow><annotation encoding="application/x-tex">\mu=B/H</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">μ</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0502em;">B</span><span class="mord">/</span><span class="mord mathnormal" style="margin-right:0.0813em;">H</span></span></span></span> <strong>不是常数</strong>：起始段 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>μ</mi></mrow><annotation encoding="application/x-tex">\mu</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">μ</span></span></span></span> 随 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi></mrow><annotation encoding="application/x-tex">H</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0813em;">H</span></span></span></span> 增大而增大，随后因<strong>磁饱和</strong>而下降；再加上磁滞，同一个 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi></mrow><annotation encoding="application/x-tex">H</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0813em;">H</span></span></span></span> 值在升磁和退磁时对应的 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0502em;">B</span></span></span></span> 都不一样（<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0502em;">B</span></span></span></span>–<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi></mrow><annotation encoding="application/x-tex">H</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0813em;">H</span></span></span></span> 是闭合的回线而不是一条直线）。铁磁材料的磁导率是<strong>非线性</strong>的，只有真空与非铁磁材料的 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>μ</mi></mrow><annotation encoding="application/x-tex">\mu</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">μ</span></span></span></span> 才近似为常数。</p>
+</details><details class="m3-disclosure" name="collapse-529-295">
+<summary class="m3-disclosure__summary"><span class="m3-disclosure__indicator" aria-hidden="true"></span><span class="m3-disclosure__title">复盘：为什么本课不能只会算线性电路</span></summary><p>正因为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>μ</mi></mrow><annotation encoding="application/x-tex">\mu</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">μ</span></span></span></span> 不是常数，铁心线圈不能像电阻那样「一个系数算到底」，本课后面才要用<strong>磁化曲线</strong>和<strong>磁滞回线</strong>来处理。</p>
+</details><h3 id="第-20-题">第 20 题</h3><p>通电导体周围的磁感应强度只取决于电流的大小及导体的形状，而与媒介质的性质无关。</p>
+<details class="m3-disclosure" name="collapse-555-308">
+<summary class="m3-disclosure__summary"><span class="m3-disclosure__indicator" aria-hidden="true"></span><span class="m3-disclosure__title">提示：这句话对哪个量才是对的</span></summary><p>把句子里的「磁感应强度」换成「磁场强度」——就成立了。可见本题在赌你分不清这两个量。</p>
+</details><details class="m3-disclosure" name="collapse-555-308">
+<summary class="m3-disclosure__summary"><span class="m3-disclosure__indicator" aria-hidden="true"></span><span class="m3-disclosure__title">完整解答</span></summary><p><strong>答案：错。</strong> 取决于电流大小与导体形状（而<strong>与介质无关</strong>）的是<strong>磁场强度 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi></mrow><annotation encoding="application/x-tex">H</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0813em;">H</span></span></span></span></strong>；<strong>磁感应强度</strong> <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo>=</mo><mi>μ</mi><mi>H</mi></mrow><annotation encoding="application/x-tex">B=\mu H</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0502em;">B</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">μ</span><span class="mord mathnormal" style="margin-right:0.0813em;">H</span></span></span></span>，还要乘上介质磁导率，因此<strong>与介质性质有关</strong>——同样的电流，放进铁心比放在空气中 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0502em;">B</span></span></span></span> 大得多（第 10 题）。</p>
+</details><details class="m3-disclosure" name="collapse-555-308">
+<summary class="m3-disclosure__summary"><span class="m3-disclosure__indicator" aria-hidden="true"></span><span class="m3-disclosure__title">复盘：一字之差就是错</span></summary><p><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0502em;">B</span></span></span></span> 与 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi></mrow><annotation encoding="application/x-tex">H</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0813em;">H</span></span></span></span> 差一个 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>μ</mi></mrow><annotation encoding="application/x-tex">\mu</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">μ</span></span></span></span>。读完题先在心里把两个量的名字互换着念一遍，这类偷换就露馅了。</p>
+</details><h3 id="第-21-题">第 21 题</h3><p>两根靠得很近的平行直导线，若通以相同方向的电流，则他们相互吸引。</p>
+<details class="m3-disclosure" name="collapse-581-321">
+<summary class="m3-disclosure__summary"><span class="m3-disclosure__indicator" aria-hidden="true"></span><span class="m3-disclosure__title">提示：一边的电流在另一边产生磁场，再让那一边受力</span></summary><p>甲电流在乙处产生磁场，乙电流在这个磁场里受力；反之亦然。方向用左手定则判断，或者直接用已知结论。</p>
+</details><details class="m3-disclosure" name="collapse-581-321">
+<summary class="m3-disclosure__summary"><span class="m3-disclosure__indicator" aria-hidden="true"></span><span class="m3-disclosure__title">完整解答</span></summary><p><strong>答案：对。</strong> <strong>同向</strong>平行电流相互<strong>吸引</strong>，<strong>反向</strong>相互<strong>排斥</strong>（每条导线处在另一条产生的磁场中受力；也可理解为同向电流之间的磁场相互抵消、侧向压力把它们压在一起）。第 4 题正是用这条结论定性地判断线框合力方向。</p>
+</details><details class="m3-disclosure" name="collapse-581-321">
+<summary class="m3-disclosure__summary"><span class="m3-disclosure__indicator" aria-hidden="true"></span><span class="m3-disclosure__title">复盘：和电流「抱团」</span></summary><p><strong>同向相吸、反向相斥</strong>——这条结论在第 4 题省掉了大量逐边计算，值得背。</p>
+</details><h3 id="第-22-题">第 22 题</h3><p>极限磁滞回线与纵坐标交点 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>B</mi><mi>r</mi></msub></mrow><annotation encoding="application/x-tex">B_r</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0502em;">B</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0502em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0278em;">r</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 称为剩余磁感应强度，与横坐标交点 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>H</mi><mi>C</mi></msub></mrow><annotation encoding="application/x-tex">H_C</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0813em;">H</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.0813em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0715em;">C</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 称为矫顽磁力。</p>
+<details class="m3-disclosure" name="collapse-607-334">
+<summary class="m3-disclosure__summary"><span class="m3-disclosure__indicator" aria-hidden="true"></span><span class="m3-disclosure__title">提示：两个交点分别在什么状态</span></summary><p>纵轴对应 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">H=0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0813em;">H</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span>（外加磁场撤掉），横轴对应 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">B=0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0502em;">B</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span>（磁性被完全抵消）。</p>
+</details><details class="m3-disclosure" name="collapse-607-334">
+<summary class="m3-disclosure__summary"><span class="m3-disclosure__indicator" aria-hidden="true"></span><span class="m3-disclosure__title">完整解答</span></summary><p><strong>答案：对。</strong> 极限磁滞回线在 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">H=0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0813em;">H</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span> 处的纵坐标 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>B</mi><mi>r</mi></msub></mrow><annotation encoding="application/x-tex">B_r</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0502em;">B</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0502em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0278em;">r</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 叫<strong>剩余磁感应强度</strong>（剩磁）；在 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">B=0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0502em;">B</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span> 处的横坐标 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>H</mi><mi>C</mi></msub></mrow><annotation encoding="application/x-tex">H_C</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0813em;">H</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.0813em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0715em;">C</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 叫<strong>矫顽力</strong>（矫顽磁力）。前者衡量「撤掉外磁场后还剩多少磁性」，后者衡量「要加多大反向磁场才能把它消掉」。</p>
+</details><details class="m3-disclosure" name="collapse-607-334">
+<summary class="m3-disclosure__summary"><span class="m3-disclosure__indicator" aria-hidden="true"></span><span class="m3-disclosure__title">复盘：两个交点，两个用途</span></summary><p><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>B</mi><mi>r</mi></msub></mrow><annotation encoding="application/x-tex">B_r</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0502em;">B</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0502em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0278em;">r</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 大 → 适合做<strong>永磁体</strong>；<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>H</mi><mi>C</mi></msub></mrow><annotation encoding="application/x-tex">H_C</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0813em;">H</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.0813em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0715em;">C</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 小且回线窄 → 适合做<strong>铁心</strong>。第 5、17 题用的就是这两把尺子。</p>
+</details><h3 id="第-23-题">第 23 题</h3><p>铁块在交变磁场中会发热，这部分损耗叫做铁耗。它包括磁滞损耗和涡流损耗。</p>
+<details class="m3-disclosure" name="collapse-633-347">
+<summary class="m3-disclosure__summary"><span class="m3-disclosure__indicator" aria-hidden="true"></span><span class="m3-disclosure__title">提示：一个在回线里，一个在导体内</span></summary><p>交变磁化带来两种发热：磁性材料本身的（与回线有关）和感应电流引起的（与电阻率、厚度有关）。</p>
+</details><details class="m3-disclosure" name="collapse-633-347">
+<summary class="m3-disclosure__summary"><span class="m3-disclosure__indicator" aria-hidden="true"></span><span class="m3-disclosure__title">完整解答</span></summary><p><strong>答案：对。</strong> 铁耗包括两部分：<strong>磁滞损耗</strong>（磁畴反复翻转，与磁滞回线面积成正比）与<strong>涡流损耗</strong>（交变磁通在铁心中感应出的涡流在电阻上发热）。工程上把两者合称<strong>铁耗</strong>（也叫铁损），变压器与电机的铁心片做得薄、片间绝缘、或改用高电阻率的非晶合金（第 14 题），都是为了压这两种损耗。</p>
+</details><details class="m3-disclosure" name="collapse-633-347">
+<summary class="m3-disclosure__summary"><span class="m3-disclosure__indicator" aria-hidden="true"></span><span class="m3-disclosure__title">复盘：铁耗 vs 铜耗</span></summary><p><strong>铁耗</strong>发生在铁心里（磁滞＋涡流，与频率、磁密有关），<strong>铜耗</strong>发生在绕组电阻上（<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>I</mi><mn>2</mn></msup><mi>R</mi></mrow><annotation encoding="application/x-tex">I^2R</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0785em;">I</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mord mathnormal" style="margin-right:0.0077em;">R</span></span></span></span>，与电流有关）。别把两者混在一句里。</p>
+</details><h3 id="第-24-题">第 24 题</h3><p>磁场中载流导体的电流流向与磁场方向及该载流导体受到的电磁作用力遵循右手定则。</p>
+<details class="m3-disclosure" name="collapse-659-360">
+<summary class="m3-disclosure__summary"><span class="m3-disclosure__indicator" aria-hidden="true"></span><span class="m3-disclosure__title">提示：数一数这句话里有几个「矢量」</span></summary><p>电流方向、磁场方向、受力方向——三个矢量定方向，用的是哪只手？回想第 11 题你用的是哪只手。</p>
+</details><details class="m3-disclosure" name="collapse-659-360">
+<summary class="m3-disclosure__summary"><span class="m3-disclosure__indicator" aria-hidden="true"></span><span class="m3-disclosure__title">完整解答</span></summary><p><strong>答案：错。</strong> 「电流＋磁场 → <strong>受力</strong>」用的是<strong>左手定则</strong>（电动机定则）；<strong>右手定则</strong>管的是「导体运动＋磁场 → <strong>感应电动势</strong>」（发电机），即磁生电那一侧。所以这句话把定则用错了位置。</p>
+</details><details class="m3-disclosure" name="collapse-659-360">
+<summary class="m3-disclosure__summary"><span class="m3-disclosure__indicator" aria-hidden="true"></span><span class="m3-disclosure__title">复盘：一手管电、一手管力</span></summary><p><strong>左手（Left）管力（L 与力都在「电生磁的下一格」）</strong>：受力；<strong>右手管发电</strong>：感应电动势。再叠加第 12 题的右手螺旋（电生磁），三个定则就分清了。</p>
+</details><hr>
+<h2 id="5-多选题-第-25-题">5. 多选题（第 25 题）</h2><h3 id="第-25-题">第 25 题</h3><p>电机学课程中对电机分类的以下说法，<strong>错误的有</strong>（　）。</p>
+<ul>
+<li>A 电机包括静止电机和旋转电机</li>
+<li>B 直流电机包括直流发电机和直流电动机</li>
+<li>C 异步电机只有电动机</li>
+<li>D 交流电机包括异步电机和同步电机</li>
+<li>E 旋转电机包括交流电机和直流电机</li>
+<li>F 变压器不是电机</li>
+</ul>
+<details class="m3-disclosure" name="collapse-696-384">
+<summary class="m3-disclosure__summary"><span class="m3-disclosure__indicator" aria-hidden="true"></span><span class="m3-disclosure__title">提示：先找「太绝对」的词，再找「自相矛盾」的两项</span></summary><p>多选题里，含「只有」「不是」这类绝对说法的选项要先怀疑；另外注意 A 与 F 说的是同一件事的两面——不可能同时成立。</p>
+</details><details class="m3-disclosure" name="collapse-696-384">
+<summary class="m3-disclosure__summary"><span class="m3-disclosure__indicator" aria-hidden="true"></span><span class="m3-disclosure__title">完整解答</span></summary><p><strong>答案：C、F。</strong></p>
+<ul>
+<li><strong>A 对</strong>：电机按运动形式分<strong>静止电机</strong>（变压器）与<strong>旋转电机</strong>——这是本课程的第一层分类。</li>
+<li><strong>B 对</strong>：直流电机＝直流发电机＋直流电动机，常规说法。</li>
+<li><strong>C 错</strong>：异步电机<strong>不是「只有电动机」</strong>——异步电机也可以作发电机运行（如风力发电中的异步发电机），「只有」太绝对。</li>
+<li><strong>D 对</strong>：交流电机＝异步电机＋同步电机，按转速与磁场同步关系划分。</li>
+<li><strong>E 对</strong>：旋转电机按电流种类分交流电机与直流电机。</li>
+<li><strong>F 错</strong>：按 A 的分类，<strong>变压器属于静止电机</strong>，所以「变压器不是电机」是错的。</li>
+</ul>
+<blockquote>
+<p>〔待核对〕C 这一条的判定取决于课程/教材口径：若教材只讲「异步电机主要作电动机」，可能只判 F 错。以教师课上口径与教材表述为准；<strong>F 是确定项</strong>（与 A 直接矛盾）。</p>
+</blockquote>
+</details><details class="m3-disclosure" name="collapse-696-384">
+<summary class="m3-disclosure__summary"><span class="m3-disclosure__indicator" aria-hidden="true"></span><span class="m3-disclosure__title">复盘：分类树自上而下记</span></summary><p><strong>电机 →（静止 / 旋转）</strong>；旋转 →（交流 / 直流）；交流 →（异步 / 同步）；直流 →（发电机 / 电动机）。把这棵树画出来，六条说法逐条挂上去，对错立刻分明。</p>
+</details><hr>
+<h2 id="6-小结-这份作业真正想教的三件事">6. 小结：这份作业真正想教的三件事</h2><ol>
+<li><strong>两个量必须分清：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi></mrow><annotation encoding="application/x-tex">H</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0813em;">H</span></span></span></span> 与 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0502em;">B</span></span></span></span>。</strong> <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi></mrow><annotation encoding="application/x-tex">H</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0813em;">H</span></span></span></span> 由电流与几何决定（与介质无关），<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo>=</mo><mi>μ</mi><mi>H</mi></mrow><annotation encoding="application/x-tex">B=\mu H</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0502em;">B</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">μ</span><span class="mord mathnormal" style="margin-right:0.0813em;">H</span></span></span></span> 才是介质里的实际响应。第 7、18、20 三题都在考这一条——它是本课第一个要背死的结论。</li>
+<li><strong>磁滞回线是一把万能尺。</strong> 回线<strong>面积</strong>→磁滞损耗（第 2 题）；回线<strong>宽度</strong>→软磁/硬磁与用途（第 5、17 题）；与纵轴交点→剩磁 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>B</mi><mi>r</mi></msub></mrow><annotation encoding="application/x-tex">B_r</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0502em;">B</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0502em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0278em;">r</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>、与横轴交点→矫顽力 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>H</mi><mi>C</mi></msub></mrow><annotation encoding="application/x-tex">H_C</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0813em;">H</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.0813em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0715em;">C</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>（第 22 题）；加上涡流损耗就是铁耗（第 14、23 题）。</li>
+<li><strong>三个定则各管一段。</strong> 右手螺旋＝电生磁（第 12 题）；左手定则＝电流在磁场中受力（第 11、24 题）；右手定则＝磁生电。判断受力类题目还要记住<strong>同向电流相吸</strong>（第 4、21 题）这条捷径。</li>
+</ol>
+<h2 id="完成边界">完成边界</h2><ul>
+<li><strong>已完成</strong>：25 题的题面逐字转抄（含 4 道配图题图中可辨的箭头与标注）、全部 25 题的答案与依据、依赖表、小结；三处索引与站点导航同步。</li>
+<li><strong>双签</strong>：2026-09-22，由「只拿题面、禁止读取本仓任何文档」的独立子代理重算 25 题，与整理者独立得出的答案<strong>逐题一致（25/25）</strong>；本平台<strong>未提供参考答案</strong>，故无第三方可比。第 25 题(多选)的 C 项另标〔待核对〕。</li>
+<li><strong>〔待核对〕</strong>：第 25 题 C 项的教材口径；布置日期与截止时间；题面转抄与截图原件的一致性（截图按 SHA-256 登记，可随时复核）；配图题（4、6、9、11）的图形细节以截图为准，本页只写了图中可辨的箭头与标注。</li>
+<li><strong>未完成</strong>：本课尚未开课，教材未提供，故没有教材解析、没有课堂笔记；音频与课件待提供。</li>
+</ul>
+
+            </div>
+
+            
+
+            <footer class="site-footer">
+              <p class="site-footer__legal">
+                © 2026 ArchivalEra · 本站自研代码与解析文字以
+                <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank" rel="license noopener">AGPL-3.0</a>
+                许可发布 · <a href="https://github.com/ArchivalEra/S26-1_202609" target="_blank" rel="noopener">仓库源码</a>
+              </p>
+              <p class="site-footer__disclaimer">
+                教材《工程数学基础》的题目原文与章节结构版权归原书作者与出版社所有，本站解析为个人学习笔记；
+                页面主题样式来自 Shirone Material 3 Reader（MIT）；KaTeX、marked 等第三方库依其自身许可证分发。
+              </p>
+            </footer>
+          </article>
+        </main>
+
+        <!-- Table of Contents -->
+        <aside class="m3-toc">
+      <div class="toc-title">目录</div>
+      <ul class="toc-list">
+        <li class="toc-item level-2"><a href="#1-来源与边界">1. 来源与边界</a></li><li class="toc-item level-2"><a href="#2-依赖-做之前该会的事">2. 依赖：做之前该会的事</a></li><li class="toc-item level-2"><a href="#3-单选题-第-1-12-题">3. 单选题（第 1–12 题）</a></li><li class="toc-item level-3"><a href="#第-1-题">第 1 题</a></li><li class="toc-item level-3"><a href="#第-2-题">第 2 题</a></li><li class="toc-item level-3"><a href="#第-3-题">第 3 题</a></li><li class="toc-item level-3"><a href="#第-4-题">第 4 题</a></li><li class="toc-item level-3"><a href="#第-5-题">第 5 题</a></li><li class="toc-item level-3"><a href="#第-6-题">第 6 题</a></li><li class="toc-item level-3"><a href="#第-7-题">第 7 题</a></li><li class="toc-item level-3"><a href="#第-8-题">第 8 题</a></li><li class="toc-item level-3"><a href="#第-9-题">第 9 题</a></li><li class="toc-item level-3"><a href="#第-10-题">第 10 题</a></li><li class="toc-item level-3"><a href="#第-11-题">第 11 题</a></li><li class="toc-item level-3"><a href="#第-12-题">第 12 题</a></li><li class="toc-item level-2"><a href="#4-判断题-第-13-24-题">4. 判断题（第 13–24 题）</a></li><li class="toc-item level-3"><a href="#第-13-题">第 13 题</a></li><li class="toc-item level-3"><a href="#第-14-题">第 14 题</a></li><li class="toc-item level-3"><a href="#第-15-题">第 15 题</a></li><li class="toc-item level-3"><a href="#第-16-题">第 16 题</a></li><li class="toc-item level-3"><a href="#第-17-题">第 17 题</a></li><li class="toc-item level-3"><a href="#第-18-题">第 18 题</a></li><li class="toc-item level-3"><a href="#第-19-题">第 19 题</a></li><li class="toc-item level-3"><a href="#第-20-题">第 20 题</a></li><li class="toc-item level-3"><a href="#第-21-题">第 21 题</a></li><li class="toc-item level-3"><a href="#第-22-题">第 22 题</a></li><li class="toc-item level-3"><a href="#第-23-题">第 23 题</a></li><li class="toc-item level-3"><a href="#第-24-题">第 24 题</a></li><li class="toc-item level-2"><a href="#5-多选题-第-25-题">5. 多选题（第 25 题）</a></li><li class="toc-item level-3"><a href="#第-25-题">第 25 题</a></li><li class="toc-item level-2"><a href="#6-小结-这份作业真正想教的三件事">6. 小结：这份作业真正想教的三件事</a></li><li class="toc-item level-2"><a href="#完成边界">完成边界</a></li>
+      </ul>
+    </aside>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../../assets/theme/shirone-reader.js" defer></script>
+  <script src="../../../assets/plugins/disclosure-anchor.js" defer></script>
+  <script type="application/json" id="sym-glossary-json">{"terms":{"sym-det":{"title":"行列式的名字","text":"D 是它的常用代号；det A 与 |A| 都读「A 的行列式」，名字不同同一个东西。竖线与方括号要分清：竖线里是一个数，方括号里只是一张数表（矩阵），还没有值。","href":"../../%E5%B7%A5%E7%A8%8B%E6%95%B0%E5%AD%A6/%E6%95%99%E6%9D%90%E8%A7%A3%E6%9E%90/0.0-%E7%AC%A6%E5%8F%B7%E5%85%A5%E9%97%A8.html"},"sym-index":{"title":"下标：门牌号","text":"下标是坐标，规则只有一句：前行后列——a₂₃ 就是第 2 行第 3 列上的数。门牌号从 1 数起，a₁₁ 读「a 一一」不是「a 十一」。","href":"../../%E5%B7%A5%E7%A8%8B%E6%95%B0%E5%AD%A6/%E6%95%99%E6%9D%90%E8%A7%A3%E6%9E%90/0.0-%E7%AC%A6%E5%8F%B7%E5%85%A5%E9%97%A8.html"},"sym-power":{"title":"上标：乘方","text":"右上角是乘方。上标位置可以放一整段式子，如 (−1)^{i+j}——它只管正负号：i+j 是偶数取 +，奇数取 −。","href":"../../%E5%B7%A5%E7%A8%8B%E6%95%B0%E5%AD%A6/%E6%95%99%E6%9D%90%E8%A7%A3%E6%9E%90/0.0-%E7%AC%A6%E5%8F%B7%E5%85%A5%E9%97%A8.html"},"sym-rowcol":{"title":"行与列：r、c","text":"r₁ 是第 1 行（row），c₂ 是第 2 列（column）。r₂−3r₁ 读作「第 2 行换成：第 2 行 − 第 1 行的 3 倍」——写在前面的被改，式子里没出现的行不动。","href":"../../%E5%B7%A5%E7%A8%8B%E6%95%B0%E5%AD%A6/%E6%95%99%E6%9D%90%E8%A7%A3%E6%9E%90/0.0-%E7%AC%A6%E5%8F%B7%E5%85%A5%E9%97%A8.html"},"sym-matrix":{"title":"矩阵的新符号","text":"E 是单位矩阵（乘法里的「1」）；Aᵀ 转置（行列互换，(AB)ᵀ=BᵀAᵀ 要反序）；A⁻¹ 是逆——AA⁻¹=E，「撤销 A」，不是 1/A；A* 伴随（代数余子式下标转置排列）；R(A) 秩（非零子式最高阶数）。","href":"../../%E5%B7%A5%E7%A8%8B%E6%95%B0%E5%AD%A6/%E6%95%99%E6%9D%90%E8%A7%A3%E6%9E%90/0.0-%E7%AC%A6%E5%8F%B7%E5%85%A5%E9%97%A8.html"},"sym-misc":{"title":"Σ 与 ⟺","text":"Σ（西格玛）是求和打包：下标轮流取 1…n 全加起来。⟺ 读「当且仅当」，两边同真同假；⟶ 上方写字是变换记号，见 r/c 一族。","href":"../../%E5%B7%A5%E7%A8%8B%E6%95%B0%E5%AD%A6/%E6%95%99%E6%9D%90%E8%A7%A3%E6%9E%90/0.0-%E7%AC%A6%E5%8F%B7%E5%85%A5%E9%97%A8.html"}}}</script>
+  <script src="../../../assets/plugins/math-glossary.js" defer></script>
+  <script src="../../../assets/plugins/site-search.js" defer></script>
+</body>
+</html>
