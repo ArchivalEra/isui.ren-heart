@@ -1,0 +1,1237 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-depth="3">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>电路原理 2026-09-23：电流复习、电压与电位、关联参考方向与电路名词 | S26-1 课程知识库 - isui.ren</title>
+  <script>
+  /* 首帧前应用已保存的主题色与明暗，避免先用默认色渲染再变色（闪光弹 + 二次全量重绘） */
+  (function () {
+    try {
+      var root = document.documentElement;
+      var m = localStorage.getItem("theme") ||
+        (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      root.setAttribute("data-theme", m === "dark" ? "dark" : "light");
+      var hue = localStorage.getItem("theme-hue");
+      if (hue !== null && /^\d+$/.test(hue)) {
+        root.style.setProperty("--hue", hue);
+        root.style.setProperty("--primary-h", hue);
+      }
+    } catch (e) { /* 隐私模式下 localStorage 可能抛错，忽略 */ }
+  })();
+  </script>
+  <link rel="stylesheet" href="../../../assets/katex/katex.min.css">
+  <link rel="stylesheet" href="../../../assets/theme/shirone-reader.css">
+  <link rel="stylesheet" href="../../../assets/plugins/site-search.css">
+</head>
+<body>
+  <div class="drawer-backdrop" id="drawer-backdrop"></div>
+
+  <div class="site-shell">
+    <!-- Left Column: Full-Height Sidebar (整列导航栏) -->
+    <aside class="m3-drawer" id="m3-drawer">
+      <div class="drawer-header-brand">
+        <a href="../../../index.html" class="sidebar-brand">
+          <span class="site-title-icon">📚</span>
+          <span class="sidebar-brand-text">S26-1 课程知识库</span>
+        </a>
+        <button class="m3-icon-btn drawer-collapse-btn" id="drawer-collapse-btn" aria-label="收起侧边栏" title="收起侧边栏">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M15 18l-6-6 6-6"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="drawer-header-toolbar">
+        <span class="drawer-section-title">课程导航目录</span>
+        <button class="drawer-action-btn" id="toggle-all-groups-btn" title="一键收起或展开所有课程分类">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M7 15l5 5 5-5M7 9l5-5 5 5"/>
+          </svg>
+          <span id="toggle-all-text">全部收起</span>
+        </button>
+      </div>
+
+      <div class="drawer-nav-scroll-area">
+        <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../index.html" class="drawer-nav-link">
+              <span>首页</span>
+            </a>
+          </li><li class="drawer-nav-group expanded">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/index.html" class="drawer-nav-link ">
+                <span>课程总览</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 课程总览" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/工程数学/index.html" class="drawer-nav-link ">
+                <span>工程数学</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 工程数学" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/工程数学/教材解析/index.html" class="drawer-nav-link ">
+                <span>教材解析</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 教材解析" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/教材解析/0.0-符号入门.html" class="drawer-nav-link">
+              <span>符号入门</span>
+            </a>
+          </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/index.html" class="drawer-nav-link ">
+                <span>第一部分 线性代数</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 第一部分 线性代数" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header nav-header-clickable">
+            
+              <span class="drawer-section-title-text">第01章 行列式</span>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 第01章 行列式" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.0-本章通关攻略.html" class="drawer-nav-link">
+              <span>★ 通关攻略</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.1-二阶与三阶行列式.html" class="drawer-nav-link">
+              <span>1.1 二阶与三阶行列式</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.2-n阶行列式.html" class="drawer-nav-link">
+              <span>1.2 n阶行列式</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.3-克莱姆法则.html" class="drawer-nav-link">
+              <span>1.3 克莱姆法则</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.4-用MATLAB计算行列式.html" class="drawer-nav-link">
+              <span>1.4 用MATLAB计算行列式</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header nav-header-clickable">
+            
+              <span class="drawer-section-title-text">第02章 矩阵</span>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 第02章 矩阵" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.0-本章通关攻略.html" class="drawer-nav-link">
+              <span>★ 通关攻略</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.1-矩阵的概念及运算.html" class="drawer-nav-link">
+              <span>2.1 矩阵的概念及运算</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.2-逆矩阵.html" class="drawer-nav-link">
+              <span>2.2 逆矩阵</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.3-矩阵的初等变换与初等矩阵.html" class="drawer-nav-link">
+              <span>2.3 初等变换与初等矩阵</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.4-矩阵的秩.html" class="drawer-nav-link">
+              <span>2.4 矩阵的秩</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.5-用MATLAB进行矩阵运算.html" class="drawer-nav-link">
+              <span>2.5 用MATLAB进行矩阵运算</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li></ul>
+            </div>
+          </div>
+        </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/工程数学/课堂笔记/index.html" class="drawer-nav-link ">
+                <span>课堂笔记</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 课堂笔记" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/课堂笔记/2026-09-17-determinants-order-2-3.html" class="drawer-nav-link">
+              <span>09-17 行列式与沙路法则</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/课堂笔记/2026-09-17-determinants-transcript-notes.html" class="drawer-nav-link">
+              <span>09-17 课堂听课整理</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/工程数学/作业/index.html" class="drawer-nav-link ">
+                <span>作业</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 作业" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/作业/2026-09-17-作业1.html" class="drawer-nav-link">
+              <span>作业1</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/原始资料/index.html" class="drawer-nav-link">
+              <span>原始资料</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/音频/index.html" class="drawer-nav-link">
+              <span>音频</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/电力大数据与人工智能/index.html" class="drawer-nav-link ">
+                <span>电力大数据与人工智能</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 电力大数据与人工智能" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/电力大数据与人工智能/作业/index.html" class="drawer-nav-link">
+              <span>作业</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电力大数据与人工智能/教材解析/index.html" class="drawer-nav-link">
+              <span>教材解析</span>
+            </a>
+          </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/电力大数据与人工智能/课堂笔记/index.html" class="drawer-nav-link ">
+                <span>课堂笔记</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 课堂笔记" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/电力大数据与人工智能/课堂笔记/2026-09-20-课程定位与考核要求.html" class="drawer-nav-link">
+              <span>09-20 开课第一讲</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电力大数据与人工智能/课堂笔记/2026-09-22-暂态稳定评估方法与紧急控制.html" class="drawer-nav-link">
+              <span>09-22 暂态稳定评估与紧急控制</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电力大数据与人工智能/原始资料/index.html" class="drawer-nav-link">
+              <span>原始资料</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电力大数据与人工智能/音频/index.html" class="drawer-nav-link">
+              <span>音频</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/形势与政策/index.html" class="drawer-nav-link ">
+                <span>形势与政策</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 形势与政策" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/形势与政策/作业/index.html" class="drawer-nav-link">
+              <span>作业</span>
+            </a>
+          </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/形势与政策/课堂笔记/index.html" class="drawer-nav-link ">
+                <span>课堂笔记</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 课堂笔记" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/形势与政策/课堂笔记/2026-09-21-经济热点专题与考试安排.html" class="drawer-nav-link">
+              <span>09-21 经济热点专题与考试安排</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-item ">
+            <a href="../../../课程/形势与政策/原始资料/index.html" class="drawer-nav-link">
+              <span>原始资料</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/形势与政策/音频/index.html" class="drawer-nav-link">
+              <span>音频</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group expanded">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/电路原理/index.html" class="drawer-nav-link ">
+                <span>电路原理</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 电路原理" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/电路原理/作业/index.html" class="drawer-nav-link">
+              <span>作业</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电路原理/教材解析/index.html" class="drawer-nav-link">
+              <span>教材解析</span>
+            </a>
+          </li><li class="drawer-nav-group expanded">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/电路原理/课堂笔记/index.html" class="drawer-nav-link ">
+                <span>课堂笔记</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 课堂笔记" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/电路原理/课堂笔记/2026-09-21-开课说明与电路的基本概念.html" class="drawer-nav-link">
+              <span>09-21 开课说明与电路的基本概念</span>
+            </a>
+          </li><li class="drawer-nav-item active">
+            <a href="../../../课程/电路原理/课堂笔记/2026-09-23-电压电位与电路名词.html" class="drawer-nav-link">
+              <span>09-23 电压电位与电路名词</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电路原理/原始资料/index.html" class="drawer-nav-link">
+              <span>原始资料</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电路原理/音频/index.html" class="drawer-nav-link">
+              <span>音频</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/电子技术/index.html" class="drawer-nav-link ">
+                <span>电子技术</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 电子技术" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/电子技术/作业/index.html" class="drawer-nav-link">
+              <span>作业</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电子技术/教材解析/index.html" class="drawer-nav-link">
+              <span>教材解析</span>
+            </a>
+          </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/电子技术/课堂笔记/index.html" class="drawer-nav-link ">
+                <span>课堂笔记</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 课堂笔记" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/电子技术/课堂笔记/2026-09-21-开课说明与半导体基础到PN结.html" class="drawer-nav-link">
+              <span>09-21 开课说明与半导体基础到 PN 结</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电子技术/原始资料/index.html" class="drawer-nav-link">
+              <span>原始资料</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电子技术/音频/index.html" class="drawer-nav-link">
+              <span>音频</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/电机学/index.html" class="drawer-nav-link ">
+                <span>电机学</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 电机学" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/电机学/作业/index.html" class="drawer-nav-link ">
+                <span>作业</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 作业" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/电机学/作业/2026-09-22-第1章概述客观题.html" class="drawer-nav-link">
+              <span>09-22 第1章概述客观题（25题）</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电机学/教材解析/index.html" class="drawer-nav-link">
+              <span>教材解析</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电机学/课堂笔记/index.html" class="drawer-nav-link">
+              <span>课堂笔记</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电机学/原始资料/index.html" class="drawer-nav-link">
+              <span>原始资料</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电机学/音频/index.html" class="drawer-nav-link">
+              <span>音频</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header nav-header-clickable">
+            
+              <span class="drawer-section-title-text">仓库规约</span>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 仓库规约" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../维护条例.html" class="drawer-nav-link">
+              <span>维护条例</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../维护细则.html" class="drawer-nav-link">
+              <span>维护细则</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li></ul>
+      </div>
+
+      <div class="sidebar-resizer" id="sidebar-resizer" title="按住拖拽调整侧边栏宽度，双击恢复默认宽度"></div>
+    </aside>
+
+    <!-- Right Column: Main Content Column (主内容列) -->
+    <div class="main-column">
+      <!-- Top App Bar -->
+      <header class="m3-top-app-bar">
+        <div class="top-bar-left">
+          <button class="m3-icon-btn" id="drawer-toggle" aria-label="展开/收起侧边栏" title="展开/收起侧边栏">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+          </button>
+          <a href="../../../index.html" class="top-bar-mobile-title">
+            <span>S26-1 课程知识库</span>
+          </a>
+          <nav class="top-bar-breadcrumbs" aria-label="当前路径">
+            <a href="../../../index.html">首页</a><span class="m3-breadcrumb-sep">/</span><span class="current-crumb">电路原理 2026-09-23：电流复习、电压与电位、关联参考方向与电路名词</span>
+          </nav>
+        </div>
+
+        <div class="top-bar-right">
+          <button class="m3-icon-btn" id="palette-toggle" aria-label="调色盘" title="自定义主题强调色">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/>
+              <circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/>
+              <circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/>
+              <circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/>
+              <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/>
+            </svg>
+          </button>
+
+          <!-- Palette Popover -->
+          <div class="palette-popover" id="palette-popover">
+            <div class="palette-header">
+              <span class="palette-title">主题强调色调色盘</span>
+              <button class="palette-reset-btn" id="palette-reset-btn" title="重置为默认色">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+              </button>
+            </div>
+            <div class="palette-current-row">
+              <span class="palette-hue-badge" id="palette-hue-badge">Hue 248°</span>
+              <div class="palette-color-dot" id="palette-color-dot"></div>
+            </div>
+            <div class="palette-slider-container">
+              <span class="palette-slider-label">色相微调 (0° - 360°)</span>
+              <input type="range" min="0" max="360" value="248" class="palette-slider" id="hue-slider">
+            </div>
+            <div>
+              <div class="palette-swatches-title">预设配色</div>
+              <div class="palette-swatches-grid">
+                <button class="palette-swatch-item" data-hue="315" title="经典粉紫">
+                  <span class="palette-swatch-dot" style="background: hsl(315, 75%, 45%);"></span>
+                  <span class="palette-swatch-name">粉紫</span>
+                </button>
+                <button class="palette-swatch-item" data-hue="280" title="紫罗兰">
+                  <span class="palette-swatch-dot" style="background: hsl(280, 75%, 45%);"></span>
+                  <span class="palette-swatch-name">紫罗兰</span>
+                </button>
+                <button class="palette-swatch-item active" data-hue="248" title="学术深蓝">
+                  <span class="palette-swatch-dot" style="background: hsl(248, 75%, 45%);"></span>
+                  <span class="palette-swatch-name">深蓝</span>
+                </button>
+                <button class="palette-swatch-item" data-hue="205" title="天青蓝">
+                  <span class="palette-swatch-dot" style="background: hsl(205, 75%, 45%);"></span>
+                  <span class="palette-swatch-name">天青</span>
+                </button>
+                <button class="palette-swatch-item" data-hue="150" title="翡翠绿">
+                  <span class="palette-swatch-dot" style="background: hsl(150, 75%, 40%);"></span>
+                  <span class="palette-swatch-name">翡翠</span>
+                </button>
+                <button class="palette-swatch-item" data-hue="75" title="琥珀黄">
+                  <span class="palette-swatch-dot" style="background: hsl(75, 75%, 40%);"></span>
+                  <span class="palette-swatch-name">琥珀</span>
+                </button>
+                <button class="palette-swatch-item" data-hue="30" title="晚霞橙">
+                  <span class="palette-swatch-dot" style="background: hsl(30, 80%, 48%);"></span>
+                  <span class="palette-swatch-name">晚霞</span>
+                </button>
+                <button class="palette-swatch-item" data-hue="355" title="绯红">
+                  <span class="palette-swatch-dot" style="background: hsl(355, 75%, 45%);"></span>
+                  <span class="palette-swatch-name">绯红</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <button class="m3-icon-btn" id="search-toggle" aria-label="全站搜索" title="全站搜索">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+          </button>
+
+          <button class="m3-icon-btn" id="theme-toggle" aria-label="切换昼夜主题">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          </button>
+        </div>
+      </header>
+
+      <!-- 全站搜索面板（点击顶栏放大镜展开；ESC 或点外部关闭） -->
+      <div class="search-panel" id="search-panel" hidden>
+        <div class="search-panel-inner" role="dialog" aria-modal="true" aria-label="全站搜索">
+          <div class="search-panel-head">
+            <svg class="search-panel-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+            <input type="search" id="search-input" class="search-panel-input" placeholder="搜索知识点、例题、习题…" autocomplete="off" spellcheck="false">
+            <button class="m3-icon-btn" id="search-close" aria-label="关闭搜索" title="关闭（ESC）">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
+          </div>
+          <div class="search-panel-body" id="search-results">
+            <p class="search-hint">输入关键词开始搜索。中文按字面子串匹配——搜「沙路法则」只出真正连着出现这四个字的地方；结果按相关度排序，回车打开第一条。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="layout-container">
+        <!-- Content Area -->
+        <main class="content-wrapper">
+          <article class="article-container">
+            <!-- Breadcrumb in page body -->
+            <nav class="m3-breadcrumb">
+              <a href="../../../index.html">首页</a><span class="m3-breadcrumb-sep">/</span><span>电路原理 2026-09-23：电流复习、电压与电位、关联参考方向与电路名词</span>
+            </nav>
+
+            <div class="meta-chip-bar"><span class="meta-chip primary">📚 电路原理</span><span class="meta-chip">🏷️ 课堂笔记</span><span class="meta-chip">⚡ 状态: active</span><span class="meta-chip">📅 更新: 2026-09-23</span><span class="meta-chip">📖 来源: 原始资料/20260923_09501115-原文.doc</span></div>
+
+            <div class="article-content">
+              <h1 id="电路原理-2026-09-23-电流复习-电压与电位-关联参考方向与电路名词">电路原理 2026-09-23：电流复习、电压与电位、关联参考方向与电路名词</h1><h2 id="1-来源与使用边界">1. 来源与使用边界</h2><ul>
+<li><strong>课程</strong>：电路原理。<strong>日期</strong>：2026-09-23（星期三）。<strong>上课时段</strong>：文件名标注录音时段 <strong>09:50–11:15</strong>（上午）；<strong>课次</strong>：本课程第二次课（上一讲 09-21 末尾停在电流参考方向，本次接着讲；不由日期推断课时编号）。</li>
+<li><strong>原始来源</strong>：<span class="res-degrade-badge">📄 原件: 20260923_09501115-原文.doc (原件不入库，网页不提供)</span>（<code>a5bb9144…1fbb39</code>），相对时间 <code>00:00–1:00:52</code>。</li>
+<li><strong>实际格式</strong>：扩展名 <code>.doc</code>，内容实为 UTF-8 HTML 文本，本地去标签提取，未经在线转换。</li>
+<li><strong>录音与文件名的关系</strong>：文件名后 8 位 <code>09501115</code> 即 09:50–11:15；录音长 <code>1:00:52</code>，明显短于 85 分钟——<strong>录音未覆盖完整课堂</strong>（开头还在讲座位与看空位点名，结尾停在讲解例题过程中）。文件内页另标 <code>09:52:34</code>，那是转写服务自己的时间，<strong>不是上课时间</strong>。</li>
+<li><strong>说话人标签不可靠</strong>：转写给了「讲话人 1/2/3」三个标签，但同一句话常被切给两人，且「讲话人 2」大量只是两三个字的附和；本笔记按语义归到教师名下，不引用说话人编号。<code>1:00:46</code> 起的碎片是课后杂音，不入笔记。</li>
+</ul>
+<blockquote>
+<p><strong>可信度说明</strong>：原文是口语转写，同音误识别集中在专业词上（「基尔霍夫定律」被转成「学校高速定律」、「网孔」被转成「网口／惶恐」、「支路」被转成「制度」）。
+<strong>考试与教学口径</strong>（习题册与考试题的关系、题型分布、答题给分）在课堂上多次重复，可靠度较高，但个别数字含糊，已逐条进第 12 节；
+<strong>教学正文只写教师确实讲过且语义完整的内容</strong>，缺口列在第 11 节；<strong>教材例题的数字凡转写含糊的一律标〔待核对〕，不代为补全</strong>。
+<strong>学生姓名、点名段内容、教师个人经历与劝学议论一律不复录。</strong></p>
+</blockquote>
+<h3 id="时间导览-相对时间-便于回查原文">时间导览（相对时间，便于回查原文）</h3><div class="table-scroll-container"><table>
+<thead>
+<tr>
+<th align="left">时间段</th>
+<th align="left">内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">00:00–01:16</td>
+<td align="left">上课前：座位与点名方式（看完座位表看空位判断缺席）——管理事项，不入正文</td>
+</tr>
+<tr>
+<td align="left">01:16–10:07</td>
+<td align="left"><strong>复习电流与参考方向</strong>：符号、单位、直/交流写法、参考方向的意义与正负判断</td>
+</tr>
+<tr>
+<td align="left">06:59–08:53</td>
+<td align="left"><strong>考试答题口径</strong>：先标参考方向；不会做也要抄题、标方向，避免空题</td>
+</tr>
+<tr>
+<td align="left">10:07–13:59</td>
+<td align="left">教材第 4、5 页与例题；教师说明会把<strong>标准 PPT</strong> 放到群里</td>
+</tr>
+<tr>
+<td align="left">13:59–19:14</td>
+<td align="left"><strong>电压</strong>：定义、单位、直流/交流写法、实际方向与参考方向、符号表示习惯</td>
+</tr>
+<tr>
+<td align="left">19:14–27:36</td>
+<td align="left"><strong>电位</strong>：定义、参考点与接地符号、电位差、思考题（换参考点后电位变、电压不变）</td>
+</tr>
+<tr>
+<td align="left">27:36–30:52</td>
+<td align="left"><strong>关联参考方向 / 非关联参考方向</strong></td>
+</tr>
+<tr>
+<td align="left">30:52–37:46</td>
+<td align="left">教材 5–7 页与例题 1.2.2–1.2.4（教师逐题过）</td>
+</tr>
+<tr>
+<td align="left">37:46–38:46</td>
+<td align="left">考试出题范围口径：第六、七、九章都会有题，「刚好是六个题」</td>
+</tr>
+<tr>
+<td align="left">38:46–43:56</td>
+<td align="left"><strong>功率</strong>：关联→吸收、非关联→发出；教师对其中一题的答案提出疑问，说要回去核实</td>
+</tr>
+<tr>
+<td align="left">41:17–43:56</td>
+<td align="left"><strong>阶段总结</strong>：1.1 的三个模型与元件识别；本节讲电压、电流、功率</td>
+</tr>
+<tr>
+<td align="left">43:56–51:57</td>
+<td align="left">例题 1.2.6、1.2.7 与用电常识（电费与能耗估算）</td>
+</tr>
+<tr>
+<td align="left">51:57–53:49</td>
+<td align="left"><strong>出题口径</strong>：课本例题与习题最经典，考试基本是原题，数字甚至选项都不变</td>
+</tr>
+<tr>
+<td align="left">53:49–1:00:52</td>
+<td align="left"><strong>1.3 开头：电路的几个名词</strong>——支路、节点、回路、网孔与关系式 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo>=</mo><mi>B</mi><mo>−</mo><mo stretchy="false">(</mo><mi>N</mi><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">M=B-(N-1)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">M</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal" style="margin-right:0.0502em;">B</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.109em;">N</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">)</span></span></span></span>，并过一个数支路的例题</td>
+</tr>
+<tr>
+<td align="left">1:00:52 起</td>
+<td align="left">课后杂音，不入笔记</td>
+</tr>
+</tbody></table></div>
+<h2 id="2-本次课在课程里的位置">2. 本次课在课程里的位置</h2><p>教师开头明确说上一讲讲到哪：「我们上节课讲到了，应该是电路电流这块儿是吧？把电流的概念应该没讲完吧」——所以本次课<strong>先把电流与参考方向收尾</strong>，再往下讲电压、电位、功率，最后给 1.3 开头。</p>
+<p>结尾教师做了<strong>阶段总结</strong>（<code>41:17</code> 起）：</p>
+<ul>
+<li><strong>1.1 的重点是三个模型</strong>：最简电路必须同时有<strong>电源、负载、中间环节</strong>，「只有这三个同时满足的时候，才可以称之为一个电路」；并要<strong>认得出元件</strong>——前四章用得最多的是<strong>电压源、电流源、电阻</strong>，此外还有电感、电容。</li>
+<li><strong>本次课（1.2 的主体）讲三件事</strong>：<strong>电压、电流、功率</strong>；核心是<strong>实际方向与参考方向的区别</strong>，以及<strong>功率的计算</strong>（关联→吸收，非关联→发出）。</li>
+<li>求解工具没有变：<strong>电压、电流仍然用欧姆定律</strong>（电压＝电流×电阻），<strong>功率公式也没变</strong>，只是要先定方向。</li>
+<li>教师说这一节本该是「一次课的内容」，因为第一讲讲了很多上课与考试要求，「拖了几乎接近两节课才能讲完」。</li>
+</ul>
+<h2 id="3-电流与参考方向-复习">3. 电流与参考方向（复习）</h2><div class="table-scroll-container"><table>
+<thead>
+<tr>
+<th align="left">要点</th>
+<th align="left">内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">符号与单位</td>
+<td align="left">电流用 <strong>I</strong> 表示，单位<strong>安培</strong>，常用<strong>毫安</strong>——「大家会换算就行了」</td>
+</tr>
+<tr>
+<td align="left">直流 / 交流的写法</td>
+<td align="left">直流用<strong>大写 I</strong>；交流用<strong>小写 i</strong>。交流在第五章以后出现</td>
+</tr>
+<tr>
+<td align="left">实际方向</td>
+<td align="left"><strong>正电荷移动的方向</strong>（初高中就是这么定义的，只是那时不提「参考方向」这个名字）</td>
+</tr>
+<tr>
+<td align="left">参考方向</td>
+<td align="left"><strong>可以任意假定</strong>；常见表示法：在电路图上画<strong>箭头</strong>，或用<strong>角标</strong>（如 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mrow><mi>a</mi><mi>b</mi></mrow></msub></mrow><annotation encoding="application/x-tex">I_{ab}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0785em;">I</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0785em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">ab</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>），也有在 I 上方画箭头</td>
+</tr>
+<tr>
+<td align="left">正负的意义</td>
+<td align="left">算出的值 <strong>大于 0</strong> → 实际方向与参考方向<strong>相同</strong>；<strong>小于 0</strong> → <strong>相反</strong>。直流、交流电路通用</td>
+</tr>
+</tbody></table></div>
+<p><strong>为什么要引入参考方向</strong>（教师重复讲了两遍，是本次的重点之一）：简单电路里电流从正极出来回到负极，方向好判断；但<strong>中间多出一条线或加一个元件</strong>时，那条线上的电流方向<strong>很难确定</strong>——「你可以向下也可以向上」。所以先<strong>假定</strong>一个参考方向，算出结果的正负再回头判断实际方向。</p>
+<blockquote>
+<p><strong>教师强调的做题顺序</strong>：拿到电路图<strong>第一步就是假定参考方向</strong>——「因为你只有给出了它的参考方向，才可以写出它的公式」，后面学基尔霍夫定律时也必须先有电流、电压的参考方向才能列式。</p>
+</blockquote>
+<p><strong>考试答题口径（<code>06:59</code>–<code>08:53</code>）</strong>：</p>
+<ul>
+<li>试卷上有图，答题卡上只有题号，所以<strong>要在图或答题卡上写出／画出电流的参考方向</strong>。</li>
+<li>教师原话的意思：<strong>不会做也不要空题</strong>——「你把题抄下来，把参考方向假定一下」，这样也能拿<strong>一到两分</strong>；如果卷面正好考了 44 分，「加两分不就上来了吗」。</li>
+<li>教师说这是「我在这里会经常告诉大家考试的时候怎么写」，并反复强调<strong>别空题</strong>。</li>
+</ul>
+<h2 id="4-电压">4. 电压</h2><h3 id="4-1-定义与单位">4.1 定义与单位</h3><ul>
+<li><strong>定义</strong>：<strong>单位正电荷在电路中从 A 点移到 B 点，电场力所做的功</strong>，就是 A、B 两点间的电压。</li>
+<li><strong>数学解读</strong>（教师借高数讲）：把<strong>电荷量作横坐标、做功作纵坐标</strong>，电压就是这个「微分」对应的<strong>面积</strong>——「它的数学意义就是求总的面积」。</li>
+<li><strong>单位</strong>：<strong>伏特</strong>；常用<strong>千伏</strong>（高压电路，输出电压多是千伏）与<strong>毫伏</strong>（实验室里会涉及）；「正常用的就是伏特，这两个用得最多，其他的几乎不怎么见」。</li>
+</ul>
+<h3 id="4-2-直流与交流">4.2 直流与交流</h3><div class="table-scroll-container"><table>
+<thead>
+<tr>
+<th align="left"></th>
+<th align="left">特征</th>
+<th align="left">写法</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>直流电压</strong></td>
+<td align="left">大小、方向<strong>不随时间变化</strong></td>
+<td align="left">大写 <strong>U</strong>（前几章）</td>
+</tr>
+<tr>
+<td align="left"><strong>交流电压</strong></td>
+<td align="left">大小、方向<strong>随时间变化</strong></td>
+<td align="left">小写 <strong>u</strong>（第五章起）</td>
+</tr>
+</tbody></table></div>
+<p>教师借这一点解释「为什么很多人第五章学不懂」，给了<strong>两个原因</strong>：① <strong>交直流电压、电流的表示形式没搞清楚</strong>；② <strong>不会电感、电容上电压与电流的关系</strong>（交流电路会出现电感电容）。他强调<strong>解题方法与前四章完全一样</strong>；如果是「前四章本身就没学懂」，那后面自然会掉队。</p>
+<h3 id="4-3-方向与表示法">4.3 方向与表示法</h3><ul>
+<li><strong>实际方向</strong>：从<strong>高电位指向低电位</strong>，也就是<strong>电压降的方向</strong>（从正极到负极）。电压表上会直接标出正负极。</li>
+<li><strong>参考方向</strong>：<strong>可以任意选择</strong>；但一般习惯<strong>选从正到负</strong>，若已知实际方向就取与之同向。同样地：算出的值<strong>大于 0</strong> 说明参考方向与实际方向<strong>相同</strong>，小于 0 则<strong>相反</strong>。</li>
+<li><strong>表示习惯（本书最常用）</strong>：<ul>
+<li><strong>电流用箭头</strong>画在导线上；</li>
+<li><strong>电压用正负号</strong>标在元件两端（因为一个元件两端已经画了电流箭头，再画电压箭头容易乱）；</li>
+<li>也有用箭头加符号、或用下标（如 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>U</mi><mrow><mi>a</mi><mi>b</mi></mrow></msub></mrow><annotation encoding="application/x-tex">U_{ab}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.109em;">U</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.109em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">ab</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>）的写法，但<strong>前两种最常用</strong>。</li>
+</ul>
+</li>
+<li><strong>复杂电路里怎么选</strong>：不是随便选了——「一般我们还是根据解题怎么样方便，怎么样选」，怎么简单怎么写；第一章的电路简单，先按习惯来。</li>
+</ul>
+<h2 id="5-电位">5. 电位</h2><ul>
+<li><strong>定义</strong>：在电路中选择某一点作为<strong>参考点</strong>，电路中<strong>各点到参考点之间的电压</strong>，就称为该点的<strong>电位</strong>。</li>
+<li><strong>参考点的电位约定为 0</strong>，一般用<strong>接地符号</strong>表示；参考点<strong>可以任意选择</strong>（选 A、B、C、D 都可以）。</li>
+<li><strong>表达式</strong>：以 C 为参考点时，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>V</mi><mi>b</mi></msub><mo>=</mo><msub><mi>U</mi><mrow><mi>b</mi><mi>c</mi></mrow></msub></mrow><annotation encoding="application/x-tex">V_b=U_{bc}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.2222em;">V</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.2222em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">b</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.109em;">U</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.109em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">b</span><span class="mord mathnormal mtight">c</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>、<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>V</mi><mi>a</mi></msub><mo>=</mo><msub><mi>U</mi><mrow><mi>a</mi><mi>c</mi></mrow></msub></mrow><annotation encoding="application/x-tex">V_a=U_{ac}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.2222em;">V</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.2222em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">a</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.109em;">U</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.109em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">a</span><span class="mord mathnormal mtight">c</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>——即<strong>某点电位＝该点与参考点之间的电压</strong>。</li>
+<li><strong>两点间的电压＝电位差</strong>：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>U</mi><mrow><mi>a</mi><mi>b</mi></mrow></msub><mo>=</mo><msub><mi>V</mi><mi>a</mi></msub><mo>−</mo><msub><mi>V</mi><mi>b</mi></msub></mrow><annotation encoding="application/x-tex">U_{ab}=V_a-V_b</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.109em;">U</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.109em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">ab</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.2222em;">V</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.2222em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">a</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.2222em;">V</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.2222em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">b</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>。想求某个电阻两端的电压，就用它两端点的电位相减；电压的方向就是<strong>电位降低的方向</strong>。</li>
+<li><strong>什么时候用</strong>：教师说<strong>第一、二章用得不多</strong>，到<strong>第三章节点电压法</strong>会大量用到；「到第三章讲的时候还会再翻过来补充一下」。</li>
+</ul>
+<h3 id="思考题-换参考点会怎样-inline_code_10-inline_code_11">思考题：换参考点会怎样（<code>22:56</code>–<code>27:36</code>）</h3><p>以同一个电路分别取 A、B、C 为参考点，教师逐一带算（4 Ω 上 8 V、6 Ω 上 12 V）：</p>
+<div class="table-scroll-container"><table>
+<thead>
+<tr>
+<th align="left">参考点</th>
+<th align="left"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>V</mi><mi>a</mi></msub></mrow><annotation encoding="application/x-tex">V_a</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.2222em;">V</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.2222em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">a</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></th>
+<th align="left"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>V</mi><mi>b</mi></msub></mrow><annotation encoding="application/x-tex">V_b</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.2222em;">V</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.2222em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">b</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></th>
+<th align="left"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>U</mi><mrow><mi>a</mi><mi>b</mi></mrow></msub></mrow><annotation encoding="application/x-tex">U_{ab}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.109em;">U</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.109em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">ab</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">以 <strong>A</strong> 为参考点</td>
+<td align="left">0</td>
+<td align="left">−8 V</td>
+<td align="left">8 V</td>
+</tr>
+<tr>
+<td align="left">以 <strong>B</strong> 为参考点</td>
+<td align="left">+8 V</td>
+<td align="left">0</td>
+<td align="left">8 V</td>
+</tr>
+<tr>
+<td align="left">以 <strong>C</strong> 为参考点</td>
+<td align="left">20 V</td>
+<td align="left">12 V</td>
+<td align="left">8 V</td>
+</tr>
+</tbody></table></div>
+<p><strong>结论（教师要求记住）</strong>：<strong>参考点可以任意选择；换了参考点，各点的电位都会变，但两点之间的电压始终不变</strong>——4 Ω 两端始终 8 V、6 Ω 两端始终 12 V，「与参考点选择没有关系」。</p>
+<blockquote>
+<p>教师顺带解释「为什么 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>V</mi><mi>b</mi></msub></mrow><annotation encoding="application/x-tex">V_b</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.2222em;">V</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.2222em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">b</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 会是 −8」：先算出电阻上的电流是 2 A，4 Ω 两端电压 8 V，电压降的方向已知，再由 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>U</mi><mrow><mi>a</mi><mi>b</mi></mrow></msub><mo>=</mo><msub><mi>V</mi><mi>a</mi></msub><mo>−</mo><msub><mi>V</mi><mi>b</mi></msub></mrow><annotation encoding="application/x-tex">U_{ab}=V_a-V_b</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.109em;">U</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.109em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">ab</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.2222em;">V</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.2222em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">a</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.2222em;">V</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.2222em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">b</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 推出 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>V</mi><mi>b</mi></msub><mo>=</mo><mo>−</mo><mn>8</mn></mrow><annotation encoding="application/x-tex">V_b=-8</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.2222em;">V</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.2222em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">b</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">−</span><span class="mord">8</span></span></span></span>——不要只背结论。</p>
+</blockquote>
+<h2 id="6-关联参考方向与非关联参考方向">6. 关联参考方向与非关联参考方向</h2><ul>
+<li><strong>关联参考方向</strong>：电压与电流取<strong>相同的参考方向</strong>（同向）。</li>
+<li><strong>非关联参考方向</strong>：电压与电流的参考方向<strong>相反</strong>。</li>
+<li>教师说明为什么要讲这套叫法：<strong>我们课上用得不多</strong>，但<strong>不同版本的教材会讲</strong>，别的老师也会用这两个词——「你通过这个词知道啥意思就行」。</li>
+<li><strong>看图判断的方法</strong>（教师用例题示范）：先把电流箭头沿着闭合回路画下去，再看电压的正负号方向——<ul>
+<li>对<strong>元件 A</strong>：电流向上、电压方向向下 → <strong>非关联</strong>；</li>
+<li>对<strong>元件 B</strong>：电流与电压同向 → <strong>关联</strong>。</li>
+</ul>
+</li>
+</ul>
+<h2 id="7-功率-是吸收还是发出">7. 功率：是吸收还是发出</h2><p>教师给的口径（本次课的重点计算规则）：</p>
+<div class="table-scroll-container"><table>
+<thead>
+<tr>
+<th align="left">参考方向</th>
+<th align="left">功率算法</th>
+<th align="left">结果含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>关联</strong>（电压电流同向）</td>
+<td align="left"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>=</mo><mi>U</mi><mi>I</mi></mrow><annotation encoding="application/x-tex">P=UI</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.1389em;">P</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">U</span><span class="mord mathnormal" style="margin-right:0.0785em;">I</span></span></span></span></td>
+<td align="left">算出来就是<strong>吸收功率</strong></td>
+</tr>
+<tr>
+<td align="left"><strong>非关联</strong>（电压电流反向）</td>
+<td align="left"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>=</mo><mi>U</mi><mi>I</mi></mrow><annotation encoding="application/x-tex">P=UI</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.1389em;">P</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">U</span><span class="mord mathnormal" style="margin-right:0.0785em;">I</span></span></span></span></td>
+<td align="left">算出来就是<strong>发出功率</strong></td>
+</tr>
+</tbody></table></div>
+<ul>
+<li>例题（<code>38:46</code> 起，教师说这是他自己加的题）：A 图关联 → 吸收功率；B 图非关联 → 发出功率。</li>
+<li><strong>教师主动标注了一处疑问</strong>：其中一题（讨论 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi></mrow><annotation encoding="application/x-tex">P</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.1389em;">P</span></span></span></span> 的正负与「实际发出／吸收」那一问）——「我觉得他答案是有点奇怪的……这个答案有可能是我回去要核实一下是不是粘错了」，并说这类绕口的题「也不会单独地考」。<strong>该题的结论不作为仓库结论采用</strong>（见第 12 节）。</li>
+<li>例题 1.2.6（<code>48:41</code>）：A 图关联 → 吸收；B 图关联 → 吸收；C 图非关联 → 发出功率，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>10</mn><mo>×</mo><mn>2</mn><mo>=</mo><mn>20</mn></mrow><annotation encoding="application/x-tex">10\times2=20</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">10</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">2</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">20</span></span></span></span> W。</li>
+<li>例题 1.2.7（<code>49:31</code>）：已知发出功率与电流求电压，<strong>先化成国际单位</strong>再算——教师给的数是 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0.15</mn></mrow><annotation encoding="application/x-tex">0.15</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0.15</span></span></span></span> W 与 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0.01</mn></mrow><annotation encoding="application/x-tex">0.01</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0.01</span></span></span></span> A，得 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>15</mn></mrow><annotation encoding="application/x-tex">15</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">15</span></span></span></span> V（数值转写含糊，见第 12 节）。</li>
+</ul>
+<h2 id="8-1-3-开头-支路-节点-回路-网孔">8. 1.3 开头：支路、节点、回路、网孔</h2><p>教师说这是第一章<strong>最重要、用得最多</strong>的部分（基尔霍夫定律下一节才讲），本次只讲名词与关系式。</p>
+<div class="table-scroll-container"><table>
+<thead>
+<tr>
+<th align="left">名词</th>
+<th align="left">定义（教师口径）</th>
+<th align="left">辨识要点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>支路</strong></td>
+<td align="left">电路中的<strong>每一个分支</strong></td>
+<td align="left"><strong>同一支路上的电流处处相等</strong>（就是串联那一段）；<strong>支路上必须有元件</strong>——一根纯导线不构成支路（「你把两个点连在一起，中间什么都不接」没有意义）</td>
+</tr>
+<tr>
+<td align="left"><strong>节点</strong></td>
+<td align="left"><strong>两个或两个以上支路的连接点</strong></td>
+<td align="left">只是拐角不算节点；用<strong>理想导线</strong>直接相连的点电位相同，<strong>算同一个节点</strong></td>
+</tr>
+<tr>
+<td align="left"><strong>回路</strong></td>
+<td align="left">电路中任何一个<strong>闭合路径</strong></td>
+<td align="left">「只要能绕成一圈儿的都可以称之为一个回路」</td>
+</tr>
+<tr>
+<td align="left"><strong>网孔</strong></td>
+<td align="left"><strong>内部不含有其他支路的回路</strong></td>
+<td align="left">「电路中有几个洞就称之为几个网孔」；<strong>网孔一定是回路，回路不一定是网孔</strong></td>
+</tr>
+</tbody></table></div>
+<p><strong>关系式（教师说既常考也常用，教材第 10 页 1.3.1 公式三）</strong>：</p>
+<p><div class="katex-scroll-container"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>M</mi><mo>=</mo><mi>B</mi><mo>−</mo><mo stretchy="false">(</mo><mi>N</mi><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo><mo>=</mo><mi>B</mi><mo>−</mo><mi>N</mi><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">M=B-(N-1)=B-N+1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">M</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal" style="margin-right:0.0502em;">B</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.109em;">N</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal" style="margin-right:0.0502em;">B</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">N</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span></span></div></p>
+<p>其中 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi></mrow><annotation encoding="application/x-tex">M</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">M</span></span></span></span> 为网孔数、<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0502em;">B</span></span></span></span> 为支路数、<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">N</span></span></span></span> 为节点数。</p>
+<p><strong>随堂例题</strong>（教师带数的那题）：图中共 <strong>5 条支路、3 个节点、6 个回路、3 个网孔</strong>；用公式核对 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo>=</mo><mn>5</mn><mo>−</mo><mn>3</mn><mo>+</mo><mn>1</mn><mo>=</mo><mn>3</mn></mrow><annotation encoding="application/x-tex">M=5-3+1=3</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">M</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">5</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">3</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">3</span></span></span></span>，与数出来的网孔数一致。</p>
+<blockquote>
+<p>教师对例题的重点提示：<strong>支路数最容易数错</strong>——「有很多同学看不懂这个题有几条支路」，数错后面用公式就会少写、多写或乱写；<strong>两条元件串联在同一条线上算一条支路</strong>，<strong>纯导线不算支路</strong>，用理想导线相连的两点算<strong>同一个节点</strong>。</p>
+</blockquote>
+<h2 id="9-本次课涉及的教材例题-教师逐题过">9. 本次课涉及的教材例题（教师逐题过）</h2><p>教师说他会把<strong>课本上的例题</strong>（尤其前五章的）都过一遍：不难的简单说一下，难的细讲。本次课点到的：</p>
+<div class="table-scroll-container"><table>
+<thead>
+<tr>
+<th align="left">例题</th>
+<th align="left">内容</th>
+<th align="left">教师给的结果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">教材第 5 页例题</td>
+<td align="left">已知 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>I</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">I=1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0785em;">I</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span>（A），问电流的实际方向</td>
+<td align="left"><strong>实际方向从 A 流向 B</strong>；若参考方向反过来画，则 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>I</mi><mo>=</mo><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">I=-1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0785em;">I</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">−</span><span class="mord">1</span></span></span></span></td>
+</tr>
+<tr>
+<td align="left">1.2.2</td>
+<td align="left">参考点任选（A／B／C），求 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>U</mi><mrow><mi>a</mi><mi>b</mi></mrow></msub></mrow><annotation encoding="application/x-tex">U_{ab}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.109em;">U</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.109em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">ab</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></td>
+<td align="left">结果一致——与第 5 节的思考题同一结论</td>
+</tr>
+<tr>
+<td align="left">1.2.3</td>
+<td align="left">已知电动势（两端电压）5 V，问 A、B 的电位</td>
+<td align="left">电压方向由高电位指向低电位 → <strong>A 电位高、B 电位低</strong></td>
+</tr>
+<tr>
+<td align="left">1.2.4</td>
+<td align="left">已知 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>V</mi><mi>a</mi></msub><mo>=</mo><mn>10</mn></mrow><annotation encoding="application/x-tex">V_a=10</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.2222em;">V</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.2222em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">a</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">10</span></span></span></span> V、<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>V</mi><mi>c</mi></msub><mo>=</mo><mo>−</mo><mn>6</mn></mrow><annotation encoding="application/x-tex">V_c=-6</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.2222em;">V</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.2222em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">c</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">−</span><span class="mord">6</span></span></span></span> V，求 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>V</mi><mi>b</mi></msub></mrow><annotation encoding="application/x-tex">V_b</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.2222em;">V</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.2222em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">b</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></td>
+<td align="left">先求 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>U</mi><mrow><mi>a</mi><mi>c</mi></mrow></msub><mo>=</mo><mn>16</mn></mrow><annotation encoding="application/x-tex">U_{ac}=16</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.109em;">U</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.109em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">a</span><span class="mord mathnormal mtight">c</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">16</span></span></span></span> V，再算电流 → 得到 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>V</mi><mi>b</mi></msub><mo>=</mo><mn>5</mn></mrow><annotation encoding="application/x-tex">V_b=5</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.2222em;">V</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.2222em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">b</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">5</span></span></span></span> V（中间电阻值与算式转写含糊，见第 12 节）</td>
+</tr>
+<tr>
+<td align="left">1.2.5（用电估算）</td>
+<td align="left">浙江电价 0.58 元/度、额定 220 V、每天开 6 小时的灯，算损失</td>
+<td align="left">教师说这题「非常有用」，可用来估算家电能耗</td>
+</tr>
+<tr>
+<td align="left">1.2.6</td>
+<td align="left">判断各元件是吸收还是发出功率</td>
+<td align="left">A、B 关联 → 吸收；<strong>C 非关联 → 发出功率 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>10</mn><mo>×</mo><mn>2</mn><mo>=</mo><mn>20</mn></mrow><annotation encoding="application/x-tex">10\times2=20</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">10</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">2</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">20</span></span></span></span> W</strong></td>
+</tr>
+<tr>
+<td align="left">1.2.7</td>
+<td align="left">已知发出功率与电流求电压</td>
+<td align="left">先化国际单位再除（数值见第 12 节）</td>
+</tr>
+</tbody></table></div>
+<p>教师反复给的<strong>看例题方法</strong>：<strong>先把答案遮住自己算</strong>，「如果你直接连题连答案全部看下来，你自我感觉非常良好……真让你写的时候就很难下笔了」。他还说看课本时<strong>不要看手机</strong>（<code>44:04</code> 起的那段提醒，属课堂纪律，不细录）。</p>
+<h2 id="10-考试与教学口径-本次新增与强化">10. 考试与教学口径（本次新增与强化）</h2><ul>
+<li><strong>出题来源（强化了上一讲的说法）</strong>：课本例题与习题「都是比较经典的」，老师出题<strong>倾向于用课本上的例题和习题</strong>，而且是<strong>原题</strong>；「考试的题包括我们给了大家的习题册，到时候考试题都是一模一样的，<strong>数字都不会发生变化</strong>」，连<strong>选项 A、B、C、D 都不变</strong>。极个别的改动也只是把 5 V 换成 10 V 这种<strong>成倍</strong>的变化（因为复杂电路的结果常带小数）。</li>
+<li><strong>大题分布</strong>：教师说<strong>第六、七、九章都会有题</strong>，「所以是刚好是六个题」——与上一讲「大题每题 10 分、合计约 60 分」的说法吻合（可理解为<strong>每章一题、共六题</strong>；详见第 12 节的口径说明）。</li>
+<li><strong>讲授范围提示</strong>：本次课说「前五章」是最基础、最常考的部分（上一讲给的讲授范围是第 1、2、3、4、5、6、7、9 章）。</li>
+<li><strong>课件</strong>：教师会把<strong>学院统一标准的 PPT</strong> 放到<strong>班级群</strong>的文件夹里（不是他自己改动的版本）；他说自己的 PPT 与标准版「差的就是总结」，而总结「应该大家自己去总结」。</li>
+<li><strong>课堂节奏</strong>：教师明说「一般上课不会拖堂」，讲到临近下课就停下；本次课结束时留了几分钟让大家自己看 8、9 页（1.3.1 的回路与网孔）。</li>
+</ul>
+<h2 id="11-本篇明确没有的内容-不要脑补">11. 本篇明确没有的内容（不要脑补）</h2><div class="table-scroll-container"><table>
+<thead>
+<tr>
+<th align="left">缺口</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>基尔霍夫定律的内容</strong></td>
+<td align="left">教师明确说「今天我们不会讲这个定理，下一次我们再讲」——<strong>没有 KCL/KVL 的表述、符号规则与例题</strong></td>
+</tr>
+<tr>
+<td align="left"><strong>1.3 之后的节</strong></td>
+<td align="left">只讲名词与关系式，1.3.2 及以后未涉及</td>
+</tr>
+<tr>
+<td align="left"><strong>第二章及以后</strong></td>
+<td align="left">未涉及</td>
+</tr>
+<tr>
+<td align="left"><strong>电位的具体应用</strong></td>
+<td align="left">只讲定义与换参考点的结论，<strong>节点电压法要到第三章</strong>，本次没有用法步骤</td>
+</tr>
+<tr>
+<td align="left"><strong>完整例题数据</strong></td>
+<td align="left">例题 1.2.4（<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>V</mi><mi>b</mi></msub></mrow><annotation encoding="application/x-tex">V_b</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.2222em;">V</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.2222em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">b</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>）、1.2.7（电压值）、1.2.5（损失估算）的数字在转写中含混，<strong>本笔记不补全</strong>，只记方法与教师口头给出的结论</td>
+</tr>
+<tr>
+<td align="left"><strong>教材的书名与作者</strong></td>
+<td align="left">教师提到「第五版／第六版」与作者名（转写为「出关联」，不可辨），<strong>仍不足以确认教材</strong></td>
+</tr>
+<tr>
+<td align="left"><strong>PPT 与群里文件</strong></td>
+<td align="left">教师说要放到群里，仓库不收课件正文，只登记此事</td>
+</tr>
+</tbody></table></div>
+<h2 id="12-待核实与不可靠识别">12. 待核实与不可靠识别</h2><h3 id="12-1-术语被转写读错">12.1 术语被转写读错</h3><div class="table-scroll-container"><table>
+<thead>
+<tr>
+<th align="left">转写原文</th>
+<th align="left">应为</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">「学校高速定律」</td>
+<td align="left"><strong>基尔霍夫定律</strong></td>
+<td align="left">讲做题必须先定参考方向时提到（下一节将讲）</td>
+</tr>
+<tr>
+<td align="left">「网口」「惶恐」</td>
+<td align="left"><strong>网孔</strong></td>
+<td align="left">讲课与例题里反复出现，同段也写对过</td>
+</tr>
+<tr>
+<td align="left">「制度」「一个制度里」</td>
+<td align="left"><strong>支路</strong></td>
+<td align="left">「这个不能称之为一个制度里没有任何的原件」＝纯导线不算支路</td>
+</tr>
+<tr>
+<td align="left">「碳酸锂」</td>
+<td align="left">噪声</td>
+<td align="left">讲换参考点结论处的一句无意义转写，不采</td>
+</tr>
+<tr>
+<td align="left">「L 就等于 3」</td>
+<td align="left">疑为<strong>回路数 3</strong></td>
+<td align="left">讲「这个里面有三条回路」处的口误或误识</td>
+</tr>
+<tr>
+<td align="left">「电压补偿电流」</td>
+<td align="left"><strong>不确定</strong></td>
+<td align="left">上下文在说「因为我没有讲电压的方向，所以这里电流就直接给了」</td>
+</tr>
+<tr>
+<td align="left">「出关联的那个第五版、第六版」</td>
+<td align="left">作者名<strong>不可辨</strong>（版本为第五版／第六版）</td>
+<td align="left">与上一讲笔记里「作者名失真」的结论一致，<strong>不据此断言教材</strong></td>
+</tr>
+<tr>
+<td align="left">「12 岁，21 岁的时候……发现了这个规律」</td>
+<td align="left"><strong>不确定</strong></td>
+<td align="left">讲基尔霍夫发现定律的年龄，转写数字不可靠，不作为事实</td>
+</tr>
+<tr>
+<td align="left">「有的很少一部分学校会考国电」</td>
+<td align="left">疑为<strong>电路</strong></td>
+<td align="left">讲考研科目时的一句，前后都在说「基本上都是考电路」</td>
+</tr>
+<tr>
+<td align="left">「垫资的」</td>
+<td align="left">疑为<strong>电子的</strong></td>
+<td align="left">讲电子专业与电路课的关系</td>
+</tr>
+<tr>
+<td align="left">「1.2:03」「一点 2.2」</td>
+<td align="left">节号 <strong>1.2.3 / 1.2.2</strong></td>
+<td align="left">节号被转成时间样式的数字（上一讲同样问题）</td>
+</tr>
+<tr>
+<td align="left">「福特」</td>
+<td align="left"><strong>伏特</strong></td>
+<td align="left">讲电压单位</td>
+</tr>
+<tr>
+<td align="left">「5 6 分钟」</td>
+<td align="left">五六分钟</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">「4A4O2 端」</td>
+<td align="left"><strong>4 Ω 两端</strong></td>
+<td align="left">讲参考点思考题的结论</td>
+</tr>
+</tbody></table></div>
+<h3 id="12-2-数字与说法需要确认-不择一断言">12.2 数字与说法需要确认（不择一断言）</h3><div class="table-scroll-container"><table>
+<thead>
+<tr>
+<th align="left">项</th>
+<th align="left">情况</th>
+<th align="left">处理</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">例题 1.2.4 的中间量</td>
+<td align="left">「<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>U</mi><mrow><mi>a</mi><mi>c</mi></mrow></msub></mrow><annotation encoding="application/x-tex">U_{ac}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.109em;">U</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.109em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">a</span><span class="mord mathnormal mtight">c</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 之间的电阻是多少呀？15 欧，16 欧」，随后又出现「16 伏比上 16 欧」</td>
+<td align="left"><strong>电阻值转写含糊</strong>，只记方法与教师给出的 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>V</mi><mi>b</mi></msub><mo>=</mo><mn>5</mn></mrow><annotation encoding="application/x-tex">V_b=5</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.2222em;">V</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.2222em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">b</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">5</span></span></span></span> V，<strong>不补算式</strong></td>
+</tr>
+<tr>
+<td align="left">例题 1.2.7 的数值</td>
+<td align="left">「发出功率是这么多毫瓦……0.15……0.01……15 伏」</td>
+<td align="left">单位（毫瓦/瓦）与数字含混，<strong>只记「先化国际单位再算」这一方法</strong></td>
+</tr>
+<tr>
+<td align="left">功率那一题的答案</td>
+<td align="left">教师自己说「答案是有点奇怪的，我回去要核实一下是不是粘错了」</td>
+<td align="left"><strong>按教师口径标注为未定</strong>，不作为仓库结论</td>
+</tr>
+<tr>
+<td align="left">「刚好是六个题」</td>
+<td align="left">与「第六、七、九章都会有题」连着说</td>
+<td align="left">记教师的说法：六题、覆盖到后面几章；<strong>不推断每章一题</strong>，标注为口径</td>
+</tr>
+<tr>
+<td align="left">「一节课 40 分钟」</td>
+<td align="left">与录音时段 09:50–11:15（85 分钟）不一致</td>
+<td align="left">教师指单节时长，<strong>不用它改上课时段</strong>；课次/节次仍待正式通知</td>
+</tr>
+<tr>
+<td align="left">教材版本</td>
+<td align="left">教师提到第五版、第六版</td>
+<td align="left"><strong>书名与版次待提供</strong>，仍不建立教材解析</td>
+</tr>
+<tr>
+<td align="left">「我一般不会放我自己的这个 PPT」</td>
+<td align="left">与「我会建一个文件夹把 PPT 放进去」并说</td>
+<td align="left">记「放的是学院统一标准版」，<strong>不放教师个人版</strong></td>
+</tr>
+</tbody></table></div>
+<h3 id="12-3-隐私与不宜转载的内容-本笔记已剔除">12.3 隐私与不宜转载的内容（本笔记已剔除）</h3><div class="table-scroll-container"><table>
+<thead>
+<tr>
+<th align="left">位置</th>
+<th align="left">内容</th>
+<th align="left">处理</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">00:00–01:16</td>
+<td align="left">座位安排与「看空位判断谁没来」的点名方式</td>
+<td align="left">只记管理事实，<strong>不记座位、不记具体学生</strong></td>
+</tr>
+<tr>
+<td align="left">31:25–32:16、44:04–44:48</td>
+<td align="left">对个别学生行为的议论（看手机、打游戏等）</td>
+<td align="left"><strong>不复录</strong></td>
+</tr>
+<tr>
+<td align="left">52:29–53:49</td>
+<td align="left">教师关于年龄、创造力与科研的个人议论</td>
+<td align="left">属个人观点，不转载</td>
+</tr>
+<tr>
+<td align="left">47:20–48:41</td>
+<td align="left">教师个人买房与空调费用的生活话题</td>
+<td align="left">只保留「用电费估算能耗」这个教学点</td>
+</tr>
+<tr>
+<td align="left">全篇</td>
+<td align="left">学生姓名、课堂应答的归属</td>
+<td align="left">只保留问答所确认的知识点</td>
+</tr>
+</tbody></table></div>
+<h2 id="13-给同学的复习顺序">13. 给同学的复习顺序</h2><ol>
+<li><strong>先记死参考方向这条主线</strong>（第 3、4.3 节）：拿到电路图<strong>第一步标参考方向</strong>；算出的值 &gt;0 表示与实际同向、&lt;0 表示相反；<strong>电流用箭头、电压用正负号</strong>。这条是本次课反复讲的，也是后面基尔霍夫定律的前提。</li>
+<li><strong>分清电流与电压的四种写法</strong>（第 3、4.2 节）：直流大写 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>I</mi></mrow><annotation encoding="application/x-tex">I</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0785em;">I</span></span></span></span>、<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>U</mi></mrow><annotation encoding="application/x-tex">U</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">U</span></span></span></span>，交流小写 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi></mrow><annotation encoding="application/x-tex">i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6595em;"></span><span class="mord mathnormal">i</span></span></span></span>、<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi></mrow><annotation encoding="application/x-tex">u</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">u</span></span></span></span>；交流从第五章开始。教师把「第五章学不懂」的原因归结为两点：表示形式没搞清，或电感电容的电压电流关系不会。</li>
+<li><strong>电位只抓一条结论</strong>（第 5 节）：参考点任选 → <strong>电位会变、两点间电压不变</strong>；会用 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>U</mi><mrow><mi>a</mi><mi>b</mi></mrow></msub><mo>=</mo><msub><mi>V</mi><mi>a</mi></msub><mo>−</mo><msub><mi>V</mi><mi>b</mi></msub></mrow><annotation encoding="application/x-tex">U_{ab}=V_a-V_b</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.109em;">U</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.109em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">ab</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.2222em;">V</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.2222em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">a</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.2222em;">V</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.2222em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">b</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 互推。细节留到第三章节点电压法再看。</li>
+<li><strong>关联与非关联要能看图判断</strong>（第 6 节）：先把电流箭头顺着回路画下去，再看电压的正负号方向，同向即关联。考试若用别的教材术语，这两个词要认得。</li>
+<li><strong>功率只记一张表</strong>（第 7 节）：<strong>关联 → <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>=</mo><mi>U</mi><mi>I</mi></mrow><annotation encoding="application/x-tex">P=UI</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.1389em;">P</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">U</span><span class="mord mathnormal" style="margin-right:0.0785em;">I</span></span></span></span> 是吸收；非关联 → <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>=</mo><mi>U</mi><mi>I</mi></mrow><annotation encoding="application/x-tex">P=UI</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.1389em;">P</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">U</span><span class="mord mathnormal" style="margin-right:0.0785em;">I</span></span></span></span> 是发出</strong>。教师自己存疑的那道绕口题不要背结论。</li>
+<li><strong>支路/节点/回路/网孔要会数</strong>（第 8 节）：支路上必须有元件、纯导线不算支路；理想导线相连的点算同一节点；网孔是内部不含支路的回路；<strong>记住 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo>=</mo><mi>B</mi><mo>−</mo><mo stretchy="false">(</mo><mi>N</mi><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo><mo>=</mo><mi>B</mi><mo>−</mo><mi>N</mi><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">M=B-(N-1)=B-N+1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">M</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal" style="margin-right:0.0502em;">B</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.109em;">N</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal" style="margin-right:0.0502em;">B</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">N</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span></strong>，并用随堂那题（5 支路、3 节点、6 回路、3 网孔）自查。</li>
+<li><strong>把课本例题遮住答案自己做一遍</strong>（第 9 节）：1.2.2–1.2.7 的方法都在本笔记里；数字含糊的那几题以课本为准（本笔记不代为补全）。</li>
+<li><strong>别提前背下一节</strong>（第 11 节）：基尔霍夫定律的内容、1.3.2 及以后、第二章都还没讲，等对应课次再整理。</li>
+</ol>
+<h2 id="完成边界">完成边界</h2><ul>
+<li><strong>已整理</strong>：复习部分（电流与参考方向、考试答题口径）、电压（定义/单位/直流交流/方向与表示法）、电位（定义/参考点结论/思考题）、关联与非关联参考方向、功率的两种算法、1.3 开头四个名词与关系式 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo>=</mo><mi>B</mi><mo>−</mo><mo stretchy="false">(</mo><mi>N</mi><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">M=B-(N-1)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">M</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal" style="margin-right:0.0502em;">B</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.109em;">N</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">)</span></span></span></span>、本次点到的 7 道教材例题的结论与看题方法、考试与教学口径。</li>
+<li><strong>〔待核对〕</strong>：例题 1.2.4／1.2.5／1.2.7 的中间数字与单位；功率那道教师自称存疑的题；教材书名与版次（作者名转写不可辨）；「刚好是六个题」的题量口径；第 12.1 节列出的全部术语（均由上下文推断，未经教材或课件核对）。</li>
+<li><strong>未完成</strong>：基尔霍夫定律（下一节）、1.3 其余内容、第二章及以后；音频与课件未提供（教师说 PPT 会放班级群，仓库不收课件正文）。</li>
+</ul>
+
+            </div>
+
+            
+
+            <footer class="site-footer">
+              <p class="site-footer__legal">
+                © 2026 ArchivalEra · 本站自研代码与解析文字以
+                <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank" rel="license noopener">AGPL-3.0</a>
+                许可发布 · <a href="https://github.com/ArchivalEra/S26-1_202609" target="_blank" rel="noopener">仓库源码</a>
+              </p>
+              <p class="site-footer__disclaimer">
+                教材《工程数学基础》的题目原文与章节结构版权归原书作者与出版社所有，本站解析为个人学习笔记；
+                页面主题样式来自 Shirone Material 3 Reader（MIT）；KaTeX、marked 等第三方库依其自身许可证分发。
+              </p>
+            </footer>
+          </article>
+        </main>
+
+        <!-- Table of Contents -->
+        <aside class="m3-toc">
+      <div class="toc-title">目录</div>
+      <ul class="toc-list">
+        <li class="toc-item level-2"><a href="#1-来源与使用边界">1. 来源与使用边界</a></li><li class="toc-item level-3"><a href="#时间导览-相对时间-便于回查原文">时间导览（相对时间，便于回查原文）</a></li><li class="toc-item level-2"><a href="#2-本次课在课程里的位置">2. 本次课在课程里的位置</a></li><li class="toc-item level-2"><a href="#3-电流与参考方向-复习">3. 电流与参考方向（复习）</a></li><li class="toc-item level-2"><a href="#4-电压">4. 电压</a></li><li class="toc-item level-3"><a href="#4-1-定义与单位">4.1 定义与单位</a></li><li class="toc-item level-3"><a href="#4-2-直流与交流">4.2 直流与交流</a></li><li class="toc-item level-3"><a href="#4-3-方向与表示法">4.3 方向与表示法</a></li><li class="toc-item level-2"><a href="#5-电位">5. 电位</a></li><li class="toc-item level-3"><a href="#思考题-换参考点会怎样-inline_code_10-inline_code_11">思考题：换参考点会怎样（22:56–27:36）</a></li><li class="toc-item level-2"><a href="#6-关联参考方向与非关联参考方向">6. 关联参考方向与非关联参考方向</a></li><li class="toc-item level-2"><a href="#7-功率-是吸收还是发出">7. 功率：是吸收还是发出</a></li><li class="toc-item level-2"><a href="#8-1-3-开头-支路-节点-回路-网孔">8. 1.3 开头：支路、节点、回路、网孔</a></li><li class="toc-item level-2"><a href="#9-本次课涉及的教材例题-教师逐题过">9. 本次课涉及的教材例题（教师逐题过）</a></li><li class="toc-item level-2"><a href="#10-考试与教学口径-本次新增与强化">10. 考试与教学口径（本次新增与强化）</a></li><li class="toc-item level-2"><a href="#11-本篇明确没有的内容-不要脑补">11. 本篇明确没有的内容（不要脑补）</a></li><li class="toc-item level-2"><a href="#12-待核实与不可靠识别">12. 待核实与不可靠识别</a></li><li class="toc-item level-3"><a href="#12-1-术语被转写读错">12.1 术语被转写读错</a></li><li class="toc-item level-3"><a href="#12-2-数字与说法需要确认-不择一断言">12.2 数字与说法需要确认（不择一断言）</a></li><li class="toc-item level-3"><a href="#12-3-隐私与不宜转载的内容-本笔记已剔除">12.3 隐私与不宜转载的内容（本笔记已剔除）</a></li><li class="toc-item level-2"><a href="#13-给同学的复习顺序">13. 给同学的复习顺序</a></li><li class="toc-item level-2"><a href="#完成边界">完成边界</a></li>
+      </ul>
+    </aside>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../../assets/theme/shirone-reader.js" defer></script>
+  <script src="../../../assets/plugins/disclosure-anchor.js" defer></script>
+  <script type="application/json" id="sym-glossary-json">{"terms":{"sym-det":{"title":"行列式的名字","text":"D 是它的常用代号；det A 与 |A| 都读「A 的行列式」，名字不同同一个东西。竖线与方括号要分清：竖线里是一个数，方括号里只是一张数表（矩阵），还没有值。","href":"../../%E5%B7%A5%E7%A8%8B%E6%95%B0%E5%AD%A6/%E6%95%99%E6%9D%90%E8%A7%A3%E6%9E%90/0.0-%E7%AC%A6%E5%8F%B7%E5%85%A5%E9%97%A8.html"},"sym-index":{"title":"下标：门牌号","text":"下标是坐标，规则只有一句：前行后列——a₂₃ 就是第 2 行第 3 列上的数。门牌号从 1 数起，a₁₁ 读「a 一一」不是「a 十一」。","href":"../../%E5%B7%A5%E7%A8%8B%E6%95%B0%E5%AD%A6/%E6%95%99%E6%9D%90%E8%A7%A3%E6%9E%90/0.0-%E7%AC%A6%E5%8F%B7%E5%85%A5%E9%97%A8.html"},"sym-power":{"title":"上标：乘方","text":"右上角是乘方。上标位置可以放一整段式子，如 (−1)^{i+j}——它只管正负号：i+j 是偶数取 +，奇数取 −。","href":"../../%E5%B7%A5%E7%A8%8B%E6%95%B0%E5%AD%A6/%E6%95%99%E6%9D%90%E8%A7%A3%E6%9E%90/0.0-%E7%AC%A6%E5%8F%B7%E5%85%A5%E9%97%A8.html"},"sym-rowcol":{"title":"行与列：r、c","text":"r₁ 是第 1 行（row），c₂ 是第 2 列（column）。r₂−3r₁ 读作「第 2 行换成：第 2 行 − 第 1 行的 3 倍」——写在前面的被改，式子里没出现的行不动。","href":"../../%E5%B7%A5%E7%A8%8B%E6%95%B0%E5%AD%A6/%E6%95%99%E6%9D%90%E8%A7%A3%E6%9E%90/0.0-%E7%AC%A6%E5%8F%B7%E5%85%A5%E9%97%A8.html"},"sym-matrix":{"title":"矩阵的新符号","text":"E 是单位矩阵（乘法里的「1」）；Aᵀ 转置（行列互换，(AB)ᵀ=BᵀAᵀ 要反序）；A⁻¹ 是逆——AA⁻¹=E，「撤销 A」，不是 1/A；A* 伴随（代数余子式下标转置排列）；R(A) 秩（非零子式最高阶数）。","href":"../../%E5%B7%A5%E7%A8%8B%E6%95%B0%E5%AD%A6/%E6%95%99%E6%9D%90%E8%A7%A3%E6%9E%90/0.0-%E7%AC%A6%E5%8F%B7%E5%85%A5%E9%97%A8.html"},"sym-misc":{"title":"Σ 与 ⟺","text":"Σ（西格玛）是求和打包：下标轮流取 1…n 全加起来。⟺ 读「当且仅当」，两边同真同假；⟶ 上方写字是变换记号，见 r/c 一族。","href":"../../%E5%B7%A5%E7%A8%8B%E6%95%B0%E5%AD%A6/%E6%95%99%E6%9D%90%E8%A7%A3%E6%9E%90/0.0-%E7%AC%A6%E5%8F%B7%E5%85%A5%E9%97%A8.html"}}}</script>
+  <script src="../../../assets/plugins/math-glossary.js" defer></script>
+  <script src="../../../assets/plugins/site-search.js" defer></script>
+</body>
+</html>
