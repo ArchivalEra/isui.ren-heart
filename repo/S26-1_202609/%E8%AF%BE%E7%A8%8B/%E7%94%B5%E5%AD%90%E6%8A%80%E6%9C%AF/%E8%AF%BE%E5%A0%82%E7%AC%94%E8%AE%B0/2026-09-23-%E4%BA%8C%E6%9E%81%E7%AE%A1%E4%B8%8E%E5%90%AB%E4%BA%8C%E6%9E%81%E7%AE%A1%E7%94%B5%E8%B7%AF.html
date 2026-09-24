@@ -733,9 +733,7 @@
 <li><strong>替换后重算</strong>：理想二极管导通相当于一根<strong>导线</strong>，A 点电位被拉到 −6 V，而 B 点是参考点 0 V，所以 <strong><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>U</mi><mrow><mi>a</mi><mi>b</mi></mrow></msub><mo>=</mo><mo>−</mo><mn>6</mn></mrow><annotation encoding="application/x-tex">U_{ab}=-6</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.109em;">U</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.109em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">ab</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">−</span><span class="mord">6</span></span></span></span> V</strong>。</li>
 <li><strong>换管子只换压降</strong>：锗管导通后串入 0.3 V → <strong>−6.3 V</strong>；硅管串入 0.7 V → <strong>−6.7 V</strong>。</li>
 </ol>
-<blockquote>
-<p><strong>条件备注</strong>：本例的电路图只在课件上，口述条件<strong>不足以独立重做</strong>——缺两条支路与二极管的接法、缺电阻值（见末尾「待办」的盲测记录）。上面四步是<strong>教师当堂给出的链条</strong>，不是从口述条件自行推出来的。</p>
-</blockquote>
+<p>⚠ <strong>本题条件未经独立核实</strong>：下面四步是教师当堂给出的链条，不是从口述条件推出来的（缺哪些条件、盲测怎么测的，见文末「条件备注」）。</p>
 <p><strong>这一题在讲什么</strong>：老师用最简的一张图把「假设断开 → 比电位 → 替换 → 重算」走了一遍，答案 −6 V 不是重点，**「导通以后这个节点的电位由谁说了算」**才是——二极管把节点与电源锁在一起，<strong>电阻不影响它</strong>（课上就有同学问「电阻对它没有影响吗」）。这条判据正是后面钳位、限幅一路要反复用的东西。</p>
 <h3 id="例题二-两个二极管-优先导通与隔离">例题二：两个二极管 → 优先导通与隔离</h3><p><strong>解析</strong>：</p>
 <ol>
@@ -751,9 +749,7 @@
 <li>波形结果：输入超过 8 V 的部分被<strong>削平</strong>，转折点正好落在 8 V。</li>
 </ol>
 <p><strong>这一题在讲什么</strong>：同一套判据换用法——有输入输出的电路改成<strong>分段讨论</strong>，一次只判一个条件。这在工程上叫<strong>限幅（削波）</strong>，用来保护后续电路不被大信号打坏。</p>
-<blockquote>
-<p><strong>条件备注</strong>：「削掉超过 8 V 的部分」是教师当堂给出的结论；二极管与 8 V 电源那条支路的<strong>朝向只在课件上</strong>，光凭口述条件判不出削在哪一侧（见末尾「待办」的盲测记录）。</p>
-</blockquote>
+<p>⚠ <strong>本题条件未经独立核实</strong>：「削掉超过 8 V 的部分」是教师当堂给出的结论，二极管朝向只在课件上（原因见文末「条件备注」）。</p>
 <h3 id="例题五-双向限幅-上限-2-7-v-下限-4-7-v">例题五：双向限幅（上限 2.7 V、下限 −4.7 V）</h3><p><strong>解析</strong>：</p>
 <ol>
 <li>两个<strong>硅</strong>二极管都要算 0.7 V 管压降：D1 阴极接 <strong>+2 V</strong>，D2 阳极接 <strong>−4 V</strong>。</li>
@@ -766,7 +762,6 @@
 <li><strong>只记方法</strong>：14.3 V 与 2.3 V 是由 0.7 V 管压降直接推出的中间量，可以留；后续算式与数值<strong>不补</strong>。</li>
 <li>原因：<strong>电阻值与电流的数值在转写里含糊</strong>（「3 3000 欧」「3 10 欧」「14.30 除以 3 10 欧」），<strong>教师本人讲到中途也自查过一次</strong>（「我是不是哪里搞错了什么」）。以课件为准，课件页到手再补齐。</li>
 </ul>
-<p><strong>双签</strong>：2026-09-24，独立子代理<strong>只拿题面</strong>（不读本仓）重做这四道题——<strong>例题二</strong>（<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>I</mi><mo>=</mo><mn>4</mn></mrow><annotation encoding="application/x-tex">I=4</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0785em;">I</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">4</span></span></span></span> mA）与<strong>例题五</strong>（<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2.7</mn></mrow><annotation encoding="application/x-tex">2.7</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">2.7</span></span></span></span> V／<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>−</mo><mn>4.7</mn></mrow><annotation encoding="application/x-tex">-4.7</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">−</span><span class="mord">4.7</span></span></span></span> V）条件自足、结论一致；<strong>例题一</strong>与<strong>例题三</strong>的口述条件经判定<strong>不足以独立重做</strong>（缺电路图与二极管朝向），这两道只记教师当堂给出的结论，不自行补图。</p>
 <h2 id="没编号但讲了的知识点">没编号但讲了的知识点</h2><h3 id="二极管的结构三类型与选用">二极管的结构三类型与选用</h3><p>先说现实中常见的<strong>发光二极管</strong>：颗粒型显示屏由许多组 LED 组成，「有多少个像素点就有多少个发光二极管」。再看结构分类：</p>
 <div class="table-scroll-container"><table>
 <thead>
@@ -933,7 +928,21 @@
 <li>「震荡电流」疑为<strong>正向电流</strong>（讲点接触型时「它的震荡电流也很小」，下文都在说正向电流）；「低压强度特性曲线」应为<strong>电压传输特性曲线</strong>。</li>
 <li><strong>口径留痕</strong>：硅管导通压降教师说「0.6–0.8 V，一般取 0.7」，也提过 0.75，本篇按常见的 <strong>0.7 V</strong>；死区电压（硅 0.5 V／锗 0.1 V）<strong>未与教材核对</strong>。</li>
 </ul>
-<h2 id="待办">待办</h2><div class="table-scroll-container"><table>
+<hr>
+<p>以下内容面向整理者/复核，同学可以不看</p>
+<hr>
+<h3 id="条件备注-按题号索引">条件备注（按题号索引）</h3><ul>
+<li><strong>例题一</strong>：电路图只在课件上。口述条件缺两样——「两条支路与二极管怎么接」和「电阻值」，
+所以「阳极 −6 V、阴极 −12 V」这一步只能照教师当堂的链条记，独立重做做不出来。</li>
+<li><strong>例题三</strong>：缺「二极管 + 8 V 电源」那条支路的朝向。削平幅值 8 V 能定，削在哪一侧不能定，
+所以正文取教师当堂给的结论。</li>
+<li><strong>例题二、例题五</strong>：条件自足（例二给出两管共用节点与 3000 Ω；例五给出两管朝向与参考电压），
+正文的结论可直接当答案用。</li>
+</ul>
+<h3 id="双签">双签</h3><p>2026-09-24，独立子代理<strong>只拿题面</strong>（不读本仓）一次性重做这四道题：
+<strong>例题二</strong>（<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>I</mi><mo>=</mo><mn>4</mn></mrow><annotation encoding="application/x-tex">I=4</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0785em;">I</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">4</span></span></span></span> mA）与<strong>例题五</strong>（<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2.7</mn></mrow><annotation encoding="application/x-tex">2.7</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">2.7</span></span></span></span> V／<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>−</mo><mn>4.7</mn></mrow><annotation encoding="application/x-tex">-4.7</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">−</span><span class="mord">4.7</span></span></span></span> V）条件自足、结论与正文一致；
+<strong>例题一</strong>与<strong>例题三</strong>条件不足、无法独立重做（原因见上）。</p>
+<h3 id="待办">待办</h3><div class="table-scroll-container"><table>
 <thead>
 <tr>
 <th align="left">项</th>
@@ -990,7 +999,7 @@
         <aside class="m3-toc">
       <div class="toc-title">目录</div>
       <ul class="toc-list">
-        <li class="toc-item level-2"><a href="#题号条目">题号条目</a></li><li class="toc-item level-3"><a href="#例题一-求-uab-课件例题-电路图在课件上-本仓无照片">例题一：求 UabU_{ab}Uab​（课件例题；电路图在课件上，本仓无照片）</a></li><li class="toc-item level-3"><a href="#例题二-两个二极管-优先导通与隔离">例题二：两个二极管 → 优先导通与隔离</a></li><li class="toc-item level-3"><a href="#例题三-单向限幅-阈值-8-v">例题三：单向限幅（阈值 8 V）</a></li><li class="toc-item level-3"><a href="#例题五-双向限幅-上限-2-7-v-下限-4-7-v">例题五：双向限幅（上限 2.7 V、下限 −4.7 V）</a></li><li class="toc-item level-3"><a href="#例题四-硅管电路求各支路电流-数据待核-见待办">例题四：硅管电路求各支路电流（数据待核，见待办）</a></li><li class="toc-item level-2"><a href="#没编号但讲了的知识点">没编号但讲了的知识点</a></li><li class="toc-item level-3"><a href="#二极管的结构三类型与选用">二极管的结构三类型与选用</a></li><li class="toc-item level-3"><a href="#引脚识别与万用表判别">引脚识别与万用表判别</a></li><li class="toc-item level-3"><a href="#二极管的符号">二极管的符号</a></li><li class="toc-item level-3"><a href="#伏安特性曲线">伏安特性曲线</a></li><li class="toc-item level-3"><a href="#主要参数与选型">主要参数与选型</a></li><li class="toc-item level-3"><a href="#含二极管电路的分析方法">含二极管电路的分析方法</a></li><li class="toc-item level-3"><a href="#总回顾-教师最后收的两句话">总回顾（教师最后收的两句话）</a></li><li class="toc-item level-3"><a href="#稳压二极管">稳压二极管</a></li><li class="toc-item level-2"><a href="#本篇没讲的">本篇没讲的</a></li><li class="toc-item level-2"><a href="#转写与术语">转写与术语</a></li><li class="toc-item level-2"><a href="#待办">待办</a></li>
+        <li class="toc-item level-2"><a href="#题号条目">题号条目</a></li><li class="toc-item level-3"><a href="#例题一-求-uab-课件例题-电路图在课件上-本仓无照片">例题一：求 UabU_{ab}Uab​（课件例题；电路图在课件上，本仓无照片）</a></li><li class="toc-item level-3"><a href="#例题二-两个二极管-优先导通与隔离">例题二：两个二极管 → 优先导通与隔离</a></li><li class="toc-item level-3"><a href="#例题三-单向限幅-阈值-8-v">例题三：单向限幅（阈值 8 V）</a></li><li class="toc-item level-3"><a href="#例题五-双向限幅-上限-2-7-v-下限-4-7-v">例题五：双向限幅（上限 2.7 V、下限 −4.7 V）</a></li><li class="toc-item level-3"><a href="#例题四-硅管电路求各支路电流-数据待核-见待办">例题四：硅管电路求各支路电流（数据待核，见待办）</a></li><li class="toc-item level-2"><a href="#没编号但讲了的知识点">没编号但讲了的知识点</a></li><li class="toc-item level-3"><a href="#二极管的结构三类型与选用">二极管的结构三类型与选用</a></li><li class="toc-item level-3"><a href="#引脚识别与万用表判别">引脚识别与万用表判别</a></li><li class="toc-item level-3"><a href="#二极管的符号">二极管的符号</a></li><li class="toc-item level-3"><a href="#伏安特性曲线">伏安特性曲线</a></li><li class="toc-item level-3"><a href="#主要参数与选型">主要参数与选型</a></li><li class="toc-item level-3"><a href="#含二极管电路的分析方法">含二极管电路的分析方法</a></li><li class="toc-item level-3"><a href="#总回顾-教师最后收的两句话">总回顾（教师最后收的两句话）</a></li><li class="toc-item level-3"><a href="#稳压二极管">稳压二极管</a></li><li class="toc-item level-2"><a href="#本篇没讲的">本篇没讲的</a></li><li class="toc-item level-2"><a href="#转写与术语">转写与术语</a></li><li class="toc-item level-3"><a href="#条件备注-按题号索引">条件备注（按题号索引）</a></li><li class="toc-item level-3"><a href="#双签">双签</a></li><li class="toc-item level-3"><a href="#待办">待办</a></li>
       </ul>
     </aside>
       </div>
