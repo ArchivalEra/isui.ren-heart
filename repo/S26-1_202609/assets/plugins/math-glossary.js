@@ -27,7 +27,8 @@ function () {
     pop = document.createElement("div");
     pop.className = "sym-gloss-pop";
     var t = document.createElement("strong");
-    t.textContent = entry.title;
+    // 标题与正文一样由构建期渲染：HTML 已转义、$…$ 已出公式（所以两者都用 innerHTML）
+    t.innerHTML = entry.title;
     pop.appendChild(t);
     var p = document.createElement("p");
     // 词条文本由构建期处理好：HTML 已转义、$…$ 已渲染成公式（所以这里用 innerHTML），
