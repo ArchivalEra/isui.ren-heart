@@ -823,13 +823,20 @@
 <li>判据形式（教师口述）：若存在<strong>正定</strong>函数，且沿轨线的<strong>导函数非正定（半负定）</strong>，则系统稳定；这样的函数称<strong>李雅普诺夫函数</strong>。</li>
 <li><strong>正定／负定的直观含义</strong>：<strong>正定</strong>——无论哪个分量变化，能量都逐渐<strong>增大</strong>（发散）；<strong>负定</strong>——总能量都在<strong>减少</strong>（耗散），这正是稳定系统该有的样子。</li>
 <li><strong>两个定理的差别</strong>：<strong>李雅普诺夫定理</strong>要求函数<strong>正定</strong>（各项系数都大于 0），条件更<strong>保守</strong>；<strong>拉萨尔（LaSalle）定理</strong>只要求<strong>非负定</strong>（系数大于等于 0），是在李雅普诺夫基础上<strong>放宽</strong>了。</li>
-<li><strong>稳定域与临界能量</strong>：求<strong>稳定域</strong> ⟺ 构造满足该原理的<strong>能量函数</strong>；求<strong>稳定边界</strong> ⟺ 定该函数的<strong>临界能量</strong>。临界能量最初取「稳定平衡点周围所有<strong>不稳定平衡点中能量最低点</strong>的能量」——缺点是平衡点多时<strong>计算量最大</strong>且结果<strong>非常保守</strong>。后来的方向：<strong>主导不稳定平衡点法（BCU）</strong>（被认为是最有效的暂态能量函数方法之一），还有结合四种界面法等方法；另一条路线是<strong>基于非线性动力学稳定边界的拓扑方法</strong>——把稳定域边界描述为<strong>所有不稳定平衡点稳定流形的并</strong>，不依赖能量函数、通用性强。</li>
+<li><strong>稳定域与临界能量</strong>：求<strong>稳定域</strong> ⟺ 构造满足该原理的<strong>能量函数</strong>；求<strong>稳定边界</strong> ⟺ 定该函数的<strong>临界能量</strong>。
+临界能量最初取「稳定平衡点周围所有<strong>不稳定平衡点中能量最低点</strong>的能量」——缺点是平衡点多时<strong>计算量最大</strong>
+且结果<strong>非常保守</strong>。后来的方向：<strong>主导不稳定平衡点法（BCU）</strong>（被认为是最有效的暂态能量函数方法之一），
+还有结合四种界面法等方法；另一条路线是<strong>基于非线性动力学稳定边界的拓扑方法</strong>——把稳定域边界描述为
+<strong>所有不稳定平衡点稳定流形的并</strong>，不依赖能量函数、通用性强。</li>
 <li><strong>缺点（教师逐条列）</strong>：能量函数形式<strong>非常复杂</strong>、目前<strong>没有统一的构造方法</strong>，只能用于<strong>较简单的系统</strong>；早期发电机用<strong>经典二阶模型</strong>、<strong>不考虑调速器动态</strong>，随着 HVDC 模型、带调控器的三级发电机模型、考虑负荷动态的模型逐个加进来——<strong>每加一个新模型都要重造一个能量函数</strong>，难度剧增，「限制了能量法则的发展」。→ 又回到主线：<strong>发展 AI 与云计算是必由之路</strong>。</li>
 </ul>
 <p><strong>顺带讲清的概念</strong>：</p>
 <ul>
 <li><strong>自治系统</strong>：<strong>没有输入、没有输出</strong>的系统（理想化；数学上对应<strong>齐次</strong>微分方程）。比方是「一个没有外界干扰、没有激励、完全自发行为的人」；加了输入／激励就不是自治系统。<strong>电力系统经适当假设与建模可看作非线性自治系统</strong>。</li>
-<li><strong>平衡点与平衡集</strong>：动态过程分三段——① <strong>故障前</strong>：运行于<strong>稳定平衡</strong>（所有运行点构成<strong>平衡集</strong>）；② <strong>扰动过程中</strong>：离扰动近的机组<strong>电磁功率突然减少</strong>而<strong>机械功率基本不变</strong> → 功率不平衡 → <strong>转子开始加速</strong>；③ <strong>扰动后（故障切除后）</strong>：外力消失，系统重新成为封闭系统，扰动中积累的能量开始释放。<strong>所以判断扰动后稳不稳，本质是判断最后一次扰动清除后系统能否回到稳定平衡点</strong>。</li>
+<li><strong>平衡点与平衡集</strong>：动态过程分三段——① <strong>故障前</strong>：运行于<strong>稳定平衡</strong>（所有运行点构成<strong>平衡集</strong>）；
+② <strong>扰动过程中</strong>：离扰动近的机组<strong>电磁功率突然减少</strong>而<strong>机械功率基本不变</strong> → 功率不平衡 → <strong>转子开始加速</strong>；
+③ <strong>扰动后（故障切除后）</strong>：外力消失，系统重新成为封闭系统，扰动中积累的能量开始释放。
+<strong>所以判断扰动后稳不稳，本质是判断最后一次扰动清除后系统能否回到稳定平衡点</strong>。</li>
 </ul>
 <h3 id="第三类-基于故障后系统响应的方法">第三类：基于故障后系统响应的方法</h3><ul>
 <li><strong>思路</strong>：直接用<strong>故障后系统的实际轨迹／时间响应</strong>判稳，例如看<strong>故障电流</strong>是衰减还是发散。</li>
