@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-depth="4">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第 1 章 1.4 电机的制造材料 | S26-1 课程知识库 - isui.ren</title>
+  <script>
+  /* 首帧前应用已保存的主题色与明暗，避免先用默认色渲染再变色（闪光弹 + 二次全量重绘） */
+  (function () {
+    try {
+      var root = document.documentElement;
+      var m = localStorage.getItem("theme") ||
+        (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      root.setAttribute("data-theme", m === "dark" ? "dark" : "light");
+      var hue = localStorage.getItem("theme-hue");
+      if (hue !== null && /^\d+$/.test(hue)) {
+        root.style.setProperty("--hue", hue);
+        root.style.setProperty("--primary-h", hue);
+      }
+    } catch (e) { /* 隐私模式下 localStorage 可能抛错，忽略 */ }
+  })();
+  </script>
+  <link rel="stylesheet" href="../../../../assets/katex/katex.min.css">
+  <link rel="stylesheet" href="../../../../assets/theme/shirone-reader.css">
+  <link rel="stylesheet" href="../../../../assets/plugins/site-search.css">
+</head>
+<body>
+  <div class="drawer-backdrop" id="drawer-backdrop"></div>
+
+  <div class="site-shell">
+    <!-- Left Column: Full-Height Sidebar (整列导航栏) -->
+    <aside class="m3-drawer" id="m3-drawer">
+      <div class="drawer-header-brand">
+        <a href="../../../../index.html" class="sidebar-brand">
+          <span class="site-title-icon">📚</span>
+          <span class="sidebar-brand-text">S26-1 课程知识库</span>
+        </a>
+        <button class="m3-icon-btn drawer-collapse-btn" id="drawer-collapse-btn" aria-label="收起侧边栏" title="收起侧边栏">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M15 18l-6-6 6-6"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="drawer-header-toolbar">
+        <span class="drawer-section-title">课程导航目录</span>
+        <button class="drawer-action-btn" id="toggle-all-groups-btn" title="一键收起或展开所有课程分类">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M7 15l5 5 5-5M7 9l5-5 5 5"/>
+          </svg>
+          <span id="toggle-all-text">全部收起</span>
+        </button>
+      </div>
+
+      <div class="drawer-nav-scroll-area">
+        <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../../index.html" class="drawer-nav-link">
+              <span>首页</span>
+            </a>
+          </li><li class="drawer-nav-group expanded">
+          <div class="nav-group-header ">
+            
+              <a href="../../../../课程/index.html" class="drawer-nav-link ">
+                <span>课程总览</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 课程总览" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../../课程/工程数学/index.html" class="drawer-nav-link ">
+                <span>工程数学</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 工程数学" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../../课程/工程数学/教材解析/index.html" class="drawer-nav-link ">
+                <span>教材解析</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 教材解析" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../../课程/工程数学/教材解析/0.0-符号入门.html" class="drawer-nav-link">
+              <span>符号入门</span>
+            </a>
+          </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../../课程/工程数学/教材解析/第一部分-线性代数/index.html" class="drawer-nav-link ">
+                <span>第一部分 线性代数</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 第一部分 线性代数" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header nav-header-clickable">
+            
+              <span class="drawer-section-title-text">第01章 行列式</span>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 第01章 行列式" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../../课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.0-本章通关攻略.html" class="drawer-nav-link">
+              <span>★ 通关攻略</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../../课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.1-二阶与三阶行列式.html" class="drawer-nav-link">
+              <span>1.1 二阶与三阶行列式</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../../课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.2-n阶行列式.html" class="drawer-nav-link">
+              <span>1.2 n阶行列式</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../../课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.3-克莱姆法则.html" class="drawer-nav-link">
+              <span>1.3 克莱姆法则</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../../课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.4-用MATLAB计算行列式.html" class="drawer-nav-link">
+              <span>1.4 用MATLAB计算行列式</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header nav-header-clickable">
+            
+              <span class="drawer-section-title-text">第02章 矩阵</span>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 第02章 矩阵" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../../课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.0-本章通关攻略.html" class="drawer-nav-link">
+              <span>★ 通关攻略</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../../课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.1-矩阵的概念及运算.html" class="drawer-nav-link">
+              <span>2.1 矩阵的概念及运算</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../../课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.2-逆矩阵.html" class="drawer-nav-link">
+              <span>2.2 逆矩阵</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../../课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.3-矩阵的初等变换与初等矩阵.html" class="drawer-nav-link">
+              <span>2.3 初等变换与初等矩阵</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../../课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.4-矩阵的秩.html" class="drawer-nav-link">
+              <span>2.4 矩阵的秩</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../../课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.5-用MATLAB进行矩阵运算.html" class="drawer-nav-link">
+              <span>2.5 用MATLAB进行矩阵运算</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li></ul>
+            </div>
+          </div>
+        </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../../课程/工程数学/课堂笔记/index.html" class="drawer-nav-link ">
+                <span>课堂笔记</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 课堂笔记" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../../课程/工程数学/课堂笔记/2026-09-17-determinants-order-2-3.html" class="drawer-nav-link">
+              <span>09-17 行列式与沙路法则</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../../课程/工程数学/课堂笔记/2026-09-17-determinants-transcript-notes.html" class="drawer-nav-link">
+              <span>09-17 课堂听课整理</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../../课程/工程数学/作业/index.html" class="drawer-nav-link ">
+                <span>作业</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 作业" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../../课程/工程数学/作业/2026-09-17-作业1.html" class="drawer-nav-link">
+              <span>作业1</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-item ">
+            <a href="../../../../课程/工程数学/原始资料/index.html" class="drawer-nav-link">
+              <span>原始资料</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../../课程/工程数学/音频/index.html" class="drawer-nav-link">
+              <span>音频</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../../课程/电力大数据与人工智能/index.html" class="drawer-nav-link ">
+                <span>电力大数据与人工智能</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 电力大数据与人工智能" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../../课程/电力大数据与人工智能/作业/index.html" class="drawer-nav-link">
+              <span>作业</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../../课程/电力大数据与人工智能/教材解析/index.html" class="drawer-nav-link">
+              <span>教材解析</span>
+            </a>
+          </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../../课程/电力大数据与人工智能/课堂笔记/index.html" class="drawer-nav-link ">
+                <span>课堂笔记</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 课堂笔记" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../../课程/电力大数据与人工智能/课堂笔记/2026-09-20-课程定位与考核要求.html" class="drawer-nav-link">
+              <span>09-20 开课第一讲</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../../课程/电力大数据与人工智能/课堂笔记/2026-09-22-暂态稳定评估方法与紧急控制.html" class="drawer-nav-link">
+              <span>09-22 暂态稳定评估与紧急控制</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-item ">
+            <a href="../../../../课程/电力大数据与人工智能/原始资料/index.html" class="drawer-nav-link">
+              <span>原始资料</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../../课程/电力大数据与人工智能/音频/index.html" class="drawer-nav-link">
+              <span>音频</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../../课程/形势与政策/index.html" class="drawer-nav-link ">
+                <span>形势与政策</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 形势与政策" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../../课程/形势与政策/作业/index.html" class="drawer-nav-link">
+              <span>作业</span>
+            </a>
+          </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../../课程/形势与政策/课堂笔记/index.html" class="drawer-nav-link ">
+                <span>课堂笔记</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 课堂笔记" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../../课程/形势与政策/课堂笔记/2026-09-21-经济热点专题与考试安排.html" class="drawer-nav-link">
+              <span>09-21 经济热点专题与考试安排</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-item ">
+            <a href="../../../../课程/形势与政策/原始资料/index.html" class="drawer-nav-link">
+              <span>原始资料</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../../课程/形势与政策/音频/index.html" class="drawer-nav-link">
+              <span>音频</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../../课程/电路原理/index.html" class="drawer-nav-link ">
+                <span>电路原理</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 电路原理" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../../课程/电路原理/作业/index.html" class="drawer-nav-link">
+              <span>作业</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../../课程/电路原理/教材解析/index.html" class="drawer-nav-link">
+              <span>教材解析</span>
+            </a>
+          </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../../课程/电路原理/课堂笔记/index.html" class="drawer-nav-link ">
+                <span>课堂笔记</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 课堂笔记" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../../课程/电路原理/课堂笔记/2026-09-21-开课说明与电路的基本概念.html" class="drawer-nav-link">
+              <span>09-21 开课说明与电路的基本概念</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../../课程/电路原理/课堂笔记/2026-09-23-电压电位与电路名词.html" class="drawer-nav-link">
+              <span>09-23 电压电位与电路名词</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-item ">
+            <a href="../../../../课程/电路原理/原始资料/index.html" class="drawer-nav-link">
+              <span>原始资料</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../../课程/电路原理/音频/index.html" class="drawer-nav-link">
+              <span>音频</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../../课程/电子技术/index.html" class="drawer-nav-link ">
+                <span>电子技术</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 电子技术" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../../课程/电子技术/作业/index.html" class="drawer-nav-link">
+              <span>作业</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../../课程/电子技术/教材解析/index.html" class="drawer-nav-link">
+              <span>教材解析</span>
+            </a>
+          </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../../课程/电子技术/课堂笔记/index.html" class="drawer-nav-link ">
+                <span>课堂笔记</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 课堂笔记" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../../课程/电子技术/课堂笔记/2026-09-21-开课说明与半导体基础到PN结.html" class="drawer-nav-link">
+              <span>09-21 开课说明与半导体基础到 PN 结</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../../课程/电子技术/课堂笔记/2026-09-23-二极管与含二极管电路.html" class="drawer-nav-link">
+              <span>09-23 二极管与含二极管电路</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-item ">
+            <a href="../../../../课程/电子技术/原始资料/index.html" class="drawer-nav-link">
+              <span>原始资料</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../../课程/电子技术/音频/index.html" class="drawer-nav-link">
+              <span>音频</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group expanded">
+          <div class="nav-group-header ">
+            
+              <a href="../../../../课程/电机学/index.html" class="drawer-nav-link ">
+                <span>电机学</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 电机学" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../../课程/电机学/作业/index.html" class="drawer-nav-link ">
+                <span>作业</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 作业" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../../课程/电机学/作业/2026-09-22-第1章概述客观题.html" class="drawer-nav-link">
+              <span>09-22 第1章概述客观题（25题）</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group expanded">
+          <div class="nav-group-header ">
+            
+              <a href="../../../../课程/电机学/教材解析/index.html" class="drawer-nav-link ">
+                <span>教材解析</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 教材解析" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../../课程/电机学/教材解析/0.0-符号入门.html" class="drawer-nav-link">
+              <span>0.0 符号入门</span>
+            </a>
+          </li><li class="drawer-nav-group expanded">
+          <div class="nav-group-header ">
+            
+              <a href="../../../../课程/电机学/教材解析/第01章-概述/1.1-电机的分类.html" class="drawer-nav-link ">
+                <span>第01章 概述</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 第01章 概述" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../../课程/电机学/教材解析/第01章-概述/1.1-电机的分类.html" class="drawer-nav-link">
+              <span>1.1 电机的分类</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../../课程/电机学/教材解析/第01章-概述/1.2-电机的磁路和磁路定律.html" class="drawer-nav-link">
+              <span>1.2 电机的磁路和磁路定律</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../../课程/电机学/教材解析/第01章-概述/1.3-电机的电磁基本理论.html" class="drawer-nav-link">
+              <span>1.3 电机的电磁基本理论</span>
+            </a>
+          </li><li class="drawer-nav-item active">
+            <a href="../../../../课程/电机学/教材解析/第01章-概述/1.4-电机的制造材料.html" class="drawer-nav-link">
+              <span>1.4 电机的制造材料</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../../课程/电机学/教材解析/第01章-概述/第01章-小结与思考题习题.html" class="drawer-nav-link">
+              <span>第01章 小结与思考题习题</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-item ">
+            <a href="../../../../课程/电机学/课堂笔记/index.html" class="drawer-nav-link">
+              <span>课堂笔记</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../../课程/电机学/原始资料/index.html" class="drawer-nav-link">
+              <span>原始资料</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../../课程/电机学/音频/index.html" class="drawer-nav-link">
+              <span>音频</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header nav-header-clickable">
+            
+              <span class="drawer-section-title-text">仓库规约</span>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 仓库规约" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../../维护条例.html" class="drawer-nav-link">
+              <span>维护条例</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../../维护细则.html" class="drawer-nav-link">
+              <span>维护细则</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li></ul>
+      </div>
+
+      <div class="sidebar-resizer" id="sidebar-resizer" title="按住拖拽调整侧边栏宽度，双击恢复默认宽度"></div>
+    </aside>
+
+    <!-- Right Column: Main Content Column (主内容列) -->
+    <div class="main-column">
+      <!-- Top App Bar -->
+      <header class="m3-top-app-bar">
+        <div class="top-bar-left">
+          <button class="m3-icon-btn" id="drawer-toggle" aria-label="展开/收起侧边栏" title="展开/收起侧边栏">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+          </button>
+          <a href="../../../../index.html" class="top-bar-mobile-title">
+            <span>S26-1 课程知识库</span>
+          </a>
+          <nav class="top-bar-breadcrumbs" aria-label="当前路径">
+            <a href="../../../../index.html">首页</a><span class="m3-breadcrumb-sep">/</span><span class="current-crumb">第 1 章 1.4 电机的制造材料</span>
+          </nav>
+        </div>
+
+        <div class="top-bar-right">
+          <button class="m3-icon-btn" id="palette-toggle" aria-label="调色盘" title="自定义主题强调色">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/>
+              <circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/>
+              <circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/>
+              <circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/>
+              <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/>
+            </svg>
+          </button>
+
+          <!-- Palette Popover -->
+          <div class="palette-popover" id="palette-popover">
+            <div class="palette-header">
+              <span class="palette-title">主题强调色调色盘</span>
+              <button class="palette-reset-btn" id="palette-reset-btn" title="重置为默认色">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+              </button>
+            </div>
+            <div class="palette-current-row">
+              <span class="palette-hue-badge" id="palette-hue-badge">Hue 248°</span>
+              <div class="palette-color-dot" id="palette-color-dot"></div>
+            </div>
+            <div class="palette-slider-container">
+              <span class="palette-slider-label">色相微调 (0° - 360°)</span>
+              <input type="range" min="0" max="360" value="248" class="palette-slider" id="hue-slider">
+            </div>
+            <div>
+              <div class="palette-swatches-title">预设配色</div>
+              <div class="palette-swatches-grid">
+                <button class="palette-swatch-item" data-hue="315" title="经典粉紫">
+                  <span class="palette-swatch-dot" style="background: hsl(315, 75%, 45%);"></span>
+                  <span class="palette-swatch-name">粉紫</span>
+                </button>
+                <button class="palette-swatch-item" data-hue="280" title="紫罗兰">
+                  <span class="palette-swatch-dot" style="background: hsl(280, 75%, 45%);"></span>
+                  <span class="palette-swatch-name">紫罗兰</span>
+                </button>
+                <button class="palette-swatch-item active" data-hue="248" title="学术深蓝">
+                  <span class="palette-swatch-dot" style="background: hsl(248, 75%, 45%);"></span>
+                  <span class="palette-swatch-name">深蓝</span>
+                </button>
+                <button class="palette-swatch-item" data-hue="205" title="天青蓝">
+                  <span class="palette-swatch-dot" style="background: hsl(205, 75%, 45%);"></span>
+                  <span class="palette-swatch-name">天青</span>
+                </button>
+                <button class="palette-swatch-item" data-hue="150" title="翡翠绿">
+                  <span class="palette-swatch-dot" style="background: hsl(150, 75%, 40%);"></span>
+                  <span class="palette-swatch-name">翡翠</span>
+                </button>
+                <button class="palette-swatch-item" data-hue="75" title="琥珀黄">
+                  <span class="palette-swatch-dot" style="background: hsl(75, 75%, 40%);"></span>
+                  <span class="palette-swatch-name">琥珀</span>
+                </button>
+                <button class="palette-swatch-item" data-hue="30" title="晚霞橙">
+                  <span class="palette-swatch-dot" style="background: hsl(30, 80%, 48%);"></span>
+                  <span class="palette-swatch-name">晚霞</span>
+                </button>
+                <button class="palette-swatch-item" data-hue="355" title="绯红">
+                  <span class="palette-swatch-dot" style="background: hsl(355, 75%, 45%);"></span>
+                  <span class="palette-swatch-name">绯红</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <button class="m3-icon-btn" id="search-toggle" aria-label="全站搜索" title="全站搜索">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+          </button>
+
+          <button class="m3-icon-btn" id="theme-toggle" aria-label="切换昼夜主题">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          </button>
+        </div>
+      </header>
+
+      <!-- 全站搜索面板（点击顶栏放大镜展开；ESC 或点外部关闭） -->
+      <div class="search-panel" id="search-panel" hidden>
+        <div class="search-panel-inner" role="dialog" aria-modal="true" aria-label="全站搜索">
+          <div class="search-panel-head">
+            <svg class="search-panel-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+            <input type="search" id="search-input" class="search-panel-input" placeholder="搜索知识点、例题、习题…" autocomplete="off" spellcheck="false">
+            <button class="m3-icon-btn" id="search-close" aria-label="关闭搜索" title="关闭（ESC）">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
+          </div>
+          <div class="search-panel-body" id="search-results">
+            <p class="search-hint">输入关键词开始搜索。中文按字面子串匹配——搜「沙路法则」只出真正连着出现这四个字的地方；结果按相关度排序，回车打开第一条。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="layout-container">
+        <!-- Content Area -->
+        <main class="content-wrapper">
+          <article class="article-container">
+            <!-- Breadcrumb in page body -->
+            <nav class="m3-breadcrumb">
+              <a href="../../../../index.html">首页</a><span class="m3-breadcrumb-sep">/</span><span>第 1 章 1.4 电机的制造材料</span>
+            </nav>
+
+            <div class="meta-chip-bar"><span class="meta-chip primary">📚 电机学</span><span class="meta-chip">🏷️ 教材解析</span><span class="meta-chip">⚡ 状态: active</span><span class="meta-chip">📅 更新: 2026-09-24</span><span class="meta-chip">📖 来源: 教材《电机学》（第三版）第 14–17 页（照片 IMG20260924111444 / 111448 / 111455 / 111500）</span></div>
+
+            <div class="article-content">
+              <h1 id="1-4-电机的制造材料">1.4 电机的制造材料</h1><blockquote>
+<p><strong>本页怎么读</strong>：这一节是<strong>记数字与记角色</strong>的一节——没有推导，但考试喜欢在这里出小题（尤其绝缘等级与温度、硅钢片规格）。抄录照书，解析部分把散落的数字收成三张表。符号可点出气泡（[R_m]{#sym-Rm}、[Φ]{#sym-Phi}、[B]{#sym-B}）。</p>
+</blockquote>
+<h2 id="原书抄录">原书抄录</h2><h3 id="第四节-电机的制造材料-第-14-页">第四节 电机的制造材料（第 14 页）</h3><p>电机的技术经济指标在很大程度上与其制造材料有关。材料的改进使电机不但有较好的性能，而且有较小的尺寸。正确地选择导电材料、磁性材料和绝缘材料等，在设计和制造电机时极为重要。同时，在选择材料时，又必须保证电机的各部分都有足够的机械强度，即使在按技术条件所允许的不正常运行状态下，也能承受较大的电磁力而不致损坏。</p>
+<p>一台电机所用的各种材料的功用包括导电、导磁、绝缘、散热和机械支撑五种。</p>
+<h3 id="一-导电材料-第-14-15-页">一、导电材料（第 14–15 页）</h3><p>铜是最常用的导电材料，电机中的绕组一般都用铜线绕成。电力工业用的标准铜，在温度为 20℃ 时的电阻率为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>17.24</mn><mo>×</mo><msup><mn>10</mn><mrow><mo>−</mo><mn>9</mn></mrow></msup><mtext> </mtext><mi mathvariant="normal">Ω</mi><mo>⋅</mo><mi>m</mi></mrow><annotation encoding="application/x-tex">17.24\times10^{-9}\,\Omega\cdot m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">17.24</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mtight">9</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">Ω</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">m</span></span></span></span>，即长度为 1 m、截面积为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mtext> </mtext><mrow><mi mathvariant="normal">m</mi><msup><mi mathvariant="normal">m</mi><mn>2</mn></msup></mrow></mrow><annotation encoding="application/x-tex">1\,\mathrm{mm^2}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathrm">m</span><span class="mord"><span class="mord mathrm">m</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathrm mtight">2</span></span></span></span></span></span></span></span></span></span></span></span> 的铜线，其电阻为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>17.24</mn><mo>×</mo><msup><mn>10</mn><mrow><mo>−</mo><mn>3</mn></mrow></msup><mtext> </mtext><mi mathvariant="normal">Ω</mi></mrow><annotation encoding="application/x-tex">17.24\times10^{-3}\,\Omega</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">17.24</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mtight">3</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">Ω</span></span></span></span>，相对密度为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>8.9</mn><mtext> </mtext><mrow><mi mathvariant="normal">g</mi><mi mathvariant="normal">/</mi><mi mathvariant="normal">c</mi><msup><mi mathvariant="normal">m</mi><mn>3</mn></msup></mrow></mrow><annotation encoding="application/x-tex">8.9\,\mathrm{g/cm^3}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0641em;vertical-align:-0.25em;"></span><span class="mord">8.9</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathrm">g/c</span><span class="mord"><span class="mord mathrm">m</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathrm mtight">3</span></span></span></span></span></span></span></span></span></span></span></span>，含纯铜量 99.9% 以上。电机绕组用的铜导体是硬拉后再经过退火处理的。换向片的铜片则是硬拉或轧制的。</p>
+<p>铝的电阻率在 20℃ 时为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>28.2</mn><mo>×</mo><msup><mn>10</mn><mrow><mo>−</mo><mn>9</mn></mrow></msup><mtext> </mtext><mi mathvariant="normal">Ω</mi><mo>⋅</mo><mi>m</mi></mrow><annotation encoding="application/x-tex">28.2\times10^{-9}\,\Omega\cdot m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">28.2</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mtight">9</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">Ω</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">m</span></span></span></span>，相对密度为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2.7</mn><mtext> </mtext><mrow><mi mathvariant="normal">g</mi><mi mathvariant="normal">/</mi><mi mathvariant="normal">c</mi><msup><mi mathvariant="normal">m</mi><mn>3</mn></msup></mrow></mrow><annotation encoding="application/x-tex">2.7\,\mathrm{g/cm^3}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0641em;vertical-align:-0.25em;"></span><span class="mord">2.7</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathrm">g/c</span><span class="mord"><span class="mord mathrm">m</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathrm mtight">3</span></span></span></span></span></span></span></span></span></span></span></span>。作为导电金属，铝的重要性仅次于铜。铝线在输电线路上应用很广，但由于体积较大，在电机中尚不能普遍使用，而笼式异步电动机的转子绕组则常用铝浇铸而成。</p>
+<p>黄铜、青铜和钢都可以作为集电环的材料。</p>
+<p>碳也是应用于电机的一种导电材料。电刷可用碳—石墨、石墨或电化石墨制成。为了降低电刷与金属导体之间的接触电阻，某些牌号的电刷还要镀上一层厚度约为 0.05 mm 的铜。碳刷的接触电阻并不是常数，随着电流密度的增大而减小。每对电刷的接触电压降随着电刷的牌号略有不同。</p>
+<p>随着超导技术的不断进步，在电机设备的研制中，超导材料得到了较快的应用，已有多种实用超导电机、超导变压器、超导限流器等投入使用，并且有广泛应用的趋势。</p>
+<p>超导材料，又称为超导体，在临界温度 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>T</mi><mi>c</mi></msub></mrow><annotation encoding="application/x-tex">T_c</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.1389em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">c</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>、临界磁场强度 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>H</mi><mi>c</mi></msub></mrow><annotation encoding="application/x-tex">H_c</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0813em;">H</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0813em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">c</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 以及临界电流密度 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>J</mi></mrow><annotation encoding="application/x-tex">J</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0962em;">J</span></span></span></span> 值以内时具有超导性，能够无损耗地传输电能，其电阻为零。超导材料按其化学成分可分为元素材料、合金材料、化合物材料和超导陶瓷。</p>
+<p>利用材料的超导电性可制作磁体，用于制作交流超导发电机、变压器、限流器、磁流体发电机、高能粒子加速器及用于磁悬浮运输、受控热核反应、储能等，也可制作电力电缆，用于大容量输电（功率可达 10000 MVA）；可制作通信电缆和天线，其性能优于常规材料。</p>
+<p>利用实用超导线绕制电机的绕组，使得电机绕组的电阻损耗降为零，不仅可以减少电枢绕组发热、降低温升，又可大大提高电机的效率。此外，由于超导线的临界磁场强度和临界电流密度都很高，可使超导电机的气隙磁通密度和绕组的电流密度比传统常规电机高数倍乃至数十倍，大大提高了电机功率密度，降低电机的质量、体积和材料消耗。</p>
+<p>在传统变压器中，变压器运行的损耗主要是绕组中的铜损。因此，采用实用超导线制成绕组，可以大大降低变压器的损耗，提高变压器的运行效率。由于超导线具有较高的电流密度，在容量一定的条件下超导变压器的体积要比常规变压器小，使得超导变压器具有效率高、体积小等优点。</p>
+<h3 id="二-导磁材料-第-15-16-页">二、导磁材料（第 15–16 页）</h3><p>钢铁是良好的导磁材料。铸铁因导磁性能较差，应用较少，仅用于截面积较大、形状较复杂的结构部件。各种成分的铸钢的导磁性能较好，应用也较广。特性较好的铸钢为合金钢，如镍钢、镍铬钢，但价格较贵。整块的钢材，仅能用它以传导不随时间变化的磁通。</p>
+<p>如所导磁通是交变的，为了减少铁芯中的涡流损耗，导磁材料应当用薄钢片，称为电工钢片。电工钢片的成分中含有少量的硅，使它有较高的电阻，同时又有良好的磁性能。因此，电工钢片又称硅钢片。
+随着牌号的不同，各种电工钢片的含硅量也不相同，最低的为 0.8%，最高的可达 4.8%，含硅量越高则电阻越大，但导磁性能略差。在近代的电机制造工业中，变压器和电机的铁芯越来越多地应用冷轧硅钢片替代热轧硅钢片，它具有优良的导磁性能，有较小的比损耗，较高的磁导率。其中，有取向电工钢片比无取向电工钢片可以工作在更高磁通密度下。</p>
+<p>电工钢片的标准厚度为 0.35、0.5、1 mm 等。变压器用较薄的钢片，旋转电机用较厚的钢片。高速电机需用更薄的钢片，其厚度可为 0.2、0.15、0.1 mm。钢片与钢片之间常涂有一层很薄的绝缘漆。一叠钢片中叠片的净长和包含有片间绝缘的叠片毛长之比称为叠片因数，对于表面涂有绝缘漆，厚度为 0.5 mm 的硅钢片来说，叠片因数的数值约为 0.93～0.95。</p>
+<p>非晶态合金，又称非晶合金，是现代材料科学中十分活跃的领域之一。随着冶金技术的发展，非晶合金作为一种新型的软磁性能材料得到了快速发展和应用，以电机制造领域广泛应用的铁基非晶合金材料为例，它具有高饱和磁感应强度和低损耗的特点。</p>
+<p>材料一般分为两种形态：一种是晶态材料，另一种是非晶态材料。所谓晶态材料，是指材料内部的原子排列遵循一定的规律。反之，内部原子排列处于无规则状态，则为非晶态材料。一般的金属，其内部原子排列有序，都属于晶态材料。非晶态合金与晶态合金相比，在物理性能、化学性能和机械性能方面都发生了显著的变化，使其呈现了不同于晶态材料的特性。</p>
+<p>降低变压器铁芯损耗一直是电机制造领域中的技术问题之一。应用非晶态合金制造变压器铁芯，与硅钢片铁芯变压器相比，空载损耗下降可达 80%。铁基非晶合金主要元素是铁、硅、硼、碳、磷等。它们磁性强，价格便宜，最适合替代硅钢片，带材厚度为 0.03 mm 左右，可用作中低频变压器的铁芯；
+铁镍基非晶合金主要元素由铁、镍、硅、硼、磷等，它们磁导率高，价格较贵，可用作中低频变压器铁芯；钴基非晶合金主要元素由钴和硅、硼等，它们磁导率极高，一般用在要求严格的军工电源变压器和电感中，替代坡莫合金和铁氧体。</p>
+<h3 id="三-绝缘材料-第-16-17-页">三、绝缘材料（第 16–17 页）</h3><p>导体与导体间、导体和机壳或铁芯间，都必须用绝缘材料隔开。绝缘材料的种类很多，可分为天然的和人工的、有机的和无机的，有时也使用不同绝缘材料的组合。绝缘材料的寿命和它的工作温度有很大关系，过高的运行温度，绝缘材料会加速老化，会使其丧失机械强度和绝缘性能。
+在电机材料中，绝缘材料的耐热程度较低，为了保证电机能在足够长的合理的年限内可靠地运行，对绝缘材料都规定了极限允许温度。国家标准根据绝缘的耐热能力将绝缘材料分为七个标准等级，见表 1-1。表中绝缘级别的符号及其极限允许温度是由国际电工技术协会所规定的。</p>
+<p>〔表 1-1 绝缘材料的等级〕</p>
+<div class="table-scroll-container"><table>
+<thead>
+<tr>
+<th align="left">绝缘级别</th>
+<th align="left">Y</th>
+<th align="left">A</th>
+<th align="left">E</th>
+<th align="left">B</th>
+<th align="left">F</th>
+<th align="left">H</th>
+<th align="left">C</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">极限允许温度（℃）</td>
+<td align="left">90</td>
+<td align="left">105</td>
+<td align="left">120</td>
+<td align="left">130</td>
+<td align="left">155</td>
+<td align="left">180</td>
+<td align="left">180 以上</td>
+</tr>
+</tbody></table></div>
+<p>Y 级绝缘是未用油或漆处理过的纤维材料及其制品，如棉纱、棉布、天然丝、纸及其他类似的材料。</p>
+<p>A 级绝缘为经过油或树脂处理过的棉纱、棉布、天然丝、纸及其他类似的有机物质。整个绕组可先用油或树脂浸透，再在电烘箱中烘干，此种手续称为浸渍。纤维间所含的气泡或潮气，经过烘干后逸出，油和树脂即行填充原来的空隙。因为油类物质的介质常数较大，所以 A 级绝缘能力较 Y 级绝缘能力为强。
+普通漆包线的漆膜也属于 A 级绝缘。在早期的中小型电机中，A 级绝缘应用最多。20 世纪 60 年代以后，由于绝缘材料工业的发展，中小型电机多采用 E 级绝缘，当今已普遍采用 B 级及以上绝缘等级。</p>
+<p>E 级绝缘包括由各种有机合成树脂所制成的绝缘膜，如酚醛树脂、环氧树脂、聚酯薄膜等。</p>
+<p>B 级绝缘包括用无机物质如云母、石棉、玻璃丝和有机黏合物，以及 A 级绝缘为衬底的云母纸、石棉板、玻璃漆布等。B 级绝缘物质在大中型电机中采用颇广。</p>
+<p>F 级绝缘是用耐热有机漆（如聚酯漆）黏合的无机物质，如云母、石棉、玻璃丝等。</p>
+<p>H 级绝缘包括耐热硅有机树脂、硅有机漆，以及用它们作为黏合物的无机绝缘材料，如硅有机云母带等。H 级绝缘由于价格昂贵，所以仅用于对尺寸和重量限制特别严格的电机。</p>
+<p>C 级绝缘包括各种无机物质，如云母、瓷、玻璃、石英等，但不用任何有机黏合物。这类绝缘物质的耐热能力极高。它们的物理性质使它们不适用于电机的绕组绝缘。</p>
+<p>输电线上应用很多。在电机工业中利用瓷做成变压器的绝缘套管，用于高压的引出端。</p>
+<p>变压器油为一种特种矿物油，在变压器中同时起绝缘和散热两种作用。</p>
+<h3 id="四-机械支撑材料-第-17-页">四、机械支撑材料（第 17 页）</h3><p>电机上有些结构部件是专为机械支撑用的，例如机座、端盖、轴与轴承、螺杆、木块间隔等。在漏磁场附近，任何机械支撑最好应用非磁性物质，例如置于槽口的楔，中小型电机用木材或竹片，大型电机用磷青铜等材料。定子绕组端部的箍环应当用黄铜或非磁性铜制成。转子外围的绑线采用非磁性钢丝。钢的成分中如含有 25% 镍或 12% 锰，即可完全使其丧失磁性。制造电机所用的材料，种类极多，以上所述仅是大概的情况。</p>
+<p>（<strong>第四节完</strong>；下一节为第 17 页「小结」。）</p>
+<h2 id="解析">解析</h2><h3 id="一-五种功用-材料-先记角色-再记牌子">一、五种功用 ↔ 材料（先记角色，再记牌子）</h3><div class="table-scroll-container"><table>
+<thead>
+<tr>
+<th align="left">功用</th>
+<th align="left">主力材料</th>
+<th align="left">关键理由（教材给的）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>导电</strong></td>
+<td align="left">铜（绕组）、铝（笼式异步机转子浇铸）、碳/石墨（电刷）、黄铜青铜钢（集电环）</td>
+<td align="left">铜电阻率最低；铝轻但体积大；电刷要&quot;接触电阻可调、耐磨&quot;</td>
+</tr>
+<tr>
+<td align="left"><strong>导磁</strong></td>
+<td align="left">硅钢片（交变磁通）、铸钢/铸铁（恒定磁通、结构件）、非晶合金（低损耗铁芯）</td>
+<td align="left">交变磁通必须用薄片叠压（否则涡流损耗大）</td>
+</tr>
+<tr>
+<td align="left"><strong>绝缘</strong></td>
+<td align="left">按温度等级选（表 1-1）；漆、树脂、云母、石棉、玻璃丝、硅有机材料、瓷、变压器油</td>
+<td align="left">绝缘的<strong>寿命由温度决定</strong>，所以要限温</td>
+</tr>
+<tr>
+<td align="left"><strong>散热</strong></td>
+<td align="left">变压器油（兼绝缘）、通风结构</td>
+<td align="left">—</td>
+</tr>
+<tr>
+<td align="left"><strong>机械支撑</strong></td>
+<td align="left">机座、端盖、轴、轴承、螺杆、槽楔、箍环、绑线</td>
+<td align="left"><strong>漏磁场附近必须用非磁性材料</strong>（否则产生额外损耗、受力）</td>
+</tr>
+</tbody></table></div>
+<h3 id="二-必须记的数字-本节是全书数字最密的一页">二、必须记的数字（本节是全书数字最密的一页）</h3><div class="table-scroll-container"><table>
+<thead>
+<tr>
+<th align="left">项</th>
+<th align="left">数值</th>
+<th align="left">备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">铜电阻率（20℃）</td>
+<td align="left"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>17.24</mn><mo>×</mo><msup><mn>10</mn><mrow><mo>−</mo><mn>9</mn></mrow></msup><mtext> </mtext><mi mathvariant="normal">Ω</mi><mo>⋅</mo><mi>m</mi></mrow><annotation encoding="application/x-tex">17.24\times10^{-9}\ \Omega\cdot m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">17.24</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mtight">9</span></span></span></span></span></span></span></span></span><span class="mspace"> </span><span class="mord">Ω</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">m</span></span></span></span></td>
+<td align="left">即 1 m、1 mm² 的铜线电阻 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>17.24</mn><mo>×</mo><msup><mn>10</mn><mrow><mo>−</mo><mn>3</mn></mrow></msup><mtext> </mtext><mi mathvariant="normal">Ω</mi></mrow><annotation encoding="application/x-tex">17.24\times10^{-3}\ \Omega</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">17.24</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mtight">3</span></span></span></span></span></span></span></span></span><span class="mspace"> </span><span class="mord">Ω</span></span></span></span></td>
+</tr>
+<tr>
+<td align="left">铜相对密度 / 含铜量</td>
+<td align="left"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>8.9</mn><mtext> </mtext><mrow><mi mathvariant="normal">g</mi><mi mathvariant="normal">/</mi><mi mathvariant="normal">c</mi><msup><mi mathvariant="normal">m</mi><mn>3</mn></msup></mrow></mrow><annotation encoding="application/x-tex">8.9\ \mathrm{g/cm^3}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0641em;vertical-align:-0.25em;"></span><span class="mord">8.9</span><span class="mspace"> </span><span class="mord"><span class="mord mathrm">g/c</span><span class="mord"><span class="mord mathrm">m</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathrm mtight">3</span></span></span></span></span></span></span></span></span></span></span></span> / 99.9% 以上</td>
+<td align="left">绕组用铜：硬拉后<strong>退火</strong></td>
+</tr>
+<tr>
+<td align="left">铝电阻率（20℃）/ 密度</td>
+<td align="left"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>28.2</mn><mo>×</mo><msup><mn>10</mn><mrow><mo>−</mo><mn>9</mn></mrow></msup><mtext> </mtext><mi mathvariant="normal">Ω</mi><mo>⋅</mo><mi>m</mi></mrow><annotation encoding="application/x-tex">28.2\times10^{-9}\ \Omega\cdot m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">28.2</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mtight">9</span></span></span></span></span></span></span></span></span><span class="mspace"> </span><span class="mord">Ω</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">m</span></span></span></span> / <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2.7</mn><mtext> </mtext><mrow><mi mathvariant="normal">g</mi><mi mathvariant="normal">/</mi><mi mathvariant="normal">c</mi><msup><mi mathvariant="normal">m</mi><mn>3</mn></msup></mrow></mrow><annotation encoding="application/x-tex">2.7\ \mathrm{g/cm^3}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0641em;vertical-align:-0.25em;"></span><span class="mord">2.7</span><span class="mspace"> </span><span class="mord"><span class="mord mathrm">g/c</span><span class="mord"><span class="mord mathrm">m</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathrm mtight">3</span></span></span></span></span></span></span></span></span></span></span></span></td>
+<td align="left">约是铜的 1.6 倍电阻、1/3 密度</td>
+</tr>
+<tr>
+<td align="left">电刷镀铜层厚度</td>
+<td align="left">约 0.05 mm</td>
+<td align="left">碳刷接触电阻<strong>随电流密度增大而减小</strong></td>
+</tr>
+<tr>
+<td align="left">电工钢片含硅量</td>
+<td align="left">0.8% ～ 4.8%</td>
+<td align="left">含硅越高电阻越大，<strong>但导磁性能略差</strong></td>
+</tr>
+<tr>
+<td align="left">钢片标准厚度</td>
+<td align="left">0.35 / 0.5 / 1 mm</td>
+<td align="left">变压器用薄、旋转电机用厚、<strong>高速电机 0.2/0.15/0.1 mm</strong></td>
+</tr>
+<tr>
+<td align="left">叠片因数（0.5 mm 涂漆硅钢片）</td>
+<td align="left">0.93～0.95</td>
+<td align="left">净长/毛长；<a href="./1.2-%E7%94%B5%E6%9C%BA%E7%9A%84%E7%A3%81%E8%B7%AF%E5%92%8C%E7%A3%81%E8%B7%AF%E5%AE%9A%E5%BE%8B.html">例 1-1</a>就取 0.94</td>
+</tr>
+<tr>
+<td align="left">非晶合金带材厚度</td>
+<td align="left">约 0.03 mm</td>
+<td align="left">比硅钢片薄一个数量级；变压器空载损耗<strong>下降可达 80%</strong></td>
+</tr>
+<tr>
+<td align="left">绝缘等级七级温度</td>
+<td align="left">90 / 105 / 120 / 130 / 155 / 180 / 180 以上</td>
+<td align="left">Y A E B F H C</td>
+</tr>
+<tr>
+<td align="left">使钢失去磁性的成分</td>
+<td align="left">25% 镍 或 12% 锰</td>
+<td align="left">用于漏磁场附近的支撑件</td>
+</tr>
+</tbody></table></div>
+<h3 id="三-绝缘等级怎么记-表-1-1-的机械背法">三、绝缘等级怎么记（表 1-1 的机械背法）</h3><ul>
+<li><strong>顺序固定</strong>：Y → A → E → B → F → H → C（注意<strong>字母表顺序被打破</strong>：E 排在 B 前面）。</li>
+<li><strong>温度阶梯</strong>：90、105、120、130、155、180、180 以上；相邻间隔是 15、15、10、25、25——<strong>不规整，只能整列背</strong>，别用&quot;每级加 15&quot;去推。</li>
+<li><strong>用途一句话</strong>：Y/A 是&quot;纤维＋浸渍&quot;（早期中小型电机用 A，普通漆包线漆膜属 A）；E 是<strong>合成树脂薄膜</strong>（60 年代后中小型电机主流）；B 是<strong>无机＋有机黏合</strong>（大中型电机用得广，&quot;当今普遍 B 级及以上&quot;）；F 是耐热有机漆黏合的无机物；H 是<strong>硅有机</strong>材料（贵，只用于尺寸重量严格受限的电机）；C 是纯无机物（耐热极高，但<strong>不适合作绕组绝缘</strong>）。</li>
+<li><strong>别混的一对</strong>：<strong>瓷</strong>（做变压器绝缘套管、高压引出端）与<strong>变压器油</strong>（同时起绝缘和散热）都是绝缘材料，但用途完全不同。</li>
+</ul>
+<h3 id="四-本节易错点">四、本节易错点</h3><ol>
+<li><strong>恒定磁通可以用整块钢，交变磁通必须用叠片</strong>——涡流只由&quot;变化的磁通&quot;激起（教材原话：&quot;整块的钢材，仅能用它以传导不随时间变化的磁通&quot;）。</li>
+<li><strong>含硅量是权衡</strong>：硅提高电阻率（利于降涡流损耗），但导磁性能略差——所以硅钢片的牌号要按用途选。</li>
+<li><strong>&quot;薄&quot;服务于涡流损耗</strong>：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>p</mi><mi>e</mi></msub><mo>∝</mo><msup><mi>τ</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">p_e\propto\tau^2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathnormal">p</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">e</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∝</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.1132em;">τ</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span>（见<a href="./1.2-%E7%94%B5%E6%9C%BA%E7%9A%84%E7%A3%81%E8%B7%AF%E5%92%8C%E7%A3%81%E8%B7%AF%E5%AE%9A%E5%BE%8B.html">1.2 节式 1-10</a>），所以高速电机（频率高）要用更薄的片；非晶合金薄到 0.03 mm，才换来&quot;空载损耗降 80%&quot;。</li>
+<li><strong>漏磁场附近必须非磁性</strong>：槽楔、端部箍环、转子绑线都要非磁性材料——否则漏磁场会在这些部件里造成附加损耗与额外受力。</li>
+<li><strong>超导材料也有&quot;上限&quot;</strong>：只在<strong>临界温度、临界磁场强度、临界电流密度</strong>三者之内才零电阻——三个临界值缺一不可。</li>
+</ol>
+<h2 id="本节完成边界">本节完成边界</h2><ul>
+<li><strong>已抄录</strong>：第 14–17 页第四节全部印刷正文，含表 1-1（绝缘等级七级与极限允许温度）逐行数据。</li>
+<li><strong>已解析</strong>：五种功用↔材料对照表、必记数字表（含出处）、绝缘等级的机械背法与用途一句话、五处易错点。</li>
+<li><strong>〔待核对〕</strong>：第 17 页一处原文作&quot;以上所述仅是<strong>大慨</strong>的情况&quot;（疑为&quot;大概&quot;，抄录保留原字形，未改）；第 16 页 C 级绝缘末句被页面下缘裁切（&quot;C 级绝缘在……&quot;未完）。</li>
+<li><strong>未完成</strong>：本节无例题、无习题；表 1-1 之外教材未给绝缘材料的其他数据。</li>
+</ul>
+
+            </div>
+
+            
+
+            <footer class="site-footer">
+              <p class="site-footer__legal">
+                © 2026 ArchivalEra · 本站自研代码与解析文字以
+                <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank" rel="license noopener">AGPL-3.0</a>
+                许可发布 · <a href="https://github.com/ArchivalEra/S26-1_202609" target="_blank" rel="noopener">仓库源码</a>
+              </p>
+              <p class="site-footer__disclaimer">
+                教材《工程数学基础》的题目原文与章节结构版权归原书作者与出版社所有，本站解析为个人学习笔记；
+                页面主题样式来自 Shirone Material 3 Reader（MIT）；KaTeX、marked 等第三方库依其自身许可证分发。
+              </p>
+            </footer>
+          </article>
+        </main>
+
+        <!-- Table of Contents -->
+        <aside class="m3-toc">
+      <div class="toc-title">目录</div>
+      <ul class="toc-list">
+        <li class="toc-item level-2"><a href="#原书抄录">原书抄录</a></li><li class="toc-item level-3"><a href="#第四节-电机的制造材料-第-14-页">第四节 电机的制造材料（第 14 页）</a></li><li class="toc-item level-3"><a href="#一-导电材料-第-14-15-页">一、导电材料（第 14–15 页）</a></li><li class="toc-item level-3"><a href="#二-导磁材料-第-15-16-页">二、导磁材料（第 15–16 页）</a></li><li class="toc-item level-3"><a href="#三-绝缘材料-第-16-17-页">三、绝缘材料（第 16–17 页）</a></li><li class="toc-item level-3"><a href="#四-机械支撑材料-第-17-页">四、机械支撑材料（第 17 页）</a></li><li class="toc-item level-2"><a href="#解析">解析</a></li><li class="toc-item level-3"><a href="#一-五种功用-材料-先记角色-再记牌子">一、五种功用 ↔ 材料（先记角色，再记牌子）</a></li><li class="toc-item level-3"><a href="#二-必须记的数字-本节是全书数字最密的一页">二、必须记的数字（本节是全书数字最密的一页）</a></li><li class="toc-item level-3"><a href="#三-绝缘等级怎么记-表-1-1-的机械背法">三、绝缘等级怎么记（表 1-1 的机械背法）</a></li><li class="toc-item level-3"><a href="#四-本节易错点">四、本节易错点</a></li><li class="toc-item level-2"><a href="#本节完成边界">本节完成边界</a></li>
+      </ul>
+    </aside>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../../../assets/theme/shirone-reader.js" defer></script>
+  <script src="../../../../assets/plugins/disclosure-anchor.js" defer></script>
+  <script type="application/json" id="sym-glossary-json">{"terms":{"sym-det":{"title":"行列式的名字","text":"D 是它的常用代号；det A 与 |A| 都读「A 的行列式」，名字不同同一个东西。竖线与方括号要分清：竖线里是一个数，方括号里只是一张数表（矩阵），还没有值。","href":"../../../%E5%B7%A5%E7%A8%8B%E6%95%B0%E5%AD%A6/%E6%95%99%E6%9D%90%E8%A7%A3%E6%9E%90/0.0-%E7%AC%A6%E5%8F%B7%E5%85%A5%E9%97%A8.html"},"sym-index":{"title":"下标：门牌号","text":"下标是坐标，规则只有一句：前行后列——a₂₃ 就是第 2 行第 3 列上的数。门牌号从 1 数起，a₁₁ 读「a 一一」不是「a 十一」。","href":"../../../%E5%B7%A5%E7%A8%8B%E6%95%B0%E5%AD%A6/%E6%95%99%E6%9D%90%E8%A7%A3%E6%9E%90/0.0-%E7%AC%A6%E5%8F%B7%E5%85%A5%E9%97%A8.html"},"sym-power":{"title":"上标：乘方","text":"右上角是乘方。上标位置可以放一整段式子，如 (−1)^{i+j}——它只管正负号：i+j 是偶数取 +，奇数取 −。","href":"../../../%E5%B7%A5%E7%A8%8B%E6%95%B0%E5%AD%A6/%E6%95%99%E6%9D%90%E8%A7%A3%E6%9E%90/0.0-%E7%AC%A6%E5%8F%B7%E5%85%A5%E9%97%A8.html"},"sym-rowcol":{"title":"行与列：r、c","text":"r₁ 是第 1 行（row），c₂ 是第 2 列（column）。r₂−3r₁ 读作「第 2 行换成：第 2 行 − 第 1 行的 3 倍」——写在前面的被改，式子里没出现的行不动。","href":"../../../%E5%B7%A5%E7%A8%8B%E6%95%B0%E5%AD%A6/%E6%95%99%E6%9D%90%E8%A7%A3%E6%9E%90/0.0-%E7%AC%A6%E5%8F%B7%E5%85%A5%E9%97%A8.html"},"sym-matrix":{"title":"矩阵的新符号","text":"E 是单位矩阵（乘法里的「1」）；Aᵀ 转置（行列互换，(AB)ᵀ=BᵀAᵀ 要反序）；A⁻¹ 是逆——AA⁻¹=E，「撤销 A」，不是 1/A；A* 伴随（代数余子式下标转置排列）；R(A) 秩（非零子式最高阶数）。","href":"../../../%E5%B7%A5%E7%A8%8B%E6%95%B0%E5%AD%A6/%E6%95%99%E6%9D%90%E8%A7%A3%E6%9E%90/0.0-%E7%AC%A6%E5%8F%B7%E5%85%A5%E9%97%A8.html"},"sym-misc":{"title":"Σ 与 ⟺","text":"Σ（西格玛）是求和打包：下标轮流取 1…n 全加起来。⟺ 读「当且仅当」，两边同真同假；⟶ 上方写字是变换记号，见 r/c 一族。","href":"../../../%E5%B7%A5%E7%A8%8B%E6%95%B0%E5%AD%A6/%E6%95%99%E6%9D%90%E8%A7%A3%E6%9E%90/0.0-%E7%AC%A6%E5%8F%B7%E5%85%A5%E9%97%A8.html"}}}</script>
+  <script src="../../../../assets/plugins/math-glossary.js" defer></script>
+  <script src="../../../../assets/plugins/site-search.js" defer></script>
+</body>
+</html>
