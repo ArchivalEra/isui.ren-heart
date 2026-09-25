@@ -3,5 +3,8 @@
     { "source": "/blog", "destination": "/Blog", "statusCode": 301 },
     { "source": "/mangomesa", "destination": "/MangoMesa", "statusCode": 301 },
     { "source": "/mangomesa/", "destination": "/MangoMesa/", "statusCode": 301 }
+  ],
+  "rewrites": [
+    { "source": "/__miss-probe", "destination": "/404.html" }
   ]
 }
