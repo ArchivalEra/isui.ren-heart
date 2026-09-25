@@ -3,7 +3,7 @@
     { "source": "/blog", "destination": "/Blog", "statusCode": 301 },
     { "source": "/mangomesa", "destination": "/MangoMesa", "statusCode": 301 },
     { "source": "/mangomesa/", "destination": "/MangoMesa/", "statusCode": 301 },
-    { "source": "/__probe404", "destination": "/404.html", "statusCode": 404 },
-    { "source": "/Bahnhof/index.html", "destination": "/404.html", "statusCode": 404 }
+    { "source": "/__probe301", "destination": "/Blog", "statusCode": 301 },
+    { "source": "/__probe404", "destination": "/404.html", "statusCode": 404 }
   ]
 }
