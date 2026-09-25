@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "routes": [
+    { "handle": "filesystem" },
+    { "src": "^/__eo-probe$", "dest": "/404.html", "status": 404 }
+  ]
+}
