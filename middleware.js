@@ -582,15 +582,6 @@ export async function middleware(context) {
 	const { request, rewrite, next } = context;
 	const url = new URL(request.url);
 
-	// TEMPORARY PROBE: may a middleware import a sibling file?
-	if (url.pathname === "/__probe-import") {
-		try {
-			const mod = await import("./_probe-import.mjs");
-			return new Response(`ok ${mod.answer}`, { status: 200, headers: TEXT_HEADERS });
-		} catch (error) {
-			return new Response(`fail ${error && error.message}`, { status: 500, headers: TEXT_HEADERS });
-		}
-	}
 
 	if (url.pathname === "/api/activity") {
 		if (request.method === "OPTIONS") {
@@ -838,7 +829,6 @@ export const config = {
 		"/api/activity",
 		"/api/activity/:path*",
 		"/repo/:path*",
-		"/__probe-import",
 		"/Bahnhof",
 	],
 };
