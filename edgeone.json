@@ -1,8 +1,19 @@
 {
-  "buildCommand": "echo noop",
-  "redirects": [
-    { "source": "/blog", "destination": "/Blog", "statusCode": 301 },
-    { "source": "/mangomesa", "destination": "/MangoMesa", "statusCode": 301 },
-    { "source": "/mangomesa/", "destination": "/MangoMesa/", "statusCode": 301 }
-  ]
+	"buildCommand": "echo noop",
+	"headers": [
+		{
+			"source": "/MangoMesa/sites.json",
+			"headers": [
+				{
+					"key": "Cache-Control",
+					"value": "public, max-age=0, s-maxage=60, must-revalidate"
+				}
+			]
+		}
+	],
+	"redirects": [
+		{ "source": "/blog", "destination": "/Blog", "statusCode": 301 },
+		{ "source": "/mangomesa", "destination": "/MangoMesa", "statusCode": 301 },
+		{ "source": "/mangomesa/", "destination": "/MangoMesa/", "statusCode": 301 }
+	]
 }

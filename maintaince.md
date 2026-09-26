@@ -39,6 +39,7 @@ curl -s -o /dev/null -w '%{http_code}\n' https://isui.ren/nonexistent-abc.xyz
 
 | 日期 | 类型 | 影响文件 | 变更要点 | 维护人 |
 | :--- | :--- | :--- | :--- | :--- |
+| 2026-09-26 | `feat` | `edgeone.json` | **项目页清单短 TTL**：为 `/MangoMesa/sites.json`（构建期仓库镜像清单的发布件）加 `Cache-Control: public, max-age=0, s-maxage=60, must-revalidate`，让页面的手动刷新最多陈旧 60 秒；`headers` 段与既有 `redirects` 并存 | ArchivalEra |
 | 2026-09-25 | `fix` | `edgeone.json` | 全站 404：`buildCommand` 置为非空（`echo noop`），让 Makers 登记根目录 `404.html`；缺失路径从「200 + 根 index.html」改为「404 + 404.html」 | ArchivalEra |
 | 2026-09-20 | `fix` | `middleware.js` | 门户与 README 落地页在 GitHub API 不可达时改用内置仓库清单兜底，避免降级成 404 | ArchivalEra |
 | 2026-09-20 | `feat` | `middleware.js` | `/repo/` 从 302 跳转升级为 GitHub API 驱动的全仓库门户；无 Pages 的公开仓库回退渲染 README 落地页；新增路径级 404、仓库名校验与 API 降级清单 | ArchivalEra |
