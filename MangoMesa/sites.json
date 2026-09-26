@@ -1,12 +1,12 @@
 {
-	"generatedAt": "2026-09-26T08:56:05.936Z",
-	"acceleratedDirs": ["S26-1Shitass", "S26-1_202609"],
+	"generatedAt": "2026-09-26T09:19:20.991Z",
+	"acceleratedDirs": ["S26-1_202609"],
 	"entries": [
 		{
 			"name": "isui.ren-heart",
 			"pages": "ready",
 			"accelerated": false,
-			"pushedAt": "2026-09-26T08:52:25Z",
+			"pushedAt": "2026-09-26T09:17:07Z",
 			"status": "built"
 		},
 		{
@@ -27,7 +27,7 @@
 			"name": "My-Shirone-Plugins",
 			"pages": "ready",
 			"accelerated": false,
-			"pushedAt": "2026-09-26T08:55:17Z",
+			"pushedAt": "2026-09-26T09:18:25Z",
 			"status": "built"
 		},
 		{
