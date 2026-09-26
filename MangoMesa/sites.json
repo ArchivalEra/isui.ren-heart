@@ -1,69 +1,236 @@
 {
-	"generatedAt": "2026-09-26T09:23:51.279Z",
+	"generatedAt": "2026-09-26T09:33:43.052Z",
 	"acceleratedDirs": ["S26-1_202609"],
 	"entries": [
+		{
+			"name": "My-Shirone-Plugins",
+			"pages": "ready",
+			"accelerated": false,
+			"pushedAt": "2026-09-26T09:31:03Z",
+			"status": "built",
+			"description": "Plugins, extensions, and enhancements for the Shirone blog theme ecosystem.",
+			"language": "JavaScript",
+			"url": "https://github.com/ArchivalEra/My-Shirone-Plugins"
+		},
 		{
 			"name": "isui.ren-heart",
 			"pages": "ready",
 			"accelerated": false,
-			"pushedAt": "2026-09-26T09:20:00Z",
-			"status": "built"
+			"pushedAt": "2026-09-26T09:24:30Z",
+			"status": "built",
+			"description": "😭📔🖋",
+			"language": "Rust",
+			"url": "https://github.com/ArchivalEra/isui.ren-heart"
 		},
 		{
-			"name": "isui.ren-Bahnhof",
+			"name": "Mellow-Player",
+			"pages": "absent",
+			"accelerated": false,
+			"pushedAt": "2026-09-26T06:41:01Z",
+			"status": null,
+			"description": "",
+			"language": null,
+			"url": "https://github.com/ArchivalEra/Mellow-Player"
+		},
+		{
+			"name": "Clouddrive-as-Origin",
 			"pages": "ready",
 			"accelerated": false,
-			"pushedAt": "2026-09-20T03:38:29Z",
-			"status": "built"
+			"pushedAt": "2026-09-26T05:00:12Z",
+			"status": "built",
+			"description": "",
+			"language": "Rust",
+			"url": "https://github.com/ArchivalEra/Clouddrive-as-Origin"
 		},
 		{
 			"name": "S26-1_202609",
 			"pages": "absent",
 			"accelerated": true,
 			"pushedAt": "2026-09-25T06:22:26Z",
-			"status": null
+			"status": null,
+			"description": "S26-1 课程知识库 · 高精度公式渲染阅读站（M3E 质感排版与动态色盘）",
+			"language": "JavaScript",
+			"url": "https://github.com/ArchivalEra/S26-1_202609"
 		},
 		{
-			"name": "My-Shirone-Plugins",
+			"name": "H10e-11ac",
 			"pages": "ready",
 			"accelerated": false,
-			"pushedAt": "2026-09-26T09:18:25Z",
-			"status": "built"
+			"pushedAt": "2026-09-23T09:47:42Z",
+			"status": "built",
+			"description": "",
+			"language": "Shell",
+			"url": "https://github.com/ArchivalEra/H10e-11ac"
 		},
 		{
-			"name": "Policy-Gateway",
+			"name": "isui.ren-Bahnhof",
 			"pages": "ready",
 			"accelerated": false,
-			"pushedAt": "2026-08-14T16:22:21Z",
-			"status": "built"
-		},
-		{
-			"name": "Onedrive-as-Origin",
-			"pages": "ready",
-			"accelerated": false,
-			"pushedAt": "2026-09-26T05:00:12Z",
-			"status": "built"
+			"pushedAt": "2026-09-20T03:38:29Z",
+			"status": "built",
+			"description": "isui.ren 站点中央调度与导航短链分发中枢 🚉",
+			"language": "TypeScript",
+			"url": "https://github.com/ArchivalEra/isui.ren-Bahnhof"
 		},
 		{
 			"name": "nearlink-E573H-USBDC",
 			"pages": "ready",
 			"accelerated": false,
 			"pushedAt": "2026-09-17T09:03:18Z",
-			"status": "built"
+			"status": "built",
+			"description": "",
+			"language": "C",
+			"url": "https://github.com/ArchivalEra/nearlink-E573H-USBDC"
 		},
 		{
-			"name": "hi3798mv300-debian-sid",
+			"name": "Anti-Laborer-Skills",
+			"pages": "ready",
+			"accelerated": false,
+			"pushedAt": "2026-09-15T10:49:49Z",
+			"status": "built",
+			"description": "",
+			"language": "JavaScript",
+			"url": "https://github.com/ArchivalEra/Anti-Laborer-Skills"
+		},
+		{
+			"name": "hi3798mv310-debian",
+			"pages": "ready",
+			"accelerated": false,
+			"pushedAt": "2026-09-15T07:21:00Z",
+			"status": "built",
+			"description": "",
+			"language": "Shell",
+			"url": "https://github.com/ArchivalEra/hi3798mv310-debian"
+		},
+		{
+			"name": "Shirone",
 			"pages": "absent",
 			"accelerated": false,
-			"pushedAt": "2026-08-09T13:48:09Z",
-			"status": null
+			"pushedAt": "2026-09-10T13:30:39Z",
+			"status": null,
+			"description": "An expressive, anime-inspired blog theme built on Material 3 Expressive, Astro 7, and Svelte 5",
+			"language": "TypeScript",
+			"url": "https://github.com/ArchivalEra/Shirone"
+		},
+		{
+			"name": "S3-Xray",
+			"pages": "ready",
+			"accelerated": false,
+			"pushedAt": "2026-09-10T13:13:18Z",
+			"status": "built",
+			"description": "",
+			"language": "Python",
+			"url": "https://github.com/ArchivalEra/S3-Xray"
+		},
+		{
+			"name": "PureDns",
+			"pages": "ready",
+			"accelerated": false,
+			"pushedAt": "2026-09-08T13:57:25Z",
+			"status": "built",
+			"description": "",
+			"language": "Rust",
+			"url": "https://github.com/ArchivalEra/PureDns"
+		},
+		{
+			"name": "vps-related",
+			"pages": "ready",
+			"accelerated": false,
+			"pushedAt": "2026-09-08T11:25:05Z",
+			"status": "built",
+			"description": "",
+			"language": "Rust",
+			"url": "https://github.com/ArchivalEra/vps-related"
+		},
+		{
+			"name": "my-themes-on-linux",
+			"pages": "ready",
+			"accelerated": false,
+			"pushedAt": "2026-09-08T10:05:20Z",
+			"status": "built",
+			"description": "Catppuccin 主题设置（Linux）",
+			"language": "Shell",
+			"url": "https://github.com/ArchivalEra/my-themes-on-linux"
+		},
+		{
+			"name": "isui.ren-Blog-discussion",
+			"pages": "absent",
+			"accelerated": false,
+			"pushedAt": "2026-09-04T09:38:39Z",
+			"status": null,
+			"description": "",
+			"language": null,
+			"url": "https://github.com/ArchivalEra/isui.ren-Blog-discussion"
+		},
+		{
+			"name": "clearmail",
+			"pages": "ready",
+			"accelerated": false,
+			"pushedAt": "2026-09-03T07:19:31Z",
+			"status": "built",
+			"description": "",
+			"language": "Shell",
+			"url": "https://github.com/ArchivalEra/clearmail"
+		},
+		{
+			"name": "Policy-Gateway",
+			"pages": "ready",
+			"accelerated": false,
+			"pushedAt": "2026-08-14T16:22:21Z",
+			"status": "built",
+			"description": "",
+			"language": "Rust",
+			"url": "https://github.com/ArchivalEra/Policy-Gateway"
 		},
 		{
 			"name": "newifi3-immortalwrt-personal",
 			"pages": "ready",
 			"accelerated": false,
 			"pushedAt": "2026-08-12T09:43:43Z",
-			"status": "built"
+			"status": "built",
+			"description": "校园网是哪个b发明的",
+			"language": "Shell",
+			"url": "https://github.com/ArchivalEra/newifi3-immortalwrt-personal"
+		},
+		{
+			"name": "hi3798mv300-debian-sid",
+			"pages": "absent",
+			"accelerated": false,
+			"pushedAt": "2026-08-09T13:48:09Z",
+			"status": null,
+			"description": "我牛逼",
+			"language": "Shell",
+			"url": "https://github.com/ArchivalEra/hi3798mv300-debian-sid"
+		},
+		{
+			"name": "utls",
+			"pages": "absent",
+			"accelerated": false,
+			"pushedAt": "2026-08-02T15:17:17Z",
+			"status": null,
+			"description": " Fork of the Go standard TLS library, providing low-level access to the ClientHello for mimicry purposes.",
+			"language": null,
+			"url": "https://github.com/ArchivalEra/utls"
+		},
+		{
+			"name": "omp_for_cloudflare_worker-20260707",
+			"pages": "absent",
+			"accelerated": false,
+			"pushedAt": "2025-11-05T14:50:19Z",
+			"status": null,
+			"description": "OneDrive Media Player on the web | 网页端 OneDrive 媒体播放器",
+			"language": null,
+			"url": "https://github.com/ArchivalEra/omp_for_cloudflare_worker-20260707"
+		},
+		{
+			"name": "bilibili-white",
+			"pages": "absent",
+			"accelerated": false,
+			"pushedAt": "2025-07-06T09:31:34Z",
+			"status": null,
+			"description": "哔哩哔哩白图标版_v3.20.4",
+			"language": null,
+			"url": "https://github.com/ArchivalEra/bilibili-white"
 		}
 	]
 }

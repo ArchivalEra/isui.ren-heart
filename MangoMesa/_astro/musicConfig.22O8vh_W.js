@@ -1,1 +1,0 @@
-import{n as t}from"./config-overlay.C3etlwOy.js";var n=t("music",{enable:!0,provider:"mixed",meting:{server:"netease",type:"playlist",id:"14164869977",preload:"none"},defaultVolume:.7,defaultMode:"sequence"});function a(e,i=.7){return Number.isFinite(e)?Math.min(1,Math.max(0,e)):i}export{a as t};
