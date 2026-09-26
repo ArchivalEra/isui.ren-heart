@@ -566,16 +566,23 @@ function renderPathNotFound(repoName, requestPath) {
 	});
 }
 
-function injectBaseAndRewrite(html, repoName) {
-	const baseTarget = `/repo/${repoName}/`;
-	let output = html;
-	if (output.includes("<head>")) {
-		output = output.replace("<head>", `<head>\n    <base href="${baseTarget}">`);
-	} else if (output.includes("<head ")) {
-		output = output.replace(/(<head[^>]*>)/i, `$1\n    <base href="${baseTarget}">`);
+/**
+ * Prefix rewriting is owned by the repo-pages plugin; the theme's deploy vendors
+ * that plugin's build next to this file, so there is exactly one implementation
+ * and nothing to hand-sync.
+ *
+ * Loaded with a dynamic import because that is the form this runtime was
+ * measured to support — a static import would take the whole middleware down
+ * with it if the file were ever missing.
+ */
+let rewriteForPrefixPromise;
+function loadRewriteForPrefix() {
+	if (!rewriteForPrefixPromise) {
+		rewriteForPrefixPromise = import("./rewrite-for-prefix.mjs").then(
+			(loaded) => loaded.rewriteForPrefix,
+		);
 	}
-	const repoRegex = new RegExp(`(href|src|action)=["']/${repoName}/`, "g");
-	return output.replace(repoRegex, `$1="${baseTarget}`);
+	return rewriteForPrefixPromise;
 }
 
 export async function middleware(context) {
@@ -777,14 +784,18 @@ export async function middleware(context) {
 
 				if (contentType.includes("text/html")) {
 					const html = await upstreamResp.text();
-					return new Response(injectBaseAndRewrite(html, repoName), {
-						status: upstreamResp.status,
-						headers: {
-							"Content-Type": "text/html; charset=utf-8",
-							"Access-Control-Allow-Origin": "*",
-							"Cache-Control": "public, max-age=60, s-maxage=300",
+					const rewriteForPrefix = await loadRewriteForPrefix();
+					return new Response(
+						rewriteForPrefix(html, { repo: repoName, prefix: "/repo" }),
+						{
+							status: upstreamResp.status,
+							headers: {
+								"Content-Type": "text/html; charset=utf-8",
+								"Access-Control-Allow-Origin": "*",
+								"Cache-Control": "public, max-age=60, s-maxage=300",
+							},
 						},
-					});
+					);
 				}
 
 				// Static assets (CSS, JS, images, wasm, fonts): stream with a long edge cache.
