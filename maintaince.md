@@ -39,6 +39,7 @@ curl -s -o /dev/null -w '%{http_code}\n' https://isui.ren/nonexistent-abc.xyz
 
 | 日期 | 类型 | 影响文件 | 变更要点 | 维护人 |
 | :--- | :--- | :--- | :--- | :--- |
+| 2026-09-26 | `chore` | `repo/S26-1Shitass/` | **删掉不可达的旧静态树**（67 个文件 / 13MB）：它已被 middleware 的名字级 301 永久隔离，发布出来却永远取不到；名字级 301 保留，老链接照旧。构建期探测器从此不再报孤儿目录 | ArchivalEra |
 | 2026-09-26 | `refactor` | `middleware.js`, `rewrite-for-prefix.mjs` | **前缀重写合一**：删掉本地那份 `injectBaseAndRewrite`，改为动态 import 主题部署时从 `repo-pages` 插件产物拷来的 `rewrite-for-prefix.mjs`（实测该运行时支持同目录 import），两份实现从此只剩一份、漂移不可能；顺带修掉三个缺陷——仓名未转义（`isui.ren-heart` 的 `.` 成通配符）、上游已有 `<base>` 时叠加第二个、`<head>` 匹配过窄 | ArchivalEra |
 | 2026-09-26 | `refactor` | `middleware.js`, `edgeone.json` | **退役 `/repo` 门户**：删除 `renderPortal` / `renderRepoCard` / `loadRepoList` 与门户分支（−2998 字节），`/repo` 改由 `edgeone.json` 302 到项目页，`/repo/<repo>/` 的镜像与 README 落地页原样保留（`repoBadge` 与 `FALLBACK_REPOS` 仍被落地页使用，故保留）。仓库清单的事实来源从此是构建期的 `repo-inventory`，边缘不再维护手抄清单 | ArchivalEra |
 | 2026-09-26 | `feat` | `edgeone.json` | **项目页清单短 TTL**：为 `/MangoMesa/sites.json`（构建期仓库镜像清单的发布件）加 `Cache-Control: public, max-age=0, s-maxage=60, must-revalidate`，让页面的手动刷新最多陈旧 60 秒；`headers` 段与既有 `redirects` 并存 | ArchivalEra |
