@@ -1,0 +1,69 @@
+{
+	"generatedAt": "2026-09-26T08:51:46.454Z",
+	"acceleratedDirs": ["S26-1Shitass", "S26-1_202609"],
+	"entries": [
+		{
+			"name": "isui.ren-heart",
+			"pages": "ready",
+			"accelerated": false,
+			"pushedAt": "2026-09-26T08:50:48Z",
+			"status": "built"
+		},
+		{
+			"name": "isui.ren-Bahnhof",
+			"pages": "ready",
+			"accelerated": false,
+			"pushedAt": "2026-09-20T03:38:29Z",
+			"status": "built"
+		},
+		{
+			"name": "S26-1_202609",
+			"pages": "absent",
+			"accelerated": true,
+			"pushedAt": "2026-09-25T06:22:26Z",
+			"status": null
+		},
+		{
+			"name": "My-Shirone-Plugins",
+			"pages": "ready",
+			"accelerated": false,
+			"pushedAt": "2026-09-26T08:46:26Z",
+			"status": "built"
+		},
+		{
+			"name": "Policy-Gateway",
+			"pages": "ready",
+			"accelerated": false,
+			"pushedAt": "2026-08-14T16:22:21Z",
+			"status": "built"
+		},
+		{
+			"name": "Onedrive-as-Origin",
+			"pages": "ready",
+			"accelerated": false,
+			"pushedAt": "2026-09-26T05:00:12Z",
+			"status": "built"
+		},
+		{
+			"name": "nearlink-E573H-USBDC",
+			"pages": "ready",
+			"accelerated": false,
+			"pushedAt": "2026-09-17T09:03:18Z",
+			"status": "built"
+		},
+		{
+			"name": "hi3798mv300-debian-sid",
+			"pages": "absent",
+			"accelerated": false,
+			"pushedAt": "2026-08-09T13:48:09Z",
+			"status": null
+		},
+		{
+			"name": "newifi3-immortalwrt-personal",
+			"pages": "ready",
+			"accelerated": false,
+			"pushedAt": "2026-08-12T09:43:43Z",
+			"status": "built"
+		}
+	]
+}
