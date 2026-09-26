@@ -2,7 +2,7 @@
 
 > **角色**：EdgeOne Pages 静态源仓库（`deploy` 分支）。
 > **自动产物**：`MangoMesa/` 由 `ArchivalEra/Shirone-personalized` 的 Deploy workflow 覆盖式推送；`Blog/` 是旧槽位跳转页。请勿手工修改这两个目录。
-> **手工维护**：`middleware.js`（EdgeOne Makers 边缘中间件）、`edge-functions/`、`repo/`（本地托管的静态站点）、`Bahnhof/`、`heart/`、`.edgeone/`（全站 404 路由）。
+> **手工维护**：`middleware.js`（EdgeOne Makers 边缘中间件）、`edge-functions/`、`repo/`（本地托管的静态站点）、`Bahnhof/`、`heart/`、`edgeone.json`（重定向与构建命令）。
 
 ## 边缘中间件路由
 
@@ -15,31 +15,31 @@
 | `/repo/S26-1Shitass/` | 301 到 `/repo/S26-1_202609/`。 |
 | `/Bahnhof` | 301 到 `/Bahnhof/`。 |
 
-## 全站 404（`.edgeone/cloud-functions/ssr-node/config.json`）
+## 全站 404
 
-EdgeOne Makers 的默认行为是：请求未命中任何静态文件时返回根 `index.html`（**HTTP 200**，即 SPA 兜底）。这在 `edgeone.json` 里无解——实测 `redirects` 的 `statusCode: 404` 被静默忽略，`rewrites` 虽生效但只产出 200，且顶不掉项目侧的 SPA 兜底。
+站点级 404 页是根目录的 `404.html`（8860B，由 `isui.ren-Bahnhof` 的 workflow 写入，勿手工改）。
 
-改用 Build Output API 的路由表解决。`{ "handle": "filesystem" }` 是静态查找的分界点，写在它**之后**的路由只在未命中静态文件时执行：
+要让 EdgeOne Makers 真的把它当 404 页返回，`edgeone.json` 里的 `buildCommand` **必须非空**：
 
 ```json
-{
-  "version": 3,
-  "routes": [
-    { "handle": "filesystem" },
-    { "src": "^/.*$", "dest": "/404.html", "status": 404 }
-  ]
-}
+{ "buildCommand": "echo noop", "redirects": [ ... ] }
 ```
 
-效果：缺失路径返回 **404 状态码 + 根目录 `404.html` 正文**；真实静态文件、`/api/*` 边缘函数、中间件路由（`/repo/*`、`/Bahnhof`）优先级都不受影响。
+原因（2026-09-25 实测）：Makers 只在**有构建阶段**的部署里登记 `404.html`。编译命令留空时它不登记，未命中任何静态文件的请求会回落成 **200 + 根 `index.html`**（根 index.html 是个跳转壳，所以表现为 200 的 HTML），资源类缺失路径因此被伪装成成功响应——调试部署问题时极易被误导。给一个不产出任何文件的 `echo noop`，就能把部署切进构建路径；输出目录仍是仓库根，站点内容不变。
 
-`404.html` 由 `isui.ren-Bahnhof` 的 workflow 写入本仓库根目录（站点级 404 页由它负责）。
+验证（期望 404 + 标题 `404 — IM BAHNHOF`）：
+
+```sh
+curl -s -o /dev/null -w '%{http_code}\n' https://isui.ren/nonexistent-abc.xyz
+```
+
+三条已钉死的死路，别再试：`redirects` 的 `statusCode: 404` 被静默忽略（同位置的 301 正常生效）；`rewrites` 生效但只产出 200，且顶不掉默认兜底；Build Output API 的 `.edgeone/` 路由表能产出 404 状态码，但正文会被平台自带的错误页顶掉（标题 `Tencent Edgeone`），所以未采用。
 
 ## 变更记录
 
 | 日期 | 类型 | 影响文件 | 变更要点 | 维护人 |
 | :--- | :--- | :--- | :--- | :--- |
-| 2026-09-25 | `fix` | `.edgeone/` | 新增全站 404 路由：缺失路径从「200 + 根 index.html（SPA 兜底）」改为「404 + 404.html」（Build Output API，`handle: filesystem` 之后的路由） | ArchivalEra |
+| 2026-09-25 | `fix` | `edgeone.json` | 全站 404：`buildCommand` 置为非空（`echo noop`），让 Makers 登记根目录 `404.html`；缺失路径从「200 + 根 index.html」改为「404 + 404.html」 | ArchivalEra |
 | 2026-09-20 | `fix` | `middleware.js` | 门户与 README 落地页在 GitHub API 不可达时改用内置仓库清单兜底，避免降级成 404 | ArchivalEra |
 | 2026-09-20 | `feat` | `middleware.js` | `/repo/` 从 302 跳转升级为 GitHub API 驱动的全仓库门户；无 Pages 的公开仓库回退渲染 README 落地页；新增路径级 404、仓库名校验与 API 降级清单 | ArchivalEra |
 | 2026-09-20 | `docs` | `middleware.js` | 门户文案明确「公开原创仓库（不含 fork）」 | ArchivalEra |
