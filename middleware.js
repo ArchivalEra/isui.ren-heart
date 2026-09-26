@@ -103,26 +103,6 @@ function normalizeRepo(repo) {
 	};
 }
 
-async function loadRepoList() {
-	const response = await fetchWithTimeout(
-		`${GITHUB_API}/users/${GITHUB_OWNER}/repos?per_page=100&type=owner&sort=pushed`,
-		{ headers: GITHUB_HEADERS },
-		5000,
-	);
-	if (!response || !response.ok) return { repos: FALLBACK_REPOS, degraded: true };
-	const data = await response.json().catch(() => null);
-	if (!Array.isArray(data)) return { repos: FALLBACK_REPOS, degraded: true };
-	const repos = data
-		.filter((repo) => !repo.fork && !repo.private)
-		.map(normalizeRepo)
-		.sort(
-			(a, b) =>
-				(b.updatedAt || "").localeCompare(a.updatedAt || "") ||
-				a.name.localeCompare(b.name),
-		);
-	if (repos.length === 0) return { repos: FALLBACK_REPOS, degraded: true };
-	return { repos, degraded: false };
-}
 
 async function loadRepoMeta(repoName) {
 	const response = await fetchWithTimeout(
@@ -500,53 +480,7 @@ function repoBadge(repo) {
 	return { label: "README 页面", className: "badge--readme" };
 }
 
-function renderRepoCard(repo) {
-	const badge = repoBadge(repo);
-	const href = `/repo/${encodeURIComponent(repo.name)}/`;
-	const meta = [
-		repo.language ? `<span>${escapeHtml(repo.language)}</span>` : "",
-		repo.stars > 0 ? `<span>★ ${repo.stars}</span>` : "",
-		repo.updatedAt ? `<span>${formatDate(repo.updatedAt)}</span>` : "",
-	]
-		.filter(Boolean)
-		.join("");
-	return `<article class="card">
-	<div class="card__head">
-		<a class="card__name" href="${href}">${escapeHtml(repo.name)}</a>
-		<span class="badge ${badge.className}">${badge.label}</span>
-	</div>
-	<p class="card__desc">${escapeHtml(repo.description || "暂无仓库简介")}</p>
-	<div class="card__meta">${meta}</div>
-	<div class="card__actions">
-		<a href="${href}">站内页面 →</a>
-		<a href="${escapeHtml(repo.htmlUrl || `${GITHUB_WEB}/${GITHUB_OWNER}/${repo.name}`)}" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
-	</div>
-</article>`;
-}
 
-function renderPortal(repos, degraded) {
-	const body = `<main class="wrap">
-	<header class="hero">
-		<span class="badge">⚡ EdgeOne 国内加速路由</span>
-		<h1>开源仓库集群</h1>
-		<p>ArchivalEra 的全部公开原创仓库统一反代到 <code>isui.ren/repo/&lt;repo&gt;/</code>：有 GitHub Pages 的仓库走边缘镜像与强缓存，没有 Pages 的仓库自动生成本地 README 页面（上游 fork 不计入）。</p>
-		<div class="actions">
-			<a class="btn btn-primary" href="${BLOG_URL}">返回博客</a>
-			<a class="btn" href="${GITHUB_WEB}/${GITHUB_OWNER}" target="_blank" rel="noopener noreferrer">GitHub 主页 ↗</a>
-		</div>
-	</header>
-	${degraded ? '<div class="notice">GitHub API 暂时不可达，当前展示内置仓库清单；稍后刷新即可恢复实时状态。</div>' : ""}
-	<section class="grid">
-		${repos.map(renderRepoCard).join("\n")}
-	</section>
-	<footer class="footer">共 ${repos.length} 个公开原创仓库 · 由 EdgeOne 边缘节点提供国内加速与缓存</footer>
-</main>`;
-	return renderPage({
-		title: "开源仓库集群",
-		description: "ArchivalEra 公开仓库的国内加速镜像门户",
-		body,
-	});
-}
 
 function renderRepoLanding(meta, readme, { degraded } = {}) {
 	const branch = readme?.branch || meta.defaultBranch || "main";
@@ -740,19 +674,6 @@ export async function middleware(context) {
 		return Response.redirect(redirectUrl.toString(), 301);
 	}
 
-	// Repository portal: every public repository, with Pages mirrors or README pages.
-	if (url.pathname === "/repo" || url.pathname === "/repo/") {
-		const { repos, degraded } = await loadRepoList();
-		return new Response(renderPortal(repos, degraded), {
-			status: 200,
-			headers: {
-				"Content-Type": "text/html; charset=utf-8",
-				"Cache-Control": degraded
-					? "public, max-age=30, s-maxage=60"
-					: "public, max-age=120, s-maxage=600",
-			},
-		});
-	}
 
 	if (url.pathname.startsWith("/repo/")) {
 		const repoMatch = url.pathname.match(/^\/repo\/([^/]+)(\/.*)?$/);
@@ -906,7 +827,6 @@ export const config = {
 	matcher: [
 		"/api/activity",
 		"/api/activity/:path*",
-		"/repo",
 		"/repo/:path*",
 		"/Bahnhof",
 	],

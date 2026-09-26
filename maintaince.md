@@ -9,7 +9,7 @@
 | 路由 | 行为 |
 | :--- | :--- |
 | `/api/activity`、`/api/activity/report` | 反代到 `api.mango-mesa.ccwu.cc` 的上游 Worker。 |
-| `/repo/` | 动态门户：GitHub API 拉取 `ArchivalEra` 公开原创仓库（不含 fork），展示 Pages 镜像 / 本地加速 / README 页状态；API 不可达时回退到内置清单。 |
+| `/repo` | 302 到 `/MangoMesa/projects/`（`edgeone.json` 声明式）。门户已退役：仓库清单改由 `@shirone-plugins/repo-inventory` 在构建期产出，项目页直接消费。 |
 | `/repo/<repo>/` | 反代 `archivalera.github.io/<repo>/`，注入 `<base>` 并重写根相对资源；Pages 未就绪或未开启时回退为仓库 README 落地页。 |
 | `/repo/S26-1_202609/` | 直接由本仓库 `repo/S26-1_202609/` 提供，优先于 GitHub Pages。 |
 | `/repo/S26-1Shitass/` | 301 到 `/repo/S26-1_202609/`。 |
@@ -39,6 +39,7 @@ curl -s -o /dev/null -w '%{http_code}\n' https://isui.ren/nonexistent-abc.xyz
 
 | 日期 | 类型 | 影响文件 | 变更要点 | 维护人 |
 | :--- | :--- | :--- | :--- | :--- |
+| 2026-09-26 | `refactor` | `middleware.js`, `edgeone.json` | **退役 `/repo` 门户**：删除 `renderPortal` / `renderRepoCard` / `loadRepoList` 与门户分支（−2998 字节），`/repo` 改由 `edgeone.json` 302 到项目页，`/repo/<repo>/` 的镜像与 README 落地页原样保留（`repoBadge` 与 `FALLBACK_REPOS` 仍被落地页使用，故保留）。仓库清单的事实来源从此是构建期的 `repo-inventory`，边缘不再维护手抄清单 | ArchivalEra |
 | 2026-09-26 | `feat` | `edgeone.json` | **项目页清单短 TTL**：为 `/MangoMesa/sites.json`（构建期仓库镜像清单的发布件）加 `Cache-Control: public, max-age=0, s-maxage=60, must-revalidate`，让页面的手动刷新最多陈旧 60 秒；`headers` 段与既有 `redirects` 并存 | ArchivalEra |
 | 2026-09-25 | `fix` | `edgeone.json` | 全站 404：`buildCommand` 置为非空（`echo noop`），让 Makers 登记根目录 `404.html`；缺失路径从「200 + 根 index.html」改为「404 + 404.html」 | ArchivalEra |
 | 2026-09-20 | `fix` | `middleware.js` | 门户与 README 落地页在 GitHub API 不可达时改用内置仓库清单兜底，避免降级成 404 | ArchivalEra |
