@@ -9,7 +9,7 @@
 | 路由 | 行为 |
 | :--- | :--- |
 | `/api/activity`、`/api/activity/report` | 反代到 `api.mango-mesa.ccwu.cc` 的上游 Worker。 |
-| `/repo` | 302 到 `/MangoMesa/projects/`（`edgeone.json` 声明式）。门户已退役：仓库清单改由 `@shirone-plugins/repo-inventory` 在构建期产出，项目页直接消费。 |
+| `/repo`、`/repo/` | 302 到 `/MangoMesa/projects/`（`edgeone.json` 声明式，两条并列——精确匹配不含尾斜杠）。门户已退役：仓库清单改由 `@shirone-plugins/repo-inventory` 在构建期产出，项目页直接消费。 |
 | `/repo/<repo>/` | 反代 `archivalera.github.io/<repo>/`，注入 `<base>` 并重写根相对资源；Pages 未就绪或未开启时回退为仓库 README 落地页。 |
 | `/repo/S26-1_202609/` | 直接由本仓库 `repo/S26-1_202609/` 提供，优先于 GitHub Pages。 |
 | `/repo/S26-1Shitass/` | 301 到 `/repo/S26-1_202609/`。 |
