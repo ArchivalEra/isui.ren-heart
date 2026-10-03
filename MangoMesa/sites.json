@@ -1,12 +1,22 @@
 {
-	"generatedAt": "2026-10-03T12:43:51.737Z",
+	"generatedAt": "2026-10-03T17:36:44.001Z",
 	"acceleratedDirs": [],
 	"entries": [
+		{
+			"name": "Einfacht",
+			"pages": "absent",
+			"accelerated": false,
+			"pushedAt": "2026-10-03T13:56:10Z",
+			"status": null,
+			"description": "让 agent 的每句「现在如此」都能被复跑证明 —— 反幻觉事实系统：事实台账 / 翻案台账 / 悬案台账 + 必须能红的闸门",
+			"language": "Python",
+			"url": "https://github.com/ArchivalEra/Einfacht"
+		},
 		{
 			"name": "isui.ren-heart",
 			"pages": "ready",
 			"accelerated": false,
-			"pushedAt": "2026-10-03T09:56:25Z",
+			"pushedAt": "2026-10-03T12:44:33Z",
 			"status": "built",
 			"description": "isui.ren 的站点心脏：EdgeOne Pages 静态源、边缘中间件与跨仓部署链",
 			"language": "Rust",
@@ -91,16 +101,6 @@
 			"description": "uTLS 的 Rust 复刻与指纹验收：逐字节对拍、REALITY 对线与事实台账",
 			"language": "Rust",
 			"url": "https://github.com/ArchivalEra/uTLS-Gone"
-		},
-		{
-			"name": "Einfacht",
-			"pages": "absent",
-			"accelerated": false,
-			"pushedAt": "2026-10-03T01:18:20Z",
-			"status": null,
-			"description": "让 agent 的每句「现在如此」都能被复跑证明 —— 反幻觉事实系统：事实台账 / 翻案台账 / 悬案台账 + 必须能红的闸门",
-			"language": "Python",
-			"url": "https://github.com/ArchivalEra/Einfacht"
 		},
 		{
 			"name": "cachyos-kernel-debian-clang",
