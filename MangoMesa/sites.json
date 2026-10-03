@@ -1,0 +1,206 @@
+{
+	"generatedAt": "2026-10-03T06:58:25.707Z",
+	"acceleratedDirs": [],
+	"entries": [
+		{
+			"name": "isui.ren-heart",
+			"pages": "ready",
+			"accelerated": false,
+			"pushedAt": "2026-10-03T06:39:26Z",
+			"status": "built",
+			"description": "isui.ren 的站点心脏：EdgeOne Pages 静态源、边缘中间件与跨仓部署链",
+			"language": "Rust",
+			"url": "https://github.com/ArchivalEra/isui.ren-heart"
+		},
+		{
+			"name": "newifi3-immortalwrt-personal",
+			"pages": "ready",
+			"accelerated": false,
+			"pushedAt": "2026-10-03T06:39:00Z",
+			"status": "built",
+			"description": "Newifi D2 的 ImmortalWrt 定制固件：校园网下的路由自救",
+			"language": "Shell",
+			"url": "https://github.com/ArchivalEra/newifi3-immortalwrt-personal"
+		},
+		{
+			"name": "nearlink-E573H-USBDC",
+			"pages": "ready",
+			"accelerated": false,
+			"pushedAt": "2026-10-03T06:38:55Z",
+			"status": "built",
+			"description": "华为星闪（NearLink）E573H USB Dongle 连通性实验与工具",
+			"language": "C",
+			"url": "https://github.com/ArchivalEra/nearlink-E573H-USBDC"
+		},
+		{
+			"name": "Clouddrive-as-Origin",
+			"pages": "ready",
+			"accelerated": false,
+			"pushedAt": "2026-10-03T06:38:51Z",
+			"status": "built",
+			"description": "把云盘当视频源站：有界 Range 调度、SigV4 现签与 CORS 实证",
+			"language": "Rust",
+			"url": "https://github.com/ArchivalEra/Clouddrive-as-Origin"
+		},
+		{
+			"name": "Policy-Gateway",
+			"pages": "ready",
+			"accelerated": false,
+			"pushedAt": "2026-10-03T06:38:48Z",
+			"status": "built",
+			"description": "基于 Rust 的高性能网络策略网关",
+			"language": "Rust",
+			"url": "https://github.com/ArchivalEra/Policy-Gateway"
+		},
+		{
+			"name": "My-Shirone-Plugins",
+			"pages": "ready",
+			"accelerated": false,
+			"pushedAt": "2026-10-03T06:38:45Z",
+			"status": "built",
+			"description": "Plugins, extensions, and enhancements for the Shirone blog theme ecosystem.",
+			"language": "JavaScript",
+			"url": "https://github.com/ArchivalEra/My-Shirone-Plugins"
+		},
+		{
+			"name": "S26-1_202609",
+			"pages": "absent",
+			"accelerated": false,
+			"pushedAt": "2026-10-03T06:38:42Z",
+			"status": null,
+			"description": "S26-1 课程知识库 · 高精度公式渲染阅读站（M3E 质感排版与动态色盘）",
+			"language": "JavaScript",
+			"url": "https://github.com/ArchivalEra/S26-1_202609"
+		},
+		{
+			"name": "isui.ren-Bahnhof",
+			"pages": "ready",
+			"accelerated": false,
+			"pushedAt": "2026-10-03T06:38:39Z",
+			"status": "built",
+			"description": "isui.ren 站点中央调度与导航短链分发中枢 🚉",
+			"language": "TypeScript",
+			"url": "https://github.com/ArchivalEra/isui.ren-Bahnhof"
+		},
+		{
+			"name": "uTLS-Gone",
+			"pages": "absent",
+			"accelerated": false,
+			"pushedAt": "2026-10-03T03:49:46Z",
+			"status": null,
+			"description": "uTLS 的 Rust 复刻与指纹验收：逐字节对拍、REALITY 对线与事实台账",
+			"language": "Rust",
+			"url": "https://github.com/ArchivalEra/uTLS-Gone"
+		},
+		{
+			"name": "Einfacht",
+			"pages": "absent",
+			"accelerated": false,
+			"pushedAt": "2026-10-03T01:18:20Z",
+			"status": null,
+			"description": "让 agent 的每句「现在如此」都能被复跑证明 —— 反幻觉事实系统：事实台账 / 翻案台账 / 悬案台账 + 必须能红的闸门",
+			"language": "Python",
+			"url": "https://github.com/ArchivalEra/Einfacht"
+		},
+		{
+			"name": "cachyos-kernel-debian-clang",
+			"pages": "absent",
+			"accelerated": false,
+			"pushedAt": "2026-09-29T05:17:07Z",
+			"status": null,
+			"description": "Self-built CachyOS kernel for Debian with BORE scheduler + clang ThinLTO + O3, packaged as .deb",
+			"language": "Shell",
+			"url": "https://github.com/ArchivalEra/cachyos-kernel-debian-clang"
+		},
+		{
+			"name": "H10e-11ac",
+			"pages": "ready",
+			"accelerated": false,
+			"pushedAt": "2026-09-23T09:47:42Z",
+			"status": "built",
+			"description": "双 SoC 融合网关：S905L3 盒侧 Debian 13 + ZX279128S 路由侧",
+			"language": "Shell",
+			"url": "https://github.com/ArchivalEra/H10e-11ac"
+		},
+		{
+			"name": "Anti-Laborer-Skills",
+			"pages": "ready",
+			"accelerated": false,
+			"pushedAt": "2026-09-15T10:49:49Z",
+			"status": "built",
+			"description": "反力工思维方法论：高信息密度、科学风味的论证知识库",
+			"language": "JavaScript",
+			"url": "https://github.com/ArchivalEra/Anti-Laborer-Skills"
+		},
+		{
+			"name": "hi3798mv310-debian",
+			"pages": "ready",
+			"accelerated": false,
+			"pushedAt": "2026-09-15T07:21:00Z",
+			"status": "built",
+			"description": "Hi3798MV310 机顶盒 SoC 的 Debian bring-up：主线内核移植与桌面化",
+			"language": "Shell",
+			"url": "https://github.com/ArchivalEra/hi3798mv310-debian"
+		},
+		{
+			"name": "Shirone",
+			"pages": "absent",
+			"accelerated": false,
+			"pushedAt": "2026-09-10T13:30:39Z",
+			"status": null,
+			"description": "An expressive, anime-inspired blog theme built on Material 3 Expressive, Astro 7, and Svelte 5",
+			"language": "TypeScript",
+			"url": "https://github.com/ArchivalEra/Shirone"
+		},
+		{
+			"name": "S3-Xray",
+			"pages": "ready",
+			"accelerated": false,
+			"pushedAt": "2026-09-10T13:13:18Z",
+			"status": "built",
+			"description": "把代理流量伪装成对象存储 API 调用的 Python 片段集",
+			"language": "Python",
+			"url": "https://github.com/ArchivalEra/S3-Xray"
+		},
+		{
+			"name": "PureDns",
+			"pages": "ready",
+			"accelerated": false,
+			"pushedAt": "2026-09-08T13:57:25Z",
+			"status": "built",
+			"description": "VPS 与家用盒子的私有基础设施：手写 DNS relay 与代理配置工具",
+			"language": "Rust",
+			"url": "https://github.com/ArchivalEra/PureDns"
+		},
+		{
+			"name": "clearmail",
+			"pages": "ready",
+			"accelerated": false,
+			"pushedAt": "2026-09-03T07:19:31Z",
+			"status": "built",
+			"description": "Oracle VPS 极简邮件服务器：OpenSMTPD + Dovecot + DKIM，内存占用低于 200MB",
+			"language": "Shell",
+			"url": "https://github.com/ArchivalEra/clearmail"
+		},
+		{
+			"name": "hi3798mv300-debian-sid",
+			"pages": "absent",
+			"accelerated": false,
+			"pushedAt": "2026-08-09T13:48:09Z",
+			"status": null,
+			"description": "我牛逼",
+			"language": "Shell",
+			"url": "https://github.com/ArchivalEra/hi3798mv300-debian-sid"
+		},
+		{
+			"name": "bilibili-white",
+			"pages": "absent",
+			"accelerated": false,
+			"pushedAt": "2025-07-06T09:31:34Z",
+			"status": null,
+			"description": "哔哩哔哩白图标版_v3.20.4",
+			"language": null,
+			"url": "https://github.com/ArchivalEra/bilibili-white"
+		}
+	]
+}
