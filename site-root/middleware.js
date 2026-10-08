@@ -426,28 +426,15 @@ export async function middleware(context) {
 			if (repoName === "Octave") {
 				const cleanRest = restPath.startsWith("/") ? restPath.slice(1) : restPath;
 				const pagesUrl = `https://archivalera.github.io/Octave-UI/${cleanRest}${url.search}`;
-				// Range passthrough: a large wasm pulled whole from the client to the edge
-				// is ~42s (edge egress ~0.7MB/s, no gzip for application/wasm), while the
-				// site admin's measurements show ~5MB slices are the sweet spot. EdgeOne's
-				// own cache ignores client Range, so this function honours it: it asks
-				// Pages (which supports ranges) for the slice and returns 206.
+
+				// 转发给上游的条件/范围头：让「大二进制不必每次重传、但推送立即可见」
+				// 这两件事同时成立（Pages 支持 ETag，条件请求回 304 不收体）。
+				const fwd = { "Accept-Encoding": "gzip" };
 				const rangeHeader = request.headers.get("range");
-				if (rangeHeader) {
-					try {
-						const rangedResp = await fetch(pagesUrl, { headers: { Range: rangeHeader } });
-						if (rangedResp.status === 206) {
-							const h = new Headers(rangedResp.headers);
-							h.set("Cross-Origin-Opener-Policy", "same-origin");
-							h.set("Cross-Origin-Embedder-Policy", "require-corp");
-							h.set("Access-Control-Allow-Origin", "*");
-							h.set("Accept-Ranges", "bytes");
-							h.delete("Content-Encoding");
-							// 分片与整包同档短缓存（10 分钟）；Range 请求命中即 206
-							h.set("Cache-Control", "public, max-age=600, must-revalidate");
-							return new Response(rangedResp.body, { status: 206, headers: h });
-						}
-					} catch (_e) { /* fall through to full */ }
-				}
+				if (rangeHeader) fwd.Range = rangeHeader;
+				const inm = request.headers.get("if-none-match");
+				if (inm) fwd["If-None-Match"] = inm;
+
 				let upstream = null;
 				try {
 					// Ask Pages for its gzip variant so the ORIGIN PULL is ~7.5MB instead of
@@ -455,43 +442,46 @@ export async function middleware(context) {
 					// receives but leaves the upstream `content-encoding` header in place, so
 					// the forwarded headers are sanitised below (a naive pass-through sends a
 					// gzip header over a decoded body and the transfer truncates).
-					upstream = await fetch(pagesUrl, {
-						headers: { "Accept-Encoding": "gzip" },
-					});
+					upstream = await fetch(pagesUrl, { headers: fwd });
 				} catch (_err) {
 					upstream = null;
 				}
-				if (!upstream || upstream.status === 404) {
+				if (!upstream) {
+					return new Response("Octave upstream unreachable", {
+						status: 502,
+						headers: { "Content-Type": "text/plain; charset=utf-8" },
+					});
+				}
+				if (upstream.status === 404) {
 					return new Response("Octave asset not found on GitHub Pages", {
 						status: 404,
 						headers: { "Content-Type": "text/plain; charset=utf-8" },
 					});
 				}
+
 				const headers = new Headers(upstream.headers);
 				headers.set("Cross-Origin-Opener-Policy", "same-origin");
 				headers.set("Cross-Origin-Embedder-Policy", "require-corp");
+				headers.set("Access-Control-Allow-Origin", "*");
+				headers.set("Accept-Ranges", "bytes");
 				if (url.pathname.endsWith(".wasm")) {
 					headers.set("Content-Type", "application/wasm");
 				}
-				headers.set("Access-Control-Allow-Origin", "*");
 				// The body we hold is whatever the runtime handed back; never forward a
-				// content-encoding/content-length that may disagree with it.
+				// content-encoding/content-length that may disagree with it. A 206 is a
+				// raw range (no encoding), so its Content-Length stays accurate — only a
+				// 200 may have been decoded from gzip, where both headers must go.
 				headers.delete("Content-Encoding");
-				headers.delete("Content-Length");
-				// 缓存策略分两类，目的是「推送即上线」且无需人工清缓存
-				// （本部署对承载 isui.ren 的 EdgeOne Pages zone 无 purge 权限）：
-				//
-				//  1. index.html 是**版本指针**——它引用的 JS/CSS 都带内容哈希，
-				//     所以只要它自己不陈旧，一次部署就能整体可见。因此它必须
-				//     must-revalidate + 显式 max-age=0：命中也要回源用 ETag 校验，
-				//     推送后下一次请求即拿到新版本（回源只传 304 或几 KB HTML）。
-				//  2. 其余（wasm/data/js/css/…）按站点决策 10 分钟：大二进制
-				//     靠 TTL 自愈，避免每次请求都回源拉 MB 级。
-				const isPointer = url.pathname.endsWith("/") || url.pathname.endsWith(".html");
-				if (isPointer) {
-					headers.set("Cache-Control", "no-cache, max-age=0, must-revalidate");
-				} else {
-					headers.set("Cache-Control", "public, max-age=600, must-revalidate");
+				if (upstream.status !== 206) headers.delete("Content-Length");
+				// 与站内其它路径保持一致的缓存策略：max-age=0 + must-revalidate。
+				// 这不是「清缓存」，而是「本来就每次校验」——所以推送立刻可见；
+				// 配合上面的条件请求透传，大文件校验走 304、不重传（MangoMesa /
+				// repo/S26 用的是同一档，只是它们由 EdgeOne 静态托管直接处理）。
+				headers.set("Cache-Control", "public, max-age=0, must-revalidate");
+
+				// 304 / 其它无体状态：按原状态回，不带 body
+				if (upstream.status === 304 || upstream.status === 204) {
+					return new Response(null, { status: upstream.status, headers });
 				}
 				return new Response(upstream.body, { status: upstream.status, headers });
 			}
