@@ -67,11 +67,14 @@ jobs:
           git fetch origin deploy:refs/remotes/origin/deploy
           rm -rf /tmp/keep-deploy
           if git cat-file -e refs/remotes/origin/deploy 2>/dev/null; then
-            # Bahnhof/ station, the Blog/ and MangoMesa/ slots, and the root 404 page belong
-            # to their own repos' pipelines - carry them across this
-            # rebuild untouched
+            # Bahnhof/ station, the Blog/ and MangoMesa/ slots, the repo/ slot-repo tree
+            # (S26-1_202609's static site + the accelerated-mirror tree the inventory reads),
+            # and the root 404 page belong to their own repos' pipelines / sibling
+            # outputs - carry them across this rebuild untouched. repo/ was missing from
+            # this list until 2026-10-08, when a heart deploy wiped it and killed
+            # /repo/S26-1_202609/ (the middleware next()-served tree) plus the mirror tree.
             PRESERVE_SLOTS=()
-            for slot in Bahnhof Blog MangoMesa 404.html; do
+            for slot in Bahnhof Blog MangoMesa repo 404.html; do
               if git rev-parse --verify --quiet "refs/remotes/origin/deploy:$slot" >/dev/null; then
                 PRESERVE_SLOTS+=("$slot")
               fi
@@ -95,7 +98,7 @@ jobs:
           cp -r /tmp/deploy-out/. .
           # Restore Bahnhof/, Blog/, MangoMesa/ and 404.html if they existed before
           # this run
-          for slot in Bahnhof Blog MangoMesa; do
+          for slot in Bahnhof Blog MangoMesa repo; do
             if [ -d "/tmp/keep-deploy/$slot" ]; then
               rm -rf "./$slot"
               cp -r "/tmp/keep-deploy/$slot" "./$slot"
