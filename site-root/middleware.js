@@ -426,6 +426,26 @@ export async function middleware(context) {
 			if (repoName === "Octave") {
 				const cleanRest = restPath.startsWith("/") ? restPath.slice(1) : restPath;
 				const pagesUrl = `https://archivalera.github.io/Octave-UI/${cleanRest}${url.search}`;
+				// Range passthrough: a large wasm pulled whole from the client to the edge
+				// is ~42s (edge egress ~0.7MB/s, no gzip for application/wasm), while the
+				// site admin's measurements show ~5MB slices are the sweet spot. EdgeOne's
+				// own cache ignores client Range, so this function honours it: it asks
+				// Pages (which supports ranges) for the slice and returns 206.
+				const rangeHeader = request.headers.get("range");
+				if (rangeHeader) {
+					try {
+						const rangedResp = await fetch(pagesUrl, { headers: { Range: rangeHeader } });
+						if (rangedResp.status === 206) {
+							const h = new Headers(rangedResp.headers);
+							h.set("Cross-Origin-Opener-Policy", "same-origin");
+							h.set("Cross-Origin-Embedder-Policy", "require-corp");
+							h.set("Access-Control-Allow-Origin", "*");
+							h.set("Accept-Ranges", "bytes");
+							h.delete("Content-Encoding");
+							return new Response(rangedResp.body, { status: 206, headers: h });
+						}
+					} catch (_e) { /* fall through to full */ }
+				}
 				let upstream = null;
 				try {
 					// Ask Pages for its gzip variant so the ORIGIN PULL is ~7.5MB instead of
