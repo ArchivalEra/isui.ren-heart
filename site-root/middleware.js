@@ -432,12 +432,12 @@ export async function middleware(context) {
 				// Range 与 gzip 互斥：请求分片时**不能**带上 gzip —— 否则 Pages 会对
 				// 压缩表示切范围，返回的 Content-Range 总数是压缩后大小（实测 7488364
 				// 而非 31003790），分片拼起来就是坏文件。分片走原始字节，压缩只用于整包。
+				// 分片走 **gzip 表示**（Pages 支持 Range+gzip，实测 Content-Range 总数
+				// 7488364 = 压缩后大小、首字节 1f8b）。于是回源只拉 ~7.4MB 而不是 31MB；
+				// 客户端 shim 负责把拼好的 gzip 流解压回原文件（DecompressionStream）。
 				const rangeHeader = request.headers.get("range");
-				// 关键：不指定 Accept-Encoding 时，这个运行时**自己**会加上 gzip
-				// （省带宽的默认行为），Pages 便对压缩表示切片 → Content-Range 总数
-				// 变成压缩后大小。必须显式要 identity，运行时才会照办。
 				const fwd = rangeHeader
-					? { "Accept-Encoding": "identity", Range: rangeHeader }
+					? { "Accept-Encoding": "gzip", Range: rangeHeader }
 					: { "Accept-Encoding": "gzip" };
 				const inm = request.headers.get("if-none-match");
 				if (inm) fwd["If-None-Match"] = inm;
@@ -474,12 +474,13 @@ export async function middleware(context) {
 				if (url.pathname.endsWith(".wasm")) {
 					headers.set("Content-Type", "application/wasm");
 				}
-				// The body we hold is whatever the runtime handed back; never forward a
-				// content-encoding/content-length that may disagree with it. A 206 is a
-				// raw range (no encoding), so its Content-Length stays accurate — only a
-				// 200 may have been decoded from gzip, where both headers must go.
-				headers.delete("Content-Encoding");
-				if (upstream.status !== 206) headers.delete("Content-Length");
+				// 200（整包）：运行时可能已把 gzip 解掉，故这两个头必须删。
+				// 206（分片）：体是**原始 gzip 分片**（Content-Encoding: gzip 必须保留，
+				// 否则客户端不知道要解压），Content-Length 与 Content-Range 也都准确。
+				if (upstream.status !== 206) {
+					headers.delete("Content-Encoding");
+					headers.delete("Content-Length");
+				}
 				// 与站内其它路径保持一致的缓存策略：max-age=0 + must-revalidate。
 				// 这不是「清缓存」，而是「本来就每次校验」——所以推送立刻可见；
 				// 配合上面的条件请求透传，大文件校验走 304、不重传（MangoMesa /
