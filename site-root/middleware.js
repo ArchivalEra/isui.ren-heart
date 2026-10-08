@@ -414,20 +414,38 @@ export async function middleware(context) {
 				return next();
 			}
 
-			// Octave-UI (repo/Octave): also served from the deploy tree, but every
-			// response must carry cross-origin isolation headers — the WebAssembly
-			// engine needs SharedArrayBuffer, and without COOP/COEP the browser
-			// disables it and the engine dies at startup (Octave-UI HANDOFF §3).
-			// .wasm must be application/wasm or streaming compilation fails.
+			// Octave-UI (repo/Octave): bytes come from GitHub Pages, not the deploy
+			// tree — octave.wasm is ~31MB and EdgeOne refuses files over 25MB, so the
+			// Pages site (archivalera.github.io/Octave-UI) carries the large binaries
+			// and this middleware reverse-proxies it under /repo/Octave/. Every
+			// response is stamped with the cross-origin isolation headers the WASM
+			// engine requires (SharedArrayBuffer → COOP/COEP; Octave-UI HANDOFF §3),
+			// and .wasm gets application/wasm or streaming compilation fails.
+			// The Pages build uses base '/repo/Octave/', so no path rewriting is needed
+			// here — the HTML already references this prefix, which this proxy serves.
 			if (repoName === "Octave") {
-				const resp = await next();
-				const headers = new Headers(resp.headers);
+				const cleanRest = restPath.startsWith("/") ? restPath.slice(1) : restPath;
+				const pagesUrl = `https://archivalera.github.io/Octave-UI/${cleanRest}${url.search}`;
+				let upstream = null;
+				try {
+					upstream = await fetch(pagesUrl);
+				} catch (_err) {
+					upstream = null;
+				}
+				if (!upstream || upstream.status === 404) {
+					return new Response("Octave asset not found on GitHub Pages", {
+						status: 404,
+						headers: { "Content-Type": "text/plain; charset=utf-8" },
+					});
+				}
+				const headers = new Headers(upstream.headers);
 				headers.set("Cross-Origin-Opener-Policy", "same-origin");
 				headers.set("Cross-Origin-Embedder-Policy", "require-corp");
 				if (url.pathname.endsWith(".wasm")) {
 					headers.set("Content-Type", "application/wasm");
 				}
-				return new Response(resp.body, { status: resp.status, headers });
+				headers.set("Access-Control-Allow-Origin", "*");
+				return new Response(upstream.body, { status: upstream.status, headers });
 			}
 
 			const cleanRest = restPath.startsWith("/") ? restPath.slice(1) : restPath;
