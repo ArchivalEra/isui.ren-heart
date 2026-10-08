@@ -429,8 +429,11 @@ export async function middleware(context) {
 
 				// 转发给上游的条件/范围头：让「大二进制不必每次重传、但推送立即可见」
 				// 这两件事同时成立（Pages 支持 ETag，条件请求回 304 不收体）。
-				const fwd = { "Accept-Encoding": "gzip" };
+				// Range 与 gzip 互斥：请求分片时**不能**带上 gzip —— 否则 Pages 会对
+				// 压缩表示切范围，返回的 Content-Range 总数是压缩后大小（实测 7488364
+				// 而非 31003790），分片拼起来就是坏文件。分片走原始字节，压缩只用于整包。
 				const rangeHeader = request.headers.get("range");
+				const fwd = rangeHeader ? {} : { "Accept-Encoding": "gzip" };
 				if (rangeHeader) fwd.Range = rangeHeader;
 				const inm = request.headers.get("if-none-match");
 				if (inm) fwd["If-None-Match"] = inm;
