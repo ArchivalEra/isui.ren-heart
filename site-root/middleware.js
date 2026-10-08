@@ -426,16 +426,6 @@ export async function middleware(context) {
 			if (repoName === "Octave") {
 				const cleanRest = restPath.startsWith("/") ? restPath.slice(1) : restPath;
 				const pagesUrl = `https://archivalera.github.io/Octave-UI/${cleanRest}${url.search}`;
-				// Large binaries (octave.wasm ~31MB, octave.data ~10MB) must not flow
-				// through the edge function: EdgeOne egresses ~0.7MB/s and does not gzip
-				// application/wasm, so a 31MB pull costs ~40s. GitHub Pages serves the
-				// same bytes at ~2.3MB/s with gzip (~7.5MB, ~3s) and answers cross-origin
-				// fetches with `access-control-allow-origin: *` (COEP-satisfying CORS).
-				// Redirect those to Pages; the page itself (which needs the COOP/COEP
-				// headers only this middleware can add) still comes through the proxy.
-				if (/\.(wasm|data)$/i.test(url.pathname)) {
-					return Response.redirect(pagesUrl, 302);
-				}
 				let upstream = null;
 				try {
 					// Ask Pages for its gzip variant so the ORIGIN PULL is ~7.5MB instead of
