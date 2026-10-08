@@ -433,8 +433,12 @@ export async function middleware(context) {
 				// 压缩表示切范围，返回的 Content-Range 总数是压缩后大小（实测 7488364
 				// 而非 31003790），分片拼起来就是坏文件。分片走原始字节，压缩只用于整包。
 				const rangeHeader = request.headers.get("range");
-				const fwd = rangeHeader ? {} : { "Accept-Encoding": "gzip" };
-				if (rangeHeader) fwd.Range = rangeHeader;
+				// 关键：不指定 Accept-Encoding 时，这个运行时**自己**会加上 gzip
+				// （省带宽的默认行为），Pages 便对压缩表示切片 → Content-Range 总数
+				// 变成压缩后大小。必须显式要 identity，运行时才会照办。
+				const fwd = rangeHeader
+					? { "Accept-Encoding": "identity", Range: rangeHeader }
+					: { "Accept-Encoding": "gzip" };
 				const inm = request.headers.get("if-none-match");
 				if (inm) fwd["If-None-Match"] = inm;
 
