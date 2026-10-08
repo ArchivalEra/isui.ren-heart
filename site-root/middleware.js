@@ -424,32 +424,21 @@ export async function middleware(context) {
 			// The Pages build uses base '/repo/Octave/', so no path rewriting is needed
 			// here — the HTML already references this prefix, which this proxy serves.
 			if (repoName === "Octave") {
+				// 字节经 GitHub Pages，因为 octave.wasm ~31MB 超过 EdgeOne 单文件 25MB 上限。
+				//
+				// 传输策略（2026-10-08 原始 HTTP 实测，见下）：**只做整包转发，不做分片**。
+				//   · 回源：向 Pages 要 gzip（~7.4MB 拉取，而非 31MB）。
+				//   · 本运行时**自己会**把函数响应对声明接受 gzip 的客户端压缩；
+				//     实测客户端拿到 7488364B + `content-encoding: gzip`，浏览器原生解压成 31MB。
+				//   · 所以两个方向都只有 ~7.4MB，且不需要任何客户端 shim。
+				//   · 反例：`Range` + gzip **不成立** —— 实测 206 声称
+				//     `content-range: bytes 0-5242879/7488364` 却吐回 19,699,285B 的**已解压**体
+				//     （头与体不一致），客户端解析必然失败。故此处不实现分片。
 				const cleanRest = restPath.startsWith("/") ? restPath.slice(1) : restPath;
 				const pagesUrl = `https://archivalera.github.io/Octave-UI/${cleanRest}${url.search}`;
-
-				// 转发给上游的条件/范围头：让「大二进制不必每次重传、但推送立即可见」
-				// 这两件事同时成立（Pages 支持 ETag，条件请求回 304 不收体）。
-				// Range 与 gzip 互斥：请求分片时**不能**带上 gzip —— 否则 Pages 会对
-				// 压缩表示切范围，返回的 Content-Range 总数是压缩后大小（实测 7488364
-				// 而非 31003790），分片拼起来就是坏文件。分片走原始字节，压缩只用于整包。
-				// 分片走 **gzip 表示**（Pages 支持 Range+gzip，实测 Content-Range 总数
-				// 7488364 = 压缩后大小、首字节 1f8b）。于是回源只拉 ~7.4MB 而不是 31MB；
-				// 客户端 shim 负责把拼好的 gzip 流解压回原文件（DecompressionStream）。
-				const rangeHeader = request.headers.get("range");
-				const fwd = rangeHeader
-					? { "Accept-Encoding": "gzip", Range: rangeHeader }
-					: { "Accept-Encoding": "gzip" };
-				const inm = request.headers.get("if-none-match");
-				if (inm) fwd["If-None-Match"] = inm;
-
 				let upstream = null;
 				try {
-					// Ask Pages for its gzip variant so the ORIGIN PULL is ~7.5MB instead of
-					// ~31MB (octave.wasm). This edge runtime decodes the gzip body it
-					// receives but leaves the upstream `content-encoding` header in place, so
-					// the forwarded headers are sanitised below (a naive pass-through sends a
-					// gzip header over a decoded body and the transfer truncates).
-					upstream = await fetch(pagesUrl, { headers: fwd });
+					upstream = await fetch(pagesUrl, { headers: { "Accept-Encoding": "gzip" } });
 				} catch (_err) {
 					upstream = null;
 				}
@@ -465,32 +454,20 @@ export async function middleware(context) {
 						headers: { "Content-Type": "text/plain; charset=utf-8" },
 					});
 				}
-
 				const headers = new Headers(upstream.headers);
 				headers.set("Cross-Origin-Opener-Policy", "same-origin");
 				headers.set("Cross-Origin-Embedder-Policy", "require-corp");
 				headers.set("Access-Control-Allow-Origin", "*");
-				headers.set("Accept-Ranges", "bytes");
+				headers.set("Accept-Ranges", "none");
 				if (url.pathname.endsWith(".wasm")) {
 					headers.set("Content-Type", "application/wasm");
 				}
-				// 200（整包）：运行时可能已把 gzip 解掉，故这两个头必须删。
-				// 206（分片）：体是**原始 gzip 分片**（Content-Encoding: gzip 必须保留，
-				// 否则客户端不知道要解压），Content-Length 与 Content-Range 也都准确。
-				if (upstream.status !== 206) {
-					headers.delete("Content-Encoding");
-					headers.delete("Content-Length");
-				}
-				// 与站内其它路径保持一致的缓存策略：max-age=0 + must-revalidate。
-				// 这不是「清缓存」，而是「本来就每次校验」——所以推送立刻可见；
-				// 配合上面的条件请求透传，大文件校验走 304、不重传（MangoMesa /
-				// repo/S26 用的是同一档，只是它们由 EdgeOne 静态托管直接处理）。
+				// 运行时交给我们的体可能已被解压，故清掉这两个头（由运行时按客户端
+				// 的 Accept-Encoding 重新协商压缩）；这与实测 B 一致。
+				headers.delete("Content-Encoding");
+				headers.delete("Content-Length");
+				// 与站内其它路径一致：每次校验，推送立即可见（不是「清缓存」，是默认不缓存）。
 				headers.set("Cache-Control", "public, max-age=0, must-revalidate");
-
-				// 304 / 其它无体状态：按原状态回，不带 body
-				if (upstream.status === 304 || upstream.status === 204) {
-					return new Response(null, { status: upstream.status, headers });
-				}
 				return new Response(upstream.body, { status: upstream.status, headers });
 			}
 
