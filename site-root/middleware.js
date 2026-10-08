@@ -478,10 +478,21 @@ export async function middleware(context) {
 				// content-encoding/content-length that may disagree with it.
 				headers.delete("Content-Encoding");
 				headers.delete("Content-Length");
-				// 一律短缓存（站点决策：全站 10 分钟）。EdgeOne 的 purge 需要控制台权限、
-				// 本部署不可用，所以「更新可见性」完全靠 TTL 自愈——不区分文件类型，
-				// 内容哈希也不例外：宁可多回源一点，也不要任何人工清缓存的步骤。
-				headers.set("Cache-Control", "public, max-age=600, must-revalidate");
+				// 缓存策略分两类，目的是「推送即上线」且无需人工清缓存
+				// （本部署对承载 isui.ren 的 EdgeOne Pages zone 无 purge 权限）：
+				//
+				//  1. index.html 是**版本指针**——它引用的 JS/CSS 都带内容哈希，
+				//     所以只要它自己不陈旧，一次部署就能整体可见。因此它必须
+				//     must-revalidate + 显式 max-age=0：命中也要回源用 ETag 校验，
+				//     推送后下一次请求即拿到新版本（回源只传 304 或几 KB HTML）。
+				//  2. 其余（wasm/data/js/css/…）按站点决策 10 分钟：大二进制
+				//     靠 TTL 自愈，避免每次请求都回源拉 MB 级。
+				const isPointer = url.pathname.endsWith("/") || url.pathname.endsWith(".html");
+				if (isPointer) {
+					headers.set("Cache-Control", "no-cache, max-age=0, must-revalidate");
+				} else {
+					headers.set("Cache-Control", "public, max-age=600, must-revalidate");
+				}
 				return new Response(upstream.body, { status: upstream.status, headers });
 			}
 
