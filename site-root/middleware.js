@@ -428,12 +428,12 @@ export async function middleware(context) {
 				const pagesUrl = `https://archivalera.github.io/Octave-UI/${cleanRest}${url.search}`;
 				let upstream = null;
 				try {
-					// Ask Pages for its gzip variant: octave.wasm is ~31MB raw but ~7.5MB
-					// gzipped, and EdgeOne's origin pull otherwise fetches the full size
-					// (the "over-10MB origin pull is slow" the site admin hit).
-					upstream = await fetch(pagesUrl, {
-						headers: { "Accept-Encoding": "gzip" },
-					});
+					// No explicit Accept-Encoding: the edge runtime decodes any gzip it
+					// asked for while leaving the upstream `content-encoding` header in
+					// place, which corrupts the response (client sees gzip header +
+					// uncompressed body → truncated transfer). Pull plain and let the
+					// headers stay consistent with the body.
+					upstream = await fetch(pagesUrl);
 				} catch (_err) {
 					upstream = null;
 				}
@@ -450,9 +450,12 @@ export async function middleware(context) {
 					headers.set("Content-Type", "application/wasm");
 				}
 				headers.set("Access-Control-Allow-Origin", "*");
-				// Keep the upstream Content-Encoding (gzip) so the edge caches the
-				// compressed object; and cache content-addressed binaries long enough
-				// that the big pull happens once per deploy, not every cold window.
+				// The body we hold is whatever the runtime handed back; never forward a
+				// content-encoding/content-length that may disagree with it.
+				headers.delete("Content-Encoding");
+				headers.delete("Content-Length");
+				// Cache content-addressed binaries long enough that the big pull happens
+				// once per deploy, not every cold window.
 				const immutable = /\.(wasm|data|js|css|woff2?)$/.test(url.pathname);
 				headers.set(
 					"Cache-Control",
