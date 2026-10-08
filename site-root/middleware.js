@@ -442,6 +442,8 @@ export async function middleware(context) {
 							h.set("Access-Control-Allow-Origin", "*");
 							h.set("Accept-Ranges", "bytes");
 							h.delete("Content-Encoding");
+							// 分片也可缓存（1h，与固定名大文件同档）；Range 请求命中即 206
+							h.set("Cache-Control", "public, max-age=3600, must-revalidate");
 							return new Response(rangedResp.body, { status: 206, headers: h });
 						}
 					} catch (_e) { /* fall through to full */ }
@@ -476,14 +478,19 @@ export async function middleware(context) {
 				// content-encoding/content-length that may disagree with it.
 				headers.delete("Content-Encoding");
 				headers.delete("Content-Length");
-				// Cache content-addressed binaries long enough that the big pull happens
-				// once per deploy, not every cold window.
-				const immutable = /\.(wasm|data|js|css|woff2?)$/.test(url.pathname);
+				// 分层缓存（EdgeOne 的 purge 需要控制台权限，本部署不可用 ⇒ 靠 TTL 自愈）：
+				//   /_astro/*         Astro 内容哈希 → 长缓存，永不陈旧
+				//   .html / 目录路径  短 TTL，页面更新快速可见
+				//   其余（wasm/data/js）固定名 → 1h：引擎更新后最长 1h 自愈，无需人工清缓存
+				const hashed = url.pathname.includes("/_astro/");
+				const isHtml = url.pathname.endsWith("/") || url.pathname.endsWith(".html");
 				headers.set(
 					"Cache-Control",
-					immutable
+					hashed
 						? "public, max-age=604800, immutable"
-						: "public, max-age=300",
+						: isHtml
+							? "public, max-age=300, must-revalidate"
+							: "public, max-age=3600, must-revalidate",
 				);
 				return new Response(upstream.body, { status: upstream.status, headers });
 			}
