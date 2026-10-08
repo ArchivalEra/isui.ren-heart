@@ -3,6 +3,283 @@
  * Runs before page load on EdgeOne edge nodes.
  * Intercepts /api/activity and /api/activity/report, reverse-proxying to upstream Cloudflare Worker.
  */
+// ─────────────────────────────────────────────────────────────────────────
+// mp-ticket minting, inlined (ADR-0027 client half).
+//
+// The origin (cdn-oracle) refuses unsigned content reads; a ticket is a
+// standard S3 presigned URL (SigV4 query auth) with a signed `session` marker
+// the origin charges its budgets on. Minting is LOCAL crypto — the site holds
+// its tenant credential in edge env and signs here; no external minting
+// service is involved, and the operator's duty ends at the credential.
+//
+// Kept inline (not a sibling import): this middleware is deliberately
+// self-contained because EdgeOne Makers does not resolve sibling dynamic
+// imports. Byte-for-byte agreement with the origin's reference signer
+// (presign.py) is a test result, checked with a fixed --date vector.
+//
+// env: TICKET_HOST / TICKET_ID / TICKET_PREFIX / TICKET_SECRET (+ optional
+// ALLOWED_ORIGIN, TICKET_EXPIRES_SECS, TICKET_RATE_PER_MIN). Missing config
+// → 503; the client silently falls back to the bare source URL.
+const enc = new TextEncoder();
+
+const DEFAULT_EXPIRES = 3600; // 1 h: the client renews; a leak lives an hour
+const DEFAULT_RATE_PER_MIN = 30;
+const SESSION_COOKIE = "ticket_session";
+const SESSION_MAX_AGE = 7 * 24 * 3600; // >= the 24 h the client asked for
+
+/** AWS SigV4 unreserved set; everything else percent-encodes, uppercase hex. */
+const UNRESERVED = /[A-Za-z0-9_.~-]/;
+
+function uriEncode(value, keepSlash = false) {
+	let out = "";
+	for (const ch of value) {
+		if (UNRESERVED.test(ch) || (keepSlash && ch === "/")) {
+			out += ch;
+		} else {
+			for (const byte of enc.encode(ch)) {
+				out += "%" + byte.toString(16).toUpperCase().padStart(2, "0");
+			}
+		}
+	}
+	return out;
+}
+
+function hex(bytes) {
+	return [...new Uint8Array(bytes)]
+		.map((b) => b.toString(16).padStart(2, "0"))
+		.join("");
+}
+
+async function hmac(key, data) {
+	const k = await crypto.subtle.importKey(
+		"raw",
+		typeof key === "string" ? enc.encode(key) : key,
+		{ name: "HMAC", hash: "SHA-256" },
+		false,
+		["sign"],
+	);
+	return new Uint8Array(
+		await crypto.subtle.sign(
+			"HMAC",
+			k,
+			typeof data === "string" ? enc.encode(data) : data,
+		),
+	);
+}
+
+async function sha256Hex(data) {
+	return hex(await crypto.subtle.digest("SHA-256", enc.encode(data)));
+}
+
+/** Sort by name, then by value; encode each component. */
+function canonicalQuery(pairs) {
+	const ordered = [...pairs].sort((a, b) =>
+		a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : a[1] < b[1] ? -1 : 1,
+	);
+	return ordered
+		.map(([k, v]) => `${uriEncode(k, false)}=${uriEncode(v, false)}`)
+		.join("&");
+}
+
+/**
+ * Mint one presigned GET. Byte-for-byte equivalent to
+ *   presign.py --host H --key K --session S --expires E --id I --secret SEC
+ * (`--date` fixed via `now`), which is how the cross-check against the
+ * reference signer is run.
+ */
+async function signUrl({
+	host,
+	key,
+	session,
+	expires,
+	accessKeyId,
+	secret,
+	region = "us-east-1",
+	service = "s3",
+	method = "GET",
+	now = new Date(),
+}) {
+	// The reference signer normalizes a bare key to an absolute path, and the
+	// canonical request is computed over that normalized form.
+	const fullKey = key.startsWith("/") ? key : `/${key}`;
+	const amzDate = now
+		.toISOString()
+		.replace(/[-:]/g, "")
+		.replace(/\.\d+Z$/, "Z");
+	const scopeDate = amzDate.slice(0, 8);
+	const pairs = [
+		["X-Amz-Algorithm", "AWS4-HMAC-SHA256"],
+		["X-Amz-Credential", `${accessKeyId}/${scopeDate}/${region}/${service}/aws4_request`],
+		["X-Amz-Date", amzDate],
+		["X-Amz-Expires", String(expires)],
+		["X-Amz-SignedHeaders", "host"],
+		["session", session],
+	];
+	const canonicalRequest = [
+		method,
+		uriEncode(fullKey, true),
+		canonicalQuery(pairs),
+		`host:${host}`,
+		"",
+		"host",
+		"UNSIGNED-PAYLOAD",
+	].join("\n");
+	const scope = `${scopeDate}/${region}/${service}/aws4_request`;
+	const stringToSign = [
+		"AWS4-HMAC-SHA256",
+		amzDate,
+		scope,
+		await sha256Hex(canonicalRequest),
+	].join("\n");
+	let signingKey = await hmac(`AWS4${secret}`, scopeDate);
+	signingKey = await hmac(signingKey, region);
+	signingKey = await hmac(signingKey, service);
+	signingKey = await hmac(signingKey, "aws4_request");
+	const signature = hex(await hmac(signingKey, stringToSign));
+	const query = canonicalQuery(pairs) + `&X-Amz-Signature=${signature}`;
+	return `https://${host}${uriEncode(fullKey, true)}?${query}`;
+}
+
+/**
+ * The caller must come from the site: `Origin` when the browser sends one,
+ * `Referer` otherwise (same-origin POSTs carry Origin; some agents only
+ * carry Referer).
+ */
+function originAllowed(request, allowedOrigin) {
+	const origin = request.headers.get("origin");
+	if (origin) return origin === allowedOrigin;
+	const referer = request.headers.get("referer");
+	return Boolean(referer) && referer.startsWith(`${allowedOrigin}/`);
+}
+
+/**
+ * Two refusal kinds with deliberately different codes: a malformed src
+ * (unparseable, a query riding along) is the client's mistake → 400; a src
+ * that names another host or leaves the tenant prefix is authorization → 403.
+ */
+function validateSrc(raw, host, prefix) {
+	if (typeof raw !== "string" || raw === "") return { status: 400 };
+	let url;
+	try {
+		url = new URL(raw);
+	} catch {
+		return { status: 400 };
+	}
+	if (url.protocol !== "https:" || url.search) return { status: 400 };
+	if (url.host !== host) return { status: 403 };
+	let key;
+	try {
+		key = decodeURIComponent(url.pathname.slice(1));
+	} catch {
+		return { status: 400 };
+	}
+	if (!key.startsWith(prefix)) return { status: 403 };
+	return { key };
+}
+
+function sessionFromCookie(request, name) {
+	const cookie = request.headers.get("cookie") ?? "";
+	for (const part of cookie.split(";")) {
+		const [k, ...rest] = part.trim().split("=");
+		if (k === name && rest.length) return rest.join("=");
+	}
+	return null;
+}
+
+/**
+ * Per-session valve: a mint per embed and one per hour after that is a tiny
+ * budget, so this only has to stop a runaway. Isolate-memory, best-effort by
+ * design — the origin's budgets are the authority; this is a valve, not a
+ * quality-of-service signal.
+ */
+function makeRateValve(perMinute) {
+	const seen = new Map();
+	return (session, nowMs) => {
+		const window = Math.floor(nowMs / 60000);
+		const key = `${session}:${window}`;
+		const used = (seen.get(key) ?? 0) + 1;
+		seen.set(key, used);
+		if (seen.size > 4096) {
+			for (const k of seen.keys()) {
+				if (!k.endsWith(`:${window}`)) seen.delete(k);
+			}
+		}
+		return used <= perMinute;
+	};
+}
+
+/**
+ * One mint per request: validate, derive-or-create the session, valve, sign.
+ * `deps` injects the clock / session factory / limiter / signer for tests.
+ * Returns a `Response` with `Cache-Control: no-store` in every branch.
+ */
+async function handleTicketRequest(request, env, deps = {}) {
+	const now = deps.now ? deps.now() : new Date();
+	const nowMs = now.getTime();
+	const respond = (status, body, extra = {}) =>
+		new Response(body, {
+			status,
+			headers: {
+				"cache-control": "no-store",
+				"content-type": "application/json; charset=utf-8",
+				...extra,
+			},
+		});
+
+	if (request.method !== "POST") return respond(405, "{}");
+	const required = ["TICKET_HOST", "TICKET_ID", "TICKET_PREFIX", "TICKET_SECRET"];
+	const missing = required.filter((k) => !env[k]);
+	if (missing.length) {
+		console.error("ticket mint misconfigured: missing", missing.join(", "));
+		return respond(503, "{}");
+	}
+	const allowedOrigin = env.ALLOWED_ORIGIN || "https://isui.ren";
+	if (!originAllowed(request, allowedOrigin)) return respond(403, "{}");
+
+	let src;
+	try {
+		src = JSON.parse(await request.text()).src;
+	} catch {
+		return respond(400, "{}");
+	}
+	const parsed = validateSrc(src, env.TICKET_HOST, env.TICKET_PREFIX);
+	if (parsed.status) return respond(parsed.status, "{}");
+	const key = parsed.key;
+
+	const cookieName = env.TICKET_SESSION_COOKIE ?? SESSION_COOKIE;
+	const existing = sessionFromCookie(request, cookieName);
+	const session = existing ?? (deps.newSession ?? crypto.randomUUID.bind(crypto))();
+	const perMinute = Number(env.TICKET_RATE_PER_MIN ?? DEFAULT_RATE_PER_MIN);
+	const valve = deps.valve ?? (deps.valve = makeRateValve(perMinute));
+	if (!valve(session, nowMs)) return respond(429, "{}");
+
+	const expires = Number(env.TICKET_EXPIRES_SECS ?? DEFAULT_EXPIRES);
+	const url = await (deps.sign ?? signUrl)({
+		host: env.TICKET_HOST,
+		key,
+		session,
+		expires,
+		accessKeyId: env.TICKET_ID,
+		secret: env.TICKET_SECRET,
+		now,
+	});
+	const headers = {};
+	if (!existing) {
+		headers["set-cookie"] =
+			`${cookieName}=${session}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=${SESSION_MAX_AGE}`;
+	}
+	return respond(
+		200,
+		JSON.stringify({
+			url,
+			expiresAt: new Date(nowMs + expires * 1000)
+				.toISOString()
+				.replace(/\.\d+Z$/, "Z"),
+		}),
+		headers,
+	);
+}
+
 export async function middleware(context) {
 	const { request, rewrite, next } = context;
 	const url = new URL(request.url);
@@ -90,6 +367,13 @@ export async function middleware(context) {
 				return rewrite("https://api.mango-mesa.ccwu.cc/api/activity/report");
 			}
 		}
+	}
+
+	// mp-ticket: the site mints its own tickets (ADR-0027 client half). The
+	// operator's duty ends at the tenant credential (edge env); minting is local
+	// crypto, so it happens here — zero external minting services.
+	if (url.pathname === "/api/mp-ticket") {
+		return handleTicketRequest(request, context.env || {});
 	}
 
 	// Hard-wire /Bahnhof slash normalization
@@ -332,6 +616,7 @@ export const config = {
 	matcher: [
 		"/api/activity",
 		"/api/activity/:path*",
+		"/api/mp-ticket",
 		"/repo",
 		"/repo/:path*",
 		"/Bahnhof",
