@@ -428,12 +428,14 @@ export async function middleware(context) {
 				const pagesUrl = `https://archivalera.github.io/Octave-UI/${cleanRest}${url.search}`;
 				let upstream = null;
 				try {
-					// No explicit Accept-Encoding: the edge runtime decodes any gzip it
-					// asked for while leaving the upstream `content-encoding` header in
-					// place, which corrupts the response (client sees gzip header +
-					// uncompressed body → truncated transfer). Pull plain and let the
-					// headers stay consistent with the body.
-					upstream = await fetch(pagesUrl);
+					// Ask Pages for its gzip variant so the ORIGIN PULL is ~7.5MB instead of
+					// ~31MB (octave.wasm). This edge runtime decodes the gzip body it
+					// receives but leaves the upstream `content-encoding` header in place, so
+					// the forwarded headers are sanitised below (a naive pass-through sends a
+					// gzip header over a decoded body and the transfer truncates).
+					upstream = await fetch(pagesUrl, {
+						headers: { "Accept-Encoding": "gzip" },
+					});
 				} catch (_err) {
 					upstream = null;
 				}
