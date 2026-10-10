@@ -1,17 +1,50 @@
 {
-	"generatedAt": "2026-10-09T23:29:15.423Z",
+	"generatedAt": "2026-10-10T07:44:21.789Z",
 	"acceleratedDirs": ["Octave", "S26-1_202609"],
 	"entries": [
+		{
+			"name": "Einfacht",
+			"pages": "absent",
+			"accelerated": false,
+			"pushedAt": "2026-10-10T05:55:42Z",
+			"status": null,
+			"description": "让 agent 的每句「现在如此」都能被复跑证明 —— 反幻觉事实系统：事实台账 / 翻案台账 / 悬案台账 + 必须能红的闸门",
+			"language": "Python",
+			"url": "https://github.com/ArchivalEra/Einfacht",
+			"icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cmVjdCB4PSI2LjUiIHk9IjQuNSIgd2lkdGg9IjExIiBoZWlnaHQ9IjE1LjUiIHJ4PSIyLjIiLz48cGF0aCBkPSJNOS41IDMuNWg1djIuMmgtNXoiLz48cGF0aCBkPSJNOS4zIDEyLjhsMS45IDEuOSAzLjYtNCIvPjwvc3ZnPg=="
+		},
+		{
+			"name": "Octave-Full-Wasm",
+			"pages": "absent",
+			"accelerated": false,
+			"pushedAt": "2026-10-10T05:13:59Z",
+			"status": null,
+			"description": "浏览器里跑满功能 GNU Octave 11.3.0：wasm64 + 多线程 + OpenBLAS 四车道自动选档",
+			"language": "JavaScript",
+			"url": "https://github.com/ArchivalEra/Octave-Full-Wasm",
+			"icon": ""
+		},
 		{
 			"name": "isui.ren-heart",
 			"pages": "ready",
 			"accelerated": false,
-			"pushedAt": "2026-10-09T19:00:19Z",
+			"pushedAt": "2026-10-10T02:49:13Z",
 			"status": "built",
 			"description": "isui.ren 的站点心脏：EdgeOne Pages 静态源、边缘中间件与跨仓部署链",
 			"language": "Rust",
 			"url": "https://github.com/ArchivalEra/isui.ren-heart",
 			"icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMTIgMjAuNUMxMiAyMC41IDQgMTUuNCA0IDEwLjIgNCA3LjYgNiA1LjUgOC42IDUuNWMxLjUgMCAyLjguNyAzLjQgMS44LjYtMS4xIDEuOS0xLjggMy40LTEuOEMxOCA1LjUgMjAgNy42IDIwIDEwLjJjMCA1LjItOCAxMC4zLTggMTAuM1oiLz48L3N2Zz4="
+		},
+		{
+			"name": "S26-1_202609",
+			"pages": "absent",
+			"accelerated": true,
+			"pushedAt": "2026-10-10T02:48:59Z",
+			"status": null,
+			"description": "S26-1 课程知识库 · 高精度公式渲染阅读站（M3E 质感排版与动态色盘）",
+			"language": "JavaScript",
+			"url": "https://github.com/ArchivalEra/S26-1_202609",
+			"icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMTIgN2MtMS40LTEuMi0zLjQtMS45LTUuNi0xLjktLjcgMC0xLjQuMDYtMiAuMTlWMTguM2MuNi0uMTIgMS4zLS4xOSAyLS4xOSAyLjIgMCA0LjIuNyA1LjYgMS45IDEuNC0xLjIgMy40LTEuOSA1LjYtMS45LjcgMCAxLjQuMDcgMiAuMTlWNS4yOWMtLjYtLjEzLTEuMy0uMTktMi0uMTktMi4yIDAtNC4yLjctNS42IDEuOVoiLz48cGF0aCBkPSJNMTIgN3YxMyIvPjwvc3ZnPg=="
 		},
 		{
 			"name": "Octave-Forge-Shelf",
@@ -34,28 +67,6 @@
 			"language": "TypeScript",
 			"url": "https://github.com/ArchivalEra/Octave-UI",
 			"icon": ""
-		},
-		{
-			"name": "Octave-Full-Wasm",
-			"pages": "absent",
-			"accelerated": false,
-			"pushedAt": "2026-10-09T14:26:54Z",
-			"status": null,
-			"description": "浏览器里跑满功能 GNU Octave 11.3.0：wasm64 + 多线程 + OpenBLAS 四车道自动选档",
-			"language": "JavaScript",
-			"url": "https://github.com/ArchivalEra/Octave-Full-Wasm",
-			"icon": ""
-		},
-		{
-			"name": "Einfacht",
-			"pages": "absent",
-			"accelerated": false,
-			"pushedAt": "2026-10-08T04:21:26Z",
-			"status": null,
-			"description": "让 agent 的每句「现在如此」都能被复跑证明 —— 反幻觉事实系统：事实台账 / 翻案台账 / 悬案台账 + 必须能红的闸门",
-			"language": "Python",
-			"url": "https://github.com/ArchivalEra/Einfacht",
-			"icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cmVjdCB4PSI2LjUiIHk9IjQuNSIgd2lkdGg9IjExIiBoZWlnaHQ9IjE1LjUiIHJ4PSIyLjIiLz48cGF0aCBkPSJNOS41IDMuNWg1djIuMmgtNXoiLz48cGF0aCBkPSJNOS4zIDEyLjhsMS45IDEuOSAzLjYtNCIvPjwvc3ZnPg=="
 		},
 		{
 			"name": "Clouddrive-as-Origin",
@@ -177,17 +188,6 @@
 			"language": "Rust",
 			"url": "https://github.com/ArchivalEra/Policy-Gateway",
 			"icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMTIgMy4ybDYuNSAyLjZWMTFjMCA0LTIuNiA3LTYuNSA4LjdDOC4xIDE4IDUuNSAxNSA1LjUgMTFWNS44WiIvPjxwYXRoIGQ9Ik05LjQgMTEuN2wxLjkgMS45IDMuNC0zLjciLz48L3N2Zz4="
-		},
-		{
-			"name": "S26-1_202609",
-			"pages": "absent",
-			"accelerated": true,
-			"pushedAt": "2026-10-03T07:03:43Z",
-			"status": null,
-			"description": "S26-1 课程知识库 · 高精度公式渲染阅读站（M3E 质感排版与动态色盘）",
-			"language": "JavaScript",
-			"url": "https://github.com/ArchivalEra/S26-1_202609",
-			"icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMTIgN2MtMS40LTEuMi0zLjQtMS45LTUuNi0xLjktLjcgMC0xLjQuMDYtMiAuMTlWMTguM2MuNi0uMTIgMS4zLS4xOSAyLS4xOSAyLjIgMCA0LjIuNyA1LjYgMS45IDEuNC0xLjIgMy40LTEuOSA1LjYtMS45LjcgMCAxLjQuMDcgMiAuMTlWNS4yOWMtLjYtLjEzLTEuMy0uMTktMi0uMTktMi4yIDAtNC4yLjctNS42IDEuOVoiLz48cGF0aCBkPSJNMTIgN3YxMyIvPjwvc3ZnPg=="
 		},
 		{
 			"name": "isui.ren-Bahnhof",
