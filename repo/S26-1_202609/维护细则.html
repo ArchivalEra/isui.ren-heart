@@ -808,10 +808,33 @@
       <pre><code>python3 .githooks/update-readme.py --worktree   # 同步 README 课程目录 + 本文件状态区块
 python3 .githooks/check-markdown.py             # Markdown 美观度，错误必须为 0
 python3 .githooks/test-update-readme.py         # 目录、白名单、命名、索引集成测试
+python3 zreflect/facts.py --render-doc STATE.md # 事实系统：重渲染机器块（改了计数才需要重测，
+                                                #   见 §1.1；这条只重渲染，缺台账会退 2）
 git fsck --no-progress                          # 仓库对象完整性，不应有输出
 git diff --check                                # 空白与冲突标记</code></pre>
     </div></p>
-<p>四项都通过再提交。提交由 pre-commit 再次生成两处自动区块；推送由 pre-push 校验待推送提交。</p>
+<p>都通过再提交。提交由 pre-commit 再次生成两处自动区块<strong>并跑全部事实系统闸门</strong>；推送由 pre-push
+校验待推送提交 + 机器块新鲜度。</p>
+<h3 id="1-1-事实系统-数字的唯一产地">1.1 事实系统（数字的唯一产地）</h3><p>计数类数字（课程数、资料数、习题数、配图张数、词条数、站点页数、测试项数）<strong>只在 <code>FACTS.json</code>
+里生产一次</strong>，文档引用写 <code>[[键名]]</code>。改完东西发现计数变了：</p>
+<p><div class="code-fence-wrapper">
+      <div class="code-fence-header">
+        <span>bash</span>
+        <button class="copy-btn">复制</button>
+      </div>
+      <pre><code>python3 zreflect/facts.py                       # 重测并写台账（掉条/改口会拒绝写盘）
+python3 zreflect/facts.py --render-doc STATE.md # 把新数字渲染进 STATE.md 的机器块
+python3 zreflect/registry.py --run commit       # 全部提交相位闸门（off 单列，没查 ≠ 通过）</code></pre>
+    </div></p>
+<ul>
+<li><strong>改口要逐条放行</strong>：<code>--accept-changes=键名</code> —— 含义是「这个数真的变了」，不是「让闸门闭嘴」。</li>
+<li><strong>被推翻的旧值</strong>进 <code>retractions.json</code>（旧片段不许无标记地回到活状态文档）；<strong>已知手抄旧值</strong>
+用 <code>invariants.json</code> 按片段拦（配图张数的 150 就是这类）。</li>
+<li><strong>悬案</strong>放 <code>questions/</code>，每条要带 <code>**Status:**</code> 与可区分的 <code>**Settling:**</code>。</li>
+<li>开工先读 <code>STATE.md</code>（活状态）；会话开始会自动注入未结案悬案与台账规模。</li>
+<li>机制文件在 <code>zreflect/</code>，来自 Einfacht 上游、逐字节照抄（可原样升级）；本仓要量的东西在
+<code>zreflect/measure_edu.py</code>；配置在 <code>reflect-hooks/Einfacht.env</code>。</li>
+</ul>
 <h2 id="2-新增一门课程">2. 新增一门课程</h2><ol>
 <li>在 <code>课程/&lt;中文课名&gt;/</code> 下按类别建目录：默认五类（作业、教材解析、课堂笔记、原始资料、音频）；该课已在 <code>.githooks/hook_lib.py</code> 的 <code>COURSE_SKIPPED_KINDS</code> 声明豁免的类别不建（如形势与政策不建教材解析）。</li>
 <li>每类复制 <code>模板/</code> 下对应模板生成 <code>index.md</code>；课程入口 <code>课程/&lt;课名&gt;/index.md</code> 复制 <code>模板/课程索引.md</code>。</li>
@@ -907,8 +930,8 @@ git diff --check                                # 空白与冲突标记</code></
 </blockquote>
 <ul>
 <li>课程 <strong>6</strong> 门；正式资料 <strong>218</strong> 份（不含索引、模板和历史入口）。</li>
-<li>精确白名单 <strong>397</strong> 条逐文件路径（无通配符），仓库共 <strong>348</strong> 个受管文件。</li>
-<li>暂存内容摘要（不含本文件与 README）：<code>fb0c1a9266a5752f9e31a780bfcce937fab7ae96bce57a877434447418e539eb</code>。任何正文改动都会改变这一行。</li>
+<li>精确白名单 <strong>434</strong> 条逐文件路径（无通配符），仓库共 <strong>385</strong> 个受管文件。</li>
+<li>暂存内容摘要（不含本文件与 README）：<code>28db5a7c890ff48ca1d53f06a40f634a21a5a532cb4e697e87c850e49ed6736e</code>。任何正文改动都会改变这一行。</li>
 </ul>
 <h3 id="课程分类一览">课程分类一览</h3><div class="table-scroll-container"><table>
 <thead>
@@ -1086,7 +1109,7 @@ git diff --check                                # 空白与冲突标记</code></
         <aside class="m3-toc">
       <div class="toc-title">目录</div>
       <ul class="toc-list">
-        <li class="toc-item level-2"><a href="#1-每次编辑后的固定动作-强制">1. 每次编辑后的固定动作（强制）</a></li><li class="toc-item level-2"><a href="#2-新增一门课程">2. 新增一门课程</a></li><li class="toc-item level-2"><a href="#3-教材照片归档与读图">3. 教材照片归档与读图</a></li><li class="toc-item level-3"><a href="#3-1-归档">3.1 归档</a></li><li class="toc-item level-3"><a href="#3-2-读图-强制交给子代理">3.2 读图（强制交给子代理）</a></li><li class="toc-item level-3"><a href="#3-3-教材解析写作-先抄后析">3.3 教材解析写作（先抄后析）</a></li><li class="toc-item level-3"><a href="#3-4-资料与索引同进同出-hook-强制">3.4 资料与索引同进同出（hook 强制）</a></li><li class="toc-item level-2"><a href="#4-命名与目录速查">4. 命名与目录速查</a></li><li class="toc-item level-2"><a href="#5-白名单与提交">5. 白名单与提交</a></li><li class="toc-item level-2"><a href="#6-禁止事项">6. 禁止事项</a></li><li class="toc-item level-2"><a href="#7-故障处理">7. 故障处理</a></li><li class="toc-item level-2"><a href="#仓库状态-自动生成">仓库状态（自动生成）</a></li><li class="toc-item level-3"><a href="#课程分类一览">课程分类一览</a></li><li class="toc-item level-3"><a href="#教材解析进度">教材解析进度</a></li><li class="toc-item level-3"><a href="#原始资料构成">原始资料构成</a></li><li class="toc-item level-3"><a href="#待补提示-自动列出-非错误">待补提示（自动列出，非错误）</a></li><li class="toc-item level-3"><a href="#验证基线">验证基线</a></li>
+        <li class="toc-item level-2"><a href="#1-每次编辑后的固定动作-强制">1. 每次编辑后的固定动作（强制）</a></li><li class="toc-item level-3"><a href="#1-1-事实系统-数字的唯一产地">1.1 事实系统（数字的唯一产地）</a></li><li class="toc-item level-2"><a href="#2-新增一门课程">2. 新增一门课程</a></li><li class="toc-item level-2"><a href="#3-教材照片归档与读图">3. 教材照片归档与读图</a></li><li class="toc-item level-3"><a href="#3-1-归档">3.1 归档</a></li><li class="toc-item level-3"><a href="#3-2-读图-强制交给子代理">3.2 读图（强制交给子代理）</a></li><li class="toc-item level-3"><a href="#3-3-教材解析写作-先抄后析">3.3 教材解析写作（先抄后析）</a></li><li class="toc-item level-3"><a href="#3-4-资料与索引同进同出-hook-强制">3.4 资料与索引同进同出（hook 强制）</a></li><li class="toc-item level-2"><a href="#4-命名与目录速查">4. 命名与目录速查</a></li><li class="toc-item level-2"><a href="#5-白名单与提交">5. 白名单与提交</a></li><li class="toc-item level-2"><a href="#6-禁止事项">6. 禁止事项</a></li><li class="toc-item level-2"><a href="#7-故障处理">7. 故障处理</a></li><li class="toc-item level-2"><a href="#仓库状态-自动生成">仓库状态（自动生成）</a></li><li class="toc-item level-3"><a href="#课程分类一览">课程分类一览</a></li><li class="toc-item level-3"><a href="#教材解析进度">教材解析进度</a></li><li class="toc-item level-3"><a href="#原始资料构成">原始资料构成</a></li><li class="toc-item level-3"><a href="#待补提示-自动列出-非错误">待补提示（自动列出，非错误）</a></li><li class="toc-item level-3"><a href="#验证基线">验证基线</a></li>
       </ul>
     </aside>
       </div>
