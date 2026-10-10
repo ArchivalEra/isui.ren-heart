@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-depth="0">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>学期学习仓库总入口 | S26-1 课程知识库 - isui.ren</title>
+  <script>
+  /* 首帧前应用已保存的主题色与明暗，避免先用默认色渲染再变色（闪光弹 + 二次全量重绘） */
+  (function () {
+    try {
+      var root = document.documentElement;
+      var m = localStorage.getItem("theme") ||
+        (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      root.setAttribute("data-theme", m === "dark" ? "dark" : "light");
+      var hue = localStorage.getItem("theme-hue");
+      if (hue !== null && /^\d+$/.test(hue)) {
+        root.style.setProperty("--hue", hue);
+        root.style.setProperty("--primary-h", hue);
+      }
+    } catch (e) { /* 隐私模式下 localStorage 可能抛错，忽略 */ }
+  })();
+  </script>
+  <link rel="stylesheet" href="./assets/katex/katex.min.css">
+  <link rel="stylesheet" href="./assets/theme/shirone-reader.css">
+  <link rel="stylesheet" href="./assets/plugins/site-search.css">
+</head>
+<body>
+  <div class="drawer-backdrop" id="drawer-backdrop"></div>
+
+  <div class="site-shell">
+    <!-- Left Column: Full-Height Sidebar (整列导航栏) -->
+    <aside class="m3-drawer" id="m3-drawer">
+      <div class="drawer-header-brand">
+        <a href="./index.html" class="sidebar-brand">
+          <span class="site-title-icon">📚</span>
+          <span class="sidebar-brand-text">S26-1 课程知识库</span>
+        </a>
+        <button class="m3-icon-btn drawer-collapse-btn" id="drawer-collapse-btn" aria-label="收起侧边栏" title="收起侧边栏">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M15 18l-6-6 6-6"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="drawer-header-toolbar">
+        <span class="drawer-section-title">课程导航目录</span>
+        <button class="drawer-action-btn" id="toggle-all-groups-btn" title="一键收起或展开所有课程分类">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M7 15l5 5 5-5M7 9l5-5 5 5"/>
+          </svg>
+          <span id="toggle-all-text">全部收起</span>
+        </button>
+      </div>
+
+      <div class="drawer-nav-scroll-area">
+        <ul class="drawer-nav-list"><li class="drawer-nav-item active">
+            <a href="./index.html" class="drawer-nav-link">
+              <span>首页</span>
+            </a>
+          </li><li class="drawer-nav-group expanded">
+          <div class="nav-group-header ">
+            
+              <a href="./课程/index.html" class="drawer-nav-link ">
+                <span>课程总览</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 课程总览" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="./课程/工程数学/index.html" class="drawer-nav-link ">
+                <span>工程数学</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 工程数学" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="./课程/工程数学/教材解析/index.html" class="drawer-nav-link ">
+                <span>教材解析</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 教材解析" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="./课程/工程数学/教材解析/0.0-符号入门.html" class="drawer-nav-link">
+              <span>符号入门</span>
+            </a>
+          </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="./课程/工程数学/教材解析/第一部分-线性代数/index.html" class="drawer-nav-link ">
+                <span>第一部分 线性代数</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 第一部分 线性代数" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header nav-header-clickable">
+            
+              <span class="drawer-section-title-text">第01章 行列式</span>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 第01章 行列式" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="./课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.0-本章通关攻略.html" class="drawer-nav-link">
+              <span>★ 通关攻略</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="./课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.1-二阶与三阶行列式.html" class="drawer-nav-link">
+              <span>1.1 二阶与三阶行列式</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="./课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.2-n阶行列式.html" class="drawer-nav-link">
+              <span>1.2 n阶行列式</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="./课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.3-克莱姆法则.html" class="drawer-nav-link">
+              <span>1.3 克莱姆法则</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="./课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.4-用MATLAB计算行列式.html" class="drawer-nav-link">
+              <span>1.4 用MATLAB计算行列式</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header nav-header-clickable">
+            
+              <span class="drawer-section-title-text">第02章 矩阵</span>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 第02章 矩阵" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="./课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.0-本章通关攻略.html" class="drawer-nav-link">
+              <span>★ 通关攻略</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="./课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.1-矩阵的概念及运算.html" class="drawer-nav-link">
+              <span>2.1 矩阵的概念及运算</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="./课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.2-逆矩阵.html" class="drawer-nav-link">
+              <span>2.2 逆矩阵</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="./课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.3-矩阵的初等变换与初等矩阵.html" class="drawer-nav-link">
+              <span>2.3 初等变换与初等矩阵</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="./课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.4-矩阵的秩.html" class="drawer-nav-link">
+              <span>2.4 矩阵的秩</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="./课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.5-用MATLAB进行矩阵运算.html" class="drawer-nav-link">
+              <span>2.5 用MATLAB进行矩阵运算</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li></ul>
+            </div>
+          </div>
+        </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="./课程/工程数学/课堂笔记/index.html" class="drawer-nav-link ">
+                <span>课堂笔记</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 课堂笔记" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="./课程/工程数学/课堂笔记/2026-09-17-determinants-order-2-3.html" class="drawer-nav-link">
+              <span>09-17 行列式与沙路法则</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="./课程/工程数学/课堂笔记/2026-09-17-determinants-transcript-notes.html" class="drawer-nav-link">
+              <span>09-17 课堂听课整理</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="./课程/工程数学/课堂笔记/2026-09-24-降阶法克拉默法则与齐次方程组.html" class="drawer-nav-link">
+              <span>09-24 降阶法与克拉默法则</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="./课程/工程数学/作业/index.html" class="drawer-nav-link ">
+                <span>作业</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 作业" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="./课程/工程数学/作业/2026-09-17-作业1.html" class="drawer-nav-link">
+              <span>作业1</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-item ">
+            <a href="./课程/工程数学/原始资料/index.html" class="drawer-nav-link">
+              <span>原始资料</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="./课程/工程数学/音频/index.html" class="drawer-nav-link">
+              <span>音频</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="./课程/电力大数据与人工智能/index.html" class="drawer-nav-link ">
+                <span>电力大数据与人工智能</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 电力大数据与人工智能" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="./课程/电力大数据与人工智能/作业/index.html" class="drawer-nav-link">
+              <span>作业</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="./课程/电力大数据与人工智能/教材解析/index.html" class="drawer-nav-link">
+              <span>教材解析</span>
+            </a>
+          </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="./课程/电力大数据与人工智能/课堂笔记/index.html" class="drawer-nav-link ">
+                <span>课堂笔记</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 课堂笔记" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="./课程/电力大数据与人工智能/课堂笔记/2026-09-20-课程定位与考核要求.html" class="drawer-nav-link">
+              <span>09-20 开课第一讲</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="./课程/电力大数据与人工智能/课堂笔记/2026-09-22-暂态稳定评估方法与紧急控制.html" class="drawer-nav-link">
+              <span>09-22 暂态稳定评估与紧急控制</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-item ">
+            <a href="./课程/电力大数据与人工智能/原始资料/index.html" class="drawer-nav-link">
+              <span>原始资料</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="./课程/电力大数据与人工智能/音频/index.html" class="drawer-nav-link">
+              <span>音频</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="./课程/形势与政策/index.html" class="drawer-nav-link ">
+                <span>形势与政策</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 形势与政策" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="./课程/形势与政策/作业/index.html" class="drawer-nav-link">
+              <span>作业</span>
+            </a>
+          </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="./课程/形势与政策/课堂笔记/index.html" class="drawer-nav-link ">
+                <span>课堂笔记</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 课堂笔记" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="./课程/形势与政策/课堂笔记/2026-09-21-经济热点专题与考试安排.html" class="drawer-nav-link">
+              <span>09-21 经济热点专题与考试安排</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-item ">
+            <a href="./课程/形势与政策/原始资料/index.html" class="drawer-nav-link">
+              <span>原始资料</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="./课程/形势与政策/音频/index.html" class="drawer-nav-link">
+              <span>音频</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="./课程/电路原理/index.html" class="drawer-nav-link ">
+                <span>电路原理</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 电路原理" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="./课程/电路原理/作业/index.html" class="drawer-nav-link ">
+                <span>作业</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 作业" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="./课程/电路原理/作业/2026-09-28-习题册第一章.html" class="drawer-nav-link">
+              <span>习题册第一章（43 题）</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="./课程/电路原理/作业/2026-09-28-习题册第二章.html" class="drawer-nav-link">
+              <span>习题册第二章（34 题）</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="./课程/电路原理/作业/2026-09-28-习题册第三章.html" class="drawer-nav-link">
+              <span>习题册第三章（28 题）</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="./课程/电路原理/作业/2026-09-28-习题册第四章.html" class="drawer-nav-link">
+              <span>习题册第四章（21 题）</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="./课程/电路原理/作业/2026-09-28-习题册第五章.html" class="drawer-nav-link">
+              <span>习题册第五章（62 题）</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="./课程/电路原理/作业/2026-09-28-习题册第六章.html" class="drawer-nav-link">
+              <span>习题册第六章（33 题）</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="./课程/电路原理/作业/2026-09-28-习题册第七章.html" class="drawer-nav-link">
+              <span>习题册第七章（31 题）</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="./课程/电路原理/作业/2026-09-28-习题册第九章.html" class="drawer-nav-link">
+              <span>习题册第九章（26 题）</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="./课程/电路原理/教材解析/index.html" class="drawer-nav-link ">
+                <span>教材解析</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 教材解析" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="./课程/电路原理/教材解析/0.0-符号入门.html" class="drawer-nav-link">
+              <span>符号入门</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="./课程/电路原理/课堂笔记/index.html" class="drawer-nav-link ">
+                <span>课堂笔记</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 课堂笔记" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="./课程/电路原理/课堂笔记/2026-09-21-开课说明与电路的基本概念.html" class="drawer-nav-link">
+              <span>09-21 开课说明与电路的基本概念</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="./课程/电路原理/课堂笔记/2026-09-23-电压电位与电路名词.html" class="drawer-nav-link">
+              <span>09-23 电压电位与电路名词</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-item ">
+            <a href="./课程/电路原理/原始资料/index.html" class="drawer-nav-link">
+              <span>原始资料</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="./课程/电路原理/音频/index.html" class="drawer-nav-link">
+              <span>音频</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="./课程/电子技术/index.html" class="drawer-nav-link ">
+                <span>电子技术</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 电子技术" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="./课程/电子技术/作业/index.html" class="drawer-nav-link ">
+                <span>作业</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 作业" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="./课程/电子技术/作业/2026-09-23-第一章简答题.html" class="drawer-nav-link">
+              <span>2026-9-23作业（习题 1.1、1.3、1.5）</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-item ">
+            <a href="./课程/电子技术/教材解析/index.html" class="drawer-nav-link">
+              <span>教材解析</span>
+            </a>
+          </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="./课程/电子技术/课堂笔记/index.html" class="drawer-nav-link ">
+                <span>课堂笔记</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 课堂笔记" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="./课程/电子技术/课堂笔记/2026-09-21-开课说明与半导体基础到PN结.html" class="drawer-nav-link">
+              <span>09-21 开课说明与半导体基础到 PN 结</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="./课程/电子技术/课堂笔记/2026-09-23-二极管与含二极管电路.html" class="drawer-nav-link">
+              <span>09-23 二极管与含二极管电路</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-item ">
+            <a href="./课程/电子技术/原始资料/index.html" class="drawer-nav-link">
+              <span>原始资料</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="./课程/电子技术/音频/index.html" class="drawer-nav-link">
+              <span>音频</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="./课程/电机学/index.html" class="drawer-nav-link ">
+                <span>电机学</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 电机学" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="./课程/电机学/作业/index.html" class="drawer-nav-link ">
+                <span>作业</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 作业" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="./课程/电机学/作业/2026-09-22-第1章概述客观题.html" class="drawer-nav-link">
+              <span>09-22 第1章概述客观题（25题）</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="./课程/电机学/教材解析/index.html" class="drawer-nav-link ">
+                <span>教材解析</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 教材解析" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="./课程/电机学/教材解析/0.0-符号入门.html" class="drawer-nav-link">
+              <span>符号入门</span>
+            </a>
+          </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="./课程/电机学/教材解析/第01章-概述/1.1-电机的分类.html" class="drawer-nav-link ">
+                <span>第01章 概述</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 第01章 概述" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="./课程/电机学/教材解析/第01章-概述/1.1-电机的分类.html" class="drawer-nav-link">
+              <span>1.1 电机的分类</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="./课程/电机学/教材解析/第01章-概述/1.2-电机的磁路和磁路定律.html" class="drawer-nav-link">
+              <span>1.2 电机的磁路和磁路定律</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="./课程/电机学/教材解析/第01章-概述/1.3-电机的电磁基本理论.html" class="drawer-nav-link">
+              <span>1.3 电机的电磁基本理论</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="./课程/电机学/教材解析/第01章-概述/1.4-电机的制造材料.html" class="drawer-nav-link">
+              <span>1.4 电机的制造材料</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="./课程/电机学/教材解析/第01章-概述/第01章-小结与思考题习题.html" class="drawer-nav-link">
+              <span>第01章 小结与思考题习题</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-item ">
+            <a href="./课程/电机学/课堂笔记/index.html" class="drawer-nav-link">
+              <span>课堂笔记</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="./课程/电机学/原始资料/index.html" class="drawer-nav-link">
+              <span>原始资料</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="./课程/电机学/音频/index.html" class="drawer-nav-link">
+              <span>音频</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header nav-header-clickable">
+            
+              <span class="drawer-section-title-text">仓库规约</span>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 仓库规约" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="./维护条例.html" class="drawer-nav-link">
+              <span>维护条例</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="./维护细则.html" class="drawer-nav-link">
+              <span>维护细则</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li></ul>
+      </div>
+
+      <div class="sidebar-resizer" id="sidebar-resizer" title="按住拖拽调整侧边栏宽度，双击恢复默认宽度"></div>
+    </aside>
+
+    <!-- Right Column: Main Content Column (主内容列) -->
+    <div class="main-column">
+      <!-- Top App Bar -->
+      <header class="m3-top-app-bar">
+        <div class="top-bar-left">
+          <button class="m3-icon-btn" id="drawer-toggle" aria-label="展开/收起侧边栏" title="展开/收起侧边栏">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+          </button>
+          <a href="./index.html" class="top-bar-mobile-title">
+            <span>S26-1 课程知识库</span>
+          </a>
+          <nav class="top-bar-breadcrumbs" aria-label="当前路径">
+            <a href="./index.html">首页</a><span class="m3-breadcrumb-sep">/</span><span class="current-crumb">学期学习仓库总入口</span>
+          </nav>
+        </div>
+
+        <div class="top-bar-right">
+          <button class="m3-icon-btn" id="palette-toggle" aria-label="调色盘" title="自定义主题强调色">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/>
+              <circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/>
+              <circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/>
+              <circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/>
+              <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/>
+            </svg>
+          </button>
+
+          <!-- Palette Popover -->
+          <div class="palette-popover" id="palette-popover">
+            <div class="palette-header">
+              <span class="palette-title">主题强调色调色盘</span>
+              <button class="palette-reset-btn" id="palette-reset-btn" title="重置为默认色">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+              </button>
+            </div>
+            <div class="palette-current-row">
+              <span class="palette-hue-badge" id="palette-hue-badge">Hue 248°</span>
+              <div class="palette-color-dot" id="palette-color-dot"></div>
+            </div>
+            <div class="palette-slider-container">
+              <span class="palette-slider-label">色相微调 (0° - 360°)</span>
+              <input type="range" min="0" max="360" value="248" class="palette-slider" id="hue-slider">
+            </div>
+            <div>
+              <div class="palette-swatches-title">预设配色</div>
+              <div class="palette-swatches-grid">
+                <button class="palette-swatch-item" data-hue="315" title="经典粉紫">
+                  <span class="palette-swatch-dot" style="background: hsl(315, 75%, 45%);"></span>
+                  <span class="palette-swatch-name">粉紫</span>
+                </button>
+                <button class="palette-swatch-item" data-hue="280" title="紫罗兰">
+                  <span class="palette-swatch-dot" style="background: hsl(280, 75%, 45%);"></span>
+                  <span class="palette-swatch-name">紫罗兰</span>
+                </button>
+                <button class="palette-swatch-item active" data-hue="248" title="学术深蓝">
+                  <span class="palette-swatch-dot" style="background: hsl(248, 75%, 45%);"></span>
+                  <span class="palette-swatch-name">深蓝</span>
+                </button>
+                <button class="palette-swatch-item" data-hue="205" title="天青蓝">
+                  <span class="palette-swatch-dot" style="background: hsl(205, 75%, 45%);"></span>
+                  <span class="palette-swatch-name">天青</span>
+                </button>
+                <button class="palette-swatch-item" data-hue="150" title="翡翠绿">
+                  <span class="palette-swatch-dot" style="background: hsl(150, 75%, 40%);"></span>
+                  <span class="palette-swatch-name">翡翠</span>
+                </button>
+                <button class="palette-swatch-item" data-hue="75" title="琥珀黄">
+                  <span class="palette-swatch-dot" style="background: hsl(75, 75%, 40%);"></span>
+                  <span class="palette-swatch-name">琥珀</span>
+                </button>
+                <button class="palette-swatch-item" data-hue="30" title="晚霞橙">
+                  <span class="palette-swatch-dot" style="background: hsl(30, 80%, 48%);"></span>
+                  <span class="palette-swatch-name">晚霞</span>
+                </button>
+                <button class="palette-swatch-item" data-hue="355" title="绯红">
+                  <span class="palette-swatch-dot" style="background: hsl(355, 75%, 45%);"></span>
+                  <span class="palette-swatch-name">绯红</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <button class="m3-icon-btn" id="search-toggle" aria-label="全站搜索" title="全站搜索">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+          </button>
+
+          <button class="m3-icon-btn" id="theme-toggle" aria-label="切换昼夜主题">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          </button>
+        </div>
+      </header>
+
+      <!-- 全站搜索面板（点击顶栏放大镜展开；ESC 或点外部关闭） -->
+      <div class="search-panel" id="search-panel" hidden>
+        <div class="search-panel-inner" role="dialog" aria-modal="true" aria-label="全站搜索">
+          <div class="search-panel-head">
+            <svg class="search-panel-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+            <input type="search" id="search-input" class="search-panel-input" placeholder="搜索知识点、例题、习题…" autocomplete="off" spellcheck="false">
+            <button class="m3-icon-btn" id="search-close" aria-label="关闭搜索" title="关闭（ESC）">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
+          </div>
+          <div class="search-panel-body" id="search-results">
+            <p class="search-hint">输入关键词开始搜索。中文按字面子串匹配——搜「沙路法则」只出真正连着出现这四个字的地方；结果按相关度排序，回车打开第一条。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="layout-container">
+        <!-- Content Area -->
+        <main class="content-wrapper">
+          <article class="article-container">
+            <!-- Breadcrumb in page body -->
+            <nav class="m3-breadcrumb">
+              <a href="./index.html">首页</a><span class="m3-breadcrumb-sep">/</span><span>学期学习仓库总入口</span>
+            </nav>
+
+            
+
+            <div class="article-content">
+              <h1 id="学期学习仓库总入口">学期学习仓库总入口</h1><p><strong>2026 年秋季学期</strong>学习仓库，按中文课程名分类，每门课独立管理作业、教材解析、课堂笔记、原始资料与音频记录。当前<strong>工程数学</strong>已开课：教材为《工程数学基础》，第 1 章行列式、第 2 章矩阵已按小节完成「先抄录、后解析」，例题与习题均做过独立验算。</p>
+<p><strong>网页版怎么看</strong>：在线阅读页在页面顶部有四个按钮，从左到右——</p>
+<div class="table-scroll-container"><table>
+<thead>
+<tr>
+<th align="left">位置</th>
+<th align="left">按钮</th>
+<th align="left">作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">左上</td>
+<td align="left">☰ 汉堡图标</td>
+<td align="left"><strong>打开／收起左侧课程导航</strong>。手机上导航默认收起，点它滑出；电脑上点它收起侧栏，腾出更多阅读宽度（也可按 <code>[</code> 键）</td>
+</tr>
+<tr>
+<td align="left">右上</td>
+<td align="left">🔍 放大镜</td>
+<td align="left"><strong>全站搜索</strong>。点开输入关键词，中文按<strong>字面子串</strong>匹配（搜「沙路法则」只出真正连着出现这四个字的地方），结果显示命中所在的小节并可直达锚点；回车打开第一条。也可直接按 <code>/</code> 或 <code>Ctrl/Cmd+K</code> 打开，<code>ESC</code> 关闭</td>
+</tr>
+<tr>
+<td align="left">右上</td>
+<td align="left">🎨 调色盘</td>
+<td align="left"><strong>换主题强调色</strong>。可选预设配色，或用色相滑块微调，选择会被记住</td>
+</tr>
+<tr>
+<td align="left">右上</td>
+<td align="left">🌗 昼夜图标</td>
+<td align="left"><strong>切换深色／浅色主题</strong>。默认跟随系统设置，点一下手动切换，选择会被记住</td>
+</tr>
+</tbody></table></div>
+<ul>
+<li><strong>左侧导航</strong>：按「课程 → 部分 → 章 → 文档」成树（教材解析按三部分分层），可逐级折叠；顶部「全部收起／全部展开」一键开关。电脑上还可以<strong>拖拽侧栏右边缘</strong>调宽度，<strong>双击</strong>恢复默认宽度。</li>
+<li><strong>右侧目录</strong>：显示当前页的章节结构，点标题可跳转。<strong>屏幕宽度小于 1200 像素时（如平板、小笔记本）它会自动收起</strong>，这时请用左上按钮打开左侧导航来跳转。</li>
+<li><strong>上一节／下一节</strong>：每篇解析正文末尾都有，可顺着教材顺序连续读，不必回导航。</li>
+<li><strong>作业页有分层提示</strong>：每道题下面把「提示 → 完整解答 → 复盘」做成可折叠条目，<strong>默认只展开第一条提示</strong>。先自己按提示做，卡住了再往下点开——这样看作业才有用。折叠用的是浏览器原生能力，<strong>不需要任何额外脚本</strong>。</li>
+</ul>
+<p>下面直接列出课程内容；仓库的整理与提交规则见<a href="./%E7%BB%B4%E6%8A%A4%E6%9D%A1%E4%BE%8B.html">维护条例</a>与<a href="./%E7%BB%B4%E6%8A%A4%E7%BB%86%E5%88%99.html">维护细则</a>。</p>
+<h2 id="按课程浏览">按课程浏览</h2><h3 id="工程数学"><a href="./%E8%AF%BE%E7%A8%8B/%E5%B7%A5%E7%A8%8B%E6%95%B0%E5%AD%A6/index.html">工程数学</a></h3><h4 id="作业-1-份">作业（1 份）</h4><ul>
+<li><a href="./%E8%AF%BE%E7%A8%8B/%E5%B7%A5%E7%A8%8B%E6%95%B0%E5%AD%A6/%E4%BD%9C%E4%B8%9A/2026-09-17-%E4%BD%9C%E4%B8%9A1.html">作业1</a></li>
+</ul>
+<h4 id="教材解析-12-份">教材解析（12 份）</h4><ul>
+<li><a href="./%E8%AF%BE%E7%A8%8B/%E5%B7%A5%E7%A8%8B%E6%95%B0%E5%AD%A6/%E6%95%99%E6%9D%90%E8%A7%A3%E6%9E%90/0.0-%E7%AC%A6%E5%8F%B7%E5%85%A5%E9%97%A8.html">符号入门</a></li>
+<li><a href="./%E8%AF%BE%E7%A8%8B/%E5%B7%A5%E7%A8%8B%E6%95%B0%E5%AD%A6/%E6%95%99%E6%9D%90%E8%A7%A3%E6%9E%90/%E7%AC%AC%E4%B8%80%E9%83%A8%E5%88%86-%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/%E7%AC%AC1%E7%AB%A0-%E8%A1%8C%E5%88%97%E5%BC%8F/1.0-%E6%9C%AC%E7%AB%A0%E9%80%9A%E5%85%B3%E6%94%BB%E7%95%A5.html">第 1 章 行列式 · 通关攻略</a></li>
+<li><a href="./%E8%AF%BE%E7%A8%8B/%E5%B7%A5%E7%A8%8B%E6%95%B0%E5%AD%A6/%E6%95%99%E6%9D%90%E8%A7%A3%E6%9E%90/%E7%AC%AC%E4%B8%80%E9%83%A8%E5%88%86-%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/%E7%AC%AC1%E7%AB%A0-%E8%A1%8C%E5%88%97%E5%BC%8F/1.1-%E4%BA%8C%E9%98%B6%E4%B8%8E%E4%B8%89%E9%98%B6%E8%A1%8C%E5%88%97%E5%BC%8F.html">第1章 1.1 二阶、三阶行列式（原书 p1–p5）</a></li>
+<li><a href="./%E8%AF%BE%E7%A8%8B/%E5%B7%A5%E7%A8%8B%E6%95%B0%E5%AD%A6/%E6%95%99%E6%9D%90%E8%A7%A3%E6%9E%90/%E7%AC%AC%E4%B8%80%E9%83%A8%E5%88%86-%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/%E7%AC%AC1%E7%AB%A0-%E8%A1%8C%E5%88%97%E5%BC%8F/1.2-n%E9%98%B6%E8%A1%8C%E5%88%97%E5%BC%8F.html">第1章 1.2 n 阶行列式（原书 p6–p15）</a></li>
+<li><a href="./%E8%AF%BE%E7%A8%8B/%E5%B7%A5%E7%A8%8B%E6%95%B0%E5%AD%A6/%E6%95%99%E6%9D%90%E8%A7%A3%E6%9E%90/%E7%AC%AC%E4%B8%80%E9%83%A8%E5%88%86-%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/%E7%AC%AC1%E7%AB%A0-%E8%A1%8C%E5%88%97%E5%BC%8F/1.3-%E5%85%8B%E8%8E%B1%E5%A7%86%E6%B3%95%E5%88%99.html">第1章 1.3 克莱姆法则（原书 p15–p20）</a></li>
+<li><a href="./%E8%AF%BE%E7%A8%8B/%E5%B7%A5%E7%A8%8B%E6%95%B0%E5%AD%A6/%E6%95%99%E6%9D%90%E8%A7%A3%E6%9E%90/%E7%AC%AC%E4%B8%80%E9%83%A8%E5%88%86-%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/%E7%AC%AC1%E7%AB%A0-%E8%A1%8C%E5%88%97%E5%BC%8F/1.4-%E7%94%A8MATLAB%E8%AE%A1%E7%AE%97%E8%A1%8C%E5%88%97%E5%BC%8F.html">第1章 1.4 用 MATLAB 进行行列式的计算（原书 p20–p21）</a></li>
+<li><a href="./%E8%AF%BE%E7%A8%8B/%E5%B7%A5%E7%A8%8B%E6%95%B0%E5%AD%A6/%E6%95%99%E6%9D%90%E8%A7%A3%E6%9E%90/%E7%AC%AC%E4%B8%80%E9%83%A8%E5%88%86-%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/%E7%AC%AC2%E7%AB%A0-%E7%9F%A9%E9%98%B5/2.0-%E6%9C%AC%E7%AB%A0%E9%80%9A%E5%85%B3%E6%94%BB%E7%95%A5.html">第 2 章 矩阵 · 通关攻略</a></li>
+<li><a href="./%E8%AF%BE%E7%A8%8B/%E5%B7%A5%E7%A8%8B%E6%95%B0%E5%AD%A6/%E6%95%99%E6%9D%90%E8%A7%A3%E6%9E%90/%E7%AC%AC%E4%B8%80%E9%83%A8%E5%88%86-%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/%E7%AC%AC2%E7%AB%A0-%E7%9F%A9%E9%98%B5/2.1-%E7%9F%A9%E9%98%B5%E7%9A%84%E6%A6%82%E5%BF%B5%E5%8F%8A%E8%BF%90%E7%AE%97.html">第2章 2.1 矩阵的概念及运算（原书 p22–p33）</a></li>
+<li><a href="./%E8%AF%BE%E7%A8%8B/%E5%B7%A5%E7%A8%8B%E6%95%B0%E5%AD%A6/%E6%95%99%E6%9D%90%E8%A7%A3%E6%9E%90/%E7%AC%AC%E4%B8%80%E9%83%A8%E5%88%86-%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/%E7%AC%AC2%E7%AB%A0-%E7%9F%A9%E9%98%B5/2.2-%E9%80%86%E7%9F%A9%E9%98%B5.html">第2章 2.2 逆矩阵（原书 p33–p38）</a></li>
+<li><a href="./%E8%AF%BE%E7%A8%8B/%E5%B7%A5%E7%A8%8B%E6%95%B0%E5%AD%A6/%E6%95%99%E6%9D%90%E8%A7%A3%E6%9E%90/%E7%AC%AC%E4%B8%80%E9%83%A8%E5%88%86-%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/%E7%AC%AC2%E7%AB%A0-%E7%9F%A9%E9%98%B5/2.3-%E7%9F%A9%E9%98%B5%E7%9A%84%E5%88%9D%E7%AD%89%E5%8F%98%E6%8D%A2%E4%B8%8E%E5%88%9D%E7%AD%89%E7%9F%A9%E9%98%B5.html">第2章 2.3 矩阵的初等变换与初等矩阵（原书 p38–p43）</a></li>
+<li><a href="./%E8%AF%BE%E7%A8%8B/%E5%B7%A5%E7%A8%8B%E6%95%B0%E5%AD%A6/%E6%95%99%E6%9D%90%E8%A7%A3%E6%9E%90/%E7%AC%AC%E4%B8%80%E9%83%A8%E5%88%86-%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/%E7%AC%AC2%E7%AB%A0-%E7%9F%A9%E9%98%B5/2.4-%E7%9F%A9%E9%98%B5%E7%9A%84%E7%A7%A9.html">第2章 2.4 矩阵的秩（原书 p43–p46）</a></li>
+<li><a href="./%E8%AF%BE%E7%A8%8B/%E5%B7%A5%E7%A8%8B%E6%95%B0%E5%AD%A6/%E6%95%99%E6%9D%90%E8%A7%A3%E6%9E%90/%E7%AC%AC%E4%B8%80%E9%83%A8%E5%88%86-%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/%E7%AC%AC2%E7%AB%A0-%E7%9F%A9%E9%98%B5/2.5-%E7%94%A8MATLAB%E8%BF%9B%E8%A1%8C%E7%9F%A9%E9%98%B5%E8%BF%90%E7%AE%97.html">第2章 2.5 用 MATLAB 进行矩阵运算（原书 p46–p51）</a></li>
+</ul>
+<h4 id="课堂笔记-3-份">课堂笔记（3 份）</h4><ul>
+<li><a href="./%E8%AF%BE%E7%A8%8B/%E5%B7%A5%E7%A8%8B%E6%95%B0%E5%AD%A6/%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0/2026-09-17-determinants-order-2-3.html">二阶与三阶行列式计算、沙路法则与手算书写规范</a></li>
+<li><a href="./%E8%AF%BE%E7%A8%8B/%E5%B7%A5%E7%A8%8B%E6%95%B0%E5%AD%A6/%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0/2026-09-17-determinants-transcript-notes.html">工程数学 2026-09-17：行列式的展开、三角结构与基本性质</a></li>
+<li><a href="./%E8%AF%BE%E7%A8%8B/%E5%B7%A5%E7%A8%8B%E6%95%B0%E5%AD%A6/%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0/2026-09-24-%E9%99%8D%E9%98%B6%E6%B3%95%E5%85%8B%E6%8B%89%E9%BB%98%E6%B3%95%E5%88%99%E4%B8%8E%E9%BD%90%E6%AC%A1%E6%96%B9%E7%A8%8B%E7%BB%84.html">工程数学 2026-09-24：降阶法、克拉默法则与齐次方程组</a></li>
+</ul>
+<h4 id="原始资料-2-份">原始资料（2 份）</h4><ul>
+<li><span class="res-degrade-badge">📄 原件: 20260917_13301545-%E5%8E%9F%E6%96%87.doc (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: 20260924_14101540-%E5%8E%9F%E6%96%87.doc (原件不入库，网页不提供)</span></li>
+</ul>
+<h4 id="音频-0-份">音频（0 份）</h4><p>暂无已归档资料。</p>
+<h3 id="形势与政策"><a href="./%E8%AF%BE%E7%A8%8B/%E5%BD%A2%E5%8A%BF%E4%B8%8E%E6%94%BF%E7%AD%96/index.html">形势与政策</a></h3><h4 id="作业-0-份">作业（0 份）</h4><p>暂无已归档资料。</p>
+<h4 id="课堂笔记-1-份">课堂笔记（1 份）</h4><ul>
+<li><a href="./%E8%AF%BE%E7%A8%8B/%E5%BD%A2%E5%8A%BF%E4%B8%8E%E6%94%BF%E7%AD%96/%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0/2026-09-21-%E7%BB%8F%E6%B5%8E%E7%83%AD%E7%82%B9%E4%B8%93%E9%A2%98%E4%B8%8E%E8%80%83%E8%AF%95%E5%AE%89%E6%8E%92.html">形势与政策 2026-09-21：经济热点专题（专题二）与考试安排</a></li>
+</ul>
+<h4 id="原始资料-2-份-2">原始资料（2 份）</h4><ul>
+<li><span class="res-degrade-badge">📄 原件: 20260921_09501030-%E5%8E%9F%E6%96%87.doc (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: 20260921_10351115-%E5%8E%9F%E6%96%87.doc (原件不入库，网页不提供)</span></li>
+</ul>
+<h4 id="音频-0-份-2">音频（0 份）</h4><p>暂无已归档资料。</p>
+<h3 id="电力大数据与人工智能"><a href="./%E8%AF%BE%E7%A8%8B/%E7%94%B5%E5%8A%9B%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%8E%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/index.html">电力大数据与人工智能</a></h3><h4 id="作业-0-份-2">作业（0 份）</h4><p>暂无已归档资料。</p>
+<h4 id="教材解析-0-份">教材解析（0 份）</h4><p>暂无已归档资料。</p>
+<h4 id="课堂笔记-2-份">课堂笔记（2 份）</h4><ul>
+<li><a href="./%E8%AF%BE%E7%A8%8B/%E7%94%B5%E5%8A%9B%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%8E%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0/2026-09-20-%E8%AF%BE%E7%A8%8B%E5%AE%9A%E4%BD%8D%E4%B8%8E%E8%80%83%E6%A0%B8%E8%A6%81%E6%B1%82.html">电力大数据与人工智能 2026-09-20：考核要求、课程地图与安全稳定基本概念</a></li>
+<li><a href="./%E8%AF%BE%E7%A8%8B/%E7%94%B5%E5%8A%9B%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%8E%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0/2026-09-22-%E6%9A%82%E6%80%81%E7%A8%B3%E5%AE%9A%E8%AF%84%E4%BC%B0%E6%96%B9%E6%B3%95%E4%B8%8E%E7%B4%A7%E6%80%A5%E6%8E%A7%E5%88%B6.html">电力大数据与人工智能 2026-09-22：暂态稳定评估方法与紧急控制决策</a></li>
+</ul>
+<h4 id="原始资料-2-份-3">原始资料（2 份）</h4><ul>
+<li><span class="res-degrade-badge">📄 原件: 20260920_13301545-%E5%8E%9F%E6%96%87.doc (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: 20260922_13301455-%E5%8E%9F%E6%96%87.doc (原件不入库，网页不提供)</span></li>
+</ul>
+<h4 id="音频-0-份-3">音频（0 份）</h4><p>暂无已归档资料。</p>
+<h3 id="电子技术"><a href="./%E8%AF%BE%E7%A8%8B/%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/index.html">电子技术</a></h3><h4 id="作业-1-份-2">作业（1 份）</h4><ul>
+<li><a href="./%E8%AF%BE%E7%A8%8B/%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E4%BD%9C%E4%B8%9A/2026-09-23-%E7%AC%AC%E4%B8%80%E7%AB%A0%E7%AE%80%E7%AD%94%E9%A2%98.html">2026-9-23作业：第一章简答题（习题 1.1、1.3、1.5）</a></li>
+</ul>
+<h4 id="教材解析-0-份-2">教材解析（0 份）</h4><p>暂无已归档资料。</p>
+<h4 id="课堂笔记-2-份-2">课堂笔记（2 份）</h4><ul>
+<li><a href="./%E8%AF%BE%E7%A8%8B/%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0/2026-09-21-%E5%BC%80%E8%AF%BE%E8%AF%B4%E6%98%8E%E4%B8%8E%E5%8D%8A%E5%AF%BC%E4%BD%93%E5%9F%BA%E7%A1%80%E5%88%B0PN%E7%BB%93.html">电子技术 2026-09-21：开课说明与半导体基础到 PN 结</a></li>
+<li><a href="./%E8%AF%BE%E7%A8%8B/%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0/2026-09-23-%E4%BA%8C%E6%9E%81%E7%AE%A1%E4%B8%8E%E5%90%AB%E4%BA%8C%E6%9E%81%E7%AE%A1%E7%94%B5%E8%B7%AF.html">电子技术 2026-09-23：二极管与含二极管电路的分析</a></li>
+</ul>
+<h4 id="原始资料-2-份-4">原始资料（2 份）</h4><ul>
+<li><span class="res-degrade-badge">📄 原件: 20260921_18001930-%E5%8E%9F%E6%96%87.doc (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: 20260923_18001930-%E5%8E%9F%E6%96%87.doc (原件不入库，网页不提供)</span></li>
+</ul>
+<h4 id="音频-0-份-4">音频（0 份）</h4><p>暂无已归档资料。</p>
+<h3 id="电机学"><a href="./%E8%AF%BE%E7%A8%8B/%E7%94%B5%E6%9C%BA%E5%AD%A6/index.html">电机学</a></h3><h4 id="作业-1-份-3">作业（1 份）</h4><ul>
+<li><a href="./%E8%AF%BE%E7%A8%8B/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E4%BD%9C%E4%B8%9A/2026-09-22-%E7%AC%AC1%E7%AB%A0%E6%A6%82%E8%BF%B0%E5%AE%A2%E8%A7%82%E9%A2%98.html">第 1 章 概述 · 学习通客观题（25 题）</a></li>
+</ul>
+<h4 id="教材解析-6-份">教材解析（6 份）</h4><ul>
+<li><a href="./%E8%AF%BE%E7%A8%8B/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E6%95%99%E6%9D%90%E8%A7%A3%E6%9E%90/0.0-%E7%AC%A6%E5%8F%B7%E5%85%A5%E9%97%A8.html">电机学符号入门</a></li>
+<li><a href="./%E8%AF%BE%E7%A8%8B/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E6%95%99%E6%9D%90%E8%A7%A3%E6%9E%90/%E7%AC%AC01%E7%AB%A0-%E6%A6%82%E8%BF%B0/1.1-%E7%94%B5%E6%9C%BA%E7%9A%84%E5%88%86%E7%B1%BB.html">1.1 电机的分类</a></li>
+<li><a href="./%E8%AF%BE%E7%A8%8B/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E6%95%99%E6%9D%90%E8%A7%A3%E6%9E%90/%E7%AC%AC01%E7%AB%A0-%E6%A6%82%E8%BF%B0/1.2-%E7%94%B5%E6%9C%BA%E7%9A%84%E7%A3%81%E8%B7%AF%E5%92%8C%E7%A3%81%E8%B7%AF%E5%AE%9A%E5%BE%8B.html">1.2 电机的磁路和磁路定律</a></li>
+<li><a href="./%E8%AF%BE%E7%A8%8B/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E6%95%99%E6%9D%90%E8%A7%A3%E6%9E%90/%E7%AC%AC01%E7%AB%A0-%E6%A6%82%E8%BF%B0/1.3-%E7%94%B5%E6%9C%BA%E7%9A%84%E7%94%B5%E7%A3%81%E5%9F%BA%E6%9C%AC%E7%90%86%E8%AE%BA.html">1.3 电机的电磁基本理论</a></li>
+<li><a href="./%E8%AF%BE%E7%A8%8B/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E6%95%99%E6%9D%90%E8%A7%A3%E6%9E%90/%E7%AC%AC01%E7%AB%A0-%E6%A6%82%E8%BF%B0/1.4-%E7%94%B5%E6%9C%BA%E7%9A%84%E5%88%B6%E9%80%A0%E6%9D%90%E6%96%99.html">1.4 电机的制造材料</a></li>
+<li><a href="./%E8%AF%BE%E7%A8%8B/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E6%95%99%E6%9D%90%E8%A7%A3%E6%9E%90/%E7%AC%AC01%E7%AB%A0-%E6%A6%82%E8%BF%B0/%E7%AC%AC01%E7%AB%A0-%E5%B0%8F%E7%BB%93%E4%B8%8E%E6%80%9D%E8%80%83%E9%A2%98%E4%B9%A0%E9%A2%98.html">第 1 章 小结、思考题与习题</a></li>
+</ul>
+<h4 id="课堂笔记-0-份">课堂笔记（0 份）</h4><p>暂无已归档资料。</p>
+<h4 id="原始资料-0-份">原始资料（0 份）</h4><p>暂无已归档资料。</p>
+<h4 id="音频-0-份-5">音频（0 份）</h4><p>暂无已归档资料。</p>
+<h3 id="电路原理"><a href="./%E8%AF%BE%E7%A8%8B/%E7%94%B5%E8%B7%AF%E5%8E%9F%E7%90%86/index.html">电路原理</a></h3><h4 id="作业-176-份">作业（176 份）</h4><ul>
+<li><a href="./%E8%AF%BE%E7%A8%8B/%E7%94%B5%E8%B7%AF%E5%8E%9F%E7%90%86/%E4%BD%9C%E4%B8%9A/2026-09-28-%E4%B9%A0%E9%A2%98%E5%86%8C%E7%AC%AC%E4%B8%80%E7%AB%A0.html">电路原理习题册·第一章 电路的基本概念与基本原理（选择 14 / 填空 16 / 计算 13）</a></li>
+<li><a href="./%E8%AF%BE%E7%A8%8B/%E7%94%B5%E8%B7%AF%E5%8E%9F%E7%90%86/%E4%BD%9C%E4%B8%9A/2026-09-28-%E4%B9%A0%E9%A2%98%E5%86%8C%E7%AC%AC%E4%B8%83%E7%AB%A0.html">电路原理习题册·第七章 三相电路（选择 14 / 填空 11 / 计算 6）</a></li>
+<li><a href="./%E8%AF%BE%E7%A8%8B/%E7%94%B5%E8%B7%AF%E5%8E%9F%E7%90%86/%E4%BD%9C%E4%B8%9A/2026-09-28-%E4%B9%A0%E9%A2%98%E5%86%8C%E7%AC%AC%E4%B8%89%E7%AB%A0.html">电路原理习题册·第三章 电路的系统分析方法（选择 10 / 填空 10 / 计算 8）</a></li>
+<li><a href="./%E8%AF%BE%E7%A8%8B/%E7%94%B5%E8%B7%AF%E5%8E%9F%E7%90%86/%E4%BD%9C%E4%B8%9A/2026-09-28-%E4%B9%A0%E9%A2%98%E5%86%8C%E7%AC%AC%E4%B9%9D%E7%AB%A0.html">电路原理习题册·第九章 动态电路的时域分析（选择 13 / 填空 7 / 计算 3 / 画图 3）</a></li>
+<li><a href="./%E8%AF%BE%E7%A8%8B/%E7%94%B5%E8%B7%AF%E5%8E%9F%E7%90%86/%E4%BD%9C%E4%B8%9A/2026-09-28-%E4%B9%A0%E9%A2%98%E5%86%8C%E7%AC%AC%E4%BA%8C%E7%AB%A0.html">电路原理习题册·第二章 电路的等效变换（选择 12 / 填空 13 / 计算 9）</a></li>
+<li><a href="./%E8%AF%BE%E7%A8%8B/%E7%94%B5%E8%B7%AF%E5%8E%9F%E7%90%86/%E4%BD%9C%E4%B8%9A/2026-09-28-%E4%B9%A0%E9%A2%98%E5%86%8C%E7%AC%AC%E4%BA%94%E7%AB%A0.html">电路原理习题册·第五章 正弦稳态电路的分析（选择 31 / 填空 21 / 计算 10）</a></li>
+<li><a href="./%E8%AF%BE%E7%A8%8B/%E7%94%B5%E8%B7%AF%E5%8E%9F%E7%90%86/%E4%BD%9C%E4%B8%9A/2026-09-28-%E4%B9%A0%E9%A2%98%E5%86%8C%E7%AC%AC%E5%85%AD%E7%AB%A0.html">电路原理习题册·第六章 耦合电感和理想变压器（选择 13 / 填空 16 / 判断 5）</a></li>
+<li><a href="./%E8%AF%BE%E7%A8%8B/%E7%94%B5%E8%B7%AF%E5%8E%9F%E7%90%86/%E4%BD%9C%E4%B8%9A/2026-09-28-%E4%B9%A0%E9%A2%98%E5%86%8C%E7%AC%AC%E5%9B%9B%E7%AB%A0.html">电路原理习题册·第四章 电路定理（选择 8 / 填空 8 / 计算 5）</a></li>
+<li><span class="res-degrade-badge">📄 原件: fig-1.1.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-1.10.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-1.11.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-1.12.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-1.13.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-1.14.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-1.15.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-1.16.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-1.17.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-1.18.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-1.19.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-1.2.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-1.20.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-1.21.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-1.22.jpg (原件不入库，网页不提供)</span></li>
+<li><a href="./%E8%AF%BE%E7%A8%8B/%E7%94%B5%E8%B7%AF%E5%8E%9F%E7%90%86/%E4%BD%9C%E4%B8%9A/figures/fig-1.23.png">fig-1.23.png</a></li>
+<li><span class="res-degrade-badge">📄 原件: fig-1.24.jpg (原件不入库，网页不提供)</span></li>
+<li><a href="./%E8%AF%BE%E7%A8%8B/%E7%94%B5%E8%B7%AF%E5%8E%9F%E7%90%86/%E4%BD%9C%E4%B8%9A/figures/fig-1.25.png">fig-1.25.png</a></li>
+<li><a href="./%E8%AF%BE%E7%A8%8B/%E7%94%B5%E8%B7%AF%E5%8E%9F%E7%90%86/%E4%BD%9C%E4%B8%9A/figures/fig-1.26.png">fig-1.26.png</a></li>
+<li><a href="./%E8%AF%BE%E7%A8%8B/%E7%94%B5%E8%B7%AF%E5%8E%9F%E7%90%86/%E4%BD%9C%E4%B8%9A/figures/fig-1.27.png">fig-1.27.png</a></li>
+<li><span class="res-degrade-badge">📄 原件: fig-1.28.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-1.29.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-1.3.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-1.30.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-1.31.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-1.32.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-1.4.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-1.5.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-1.6.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-1.7.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-1.8.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-1.9.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-2.1.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-2.10.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-2.11.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-2.12.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-2.13.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-2.14.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-2.15.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-2.16.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-2.17.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-2.18.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-2.19.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-2.2.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-2.20.jpg (原件不入库，网页不提供)</span></li>
+<li><a href="./%E8%AF%BE%E7%A8%8B/%E7%94%B5%E8%B7%AF%E5%8E%9F%E7%90%86/%E4%BD%9C%E4%B8%9A/figures/fig-2.21.png">fig-2.21.png</a></li>
+<li><span class="res-degrade-badge">📄 原件: fig-2.22.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-2.23.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-2.24.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-2.25.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-2.26.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-2.3.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-2.4.jpg (原件不入库，网页不提供)</span></li>
+<li><a href="./%E8%AF%BE%E7%A8%8B/%E7%94%B5%E8%B7%AF%E5%8E%9F%E7%90%86/%E4%BD%9C%E4%B8%9A/figures/fig-2.5.png">fig-2.5.png</a></li>
+<li><span class="res-degrade-badge">📄 原件: fig-2.6.jpg (原件不入库，网页不提供)</span></li>
+<li><a href="./%E8%AF%BE%E7%A8%8B/%E7%94%B5%E8%B7%AF%E5%8E%9F%E7%90%86/%E4%BD%9C%E4%B8%9A/figures/fig-2.7.png">fig-2.7.png</a></li>
+<li><span class="res-degrade-badge">📄 原件: fig-2.8.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-2.9.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-3.1.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-3.10.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-3.11.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-3.12.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-3.13.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-3.14.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-3.15.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-3.16.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-3.17.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-3.18.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-3.19.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-3.2.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-3.20.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-3.21.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-3.3.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-3.4.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-3.5.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-3.6.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-3.7.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-3.8.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-3.9.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-4.1.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-4.10.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-4.11.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-4.12.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-4.13.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-4.14.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-4.15.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-4.16.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-4.2.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-4.3.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-4.4.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-4.5.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-4.6.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-4.7.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-4.8.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-4.9.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-5.1.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-5.10.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-5.11.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-5.12.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-5.13.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-5.14.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-5.15.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-5.16.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-5.17.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-5.18.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-5.19.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-5.2.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-5.20.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-5.21.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-5.23.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-5.24.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-5.25.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-5.26.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-5.27.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-5.28.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-5.29.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-5.3.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-5.30.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-5.31.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-5.4.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-5.5.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-5.6.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-5.7.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-5.8.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-5.9.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-6.1.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-6.10.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-6.11.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-6.12.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-6.13.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-6.14.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-6.15.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-6.16.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-6.17.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-6.2.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-6.3.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-6.4.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-6.5.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-6.6.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-6.7.jpg (原件不入库，网页不提供)</span></li>
+<li><a href="./%E8%AF%BE%E7%A8%8B/%E7%94%B5%E8%B7%AF%E5%8E%9F%E7%90%86/%E4%BD%9C%E4%B8%9A/figures/fig-6.8.png">fig-6.8.png</a></li>
+<li><span class="res-degrade-badge">📄 原件: fig-6.9.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-7.1.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-7.2.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-7.3.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-7.4.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-7.5.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-7.6.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-9.1.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-9.10.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-9.11.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-9.12.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-9.13.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-9.14.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-9.15.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-9.16.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-9.17.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-9.18.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-9.19.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-9.2.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-9.20.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-9.3.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-9.4.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-9.5.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-9.6.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-9.7.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-9.8.jpg (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: fig-9.9.jpg (原件不入库，网页不提供)</span></li>
+</ul>
+<h4 id="教材解析-1-份">教材解析（1 份）</h4><ul>
+<li><a href="./%E8%AF%BE%E7%A8%8B/%E7%94%B5%E8%B7%AF%E5%8E%9F%E7%90%86/%E6%95%99%E6%9D%90%E8%A7%A3%E6%9E%90/0.0-%E7%AC%A6%E5%8F%B7%E5%85%A5%E9%97%A8.html">电路原理符号入门</a></li>
+</ul>
+<h4 id="课堂笔记-2-份-3">课堂笔记（2 份）</h4><ul>
+<li><a href="./%E8%AF%BE%E7%A8%8B/%E7%94%B5%E8%B7%AF%E5%8E%9F%E7%90%86/%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0/2026-09-21-%E5%BC%80%E8%AF%BE%E8%AF%B4%E6%98%8E%E4%B8%8E%E7%94%B5%E8%B7%AF%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5.html">电路原理 2026-09-21：开课说明与第 1 章电路的基本概念</a></li>
+<li><a href="./%E8%AF%BE%E7%A8%8B/%E7%94%B5%E8%B7%AF%E5%8E%9F%E7%90%86/%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0/2026-09-23-%E7%94%B5%E5%8E%8B%E7%94%B5%E4%BD%8D%E4%B8%8E%E7%94%B5%E8%B7%AF%E5%90%8D%E8%AF%8D.html">电路原理 2026-09-23：电流复习、电压与电位、关联参考方向与电路名词</a></li>
+</ul>
+<h4 id="原始资料-2-份-5">原始资料（2 份）</h4><ul>
+<li><span class="res-degrade-badge">📄 原件: 20260921_08000935-%E5%8E%9F%E6%96%87.doc (原件不入库，网页不提供)</span></li>
+<li><span class="res-degrade-badge">📄 原件: 20260923_09501115-%E5%8E%9F%E6%96%87.doc (原件不入库，网页不提供)</span></li>
+</ul>
+<h4 id="音频-0-份-6">音频（0 份）</h4><p>暂无已归档资料。</p>
+<p>已登记 <strong>6</strong> 门课程、<strong>218</strong> 份资料（不含索引、模板和历史入口）。</p>
+<h2 id="仓库结构">仓库结构</h2><ul>
+<li><code>课程/</code>：本学期正式课程资料，入口为<a href="./%E8%AF%BE%E7%A8%8B/index.html">课程总索引</a>。<ul>
+<li><code>课程/&lt;中文课名&gt;/</code>：一门已确认课程，默认含五类子目录（确无某一类内容的课程可在 <code>.githooks/hook_lib.py</code> 的 <code>COURSE_SKIPPED_KINDS</code> 声明豁免，如形势与政策不建教材解析）：<ul>
+<li><code>作业/</code>：正式布置的作业记录；</li>
+<li><code>教材解析/</code>：按“版本—章—节”组织的整本教材解析；</li>
+<li><code>课堂笔记/</code>：按上课日期整理的课堂笔记；</li>
+<li><code>原始资料/</code>：原始转写与讲义等原始文件；<strong>教材照片原件不入库</strong>，只登记文件名与 SHA-256；</li>
+<li><code>音频/</code>：音频下载链接与元数据记录。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>维护条例.md</code> / <code>维护细则.md</code>：原则性规定与操作规程。<strong>维护细则里的「仓库状态」区块与上方课程目录一样，每次提交自动重算、推送前校验</strong>。</li>
+<li><a href="./AGENTS.html"><code>AGENTS.md</code></a>：给 AI 助手的<strong>常驻指令</strong>（每次会话自动加载）：一张按状态触发的 skill 路由表，加上读图、白名单、索引同步、handoff 等硬约束。skill 的正文不会自动加载，要靠这张表主动调用。</li>
+<li><code>.agents/skills/repo-maintenance/SKILL.md</code>：给 AI 助手用的维护流程 skill，含「批量读图必须派子代理」的强制规则（主对话每对话仅 60 张图片）。</li>
+<li><code>模板/</code>：各类资料的 <span class="res-degrade-badge">📋 OKF 模板 (模板不随站点发布)</span>（课程索引、作业、教材章节解析、课堂笔记、音频记录）。</li>
+<li><code>knowledge/</code>：改版前的知识库入口，仅保留<a href="./knowledge/index.html">迁移说明</a>供旧链接兼容；正文已迁入课程目录，不再平行维护。</li>
+<li><code>.githooks/</code>：提交检查、README 与维护细则自动同步、推送检查；<code>prepare-photos.py</code> 从仓库外原件生成 <code>/tmp</code> 阅读副本供读图。</li>
+<li><code>站点/</code>：静态阅读站的前端<a href="./%E7%AB%99%E7%82%B9/%E5%89%8D%E7%AB%AF%E5%AE%9E%E7%8E%B0%E8%AE%A1%E5%88%92%E4%B9%A6.html">实现计划书</a>（纯文本＋公式，不含图片）；站点构建产物不入库。</li>
+<li><code>Original/</code>：旧仓库原始资料根目录的历史位置；新原始资料一律放对应课程目录。</li>
+</ul>
+<h2 id="整理与命名约定">整理与命名约定</h2><ol>
+<li>课程目录使用 <code>课程/&lt;中文课名&gt;/&lt;类别&gt;</code>；日期类资料（作业、课堂笔记、音频记录）命名为 <code>YYYY-MM-DD-名称.md</code>；<strong>教材解析一节一个文件</strong>，放在章目录 <code>教材解析/第NN章-章名/</code> 下，命名为 <code>第NN章-&lt;节号&gt;-&lt;节名&gt;.md</code>，不把整章塞进一个 md；各类目录入口为 <code>index.md</code>。</li>
+<li>笔记保留 OKF v0.2 元数据与稳定 ID，中文记录，不要求中英双语成对；新增模板补充课程、资料类别及来源信息。</li>
+<li>原始资料不等于知识笔记：筛选、合并、规范化后沉淀概念、方法和易错点；转写口误、缺失板书与题目条件不猜补，整理者补充与原文陈述明确区分。</li>
+<li>教材解析按“教材版本—章—节”组织，不按课堂日期拆散教材体系。每个解析文件先写<strong>原书抄录</strong>（按原书页码抄录印刷正文与原编号），紧跟<strong>解析</strong>（概念、条件、推导、例题解法、易错点、验算），先抄后析。目录已确认的章节才登记，看不清的照片处标“待核对”，不得虚构书名、章节或解析进度。</li>
+<li>作业只登记经正式通知确认的题目；课堂例题、旧笔记中的教材习题不自动认定为正式作业，题号与截止时间以学习通等正式来源为准。</li>
+<li>原始资料与课堂发言可能包含个人信息，提交或推送前检查是否适合公开；不把登录令牌、密码、Cookie 等凭据写入仓库。</li>
+</ol>
+<h2 id="音频资料边界">音频资料边界</h2><p>音频目录默认<strong>只保存链接与元数据</strong>：不自动下载、不提交音频二进制、不向外部服务上传课堂内容。每条记录必须包含课程、上课日期、准确课次/节次（附核实来源）、主题、下载链接及其来源与有效期、关联课堂笔记和原始转写；同一课多个片段分别登记起止时间与时间基准。尚未提供的链接标为“待提供”，不编造地址，不凭日期或文件名推断课次。</p>
+<h2 id="新增课程与资料流程">新增课程与资料流程</h2><ol>
+<li>从<span class="res-degrade-badge">📋 课程索引模板 (模板不随站点发布)</span>创建 <code>课程/&lt;中文课名&gt;/index.md</code>，并按模板建立各类 <code>index.md</code>（默认五类；需豁免的类别先在 <code>.githooks/hook_lib.py</code> 的 <code>COURSE_SKIPPED_KINDS</code> 声明）。</li>
+<li>每个新文件复制对应模板，填写唯一稳定 ID、课程、类别与来源，保持相对链接互链。</li>
+<li>在 <code>.gitignore</code> 的精确白名单中为<strong>每个新文件</strong>添加 <code>!/完整相对路径</code>（不得使用通配符）。</li>
+<li>更新课程总索引与课程入口；运行下方 CLI 验证命令确认 README 目录可正常同步。</li>
+<li>提交前由 hook 校验命名与白名单，README 自动区块由 hook 从暂存区生成；正式提交、推送由主流程执行。</li>
+</ol>
+<h2 id="提交时自动同步-readme-与维护细则">提交时自动同步 README 与维护细则</h2><p>新克隆仓库后执行一次 <code>git config core.hooksPath .githooks</code>，并确保安装 Python 3。当前本地仓库已启用该配置。</p>
+<p>每次正常 <code>git commit</code>，<code>pre-commit</code> 先检查命名、白名单、链接与索引，再从<strong>暂存区</strong>生成下方自动目录和<a href="./%E7%BB%B4%E6%8A%A4%E7%BB%86%E5%88%99.html">维护细则</a>里的仓库状态区块，并自动暂存这两个文件。任一文件若有未暂存修改，提交会停止，需先自行暂存或保存。此外，只要本次提交改动了 <code>课程/</code> 或 <code>站点/</code>，本地 <code>.zcode/handoff.md</code>（进度自更新手记，按约定不入库）必须在本轮更新过，否则提交被拒——这是防止「干了活但没人记」的硬约束；没有该文件的环境（外部克隆、CI）不受影响。<code>--no-verify</code> 可绕过本地 hook，因此它不等同于服务端强制规则；<code>pre-push</code> 仍会校验待推送提交里的两处区块。</p>
+<p>常用 CLI 验证命令：</p>
+<p><div class="code-fence-wrapper">
+      <div class="code-fence-header">
+        <span>bash</span>
+        <button class="copy-btn">复制</button>
+      </div>
+      <pre><code>python3 .githooks/test-update-readme.py
+python3 .githooks/update-readme.py --worktree   # 同步工作区 README 与维护细则，不自动暂存
+python3 .githooks/check-markdown.py              # Markdown 美观度与可读性检查
+git fsck --no-progress                           # 仓库对象完整性
+git config core.hooksPath .githooks</code></pre>
+    </div></p>
+<p><code>--worktree</code> 只更新工作区文件，不自动暂存；推送时仍要求两处区块同步。新克隆仓库需先执行 <code>git config core.hooksPath .githooks</code> 启用钩子，再运行上述验证命令。</p>
+<h2 id="许可证与内容归属">许可证与内容归属</h2><ul>
+<li>本仓<strong>自研代码</strong>（<code>站点/build.mjs</code> 与 <code>站点/plugins/</code> 下的全部模块）与<strong>原创文字</strong>（教材解析的讲解、作业解答、通关攻略、课堂笔记整理）以 <a href="./LICENSE">AGPL-3.0</a> 许可发布：使用须开源同许可，署名「ArchivalEra」。</li>
+<li>教材《工程数学基础》的题目原文、例题与章节结构<strong>版权归原书作者与出版社所有</strong>。本仓解析为个人学习笔记，题面仅作学习用途引用，不随 AGPL 再许可。</li>
+<li>站点主题样式来自 Shirone Material 3 Reader（MIT 许可证）；KaTeX、marked 等第三方库依其自身许可证分发，AGPL 不覆盖这些组件。全站搜索是本站自持实现（<code>站点/plugins/site-search.mjs</code>），不依赖第三方检索库。</li>
+</ul>
+
+            </div>
+
+            
+
+            <footer class="site-footer">
+              <p class="site-footer__legal">
+                © 2026 ArchivalEra · 本站自研代码与解析文字以
+                <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank" rel="license noopener">AGPL-3.0</a>
+                许可发布 · <a href="https://github.com/ArchivalEra/S26-1_202609" target="_blank" rel="noopener">仓库源码</a>
+              </p>
+              <p class="site-footer__disclaimer">
+                教材《工程数学基础》的题目原文与章节结构版权归原书作者与出版社所有，本站解析为个人学习笔记；
+                页面主题样式来自 Shirone Material 3 Reader（MIT）；KaTeX、marked 等第三方库依其自身许可证分发。
+              </p>
+            </footer>
+          </article>
+        </main>
+
+        <!-- Table of Contents -->
+        <aside class="m3-toc">
+      <div class="toc-title">目录</div>
+      <ul class="toc-list">
+        <li class="toc-item level-2"><a href="#按课程浏览">按课程浏览</a></li><li class="toc-item level-3"><a href="#工程数学">工程数学</a></li><li class="toc-item level-3"><a href="#形势与政策">形势与政策</a></li><li class="toc-item level-3"><a href="#电力大数据与人工智能">电力大数据与人工智能</a></li><li class="toc-item level-3"><a href="#电子技术">电子技术</a></li><li class="toc-item level-3"><a href="#电机学">电机学</a></li><li class="toc-item level-3"><a href="#电路原理">电路原理</a></li><li class="toc-item level-2"><a href="#仓库结构">仓库结构</a></li><li class="toc-item level-2"><a href="#整理与命名约定">整理与命名约定</a></li><li class="toc-item level-2"><a href="#音频资料边界">音频资料边界</a></li><li class="toc-item level-2"><a href="#新增课程与资料流程">新增课程与资料流程</a></li><li class="toc-item level-2"><a href="#提交时自动同步-readme-与维护细则">提交时自动同步 README 与维护细则</a></li><li class="toc-item level-2"><a href="#许可证与内容归属">许可证与内容归属</a></li>
+      </ul>
+    </aside>
+      </div>
+    </div>
+  </div>
+
+  <script src="./assets/theme/shirone-reader.js" defer></script>
+  <script src="./assets/plugins/disclosure-anchor.js" defer></script>
+  <script type="application/json" id="sym-glossary-json">{"terms":{}}</script>
+  <script src="./assets/plugins/math-glossary.js" defer></script>
+  <script src="./assets/plugins/site-search.js" defer></script>
+</body>
+</html>

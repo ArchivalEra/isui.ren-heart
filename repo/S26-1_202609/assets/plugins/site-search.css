@@ -1,0 +1,20 @@
+/* 自持搜索模块的样式（站点/plugins/site-search.mjs） */
+.search-hit-section {
+  display: block;
+  margin-bottom: 2px;
+  font-size: 0.78rem;
+  letter-spacing: 0.02em;
+  color: var(--md-sys-color-primary, #6750a4);
+  opacity: 0.85;
+}
+.search-hit-excerpt mark {
+  background: var(--md-sys-color-tertiary-container, #ffd8e4);
+  color: inherit;
+  border-radius: 2px;
+  padding: 0 1px;
+}
+.search-panel-empty {
+  font-size: 0.85rem;
+  opacity: 0.75;
+  padding: 4px 0;
+}

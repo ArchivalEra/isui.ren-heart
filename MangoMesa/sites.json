@@ -1,0 +1,215 @@
+{
+	"generatedAt": "2026-10-09T23:29:15.423Z",
+	"acceleratedDirs": ["Octave", "S26-1_202609"],
+	"entries": [
+		{
+			"name": "isui.ren-heart",
+			"pages": "ready",
+			"accelerated": false,
+			"pushedAt": "2026-10-09T19:00:19Z",
+			"status": "built",
+			"description": "isui.ren 的站点心脏：EdgeOne Pages 静态源、边缘中间件与跨仓部署链",
+			"language": "Rust",
+			"url": "https://github.com/ArchivalEra/isui.ren-heart",
+			"icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMTIgMjAuNUMxMiAyMC41IDQgMTUuNCA0IDEwLjIgNCA3LjYgNiA1LjUgOC42IDUuNWMxLjUgMCAyLjguNyAzLjQgMS44LjYtMS4xIDEuOS0xLjggMy40LTEuOEMxOCA1LjUgMjAgNy42IDIwIDEwLjJjMCA1LjItOCAxMC4zLTggMTAuM1oiLz48L3N2Zz4="
+		},
+		{
+			"name": "Octave-Forge-Shelf",
+			"pages": "absent",
+			"accelerated": false,
+			"pushedAt": "2026-10-09T15:49:14Z",
+			"status": null,
+			"description": "Octave-Forge package shelf: metadata-only catalogue for on-demand client-side package fetching (Octave-Full-Wasm)",
+			"language": "Python",
+			"url": "https://github.com/ArchivalEra/Octave-Forge-Shelf",
+			"icon": ""
+		},
+		{
+			"name": "Octave-UI",
+			"pages": "ready",
+			"accelerated": false,
+			"pushedAt": "2026-10-09T15:26:45Z",
+			"status": null,
+			"description": "",
+			"language": "TypeScript",
+			"url": "https://github.com/ArchivalEra/Octave-UI",
+			"icon": ""
+		},
+		{
+			"name": "Octave-Full-Wasm",
+			"pages": "absent",
+			"accelerated": false,
+			"pushedAt": "2026-10-09T14:26:54Z",
+			"status": null,
+			"description": "浏览器里跑满功能 GNU Octave 11.3.0：wasm64 + 多线程 + OpenBLAS 四车道自动选档",
+			"language": "JavaScript",
+			"url": "https://github.com/ArchivalEra/Octave-Full-Wasm",
+			"icon": ""
+		},
+		{
+			"name": "Einfacht",
+			"pages": "absent",
+			"accelerated": false,
+			"pushedAt": "2026-10-08T04:21:26Z",
+			"status": null,
+			"description": "让 agent 的每句「现在如此」都能被复跑证明 —— 反幻觉事实系统：事实台账 / 翻案台账 / 悬案台账 + 必须能红的闸门",
+			"language": "Python",
+			"url": "https://github.com/ArchivalEra/Einfacht",
+			"icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cmVjdCB4PSI2LjUiIHk9IjQuNSIgd2lkdGg9IjExIiBoZWlnaHQ9IjE1LjUiIHJ4PSIyLjIiLz48cGF0aCBkPSJNOS41IDMuNWg1djIuMmgtNXoiLz48cGF0aCBkPSJNOS4zIDEyLjhsMS45IDEuOSAzLjYtNCIvPjwvc3ZnPg=="
+		},
+		{
+			"name": "Clouddrive-as-Origin",
+			"pages": "ready",
+			"accelerated": false,
+			"pushedAt": "2026-10-06T16:31:42Z",
+			"status": "built",
+			"description": "",
+			"language": "Rust",
+			"url": "https://github.com/ArchivalEra/Clouddrive-as-Origin",
+			"icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNNy42IDE4LjVhNCA0IDAgMCAxLS42LTcuOTRBNS42IDUuNiAwIDAgMSAxNy44IDkuOWEzLjg1IDMuODUgMCAwIDEtLjkgOC42WiIvPjwvc3ZnPg=="
+		},
+		{
+			"name": "My-Shirone-Plugins",
+			"pages": "ready",
+			"accelerated": false,
+			"pushedAt": "2026-10-04T11:51:35Z",
+			"status": "built",
+			"description": "Plugins, extensions, and enhancements for the Shirone blog theme ecosystem.",
+			"language": "JavaScript",
+			"url": "https://github.com/ArchivalEra/My-Shirone-Plugins",
+			"icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNOS41IDN2NS41TTE0LjUgM3Y1LjUiLz48cGF0aCBkPSJNNi41IDguNWgxMXYzLjJhNS41IDUuNSAwIDAgMS0xMSAwWiIvPjxwYXRoIGQ9Ik0xMiAxNS43djQuOCIvPjwvc3ZnPg=="
+		},
+		{
+			"name": "clearmail",
+			"pages": "ready",
+			"accelerated": false,
+			"pushedAt": "2026-10-04T03:32:40Z",
+			"status": "built",
+			"description": "Oracle VPS 极简邮件服务器：OpenSMTPD + Dovecot + DKIM，内存占用低于 200MB",
+			"language": "Shell",
+			"url": "https://github.com/ArchivalEra/clearmail",
+			"icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cmVjdCB4PSIzLjUiIHk9IjUuNSIgd2lkdGg9IjE3IiBoZWlnaHQ9IjEzIiByeD0iMi4yIi8+PHBhdGggZD0iTTQuMiA3LjJMMTIgMTNsNy44LTUuOCIvPjwvc3ZnPg=="
+		},
+		{
+			"name": "S3-Xray",
+			"pages": "ready",
+			"accelerated": false,
+			"pushedAt": "2026-10-04T03:32:33Z",
+			"status": "built",
+			"description": "把代理流量伪装成对象存储 API 调用的 Python 片段集",
+			"language": "Python",
+			"url": "https://github.com/ArchivalEra/S3-Xray",
+			"icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMi42IDEyUzYuMiA2LjUgMTIgNi41IDIxLjQgMTIgMjEuNCAxMiAxNy44IDE3LjUgMTIgMTcuNSAyLjYgMTIgMi42IDEyWiIvPjxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjIuNyIvPjwvc3ZnPg=="
+		},
+		{
+			"name": "hi3798mv310-debian",
+			"pages": "ready",
+			"accelerated": false,
+			"pushedAt": "2026-10-04T03:32:30Z",
+			"status": "built",
+			"description": "Hi3798MV310 机顶盒 SoC 的 Debian bring-up：主线内核移植与桌面化",
+			"language": "Shell",
+			"url": "https://github.com/ArchivalEra/hi3798mv310-debian",
+			"icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cmVjdCB4PSIzLjUiIHk9IjYuNSIgd2lkdGg9IjE3IiBoZWlnaHQ9IjExIiByeD0iMi4yIi8+PHBhdGggZD0iTTcuNSAxMC41djNNMTAgMTAuNXYzTTEyLjUgMTAuNXYzTTE1IDEwLjV2MyIvPjwvc3ZnPg=="
+		},
+		{
+			"name": "Anti-Laborer-Skills",
+			"pages": "ready",
+			"accelerated": false,
+			"pushedAt": "2026-10-04T03:32:27Z",
+			"status": "built",
+			"description": "反力工思维方法论：高信息密度、科学风味的论证知识库",
+			"language": "JavaScript",
+			"url": "https://github.com/ArchivalEra/Anti-Laborer-Skills",
+			"icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMTIgNC4ydjE2TTYuNSAyMC4yaDExTTQgOWgxNiIvPjxwYXRoIGQ9Ik00IDlMMiAxMy4yYTMgMyAwIDAgMCA1IDB6Ii8+PHBhdGggZD0iTTIwIDlsMiA0LjJhMyAzIDAgMCAxLTUgMHoiLz48L3N2Zz4="
+		},
+		{
+			"name": "cachyos-kernel-debian-clang",
+			"pages": "absent",
+			"accelerated": false,
+			"pushedAt": "2026-10-04T03:32:21Z",
+			"status": null,
+			"description": "Self-built CachyOS kernel for Debian with BORE scheduler + clang ThinLTO + O3, packaged as .deb",
+			"language": "Shell",
+			"url": "https://github.com/ArchivalEra/cachyos-kernel-debian-clang",
+			"icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSIzLjEiLz48cGF0aCBkPSJNMTIgMy4ydjIuNk0xMiAxOC4ydjIuNk0zLjIgMTJoMi42TTE4LjIgMTJoMi42TTYuMSA2LjFsMS45IDEuOU0xNiAxNmwxLjkgMS45TTE3LjkgNi4xTDE2IDhNOCAxNmwtMS45IDEuOSIvPjwvc3ZnPg=="
+		},
+		{
+			"name": "uTLS-Gone",
+			"pages": "absent",
+			"accelerated": false,
+			"pushedAt": "2026-10-04T03:32:15Z",
+			"status": null,
+			"description": "uTLS 的 Rust 复刻与指纹验收：逐字节对拍、REALITY 对线与事实台账",
+			"language": "Rust",
+			"url": "https://github.com/ArchivalEra/uTLS-Gone",
+			"icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNNSAxMmE3IDcgMCAwIDEgMTQgMCIvPjxwYXRoIGQ9Ik04LjUgMTIuNWEzLjUgMy41IDAgMCAxIDcgMHYyLjUiLz48cGF0aCBkPSJNMTIgMTV2NCIvPjwvc3ZnPg=="
+		},
+		{
+			"name": "newifi3-immortalwrt-personal",
+			"pages": "ready",
+			"accelerated": false,
+			"pushedAt": "2026-10-03T07:04:00Z",
+			"status": "built",
+			"description": "Newifi D2 的 ImmortalWrt 定制固件：校园网下的路由自救",
+			"language": "Shell",
+			"url": "https://github.com/ArchivalEra/newifi3-immortalwrt-personal",
+			"icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cmVjdCB4PSIzLjUiIHk9IjEzLjUiIHdpZHRoPSIxNyIgaGVpZ2h0PSI3IiByeD0iMi42Ii8+PHBhdGggZD0iTTcuNCAxN2guMDFNMTAuNiAxN2guMDEiLz48cGF0aCBkPSJNMTIgMTMuNVY5LjhNOC42IDkuOCAxMiA2LjZsMy40IDMuMiIvPjwvc3ZnPg=="
+		},
+		{
+			"name": "nearlink-E573H-USBDC",
+			"pages": "ready",
+			"accelerated": false,
+			"pushedAt": "2026-10-03T07:03:57Z",
+			"status": "built",
+			"description": "华为星闪（NearLink）E573H USB Dongle 连通性实验与工具",
+			"language": "C",
+			"url": "https://github.com/ArchivalEra/nearlink-E573H-USBDC",
+			"icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMTIgMTguMmguMDEiLz48cGF0aCBkPSJNOC42IDE0LjZhNC45IDQuOSAwIDAgMSA2LjggMCIvPjxwYXRoIGQ9Ik01LjYgMTEuNGE5LjIgOS4yIDAgMCAxIDEyLjggMCIvPjxwYXRoIGQ9Ik0yLjkgOC40YTEzLjQgMTMuNCAwIDAgMSAxOC4yIDAiLz48L3N2Zz4="
+		},
+		{
+			"name": "Policy-Gateway",
+			"pages": "ready",
+			"accelerated": false,
+			"pushedAt": "2026-10-03T07:03:50Z",
+			"status": "built",
+			"description": "基于 Rust 的高性能网络策略网关",
+			"language": "Rust",
+			"url": "https://github.com/ArchivalEra/Policy-Gateway",
+			"icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMTIgMy4ybDYuNSAyLjZWMTFjMCA0LTIuNiA3LTYuNSA4LjdDOC4xIDE4IDUuNSAxNSA1LjUgMTFWNS44WiIvPjxwYXRoIGQ9Ik05LjQgMTEuN2wxLjkgMS45IDMuNC0zLjciLz48L3N2Zz4="
+		},
+		{
+			"name": "S26-1_202609",
+			"pages": "absent",
+			"accelerated": true,
+			"pushedAt": "2026-10-03T07:03:43Z",
+			"status": null,
+			"description": "S26-1 课程知识库 · 高精度公式渲染阅读站（M3E 质感排版与动态色盘）",
+			"language": "JavaScript",
+			"url": "https://github.com/ArchivalEra/S26-1_202609",
+			"icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMTIgN2MtMS40LTEuMi0zLjQtMS45LTUuNi0xLjktLjcgMC0xLjQuMDYtMiAuMTlWMTguM2MuNi0uMTIgMS4zLS4xOSAyLS4xOSAyLjIgMCA0LjIuNyA1LjYgMS45IDEuNC0xLjIgMy40LTEuOSA1LjYtMS45LjcgMCAxLjQuMDcgMiAuMTlWNS4yOWMtLjYtLjEzLTEuMy0uMTktMi0uMTktMi4yIDAtNC4yLjctNS42IDEuOVoiLz48cGF0aCBkPSJNMTIgN3YxMyIvPjwvc3ZnPg=="
+		},
+		{
+			"name": "isui.ren-Bahnhof",
+			"pages": "ready",
+			"accelerated": false,
+			"pushedAt": "2026-10-03T07:03:40Z",
+			"status": "built",
+			"description": "isui.ren 站点中央调度与导航短链分发中枢 🚉",
+			"language": "TypeScript",
+			"url": "https://github.com/ArchivalEra/isui.ren-Bahnhof",
+			"icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cmVjdCB4PSI1IiB5PSIzLjUiIHdpZHRoPSIxNCIgaGVpZ2h0PSIxMi41IiByeD0iMy4yIi8+PHBhdGggZD0iTTUgOS41aDE0Ii8+PHBhdGggZD0iTTkuMiAxMi44aC4wMU0xNC44IDEyLjhoLjAxIi8+PHBhdGggZD0iTTguNSAxNmwtMiA0LjVNMTUuNSAxNmwyIDQuNU05LjUgMjAuNWg1Ii8+PC9zdmc+"
+		},
+		{
+			"name": "hi3798mv300-debian-sid",
+			"pages": "absent",
+			"accelerated": false,
+			"pushedAt": "2026-08-09T13:48:09Z",
+			"status": null,
+			"description": "我牛逼",
+			"language": "Shell",
+			"url": "https://github.com/ArchivalEra/hi3798mv300-debian-sid",
+			"icon": ""
+		}
+	]
+}

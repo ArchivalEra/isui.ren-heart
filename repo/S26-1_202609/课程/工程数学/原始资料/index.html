@@ -1,0 +1,1437 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-depth="3">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>工程数学原始资料索引 | S26-1 课程知识库 - isui.ren</title>
+  <script>
+  /* 首帧前应用已保存的主题色与明暗，避免先用默认色渲染再变色（闪光弹 + 二次全量重绘） */
+  (function () {
+    try {
+      var root = document.documentElement;
+      var m = localStorage.getItem("theme") ||
+        (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      root.setAttribute("data-theme", m === "dark" ? "dark" : "light");
+      var hue = localStorage.getItem("theme-hue");
+      if (hue !== null && /^\d+$/.test(hue)) {
+        root.style.setProperty("--hue", hue);
+        root.style.setProperty("--primary-h", hue);
+      }
+    } catch (e) { /* 隐私模式下 localStorage 可能抛错，忽略 */ }
+  })();
+  </script>
+  <link rel="stylesheet" href="../../../assets/katex/katex.min.css">
+  <link rel="stylesheet" href="../../../assets/theme/shirone-reader.css">
+  <link rel="stylesheet" href="../../../assets/plugins/site-search.css">
+</head>
+<body>
+  <div class="drawer-backdrop" id="drawer-backdrop"></div>
+
+  <div class="site-shell">
+    <!-- Left Column: Full-Height Sidebar (整列导航栏) -->
+    <aside class="m3-drawer" id="m3-drawer">
+      <div class="drawer-header-brand">
+        <a href="../../../index.html" class="sidebar-brand">
+          <span class="site-title-icon">📚</span>
+          <span class="sidebar-brand-text">S26-1 课程知识库</span>
+        </a>
+        <button class="m3-icon-btn drawer-collapse-btn" id="drawer-collapse-btn" aria-label="收起侧边栏" title="收起侧边栏">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M15 18l-6-6 6-6"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="drawer-header-toolbar">
+        <span class="drawer-section-title">课程导航目录</span>
+        <button class="drawer-action-btn" id="toggle-all-groups-btn" title="一键收起或展开所有课程分类">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M7 15l5 5 5-5M7 9l5-5 5 5"/>
+          </svg>
+          <span id="toggle-all-text">全部收起</span>
+        </button>
+      </div>
+
+      <div class="drawer-nav-scroll-area">
+        <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../index.html" class="drawer-nav-link">
+              <span>首页</span>
+            </a>
+          </li><li class="drawer-nav-group expanded">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/index.html" class="drawer-nav-link ">
+                <span>课程总览</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 课程总览" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-group expanded">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/工程数学/index.html" class="drawer-nav-link ">
+                <span>工程数学</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 工程数学" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/工程数学/教材解析/index.html" class="drawer-nav-link ">
+                <span>教材解析</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 教材解析" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/教材解析/0.0-符号入门.html" class="drawer-nav-link">
+              <span>符号入门</span>
+            </a>
+          </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/index.html" class="drawer-nav-link ">
+                <span>第一部分 线性代数</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 第一部分 线性代数" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header nav-header-clickable">
+            
+              <span class="drawer-section-title-text">第01章 行列式</span>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 第01章 行列式" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.0-本章通关攻略.html" class="drawer-nav-link">
+              <span>★ 通关攻略</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.1-二阶与三阶行列式.html" class="drawer-nav-link">
+              <span>1.1 二阶与三阶行列式</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.2-n阶行列式.html" class="drawer-nav-link">
+              <span>1.2 n阶行列式</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.3-克莱姆法则.html" class="drawer-nav-link">
+              <span>1.3 克莱姆法则</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.4-用MATLAB计算行列式.html" class="drawer-nav-link">
+              <span>1.4 用MATLAB计算行列式</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header nav-header-clickable">
+            
+              <span class="drawer-section-title-text">第02章 矩阵</span>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 第02章 矩阵" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.0-本章通关攻略.html" class="drawer-nav-link">
+              <span>★ 通关攻略</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.1-矩阵的概念及运算.html" class="drawer-nav-link">
+              <span>2.1 矩阵的概念及运算</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.2-逆矩阵.html" class="drawer-nav-link">
+              <span>2.2 逆矩阵</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.3-矩阵的初等变换与初等矩阵.html" class="drawer-nav-link">
+              <span>2.3 初等变换与初等矩阵</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.4-矩阵的秩.html" class="drawer-nav-link">
+              <span>2.4 矩阵的秩</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.5-用MATLAB进行矩阵运算.html" class="drawer-nav-link">
+              <span>2.5 用MATLAB进行矩阵运算</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li></ul>
+            </div>
+          </div>
+        </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/工程数学/课堂笔记/index.html" class="drawer-nav-link ">
+                <span>课堂笔记</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 课堂笔记" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/课堂笔记/2026-09-17-determinants-order-2-3.html" class="drawer-nav-link">
+              <span>09-17 行列式与沙路法则</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/课堂笔记/2026-09-17-determinants-transcript-notes.html" class="drawer-nav-link">
+              <span>09-17 课堂听课整理</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/课堂笔记/2026-09-24-降阶法克拉默法则与齐次方程组.html" class="drawer-nav-link">
+              <span>09-24 降阶法与克拉默法则</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/工程数学/作业/index.html" class="drawer-nav-link ">
+                <span>作业</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 作业" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/作业/2026-09-17-作业1.html" class="drawer-nav-link">
+              <span>作业1</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-item active">
+            <a href="../../../课程/工程数学/原始资料/index.html" class="drawer-nav-link">
+              <span>原始资料</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/音频/index.html" class="drawer-nav-link">
+              <span>音频</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/电力大数据与人工智能/index.html" class="drawer-nav-link ">
+                <span>电力大数据与人工智能</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 电力大数据与人工智能" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/电力大数据与人工智能/作业/index.html" class="drawer-nav-link">
+              <span>作业</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电力大数据与人工智能/教材解析/index.html" class="drawer-nav-link">
+              <span>教材解析</span>
+            </a>
+          </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/电力大数据与人工智能/课堂笔记/index.html" class="drawer-nav-link ">
+                <span>课堂笔记</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 课堂笔记" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/电力大数据与人工智能/课堂笔记/2026-09-20-课程定位与考核要求.html" class="drawer-nav-link">
+              <span>09-20 开课第一讲</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电力大数据与人工智能/课堂笔记/2026-09-22-暂态稳定评估方法与紧急控制.html" class="drawer-nav-link">
+              <span>09-22 暂态稳定评估与紧急控制</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电力大数据与人工智能/原始资料/index.html" class="drawer-nav-link">
+              <span>原始资料</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电力大数据与人工智能/音频/index.html" class="drawer-nav-link">
+              <span>音频</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/形势与政策/index.html" class="drawer-nav-link ">
+                <span>形势与政策</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 形势与政策" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/形势与政策/作业/index.html" class="drawer-nav-link">
+              <span>作业</span>
+            </a>
+          </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/形势与政策/课堂笔记/index.html" class="drawer-nav-link ">
+                <span>课堂笔记</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 课堂笔记" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/形势与政策/课堂笔记/2026-09-21-经济热点专题与考试安排.html" class="drawer-nav-link">
+              <span>09-21 经济热点专题与考试安排</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-item ">
+            <a href="../../../课程/形势与政策/原始资料/index.html" class="drawer-nav-link">
+              <span>原始资料</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/形势与政策/音频/index.html" class="drawer-nav-link">
+              <span>音频</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/电路原理/index.html" class="drawer-nav-link ">
+                <span>电路原理</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 电路原理" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/电路原理/作业/index.html" class="drawer-nav-link ">
+                <span>作业</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 作业" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/电路原理/作业/2026-09-28-习题册第一章.html" class="drawer-nav-link">
+              <span>习题册第一章（43 题）</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电路原理/作业/2026-09-28-习题册第二章.html" class="drawer-nav-link">
+              <span>习题册第二章（34 题）</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电路原理/作业/2026-09-28-习题册第三章.html" class="drawer-nav-link">
+              <span>习题册第三章（28 题）</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电路原理/作业/2026-09-28-习题册第四章.html" class="drawer-nav-link">
+              <span>习题册第四章（21 题）</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电路原理/作业/2026-09-28-习题册第五章.html" class="drawer-nav-link">
+              <span>习题册第五章（62 题）</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电路原理/作业/2026-09-28-习题册第六章.html" class="drawer-nav-link">
+              <span>习题册第六章（33 题）</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电路原理/作业/2026-09-28-习题册第七章.html" class="drawer-nav-link">
+              <span>习题册第七章（31 题）</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电路原理/作业/2026-09-28-习题册第九章.html" class="drawer-nav-link">
+              <span>习题册第九章（26 题）</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/电路原理/教材解析/index.html" class="drawer-nav-link ">
+                <span>教材解析</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 教材解析" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/电路原理/教材解析/0.0-符号入门.html" class="drawer-nav-link">
+              <span>符号入门</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/电路原理/课堂笔记/index.html" class="drawer-nav-link ">
+                <span>课堂笔记</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 课堂笔记" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/电路原理/课堂笔记/2026-09-21-开课说明与电路的基本概念.html" class="drawer-nav-link">
+              <span>09-21 开课说明与电路的基本概念</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电路原理/课堂笔记/2026-09-23-电压电位与电路名词.html" class="drawer-nav-link">
+              <span>09-23 电压电位与电路名词</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电路原理/原始资料/index.html" class="drawer-nav-link">
+              <span>原始资料</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电路原理/音频/index.html" class="drawer-nav-link">
+              <span>音频</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/电子技术/index.html" class="drawer-nav-link ">
+                <span>电子技术</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 电子技术" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/电子技术/作业/index.html" class="drawer-nav-link ">
+                <span>作业</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 作业" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/电子技术/作业/2026-09-23-第一章简答题.html" class="drawer-nav-link">
+              <span>2026-9-23作业（习题 1.1、1.3、1.5）</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电子技术/教材解析/index.html" class="drawer-nav-link">
+              <span>教材解析</span>
+            </a>
+          </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/电子技术/课堂笔记/index.html" class="drawer-nav-link ">
+                <span>课堂笔记</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 课堂笔记" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/电子技术/课堂笔记/2026-09-21-开课说明与半导体基础到PN结.html" class="drawer-nav-link">
+              <span>09-21 开课说明与半导体基础到 PN 结</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电子技术/课堂笔记/2026-09-23-二极管与含二极管电路.html" class="drawer-nav-link">
+              <span>09-23 二极管与含二极管电路</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电子技术/原始资料/index.html" class="drawer-nav-link">
+              <span>原始资料</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电子技术/音频/index.html" class="drawer-nav-link">
+              <span>音频</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/电机学/index.html" class="drawer-nav-link ">
+                <span>电机学</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 电机学" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/电机学/作业/index.html" class="drawer-nav-link ">
+                <span>作业</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 作业" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/电机学/作业/2026-09-22-第1章概述客观题.html" class="drawer-nav-link">
+              <span>09-22 第1章概述客观题（25题）</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/电机学/教材解析/index.html" class="drawer-nav-link ">
+                <span>教材解析</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 教材解析" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/电机学/教材解析/0.0-符号入门.html" class="drawer-nav-link">
+              <span>符号入门</span>
+            </a>
+          </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/电机学/教材解析/第01章-概述/1.1-电机的分类.html" class="drawer-nav-link ">
+                <span>第01章 概述</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 第01章 概述" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/电机学/教材解析/第01章-概述/1.1-电机的分类.html" class="drawer-nav-link">
+              <span>1.1 电机的分类</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电机学/教材解析/第01章-概述/1.2-电机的磁路和磁路定律.html" class="drawer-nav-link">
+              <span>1.2 电机的磁路和磁路定律</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电机学/教材解析/第01章-概述/1.3-电机的电磁基本理论.html" class="drawer-nav-link">
+              <span>1.3 电机的电磁基本理论</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电机学/教材解析/第01章-概述/1.4-电机的制造材料.html" class="drawer-nav-link">
+              <span>1.4 电机的制造材料</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电机学/教材解析/第01章-概述/第01章-小结与思考题习题.html" class="drawer-nav-link">
+              <span>第01章 小结与思考题习题</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电机学/课堂笔记/index.html" class="drawer-nav-link">
+              <span>课堂笔记</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电机学/原始资料/index.html" class="drawer-nav-link">
+              <span>原始资料</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电机学/音频/index.html" class="drawer-nav-link">
+              <span>音频</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header nav-header-clickable">
+            
+              <span class="drawer-section-title-text">仓库规约</span>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 仓库规约" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../维护条例.html" class="drawer-nav-link">
+              <span>维护条例</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../维护细则.html" class="drawer-nav-link">
+              <span>维护细则</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li></ul>
+      </div>
+
+      <div class="sidebar-resizer" id="sidebar-resizer" title="按住拖拽调整侧边栏宽度，双击恢复默认宽度"></div>
+    </aside>
+
+    <!-- Right Column: Main Content Column (主内容列) -->
+    <div class="main-column">
+      <!-- Top App Bar -->
+      <header class="m3-top-app-bar">
+        <div class="top-bar-left">
+          <button class="m3-icon-btn" id="drawer-toggle" aria-label="展开/收起侧边栏" title="展开/收起侧边栏">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+          </button>
+          <a href="../../../index.html" class="top-bar-mobile-title">
+            <span>S26-1 课程知识库</span>
+          </a>
+          <nav class="top-bar-breadcrumbs" aria-label="当前路径">
+            <a href="../../../index.html">首页</a><span class="m3-breadcrumb-sep">/</span><a href="../../../课程/index.html">课程总览</a><span class="m3-breadcrumb-sep">/</span><a href="../../../课程/工程数学/index.html">工程数学</a><span class="m3-breadcrumb-sep">/</span><span class="current-crumb">工程数学原始资料索引</span>
+          </nav>
+        </div>
+
+        <div class="top-bar-right">
+          <button class="m3-icon-btn" id="palette-toggle" aria-label="调色盘" title="自定义主题强调色">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/>
+              <circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/>
+              <circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/>
+              <circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/>
+              <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/>
+            </svg>
+          </button>
+
+          <!-- Palette Popover -->
+          <div class="palette-popover" id="palette-popover">
+            <div class="palette-header">
+              <span class="palette-title">主题强调色调色盘</span>
+              <button class="palette-reset-btn" id="palette-reset-btn" title="重置为默认色">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+              </button>
+            </div>
+            <div class="palette-current-row">
+              <span class="palette-hue-badge" id="palette-hue-badge">Hue 248°</span>
+              <div class="palette-color-dot" id="palette-color-dot"></div>
+            </div>
+            <div class="palette-slider-container">
+              <span class="palette-slider-label">色相微调 (0° - 360°)</span>
+              <input type="range" min="0" max="360" value="248" class="palette-slider" id="hue-slider">
+            </div>
+            <div>
+              <div class="palette-swatches-title">预设配色</div>
+              <div class="palette-swatches-grid">
+                <button class="palette-swatch-item" data-hue="315" title="经典粉紫">
+                  <span class="palette-swatch-dot" style="background: hsl(315, 75%, 45%);"></span>
+                  <span class="palette-swatch-name">粉紫</span>
+                </button>
+                <button class="palette-swatch-item" data-hue="280" title="紫罗兰">
+                  <span class="palette-swatch-dot" style="background: hsl(280, 75%, 45%);"></span>
+                  <span class="palette-swatch-name">紫罗兰</span>
+                </button>
+                <button class="palette-swatch-item active" data-hue="248" title="学术深蓝">
+                  <span class="palette-swatch-dot" style="background: hsl(248, 75%, 45%);"></span>
+                  <span class="palette-swatch-name">深蓝</span>
+                </button>
+                <button class="palette-swatch-item" data-hue="205" title="天青蓝">
+                  <span class="palette-swatch-dot" style="background: hsl(205, 75%, 45%);"></span>
+                  <span class="palette-swatch-name">天青</span>
+                </button>
+                <button class="palette-swatch-item" data-hue="150" title="翡翠绿">
+                  <span class="palette-swatch-dot" style="background: hsl(150, 75%, 40%);"></span>
+                  <span class="palette-swatch-name">翡翠</span>
+                </button>
+                <button class="palette-swatch-item" data-hue="75" title="琥珀黄">
+                  <span class="palette-swatch-dot" style="background: hsl(75, 75%, 40%);"></span>
+                  <span class="palette-swatch-name">琥珀</span>
+                </button>
+                <button class="palette-swatch-item" data-hue="30" title="晚霞橙">
+                  <span class="palette-swatch-dot" style="background: hsl(30, 80%, 48%);"></span>
+                  <span class="palette-swatch-name">晚霞</span>
+                </button>
+                <button class="palette-swatch-item" data-hue="355" title="绯红">
+                  <span class="palette-swatch-dot" style="background: hsl(355, 75%, 45%);"></span>
+                  <span class="palette-swatch-name">绯红</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <button class="m3-icon-btn" id="search-toggle" aria-label="全站搜索" title="全站搜索">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+          </button>
+
+          <button class="m3-icon-btn" id="theme-toggle" aria-label="切换昼夜主题">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          </button>
+        </div>
+      </header>
+
+      <!-- 全站搜索面板（点击顶栏放大镜展开；ESC 或点外部关闭） -->
+      <div class="search-panel" id="search-panel" hidden>
+        <div class="search-panel-inner" role="dialog" aria-modal="true" aria-label="全站搜索">
+          <div class="search-panel-head">
+            <svg class="search-panel-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+            <input type="search" id="search-input" class="search-panel-input" placeholder="搜索知识点、例题、习题…" autocomplete="off" spellcheck="false">
+            <button class="m3-icon-btn" id="search-close" aria-label="关闭搜索" title="关闭（ESC）">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
+          </div>
+          <div class="search-panel-body" id="search-results">
+            <p class="search-hint">输入关键词开始搜索。中文按字面子串匹配——搜「沙路法则」只出真正连着出现这四个字的地方；结果按相关度排序，回车打开第一条。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="layout-container">
+        <!-- Content Area -->
+        <main class="content-wrapper">
+          <article class="article-container">
+            <!-- Breadcrumb in page body -->
+            <nav class="m3-breadcrumb">
+              <a href="../../../index.html">首页</a><span class="m3-breadcrumb-sep">/</span><a href="../../../课程/index.html">课程总览</a><span class="m3-breadcrumb-sep">/</span><a href="../../../课程/工程数学/index.html">工程数学</a><span class="m3-breadcrumb-sep">/</span><span>工程数学原始资料索引</span>
+            </nav>
+
+            <div class="meta-chip-bar"><span class="meta-chip primary">📚 工程数学</span><span class="meta-chip">🏷️ 原始资料</span><span class="meta-chip">⚡ 状态: active</span><span class="meta-chip">📅 更新: 2026-09-18</span><span class="meta-chip">📖 来源: 20260917_13301545-原文.doc, 教材照片登记（60 张，2026-09-17 拍摄；原件由拍摄者本地保存，不入库）</span></div>
+
+            <div class="article-content">
+              <h1 id="工程数学原始资料">工程数学原始资料</h1><p><a href="../index.html">返回课程索引</a></p>
+<h2 id="一-课堂原始转写">一、课堂原始转写</h2><div class="table-scroll-container"><table>
+<thead>
+<tr>
+<th align="left">资料</th>
+<th align="left">来源与性质</th>
+<th align="left">日期</th>
+<th align="left">准确课次/节次</th>
+<th align="left">关联笔记</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><span class="res-degrade-badge">📄 原件: 20260917_13301545-原文.doc (原件不入库，网页不提供)</span></td>
+<td align="left">既有仓库 <code>Original/</code> 迁入的课堂原始转写；非教师审定讲义</td>
+<td align="left">2026-09-17（按既有归档记录）</td>
+<td align="left">待核实</td>
+<td align="left"><a href="../%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0/2026-09-17-determinants-transcript-notes.html">转写整理</a>、<a href="../%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0/2026-09-17-determinants-order-2-3.html">公式与手算</a></td>
+</tr>
+<tr>
+<td align="left"><span class="res-degrade-badge">📄 原件: 20260924_14101540-原文.doc (原件不入库，网页不提供)</span></td>
+<td align="left">微信传入的课堂原始转写；非教师审定讲义</td>
+<td align="left">2026-09-24（文件名标注 14:10–15:40）</td>
+<td align="left">待核实</td>
+<td align="left"><a href="../%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0/2026-09-24-%E9%99%8D%E9%98%B6%E6%B3%95%E5%85%8B%E6%8B%89%E9%BB%98%E6%B3%95%E5%88%99%E4%B8%8E%E9%BD%90%E6%AC%A1%E6%96%B9%E7%A8%8B%E7%BB%84.html">降阶法、克拉默法则与齐次方程组</a></td>
+</tr>
+</tbody></table></div>
+<ul>
+<li>原文件保留原名和字节；虽然扩展名是 <code>.doc</code>，实际为 UTF-8 HTML 文本，迁移没有转换格式。</li>
+<li>SHA-256：<code>77974d4f68e95af89deb9d4bac5dd1015e8bde4d0b91bde12ab98f76e9c8a067</code>（20260917_13301545-原文.doc）。</li>
+<li>SHA-256：<code>b5e26ef9d8d408388024ad315a5ed68cf5b04ca973d0528140d84ccb74765690</code>（20260924_14101540-原文.doc）。</li>
+<li>已登记的转写相对时间范围：09-17 为 <code>00:00–1:52:09</code>，09-24 为 <code>00:01–1:34:11</code>。不据此断言录下完整课堂，也不视为已确认音频片段范围。</li>
+<li>原始转写可能有同音错误、口误及个人信息。公开前检查授权和隐私，缺失板书和题目条件不猜补。</li>
+<li>音频下载链接尚未提供，见<a href="../%E9%9F%B3%E9%A2%91/index.html">音频索引</a>。</li>
+</ul>
+<h2 id="二-教材照片-工程数学基础">二、教材照片（《工程数学基础》）</h2><p><strong>60 张教材照片的原件不随仓库发布</strong>，由拍摄者本地保存（2026-09-17 拍摄，第 1 章 30 张 JPG、第 2 章 30 张 HEIC）。本节只登记<strong>文件名、对应页码与 SHA-256</strong>，作为原件身份凭证；解析正文里引用的照片均指这些原件。</p>
+<ul>
+<li>原件目录（仓库外）：<code>工程数学/</code>，与本节文件名一一对应。</li>
+<li>下表文件名不带链接：原件不在仓库内，网页与仓库都不提供下载。</li>
+<li>拍摄顺序即相机时间戳顺序，下表按原书结构重排。第 1 章按小节拆分的抄录与解析见<a href="../%E6%95%99%E6%9D%90%E8%A7%A3%E6%9E%90/index.html">教材解析索引</a>与<a href="../%E6%95%99%E6%9D%90%E8%A7%A3%E6%9E%90/%E7%AC%AC%E4%B8%80%E9%83%A8%E5%88%86-%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/%E7%AC%AC1%E7%AB%A0-%E8%A1%8C%E5%88%97%E5%BC%8F/1.1-%E4%BA%8C%E9%98%B6%E4%B8%8E%E4%B8%89%E9%98%B6%E8%A1%8C%E5%88%97%E5%BC%8F.html">1.1 二阶、三阶行列式</a>。</li>
+</ul>
+<h3 id="1-目录页-原书目录-p1-p8">1. 目录页（原书目录 p1–p8）</h3><div class="table-scroll-container"><table>
+<thead>
+<tr>
+<th align="left">文件</th>
+<th align="left">内容</th>
+<th align="left">目录页码</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">IMG20260917200701.jpg</td>
+<td align="left">目录：第一部分 线性代数，第 1 章行列式、第 2 章矩阵开头</td>
+<td align="left">p1</td>
+</tr>
+<tr>
+<td align="left">IMG20260917200705.jpg</td>
+<td align="left">目录：第 2 章矩阵、第 3 章 n 维向量与向量空间、第 4 章线性方程组</td>
+<td align="left">p2</td>
+</tr>
+<tr>
+<td align="left">IMG20260917200706.jpg</td>
+<td align="left">目录：第二部分 多元微积分，第 1 章向量代数与空间解析几何</td>
+<td align="left">p3</td>
+</tr>
+<tr>
+<td align="left">IMG20260917200711.jpg</td>
+<td align="left">目录：第 2 章多元函数微分学、第 3 章重积分、第三部分开头</td>
+<td align="left">p4</td>
+</tr>
+<tr>
+<td align="left">IMG20260917200713.jpg</td>
+<td align="left">目录：第三部分 概率论与数理统计，第 1 章概率</td>
+<td align="left">p5</td>
+</tr>
+<tr>
+<td align="left">IMG20260917200717.jpg</td>
+<td align="left">目录：第 1 章概率（分布、数字特征部分）</td>
+<td align="left">p6</td>
+</tr>
+<tr>
+<td align="left">IMG20260917200718.jpg</td>
+<td align="left">目录：第 2 章数理统计</td>
+<td align="left">p7</td>
+</tr>
+<tr>
+<td align="left">IMG20260917200722.jpg</td>
+<td align="left">目录：第 2 章数理统计末、附录、习题参考答案、参考文献</td>
+<td align="left">p8</td>
+</tr>
+</tbody></table></div>
+<p><strong>目录页重拍件（2026-09-18）</strong>：上表 p3–p8 六张原为远距拍摄、目录小字不可辨；2026-09-18 补拍六张清晰版，用于逐条登记第二、三部分目录。补拍件<strong>读毕后已从原件目录移除</strong>，此处保留哈希作为身份凭证。</p>
+<div class="table-scroll-container"><table>
+<thead>
+<tr>
+<th align="left">文件（已移除）</th>
+<th align="left">对应目录页</th>
+<th align="left">SHA-256</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">微信图片_20260918053429_3_71.jpg</td>
+<td align="left">p3</td>
+<td align="left"><code>2b2fb59473a4542f351423e2c67061687f994fc7a01f3d4f1a43ec56953c4d59</code></td>
+</tr>
+<tr>
+<td align="left">微信图片_20260918053431_4_71.jpg</td>
+<td align="left">p4</td>
+<td align="left"><code>36141ef11de0ffa93b8a13f7ba6a952dfedf465a646e90a53901cb3e53adf777</code></td>
+</tr>
+<tr>
+<td align="left">微信图片_20260918053444_5_71.jpg</td>
+<td align="left">p5</td>
+<td align="left"><code>20c5b8685bb741006f6f41a334659e1b987415db031451d10cc7d8deb943968a</code></td>
+</tr>
+<tr>
+<td align="left">微信图片_20260918053450_6_71.jpg</td>
+<td align="left">p6</td>
+<td align="left"><code>10d91d6e8d3a0b25ce15b8b3f38b549d076235946c19db78b23c113864d8df6c</code></td>
+</tr>
+<tr>
+<td align="left">微信图片_20260918053457_7_71.jpg</td>
+<td align="left">p7</td>
+<td align="left"><code>17bba91e869bbbc53c505c7a137549cf92a938d62afdbab8af128b1f06607de0</code></td>
+</tr>
+<tr>
+<td align="left">微信图片_20260918053501_8_71.jpg</td>
+<td align="left">p8</td>
+<td align="left"><code>6f236adc137f28e083daa216a0570ba40dacf40a9c5504166cb41daac3662e89</code></td>
+</tr>
+</tbody></table></div>
+<p>依据补拍件逐条登记的第二、三部分目录见<a href="../%E6%95%99%E6%9D%90%E8%A7%A3%E6%9E%90/index.html">教材解析索引</a>。</p>
+<h3 id="2-第-1-章正文-原书-p1-p21">2. 第 1 章正文（原书 p1–p21）</h3><div class="table-scroll-container"><table>
+<thead>
+<tr>
+<th align="left">文件</th>
+<th align="left">原书页码</th>
+<th align="left">主要内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">IMG20260917200724.jpg</td>
+<td align="left">p1</td>
+<td align="left">第 1 章开头、1.1.1 二阶行列式、消元法引入</td>
+</tr>
+<tr>
+<td align="left">IMG20260917200731.jpg</td>
+<td align="left">p2</td>
+<td align="left">二阶行列式的行、列、主副对角线，例 1.1、例 1.2</td>
+</tr>
+<tr>
+<td align="left">IMG20260917200733.jpg</td>
+<td align="left">p3</td>
+<td align="left">1.1.2 三阶行列式、方程组 (1.7)、对角线法则与沙路法则</td>
+</tr>
+<tr>
+<td align="left">IMG20260917200740.jpg</td>
+<td align="left">p4</td>
+<td align="left">图 1.1、图 1.2，例 1.3，例 1.4 开头</td>
+</tr>
+<tr>
+<td align="left">IMG20260917200742.jpg</td>
+<td align="left">p5</td>
+<td align="left">例 1.4 的 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>D</mi><mn>1</mn></msub><mo separator="true">,</mo><msub><mi>D</mi><mn>2</mn></msub><mo separator="true">,</mo><msub><mi>D</mi><mn>3</mn></msub></mrow><annotation encoding="application/x-tex">D_1,D_2,D_3</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0278em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0278em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0278em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">3</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>、例 1.5、习题 1.1</td>
+</tr>
+<tr>
+<td align="left">IMG20260917200746.jpg</td>
+<td align="left">p6</td>
+<td align="left">1.2 n 阶行列式、定义、余子式与代数余子式、例 1.6</td>
+</tr>
+<tr>
+<td align="left">IMG20260917200748.jpg</td>
+<td align="left">p7</td>
+<td align="left">例 1.6 解、例 1.7、例 1.8 上三角行列式</td>
+</tr>
+<tr>
+<td align="left">IMG20260917200754.jpg</td>
+<td align="left">p8</td>
+<td align="left">例 1.8 证明收尾、1.2.2 性质 1.1–1.3、推论 1.1</td>
+</tr>
+<tr>
+<td align="left">IMG20260917200755.jpg</td>
+<td align="left">p9</td>
+<td align="left">推论 1.2、1.3，性质 1.4、1.5、1.6</td>
+</tr>
+<tr>
+<td align="left">IMG20260917200801.jpg</td>
+<td align="left">p10</td>
+<td align="left">性质 1.6 公式、例 1.9 化三角形法、例 1.10 开头</td>
+</tr>
+<tr>
+<td align="left">IMG20260917200802.jpg</td>
+<td align="left">p11</td>
+<td align="left">例 1.10 解、降阶法、例 1.11</td>
+</tr>
+<tr>
+<td align="left">IMG20260917200806.jpg</td>
+<td align="left">p12</td>
+<td align="left">例 1.12 对角元为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi></mrow><annotation encoding="application/x-tex">a</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">a</span></span></span></span>、其余为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi></mrow><annotation encoding="application/x-tex">b</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">b</span></span></span></span> 的 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> 阶行列式、推论 1.4</td>
+</tr>
+<tr>
+<td align="left">IMG20260917200808.jpg</td>
+<td align="left">p13</td>
+<td align="left">推论 1.4 证明、按行（列）展开公式、例 1.13</td>
+</tr>
+<tr>
+<td align="left">IMG20260917200812.jpg</td>
+<td align="left">p14</td>
+<td align="left">例 1.13 两种解法、例 1.14</td>
+</tr>
+<tr>
+<td align="left">IMG20260917200813.jpg</td>
+<td align="left">p15</td>
+<td align="left">习题 1.2、1.3 克莱姆法则开头、方程组 (1.8)</td>
+</tr>
+<tr>
+<td align="left">IMG20260917200820.jpg</td>
+<td align="left">p16</td>
+<td align="left">系数行列式与 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>D</mi><mi>j</mi></msub></mrow><annotation encoding="application/x-tex">D_j</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9694em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0278em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0572em;">j</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span>、定理 1.1 克莱姆法则及存在性证明</td>
+</tr>
+<tr>
+<td align="left">IMG20260917200822.jpg</td>
+<td align="left">p17</td>
+<td align="left">唯一性证明、例 1.15 四元方程组</td>
+</tr>
+<tr>
+<td align="left">IMG20260917200825.jpg</td>
+<td align="left">p18</td>
+<td align="left">例 1.15 解、定理 1.2–1.5、齐次与非齐次、例 1.16</td>
+</tr>
+<tr>
+<td align="left">IMG20260917200827.jpg</td>
+<td align="left">p19</td>
+<td align="left">例 1.16 解、例 1.17 参数 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi></mrow><annotation encoding="application/x-tex">\lambda</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">λ</span></span></span></span>、习题 1.3</td>
+</tr>
+<tr>
+<td align="left">IMG20260917200831.jpg</td>
+<td align="left">p20</td>
+<td align="left">习题 1.3 第 3 题、1.4 MATLAB、例 1.18、例 1.19</td>
+</tr>
+<tr>
+<td align="left">IMG20260917200833.jpg</td>
+<td align="left">p21</td>
+<td align="left">例 1.20，浮点残差 <code>-9.5162e-16</code></td>
+</tr>
+</tbody></table></div>
+<h3 id="3-书末习题参考答案">3. 书末习题参考答案</h3><div class="table-scroll-container"><table>
+<thead>
+<tr>
+<th align="left">文件</th>
+<th align="left">内容</th>
+<th align="left">原书页码</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">IMG20260917200901.jpg</td>
+<td align="left">习题参考答案：第 1 章行列式（习题 1.1–1.3）、第 2 章矩阵习题 2.1 开头</td>
+<td align="left">待确认（正文目录标为 p290）</td>
+</tr>
+</tbody></table></div>
+<h3 id="4-第-1-章照片校验和-jpg-30-张">4. 第 1 章照片校验和（JPG，30 张）</h3><p>以下 SHA-256 对应<strong>拍摄当日的原件</strong>；原件不入库，由拍摄者本地保存。如重新导出或压缩，哈希会变化，须重新登记。</p>
+<p><div class="code-fence-wrapper">
+      <div class="code-fence-header">
+        <span>text</span>
+        <button class="copy-btn">复制</button>
+      </div>
+      <pre><code>c763528f5b31097d77de1f643026bc8ab260d1eae2aa21b5ed67d86e7cb3e1cd  IMG20260917200701.jpg
+5dd9f7f58f71ffaff56605b6790aa9bff801d8429456400fdb2d7193e1d401b9  IMG20260917200705.jpg
+4ead81c3b3ef47b94f7ad561313633bdf3091be05c36054b515aad9a7de76687  IMG20260917200706.jpg
+30e09eec499e051651be2fe9b1cf696c05d241f7f9e19b2d9b30a6f1299b691e  IMG20260917200711.jpg
+44406cd45ef09554b7b451ab183c81abe11576e4ed72bb556754aec680d92bea  IMG20260917200713.jpg
+c65ab496036e20a381a679d604dc91057dbeb54505f216a321b4ad2d39076d2f  IMG20260917200717.jpg
+947d60890d7019a930be60d461494d112fca6a27657fc420f586719988965685  IMG20260917200718.jpg
+d284038baef7cbd356e038303ed8c2657e46b88341794c54e2e0ea86d015775c  IMG20260917200722.jpg
+920490e395ee8818513fc64113896aebf736ea26112a03b9f54171404d639b24  IMG20260917200724.jpg
+2cca0eb1b452667f354388677215084bfc5b3f630f90be2f9ac28107715f89df  IMG20260917200731.jpg
+a7a7fc8a2a79ea34ac676a8b8ff1a696010136538cd5a02ae1f7757f34832e97  IMG20260917200733.jpg
+b547ad33d1e3ea162f52050ea9bf4ef4092506d7957d505ea2f20d3cde0863e6  IMG20260917200740.jpg
+9a9d0e94615534c17794e738515cd80bc86d46137395c87712b86b0d885c7ea9  IMG20260917200742.jpg
+d2326bc4ca8531476482e0f47476a71bcccb5344a4c8d55f5e4c8f6b5d9b9ecf  IMG20260917200746.jpg
+949c8ad8e1389d868f0f166daa545bfadfaf1f5cddf60fab1b66cffe82daab81  IMG20260917200748.jpg
+7df11e9bcd6264fce5fe1e1b5c318b3197a0f8df8da167dab1d2f3c3b0565e81  IMG20260917200754.jpg
+845838a26ebb58d6c0d209d2153ffb36701dc577f261f68e0e39bc0f7700b970  IMG20260917200755.jpg
+d8733e73c8e780e10ab168ecf294b45011dd7783928a5bded1b423baec9ec780  IMG20260917200801.jpg
+67b10bb8fd455a81cee42897b9bcbf7ab76a7681ef3dd7abb4a3364fc1fc4b78  IMG20260917200802.jpg
+62bde393658d3f566abdb2eb6da4937fa7dd5e5d7230e6975843f23d72007368  IMG20260917200806.jpg
+00fb2d632e4358973613f4e07a18e92d6eef44578349b272db910acd5f87f12a  IMG20260917200808.jpg
+9f210b7cb6fffc0f1ce62ca54915a6b69f34367dc176469526c396d7a352f5c2  IMG20260917200812.jpg
+11f8833cdf3f5ed673559b58c4e44c1511a0c73f885997f9289577898798b75a  IMG20260917200813.jpg
+224e5308b7221d2845e7d3ebbb8344c1f12bdb80ba8e526b974fbe62ebef9171  IMG20260917200820.jpg
+90646ffe40671c596f2e3c8fcf1ea8a3a9a8ca7a8948deda28840fc5206e0ae0  IMG20260917200822.jpg
+49b046395e0d23911ab0d3ad342fa905a8619ce1415dfbd1e35a0b1b44726a74  IMG20260917200825.jpg
+74ce3f40b33a0252f1f91aa6016d4fde66277d2774a17b5eb3cd9ba270705c24  IMG20260917200827.jpg
+131e3a3d06619649d9d744d6af43ef84b822e88d463c5b0dec6334694a61d979  IMG20260917200831.jpg
+02bc7005b0fc6c0c6e90bca425f3f9eaed9ef7b79f3f03d3f0c3c8ec28b2efb9  IMG20260917200833.jpg
+a7cfc9f6c21176c85b955aea62effbfdbbf0e33625198823f056afe8c781fcdf  IMG20260917200901.jpg</code></pre>
+    </div></p>
+<h2 id="三-教材照片-第-2-章-矩阵-heic-原件">三、教材照片·第 2 章 矩阵（HEIC 原件）</h2><p>第 2 章正文照片 30 张，2026-09-17 20:31–20:34 拍摄，<strong>HEIC 格式</strong>，原件不入库、由拍摄者本地保存，SHA-256 见下文。表格按原书页码顺序排列。</p>
+<div class="table-scroll-container"><table>
+<thead>
+<tr>
+<th align="left">文件</th>
+<th align="left">原书页码</th>
+<th align="left">主要内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">IMG20260917203129.heic</td>
+<td align="left">p22</td>
+<td align="left">第 2 章开头、2.1 矩阵的概念及运算、2.1.1、引例 2.1、表 2.1、引例 2.2</td>
+</tr>
+<tr>
+<td align="left">IMG20260917203132.heic</td>
+<td align="left">p23</td>
+<td align="left">表 2.2、定义 2.1、行/列矩阵、同型、零矩阵、上三角矩阵</td>
+</tr>
+<tr>
+<td align="left">IMG20260917203142.heic</td>
+<td align="left">p24</td>
+<td align="left">下三角、对角、单位矩阵、2.1.2、2.1.2.1 矩阵的加法、引例 2.3、表 2.3</td>
+</tr>
+<tr>
+<td align="left">IMG20260917203144.heic</td>
+<td align="left">p25</td>
+<td align="left">表 2.4、表 2.5、定义 2.2、加法运算规律</td>
+</tr>
+<tr>
+<td align="left">IMG20260917203207.heic</td>
+<td align="left">p26</td>
+<td align="left">2.1.2.2 数与矩阵相乘、定义 2.3、例 2.1、2.1.2.3 矩阵与矩阵相乘、引例 2.4</td>
+</tr>
+<tr>
+<td align="left">IMG20260917203210.heic</td>
+<td align="left">p27</td>
+<td align="left">定义 2.4、例 2.2、乘法不满足交换律与消去律、乘法运算律</td>
+</tr>
+<tr>
+<td align="left">IMG20260917203216.heic</td>
+<td align="left">p28</td>
+<td align="left">单位矩阵的作用、案例 2.1 材料供应、表 2.6</td>
+</tr>
+<tr>
+<td align="left">IMG20260917203219.heic</td>
+<td align="left">p29</td>
+<td align="left">案例 2.1 解答、2.1.2.4 矩阵的转置、定义 2.5、例 2.3</td>
+</tr>
+<tr>
+<td align="left">IMG20260917203225.heic</td>
+<td align="left">p30</td>
+<td align="left">例 2.3 解答、案例 2.2 销售利润、表 2.7</td>
+</tr>
+<tr>
+<td align="left">IMG20260917203229.heic</td>
+<td align="left">p31</td>
+<td align="left">表 2.8、定义 2.6 对称与反对称、例 2.4、2.1.2.5 方阵的行列式、定义 2.7、例 2.5</td>
+</tr>
+<tr>
+<td align="left">IMG20260917203236.heic</td>
+<td align="left">p32</td>
+<td align="left">习题 2.1 第 1–7 题</td>
+</tr>
+<tr>
+<td align="left">IMG20260917203238.heic</td>
+<td align="left">p33</td>
+<td align="left">习题 2.1 第 7–10 题、2.2 逆矩阵、引例 2.5</td>
+</tr>
+<tr>
+<td align="left">IMG20260917203245.heic</td>
+<td align="left">p34</td>
+<td align="left">2.2.1 逆矩阵的概念、定义 2.8、2.2.2 逆矩阵的求法、定义 2.9 伴随矩阵</td>
+</tr>
+<tr>
+<td align="left">IMG20260917203247.heic</td>
+<td align="left">p35</td>
+<td align="left">定理 2.1 及证明、推论 2.1、逆矩阵六条运算法则、例 2.6</td>
+</tr>
+<tr>
+<td align="left">IMG20260917203253.heic</td>
+<td align="left">p36</td>
+<td align="left">例 2.6 解答、例 2.7</td>
+</tr>
+<tr>
+<td align="left">IMG20260917203255.heic</td>
+<td align="left">p37</td>
+<td align="left">例 2.8、习题 2.2 第 1 题</td>
+</tr>
+<tr>
+<td align="left">IMG20260917203306.heic</td>
+<td align="left">p38</td>
+<td align="left">习题 2.2 第 2 题、2.3 矩阵的初等变换与初等矩阵、定义 2.10–2.11、例 2.9</td>
+</tr>
+<tr>
+<td align="left">IMG20260917203308.heic</td>
+<td align="left">p39</td>
+<td align="left">行阶梯形、行最简形、等价标准形、定理 2.2–2.3</td>
+</tr>
+<tr>
+<td align="left">IMG20260917203315.heic</td>
+<td align="left">p40</td>
+<td align="left">2.3.2 初等矩阵、定义 2.12</td>
+</tr>
+<tr>
+<td align="left">IMG20260917203317.heic</td>
+<td align="left">p41</td>
+<td align="left">定理 2.4、推论 2.2、2.3.3 用初等变换求逆矩阵、定理 2.5</td>
+</tr>
+<tr>
+<td align="left">IMG20260917203324.heic</td>
+<td align="left">p42</td>
+<td align="left">初等变换法求逆的原理、例 2.10</td>
+</tr>
+<tr>
+<td align="left">IMG20260917203327.heic</td>
+<td align="left">p43</td>
+<td align="left">习题 2.3、2.4 矩阵的秩、定义 2.13–2.14、例 2.11</td>
+</tr>
+<tr>
+<td align="left">IMG20260917203336.heic</td>
+<td align="left">p44</td>
+<td align="left">最高阶非零子式、例 2.12–2.13、定理 2.6</td>
+</tr>
+<tr>
+<td align="left">IMG20260917203350.heic</td>
+<td align="left">p45</td>
+<td align="left">例 2.14、例 2.15</td>
+</tr>
+<tr>
+<td align="left">IMG20260917203355.heic</td>
+<td align="left">p46</td>
+<td align="left">例 2.15 结论、习题 2.4、2.5 用 MATLAB 进行矩阵运算、2.5.1、例 2.16、2.5.2</td>
+</tr>
+<tr>
+<td align="left">IMG20260917203400.heic</td>
+<td align="left">p47</td>
+<td align="left">表 2.9、例 2.17</td>
+</tr>
+<tr>
+<td align="left">IMG20260917203411.heic</td>
+<td align="left">p48</td>
+<td align="left">2.5.3 加减运算、例 2.18、2.5.4 乘法运算、例 2.19</td>
+</tr>
+<tr>
+<td align="left">IMG20260917203413.heic</td>
+<td align="left">p49</td>
+<td align="left">例 2.19 输出、2.5.5 除法运算、例 2.20、例 2.21</td>
+</tr>
+<tr>
+<td align="left">IMG20260917203422.heic</td>
+<td align="left">p50</td>
+<td align="left">例 2.21 输出、2.5.6 矩阵的逆、例 2.22–2.24</td>
+</tr>
+<tr>
+<td align="left">IMG20260917203425.heic</td>
+<td align="left">p51</td>
+<td align="left">例 2.24 输出、2.5.7 矩阵的秩、例 2.25</td>
+</tr>
+</tbody></table></div>
+<h3 id="第-2-章照片校验和-heic-30-张">第 2 章照片校验和（HEIC，30 张）</h3><p><div class="code-fence-wrapper">
+      <div class="code-fence-header">
+        <span>text</span>
+        <button class="copy-btn">复制</button>
+      </div>
+      <pre><code>a60f2bc4d389190ebd02883cbde27be2dc23b87bb0b72b115a8f86dbf760999d  IMG20260917203129.heic
+edc361db8bfb7d84460f6703a7af0ea928e380de1766e7a7d9176cfd96908eec  IMG20260917203132.heic
+3df2462093266e0ea455fcd55a8e65c132632714856050945b16bb5a479a0f20  IMG20260917203142.heic
+b61cc3b00e1a0e6dcd3154fd960aa681b1cecb6ed7a4537c1dda10c3d18dec44  IMG20260917203144.heic
+dad91a7ed7944cadbae7e2eb09bfb88d55275d6b43c2913e0f7a7eeb6f3460d0  IMG20260917203207.heic
+b3d0710c1d2e58e0a8235769dddc969256cc71343b039d705252181e2617cdcb  IMG20260917203210.heic
+c99e8526760b270f857a9149ed79a937c389b7deb2184447d97d6e7e138ee7b8  IMG20260917203216.heic
+2fffa804d9bdfcfe8d7ed74bcd83af3a91dc8f8d6cae6ad079c5d48203c616eb  IMG20260917203219.heic
+535d97f7c0a645dcb843ebe6cfa2a3429bf33f7cc85184222f0abd5f0736b9ff  IMG20260917203225.heic
+32d851b2b1ec67571d8ada85e9587b7b2927cf95483376748013b8aa80dd80f8  IMG20260917203229.heic
+a427b2ac7365d728f07f8a596ca8b0c03c980b09f701947db5aacd1387198c8c  IMG20260917203236.heic
+dd62d294bd6bf38d45481822b59a8edd8405b525815d0eea04790748ddb5d647  IMG20260917203238.heic
+30920acf8ac431f2815aaa8db134b2fb002d2c06b17116dec2310ff36aaf3b6c  IMG20260917203245.heic
+0d05e4ea67009b6d934e66335dfb0cd8873fe721924b301745d8afe8eb8027ee  IMG20260917203247.heic
+1308cc77b039402db4a4a5370c14a66420d31e0e3d2950b9d92efe9bfc1c2707  IMG20260917203253.heic
+ef5fdf02365fd16781ed87b77d92322c58b1c7def7d26956c53fe7e0ca0dc46e  IMG20260917203255.heic
+65e308fc70204c7bfef11d960e024d60e87bbb68cbec1079cb2dc3054252834f  IMG20260917203306.heic
+5e1cecac98d41afe170ea149514a45d41f455354d2c21110cb74d45ee9e7a0c6  IMG20260917203308.heic
+f8fa69851321d0f235ac18c460707edb40c6ec6a1dee6eed31cab04c3a4c61de  IMG20260917203315.heic
+ea7a521a3faee3161343e204cea3f816962bb696983757a00ba8e17bf4ea3c08  IMG20260917203317.heic
+1284731fc5818a76ecce1fddbc140384f933291360228c8f9f71f0b8782c1cce  IMG20260917203324.heic
+df4dab165d6a73209fd7e6398d35dc44c5de39d6cf5c24741b19fc11f454af19  IMG20260917203327.heic
+c2c0a6a5000e09e5eee9d98b541185f5ebe9173911f4b4b9a71a1dd69e278caf  IMG20260917203336.heic
+80c52a5abd7faaa2518a72a3734765b31f264453eea15fc6d0564a6649e409da  IMG20260917203350.heic
+4cc97f14d2214f1b90ebe4c9a277cb19608f19064f285992af50e7575c9e6573  IMG20260917203355.heic
+33b0b97c67abba58fd806f427703db84ab6449f078a7b7e8b985bd3faf4ce82e  IMG20260917203400.heic
+214113fc432169a2e05ee044d3d742c327e0685c7ee4dec9b087bb53aee06a17  IMG20260917203411.heic
+7b898e3e66a67c0c1bd0c36e4ed7cea1bdd16edef4fd7d89ed7c73b95dcc3153  IMG20260917203413.heic
+7cd5690eff6ad7e98df8b9ed22fed78dbad0f6f14480724f4639902dbe5b72a6  IMG20260917203422.heic
+bc758cb3abe2de87b1bf0449b9955b18d1d864130f51af6c55979b4b4804d9f8  IMG20260917203425.heic</code></pre>
+    </div></p>
+<p>第 2 章解析见<a href="../%E6%95%99%E6%9D%90%E8%A7%A3%E6%9E%90/%E7%AC%AC%E4%B8%80%E9%83%A8%E5%88%86-%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/%E7%AC%AC2%E7%AB%A0-%E7%9F%A9%E9%98%B5/2.1-%E7%9F%A9%E9%98%B5%E7%9A%84%E6%A6%82%E5%BF%B5%E5%8F%8A%E8%BF%90%E7%AE%97.html">2.1 矩阵的概念及运算</a>等五个按节拆分的文件，入口见<a href="../%E6%95%99%E6%9D%90%E8%A7%A3%E6%9E%90/index.html">教材解析索引</a>。</p>
+<h2 id="四-照片清晰度审计-2026-09-18">四、照片清晰度审计（2026-09-18）</h2><p>第 1–2 章 60 页逐页审计结果。<strong>39 页清晰</strong>，11 页局部不清，1 页看不清。页码为原书页码。</p>
+<h3 id="需重拍-有内容风险-2026-09-18-已补拍核对">需重拍（有内容风险）→ 2026-09-18 已补拍核对</h3><div class="table-scroll-container"><table>
+<thead>
+<tr>
+<th align="left">页码</th>
+<th align="left">原问题</th>
+<th align="left">补拍核对结果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">p21</td>
+<td align="left">上部约 2/3 失焦发白</td>
+<td align="left"><strong>已核对</strong>：读出 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>=</mo><mrow><mo fence="true">(</mo><mtable rowspacing="0.16em" columnalign="center center center" columnspacing="1em"><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>1</mn></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>2</mn></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>3</mn></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>4</mn></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>5</mn></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>6</mn></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>7</mn></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>8</mn></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>9</mn></mstyle></mtd></mtr></mtable><mo fence="true">)</mo></mrow></mrow><annotation encoding="application/x-tex">A=\begin{pmatrix}1&amp;2&amp;3\\4&amp;5&amp;6\\7&amp;8&amp;9\end{pmatrix}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">A</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:3.6em;vertical-align:-1.55em;"></span><span class="minner"><span class="mopen"><span class="delimsizing mult"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.05em;"><span style="top:-4.05em;"><span class="pstrut" style="height:5.6em;"></span><span style="width:0.875em;height:3.6em;"><svg xmlns="http://www.w3.org/2000/svg" width="0.875em" height="3.6em" viewBox="0 0 875 3600"><path d="M863,9c0,-2,-2,-5,-6,-9c0,0,-17,0,-17,0c-12.7,0,-19.3,0.3,-20,1
+c-5.3,5.3,-10.3,11,-15,17c-242.7,294.7,-395.3,682,-458,1162c-21.3,163.3,-33.3,349,
+-36,557 l0,84c0.2,6,0,26,0,60c2,159.3,10,310.7,24,454c53.3,528,210,
+949.7,470,1265c4.7,6,9.7,11.7,15,17c0.7,0.7,7,1,19,1c0,0,18,0,18,0c4,-4,6,-7,6,-9
+c0,-2.7,-3.3,-8.7,-10,-18c-135.3,-192.7,-235.5,-414.3,-300.5,-665c-65,-250.7,-102.5,
+-544.7,-112.5,-882c-2,-104,-3,-167,-3,-189
+l0,-92c0,-162.7,5.7,-314,17,-454c20.7,-272,63.7,-513,129,-723c65.3,
+-210,155.3,-396.3,270,-559c6.7,-9.3,10,-15.3,10,-18z"/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.55em;"><span></span></span></span></span></span></span><span class="mord"><span class="mtable"><span class="col-align-c"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.05em;"><span style="top:-4.21em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span><span style="top:-3.01em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">4</span></span></span><span style="top:-1.81em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">7</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.55em;"><span></span></span></span></span></span><span class="arraycolsep" style="width:0.5em;"></span><span class="arraycolsep" style="width:0.5em;"></span><span class="col-align-c"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.05em;"><span style="top:-4.21em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">2</span></span></span><span style="top:-3.01em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">5</span></span></span><span style="top:-1.81em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">8</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.55em;"><span></span></span></span></span></span><span class="arraycolsep" style="width:0.5em;"></span><span class="arraycolsep" style="width:0.5em;"></span><span class="col-align-c"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.05em;"><span style="top:-4.21em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">3</span></span></span><span style="top:-3.01em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">6</span></span></span><span style="top:-1.81em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">9</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.55em;"><span></span></span></span></span></span></span></span><span class="mclose"><span class="delimsizing mult"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.05em;"><span style="top:-4.05em;"><span class="pstrut" style="height:5.6em;"></span><span style="width:0.875em;height:3.6em;"><svg xmlns="http://www.w3.org/2000/svg" width="0.875em" height="3.6em" viewBox="0 0 875 3600"><path d="M76,0c-16.7,0,-25,3,-25,9c0,2,2,6.3,6,13c21.3,28.7,42.3,60.3,
+63,95c96.7,156.7,172.8,332.5,228.5,527.5c55.7,195,92.8,416.5,111.5,664.5
+c11.3,139.3,17,290.7,17,454c0,28,1.7,43,3.3,45l0,9
+c-3,4,-3.3,16.7,-3.3,38c0,162,-5.7,313.7,-17,455c-18.7,248,-55.8,469.3,-111.5,664
+c-55.7,194.7,-131.8,370.3,-228.5,527c-20.7,34.7,-41.7,66.3,-63,95c-2,3.3,-4,7,-6,11
+c0,7.3,5.7,11,17,11c0,0,11,0,11,0c9.3,0,14.3,-0.3,15,-1c5.3,-5.3,10.3,-11,15,-17
+c242.7,-294.7,395.3,-681.7,458,-1161c21.3,-164.7,33.3,-350.7,36,-558
+l0,-144c-2,-159.3,-10,-310.7,-24,-454c-53.3,-528,-210,-949.7,
+-470,-1265c-4.7,-6,-9.7,-11.7,-15,-17c-0.7,-0.7,-6.7,-1,-18,-1z"/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.55em;"><span></span></span></span></span></span></span></span></span></span></span>、<code>D=det(A)</code> 输出 <code>-9.5162e-16</code>，与本仓库 1.4 节记录一致</td>
+</tr>
+<tr>
+<td align="left">p24</td>
+<td align="left">表 2.3 右侧两格偏淡</td>
+<td align="left"><strong>已核对</strong>：甲 11/64/35、乙 15/84/52，与 2.1 节记录一致</td>
+</tr>
+<tr>
+<td align="left">p43</td>
+<td align="left">虚线叠压例 2.11 矩阵元素</td>
+<td align="left"><strong>已核对并更正</strong>：矩阵第 4 行为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo separator="true">,</mo><mn>1</mn><mo separator="true">,</mo><mn>1</mn><mo separator="true">,</mo><mn>0</mn><mo separator="true">,</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">0,1,1,0,2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8389em;vertical-align:-0.1944em;"></span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">1</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">1</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">2</span></span></span></span>（原抄第 3 列 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">-1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">−</span><span class="mord">1</span></span></span></span> 有误，见 2.4 节完成边界）</td>
+</tr>
+</tbody></table></div>
+<h3 id="补拍件-2026-09-18-读毕已从原件目录移除">补拍件（2026-09-18，读毕已从原件目录移除）</h3><p>2026-09-18 第二批共 10 张：5 张目录页（p2–p4、p7–p8，用于补全第 3、4 章与第二、三部分目录子节）、5 张正文页（p14、p16、p21、p24、p43）。哈希留作身份凭证。</p>
+<div class="table-scroll-container"><table>
+<thead>
+<tr>
+<th align="left">文件（已移除）</th>
+<th align="left">对应原书页</th>
+<th align="left">SHA-256</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">微信图片_20260918061610_9_71.jpg</td>
+<td align="left">目录 p2</td>
+<td align="left"><code>c89e4f7df99ef285a51ae76ee3a2403149fddb37123fb3f069d175472218e6bf</code></td>
+</tr>
+<tr>
+<td align="left">微信图片_20260918061613_10_71.jpg</td>
+<td align="left">目录 p3</td>
+<td align="left"><code>8288a07f51c77cc7f298b7ea46fd3c1a24387797ef02be1b4999a1bbae7b5c17</code></td>
+</tr>
+<tr>
+<td align="left">微信图片_20260918061616_11_71.jpg</td>
+<td align="left">目录 p4</td>
+<td align="left"><code>b943844a28c753853440b28570a51e75281e806b38d72c4c5ccdeb172b773e93</code></td>
+</tr>
+<tr>
+<td align="left">微信图片_20260918061617_12_71.jpg</td>
+<td align="left">目录 p7</td>
+<td align="left"><code>e6be37781e7e1165b3aa6ce2eeedce6606dd046bc13b39ed4c0629893275f62b</code></td>
+</tr>
+<tr>
+<td align="left">微信图片_20260918061620_13_71.jpg</td>
+<td align="left">目录 p8</td>
+<td align="left"><code>057ef126aff3d3f7588701c88cfa13b70fb7662ccb3331c3f0182aad01ae0aaf</code></td>
+</tr>
+<tr>
+<td align="left">微信图片_20260918061622_14_71.jpg</td>
+<td align="left">正文 p14</td>
+<td align="left"><code>710f1c422b8dad17e089aa02b051264426091e10d35ad55bf4f313f8f402ac27</code></td>
+</tr>
+<tr>
+<td align="left">微信图片_20260918061624_15_71.jpg</td>
+<td align="left">正文 p16</td>
+<td align="left"><code>7987ee8fdb2bdf4ed80f537cb361c7659b72054a3d1a9f235377d015ebb4b527</code></td>
+</tr>
+<tr>
+<td align="left">微信图片_20260918061627_16_71.jpg</td>
+<td align="left">正文 p21</td>
+<td align="left"><code>b62ec499278cd03b01af7c53650108473069133ae4906e66d966c8ebc09073a1</code></td>
+</tr>
+<tr>
+<td align="left">微信图片_20260918061629_17_71.jpg</td>
+<td align="left">正文 p24</td>
+<td align="left"><code>243151c9d25cc9d5c0650e88aeacdffa113cfa3c62b14cbe3bc1b9d0f2b85d82</code></td>
+</tr>
+<tr>
+<td align="left">微信图片_20260918061632_18_71.jpg</td>
+<td align="left">正文 p43</td>
+<td align="left"><code>2bc1c90ae576bd6a21bc040d27436883df28f90060d8e0a52be84264f27d4378</code></td>
+</tr>
+</tbody></table></div>
+<h3 id="局部遮挡-主体可辨-可选重拍">局部遮挡（主体可辨，可选重拍）</h3><p>p2（下方手指压版头）、p3（中部反光压&quot;按对角线展开&quot;段）、p4（顶部手写笔记与展开式重叠）、p7（上部蓝色手写批注覆盖 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi><mo>=</mo></mrow><annotation encoding="application/x-tex">D=</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0278em;">D</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span></span></span></span> 行列式）、p8（中部反光压推论 1.2、1.3）、p14（底部手指压末行公式）、p16（上下缘手指与右缘反光压 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mn>1</mn><mi>D</mi></mfrac><mo stretchy="false">[</mo><mo>⋯</mo><mtext> </mtext><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">\frac1D[\cdots]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.1901em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8451em;"><span style="top:-2.655em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.0278em;">D</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mopen">[</span><span class="minner">⋯</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mclose">]</span></span></span></span> 展开式）。</p>
+<h3 id="极小字号标注-受数值唯一约束">极小字号标注（受数值唯一约束）</h3><p>p39 一处双行竖排标注、p42 一处三行竖排叠加标注，下标数字粘连难以逐字确认。这两处<strong>已由矩阵数值唯一确定并验算通过</strong>（见<a href="../%E6%95%99%E6%9D%90%E8%A7%A3%E6%9E%90/%E7%AC%AC%E4%B8%80%E9%83%A8%E5%88%86-%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/%E7%AC%AC2%E7%AB%A0-%E7%9F%A9%E9%98%B5/2.3-%E7%9F%A9%E9%98%B5%E7%9A%84%E5%88%9D%E7%AD%89%E5%8F%98%E6%8D%A2%E4%B8%8E%E5%88%9D%E7%AD%89%E7%9F%A9%E9%98%B5.html">2.3 节解析</a>），不影响正确性，仅在需要核对原书字形时重拍。</p>
+<h3 id="拍摄注意">拍摄注意</h3><p>第 1 章照片<strong>整批为倒置 180° 拍摄</strong>（版头与页码在画面下方），EXIF 无方向标记，自动校正无效——阅读时需旋转；重拍时注意方向。</p>
+<h2 id="五-照片使用边界">五、照片使用边界</h2><ul>
+<li><strong>原件不入库</strong>：60 张照片由拍摄者本地保存，仓库只登记文件名、页码与 SHA-256；解析正文引用的照片均指这些原件，仓库与网页都不提供下载。</li>
+<li>照片是拍摄原件，存在倾斜、反光、局部模糊和学生手写旁注；解析以独立验算和清晰可辨的印刷内容为准，看不清处标注待核对。需要复核〔待核对〕项时，按本节的 SHA-256 确认手上原件是否与登记一致。</li>
+<li>学生手写答案不等于标准答案；教材习题也不自动认定为教师正式布置的作业，见<a href="../%E4%BD%9C%E4%B8%9A/index.html">作业索引</a>。</li>
+<li>照片含拍摄环境，公开或推送前检查是否涉及他人隐私。</li>
+</ul>
+
+            </div>
+
+            
+
+            <footer class="site-footer">
+              <p class="site-footer__legal">
+                © 2026 ArchivalEra · 本站自研代码与解析文字以
+                <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank" rel="license noopener">AGPL-3.0</a>
+                许可发布 · <a href="https://github.com/ArchivalEra/S26-1_202609" target="_blank" rel="noopener">仓库源码</a>
+              </p>
+              <p class="site-footer__disclaimer">
+                教材《工程数学基础》的题目原文与章节结构版权归原书作者与出版社所有，本站解析为个人学习笔记；
+                页面主题样式来自 Shirone Material 3 Reader（MIT）；KaTeX、marked 等第三方库依其自身许可证分发。
+              </p>
+            </footer>
+          </article>
+        </main>
+
+        <!-- Table of Contents -->
+        <aside class="m3-toc">
+      <div class="toc-title">目录</div>
+      <ul class="toc-list">
+        <li class="toc-item level-2"><a href="#一-课堂原始转写">一、课堂原始转写</a></li><li class="toc-item level-2"><a href="#二-教材照片-工程数学基础">二、教材照片（《工程数学基础》）</a></li><li class="toc-item level-3"><a href="#1-目录页-原书目录-p1-p8">1. 目录页（原书目录 p1–p8）</a></li><li class="toc-item level-3"><a href="#2-第-1-章正文-原书-p1-p21">2. 第 1 章正文（原书 p1–p21）</a></li><li class="toc-item level-3"><a href="#3-书末习题参考答案">3. 书末习题参考答案</a></li><li class="toc-item level-3"><a href="#4-第-1-章照片校验和-jpg-30-张">4. 第 1 章照片校验和（JPG，30 张）</a></li><li class="toc-item level-2"><a href="#三-教材照片-第-2-章-矩阵-heic-原件">三、教材照片·第 2 章 矩阵（HEIC 原件）</a></li><li class="toc-item level-3"><a href="#第-2-章照片校验和-heic-30-张">第 2 章照片校验和（HEIC，30 张）</a></li><li class="toc-item level-2"><a href="#四-照片清晰度审计-2026-09-18">四、照片清晰度审计（2026-09-18）</a></li><li class="toc-item level-3"><a href="#需重拍-有内容风险-2026-09-18-已补拍核对">需重拍（有内容风险）→ 2026-09-18 已补拍核对</a></li><li class="toc-item level-3"><a href="#补拍件-2026-09-18-读毕已从原件目录移除">补拍件（2026-09-18，读毕已从原件目录移除）</a></li><li class="toc-item level-3"><a href="#局部遮挡-主体可辨-可选重拍">局部遮挡（主体可辨，可选重拍）</a></li><li class="toc-item level-3"><a href="#极小字号标注-受数值唯一约束">极小字号标注（受数值唯一约束）</a></li><li class="toc-item level-3"><a href="#拍摄注意">拍摄注意</a></li><li class="toc-item level-2"><a href="#五-照片使用边界">五、照片使用边界</a></li>
+      </ul>
+    </aside>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../../assets/theme/shirone-reader.js" defer></script>
+  <script src="../../../assets/plugins/disclosure-anchor.js" defer></script>
+  <script type="application/json" id="sym-glossary-json">{"terms":{}}</script>
+  <script src="../../../assets/plugins/math-glossary.js" defer></script>
+  <script src="../../../assets/plugins/site-search.js" defer></script>
+</body>
+</html>

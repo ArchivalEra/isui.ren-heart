@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-depth="3">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>电机学教材解析索引 | S26-1 课程知识库 - isui.ren</title>
+  <script>
+  /* 首帧前应用已保存的主题色与明暗，避免先用默认色渲染再变色（闪光弹 + 二次全量重绘） */
+  (function () {
+    try {
+      var root = document.documentElement;
+      var m = localStorage.getItem("theme") ||
+        (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      root.setAttribute("data-theme", m === "dark" ? "dark" : "light");
+      var hue = localStorage.getItem("theme-hue");
+      if (hue !== null && /^\d+$/.test(hue)) {
+        root.style.setProperty("--hue", hue);
+        root.style.setProperty("--primary-h", hue);
+      }
+    } catch (e) { /* 隐私模式下 localStorage 可能抛错，忽略 */ }
+  })();
+  </script>
+  <link rel="stylesheet" href="../../../assets/katex/katex.min.css">
+  <link rel="stylesheet" href="../../../assets/theme/shirone-reader.css">
+  <link rel="stylesheet" href="../../../assets/plugins/site-search.css">
+</head>
+<body>
+  <div class="drawer-backdrop" id="drawer-backdrop"></div>
+
+  <div class="site-shell">
+    <!-- Left Column: Full-Height Sidebar (整列导航栏) -->
+    <aside class="m3-drawer" id="m3-drawer">
+      <div class="drawer-header-brand">
+        <a href="../../../index.html" class="sidebar-brand">
+          <span class="site-title-icon">📚</span>
+          <span class="sidebar-brand-text">S26-1 课程知识库</span>
+        </a>
+        <button class="m3-icon-btn drawer-collapse-btn" id="drawer-collapse-btn" aria-label="收起侧边栏" title="收起侧边栏">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M15 18l-6-6 6-6"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="drawer-header-toolbar">
+        <span class="drawer-section-title">课程导航目录</span>
+        <button class="drawer-action-btn" id="toggle-all-groups-btn" title="一键收起或展开所有课程分类">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M7 15l5 5 5-5M7 9l5-5 5 5"/>
+          </svg>
+          <span id="toggle-all-text">全部收起</span>
+        </button>
+      </div>
+
+      <div class="drawer-nav-scroll-area">
+        <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../index.html" class="drawer-nav-link">
+              <span>首页</span>
+            </a>
+          </li><li class="drawer-nav-group expanded">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/index.html" class="drawer-nav-link ">
+                <span>课程总览</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 课程总览" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/工程数学/index.html" class="drawer-nav-link ">
+                <span>工程数学</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 工程数学" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/工程数学/教材解析/index.html" class="drawer-nav-link ">
+                <span>教材解析</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 教材解析" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/教材解析/0.0-符号入门.html" class="drawer-nav-link">
+              <span>符号入门</span>
+            </a>
+          </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/index.html" class="drawer-nav-link ">
+                <span>第一部分 线性代数</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 第一部分 线性代数" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header nav-header-clickable">
+            
+              <span class="drawer-section-title-text">第01章 行列式</span>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 第01章 行列式" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.0-本章通关攻略.html" class="drawer-nav-link">
+              <span>★ 通关攻略</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.1-二阶与三阶行列式.html" class="drawer-nav-link">
+              <span>1.1 二阶与三阶行列式</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.2-n阶行列式.html" class="drawer-nav-link">
+              <span>1.2 n阶行列式</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.3-克莱姆法则.html" class="drawer-nav-link">
+              <span>1.3 克莱姆法则</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.4-用MATLAB计算行列式.html" class="drawer-nav-link">
+              <span>1.4 用MATLAB计算行列式</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header nav-header-clickable">
+            
+              <span class="drawer-section-title-text">第02章 矩阵</span>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 第02章 矩阵" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.0-本章通关攻略.html" class="drawer-nav-link">
+              <span>★ 通关攻略</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.1-矩阵的概念及运算.html" class="drawer-nav-link">
+              <span>2.1 矩阵的概念及运算</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.2-逆矩阵.html" class="drawer-nav-link">
+              <span>2.2 逆矩阵</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.3-矩阵的初等变换与初等矩阵.html" class="drawer-nav-link">
+              <span>2.3 初等变换与初等矩阵</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.4-矩阵的秩.html" class="drawer-nav-link">
+              <span>2.4 矩阵的秩</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.5-用MATLAB进行矩阵运算.html" class="drawer-nav-link">
+              <span>2.5 用MATLAB进行矩阵运算</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li></ul>
+            </div>
+          </div>
+        </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/工程数学/课堂笔记/index.html" class="drawer-nav-link ">
+                <span>课堂笔记</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 课堂笔记" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/课堂笔记/2026-09-17-determinants-order-2-3.html" class="drawer-nav-link">
+              <span>09-17 行列式与沙路法则</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/课堂笔记/2026-09-17-determinants-transcript-notes.html" class="drawer-nav-link">
+              <span>09-17 课堂听课整理</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/课堂笔记/2026-09-24-降阶法克拉默法则与齐次方程组.html" class="drawer-nav-link">
+              <span>09-24 降阶法与克拉默法则</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/工程数学/作业/index.html" class="drawer-nav-link ">
+                <span>作业</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 作业" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/作业/2026-09-17-作业1.html" class="drawer-nav-link">
+              <span>作业1</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/原始资料/index.html" class="drawer-nav-link">
+              <span>原始资料</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/工程数学/音频/index.html" class="drawer-nav-link">
+              <span>音频</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/电力大数据与人工智能/index.html" class="drawer-nav-link ">
+                <span>电力大数据与人工智能</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 电力大数据与人工智能" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/电力大数据与人工智能/作业/index.html" class="drawer-nav-link">
+              <span>作业</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电力大数据与人工智能/教材解析/index.html" class="drawer-nav-link">
+              <span>教材解析</span>
+            </a>
+          </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/电力大数据与人工智能/课堂笔记/index.html" class="drawer-nav-link ">
+                <span>课堂笔记</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 课堂笔记" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/电力大数据与人工智能/课堂笔记/2026-09-20-课程定位与考核要求.html" class="drawer-nav-link">
+              <span>09-20 开课第一讲</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电力大数据与人工智能/课堂笔记/2026-09-22-暂态稳定评估方法与紧急控制.html" class="drawer-nav-link">
+              <span>09-22 暂态稳定评估与紧急控制</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电力大数据与人工智能/原始资料/index.html" class="drawer-nav-link">
+              <span>原始资料</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电力大数据与人工智能/音频/index.html" class="drawer-nav-link">
+              <span>音频</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/形势与政策/index.html" class="drawer-nav-link ">
+                <span>形势与政策</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 形势与政策" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/形势与政策/作业/index.html" class="drawer-nav-link">
+              <span>作业</span>
+            </a>
+          </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/形势与政策/课堂笔记/index.html" class="drawer-nav-link ">
+                <span>课堂笔记</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 课堂笔记" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/形势与政策/课堂笔记/2026-09-21-经济热点专题与考试安排.html" class="drawer-nav-link">
+              <span>09-21 经济热点专题与考试安排</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-item ">
+            <a href="../../../课程/形势与政策/原始资料/index.html" class="drawer-nav-link">
+              <span>原始资料</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/形势与政策/音频/index.html" class="drawer-nav-link">
+              <span>音频</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/电路原理/index.html" class="drawer-nav-link ">
+                <span>电路原理</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 电路原理" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/电路原理/作业/index.html" class="drawer-nav-link ">
+                <span>作业</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 作业" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/电路原理/作业/2026-09-28-习题册第一章.html" class="drawer-nav-link">
+              <span>习题册第一章（43 题）</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电路原理/作业/2026-09-28-习题册第二章.html" class="drawer-nav-link">
+              <span>习题册第二章（34 题）</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电路原理/作业/2026-09-28-习题册第三章.html" class="drawer-nav-link">
+              <span>习题册第三章（28 题）</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电路原理/作业/2026-09-28-习题册第四章.html" class="drawer-nav-link">
+              <span>习题册第四章（21 题）</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电路原理/作业/2026-09-28-习题册第五章.html" class="drawer-nav-link">
+              <span>习题册第五章（62 题）</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电路原理/作业/2026-09-28-习题册第六章.html" class="drawer-nav-link">
+              <span>习题册第六章（33 题）</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电路原理/作业/2026-09-28-习题册第七章.html" class="drawer-nav-link">
+              <span>习题册第七章（31 题）</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电路原理/作业/2026-09-28-习题册第九章.html" class="drawer-nav-link">
+              <span>习题册第九章（26 题）</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/电路原理/教材解析/index.html" class="drawer-nav-link ">
+                <span>教材解析</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 教材解析" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/电路原理/教材解析/0.0-符号入门.html" class="drawer-nav-link">
+              <span>符号入门</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/电路原理/课堂笔记/index.html" class="drawer-nav-link ">
+                <span>课堂笔记</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 课堂笔记" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/电路原理/课堂笔记/2026-09-21-开课说明与电路的基本概念.html" class="drawer-nav-link">
+              <span>09-21 开课说明与电路的基本概念</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电路原理/课堂笔记/2026-09-23-电压电位与电路名词.html" class="drawer-nav-link">
+              <span>09-23 电压电位与电路名词</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电路原理/原始资料/index.html" class="drawer-nav-link">
+              <span>原始资料</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电路原理/音频/index.html" class="drawer-nav-link">
+              <span>音频</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/电子技术/index.html" class="drawer-nav-link ">
+                <span>电子技术</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 电子技术" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/电子技术/作业/index.html" class="drawer-nav-link ">
+                <span>作业</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 作业" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/电子技术/作业/2026-09-23-第一章简答题.html" class="drawer-nav-link">
+              <span>2026-9-23作业（习题 1.1、1.3、1.5）</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电子技术/教材解析/index.html" class="drawer-nav-link">
+              <span>教材解析</span>
+            </a>
+          </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/电子技术/课堂笔记/index.html" class="drawer-nav-link ">
+                <span>课堂笔记</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 课堂笔记" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/电子技术/课堂笔记/2026-09-21-开课说明与半导体基础到PN结.html" class="drawer-nav-link">
+              <span>09-21 开课说明与半导体基础到 PN 结</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电子技术/课堂笔记/2026-09-23-二极管与含二极管电路.html" class="drawer-nav-link">
+              <span>09-23 二极管与含二极管电路</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电子技术/原始资料/index.html" class="drawer-nav-link">
+              <span>原始资料</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电子技术/音频/index.html" class="drawer-nav-link">
+              <span>音频</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group expanded">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/电机学/index.html" class="drawer-nav-link ">
+                <span>电机学</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 电机学" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/电机学/作业/index.html" class="drawer-nav-link ">
+                <span>作业</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 作业" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/电机学/作业/2026-09-22-第1章概述客观题.html" class="drawer-nav-link">
+              <span>09-22 第1章概述客观题（25题）</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group expanded">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/电机学/教材解析/index.html" class="drawer-nav-link active">
+                <span>教材解析</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 教材解析" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/电机学/教材解析/0.0-符号入门.html" class="drawer-nav-link">
+              <span>符号入门</span>
+            </a>
+          </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="../../../课程/电机学/教材解析/第01章-概述/1.1-电机的分类.html" class="drawer-nav-link ">
+                <span>第01章 概述</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 第01章 概述" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../课程/电机学/教材解析/第01章-概述/1.1-电机的分类.html" class="drawer-nav-link">
+              <span>1.1 电机的分类</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电机学/教材解析/第01章-概述/1.2-电机的磁路和磁路定律.html" class="drawer-nav-link">
+              <span>1.2 电机的磁路和磁路定律</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电机学/教材解析/第01章-概述/1.3-电机的电磁基本理论.html" class="drawer-nav-link">
+              <span>1.3 电机的电磁基本理论</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电机学/教材解析/第01章-概述/1.4-电机的制造材料.html" class="drawer-nav-link">
+              <span>1.4 电机的制造材料</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电机学/教材解析/第01章-概述/第01章-小结与思考题习题.html" class="drawer-nav-link">
+              <span>第01章 小结与思考题习题</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电机学/课堂笔记/index.html" class="drawer-nav-link">
+              <span>课堂笔记</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电机学/原始资料/index.html" class="drawer-nav-link">
+              <span>原始资料</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../课程/电机学/音频/index.html" class="drawer-nav-link">
+              <span>音频</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header nav-header-clickable">
+            
+              <span class="drawer-section-title-text">仓库规约</span>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 仓库规约" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="../../../维护条例.html" class="drawer-nav-link">
+              <span>维护条例</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="../../../维护细则.html" class="drawer-nav-link">
+              <span>维护细则</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li></ul>
+      </div>
+
+      <div class="sidebar-resizer" id="sidebar-resizer" title="按住拖拽调整侧边栏宽度，双击恢复默认宽度"></div>
+    </aside>
+
+    <!-- Right Column: Main Content Column (主内容列) -->
+    <div class="main-column">
+      <!-- Top App Bar -->
+      <header class="m3-top-app-bar">
+        <div class="top-bar-left">
+          <button class="m3-icon-btn" id="drawer-toggle" aria-label="展开/收起侧边栏" title="展开/收起侧边栏">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+          </button>
+          <a href="../../../index.html" class="top-bar-mobile-title">
+            <span>S26-1 课程知识库</span>
+          </a>
+          <nav class="top-bar-breadcrumbs" aria-label="当前路径">
+            <a href="../../../index.html">首页</a><span class="m3-breadcrumb-sep">/</span><span class="current-crumb">电机学教材解析索引</span>
+          </nav>
+        </div>
+
+        <div class="top-bar-right">
+          <button class="m3-icon-btn" id="palette-toggle" aria-label="调色盘" title="自定义主题强调色">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/>
+              <circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/>
+              <circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/>
+              <circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/>
+              <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/>
+            </svg>
+          </button>
+
+          <!-- Palette Popover -->
+          <div class="palette-popover" id="palette-popover">
+            <div class="palette-header">
+              <span class="palette-title">主题强调色调色盘</span>
+              <button class="palette-reset-btn" id="palette-reset-btn" title="重置为默认色">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+              </button>
+            </div>
+            <div class="palette-current-row">
+              <span class="palette-hue-badge" id="palette-hue-badge">Hue 248°</span>
+              <div class="palette-color-dot" id="palette-color-dot"></div>
+            </div>
+            <div class="palette-slider-container">
+              <span class="palette-slider-label">色相微调 (0° - 360°)</span>
+              <input type="range" min="0" max="360" value="248" class="palette-slider" id="hue-slider">
+            </div>
+            <div>
+              <div class="palette-swatches-title">预设配色</div>
+              <div class="palette-swatches-grid">
+                <button class="palette-swatch-item" data-hue="315" title="经典粉紫">
+                  <span class="palette-swatch-dot" style="background: hsl(315, 75%, 45%);"></span>
+                  <span class="palette-swatch-name">粉紫</span>
+                </button>
+                <button class="palette-swatch-item" data-hue="280" title="紫罗兰">
+                  <span class="palette-swatch-dot" style="background: hsl(280, 75%, 45%);"></span>
+                  <span class="palette-swatch-name">紫罗兰</span>
+                </button>
+                <button class="palette-swatch-item active" data-hue="248" title="学术深蓝">
+                  <span class="palette-swatch-dot" style="background: hsl(248, 75%, 45%);"></span>
+                  <span class="palette-swatch-name">深蓝</span>
+                </button>
+                <button class="palette-swatch-item" data-hue="205" title="天青蓝">
+                  <span class="palette-swatch-dot" style="background: hsl(205, 75%, 45%);"></span>
+                  <span class="palette-swatch-name">天青</span>
+                </button>
+                <button class="palette-swatch-item" data-hue="150" title="翡翠绿">
+                  <span class="palette-swatch-dot" style="background: hsl(150, 75%, 40%);"></span>
+                  <span class="palette-swatch-name">翡翠</span>
+                </button>
+                <button class="palette-swatch-item" data-hue="75" title="琥珀黄">
+                  <span class="palette-swatch-dot" style="background: hsl(75, 75%, 40%);"></span>
+                  <span class="palette-swatch-name">琥珀</span>
+                </button>
+                <button class="palette-swatch-item" data-hue="30" title="晚霞橙">
+                  <span class="palette-swatch-dot" style="background: hsl(30, 80%, 48%);"></span>
+                  <span class="palette-swatch-name">晚霞</span>
+                </button>
+                <button class="palette-swatch-item" data-hue="355" title="绯红">
+                  <span class="palette-swatch-dot" style="background: hsl(355, 75%, 45%);"></span>
+                  <span class="palette-swatch-name">绯红</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <button class="m3-icon-btn" id="search-toggle" aria-label="全站搜索" title="全站搜索">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+          </button>
+
+          <button class="m3-icon-btn" id="theme-toggle" aria-label="切换昼夜主题">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          </button>
+        </div>
+      </header>
+
+      <!-- 全站搜索面板（点击顶栏放大镜展开；ESC 或点外部关闭） -->
+      <div class="search-panel" id="search-panel" hidden>
+        <div class="search-panel-inner" role="dialog" aria-modal="true" aria-label="全站搜索">
+          <div class="search-panel-head">
+            <svg class="search-panel-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+            <input type="search" id="search-input" class="search-panel-input" placeholder="搜索知识点、例题、习题…" autocomplete="off" spellcheck="false">
+            <button class="m3-icon-btn" id="search-close" aria-label="关闭搜索" title="关闭（ESC）">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
+          </div>
+          <div class="search-panel-body" id="search-results">
+            <p class="search-hint">输入关键词开始搜索。中文按字面子串匹配——搜「沙路法则」只出真正连着出现这四个字的地方；结果按相关度排序，回车打开第一条。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="layout-container">
+        <!-- Content Area -->
+        <main class="content-wrapper">
+          <article class="article-container">
+            <!-- Breadcrumb in page body -->
+            <nav class="m3-breadcrumb">
+              <a href="../../../index.html">首页</a><span class="m3-breadcrumb-sep">/</span><span>电机学教材解析索引</span>
+            </nav>
+
+            <div class="meta-chip-bar"><span class="meta-chip primary">📚 电机学</span><span class="meta-chip">🏷️ 教材解析</span><span class="meta-chip">⚡ 状态: active</span><span class="meta-chip">📅 更新: 2026-09-24</span><span class="meta-chip">📖 来源: 教材《电机学》（第三版）第一章照片 22 张（登记见 原始资料/index.md）</span></div>
+
+            <div class="article-content">
+              <h1 id="电机学教材解析">电机学教材解析</h1><p><a href="../index.html">返回课程索引</a> · <span class="res-degrade-badge">📋 教材章节解析模板 (模板不随站点发布)</span></p>
+<h2 id="教材登记">教材登记</h2><div class="table-scroll-container"><table>
+<thead>
+<tr>
+<th align="left">书名</th>
+<th align="left">系列</th>
+<th align="left">作者</th>
+<th align="left">出版社</th>
+<th align="left">版次</th>
+<th align="left">目录来源</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">电机学</td>
+<td align="left">「十二五」普通高等教育本科国家级规划教材</td>
+<td align="left">待提供</td>
+<td align="left">待提供</td>
+<td align="left"><strong>第三版</strong>（书名页印「电机学（第三版）」）</td>
+<td align="left">目录页照片（IMG20260924111149.heic）</td>
+</tr>
+</tbody></table></div>
+<ul>
+<li><strong>版权页不在已提供的照片内</strong>，故作者、出版社与出版年<strong>待提供</strong>，不据书名推测。</li>
+<li>教材自带「主要符号表」（两页），已整理成<a href="./0.0-%E7%AC%A6%E5%8F%B7%E5%85%A5%E9%97%A8.html">符号入门</a>：词条 122 条，标题与释义都是
+真公式（KaTeX），并整张列在页尾的<strong>符号总表</strong>里，每个符号一个锚点。</li>
+</ul>
+<h2 id="章节结构-据目录页照片抄录">章节结构（据目录页照片抄录）</h2><div class="table-scroll-container"><table>
+<thead>
+<tr>
+<th align="left">篇／章</th>
+<th align="left">标题</th>
+<th align="left">起始页</th>
+<th align="left">本仓进度</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">第一章</td>
+<td align="left">概述（第一节 电机的分类／第二节 电机的磁路和磁路定律／第三节 电机的电磁基本理论／第四节 电机的制造材料／小结／思考题／习题）</td>
+<td align="left">1</td>
+<td align="left">✅ 四节 + 小结习题已解析</td>
+</tr>
+<tr>
+<td align="left">第一篇</td>
+<td align="left">变压器</td>
+<td align="left">23 起</td>
+<td align="left">⬜ 未开始（照片未提供）</td>
+</tr>
+<tr>
+<td align="left">第二章</td>
+<td align="left">变压器的基本作用原理与理论分析</td>
+<td align="left">23</td>
+<td align="left">⬜</td>
+</tr>
+<tr>
+<td align="left">第三章</td>
+<td align="left">三相变压器及运行</td>
+<td align="left">49</td>
+<td align="left">⬜</td>
+</tr>
+</tbody></table></div>
+<h2 id="已建文件">已建文件</h2><div class="table-scroll-container"><table>
+<thead>
+<tr>
+<th align="left">文件</th>
+<th align="left">内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><a href="./0.0-%E7%AC%A6%E5%8F%B7%E5%85%A5%E9%97%A8.html">0.0 符号入门</a></td>
+<td align="left">教材「主要符号表」<strong>整张录入</strong>（122 条）+ <strong>运算符族</strong>（<a class="sym-gloss" data-term="sym-int" href="0.0-%E7%AC%A6%E5%8F%B7%E5%85%A5%E9%97%A8.html#sym-int" aria-label="int：积分号"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∫</mo></mrow><annotation encoding="application/x-tex">∫</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.1111em;vertical-align:-0.3061em;"></span><span class="mop op-symbol small-op" style="margin-right:0.1945em;position:relative;top:-0.0006em;">∫</span></span></span></span></a> <a class="sym-gloss" data-term="sym-oint" href="0.0-%E7%AC%A6%E5%8F%B7%E5%85%A5%E9%97%A8.html#sym-oint" aria-label="oint：环路积分"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∮</mo></mrow><annotation encoding="application/x-tex">∮</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.1111em;vertical-align:-0.3061em;"></span><span class="mop op-symbol small-op" style="margin-right:0.1945em;position:relative;top:-0.0006em;">∮</span></span></span></span></a> <a class="sym-gloss" data-term="sym-sum" href="0.0-%E7%AC%A6%E5%8F%B7%E5%85%A5%E9%97%A8.html#sym-sum" aria-label="Sigma：求和号"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Σ</mi></mrow><annotation encoding="application/x-tex">Σ</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">Σ</span></span></span></span></a> d <a class="sym-gloss" data-term="sym-partial" href="0.0-%E7%AC%A6%E5%8F%B7%E5%85%A5%E9%97%A8.html#sym-partial" aria-label="partial：偏导号"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">∂</mi></mrow><annotation encoding="application/x-tex">∂</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord" style="margin-right:0.0556em;">∂</span></span></span></span></a> <a class="sym-gloss" data-term="sym-inf" href="0.0-%E7%AC%A6%E5%8F%B7%E5%85%A5%E9%97%A8.html#sym-inf" aria-label="infty：无穷大"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">∞</mi></mrow><annotation encoding="application/x-tex">∞</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord">∞</span></span></span></span></a> <a class="sym-gloss" data-term="sym-propto" href="0.0-%E7%AC%A6%E5%8F%B7%E5%85%A5%E9%97%A8.html#sym-propto" aria-label="propto：正比于"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∝</mo></mrow><annotation encoding="application/x-tex">∝</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mrel">∝</span></span></span></span></a> × · →）+ 符号气泡词条，页尾另有整张<strong>符号总表</strong>（逐符号锚点）；公式内<strong>全量自动取词</strong>（<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi></mrow><annotation encoding="application/x-tex">\htmlData{term=sym-S}{S}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="enclosing" data-term="sym-S"><span class="mord mathnormal" style="margin-right:0.0576em;">S</span></span></span></span></span>、<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Φ</mi></mrow><annotation encoding="application/x-tex">\htmlData{term=sym-Phi}{\Phi}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="enclosing" data-term="sym-Phi"><span class="mord">Φ</span></span></span></span></span>、<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>B</mi><mi>r</mi></msub></mrow><annotation encoding="application/x-tex">\htmlData{term=sym-Br}{B_r}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="enclosing" data-term="sym-Br"><span class="mord"><span class="mord mathnormal" style="margin-right:0.0502em;">B</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0502em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0278em;">r</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></span>、<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>p</mi><mrow><mi>F</mi><mi>e</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\htmlData{term=sym-pFe}{p_{Fe}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="enclosing" data-term="sym-pFe"><span class="mord"><span class="mord mathnormal">p</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.1389em;">F</span><span class="mord mathnormal mtight">e</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></span>、<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mo>∮</mo><mi>l</mi></msub></mrow><annotation encoding="application/x-tex">\htmlData{term=sym-oint}{\oint}_l</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.1608em;vertical-align:-0.3558em;"></span><span class="mop"><span class="enclosing" data-term="sym-oint"><span class="mop op-symbol small-op" style="margin-right:0.1945em;position:relative;top:-0.0006em;">∮</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1303em;"><span style="top:-2.3442em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0197em;">l</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.3558em;"><span></span></span></span></span></span></span></span></span></span> 直接可点），正文自动取词限于希腊字母与带下标记号；<strong>气泡标题与释义都在构建期渲染</strong>（写 <code>\frac</code> 出真分式）</td>
+</tr>
+<tr>
+<td align="left"><a href="./%E7%AC%AC01%E7%AB%A0-%E6%A6%82%E8%BF%B0/1.1-%E7%94%B5%E6%9C%BA%E7%9A%84%E5%88%86%E7%B1%BB.html">1.1 电机的分类</a></td>
+<td align="left">按职能／电流种类／原理与运动方式的三套分法，易错三处（变压器属电机、异步机能发电、四大类≠三组）</td>
+</tr>
+<tr>
+<td align="left"><a href="./%E7%AC%AC01%E7%AB%A0-%E6%A6%82%E8%BF%B0/1.2-%E7%94%B5%E6%9C%BA%E7%9A%84%E7%A3%81%E8%B7%AF%E5%92%8C%E7%A3%81%E8%B7%AF%E5%AE%9A%E5%BE%8B.html">1.2 电机的磁路和磁路定律</a></td>
+<td align="left">磁场与磁路、<a class="sym-gloss" data-term="sym-B" href="0.0-%E7%AC%A6%E5%8F%B7%E5%85%A5%E9%97%A8.html#sym-B" aria-label="B：磁通密度（磁感应强度）"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0502em;">B</span></span></span></span></a>/<a class="sym-gloss" data-term="sym-H" href="0.0-%E7%AC%A6%E5%8F%B7%E5%85%A5%E9%97%A8.html#sym-H" aria-label="H：磁场强度"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi></mrow><annotation encoding="application/x-tex">H</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0813em;">H</span></span></span></span></a>/<a class="sym-gloss" data-term="sym-mu" href="0.0-%E7%AC%A6%E5%8F%B7%E5%85%A5%E9%97%A8.html#sym-mu" aria-label="mu：磁导率（mu_0、mu_r）"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>μ</mi></mrow><annotation encoding="application/x-tex">μ</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">μ</span></span></span></span></a>、<a class="sym-gloss" data-term="sym-B" href="0.0-%E7%AC%A6%E5%8F%B7%E5%85%A5%E9%97%A8.html#sym-B" aria-label="B：磁通密度（磁感应强度）"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0502em;">B</span></span></span></span></a>-<a class="sym-gloss" data-term="sym-H" href="0.0-%E7%AC%A6%E5%8F%B7%E5%85%A5%E9%97%A8.html#sym-H" aria-label="H：磁场强度"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi></mrow><annotation encoding="application/x-tex">H</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0813em;">H</span></span></span></span></a> 曲线与磁滞回线、铁耗、全电流定律、磁路基本定律、磁场储能；<strong>例 1-1 的独立验算与双签</strong></td>
+</tr>
+<tr>
+<td align="left"><a href="./%E7%AC%AC01%E7%AB%A0-%E6%A6%82%E8%BF%B0/1.3-%E7%94%B5%E6%9C%BA%E7%9A%84%E7%94%B5%E7%A3%81%E5%9F%BA%E6%9C%AC%E7%90%86%E8%AE%BA.html">1.3 电机的电磁基本理论</a></td>
+<td align="left">电感（含互感与漏电感）、电磁感应定律三种写法、电磁力与转矩、可逆性原理</td>
+</tr>
+<tr>
+<td align="left"><a href="./%E7%AC%AC01%E7%AB%A0-%E6%A6%82%E8%BF%B0/1.4-%E7%94%B5%E6%9C%BA%E7%9A%84%E5%88%B6%E9%80%A0%E6%9D%90%E6%96%99.html">1.4 电机的制造材料</a></td>
+<td align="left">导电／导磁／绝缘／机械支撑四类材料与必记数字表（含绝缘等级七级温度）</td>
+</tr>
+<tr>
+<td align="left"><a href="./%E7%AC%AC01%E7%AB%A0-%E6%A6%82%E8%BF%B0/%E7%AC%AC01%E7%AB%A0-%E5%B0%8F%E7%BB%93%E4%B8%8E%E6%80%9D%E8%80%83%E9%A2%98%E4%B9%A0%E9%A2%98.html">第 01 章 小结与思考题习题</a></td>
+<td align="left">小结五条、表 1-2 电路与磁路类比、思考题 1-1～1-7 的答法要点、习题 1-1～1-6 的下手路线（不给答案）</td>
+</tr>
+</tbody></table></div>
+<h2 id="命名与写作规则">命名与写作规则</h2><ul>
+<li><strong>一节一个文件</strong>，放在 <code>第NN章-章名/</code> 下，命名为 <code>&lt;节号&gt;-&lt;节名&gt;.md</code>（如 <code>1.2-电机的磁路和磁路定律.md</code>）；章级资料页用 <code>第NN章-&lt;名称&gt;.md</code>（如小结与习题）。</li>
+<li>每个文件内部固定：<strong>先「原书抄录」</strong>（按印书页码逐段抄印刷正文与原编号，公式用 LaTeX）<strong>再「解析」</strong>（机械做法、易错点、验算、与后续内容的接口），抄录与解析<strong>分开标注</strong>，文末写「本节完成边界」。</li>
+<li><strong>验算独立</strong>：教材例题必须用精确算术重算（<code>fractions.Fraction</code>），差异逐项列出；书上没给答案的习题<strong>只登记题面与方法</strong>，答案留到正式布置或写进通关攻略。</li>
+<li><strong>图不复刻</strong>：教材的图只记图题与可辨标注（本仓不做图片线）。</li>
+<li><strong>标题里不写 <code>$…$</code></strong>（2026-09-24 踩坑）：右侧目录是从<strong>渲染后</strong>的标题取文本的，KaTeX 会把同一个符号吐三遍
+（符号本体 + 原始 TeX + 渲染结果），目录里就会冒出 <code>HHH</code>、<code>pFep_{Fe}pFe</code> 这种重复。标题里的符号一律写平文
+（<code>H</code>、<code>μ</code>、<code>Φ</code>、<code>p_Fe</code>）。</li>
+<li><strong>符号气泡</strong>（2026-09-28 重构为<strong>环境包络</strong>模型）：正文里把记号写成 <code>[B]{#sym-B}</code> 令牌；词条在
+<a href="./0.0-%E7%AC%A6%E5%8F%B7%E5%85%A5%E9%97%A8.html">0.0 符号入门</a> 的 <code>:::glossary-dict</code> 围栏里维护。<strong>词条标题与释义都写 LaTeX</strong>
+（<code>$B_r$</code>、<code>$\frac{60f}{p}$</code>、<code>$\mu_0$</code>）——构建期渲染成真公式，不要再用 unicode 上下标（<code>B_r</code>、<code>μ₀</code>）
+或斜杠分数（<code>P₂/P₁</code>）凑。<strong>词条按「符号包」组织</strong>（包注册表与课程环境表在 <code>站点/符号环境.mjs</code>）：
+本页是「电机学:符号」包，词条 id 在包内唯一；别的课程要用这里的符号，把它的课程环境变量指到本包
+（整包复用）或写 <code>[…]{#电机学:sym-B}</code> 包限定令牌（强制锚定单个符号）。解析<strong>零回退</strong>——被锚定的
+包里没有的 id 原样保留并给构建期警告。「详细 ↗」落到本页<strong>符号总表</strong>里该词条那一行。</li>
+<li><strong>符号总表</strong>（2026-09-24）：本页围栏写成 <code>:::glossary-dict table</code>，构建期就在围栏位置渲染出一张
+122 行的表（每行 <code>id="&lt;词条id&gt;"</code>），气泡的「详细 ↗」才有个逐符号的落点。族的折叠面板讲「怎么记」，
+总表管「查得到」。<br>新增符号＝<strong>照教材符号表补一行</strong>，表与气泡同时生效，不用改代码。</li>
+<li><strong>自动取词</strong>（2026-09-24 加）：同一个文件里再用一个 <code>:::glossary-match</code> 围栏声明写法——
+<code>id | 正文形式（、分隔） | TeX 形式（、分隔，可省）</code>，<strong>声明过的符号在正文里裸写、在公式里出现都会自动可点</strong>，
+不必手写令牌。TeX 形式还可以写成 <code>/…/</code> 正则（<strong>模式原子</strong>，2026-09-28 加）——一族记号（如行列记号
+<code>$r_1$</code>、正负号 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mo>−</mo><mn>1</mn><msup><mo stretchy="false">)</mo><mrow><mi>i</mi><mo>+</mo><mi>j</mi></mrow></msup></mrow><annotation encoding="application/x-tex">(-1)^{\htmlData{term=sym-i}{i}+\htmlData{term=sym-j}{j}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0747em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">−</span><span class="mord">1</span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8247em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="enclosing mtight" data-term="sym-i"><span class="mord mathnormal mtight">i</span></span><span class="mbin mtight">+</span><span class="enclosing mtight" data-term="sym-j"><span class="mord mathnormal mtight" style="margin-right:0.0572em;">j</span></span></span></span></span></span></span></span></span></span></span></span></span>）一条声明全覆盖。没声明的词条仍要手写令牌（自动取词只在内容侧点过名时
+发生，不会把每个字母都上色）。正文侧不碰代码、公式、链接、标题与已有令牌，并跳过「B 级绝缘」「B 图」这类场合。
+只声明形式、没有词条内容的 id 不参与取词（构建期会警告）。</li>
+<li><strong>禁止反人类解析</strong>：解析里不出现「试探／凑／巧妙看出」这类没写完的步骤；教材本身的「试探法」一律翻译成<strong>两点线性插值的机械步骤</strong>（见 1.2 节与小结页）。</li>
+</ul>
+<blockquote>
+<p>解析的进度记在本索引的「章节结构」表里；每完成一节就在「已建文件」表里加一行，并按<a href="../../../%E7%BB%B4%E6%8A%A4%E6%9D%A1%E4%BE%8B.html">维护条例</a>与对应分类索引同步。</p>
+</blockquote>
+
+            </div>
+
+            
+
+            <footer class="site-footer">
+              <p class="site-footer__legal">
+                © 2026 ArchivalEra · 本站自研代码与解析文字以
+                <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank" rel="license noopener">AGPL-3.0</a>
+                许可发布 · <a href="https://github.com/ArchivalEra/S26-1_202609" target="_blank" rel="noopener">仓库源码</a>
+              </p>
+              <p class="site-footer__disclaimer">
+                教材《工程数学基础》的题目原文与章节结构版权归原书作者与出版社所有，本站解析为个人学习笔记；
+                页面主题样式来自 Shirone Material 3 Reader（MIT）；KaTeX、marked 等第三方库依其自身许可证分发。
+              </p>
+            </footer>
+          </article>
+        </main>
+
+        <!-- Table of Contents -->
+        <aside class="m3-toc">
+      <div class="toc-title">目录</div>
+      <ul class="toc-list">
+        <li class="toc-item level-2"><a href="#教材登记">教材登记</a></li><li class="toc-item level-2"><a href="#章节结构-据目录页照片抄录">章节结构（据目录页照片抄录）</a></li><li class="toc-item level-2"><a href="#已建文件">已建文件</a></li><li class="toc-item level-2"><a href="#命名与写作规则">命名与写作规则</a></li>
+      </ul>
+    </aside>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../../assets/theme/shirone-reader.js" defer></script>
+  <script src="../../../assets/plugins/disclosure-anchor.js" defer></script>
+  <script type="application/json" id="sym-glossary-json">{"terms":{"sym-S":{"title":"<span class=\"katex\"><span class=\"katex-mathml\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><semantics><mrow><mi>S<\/mi><\/mrow><annotation encoding=\"application/x-tex\">S<\/annotation><\/semantics><\/math><\/span><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.6833em;\"><\/span><span class=\"mord mathnormal\" style=\"margin-right:0.0576em;\">S<\/span><\/span><\/span><\/span>：视在功率；面积；每槽导体数","text":"按上下文取一个：视在功率（与 <span class=\"katex\"><span class=\"katex-mathml\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><semantics><mrow><mi>P<\/mi><\/mrow><annotation encoding=\"application/x-tex\">P<\/annotation><\/semantics><\/math><\/span><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.6833em;\"><\/span><span class=\"mord mathnormal\" style=\"margin-right:0.1389em;\">P<\/span><\/span><\/span><\/span>、<span class=\"katex\"><span class=\"katex-mathml\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><semantics><mrow><mi>Q<\/mi><\/mrow><annotation encoding=\"application/x-tex\">Q<\/annotation><\/semantics><\/math><\/span><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.8778em;vertical-align:-0.1944em;\"><\/span><span class=\"mord mathnormal\">Q<\/span><\/span><\/span><\/span> 对应）、面积（磁通 <span class=\"katex\"><span class=\"katex-mathml\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><semantics><mrow><mi mathvariant=\"normal\">Φ<\/mi><mo>=<\/mo><mi>B<\/mi><mi>S<\/mi><\/mrow><annotation encoding=\"application/x-tex\">\\Phi=BS<\/annotation><\/semantics><\/math><\/span><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.6833em;\"><\/span><span class=\"mord\">Φ<\/span><span class=\"mspace\" style=\"margin-right:0.2778em;\"><\/span><span class=\"mrel\">=<\/span><span class=\"mspace\" style=\"margin-right:0.2778em;\"><\/span><\/span><span class=\"base\"><span class=\"strut\" style=\"height:0.6833em;\"><\/span><span class=\"mord mathnormal\" style=\"margin-right:0.0502em;\">B<\/span><span class=\"mord mathnormal\" style=\"margin-right:0.0576em;\">S<\/span><\/span><\/span><\/span> 里的 <span class=\"katex\"><span class=\"katex-mathml\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><semantics><mrow><mi>S<\/mi><\/mrow><annotation encoding=\"application/x-tex\">S<\/annotation><\/semantics><\/math><\/span><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.6833em;\"><\/span><span class=\"mord mathnormal\" style=\"margin-right:0.0576em;\">S<\/span><\/span><\/span><\/span>）、每槽导体数。","href":"0.0-%E7%AC%A6%E5%8F%B7%E5%85%A5%E9%97%A8.html#sym-S"},"sym-Phi":{"title":"<span class=\"katex\"><span class=\"katex-mathml\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><semantics><mrow><mi mathvariant=\"normal\">Φ<\/mi><\/mrow><annotation encoding=\"application/x-tex\">\\Phi<\/annotation><\/semantics><\/math><\/span><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.6833em;\"><\/span><span class=\"mord\">Φ<\/span><\/span><\/span><\/span>：磁通（有效值）","text":"穿过某一面积的磁感应线根数，标量，单位 Wb。均匀磁场且磁感应线与面正交时 <span class=\"katex\"><span class=\"katex-mathml\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><semantics><mrow><mi mathvariant=\"normal\">Φ<\/mi><mo>=<\/mo><mi>B<\/mi><mi>S<\/mi><\/mrow><annotation encoding=\"application/x-tex\">\\Phi=BS<\/annotation><\/semantics><\/math><\/span><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.6833em;\"><\/span><span class=\"mord\">Φ<\/span><span class=\"mspace\" style=\"margin-right:0.2778em;\"><\/span><span class=\"mrel\">=<\/span><span class=\"mspace\" style=\"margin-right:0.2778em;\"><\/span><\/span><span class=\"base\"><span class=\"strut\" style=\"height:0.6833em;\"><\/span><span class=\"mord mathnormal\" style=\"margin-right:0.0502em;\">B<\/span><span class=\"mord mathnormal\" style=\"margin-right:0.0576em;\">S<\/span><\/span><\/span><\/span>。教材符号表区分：<span class=\"katex\"><span class=\"katex-mathml\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><semantics><mrow><mi mathvariant=\"normal\">Φ<\/mi><\/mrow><annotation encoding=\"application/x-tex\">\\Phi<\/annotation><\/semantics><\/math><\/span><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.6833em;\"><\/span><span class=\"mord\">Φ<\/span><\/span><\/span><\/span> 有效值、<span class=\"katex\"><span class=\"katex-mathml\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><semantics><mrow><msub><mi mathvariant=\"normal\">Φ<\/mi><mi>m<\/mi><\/msub><\/mrow><annotation encoding=\"application/x-tex\">\\Phi_m<\/annotation><\/semantics><\/math><\/span><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.8333em;vertical-align:-0.15em;\"><\/span><span class=\"mord\"><span class=\"mord\">Φ<\/span><span class=\"msupsub\"><span class=\"vlist-t vlist-t2\"><span class=\"vlist-r\"><span class=\"vlist\" style=\"height:0.1514em;\"><span style=\"top:-2.55em;margin-left:0em;margin-right:0.05em;\"><span class=\"pstrut\" style=\"height:2.7em;\"><\/span><span class=\"sizing reset-size6 size3 mtight\"><span class=\"mord mathnormal mtight\">m<\/span><\/span><\/span><\/span><span class=\"vlist-s\">​<\/span><\/span><span class=\"vlist-r\"><span class=\"vlist\" style=\"height:0.15em;\"><span><\/span><\/span><\/span><\/span><\/span><\/span><\/span><\/span><\/span> 最大值、<span class=\"katex\"><span class=\"katex-mathml\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><semantics><mrow><mi>φ<\/mi><\/mrow><annotation encoding=\"application/x-tex\">\\varphi<\/annotation><\/semantics><\/math><\/span><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.625em;vertical-align:-0.1944em;\"><\/span><span class=\"mord mathnormal\">φ<\/span><\/span><\/span><\/span> 瞬时值。注意它是有向的，进出要相减。","href":"0.0-%E7%AC%A6%E5%8F%B7%E5%85%A5%E9%97%A8.html#sym-Phi"},"sym-Br":{"title":"<span class=\"katex\"><span class=\"katex-mathml\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><semantics><mrow><msub><mi>B<\/mi><mi>r<\/mi><\/msub><\/mrow><annotation encoding=\"application/x-tex\">B_r<\/annotation><\/semantics><\/math><\/span><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.8333em;vertical-align:-0.15em;\"><\/span><span class=\"mord\"><span class=\"mord mathnormal\" style=\"margin-right:0.0502em;\">B<\/span><span class=\"msupsub\"><span class=\"vlist-t vlist-t2\"><span class=\"vlist-r\"><span class=\"vlist\" style=\"height:0.1514em;\"><span style=\"top:-2.55em;margin-left:-0.0502em;margin-right:0.05em;\"><span class=\"pstrut\" style=\"height:2.7em;\"><\/span><span class=\"sizing reset-size6 size3 mtight\"><span class=\"mord mathnormal mtight\" style=\"margin-right:0.0278em;\">r<\/span><\/span><\/span><\/span><span class=\"vlist-s\">​<\/span><\/span><span class=\"vlist-r\"><span class=\"vlist\" style=\"height:0.15em;\"><span><\/span><\/span><\/span><\/span><\/span><\/span><\/span><\/span><\/span>：剩余磁通密度（剩磁）","text":"极限磁滞回线与纵轴（<span class=\"katex\"><span class=\"katex-mathml\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><semantics><mrow><mi>H<\/mi><mo>=<\/mo><mn>0<\/mn><\/mrow><annotation encoding=\"application/x-tex\">H=0<\/annotation><\/semantics><\/math><\/span><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.6833em;\"><\/span><span class=\"mord mathnormal\" style=\"margin-right:0.0813em;\">H<\/span><span class=\"mspace\" style=\"margin-right:0.2778em;\"><\/span><span class=\"mrel\">=<\/span><span class=\"mspace\" style=\"margin-right:0.2778em;\"><\/span><\/span><span class=\"base\"><span class=\"strut\" style=\"height:0.6444em;\"><\/span><span class=\"mord\">0<\/span><\/span><\/span><\/span>）的交点，表示撤去外磁场后材料里还剩的磁通密度。剩磁大 → 适合做永磁体。","href":"0.0-%E7%AC%A6%E5%8F%B7%E5%85%A5%E9%97%A8.html#sym-Br"},"sym-pFe":{"title":"<span class=\"katex\"><span class=\"katex-mathml\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><semantics><mrow><msub><mi>p<\/mi><mrow><mi>F<\/mi><mi>e<\/mi><\/mrow><\/msub><\/mrow><annotation encoding=\"application/x-tex\">p_{Fe}<\/annotation><\/semantics><\/math><\/span><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.625em;vertical-align:-0.1944em;\"><\/span><span class=\"mord\"><span class=\"mord mathnormal\">p<\/span><span class=\"msupsub\"><span class=\"vlist-t vlist-t2\"><span class=\"vlist-r\"><span class=\"vlist\" style=\"height:0.3283em;\"><span style=\"top:-2.55em;margin-left:0em;margin-right:0.05em;\"><span class=\"pstrut\" style=\"height:2.7em;\"><\/span><span class=\"sizing reset-size6 size3 mtight\"><span class=\"mord mtight\"><span class=\"mord mathnormal mtight\" style=\"margin-right:0.1389em;\">F<\/span><span class=\"mord mathnormal mtight\">e<\/span><\/span><\/span><\/span><\/span><span class=\"vlist-s\">​<\/span><\/span><span class=\"vlist-r\"><span class=\"vlist\" style=\"height:0.15em;\"><span><\/span><\/span><\/span><\/span><\/span><\/span><\/span><\/span><\/span>：铁芯损耗（铁耗）","text":"交变磁化时铁心里的能量损耗，<span class=\"katex\"><span class=\"katex-mathml\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><semantics><mrow><msub><mi>p<\/mi><mrow><mi>F<\/mi><mi>e<\/mi><\/mrow><\/msub><mo>=<\/mo><msub><mi>p<\/mi><mi>h<\/mi><\/msub><mo>+<\/mo><msub><mi>p<\/mi><mi>e<\/mi><\/msub><\/mrow><annotation encoding=\"application/x-tex\">p_{Fe}=p_h+p_e<\/annotation><\/semantics><\/math><\/span><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.625em;vertical-align:-0.1944em;\"><\/span><span class=\"mord\"><span class=\"mord mathnormal\">p<\/span><span class=\"msupsub\"><span class=\"vlist-t vlist-t2\"><span class=\"vlist-r\"><span class=\"vlist\" style=\"height:0.3283em;\"><span style=\"top:-2.55em;margin-left:0em;margin-right:0.05em;\"><span class=\"pstrut\" style=\"height:2.7em;\"><\/span><span class=\"sizing reset-size6 size3 mtight\"><span class=\"mord mtight\"><span class=\"mord mathnormal mtight\" style=\"margin-right:0.1389em;\">F<\/span><span class=\"mord mathnormal mtight\">e<\/span><\/span><\/span><\/span><\/span><span class=\"vlist-s\">​<\/span><\/span><span class=\"vlist-r\"><span class=\"vlist\" style=\"height:0.15em;\"><span><\/span><\/span><\/span><\/span><\/span><\/span><span class=\"mspace\" style=\"margin-right:0.2778em;\"><\/span><span class=\"mrel\">=<\/span><span class=\"mspace\" style=\"margin-right:0.2778em;\"><\/span><\/span><span class=\"base\"><span class=\"strut\" style=\"height:0.7778em;vertical-align:-0.1944em;\"><\/span><span class=\"mord\"><span class=\"mord mathnormal\">p<\/span><span class=\"msupsub\"><span class=\"vlist-t vlist-t2\"><span class=\"vlist-r\"><span class=\"vlist\" style=\"height:0.3361em;\"><span style=\"top:-2.55em;margin-left:0em;margin-right:0.05em;\"><span class=\"pstrut\" style=\"height:2.7em;\"><\/span><span class=\"sizing reset-size6 size3 mtight\"><span class=\"mord mathnormal mtight\">h<\/span><\/span><\/span><\/span><span class=\"vlist-s\">​<\/span><\/span><span class=\"vlist-r\"><span class=\"vlist\" style=\"height:0.15em;\"><span><\/span><\/span><\/span><\/span><\/span><\/span><span class=\"mspace\" style=\"margin-right:0.2222em;\"><\/span><span class=\"mbin\">+<\/span><span class=\"mspace\" style=\"margin-right:0.2222em;\"><\/span><\/span><span class=\"base\"><span class=\"strut\" style=\"height:0.625em;vertical-align:-0.1944em;\"><\/span><span class=\"mord\"><span class=\"mord mathnormal\">p<\/span><span class=\"msupsub\"><span class=\"vlist-t vlist-t2\"><span class=\"vlist-r\"><span class=\"vlist\" style=\"height:0.1514em;\"><span style=\"top:-2.55em;margin-left:0em;margin-right:0.05em;\"><span class=\"pstrut\" style=\"height:2.7em;\"><\/span><span class=\"sizing reset-size6 size3 mtight\"><span class=\"mord mathnormal mtight\">e<\/span><\/span><\/span><\/span><span class=\"vlist-s\">​<\/span><\/span><span class=\"vlist-r\"><span class=\"vlist\" style=\"height:0.15em;\"><span><\/span><\/span><\/span><\/span><\/span><\/span><\/span><\/span><\/span>：磁滞损耗 <span class=\"katex\"><span class=\"katex-mathml\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><semantics><mrow><msub><mi>p<\/mi><mi>h<\/mi><\/msub><mo>=<\/mo><msub><mi>k<\/mi><mi>h<\/mi><\/msub><mi>f<\/mi><mi>V<\/mi><msubsup><mi>B<\/mi><mi>m<\/mi><mi>n<\/mi><\/msubsup><\/mrow><annotation encoding=\"application/x-tex\">p_h=k_h f V B_m^n<\/annotation><\/semantics><\/math><\/span><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.625em;vertical-align:-0.1944em;\"><\/span><span class=\"mord\"><span class=\"mord mathnormal\">p<\/span><span class=\"msupsub\"><span class=\"vlist-t vlist-t2\"><span class=\"vlist-r\"><span class=\"vlist\" style=\"height:0.3361em;\"><span style=\"top:-2.55em;margin-left:0em;margin-right:0.05em;\"><span class=\"pstrut\" style=\"height:2.7em;\"><\/span><span class=\"sizing reset-size6 size3 mtight\"><span class=\"mord mathnormal mtight\">h<\/span><\/span><\/span><\/span><span class=\"vlist-s\">​<\/span><\/span><span class=\"vlist-r\"><span class=\"vlist\" style=\"height:0.15em;\"><span><\/span><\/span><\/span><\/span><\/span><\/span><span class=\"mspace\" style=\"margin-right:0.2778em;\"><\/span><span class=\"mrel\">=<\/span><span class=\"mspace\" style=\"margin-right:0.2778em;\"><\/span><\/span><span class=\"base\"><span class=\"strut\" style=\"height:0.9414em;vertical-align:-0.247em;\"><\/span><span class=\"mord\"><span class=\"mord mathnormal\" style=\"margin-right:0.0315em;\">k<\/span><span class=\"msupsub\"><span class=\"vlist-t vlist-t2\"><span class=\"vlist-r\"><span class=\"vlist\" style=\"height:0.3361em;\"><span style=\"top:-2.55em;margin-left:-0.0315em;margin-right:0.05em;\"><span class=\"pstrut\" style=\"height:2.7em;\"><\/span><span class=\"sizing reset-size6 size3 mtight\"><span class=\"mord mathnormal mtight\">h<\/span><\/span><\/span><\/span><span class=\"vlist-s\">​<\/span><\/span><span class=\"vlist-r\"><span class=\"vlist\" style=\"height:0.15em;\"><span><\/span><\/span><\/span><\/span><\/span><\/span><span class=\"mord mathnormal\" style=\"margin-right:0.1076em;\">f<\/span><span class=\"mord mathnormal\" style=\"margin-right:0.2222em;\">V<\/span><span class=\"mord\"><span class=\"mord mathnormal\" style=\"margin-right:0.0502em;\">B<\/span><span class=\"msupsub\"><span class=\"vlist-t vlist-t2\"><span class=\"vlist-r\"><span class=\"vlist\" style=\"height:0.6644em;\"><span style=\"top:-2.453em;margin-left:-0.0502em;margin-right:0.05em;\"><span class=\"pstrut\" style=\"height:2.7em;\"><\/span><span class=\"sizing reset-size6 size3 mtight\"><span class=\"mord mathnormal mtight\">m<\/span><\/span><\/span><span style=\"top:-3.063em;margin-right:0.05em;\"><span class=\"pstrut\" style=\"height:2.7em;\"><\/span><span class=\"sizing reset-size6 size3 mtight\"><span class=\"mord mathnormal mtight\">n<\/span><\/span><\/span><\/span><span class=\"vlist-s\">​<\/span><\/span><span class=\"vlist-r\"><span class=\"vlist\" style=\"height:0.247em;\"><span><\/span><\/span><\/span><\/span><\/span><\/span><\/span><\/span><\/span>（正比于回线面积，<span class=\"katex\"><span class=\"katex-mathml\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><semantics><mrow><mi>n<\/mi><\/mrow><annotation encoding=\"application/x-tex\">n<\/annotation><\/semantics><\/math><\/span><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.4306em;\"><\/span><span class=\"mord mathnormal\">n<\/span><\/span><\/span><\/span> 约 1.5～2）+ 涡流损耗 <span class=\"katex\"><span class=\"katex-mathml\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><semantics><mrow><msub><mi>p<\/mi><mi>e<\/mi><\/msub><mo>=<\/mo><msub><mi>k<\/mi><mi>e<\/mi><\/msub><mi>V<\/mi><msup><mi>f<\/mi><mn>2<\/mn><\/msup><msup><mi>τ<\/mi><mn>2<\/mn><\/msup><msubsup><mi>B<\/mi><mi>m<\/mi><mn>2<\/mn><\/msubsup><\/mrow><annotation encoding=\"application/x-tex\">p_e=k_e V f^2\\tau^2 B_m^2<\/annotation><\/semantics><\/math><\/span><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.625em;vertical-align:-0.1944em;\"><\/span><span class=\"mord\"><span class=\"mord mathnormal\">p<\/span><span class=\"msupsub\"><span class=\"vlist-t vlist-t2\"><span class=\"vlist-r\"><span class=\"vlist\" style=\"height:0.1514em;\"><span style=\"top:-2.55em;margin-left:0em;margin-right:0.05em;\"><span class=\"pstrut\" style=\"height:2.7em;\"><\/span><span class=\"sizing reset-size6 size3 mtight\"><span class=\"mord mathnormal mtight\">e<\/span><\/span><\/span><\/span><span class=\"vlist-s\">​<\/span><\/span><span class=\"vlist-r\"><span class=\"vlist\" style=\"height:0.15em;\"><span><\/span><\/span><\/span><\/span><\/span><\/span><span class=\"mspace\" style=\"margin-right:0.2778em;\"><\/span><span class=\"mrel\">=<\/span><span class=\"mspace\" style=\"margin-right:0.2778em;\"><\/span><\/span><span class=\"base\"><span class=\"strut\" style=\"height:1.0611em;vertical-align:-0.247em;\"><\/span><span class=\"mord\"><span class=\"mord mathnormal\" style=\"margin-right:0.0315em;\">k<\/span><span class=\"msupsub\"><span class=\"vlist-t vlist-t2\"><span class=\"vlist-r\"><span class=\"vlist\" style=\"height:0.1514em;\"><span style=\"top:-2.55em;margin-left:-0.0315em;margin-right:0.05em;\"><span class=\"pstrut\" style=\"height:2.7em;\"><\/span><span class=\"sizing reset-size6 size3 mtight\"><span class=\"mord mathnormal mtight\">e<\/span><\/span><\/span><\/span><span class=\"vlist-s\">​<\/span><\/span><span class=\"vlist-r\"><span class=\"vlist\" style=\"height:0.15em;\"><span><\/span><\/span><\/span><\/span><\/span><\/span><span class=\"mord mathnormal\" style=\"margin-right:0.2222em;\">V<\/span><span class=\"mord\"><span class=\"mord mathnormal\" style=\"margin-right:0.1076em;\">f<\/span><span class=\"msupsub\"><span class=\"vlist-t\"><span class=\"vlist-r\"><span class=\"vlist\" style=\"height:0.8141em;\"><span style=\"top:-3.063em;margin-right:0.05em;\"><span class=\"pstrut\" style=\"height:2.7em;\"><\/span><span class=\"sizing reset-size6 size3 mtight\"><span class=\"mord mtight\">2<\/span><\/span><\/span><\/span><\/span><\/span><\/span><\/span><span class=\"mord\"><span class=\"mord mathnormal\" style=\"margin-right:0.1132em;\">τ<\/span><span class=\"msupsub\"><span class=\"vlist-t\"><span class=\"vlist-r\"><span class=\"vlist\" style=\"height:0.8141em;\"><span style=\"top:-3.063em;margin-right:0.05em;\"><span class=\"pstrut\" style=\"height:2.7em;\"><\/span><span class=\"sizing reset-size6 size3 mtight\"><span class=\"mord mtight\">2<\/span><\/span><\/span><\/span><\/span><\/span><\/span><\/span><span class=\"mord\"><span class=\"mord mathnormal\" style=\"margin-right:0.0502em;\">B<\/span><span class=\"msupsub\"><span class=\"vlist-t vlist-t2\"><span class=\"vlist-r\"><span class=\"vlist\" style=\"height:0.8141em;\"><span style=\"top:-2.453em;margin-left:-0.0502em;margin-right:0.05em;\"><span class=\"pstrut\" style=\"height:2.7em;\"><\/span><span class=\"sizing reset-size6 size3 mtight\"><span class=\"mord mathnormal mtight\">m<\/span><\/span><\/span><span style=\"top:-3.063em;margin-right:0.05em;\"><span class=\"pstrut\" style=\"height:2.7em;\"><\/span><span class=\"sizing reset-size6 size3 mtight\"><span class=\"mord mtight\">2<\/span><\/span><\/span><\/span><span class=\"vlist-s\">​<\/span><\/span><span class=\"vlist-r\"><span class=\"vlist\" style=\"height:0.247em;\"><span><\/span><\/span><\/span><\/span><\/span><\/span><\/span><\/span><\/span>（正比于频率平方、片厚平方）。工程上按材料的比损耗（W/kg）乘重量算。","href":"0.0-%E7%AC%A6%E5%8F%B7%E5%85%A5%E9%97%A8.html#sym-pFe"},"sym-oint":{"title":"<span class=\"katex\"><span class=\"katex-mathml\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><semantics><mrow><mo>∮<\/mo><\/mrow><annotation encoding=\"application/x-tex\">\\oint<\/annotation><\/semantics><\/math><\/span><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:1.1111em;vertical-align:-0.3061em;\"><\/span><span class=\"mop op-symbol small-op\" style=\"margin-right:0.1945em;position:relative;top:-0.0006em;\">∮<\/span><\/span><\/span><\/span>：环路积分","text":"沿闭合路径走一圈的积分。全电流定律 <span class=\"katex\"><span class=\"katex-mathml\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><semantics><mrow><msub><mo>∮<\/mo><mi>l<\/mi><\/msub><mi>H<\/mi><mtext> <\/mtext><mi mathvariant=\"normal\">d<\/mi><mi>l<\/mi><mo>=<\/mo><mo>∑<\/mo><mi>I<\/mi><mo>=<\/mo><mi>N<\/mi><mi>I<\/mi><\/mrow><annotation encoding=\"application/x-tex\">\\oint_l H\\,\\mathrm dl=\\sum I=NI<\/annotation><\/semantics><\/math><\/span><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:1.1608em;vertical-align:-0.3558em;\"><\/span><span class=\"mop\"><span class=\"mop op-symbol small-op\" style=\"margin-right:0.1945em;position:relative;top:-0.0006em;\">∮<\/span><span class=\"msupsub\"><span class=\"vlist-t vlist-t2\"><span class=\"vlist-r\"><span class=\"vlist\" style=\"height:0.1303em;\"><span style=\"top:-2.3442em;margin-left:-0.1945em;margin-right:0.05em;\"><span class=\"pstrut\" style=\"height:2.7em;\"><\/span><span class=\"sizing reset-size6 size3 mtight\"><span class=\"mord mathnormal mtight\" style=\"margin-right:0.0197em;\">l<\/span><\/span><\/span><\/span><span class=\"vlist-s\">​<\/span><\/span><span class=\"vlist-r\"><span class=\"vlist\" style=\"height:0.3558em;\"><span><\/span><\/span><\/span><\/span><\/span><\/span><span class=\"mspace\" style=\"margin-right:0.1667em;\"><\/span><span class=\"mord mathnormal\" style=\"margin-right:0.0813em;\">H<\/span><span class=\"mspace\" style=\"margin-right:0.1667em;\"><\/span><span class=\"mord mathrm\">d<\/span><span class=\"mord mathnormal\" style=\"margin-right:0.0197em;\">l<\/span><span class=\"mspace\" style=\"margin-right:0.2778em;\"><\/span><span class=\"mrel\">=<\/span><span class=\"mspace\" style=\"margin-right:0.2778em;\"><\/span><\/span><span class=\"base\"><span class=\"strut\" style=\"height:1em;vertical-align:-0.25em;\"><\/span><span class=\"mop op-symbol small-op\" style=\"position:relative;top:0em;\">∑<\/span><span class=\"mspace\" style=\"margin-right:0.1667em;\"><\/span><span class=\"mord mathnormal\" style=\"margin-right:0.0785em;\">I<\/span><span class=\"mspace\" style=\"margin-right:0.2778em;\"><\/span><span class=\"mrel\">=<\/span><span class=\"mspace\" style=\"margin-right:0.2778em;\"><\/span><\/span><span class=\"base\"><span class=\"strut\" style=\"height:0.6833em;\"><\/span><span class=\"mord mathnormal\" style=\"margin-right:0.109em;\">N<\/span><span class=\"mord mathnormal\" style=\"margin-right:0.0785em;\">I<\/span><\/span><\/span><\/span>：磁场强度沿闭合回路的积分等于所匝链的电流。","href":"0.0-%E7%AC%A6%E5%8F%B7%E5%85%A5%E9%97%A8.html#sym-oint"},"sym-i":{"title":"<span class=\"katex\"><span class=\"katex-mathml\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><semantics><mrow><mi>i<\/mi><\/mrow><annotation encoding=\"application/x-tex\">i<\/annotation><\/semantics><\/math><\/span><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.6595em;\"><\/span><span class=\"mord mathnormal\">i<\/span><\/span><\/span><\/span>：电流瞬时值","text":"瞬时值；直流电路用大写 <span class=\"katex\"><span class=\"katex-mathml\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><semantics><mrow><mi>I<\/mi><\/mrow><annotation encoding=\"application/x-tex\">I<\/annotation><\/semantics><\/math><\/span><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.6833em;\"><\/span><span class=\"mord mathnormal\" style=\"margin-right:0.0785em;\">I<\/span><\/span><\/span><\/span>，交流电路用电流的瞬时或有效值。","href":"0.0-%E7%AC%A6%E5%8F%B7%E5%85%A5%E9%97%A8.html#sym-i"},"sym-j":{"title":"<span class=\"katex\"><span class=\"katex-mathml\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><semantics><mrow><mi>j<\/mi><\/mrow><annotation encoding=\"application/x-tex\">j<\/annotation><\/semantics><\/math><\/span><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.854em;vertical-align:-0.1944em;\"><\/span><span class=\"mord mathnormal\" style=\"margin-right:0.0572em;\">j<\/span><\/span><\/span><\/span>：电流密度","text":"单位截面积上的电流（A/mm²）。","href":"0.0-%E7%AC%A6%E5%8F%B7%E5%85%A5%E9%97%A8.html#sym-j"},"sym-int":{"title":"<span class=\"katex\"><span class=\"katex-mathml\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><semantics><mrow><mo>∫<\/mo><\/mrow><annotation encoding=\"application/x-tex\">\\int<\/annotation><\/semantics><\/math><\/span><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:1.1111em;vertical-align:-0.3061em;\"><\/span><span class=\"mop op-symbol small-op\" style=\"margin-right:0.1945em;position:relative;top:-0.0006em;\">∫<\/span><\/span><\/span><\/span>：积分号","text":"沿一条线（或一个面）把各点的量累加。<span class=\"katex\"><span class=\"katex-mathml\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><semantics><mrow><msub><mo>∫<\/mo><mi>S<\/mi><\/msub><mi>B<\/mi><mi>cos<\/mi><mo>⁡<\/mo><mi>θ<\/mi><mtext> <\/mtext><mi mathvariant=\"normal\">d<\/mi><mi>S<\/mi><\/mrow><annotation encoding=\"application/x-tex\">\\int_S B\\cos\\theta\\,\\mathrm dS<\/annotation><\/semantics><\/math><\/span><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:1.1608em;vertical-align:-0.3558em;\"><\/span><span class=\"mop\"><span class=\"mop op-symbol small-op\" style=\"margin-right:0.1945em;position:relative;top:-0.0006em;\">∫<\/span><span class=\"msupsub\"><span class=\"vlist-t vlist-t2\"><span class=\"vlist-r\"><span class=\"vlist\" style=\"height:0.1225em;\"><span style=\"top:-2.3442em;margin-left:-0.1945em;margin-right:0.05em;\"><span class=\"pstrut\" style=\"height:2.7em;\"><\/span><span class=\"sizing reset-size6 size3 mtight\"><span class=\"mord mathnormal mtight\" style=\"margin-right:0.0576em;\">S<\/span><\/span><\/span><\/span><span class=\"vlist-s\">​<\/span><\/span><span class=\"vlist-r\"><span class=\"vlist\" style=\"height:0.3558em;\"><span><\/span><\/span><\/span><\/span><\/span><\/span><span class=\"mspace\" style=\"margin-right:0.1667em;\"><\/span><span class=\"mord mathnormal\" style=\"margin-right:0.0502em;\">B<\/span><span class=\"mspace\" style=\"margin-right:0.1667em;\"><\/span><span class=\"mop\">cos<\/span><span class=\"mspace\" style=\"margin-right:0.1667em;\"><\/span><span class=\"mord mathnormal\" style=\"margin-right:0.0278em;\">θ<\/span><span class=\"mspace\" style=\"margin-right:0.1667em;\"><\/span><span class=\"mord mathrm\">d<\/span><span class=\"mord mathnormal\" style=\"margin-right:0.0576em;\">S<\/span><\/span><\/span><\/span> 就是把整个面上各点的磁通加起来；单重积分表示沿一条路径。","href":"0.0-%E7%AC%A6%E5%8F%B7%E5%85%A5%E9%97%A8.html#sym-int"},"sym-sum":{"title":"<span class=\"katex\"><span class=\"katex-mathml\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><semantics><mrow><mi mathvariant=\"normal\">Σ<\/mi><\/mrow><annotation encoding=\"application/x-tex\">\\Sigma<\/annotation><\/semantics><\/math><\/span><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.6833em;\"><\/span><span class=\"mord\">Σ<\/span><\/span><\/span><\/span>：求和号","text":"把离散的若干项相加。<span class=\"katex\"><span class=\"katex-mathml\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><semantics><mrow><mo>∑<\/mo><msub><mi>U<\/mi><mi>M<\/mi><\/msub><mo>=<\/mo><mo>∑<\/mo><mi>F<\/mi><\/mrow><annotation encoding=\"application/x-tex\">\\sum U_M=\\sum F<\/annotation><\/semantics><\/math><\/span><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:1em;vertical-align:-0.25em;\"><\/span><span class=\"mop op-symbol small-op\" style=\"position:relative;top:0em;\">∑<\/span><span class=\"mspace\" style=\"margin-right:0.1667em;\"><\/span><span class=\"mord\"><span class=\"mord mathnormal\" style=\"margin-right:0.109em;\">U<\/span><span class=\"msupsub\"><span class=\"vlist-t vlist-t2\"><span class=\"vlist-r\"><span class=\"vlist\" style=\"height:0.3283em;\"><span style=\"top:-2.55em;margin-left:-0.109em;margin-right:0.05em;\"><span class=\"pstrut\" style=\"height:2.7em;\"><\/span><span class=\"sizing reset-size6 size3 mtight\"><span class=\"mord mathnormal mtight\" style=\"margin-right:0.109em;\">M<\/span><\/span><\/span><\/span><span class=\"vlist-s\">​<\/span><\/span><span class=\"vlist-r\"><span class=\"vlist\" style=\"height:0.15em;\"><span><\/span><\/span><\/span><\/span><\/span><\/span><span class=\"mspace\" style=\"margin-right:0.2778em;\"><\/span><span class=\"mrel\">=<\/span><span class=\"mspace\" style=\"margin-right:0.2778em;\"><\/span><\/span><span class=\"base\"><span class=\"strut\" style=\"height:1em;vertical-align:-0.25em;\"><\/span><span class=\"mop op-symbol small-op\" style=\"position:relative;top:0em;\">∑<\/span><span class=\"mspace\" style=\"margin-right:0.1667em;\"><\/span><span class=\"mord mathnormal\" style=\"margin-right:0.1389em;\">F<\/span><\/span><\/span><\/span>：各段磁压之和等于各段磁动势之和（闭合磁路）。<span class=\"katex\"><span class=\"katex-mathml\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><semantics><mrow><mi mathvariant=\"normal\">Σ<\/mi><\/mrow><annotation encoding=\"application/x-tex\">\\Sigma<\/annotation><\/semantics><\/math><\/span><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.6833em;\"><\/span><span class=\"mord\">Σ<\/span><\/span><\/span><\/span> 下标写从哪里加到哪里。","href":"0.0-%E7%AC%A6%E5%8F%B7%E5%85%A5%E9%97%A8.html#sym-sum"},"sym-partial":{"title":"<span class=\"katex\"><span class=\"katex-mathml\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><semantics><mrow><mi mathvariant=\"normal\">∂<\/mi><\/mrow><annotation encoding=\"application/x-tex\">\\partial<\/annotation><\/semantics><\/math><\/span><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.6944em;\"><\/span><span class=\"mord\" style=\"margin-right:0.0556em;\">∂<\/span><\/span><\/span><\/span>：偏导号","text":"多元函数里只对某一个变量求导（其余暂时当常数）：<span class=\"katex\"><span class=\"katex-mathml\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><semantics><mrow><mi mathvariant=\"normal\">∂<\/mi><mi>B<\/mi><mi mathvariant=\"normal\">/<\/mi><mi mathvariant=\"normal\">∂<\/mi><mi>t<\/mi><\/mrow><annotation encoding=\"application/x-tex\">\\partial B/\\partial t<\/annotation><\/semantics><\/math><\/span><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:1em;vertical-align:-0.25em;\"><\/span><span class=\"mord\" style=\"margin-right:0.0556em;\">∂<\/span><span class=\"mord mathnormal\" style=\"margin-right:0.0502em;\">B<\/span><span class=\"mord\">/<\/span><span class=\"mord\" style=\"margin-right:0.0556em;\">∂<\/span><span class=\"mord mathnormal\">t<\/span><\/span><\/span><\/span> 是磁通密度对时间的变化率。","href":"0.0-%E7%AC%A6%E5%8F%B7%E5%85%A5%E9%97%A8.html#sym-partial"},"sym-inf":{"title":"<span class=\"katex\"><span class=\"katex-mathml\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><semantics><mrow><mi mathvariant=\"normal\">∞<\/mi><\/mrow><annotation encoding=\"application/x-tex\">\\infty<\/annotation><\/semantics><\/math><\/span><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.4306em;\"><\/span><span class=\"mord\">∞<\/span><\/span><\/span><\/span>：无穷大","text":"极限记号，如\"时间趋于无穷\"。","href":"0.0-%E7%AC%A6%E5%8F%B7%E5%85%A5%E9%97%A8.html#sym-inf"},"sym-propto":{"title":"<span class=\"katex\"><span class=\"katex-mathml\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><semantics><mrow><mo>∝<\/mo><\/mrow><annotation encoding=\"application/x-tex\">\\propto<\/annotation><\/semantics><\/math><\/span><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.4306em;\"><\/span><span class=\"mrel\">∝<\/span><\/span><\/span><\/span>：正比于","text":"表示两个量成比例（差一个常数因子）：<span class=\"katex\"><span class=\"katex-mathml\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><semantics><mrow><msub><mi>p<\/mi><mi>h<\/mi><\/msub><mo>∝<\/mo><mi>f<\/mi><msubsup><mi>B<\/mi><mi>m<\/mi><mi>n<\/mi><\/msubsup><\/mrow><annotation encoding=\"application/x-tex\">p_h\\propto fB_m^n<\/annotation><\/semantics><\/math><\/span><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.625em;vertical-align:-0.1944em;\"><\/span><span class=\"mord\"><span class=\"mord mathnormal\">p<\/span><span class=\"msupsub\"><span class=\"vlist-t vlist-t2\"><span class=\"vlist-r\"><span class=\"vlist\" style=\"height:0.3361em;\"><span style=\"top:-2.55em;margin-left:0em;margin-right:0.05em;\"><span class=\"pstrut\" style=\"height:2.7em;\"><\/span><span class=\"sizing reset-size6 size3 mtight\"><span class=\"mord mathnormal mtight\">h<\/span><\/span><\/span><\/span><span class=\"vlist-s\">​<\/span><\/span><span class=\"vlist-r\"><span class=\"vlist\" style=\"height:0.15em;\"><span><\/span><\/span><\/span><\/span><\/span><\/span><span class=\"mspace\" style=\"margin-right:0.2778em;\"><\/span><span class=\"mrel\">∝<\/span><span class=\"mspace\" style=\"margin-right:0.2778em;\"><\/span><\/span><span class=\"base\"><span class=\"strut\" style=\"height:0.9414em;vertical-align:-0.247em;\"><\/span><span class=\"mord mathnormal\" style=\"margin-right:0.1076em;\">f<\/span><span class=\"mord\"><span class=\"mord mathnormal\" style=\"margin-right:0.0502em;\">B<\/span><span class=\"msupsub\"><span class=\"vlist-t vlist-t2\"><span class=\"vlist-r\"><span class=\"vlist\" style=\"height:0.6644em;\"><span style=\"top:-2.453em;margin-left:-0.0502em;margin-right:0.05em;\"><span class=\"pstrut\" style=\"height:2.7em;\"><\/span><span class=\"sizing reset-size6 size3 mtight\"><span class=\"mord mathnormal mtight\">m<\/span><\/span><\/span><span style=\"top:-3.063em;margin-right:0.05em;\"><span class=\"pstrut\" style=\"height:2.7em;\"><\/span><span class=\"sizing reset-size6 size3 mtight\"><span class=\"mord mathnormal mtight\">n<\/span><\/span><\/span><\/span><span class=\"vlist-s\">​<\/span><\/span><span class=\"vlist-r\"><span class=\"vlist\" style=\"height:0.247em;\"><span><\/span><\/span><\/span><\/span><\/span><\/span><\/span><\/span><\/span> 说磁滞损耗与频率、最大磁通密度成正比。","href":"0.0-%E7%AC%A6%E5%8F%B7%E5%85%A5%E9%97%A8.html#sym-propto"},"sym-B":{"title":"<span class=\"katex\"><span class=\"katex-mathml\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><semantics><mrow><mi>B<\/mi><\/mrow><annotation encoding=\"application/x-tex\">B<\/annotation><\/semantics><\/math><\/span><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.6833em;\"><\/span><span class=\"mord mathnormal\" style=\"margin-right:0.0502em;\">B<\/span><\/span><\/span><\/span>：磁通密度（磁感应强度）","text":"描述磁场强弱的矢量，单位 T（特斯拉）。穿过垂直于它的单位面积的磁感应线根数就是它的大小，所以又叫磁通密度。<span class=\"katex\"><span class=\"katex-mathml\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><semantics><mrow><mi>B<\/mi><mo>=<\/mo><mi>μ<\/mi><mi>H<\/mi><\/mrow><annotation encoding=\"application/x-tex\">B=\\mu H<\/annotation><\/semantics><\/math><\/span><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.6833em;\"><\/span><span class=\"mord mathnormal\" style=\"margin-right:0.0502em;\">B<\/span><span class=\"mspace\" style=\"margin-right:0.2778em;\"><\/span><span class=\"mrel\">=<\/span><span class=\"mspace\" style=\"margin-right:0.2778em;\"><\/span><\/span><span class=\"base\"><span class=\"strut\" style=\"height:0.8778em;vertical-align:-0.1944em;\"><\/span><span class=\"mord mathnormal\">μ<\/span><span class=\"mord mathnormal\" style=\"margin-right:0.0813em;\">H<\/span><\/span><\/span><\/span>——与介质有关：同一个电流在铁心里的 <span class=\"katex\"><span class=\"katex-mathml\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><semantics><mrow><mi>B<\/mi><\/mrow><annotation encoding=\"application/x-tex\">B<\/annotation><\/semantics><\/math><\/span><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.6833em;\"><\/span><span class=\"mord mathnormal\" style=\"margin-right:0.0502em;\">B<\/span><\/span><\/span><\/span> 比空气里大几千倍。","href":"0.0-%E7%AC%A6%E5%8F%B7%E5%85%A5%E9%97%A8.html#sym-B"},"sym-H":{"title":"<span class=\"katex\"><span class=\"katex-mathml\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><semantics><mrow><mi>H<\/mi><\/mrow><annotation encoding=\"application/x-tex\">H<\/annotation><\/semantics><\/math><\/span><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.6833em;\"><\/span><span class=\"mord mathnormal\" style=\"margin-right:0.0813em;\">H<\/span><\/span><\/span><\/span>：磁场强度","text":"描述磁场\"激励\"的矢量，单位 A/m。只看电流和几何（长直导线 <span class=\"katex\"><span class=\"katex-mathml\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><semantics><mrow><mi>H<\/mi><mo>=<\/mo><mfrac><mi>I<\/mi><mrow><mn>2<\/mn><mi>π<\/mi><mi>r<\/mi><\/mrow><\/mfrac><\/mrow><annotation encoding=\"application/x-tex\">H=\\frac{I}{2\\pi r}<\/annotation><\/semantics><\/math><\/span><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.6833em;\"><\/span><span class=\"mord mathnormal\" style=\"margin-right:0.0813em;\">H<\/span><span class=\"mspace\" style=\"margin-right:0.2778em;\"><\/span><span class=\"mrel\">=<\/span><span class=\"mspace\" style=\"margin-right:0.2778em;\"><\/span><\/span><span class=\"base\"><span class=\"strut\" style=\"height:1.2173em;vertical-align:-0.345em;\"><\/span><span class=\"mord\"><span class=\"mopen nulldelimiter\"><\/span><span class=\"mfrac\"><span class=\"vlist-t vlist-t2\"><span class=\"vlist-r\"><span class=\"vlist\" style=\"height:0.8723em;\"><span style=\"top:-2.655em;\"><span class=\"pstrut\" style=\"height:3em;\"><\/span><span class=\"sizing reset-size6 size3 mtight\"><span class=\"mord mtight\"><span class=\"mord mtight\">2<\/span><span class=\"mord mathnormal mtight\" style=\"margin-right:0.0359em;\">π<\/span><span class=\"mord mathnormal mtight\" style=\"margin-right:0.0278em;\">r<\/span><\/span><\/span><\/span><span style=\"top:-3.23em;\"><span class=\"pstrut\" style=\"height:3em;\"><\/span><span class=\"frac-line\" style=\"border-bottom-width:0.04em;\"><\/span><\/span><span style=\"top:-3.394em;\"><span class=\"pstrut\" style=\"height:3em;\"><\/span><span class=\"sizing reset-size6 size3 mtight\"><span class=\"mord mtight\"><span class=\"mord mathnormal mtight\" style=\"margin-right:0.0785em;\">I<\/span><\/span><\/span><\/span><\/span><span class=\"vlist-s\">​<\/span><\/span><span class=\"vlist-r\"><span class=\"vlist\" style=\"height:0.345em;\"><span><\/span><\/span><\/span><\/span><\/span><span class=\"mclose nulldelimiter\"><\/span><\/span><\/span><\/span><\/span>、螺线管 <span class=\"katex\"><span class=\"katex-mathml\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><semantics><mrow><mi>H<\/mi><mo>=<\/mo><mfrac><mrow><mi>N<\/mi><mi>I<\/mi><\/mrow><mi>l<\/mi><\/mfrac><\/mrow><annotation encoding=\"application/x-tex\">H=\\frac{NI}{l}<\/annotation><\/semantics><\/math><\/span><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.6833em;\"><\/span><span class=\"mord mathnormal\" style=\"margin-right:0.0813em;\">H<\/span><span class=\"mspace\" style=\"margin-right:0.2778em;\"><\/span><span class=\"mrel\">=<\/span><span class=\"mspace\" style=\"margin-right:0.2778em;\"><\/span><\/span><span class=\"base\"><span class=\"strut\" style=\"height:1.2173em;vertical-align:-0.345em;\"><\/span><span class=\"mord\"><span class=\"mopen nulldelimiter\"><\/span><span class=\"mfrac\"><span class=\"vlist-t vlist-t2\"><span class=\"vlist-r\"><span class=\"vlist\" style=\"height:0.8723em;\"><span style=\"top:-2.655em;\"><span class=\"pstrut\" style=\"height:3em;\"><\/span><span class=\"sizing reset-size6 size3 mtight\"><span class=\"mord mtight\"><span class=\"mord mathnormal mtight\" style=\"margin-right:0.0197em;\">l<\/span><\/span><\/span><\/span><span style=\"top:-3.23em;\"><span class=\"pstrut\" style=\"height:3em;\"><\/span><span class=\"frac-line\" style=\"border-bottom-width:0.04em;\"><\/span><\/span><span style=\"top:-3.394em;\"><span class=\"pstrut\" style=\"height:3em;\"><\/span><span class=\"sizing reset-size6 size3 mtight\"><span class=\"mord mtight\"><span class=\"mord mathnormal mtight\" style=\"margin-right:0.109em;\">N<\/span><span class=\"mord mathnormal mtight\" style=\"margin-right:0.0785em;\">I<\/span><\/span><\/span><\/span><\/span><span class=\"vlist-s\">​<\/span><\/span><span class=\"vlist-r\"><span class=\"vlist\" style=\"height:0.345em;\"><span><\/span><\/span><\/span><\/span><\/span><span class=\"mclose nulldelimiter\"><\/span><\/span><\/span><\/span><\/span>），与介质无关；介质的影响全部由 <span class=\"katex\"><span class=\"katex-mathml\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><semantics><mrow><mi>B<\/mi><mo>=<\/mo><mi>μ<\/mi><mi>H<\/mi><\/mrow><annotation encoding=\"application/x-tex\">B=\\mu H<\/annotation><\/semantics><\/math><\/span><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.6833em;\"><\/span><span class=\"mord mathnormal\" style=\"margin-right:0.0502em;\">B<\/span><span class=\"mspace\" style=\"margin-right:0.2778em;\"><\/span><span class=\"mrel\">=<\/span><span class=\"mspace\" style=\"margin-right:0.2778em;\"><\/span><\/span><span class=\"base\"><span class=\"strut\" style=\"height:0.8778em;vertical-align:-0.1944em;\"><\/span><span class=\"mord mathnormal\">μ<\/span><span class=\"mord mathnormal\" style=\"margin-right:0.0813em;\">H<\/span><\/span><\/span><\/span> 里的 <span class=\"katex\"><span class=\"katex-mathml\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><semantics><mrow><mi>μ<\/mi><\/mrow><annotation encoding=\"application/x-tex\">\\mu<\/annotation><\/semantics><\/math><\/span><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.625em;vertical-align:-0.1944em;\"><\/span><span class=\"mord mathnormal\">μ<\/span><\/span><\/span><\/span> 承担。","href":"0.0-%E7%AC%A6%E5%8F%B7%E5%85%A5%E9%97%A8.html#sym-H"},"sym-mu":{"title":"<span class=\"katex\"><span class=\"katex-mathml\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><semantics><mrow><mi>μ<\/mi><\/mrow><annotation encoding=\"application/x-tex\">\\mu<\/annotation><\/semantics><\/math><\/span><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.625em;vertical-align:-0.1944em;\"><\/span><span class=\"mord mathnormal\">μ<\/span><\/span><\/span><\/span>：磁导率（<span class=\"katex\"><span class=\"katex-mathml\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><semantics><mrow><msub><mi>μ<\/mi><mn>0<\/mn><\/msub><\/mrow><annotation encoding=\"application/x-tex\">\\mu_0<\/annotation><\/semantics><\/math><\/span><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.625em;vertical-align:-0.1944em;\"><\/span><span class=\"mord\"><span class=\"mord mathnormal\">μ<\/span><span class=\"msupsub\"><span class=\"vlist-t vlist-t2\"><span class=\"vlist-r\"><span class=\"vlist\" style=\"height:0.3011em;\"><span style=\"top:-2.55em;margin-left:0em;margin-right:0.05em;\"><span class=\"pstrut\" style=\"height:2.7em;\"><\/span><span class=\"sizing reset-size6 size3 mtight\"><span class=\"mord mtight\">0<\/span><\/span><\/span><\/span><span class=\"vlist-s\">​<\/span><\/span><span class=\"vlist-r\"><span class=\"vlist\" style=\"height:0.15em;\"><span><\/span><\/span><\/span><\/span><\/span><\/span><\/span><\/span><\/span>、<span class=\"katex\"><span class=\"katex-mathml\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><semantics><mrow><msub><mi>μ<\/mi><mi>r<\/mi><\/msub><\/mrow><annotation encoding=\"application/x-tex\">\\mu_r<\/annotation><\/semantics><\/math><\/span><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.625em;vertical-align:-0.1944em;\"><\/span><span class=\"mord\"><span class=\"mord mathnormal\">μ<\/span><span class=\"msupsub\"><span class=\"vlist-t vlist-t2\"><span class=\"vlist-r\"><span class=\"vlist\" style=\"height:0.1514em;\"><span style=\"top:-2.55em;margin-left:0em;margin-right:0.05em;\"><span class=\"pstrut\" style=\"height:2.7em;\"><\/span><span class=\"sizing reset-size6 size3 mtight\"><span class=\"mord mathnormal mtight\" style=\"margin-right:0.0278em;\">r<\/span><\/span><\/span><\/span><span class=\"vlist-s\">​<\/span><\/span><span class=\"vlist-r\"><span class=\"vlist\" style=\"height:0.15em;\"><span><\/span><\/span><\/span><\/span><\/span><\/span><\/span><\/span><\/span>）","text":"<span class=\"katex\"><span class=\"katex-mathml\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><semantics><mrow><mi>B<\/mi><mo>=<\/mo><mi>μ<\/mi><mi>H<\/mi><\/mrow><annotation encoding=\"application/x-tex\">B=\\mu H<\/annotation><\/semantics><\/math><\/span><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.6833em;\"><\/span><span class=\"mord mathnormal\" style=\"margin-right:0.0502em;\">B<\/span><span class=\"mspace\" style=\"margin-right:0.2778em;\"><\/span><span class=\"mrel\">=<\/span><span class=\"mspace\" style=\"margin-right:0.2778em;\"><\/span><\/span><span class=\"base\"><span class=\"strut\" style=\"height:0.8778em;vertical-align:-0.1944em;\"><\/span><span class=\"mord mathnormal\">μ<\/span><span class=\"mord mathnormal\" style=\"margin-right:0.0813em;\">H<\/span><\/span><\/span><\/span> 里的比例系数，单位 H/m，由介质决定。真空磁导率 <span class=\"katex\"><span class=\"katex-mathml\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><semantics><mrow><msub><mi>μ<\/mi><mn>0<\/mn><\/msub><mo>=<\/mo><mn>4<\/mn><mi>π<\/mi><mo>×<\/mo><msup><mn>10<\/mn><mrow><mo>−<\/mo><mn>7<\/mn><\/mrow><\/msup><\/mrow><annotation encoding=\"application/x-tex\">\\mu_0=4\\pi\\times10^{-7}<\/annotation><\/semantics><\/math><\/span><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.625em;vertical-align:-0.1944em;\"><\/span><span class=\"mord\"><span class=\"mord mathnormal\">μ<\/span><span class=\"msupsub\"><span class=\"vlist-t vlist-t2\"><span class=\"vlist-r\"><span class=\"vlist\" style=\"height:0.3011em;\"><span style=\"top:-2.55em;margin-left:0em;margin-right:0.05em;\"><span class=\"pstrut\" style=\"height:2.7em;\"><\/span><span class=\"sizing reset-size6 size3 mtight\"><span class=\"mord mtight\">0<\/span><\/span><\/span><\/span><span class=\"vlist-s\">​<\/span><\/span><span class=\"vlist-r\"><span class=\"vlist\" style=\"height:0.15em;\"><span><\/span><\/span><\/span><\/span><\/span><\/span><span class=\"mspace\" style=\"margin-right:0.2778em;\"><\/span><span class=\"mrel\">=<\/span><span class=\"mspace\" style=\"margin-right:0.2778em;\"><\/span><\/span><span class=\"base\"><span class=\"strut\" style=\"height:0.7278em;vertical-align:-0.0833em;\"><\/span><span class=\"mord\">4<\/span><span class=\"mord mathnormal\" style=\"margin-right:0.0359em;\">π<\/span><span class=\"mspace\" style=\"margin-right:0.2222em;\"><\/span><span class=\"mbin\">×<\/span><span class=\"mspace\" style=\"margin-right:0.2222em;\"><\/span><\/span><span class=\"base\"><span class=\"strut\" style=\"height:0.8141em;\"><\/span><span class=\"mord\">1<\/span><span class=\"mord\"><span class=\"mord\">0<\/span><span class=\"msupsub\"><span class=\"vlist-t\"><span class=\"vlist-r\"><span class=\"vlist\" style=\"height:0.8141em;\"><span style=\"top:-3.063em;margin-right:0.05em;\"><span class=\"pstrut\" style=\"height:2.7em;\"><\/span><span class=\"sizing reset-size6 size3 mtight\"><span class=\"mord mtight\"><span class=\"mord mtight\">−<\/span><span class=\"mord mtight\">7<\/span><\/span><\/span><\/span><\/span><\/span><\/span><\/span><\/span><\/span><\/span><\/span> H/m；相对磁导率 <span class=\"katex\"><span class=\"katex-mathml\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><semantics><mrow><msub><mi>μ<\/mi><mi>r<\/mi><\/msub><mo>=<\/mo><mfrac><mi>μ<\/mi><msub><mi>μ<\/mi><mn>0<\/mn><\/msub><\/mfrac><\/mrow><annotation encoding=\"application/x-tex\">\\mu_r=\\frac{\\mu}{\\mu_0}<\/annotation><\/semantics><\/math><\/span><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.625em;vertical-align:-0.1944em;\"><\/span><span class=\"mord\"><span class=\"mord mathnormal\">μ<\/span><span class=\"msupsub\"><span class=\"vlist-t vlist-t2\"><span class=\"vlist-r\"><span class=\"vlist\" style=\"height:0.1514em;\"><span style=\"top:-2.55em;margin-left:0em;margin-right:0.05em;\"><span class=\"pstrut\" style=\"height:2.7em;\"><\/span><span class=\"sizing reset-size6 size3 mtight\"><span class=\"mord mathnormal mtight\" style=\"margin-right:0.0278em;\">r<\/span><\/span><\/span><\/span><span class=\"vlist-s\">​<\/span><\/span><span class=\"vlist-r\"><span class=\"vlist\" style=\"height:0.15em;\"><span><\/span><\/span><\/span><\/span><\/span><\/span><span class=\"mspace\" style=\"margin-right:0.2778em;\"><\/span><span class=\"mrel\">=<\/span><span class=\"mspace\" style=\"margin-right:0.2778em;\"><\/span><\/span><span class=\"base\"><span class=\"strut\" style=\"height:1.2286em;vertical-align:-0.4811em;\"><\/span><span class=\"mord\"><span class=\"mopen nulldelimiter\"><\/span><span class=\"mfrac\"><span class=\"vlist-t vlist-t2\"><span class=\"vlist-r\"><span class=\"vlist\" style=\"height:0.7475em;\"><span style=\"top:-2.655em;\"><span class=\"pstrut\" style=\"height:3em;\"><\/span><span class=\"sizing reset-size6 size3 mtight\"><span class=\"mord mtight\"><span class=\"mord mtight\"><span class=\"mord mathnormal mtight\">μ<\/span><span class=\"msupsub\"><span class=\"vlist-t vlist-t2\"><span class=\"vlist-r\"><span class=\"vlist\" style=\"height:0.3173em;\"><span style=\"top:-2.357em;margin-left:0em;margin-right:0.0714em;\"><span class=\"pstrut\" style=\"height:2.5em;\"><\/span><span class=\"sizing reset-size3 size1 mtight\"><span class=\"mord mtight\">0<\/span><\/span><\/span><\/span><span class=\"vlist-s\">​<\/span><\/span><span class=\"vlist-r\"><span class=\"vlist\" style=\"height:0.143em;\"><span><\/span><\/span><\/span><\/span><\/span><\/span><\/span><\/span><\/span><span style=\"top:-3.23em;\"><span class=\"pstrut\" style=\"height:3em;\"><\/span><span class=\"frac-line\" style=\"border-bottom-width:0.04em;\"><\/span><\/span><span style=\"top:-3.4461em;\"><span class=\"pstrut\" style=\"height:3em;\"><\/span><span class=\"sizing reset-size6 size3 mtight\"><span class=\"mord mtight\"><span class=\"mord mathnormal mtight\">μ<\/span><\/span><\/span><\/span><\/span><span class=\"vlist-s\">​<\/span><\/span><span class=\"vlist-r\"><span class=\"vlist\" style=\"height:0.4811em;\"><span><\/span><\/span><\/span><\/span><\/span><span class=\"mclose nulldelimiter\"><\/span><\/span><\/span><\/span><\/span>，空气、铜、铝都近似取 1，铁磁材料可达 <span class=\"katex\"><span class=\"katex-mathml\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><semantics><mrow><msup><mn>10<\/mn><mn>2<\/mn><\/msup><mo>∼<\/mo><msup><mn>10<\/mn><mn>5<\/mn><\/msup><\/mrow><annotation encoding=\"application/x-tex\">10^2\\sim10^5<\/annotation><\/semantics><\/math><\/span><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.8141em;\"><\/span><span class=\"mord\">1<\/span><span class=\"mord\"><span class=\"mord\">0<\/span><span class=\"msupsub\"><span class=\"vlist-t\"><span class=\"vlist-r\"><span class=\"vlist\" style=\"height:0.8141em;\"><span style=\"top:-3.063em;margin-right:0.05em;\"><span class=\"pstrut\" style=\"height:2.7em;\"><\/span><span class=\"sizing reset-size6 size3 mtight\"><span class=\"mord mtight\">2<\/span><\/span><\/span><\/span><\/span><\/span><\/span><\/span><span class=\"mspace\" style=\"margin-right:0.2778em;\"><\/span><span class=\"mrel\">∼<\/span><span class=\"mspace\" style=\"margin-right:0.2778em;\"><\/span><\/span><span class=\"base\"><span class=\"strut\" style=\"height:0.8141em;\"><\/span><span class=\"mord\">1<\/span><span class=\"mord\"><span class=\"mord\">0<\/span><span class=\"msupsub\"><span class=\"vlist-t\"><span class=\"vlist-r\"><span class=\"vlist\" style=\"height:0.8141em;\"><span style=\"top:-3.063em;margin-right:0.05em;\"><span class=\"pstrut\" style=\"height:2.7em;\"><\/span><span class=\"sizing reset-size6 size3 mtight\"><span class=\"mord mtight\">5<\/span><\/span><\/span><\/span><\/span><\/span><\/span><\/span><\/span><\/span><\/span> 倍。","href":"0.0-%E7%AC%A6%E5%8F%B7%E5%85%A5%E9%97%A8.html#sym-mu"}}}</script>
+  <script src="../../../assets/plugins/math-glossary.js" defer></script>
+  <script src="../../../assets/plugins/site-search.js" defer></script>
+</body>
+</html>

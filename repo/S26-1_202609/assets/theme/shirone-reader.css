@@ -1,0 +1,1638 @@
+/* Shirone Material 3 Expressive Reader Theme with Dynamic Color System */
+:root {
+  --hue: 248; /* Default Academic Blue, configurable by user */
+  --primary-h: var(--hue);
+
+  /* Dynamic Light Mode Palette */
+  --md-sys-color-primary: hsl(var(--primary-h), 75%, 42%);
+  --md-sys-color-on-primary: #ffffff;
+  --md-sys-color-primary-container: hsl(var(--primary-h), 90%, 92%);
+  --md-sys-color-on-primary-container: hsl(var(--primary-h), 95%, 15%);
+  --md-sys-color-secondary: hsl(var(--primary-h), 25%, 38%);
+  --md-sys-color-on-secondary: #ffffff;
+  --md-sys-color-secondary-container: hsl(var(--primary-h), 35%, 88%);
+  --md-sys-color-on-secondary-container: hsl(var(--primary-h), 45%, 12%);
+  --md-sys-color-tertiary: hsl(calc(var(--primary-h) + 60), 30%, 42%);
+  --md-sys-color-on-tertiary: #ffffff;
+  --md-sys-color-tertiary-container: hsl(calc(var(--primary-h) + 60), 50%, 90%);
+  --md-sys-color-on-tertiary-container: hsl(calc(var(--primary-h) + 60), 60%, 15%);
+
+  --md-sys-color-surface: hsl(var(--primary-h), 20%, 98%);
+  --md-sys-color-surface-dim: hsl(var(--primary-h), 12%, 87%);
+  --md-sys-color-surface-bright: hsl(var(--primary-h), 20%, 98%);
+  --md-sys-color-surface-container-lowest: #ffffff;
+  --md-sys-color-surface-container-low: hsl(var(--primary-h), 18%, 96%);
+  --md-sys-color-surface-container: hsl(var(--primary-h), 15%, 94%);
+  --md-sys-color-surface-container-high: hsl(var(--primary-h), 12%, 91%);
+  --md-sys-color-surface-container-highest: hsl(var(--primary-h), 10%, 88%);
+  --md-sys-color-on-surface: hsl(var(--primary-h), 10%, 12%);
+  --md-sys-color-on-surface-variant: hsl(var(--primary-h), 8%, 30%);
+  --md-sys-color-outline: hsl(var(--primary-h), 6%, 48%);
+  --md-sys-color-outline-variant: hsl(var(--primary-h), 12%, 78%);
+  --md-sys-color-inverse-surface: hsl(var(--primary-h), 10%, 20%);
+  --md-sys-color-inverse-on-surface: hsl(var(--primary-h), 15%, 95%);
+  --md-sys-color-inverse-primary: hsl(var(--primary-h), 85%, 75%);
+
+  --shadow-1: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.05);
+  --shadow-2: 0 3px 6px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.06);
+  --shadow-3: 0 10px 24px rgba(0,0,0,0.14), 0 4px 8px rgba(0,0,0,0.08);
+  --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  --header-height: 60px;
+  --sidebar-width: 320px;
+  --toc-width: 240px;
+}
+
+[data-theme="dark"] {
+  /* Dynamic Dark Mode Palette */
+  --md-sys-color-primary: hsl(var(--primary-h), 85%, 75%);
+  --md-sys-color-on-primary: hsl(var(--primary-h), 95%, 15%);
+  --md-sys-color-primary-container: hsl(var(--primary-h), 80%, 28%);
+  --md-sys-color-on-primary-container: hsl(var(--primary-h), 90%, 90%);
+  --md-sys-color-secondary: hsl(var(--primary-h), 30%, 75%);
+  --md-sys-color-on-secondary: hsl(var(--primary-h), 35%, 18%);
+  --md-sys-color-secondary-container: hsl(var(--primary-h), 30%, 30%);
+  --md-sys-color-on-secondary-container: hsl(var(--primary-h), 40%, 88%);
+  --md-sys-color-tertiary: hsl(calc(var(--primary-h) + 60), 45%, 78%);
+  --md-sys-color-on-tertiary: hsl(calc(var(--primary-h) + 60), 50%, 18%);
+  --md-sys-color-tertiary-container: hsl(calc(var(--primary-h) + 60), 40%, 32%);
+  --md-sys-color-on-tertiary-container: hsl(calc(var(--primary-h) + 60), 55%, 90%);
+
+  --md-sys-color-surface: hsl(var(--primary-h), 15%, 8%);
+  --md-sys-color-surface-dim: hsl(var(--primary-h), 15%, 8%);
+  --md-sys-color-surface-bright: hsl(var(--primary-h), 10%, 22%);
+  --md-sys-color-surface-container-lowest: hsl(var(--primary-h), 20%, 5%);
+  --md-sys-color-surface-container-low: hsl(var(--primary-h), 14%, 11%);
+  --md-sys-color-surface-container: hsl(var(--primary-h), 12%, 13%);
+  --md-sys-color-surface-container-high: hsl(var(--primary-h), 10%, 16%);
+  --md-sys-color-surface-container-highest: hsl(var(--primary-h), 8%, 20%);
+  --md-sys-color-on-surface: hsl(var(--primary-h), 12%, 89%);
+  --md-sys-color-on-surface-variant: hsl(var(--primary-h), 10%, 78%);
+  --md-sys-color-outline: hsl(var(--primary-h), 8%, 56%);
+  --md-sys-color-outline-variant: hsl(var(--primary-h), 10%, 28%);
+  --md-sys-color-inverse-surface: hsl(var(--primary-h), 12%, 89%);
+  --md-sys-color-inverse-on-surface: hsl(var(--primary-h), 10%, 15%);
+  --md-sys-color-inverse-primary: hsl(var(--primary-h), 75%, 42%);
+
+  --shadow-1: 0 1px 3px rgba(0,0,0,0.3);
+  --shadow-2: 0 3px 6px rgba(0,0,0,0.4);
+  --shadow-3: 0 10px 24px rgba(0,0,0,0.5);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --md-sys-color-primary: hsl(var(--primary-h), 85%, 75%);
+    --md-sys-color-on-primary: hsl(var(--primary-h), 95%, 15%);
+    --md-sys-color-primary-container: hsl(var(--primary-h), 80%, 28%);
+    --md-sys-color-on-primary-container: hsl(var(--primary-h), 90%, 90%);
+    --md-sys-color-secondary: hsl(var(--primary-h), 30%, 75%);
+    --md-sys-color-on-secondary: hsl(var(--primary-h), 35%, 18%);
+    --md-sys-color-secondary-container: hsl(var(--primary-h), 30%, 30%);
+    --md-sys-color-on-secondary-container: hsl(var(--primary-h), 40%, 88%);
+    --md-sys-color-tertiary: hsl(calc(var(--primary-h) + 60), 45%, 78%);
+    --md-sys-color-on-tertiary: hsl(calc(var(--primary-h) + 60), 50%, 18%);
+    --md-sys-color-tertiary-container: hsl(calc(var(--primary-h) + 60), 40%, 32%);
+    --md-sys-color-on-tertiary-container: hsl(calc(var(--primary-h) + 60), 55%, 90%);
+
+    --md-sys-color-surface: hsl(var(--primary-h), 15%, 8%);
+    --md-sys-color-surface-dim: hsl(var(--primary-h), 15%, 8%);
+    --md-sys-color-surface-bright: hsl(var(--primary-h), 10%, 22%);
+    --md-sys-color-surface-container-lowest: hsl(var(--primary-h), 20%, 5%);
+    --md-sys-color-surface-container-low: hsl(var(--primary-h), 14%, 11%);
+    --md-sys-color-surface-container: hsl(var(--primary-h), 12%, 13%);
+    --md-sys-color-surface-container-high: hsl(var(--primary-h), 10%, 16%);
+    --md-sys-color-surface-container-highest: hsl(var(--primary-h), 8%, 20%);
+    --md-sys-color-on-surface: hsl(var(--primary-h), 12%, 89%);
+    --md-sys-color-on-surface-variant: hsl(var(--primary-h), 10%, 78%);
+    --md-sys-color-outline: hsl(var(--primary-h), 8%, 56%);
+    --md-sys-color-outline-variant: hsl(var(--primary-h), 10%, 28%);
+    --md-sys-color-inverse-surface: hsl(var(--primary-h), 12%, 89%);
+    --md-sys-color-inverse-on-surface: hsl(var(--primary-h), 10%, 15%);
+    --md-sys-color-inverse-primary: hsl(var(--primary-h), 75%, 42%);
+  }
+}
+
+html {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  line-height: 1.75;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  max-width: 100%;
+  /* 这里不能设 overflow-x: hidden —— 它让 body 成为 sticky 的包含块
+     （body 与内容等高），侧栏 sticky 因此失效、导航随页面滚走。
+     横向溢出交由 .main-column 处理。 */
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Header / TopAppBar */
+.m3-top-app-bar {
+  position: sticky;
+  top: 0;
+  height: var(--header-height);
+  background-color: var(--md-sys-color-surface-container-lowest);
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.25rem;
+  z-index: 30;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.top-bar-left {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-width: 0;
+  flex: 1;
+}
+
+.top-bar-right {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.m3-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 9999px;
+  border: none;
+  background: transparent;
+  color: var(--md-sys-color-on-surface-variant);
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+  flex-shrink: 0;
+}
+
+.m3-icon-btn:hover {
+  background-color: var(--md-sys-color-surface-container-high);
+  color: var(--md-sys-color-on-surface);
+}
+
+.top-bar-mobile-title {
+  display: none;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--md-sys-color-primary);
+  text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.top-bar-breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.84rem;
+  color: var(--md-sys-color-outline);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+
+.top-bar-breadcrumbs a {
+  color: var(--md-sys-color-on-surface-variant);
+  text-decoration: none;
+  transition: color 0.15s;
+  flex-shrink: 0;
+}
+
+.top-bar-breadcrumbs a:hover {
+  color: var(--md-sys-color-primary);
+}
+
+.top-bar-breadcrumbs .current-crumb {
+  color: var(--md-sys-color-on-surface);
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Theme Palette Popover */
+.palette-popover {
+  position: absolute;
+  top: calc(var(--header-height) - 4px);
+  right: 0;
+  width: 280px;
+  background-color: var(--md-sys-color-surface-container-lowest);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 16px;
+  box-shadow: var(--shadow-3);
+  padding: 1.2rem;
+  z-index: 100;
+  display: none;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.palette-popover.open {
+  display: flex;
+}
+
+.palette-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.palette-title {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--md-sys-color-on-surface);
+}
+
+.palette-reset-btn {
+  background: transparent;
+  border: none;
+  color: var(--md-sys-color-outline);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.palette-reset-btn:hover {
+  background-color: var(--md-sys-color-surface-container);
+  color: var(--md-sys-color-primary);
+}
+
+.palette-current-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.palette-hue-badge {
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 0.15rem 0.6rem;
+  border-radius: 8px;
+  background-color: var(--md-sys-color-surface-container-high);
+  color: var(--md-sys-color-on-surface);
+  font-family: var(--font-mono);
+}
+
+.palette-color-dot {
+  width: 28px;
+  height: 28px;
+  border-radius: 9999px;
+  background-color: var(--md-sys-color-primary);
+  border: 2px solid var(--md-sys-color-outline-variant);
+  transition: background-color 0.15s;
+}
+
+.palette-slider-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.palette-slider-label {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-outline);
+}
+
+.palette-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 10px;
+  border-radius: 9999px;
+  background: linear-gradient(to right,
+    hsl(0, 80%, 50%),
+    hsl(60, 80%, 50%),
+    hsl(120, 80%, 50%),
+    hsl(180, 80%, 50%),
+    hsl(240, 80%, 50%),
+    hsl(300, 80%, 50%),
+    hsl(360, 80%, 50%)
+  );
+  outline: none;
+  cursor: pointer;
+}
+
+.palette-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 2px solid var(--md-sys-color-outline);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+  cursor: pointer;
+  transition: transform 0.1s;
+}
+
+.palette-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+}
+
+.palette-swatches-title {
+  font-size: 0.75rem;
+  color: var(--md-sys-color-outline);
+  margin-bottom: 0.25rem;
+}
+
+.palette-swatches-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+}
+
+.palette-swatch-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  background: transparent;
+  border: 1px solid transparent;
+  padding: 0.35rem 0.2rem;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.palette-swatch-item:hover {
+  background-color: var(--md-sys-color-surface-container);
+}
+
+.palette-swatch-item.active {
+  border-color: var(--md-sys-color-primary);
+  background-color: var(--md-sys-color-primary-container);
+}
+
+.palette-swatch-dot {
+  width: 24px;
+  height: 24px;
+  border-radius: 9999px;
+  border: 1px solid rgba(0,0,0,0.15);
+}
+
+.palette-swatch-name {
+  font-size: 0.68rem;
+  color: var(--md-sys-color-on-surface-variant);
+  white-space: nowrap;
+}
+
+/* Site Shell & Layout Column */
+.site-shell {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+  position: relative;
+  /* 这里不能设 overflow-x: clip —— 它会让 sticky 子项相对 .site-shell
+     （与页面等高）吸附，等于失效，侧栏导航会随页面滚走。
+     横向溢出由 .layout-container 自己处理。 */
+  overflow-x: visible;
+}
+
+/* Sidebar Column (整列导航栏) */
+.m3-drawer {
+  width: var(--sidebar-width);
+  min-width: 240px;
+  max-width: 580px;
+  height: 100vh;
+  height: 100dvh;
+  position: sticky;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--md-sys-color-surface-container-low);
+  border-right: 1px solid var(--md-sys-color-outline-variant);
+  flex-shrink: 0;
+  z-index: 40;
+  box-sizing: border-box;
+  transition: width 0.25s cubic-bezier(0.2, 0, 0, 1), opacity 0.2s;
+  overflow: visible;
+}
+
+/* 侧栏底色铺满整页高度（仅桌面端）。
+   drawer 是 sticky + 100dvh，只覆盖视口，长页面滚到底时左侧会露出页面底色。
+   这里在 .site-shell 上加一层与侧栏同宽、贯穿整个页面高度的背景，
+   位置在 drawer 之下，不影响 drawer 的悬停与拖拽。 */
+@media (min-width: 861px) {
+  .site-shell::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: var(--sidebar-width);
+    background-color: var(--md-sys-color-surface-container-low);
+    border-right: 1px solid var(--md-sys-color-outline-variant);
+    pointer-events: none;
+    z-index: 0;
+  }
+  body.sidebar-collapsed .site-shell::before {
+    width: 0;
+    border-right-color: transparent;
+  }
+}
+
+/* Sidebar Brand Header (Top of sidebar column) */
+.drawer-header-brand {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--header-height);
+  padding: 0 0.8rem 0 1.1rem;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  flex-shrink: 0;
+}
+
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--md-sys-color-primary);
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.sidebar-brand-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.drawer-collapse-btn {
+  width: 34px;
+  height: 34px;
+  color: var(--md-sys-color-outline);
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.drawer-collapse-btn:hover {
+  background-color: var(--md-sys-color-surface-container-high);
+  color: var(--md-sys-color-primary);
+}
+
+.drawer-header-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0.85rem 0.5rem 1rem;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  flex-shrink: 0;
+  background: var(--md-sys-color-surface-container-low);
+}
+
+.drawer-nav-scroll-area {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 0.6rem 0.6rem 2rem;
+}
+
+/* Sidebar Resizer (Desktop drag handle) */
+.sidebar-resizer {
+  position: absolute;
+  top: 0;
+  right: -3px;
+  width: 6px;
+  height: 100%;
+  cursor: col-resize;
+  z-index: 50;
+  transition: background-color 0.15s;
+}
+
+.sidebar-resizer:hover,
+.sidebar-resizer.resizing {
+  background-color: var(--md-sys-color-primary);
+}
+
+body.sidebar-resizing,
+body.sidebar-resizing * {
+  cursor: col-resize !important;
+  user-select: none !important;
+}
+
+body.sidebar-resizing .m3-drawer {
+  transition: none !important;
+}
+
+/* Main Column */
+.main-column {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Main Layout Grid inside Main Column */
+.layout-container {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+@media (min-width: 861px) {
+  body.sidebar-collapsed .m3-drawer {
+    width: 0 !important;
+    min-width: 0 !important;
+    padding: 0 !important;
+    border-right-color: transparent !important;
+    overflow: hidden !important;
+    opacity: 0;
+    pointer-events: none;
+  }
+}
+
+.drawer-section-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--md-sys-color-outline);
+}
+
+.drawer-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.22rem 0.55rem;
+  border-radius: 8px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  background: var(--md-sys-color-surface-container-lowest);
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.drawer-action-btn:hover {
+  background-color: var(--md-sys-color-surface-container-high);
+  color: var(--md-sys-color-primary);
+  border-color: var(--md-sys-color-primary);
+}
+
+.drawer-nav-list {
+  list-style: none;
+  margin-bottom: 0.75rem;
+}
+
+.drawer-nav-group {
+  margin-bottom: 0.25rem;
+}
+
+.nav-group-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 10px;
+  transition: background-color 0.2s;
+  min-height: 36px;
+}
+
+.nav-group-header:hover {
+  background-color: var(--md-sys-color-surface-container);
+}
+
+.nav-group-header.nav-header-clickable {
+  cursor: pointer;
+  padding: 0.35rem 0.5rem;
+}
+
+.drawer-section-title-text {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--md-sys-color-outline);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  flex: 1;
+}
+
+.drawer-nav-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 0.65rem;
+  border-radius: 10px;
+  color: var(--md-sys-color-on-surface-variant);
+  text-decoration: none;
+  font-size: 0.88rem;
+  flex: 1;
+  min-width: 0;
+  transition: all 0.2s;
+}
+
+.drawer-nav-link span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.drawer-nav-link:hover {
+  color: var(--md-sys-color-on-surface);
+}
+
+.drawer-nav-link.active,
+.drawer-nav-item.active .drawer-nav-link {
+  background-color: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  font-weight: 600;
+}
+
+.drawer-nav-item {
+  margin-bottom: 0.15rem;
+}
+
+.drawer-nav-item .drawer-nav-link {
+  display: flex;
+}
+
+.nav-collapse-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border: none;
+  background: transparent;
+  color: var(--md-sys-color-outline);
+  border-radius: 6px;
+  cursor: pointer;
+  margin-right: 2px;
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+
+.nav-collapse-btn:hover {
+  background-color: var(--md-sys-color-surface-container-high);
+  color: var(--md-sys-color-primary);
+}
+
+.chevron-icon {
+  transition: transform 0.25s cubic-bezier(0.2, 0, 0, 1);
+  transform: rotate(0deg);
+}
+
+.drawer-nav-group.expanded > .nav-group-header .chevron-icon {
+  transform: rotate(90deg);
+}
+
+.nav-nested-wrapper {
+  display: grid;
+  grid-template-rows: 1fr;
+  transition: grid-template-rows 0.25s cubic-bezier(0.2, 0, 0, 1), opacity 0.2s ease-in-out;
+  opacity: 1;
+}
+
+.nav-nested-wrapper > .nav-nested {
+  overflow: hidden;
+}
+
+.drawer-nav-group.collapsed > .nav-nested-wrapper {
+  grid-template-rows: 0fr;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.nav-nested {
+  margin-left: 0.75rem;
+  padding-left: 0.4rem;
+  border-left: 1px dashed var(--md-sys-color-outline-variant);
+  margin-top: 0.15rem;
+}
+
+/* Content Area */
+.content-wrapper {
+  flex: 1;
+  min-width: 0;
+  max-width: 100%;
+  padding: 2rem 2.5rem;
+  display: flex;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.article-container {
+  width: 100%;
+  max-width: 860px;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.article-content {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+/* Breadcrumbs */
+.m3-breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  color: var(--md-sys-color-outline);
+  margin-bottom: 1.25rem;
+}
+
+.m3-breadcrumb a {
+  color: var(--md-sys-color-primary);
+  text-decoration: none;
+}
+
+.m3-breadcrumb a:hover {
+  text-decoration: underline;
+}
+
+.m3-breadcrumb-sep {
+  opacity: 0.5;
+}
+
+/* Frontmatter Meta Bar */
+.meta-chip-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1.25rem 0 2rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.meta-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  background-color: var(--md-sys-color-surface-container-high);
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.meta-chip.primary {
+  background-color: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+/* Typography & Headings */
+.article-content h1 {
+  font-size: 2.1rem;
+  font-weight: 800;
+  line-height: 1.3;
+  color: var(--md-sys-color-on-surface);
+  margin-bottom: 0.5rem;
+}
+
+.article-content h2 {
+  font-size: 1.55rem;
+  font-weight: 700;
+  margin: 2.25rem 0 1rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  color: var(--md-sys-color-on-surface);
+}
+
+.article-content h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 1.75rem 0 0.75rem;
+  color: var(--md-sys-color-on-surface);
+}
+
+.article-content h4 {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin: 1.25rem 0 0.5rem;
+}
+
+.article-content p {
+  margin-bottom: 1.15rem;
+  color: var(--md-sys-color-on-surface);
+}
+
+.article-content ul, .article-content ol {
+  margin: 0.75rem 0 1.25rem 1.5rem;
+}
+
+.article-content li {
+  margin-bottom: 0.4rem;
+}
+
+.article-content hr {
+  border: none;
+  border-top: 1px solid var(--md-sys-color-outline-variant);
+  margin: 2rem 0;
+}
+
+.article-content blockquote {
+  border-left: 4px solid var(--md-sys-color-primary);
+  padding: 0.75rem 1.25rem;
+  margin: 1.25rem 0;
+  background-color: var(--md-sys-color-surface-container-low);
+  border-radius: 0 12px 12px 0;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.article-content a {
+  color: var(--md-sys-color-primary);
+  text-decoration: none;
+  border-bottom: 1px dashed var(--md-sys-color-primary);
+}
+
+.article-content a:hover {
+  border-bottom-style: solid;
+}
+
+/* Math Container & Scroll */
+.katex-scroll-container {
+  overflow-x: auto;
+  overflow-y: hidden;
+  margin: 1.25rem 0;
+  padding: 0.75rem 1rem;
+  background-color: var(--md-sys-color-surface-container-low);
+  border-radius: 12px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  max-width: 100%;
+}
+
+.katex-display {
+  margin: 0 !important;
+}
+
+/* KaTeX CJK text fallback */
+.katex .text {
+  font-family: var(--font-sans) !important;
+}
+
+/* Responsive Table */
+.table-scroll-container {
+  overflow-x: auto;
+  margin: 1.5rem 0;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 12px;
+  background-color: var(--md-sys-color-surface-container-lowest);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+th, td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  text-align: left;
+}
+
+th {
+  background-color: var(--md-sys-color-surface-container);
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface);
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+/* 符号总表：深链接落到某一行时把那行标出来（气泡的「详细 ↗」就落在这里） */
+tr:target th,
+tr:target td {
+  background-color: var(--md-sys-color-secondary-container);
+}
+
+/* Code Blocks */
+.code-fence-wrapper {
+  margin: 1.25rem 0;
+  border-radius: 12px;
+  background-color: var(--md-sys-color-surface-container-lowest);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  overflow: hidden;
+}
+
+.code-fence-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.4rem 1rem;
+  background-color: var(--md-sys-color-surface-container);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--md-sys-color-outline);
+}
+
+.copy-btn {
+  background: transparent;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 0.7rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.copy-btn:hover {
+  background-color: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+pre {
+  padding: 1rem;
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+
+code {
+  font-family: var(--font-mono);
+  font-size: 0.88em;
+  background-color: var(--md-sys-color-surface-container);
+  padding: 0.15rem 0.35rem;
+  border-radius: 4px;
+}
+
+pre code {
+  background-color: transparent;
+  padding: 0;
+}
+
+/* Degraded Non-MD File Marker */
+.res-degrade-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.15rem 0.5rem;
+  margin: 0 0.2rem;
+  background-color: var(--md-sys-color-surface-container-high);
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 0.85em;
+  border-radius: 6px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  font-family: var(--font-mono);
+}
+
+/* Collapsible Panels（:::collapse → 原生 <details>，零 JS）
+ *
+ * 样式与 Shirone 生态的 .m3-disclosure 保持同一套命名，便于以后迁移。
+ * 折叠靠浏览器原生 <details>/<summary>，不依赖任何脚本；
+ * accordion 分组走原生 name 属性，也不需要 JS。
+ */
+.custom-md .m3-disclosure,
+.m3-disclosure {
+  margin: 0.5rem 0;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 12px;
+  background-color: var(--md-sys-color-surface-container-low, var(--md-sys-color-surface-container));
+  overflow: hidden;
+}
+
+/* 连续多个面板之间收紧一点，避免整页被撑得过散 */
+.m3-disclosure + .m3-disclosure {
+  margin-top: 0.35rem;
+}
+
+.m3-disclosure__summary {
+  display: flex;
+  align-items: baseline;
+  gap: 0.55rem;
+  padding: 0.7rem 0.95rem;
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface);
+  background-color: var(--md-sys-color-surface-container-high);
+  list-style: none; /* 去掉默认三角，用自绘指示器 */
+  user-select: none;
+  transition: background-color 0.15s ease;
+}
+
+/* 收起的面板做出「可点」的暗示：左侧主色竖条 + 悬停变底色 */
+.m3-disclosure:not([open]) > .m3-disclosure__summary {
+  box-shadow: inset 3px 0 0 0 var(--md-sys-color-primary);
+}
+.m3-disclosure:not([open]) > .m3-disclosure__summary:hover {
+  background-color: var(--md-sys-color-surface-container-highest, var(--md-sys-color-surface-container-high));
+}
+/* 展开的面板：标题行染主色底 + 左侧竖条转淡，
+ * 让「这个是打开的」一眼可辨，不必去数箭头方向。 */
+.m3-disclosure[open] > .m3-disclosure__summary {
+  box-shadow: inset 3px 0 0 0 var(--md-sys-color-outline-variant);
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  background-color: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+}
+.m3-disclosure[open] > .m3-disclosure__summary > .m3-disclosure__indicator {
+  border-left-color: var(--md-sys-color-on-primary-container);
+}
+
+/* 面板正文：比页面默认正文略亮一档，避免"展开后发灰" */
+.m3-disclosure > *:not(summary) {
+  color: var(--md-sys-color-on-surface);
+}
+
+/* 深链接跳到某个面板时的定位高亮：浏览器原生 :target，零 JS。
+ * 配合 disclosure-anchor.js 的自动展开——跳到收起面板 = 展开 + 高亮。 */
+.m3-disclosure:target {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* 符号气泡（math-glossary.mjs）：术语符号上**强调色**，无下划线、无链接框——
+ * 是「术语高亮」的样子，不是「链接」的样子。正文令牌（a.sym-gloss）与
+ * KaTeX 公式内部的取词符号（[data-term]，由 glossifyTex 写入）同一套配色。
+ * 选择器带 .article-content 前缀：它的通用链接样式（虚线下划线）特异性
+ * 为 (0,1,1)，裸 a.sym-gloss (0,1,0) 压不住——这里必须 (0,2,0) 以上。
+ * 无 JS 时令牌就是普通链接，点击直达符号入门页锚点。 */
+.article-content a.sym-gloss,
+.custom-md a.sym-gloss,
+a.sym-gloss {
+  color: var(--md-sys-color-tertiary) !important;
+  border-bottom: none;
+  text-decoration: none;
+  cursor: pointer;
+}
+.article-content a.sym-gloss:hover,
+.custom-md a.sym-gloss:hover,
+a.sym-gloss:hover {
+  color: var(--md-sys-color-primary) !important;
+  border-bottom: none;
+}
+
+.katex [data-term] {
+  color: var(--md-sys-color-tertiary);
+  cursor: pointer;
+}
+.katex [data-term]:hover {
+  color: var(--md-sys-color-primary);
+}
+
+.sym-gloss-pop {
+  position: absolute;
+  z-index: 1000;
+  max-width: 320px;
+  padding: 0.7rem 0.9rem;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 12px;
+  background-color: var(--md-sys-color-surface-container-high);
+  color: var(--md-sys-color-on-surface);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+.sym-gloss-pop p {
+  margin: 0.3rem 0 0.45rem;
+}
+.sym-gloss-pop__more {
+  color: var(--md-sys-color-primary);
+  font-size: 0.85rem;
+  text-decoration: none;
+}
+.sym-gloss-pop__more:hover {
+  text-decoration: underline;
+}
+
+/* 页脚：版权 / 许可 / 归属声明（全站每页文章末尾） */
+.site-footer {
+  margin-top: 2.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--md-sys-color-outline-variant);
+  font-size: 0.82rem;
+  line-height: 1.7;
+  color: var(--md-sys-color-on-surface-variant);
+}
+.site-footer p {
+  margin: 0.2rem 0;
+}
+.site-footer a {
+  color: var(--md-sys-color-primary);
+  text-decoration: none;
+}
+.site-footer a:hover {
+  text-decoration: underline;
+}
+
+}
+
+/* 去掉 WebKit 的默认展开三角 */
+.m3-disclosure__summary::-webkit-details-marker {
+  display: none;
+}
+.m3-disclosure__summary::marker {
+  content: "";
+}
+
+.m3-disclosure__summary:hover {
+  color: var(--md-sys-color-primary);
+}
+
+.m3-disclosure__summary:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: -2px;
+}
+
+/* 指示器：纯 CSS 三角，靠 details[open] 旋转 —— 不用一个字节的 JS。
+ * 做得比一般列表明显：实心主色、尺寸加大——学生要一眼看出「这里能点」。 */
+.m3-disclosure__indicator {
+  flex: none;
+  width: 0;
+  height: 0;
+  margin-top: 0.36em;
+  border-left: 9px solid var(--md-sys-color-primary);
+  border-top: 7px solid transparent;
+  border-bottom: 7px solid transparent;
+  transition: transform 0.18s ease;
+}
+
+.m3-disclosure[open] > .m3-disclosure__summary > .m3-disclosure__indicator {
+  transform: rotate(90deg);
+}
+
+.m3-disclosure__title {
+  flex: 1;
+}
+
+.m3-disclosure__content,
+.m3-disclosure > *:not(summary) {
+  padding: 0.2rem 0.95rem 0.7rem;
+}
+
+/* 折叠面板内部的首尾元素不要顶到边框 */
+.m3-disclosure__content > :first-child,
+.m3-disclosure > *:not(summary):first-of-type {
+  margin-top: 0.35rem;
+}
+.m3-disclosure__content > :last-child,
+.m3-disclosure > *:not(summary):last-child {
+  margin-bottom: 0.2rem;
+}
+
+/* 减少动效：指示器不做旋转过渡 */
+@media (prefers-reduced-motion: reduce) {
+  .m3-disclosure__indicator {
+    transition: none;
+  }
+}
+
+/* Prev / Next Pagination Cards */
+.m3-paging-container {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+  margin: 3rem 0 2rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.paging-card {
+  padding: 1.15rem 1.25rem;
+  border-radius: 16px;
+  background-color: var(--md-sys-color-surface-container-low);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  text-decoration: none;
+  color: var(--md-sys-color-on-surface);
+  transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.paging-card:hover {
+  background-color: var(--md-sys-color-surface-container);
+  border-color: var(--md-sys-color-primary);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-2);
+}
+
+.paging-label-row {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: var(--md-sys-color-outline);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.paging-label-row-next {
+  justify-content: space-between;
+}
+
+.paging-label-group {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.paging-pages-badge {
+  font-size: 0.7rem;
+  font-weight: 500;
+  padding: 0.1rem 0.45rem;
+  border-radius: 6px;
+  background-color: var(--md-sys-color-surface-container-high);
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: var(--font-mono);
+  letter-spacing: normal;
+  text-transform: none;
+}
+
+.paging-prev {
+  grid-column: 1;
+  text-align: left;
+}
+
+.paging-next {
+  grid-column: 2;
+  text-align: left;
+}
+
+.paging-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--md-sys-color-on-surface);
+  line-height: 1.55;
+  text-wrap: balance;
+  text-wrap: pretty;
+  word-break: normal;
+  overflow-wrap: break-word;
+  transition: color 0.2s;
+}
+
+.paging-card:hover .paging-title {
+  color: var(--md-sys-color-primary);
+}
+
+.paging-tail {
+  white-space: nowrap;
+}
+
+/* Right TOC */
+.m3-toc {
+  width: var(--toc-width);
+  flex-shrink: 0;
+  padding: 2rem 1rem 2rem 0;
+  height: calc(100vh - var(--header-height));
+  position: sticky;
+  top: var(--header-height);
+  overflow-y: auto;
+}
+
+.toc-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--md-sys-color-outline);
+  margin-bottom: 0.75rem;
+}
+
+.toc-list {
+  list-style: none;
+}
+
+.toc-item a {
+  display: block;
+  font-size: 0.82rem;
+  color: var(--md-sys-color-on-surface-variant);
+  text-decoration: none;
+  padding: 0.35rem 0.5rem;
+  border-radius: 6px;
+  border-left: 2px solid transparent;
+  transition: all 0.15s;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.toc-item.level-3 a {
+  padding-left: 1.25rem;
+  font-size: 0.78rem;
+}
+
+.toc-item a:hover {
+  color: var(--md-sys-color-primary);
+  background-color: var(--md-sys-color-surface-container);
+}
+
+.toc-item.active a {
+  color: var(--md-sys-color-primary);
+  border-left-color: var(--md-sys-color-primary);
+  background-color: var(--md-sys-color-primary-container);
+  font-weight: 600;
+}
+
+/* Mobile Overlay & Responsive */
+.drawer-backdrop {
+  display: none;
+}
+
+@media (max-width: 1200px) {
+  .m3-toc {
+    display: none;
+  }
+}
+
+@media (max-width: 860px) {
+  .site-shell {
+    display: block;
+    width: 100%;
+  }
+  .m3-drawer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 285px;
+    max-width: 84vw;
+    height: 100vh;
+    height: 100dvh;
+    z-index: 100;
+    transform: translateX(-100%);
+    visibility: hidden;
+    transition: transform 0.3s cubic-bezier(0.2, 0, 0, 1), visibility 0.3s;
+    box-shadow: var(--shadow-3);
+  }
+  .m3-drawer.open {
+    transform: translateX(0);
+    visibility: visible;
+  }
+  .sidebar-resizer {
+    display: none;
+  }
+  .top-bar-breadcrumbs {
+    display: none;
+  }
+  .top-bar-mobile-title {
+    display: flex;
+  }
+  .drawer-collapse-btn {
+    display: none;
+  }
+  .drawer-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 99;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+  }
+  .drawer-backdrop.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .content-wrapper {
+    padding: 1.25rem 0.85rem;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .article-container {
+    width: 100%;
+    min-width: 0;
+  }
+  .m3-paging-container {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+  .paging-prev, .paging-next {
+    grid-column: 1;
+    text-align: left;
+  }
+  .paging-label-row-next {
+    justify-content: flex-start;
+  }
+  .palette-popover {
+    right: 0;
+    width: calc(100vw - 2rem);
+    max-width: 280px;
+  }
+}
+
+/* ==========================================================================
+   全站搜索面板（Pagefind）
+   点击顶栏放大镜展开；结果卡片可键盘上下选择，回车跳转。
+   ========================================================================== */
+.search-panel {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 8vh 1rem 2rem;
+  background: color-mix(in srgb, var(--md-sys-color-inverse-surface) 45%, transparent);
+  backdrop-filter: blur(2px);
+}
+
+.search-panel[hidden] {
+  display: none;
+}
+
+.search-panel-inner {
+  width: 100%;
+  max-width: 640px;
+  max-height: 76vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 24px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  background-color: var(--md-sys-color-surface-container-high);
+  box-shadow: var(--shadow-3);
+}
+
+.search-panel-head {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.85rem 0.9rem 0.85rem 1.1rem;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  flex-shrink: 0;
+}
+
+.search-panel-icon {
+  color: var(--md-sys-color-on-surface-variant);
+  flex-shrink: 0;
+}
+
+.search-panel-input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--md-sys-color-on-surface);
+  font-size: 1rem;
+  font-family: inherit;
+}
+
+.search-panel-input::placeholder {
+  color: var(--md-sys-color-outline);
+}
+
+.search-panel-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 0.5rem;
+}
+
+.search-hint {
+  margin: 0;
+  padding: 1.2rem 1rem;
+  font-size: 0.85rem;
+  line-height: 1.7;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.search-hit {
+  display: block;
+  padding: 0.7rem 0.85rem;
+  border-radius: 14px;
+  text-decoration: none;
+  color: inherit;
+  border: 1px solid transparent;
+  transition: background-color 0.15s, border-color 0.15s;
+}
+
+.search-hit:hover,
+.search-hit.active {
+  background-color: var(--md-sys-color-primary-container);
+  border-color: color-mix(in srgb, var(--md-sys-color-primary) 35%, transparent);
+}
+
+.search-hit-title {
+  display: block;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--md-sys-color-primary);
+  margin-bottom: 0.2rem;
+}
+
+.search-hit-excerpt {
+  display: block;
+  font-size: 0.82rem;
+  line-height: 1.6;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+/* Pagefind 用 <mark> 高亮命中的词 */
+.search-hit-excerpt mark,
+.search-hit-title mark {
+  background: color-mix(in srgb, var(--md-sys-color-tertiary) 40%, transparent);
+  color: inherit;
+  border-radius: 3px;
+  padding: 0 2px;
+}
+
+body.search-open {
+  overflow: hidden;
+}
+
+/* 顶栏放不下时，搜索面板改为近乎全屏（手机端） */
+@media (max-width: 640px) {
+  .search-panel {
+    padding: 0;
+  }
+  .search-panel-inner {
+    max-width: none;
+    max-height: none;
+    height: 100%;
+    border-radius: 0;
+    border: none;
+  }
+}
+
+/* 搜索加载进度条：首次搜索需拉索引分片，用可见进度替代空白等待 */
+.search-progress {
+  padding: 1.4rem 1rem 1.6rem;
+}
+
+.search-progress-inline {
+  padding: 0.9rem 1rem 1.1rem;
+}
+
+.search-progress-label {
+  font-size: 0.82rem;
+  color: var(--md-sys-color-on-surface-variant);
+  margin-bottom: 0.6rem;
+}
+
+.search-progress-track {
+  height: 4px;
+  border-radius: 2px;
+  overflow: hidden;
+  background-color: var(--md-sys-color-surface-container-highest);
+}
+
+.search-progress-bar {
+  height: 100%;
+  border-radius: 2px;
+  background-color: var(--md-sys-color-primary);
+  transition: width 0.35s cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* 不确定进度：左右往复流动，表示"还在进行但进度未知" */
+.search-progress-bar-indeterminate {
+  width: 40% !important;
+  animation: search-indeterminate 1.1s ease-in-out infinite;
+}
+
+@keyframes search-indeterminate {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(250%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .search-progress-bar-indeterminate {
+    animation: none;
+    width: 100% !important;
+  }
+}
+
+/* 作业配图（习题册原图）：限宽随版心缩放 */
+.article-content img { max-width: 100%; height: auto; }

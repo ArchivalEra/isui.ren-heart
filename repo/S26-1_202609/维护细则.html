@@ -1,0 +1,1102 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-depth="0">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>仓库维护细则 | S26-1 课程知识库 - isui.ren</title>
+  <script>
+  /* 首帧前应用已保存的主题色与明暗，避免先用默认色渲染再变色（闪光弹 + 二次全量重绘） */
+  (function () {
+    try {
+      var root = document.documentElement;
+      var m = localStorage.getItem("theme") ||
+        (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      root.setAttribute("data-theme", m === "dark" ? "dark" : "light");
+      var hue = localStorage.getItem("theme-hue");
+      if (hue !== null && /^\d+$/.test(hue)) {
+        root.style.setProperty("--hue", hue);
+        root.style.setProperty("--primary-h", hue);
+      }
+    } catch (e) { /* 隐私模式下 localStorage 可能抛错，忽略 */ }
+  })();
+  </script>
+  <link rel="stylesheet" href="./assets/katex/katex.min.css">
+  <link rel="stylesheet" href="./assets/theme/shirone-reader.css">
+  <link rel="stylesheet" href="./assets/plugins/site-search.css">
+</head>
+<body>
+  <div class="drawer-backdrop" id="drawer-backdrop"></div>
+
+  <div class="site-shell">
+    <!-- Left Column: Full-Height Sidebar (整列导航栏) -->
+    <aside class="m3-drawer" id="m3-drawer">
+      <div class="drawer-header-brand">
+        <a href="./index.html" class="sidebar-brand">
+          <span class="site-title-icon">📚</span>
+          <span class="sidebar-brand-text">S26-1 课程知识库</span>
+        </a>
+        <button class="m3-icon-btn drawer-collapse-btn" id="drawer-collapse-btn" aria-label="收起侧边栏" title="收起侧边栏">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M15 18l-6-6 6-6"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="drawer-header-toolbar">
+        <span class="drawer-section-title">课程导航目录</span>
+        <button class="drawer-action-btn" id="toggle-all-groups-btn" title="一键收起或展开所有课程分类">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M7 15l5 5 5-5M7 9l5-5 5 5"/>
+          </svg>
+          <span id="toggle-all-text">全部收起</span>
+        </button>
+      </div>
+
+      <div class="drawer-nav-scroll-area">
+        <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="./index.html" class="drawer-nav-link">
+              <span>首页</span>
+            </a>
+          </li><li class="drawer-nav-group expanded">
+          <div class="nav-group-header ">
+            
+              <a href="./课程/index.html" class="drawer-nav-link ">
+                <span>课程总览</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 课程总览" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="./课程/工程数学/index.html" class="drawer-nav-link ">
+                <span>工程数学</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 工程数学" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="./课程/工程数学/教材解析/index.html" class="drawer-nav-link ">
+                <span>教材解析</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 教材解析" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="./课程/工程数学/教材解析/0.0-符号入门.html" class="drawer-nav-link">
+              <span>符号入门</span>
+            </a>
+          </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="./课程/工程数学/教材解析/第一部分-线性代数/index.html" class="drawer-nav-link ">
+                <span>第一部分 线性代数</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 第一部分 线性代数" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header nav-header-clickable">
+            
+              <span class="drawer-section-title-text">第01章 行列式</span>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 第01章 行列式" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="./课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.0-本章通关攻略.html" class="drawer-nav-link">
+              <span>★ 通关攻略</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="./课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.1-二阶与三阶行列式.html" class="drawer-nav-link">
+              <span>1.1 二阶与三阶行列式</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="./课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.2-n阶行列式.html" class="drawer-nav-link">
+              <span>1.2 n阶行列式</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="./课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.3-克莱姆法则.html" class="drawer-nav-link">
+              <span>1.3 克莱姆法则</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="./课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.4-用MATLAB计算行列式.html" class="drawer-nav-link">
+              <span>1.4 用MATLAB计算行列式</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header nav-header-clickable">
+            
+              <span class="drawer-section-title-text">第02章 矩阵</span>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 第02章 矩阵" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="./课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.0-本章通关攻略.html" class="drawer-nav-link">
+              <span>★ 通关攻略</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="./课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.1-矩阵的概念及运算.html" class="drawer-nav-link">
+              <span>2.1 矩阵的概念及运算</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="./课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.2-逆矩阵.html" class="drawer-nav-link">
+              <span>2.2 逆矩阵</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="./课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.3-矩阵的初等变换与初等矩阵.html" class="drawer-nav-link">
+              <span>2.3 初等变换与初等矩阵</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="./课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.4-矩阵的秩.html" class="drawer-nav-link">
+              <span>2.4 矩阵的秩</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="./课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.5-用MATLAB进行矩阵运算.html" class="drawer-nav-link">
+              <span>2.5 用MATLAB进行矩阵运算</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li></ul>
+            </div>
+          </div>
+        </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="./课程/工程数学/课堂笔记/index.html" class="drawer-nav-link ">
+                <span>课堂笔记</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 课堂笔记" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="./课程/工程数学/课堂笔记/2026-09-17-determinants-order-2-3.html" class="drawer-nav-link">
+              <span>09-17 行列式与沙路法则</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="./课程/工程数学/课堂笔记/2026-09-17-determinants-transcript-notes.html" class="drawer-nav-link">
+              <span>09-17 课堂听课整理</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="./课程/工程数学/课堂笔记/2026-09-24-降阶法克拉默法则与齐次方程组.html" class="drawer-nav-link">
+              <span>09-24 降阶法与克拉默法则</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="./课程/工程数学/作业/index.html" class="drawer-nav-link ">
+                <span>作业</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 作业" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="./课程/工程数学/作业/2026-09-17-作业1.html" class="drawer-nav-link">
+              <span>作业1</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-item ">
+            <a href="./课程/工程数学/原始资料/index.html" class="drawer-nav-link">
+              <span>原始资料</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="./课程/工程数学/音频/index.html" class="drawer-nav-link">
+              <span>音频</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="./课程/电力大数据与人工智能/index.html" class="drawer-nav-link ">
+                <span>电力大数据与人工智能</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 电力大数据与人工智能" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="./课程/电力大数据与人工智能/作业/index.html" class="drawer-nav-link">
+              <span>作业</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="./课程/电力大数据与人工智能/教材解析/index.html" class="drawer-nav-link">
+              <span>教材解析</span>
+            </a>
+          </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="./课程/电力大数据与人工智能/课堂笔记/index.html" class="drawer-nav-link ">
+                <span>课堂笔记</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 课堂笔记" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="./课程/电力大数据与人工智能/课堂笔记/2026-09-20-课程定位与考核要求.html" class="drawer-nav-link">
+              <span>09-20 开课第一讲</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="./课程/电力大数据与人工智能/课堂笔记/2026-09-22-暂态稳定评估方法与紧急控制.html" class="drawer-nav-link">
+              <span>09-22 暂态稳定评估与紧急控制</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-item ">
+            <a href="./课程/电力大数据与人工智能/原始资料/index.html" class="drawer-nav-link">
+              <span>原始资料</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="./课程/电力大数据与人工智能/音频/index.html" class="drawer-nav-link">
+              <span>音频</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="./课程/形势与政策/index.html" class="drawer-nav-link ">
+                <span>形势与政策</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 形势与政策" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="./课程/形势与政策/作业/index.html" class="drawer-nav-link">
+              <span>作业</span>
+            </a>
+          </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="./课程/形势与政策/课堂笔记/index.html" class="drawer-nav-link ">
+                <span>课堂笔记</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 课堂笔记" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="./课程/形势与政策/课堂笔记/2026-09-21-经济热点专题与考试安排.html" class="drawer-nav-link">
+              <span>09-21 经济热点专题与考试安排</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-item ">
+            <a href="./课程/形势与政策/原始资料/index.html" class="drawer-nav-link">
+              <span>原始资料</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="./课程/形势与政策/音频/index.html" class="drawer-nav-link">
+              <span>音频</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="./课程/电路原理/index.html" class="drawer-nav-link ">
+                <span>电路原理</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 电路原理" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="./课程/电路原理/作业/index.html" class="drawer-nav-link ">
+                <span>作业</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 作业" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="./课程/电路原理/作业/2026-09-28-习题册第一章.html" class="drawer-nav-link">
+              <span>习题册第一章（43 题）</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="./课程/电路原理/作业/2026-09-28-习题册第二章.html" class="drawer-nav-link">
+              <span>习题册第二章（34 题）</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="./课程/电路原理/作业/2026-09-28-习题册第三章.html" class="drawer-nav-link">
+              <span>习题册第三章（28 题）</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="./课程/电路原理/作业/2026-09-28-习题册第四章.html" class="drawer-nav-link">
+              <span>习题册第四章（21 题）</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="./课程/电路原理/作业/2026-09-28-习题册第五章.html" class="drawer-nav-link">
+              <span>习题册第五章（62 题）</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="./课程/电路原理/作业/2026-09-28-习题册第六章.html" class="drawer-nav-link">
+              <span>习题册第六章（33 题）</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="./课程/电路原理/作业/2026-09-28-习题册第七章.html" class="drawer-nav-link">
+              <span>习题册第七章（31 题）</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="./课程/电路原理/作业/2026-09-28-习题册第九章.html" class="drawer-nav-link">
+              <span>习题册第九章（26 题）</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="./课程/电路原理/教材解析/index.html" class="drawer-nav-link ">
+                <span>教材解析</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 教材解析" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="./课程/电路原理/教材解析/0.0-符号入门.html" class="drawer-nav-link">
+              <span>符号入门</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="./课程/电路原理/课堂笔记/index.html" class="drawer-nav-link ">
+                <span>课堂笔记</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 课堂笔记" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="./课程/电路原理/课堂笔记/2026-09-21-开课说明与电路的基本概念.html" class="drawer-nav-link">
+              <span>09-21 开课说明与电路的基本概念</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="./课程/电路原理/课堂笔记/2026-09-23-电压电位与电路名词.html" class="drawer-nav-link">
+              <span>09-23 电压电位与电路名词</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-item ">
+            <a href="./课程/电路原理/原始资料/index.html" class="drawer-nav-link">
+              <span>原始资料</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="./课程/电路原理/音频/index.html" class="drawer-nav-link">
+              <span>音频</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="./课程/电子技术/index.html" class="drawer-nav-link ">
+                <span>电子技术</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 电子技术" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="./课程/电子技术/作业/index.html" class="drawer-nav-link ">
+                <span>作业</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 作业" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="./课程/电子技术/作业/2026-09-23-第一章简答题.html" class="drawer-nav-link">
+              <span>2026-9-23作业（习题 1.1、1.3、1.5）</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-item ">
+            <a href="./课程/电子技术/教材解析/index.html" class="drawer-nav-link">
+              <span>教材解析</span>
+            </a>
+          </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="./课程/电子技术/课堂笔记/index.html" class="drawer-nav-link ">
+                <span>课堂笔记</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 课堂笔记" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="./课程/电子技术/课堂笔记/2026-09-21-开课说明与半导体基础到PN结.html" class="drawer-nav-link">
+              <span>09-21 开课说明与半导体基础到 PN 结</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="./课程/电子技术/课堂笔记/2026-09-23-二极管与含二极管电路.html" class="drawer-nav-link">
+              <span>09-23 二极管与含二极管电路</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-item ">
+            <a href="./课程/电子技术/原始资料/index.html" class="drawer-nav-link">
+              <span>原始资料</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="./课程/电子技术/音频/index.html" class="drawer-nav-link">
+              <span>音频</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="./课程/电机学/index.html" class="drawer-nav-link ">
+                <span>电机学</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 电机学" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="./课程/电机学/作业/index.html" class="drawer-nav-link ">
+                <span>作业</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 作业" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="./课程/电机学/作业/2026-09-22-第1章概述客观题.html" class="drawer-nav-link">
+              <span>09-22 第1章概述客观题（25题）</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="./课程/电机学/教材解析/index.html" class="drawer-nav-link ">
+                <span>教材解析</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 教材解析" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="./课程/电机学/教材解析/0.0-符号入门.html" class="drawer-nav-link">
+              <span>符号入门</span>
+            </a>
+          </li><li class="drawer-nav-group collapsed">
+          <div class="nav-group-header ">
+            
+              <a href="./课程/电机学/教材解析/第01章-概述/1.1-电机的分类.html" class="drawer-nav-link ">
+                <span>第01章 概述</span>
+              </a>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 第01章 概述" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="./课程/电机学/教材解析/第01章-概述/1.1-电机的分类.html" class="drawer-nav-link">
+              <span>1.1 电机的分类</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="./课程/电机学/教材解析/第01章-概述/1.2-电机的磁路和磁路定律.html" class="drawer-nav-link">
+              <span>1.2 电机的磁路和磁路定律</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="./课程/电机学/教材解析/第01章-概述/1.3-电机的电磁基本理论.html" class="drawer-nav-link">
+              <span>1.3 电机的电磁基本理论</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="./课程/电机学/教材解析/第01章-概述/1.4-电机的制造材料.html" class="drawer-nav-link">
+              <span>1.4 电机的制造材料</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="./课程/电机学/教材解析/第01章-概述/第01章-小结与思考题习题.html" class="drawer-nav-link">
+              <span>第01章 小结与思考题习题</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-item ">
+            <a href="./课程/电机学/课堂笔记/index.html" class="drawer-nav-link">
+              <span>课堂笔记</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="./课程/电机学/原始资料/index.html" class="drawer-nav-link">
+              <span>原始资料</span>
+            </a>
+          </li><li class="drawer-nav-item ">
+            <a href="./课程/电机学/音频/index.html" class="drawer-nav-link">
+              <span>音频</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group expanded">
+          <div class="nav-group-header nav-header-clickable">
+            
+              <span class="drawer-section-title-text">仓库规约</span>
+            
+            <button class="nav-collapse-btn" aria-label="折叠或展开 仓库规约" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item ">
+            <a href="./维护条例.html" class="drawer-nav-link">
+              <span>维护条例</span>
+            </a>
+          </li><li class="drawer-nav-item active">
+            <a href="./维护细则.html" class="drawer-nav-link">
+              <span>维护细则</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li></ul>
+      </div>
+
+      <div class="sidebar-resizer" id="sidebar-resizer" title="按住拖拽调整侧边栏宽度，双击恢复默认宽度"></div>
+    </aside>
+
+    <!-- Right Column: Main Content Column (主内容列) -->
+    <div class="main-column">
+      <!-- Top App Bar -->
+      <header class="m3-top-app-bar">
+        <div class="top-bar-left">
+          <button class="m3-icon-btn" id="drawer-toggle" aria-label="展开/收起侧边栏" title="展开/收起侧边栏">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+          </button>
+          <a href="./index.html" class="top-bar-mobile-title">
+            <span>S26-1 课程知识库</span>
+          </a>
+          <nav class="top-bar-breadcrumbs" aria-label="当前路径">
+            <a href="./index.html">首页</a><span class="m3-breadcrumb-sep">/</span><span class="current-crumb">仓库维护细则</span>
+          </nav>
+        </div>
+
+        <div class="top-bar-right">
+          <button class="m3-icon-btn" id="palette-toggle" aria-label="调色盘" title="自定义主题强调色">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/>
+              <circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/>
+              <circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/>
+              <circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/>
+              <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/>
+            </svg>
+          </button>
+
+          <!-- Palette Popover -->
+          <div class="palette-popover" id="palette-popover">
+            <div class="palette-header">
+              <span class="palette-title">主题强调色调色盘</span>
+              <button class="palette-reset-btn" id="palette-reset-btn" title="重置为默认色">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+              </button>
+            </div>
+            <div class="palette-current-row">
+              <span class="palette-hue-badge" id="palette-hue-badge">Hue 248°</span>
+              <div class="palette-color-dot" id="palette-color-dot"></div>
+            </div>
+            <div class="palette-slider-container">
+              <span class="palette-slider-label">色相微调 (0° - 360°)</span>
+              <input type="range" min="0" max="360" value="248" class="palette-slider" id="hue-slider">
+            </div>
+            <div>
+              <div class="palette-swatches-title">预设配色</div>
+              <div class="palette-swatches-grid">
+                <button class="palette-swatch-item" data-hue="315" title="经典粉紫">
+                  <span class="palette-swatch-dot" style="background: hsl(315, 75%, 45%);"></span>
+                  <span class="palette-swatch-name">粉紫</span>
+                </button>
+                <button class="palette-swatch-item" data-hue="280" title="紫罗兰">
+                  <span class="palette-swatch-dot" style="background: hsl(280, 75%, 45%);"></span>
+                  <span class="palette-swatch-name">紫罗兰</span>
+                </button>
+                <button class="palette-swatch-item active" data-hue="248" title="学术深蓝">
+                  <span class="palette-swatch-dot" style="background: hsl(248, 75%, 45%);"></span>
+                  <span class="palette-swatch-name">深蓝</span>
+                </button>
+                <button class="palette-swatch-item" data-hue="205" title="天青蓝">
+                  <span class="palette-swatch-dot" style="background: hsl(205, 75%, 45%);"></span>
+                  <span class="palette-swatch-name">天青</span>
+                </button>
+                <button class="palette-swatch-item" data-hue="150" title="翡翠绿">
+                  <span class="palette-swatch-dot" style="background: hsl(150, 75%, 40%);"></span>
+                  <span class="palette-swatch-name">翡翠</span>
+                </button>
+                <button class="palette-swatch-item" data-hue="75" title="琥珀黄">
+                  <span class="palette-swatch-dot" style="background: hsl(75, 75%, 40%);"></span>
+                  <span class="palette-swatch-name">琥珀</span>
+                </button>
+                <button class="palette-swatch-item" data-hue="30" title="晚霞橙">
+                  <span class="palette-swatch-dot" style="background: hsl(30, 80%, 48%);"></span>
+                  <span class="palette-swatch-name">晚霞</span>
+                </button>
+                <button class="palette-swatch-item" data-hue="355" title="绯红">
+                  <span class="palette-swatch-dot" style="background: hsl(355, 75%, 45%);"></span>
+                  <span class="palette-swatch-name">绯红</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <button class="m3-icon-btn" id="search-toggle" aria-label="全站搜索" title="全站搜索">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+          </button>
+
+          <button class="m3-icon-btn" id="theme-toggle" aria-label="切换昼夜主题">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          </button>
+        </div>
+      </header>
+
+      <!-- 全站搜索面板（点击顶栏放大镜展开；ESC 或点外部关闭） -->
+      <div class="search-panel" id="search-panel" hidden>
+        <div class="search-panel-inner" role="dialog" aria-modal="true" aria-label="全站搜索">
+          <div class="search-panel-head">
+            <svg class="search-panel-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+            <input type="search" id="search-input" class="search-panel-input" placeholder="搜索知识点、例题、习题…" autocomplete="off" spellcheck="false">
+            <button class="m3-icon-btn" id="search-close" aria-label="关闭搜索" title="关闭（ESC）">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
+          </div>
+          <div class="search-panel-body" id="search-results">
+            <p class="search-hint">输入关键词开始搜索。中文按字面子串匹配——搜「沙路法则」只出真正连着出现这四个字的地方；结果按相关度排序，回车打开第一条。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="layout-container">
+        <!-- Content Area -->
+        <main class="content-wrapper">
+          <article class="article-container">
+            <!-- Breadcrumb in page body -->
+            <nav class="m3-breadcrumb">
+              <a href="./index.html">首页</a><span class="m3-breadcrumb-sep">/</span><span>仓库维护细则</span>
+            </nav>
+
+            <div class="meta-chip-bar"><span class="meta-chip">⚡ 状态: active</span><span class="meta-chip">📅 更新: 2026-09-17</span></div>
+
+            <div class="article-content">
+              <h1 id="仓库维护细则">仓库维护细则</h1><p>本细则适用于<strong>任意数量课程</strong>的学习仓库：增加课程、增加资料类别、迁移目录都不需要改写本细则，只需要按下面的固定动作执行。原则性规定见<a href="./%E7%BB%B4%E6%8A%A4%E6%9D%A1%E4%BE%8B.html">仓库维护条例</a>；两者冲突时以条例为准，并同步修订本细则。</p>
+<p><strong>与 README 的关系</strong>：README 的课程目录和本文件的「仓库状态」都是<strong>自动区块</strong>，由 <code>.githooks/hook_lib.py</code> 在每次提交时从暂存内容重新生成，推送前校验一致性。手工改动会被覆盖；要改内容，改自动区块之外的正文。</p>
+<h2 id="1-每次编辑后的固定动作-强制">1. 每次编辑后的固定动作（强制）</h2><p>任何一次新增、修改、移动或删除资料之后，按顺序执行：</p>
+<p><div class="code-fence-wrapper">
+      <div class="code-fence-header">
+        <span>bash</span>
+        <button class="copy-btn">复制</button>
+      </div>
+      <pre><code>python3 .githooks/update-readme.py --worktree   # 同步 README 课程目录 + 本文件状态区块
+python3 .githooks/check-markdown.py             # Markdown 美观度，错误必须为 0
+python3 .githooks/test-update-readme.py         # 目录、白名单、命名、索引集成测试
+git fsck --no-progress                          # 仓库对象完整性，不应有输出
+git diff --check                                # 空白与冲突标记</code></pre>
+    </div></p>
+<p>四项都通过再提交。提交由 pre-commit 再次生成两处自动区块；推送由 pre-push 校验待推送提交。</p>
+<h2 id="2-新增一门课程">2. 新增一门课程</h2><ol>
+<li>在 <code>课程/&lt;中文课名&gt;/</code> 下按类别建目录：默认五类（作业、教材解析、课堂笔记、原始资料、音频）；该课已在 <code>.githooks/hook_lib.py</code> 的 <code>COURSE_SKIPPED_KINDS</code> 声明豁免的类别不建（如形势与政策不建教材解析）。</li>
+<li>每类复制 <code>模板/</code> 下对应模板生成 <code>index.md</code>；课程入口 <code>课程/&lt;课名&gt;/index.md</code> 复制 <code>模板/课程索引.md</code>。</li>
+<li>在 <code>课程/index.md</code> 登记这门课；在 <code>.gitignore</code> 为<strong>每个新文件</strong>加一行 <code>!/完整相对路径</code>。</li>
+<li>若该课需要新的豁免类别，先在 <code>COURSE_SKIPPED_KINDS</code> 增加声明再建目录——豁免漏登记会被钩子按「课程入口缺少分类链接」拦下。</li>
+<li>跑第 1 节的固定动作，然后提交。</li>
+</ol>
+<p>不需要改本细则、README 正文或钩子脚本——自动区块会自己反映新课程。</p>
+<h2 id="3-教材照片归档与读图">3. 教材照片归档与读图</h2><h3 id="3-1-归档">3.1 归档</h3><ul>
+<li><strong>原件不入库</strong>：教材照片由拍摄者本地保存，仓库内不存放图片二进制。手机 HEIC 与 JPG 都不入库，也不转格式、不压缩、不重命名。</li>
+<li>在 <code>课程/&lt;课名&gt;/原始资料/index.md</code> 逐张登记<strong>文件名、原书页码/内容与 SHA-256</strong>，并在表格里把文件名写成<strong>纯文本</strong>（不加链接，避免死链）。这是原件的身份凭证。</li>
+<li>登记后逐张核对：登记哈希 = 拍摄者本地原件哈希。核对命令见<a href="./%E7%BB%B4%E6%8A%A4%E6%9D%A1%E4%BE%8B.html">维护条例</a>第 6 节验证基线。</li>
+<li>需要方向校正、缩放或裁剪来读图时，由 <code>.githooks/prepare-photos.py</code> 从<strong>仓库外原件</strong>生成 <code>/tmp</code> 阅读副本；副本不入库、不作证据引用。</li>
+<li>解析正文引用照片时用文件名（如 <code>IMG20260917203306.jpg</code>）或页码，不写仓库内路径。</li>
+</ul>
+<h3 id="3-2-读图-强制交给子代理">3.2 读图（强制交给子代理）</h3><p><strong>主对话每对话最多 60 张图片</strong>，超限后主代理无法再读图，会把整批任务卡住。因此：</p>
+<ul>
+<li><strong>批量读图一律派子代理</strong>：用 Agent 工具（<code>general-purpose</code>）分批读，一个子代理读 4–8 张。提示词只列出<strong>要读的具体那几行字</strong>（某个下标、某个标注），并写明「<strong>不要转录整页正文</strong>」。</li>
+<li><strong>每张图只读一次，看不清就上报重拍</strong>：禁止重复打开同一张、禁止换副本重试、禁止裁剪/放大/增强等自救手段。读不清的按「文件名 + 原书页码 + 看不清的位置 + 原因」报给用户重拍，由用户决定。正常单张约 1 万 token；若某次读图远超此量级，说明提示词里让它抄整页了。</li>
+<li>子代理有独立的图片预算，不受主对话上限影响；主代理只汇总它返回的文字结论。</li>
+<li>主代理只在需要目视确认<strong>一两个关键点</strong>（例如某一步变换标注、某个下标）时才直接读图，并计入自己的预算。</li>
+<li><strong>禁止用 OCR 代替读图</strong>：公式、矩阵、上下标、手写旁注在识别结果里普遍出错（实测会漏掉 <code>1</code>、负号和下标）。OCR 只能用来辅助定位页码，不能作为转录依据。</li>
+<li><strong>子代理只许用 Read 看图，不许自建识别管线</strong>：实测有子代理收到「读照片」指令后，自行建虚拟环境、装识别工具、把图旋转缩放截图做探针，整轮作废且结果一字不可用。派活提示词必须写死三条：<ul>
+<li>只允许 Read；禁止使用或安装任何 OCR／文字识别工具与模型，禁止 <code>pip</code>/<code>uv</code>/<code>apt</code> 安装；</li>
+<li>禁止对图片做旋转、裁剪、缩放、增强、拼接；Read 打不开或看不清就<strong>立即停下如实报告</strong>，不许另找替代方案；</li>
+<li>报告开头必须先列「实际打开的文件清单＋未能打开的文件」，没有这份声明的结果一律丢弃重派。</li>
+</ul>
+</li>
+<li>主代理派活时写清：这是第几章第几节、期望的页码区间、需要逐字核对的记号（箭头上的变换标注、下标、符号），并要求区分「数值确定」与「标注看不清」。</li>
+</ul>
+<h3 id="3-3-教材解析写作-先抄后析">3.3 教材解析写作（先抄后析）</h3><ul>
+<li><strong>一节一个文件</strong>，放在 <code>课程/&lt;课名&gt;/教材解析/第NN章-章名/</code> 下，命名 <code>第NN章-&lt;节号&gt;-&lt;节名&gt;.md</code>；不把整章塞进一个 md。</li>
+<li>每个文件内部固定：先<strong>原书抄录</strong>（按原书页码抄录印刷正文与原编号，公式用 LaTeX 重排），紧跟<strong>解析</strong>（概念、条件、推导、例题解法、易错点、验算）。</li>
+<li>教材陈述与整理者补充必须分开标注；学生手写答案不得当作标准答案；教材习题不自动认定为教师布置的作业。</li>
+<li>例题与习题的数值结果要用<strong>精确算术独立验算</strong>（有理数或整数运算），不照抄书上手写过程；验算发现的差异要写进解析并在文件末尾说明。</li>
+<li>每个文件末尾写「本节完成边界」：已抄录、已解析、〔待核对〕、未完成，不夸大进度。</li>
+</ul>
+<h3 id="3-4-资料与索引同进同出-hook-强制">3.4 资料与索引同进同出（hook 强制）</h3><p><code>课程/&lt;课程&gt;/&lt;类别&gt;/</code> 下任何资料（不含 <code>index.md</code>）<strong>新增、删除或修改</strong>，同一次提交必须同时改对应类别的 <code>index.md</code>（含其中 <code>last_updated</code>），否则 pre-commit 直接拒绝。索引是资料的登记处；资料变了索引不动，索引就已过期。作业记录照此办理：新增作业要登记进 <code>作业/index.md</code>，改正文要同步索引里的状态与时间。</p>
+<h2 id="4-命名与目录速查">4. 命名与目录速查</h2><div class="table-scroll-container"><table>
+<thead>
+<tr>
+<th align="left">类别</th>
+<th align="left">位置</th>
+<th align="left">命名</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">作业</td>
+<td align="left"><code>课程/&lt;课名&gt;/作业/</code></td>
+<td align="left"><code>YYYY-MM-DD-名称.md</code></td>
+</tr>
+<tr>
+<td align="left">教材解析</td>
+<td align="left"><code>课程/&lt;课名&gt;/教材解析/第NN章-章名/</code></td>
+<td align="left"><code>第NN章-&lt;节号&gt;-&lt;节名&gt;.md</code></td>
+</tr>
+<tr>
+<td align="left">课堂笔记</td>
+<td align="left"><code>课程/&lt;课名&gt;/课堂笔记/</code></td>
+<td align="left"><code>YYYY-MM-DD-名称.md</code></td>
+</tr>
+<tr>
+<td align="left">原始资料</td>
+<td align="left"><code>课程/&lt;课名&gt;/原始资料/</code></td>
+<td align="left">保留原文件名，不强制日期</td>
+</tr>
+<tr>
+<td align="left">音频记录</td>
+<td align="left"><code>课程/&lt;课名&gt;/音频/</code></td>
+<td align="left"><code>YYYY-MM-DD-名称.md</code></td>
+</tr>
+</tbody></table></div>
+<p>各类目录入口一律 <code>index.md</code>；<code>knowledge/</code> 只作历史兼容，不新增正文。</p>
+<h2 id="5-白名单与提交">5. 白名单与提交</h2><ul>
+<li><code>.gitignore</code> 保持 <code>*</code> → <code>!*/</code> → 逐文件 <code>!/完整相对路径</code>，<strong>禁止通配符</strong>；新增文件先加白名单。</li>
+<li>提交信息用中文，说明做了什么；不提交音频二进制、不写入任何凭据。</li>
+<li>每次提交后确认工作区干净；推送前确认 pre-push 通过。</li>
+</ul>
+<h2 id="6-禁止事项">6. 禁止事项</h2><ol>
+<li>猜补看不清的题面、数值、下标；拿不准就标〔待核对〕并写明照片来源。</li>
+<li>把 OCR 结果、转换后的临时图、学生手写答案当作权威依据。</li>
+<li>用子代理的转录直接成文而不做数值验算；转录只解决「书上写了什么」，不解决「写得对不对」。</li>
+<li>只在一个位置维护正文，其他位置用链接；不复制第二份。</li>
+<li>凭文件名或日期推断课次、节次；课次以正式资料为准。</li>
+</ol>
+<h2 id="7-故障处理">7. 故障处理</h2><ul>
+<li><strong><code>git fsck</code> 报对象损坏</strong>：先确认工作区文件与源文件哈希一致，再删除损坏的松散对象（<code>.git/objects/xx/…</code>）并重新 <code>git add</code> 该文件，最后重跑 <code>git fsck</code>。不要用 <code>git gc</code> 掩盖问题。</li>
+<li><strong>提交被 pre-commit 拦下</strong>：按提示修好命名、索引链接或自动区块，不要用 <code>--no-verify</code> 绕过；该选项只应作为临时诊断手段，且推送端仍会校验。</li>
+<li><strong>主对话读图超限</strong>：改为派子代理读，或把剩余张数留到下一轮对话继续。</li>
+</ul>
+<h2 id="仓库状态-自动生成">仓库状态（自动生成）</h2><blockquote>
+<p>本区块由 <code>.githooks/hook_lib.py</code> 在<strong>每次提交时从暂存内容重新生成</strong>，推送前校验一致性；手工修改会在下次提交时被覆盖。要改内容请改这一节之外的正文。</p>
+</blockquote>
+<ul>
+<li>课程 <strong>6</strong> 门；正式资料 <strong>218</strong> 份（不含索引、模板和历史入口）。</li>
+<li>精确白名单 <strong>396</strong> 条逐文件路径（无通配符），仓库共 <strong>347</strong> 个受管文件。</li>
+<li>暂存内容摘要（不含本文件与 README）：<code>2b71d2189ea30b5aae7e07946edd94fe686b14a5374eae30aa7c439b56c9efaf</code>。任何正文改动都会改变这一行。</li>
+</ul>
+<h3 id="课程分类一览">课程分类一览</h3><div class="table-scroll-container"><table>
+<thead>
+<tr>
+<th align="left">课程</th>
+<th align="right">作业</th>
+<th align="right">教材解析</th>
+<th align="right">课堂笔记</th>
+<th align="right">原始资料</th>
+<th align="right">音频</th>
+<th align="left">分类索引</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">工程数学</td>
+<td align="right">1</td>
+<td align="right">12</td>
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="right">0</td>
+<td align="left">齐全</td>
+</tr>
+<tr>
+<td align="left">形势与政策</td>
+<td align="right">0</td>
+<td align="right">—</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">0</td>
+<td align="left">齐全</td>
+</tr>
+<tr>
+<td align="left">电力大数据与人工智能</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">0</td>
+<td align="left">齐全</td>
+</tr>
+<tr>
+<td align="left">电子技术</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">0</td>
+<td align="left">齐全</td>
+</tr>
+<tr>
+<td align="left">电机学</td>
+<td align="right">1</td>
+<td align="right">6</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="left">齐全</td>
+</tr>
+<tr>
+<td align="left">电路原理</td>
+<td align="right">176</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">0</td>
+<td align="left">齐全</td>
+</tr>
+</tbody></table></div>
+<h3 id="教材解析进度">教材解析进度</h3><p><strong>工程数学</strong>（12 个文件）</p>
+<ul>
+<li><code>课程/工程数学/教材解析/0.0-符号入门.md</code> — 符号入门</li>
+<li><code>课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.0-本章通关攻略.md</code> — 第 1 章 行列式 · 通关攻略</li>
+<li><code>课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.1-二阶与三阶行列式.md</code> — 第1章 1.1 二阶、三阶行列式（原书 p1–p5）</li>
+<li><code>课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.2-n阶行列式.md</code> — 第1章 1.2 n 阶行列式（原书 p6–p15）</li>
+<li><code>课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.3-克莱姆法则.md</code> — 第1章 1.3 克莱姆法则（原书 p15–p20）</li>
+<li><code>课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.4-用MATLAB计算行列式.md</code> — 第1章 1.4 用 MATLAB 进行行列式的计算（原书 p20–p21）</li>
+<li><code>课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.0-本章通关攻略.md</code> — 第 2 章 矩阵 · 通关攻略</li>
+<li><code>课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.1-矩阵的概念及运算.md</code> — 第2章 2.1 矩阵的概念及运算（原书 p22–p33）</li>
+<li><code>课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.2-逆矩阵.md</code> — 第2章 2.2 逆矩阵（原书 p33–p38）</li>
+<li><code>课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.3-矩阵的初等变换与初等矩阵.md</code> — 第2章 2.3 矩阵的初等变换与初等矩阵（原书 p38–p43）</li>
+<li><code>课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.4-矩阵的秩.md</code> — 第2章 2.4 矩阵的秩（原书 p43–p46）</li>
+<li><code>课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.5-用MATLAB进行矩阵运算.md</code> — 第2章 2.5 用 MATLAB 进行矩阵运算（原书 p46–p51）</li>
+</ul>
+<p><strong>形势与政策</strong>（本课声明不设教材解析）</p>
+<p><strong>电力大数据与人工智能</strong>（0 个文件）</p>
+<ul>
+<li>尚未建立章节解析。</li>
+</ul>
+<p><strong>电子技术</strong>（0 个文件）</p>
+<ul>
+<li>尚未建立章节解析。</li>
+</ul>
+<p><strong>电机学</strong>（6 个文件）</p>
+<ul>
+<li><code>课程/电机学/教材解析/0.0-符号入门.md</code> — 电机学符号入门</li>
+<li><code>课程/电机学/教材解析/第01章-概述/1.1-电机的分类.md</code> — 1.1 电机的分类</li>
+<li><code>课程/电机学/教材解析/第01章-概述/1.2-电机的磁路和磁路定律.md</code> — 1.2 电机的磁路和磁路定律</li>
+<li><code>课程/电机学/教材解析/第01章-概述/1.3-电机的电磁基本理论.md</code> — 1.3 电机的电磁基本理论</li>
+<li><code>课程/电机学/教材解析/第01章-概述/1.4-电机的制造材料.md</code> — 1.4 电机的制造材料</li>
+<li><code>课程/电机学/教材解析/第01章-概述/第01章-小结与思考题习题.md</code> — 第 1 章 小结、思考题与习题</li>
+</ul>
+<p><strong>电路原理</strong>（1 个文件）</p>
+<ul>
+<li><code>课程/电路原理/教材解析/0.0-符号入门.md</code> — 电路原理符号入门</li>
+</ul>
+<h3 id="原始资料构成">原始资料构成</h3><div class="table-scroll-container"><table>
+<thead>
+<tr>
+<th align="left">课程</th>
+<th align="right"><code>.doc</code></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">工程数学</td>
+<td align="right">2</td>
+</tr>
+<tr>
+<td align="left">形势与政策</td>
+<td align="right">2</td>
+</tr>
+<tr>
+<td align="left">电力大数据与人工智能</td>
+<td align="right">2</td>
+</tr>
+<tr>
+<td align="left">电子技术</td>
+<td align="right">2</td>
+</tr>
+<tr>
+<td align="left">电机学</td>
+<td align="right">0</td>
+</tr>
+<tr>
+<td align="left">电路原理</td>
+<td align="right">2</td>
+</tr>
+</tbody></table></div>
+<h3 id="待补提示-自动列出-非错误">待补提示（自动列出，非错误）</h3><ul>
+<li>工程数学：音频目录尚无记录，待正式通知或链接，登记前不得编造。</li>
+<li>形势与政策：作业目录尚无记录，待正式通知或链接，登记前不得编造。</li>
+<li>形势与政策：音频目录尚无记录，待正式通知或链接，登记前不得编造。</li>
+<li>电力大数据与人工智能：作业目录尚无记录，待正式通知或链接，登记前不得编造。</li>
+<li>电力大数据与人工智能：音频目录尚无记录，待正式通知或链接，登记前不得编造。</li>
+<li>电子技术：音频目录尚无记录，待正式通知或链接，登记前不得编造。</li>
+<li>电机学：音频目录尚无记录，待正式通知或链接，登记前不得编造。</li>
+<li>电路原理：音频目录尚无记录，待正式通知或链接，登记前不得编造。</li>
+</ul>
+<h3 id="验证基线">验证基线</h3><ul>
+<li><code>python3 .githooks/update-readme.py --worktree</code>：同步 README 与维护细则自动区块。</li>
+<li><code>python3 .githooks/test-update-readme.py</code>：目录、白名单、命名、索引与移动的集成测试。</li>
+<li><code>python3 .githooks/check-markdown.py</code>：Markdown 美观度与可读性检查，错误项必须为 0。</li>
+<li><code>git fsck --no-progress</code>：仓库对象完整性，不应有输出。</li>
+<li>推送由 <code>.githooks/pre-push</code> 校验待推送提交的两处自动区块。</li>
+</ul>
+
+            </div>
+
+            
+
+            <footer class="site-footer">
+              <p class="site-footer__legal">
+                © 2026 ArchivalEra · 本站自研代码与解析文字以
+                <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank" rel="license noopener">AGPL-3.0</a>
+                许可发布 · <a href="https://github.com/ArchivalEra/S26-1_202609" target="_blank" rel="noopener">仓库源码</a>
+              </p>
+              <p class="site-footer__disclaimer">
+                教材《工程数学基础》的题目原文与章节结构版权归原书作者与出版社所有，本站解析为个人学习笔记；
+                页面主题样式来自 Shirone Material 3 Reader（MIT）；KaTeX、marked 等第三方库依其自身许可证分发。
+              </p>
+            </footer>
+          </article>
+        </main>
+
+        <!-- Table of Contents -->
+        <aside class="m3-toc">
+      <div class="toc-title">目录</div>
+      <ul class="toc-list">
+        <li class="toc-item level-2"><a href="#1-每次编辑后的固定动作-强制">1. 每次编辑后的固定动作（强制）</a></li><li class="toc-item level-2"><a href="#2-新增一门课程">2. 新增一门课程</a></li><li class="toc-item level-2"><a href="#3-教材照片归档与读图">3. 教材照片归档与读图</a></li><li class="toc-item level-3"><a href="#3-1-归档">3.1 归档</a></li><li class="toc-item level-3"><a href="#3-2-读图-强制交给子代理">3.2 读图（强制交给子代理）</a></li><li class="toc-item level-3"><a href="#3-3-教材解析写作-先抄后析">3.3 教材解析写作（先抄后析）</a></li><li class="toc-item level-3"><a href="#3-4-资料与索引同进同出-hook-强制">3.4 资料与索引同进同出（hook 强制）</a></li><li class="toc-item level-2"><a href="#4-命名与目录速查">4. 命名与目录速查</a></li><li class="toc-item level-2"><a href="#5-白名单与提交">5. 白名单与提交</a></li><li class="toc-item level-2"><a href="#6-禁止事项">6. 禁止事项</a></li><li class="toc-item level-2"><a href="#7-故障处理">7. 故障处理</a></li><li class="toc-item level-2"><a href="#仓库状态-自动生成">仓库状态（自动生成）</a></li><li class="toc-item level-3"><a href="#课程分类一览">课程分类一览</a></li><li class="toc-item level-3"><a href="#教材解析进度">教材解析进度</a></li><li class="toc-item level-3"><a href="#原始资料构成">原始资料构成</a></li><li class="toc-item level-3"><a href="#待补提示-自动列出-非错误">待补提示（自动列出，非错误）</a></li><li class="toc-item level-3"><a href="#验证基线">验证基线</a></li>
+      </ul>
+    </aside>
+      </div>
+    </div>
+  </div>
+
+  <script src="./assets/theme/shirone-reader.js" defer></script>
+  <script src="./assets/plugins/disclosure-anchor.js" defer></script>
+  <script type="application/json" id="sym-glossary-json">{"terms":{}}</script>
+  <script src="./assets/plugins/math-glossary.js" defer></script>
+  <script src="./assets/plugins/site-search.js" defer></script>
+</body>
+</html>
