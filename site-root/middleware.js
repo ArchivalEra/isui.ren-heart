@@ -394,6 +394,18 @@ export async function middleware(context) {
 			const repoName = repoMatch[1];
 			const restPath = repoMatch[2] || "";
 
+			// 仓名大小写归一化：GitHub 仓名不区分大小写，但 Pages 路径与本站静态树
+			// 区分大小写。已知规范名（本站特殊处理的仓）按不区分大小写匹配，命中即
+			// 301 到规范大小写 —— 否则 /repo/s26-1_202609/ 会落到通用分支去
+			// archivalera.github.io/s26-1_202609/（不存在）而 404。
+			const CANONICAL_REPOS = ["S26-1_202609", "Octave"];
+			const canonical = CANONICAL_REPOS.find((n) => n.toLowerCase() === repoName.toLowerCase());
+			if (canonical && canonical !== repoName) {
+				const redirectUrl = new URL(request.url);
+				redirectUrl.pathname = `/repo/${canonical}${restPath || "/"}`;
+				return Response.redirect(redirectUrl.toString(), 301);
+			}
+
 			// Enforce trailing slash on repository root path (/repo/<repoName> -> /repo/<repoName>/)
 			if (!restPath && !url.pathname.endsWith("/")) {
 				const redirectUrl = new URL(request.url);
