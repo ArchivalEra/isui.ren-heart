@@ -420,9 +420,28 @@ export async function middleware(context) {
 				return Response.redirect(redirectUrl.toString(), 301);
 			}
 
-			// If repository has its own static files deployed locally in EdgeOne,
-			// serve directly via EdgeOne static origin
+			// S26-1_202609：字节经 GitHub Pages（archivalera.github.io/S26-1_202609），
+			// 与 Octave 同款反代形态。2026-10-12 EdgeOne 静态层对非 ASCII 已存在
+			// 路径出现一阵 403（同内容稍后自愈），且平台侧无任何可配的字符/解码
+			// 开关（tccli ExportZoneConfig 全量导出为证）——字节不再经过那一层。
+			// 站点纯相对引用、可挂任意子路径；整包转发、不做分片。
+			// Pages 不可用（fetch 失败/404）时回落 next() 走 EdgeOne 静态树兜底。
 			if (repoName === "S26-1_202609") {
+				const cleanRest = restPath.startsWith("/") ? restPath.slice(1) : restPath;
+				const pagesUrl = `https://archivalera.github.io/S26-1_202609/${cleanRest}${url.search}`;
+				try {
+					const upstream = await fetch(pagesUrl, { headers: { "Accept-Encoding": "gzip" } });
+					if (upstream && upstream.status !== 404) {
+						const headers = new Headers(upstream.headers);
+						headers.set("Access-Control-Allow-Origin", "*");
+						headers.delete("Content-Encoding");
+						headers.delete("Content-Length");
+						headers.set("Cache-Control", "public, max-age=0, must-revalidate");
+						return new Response(upstream.body, { status: upstream.status, headers });
+					}
+				} catch (_err) {
+					// fall through to next() below
+				}
 				return next();
 			}
 
