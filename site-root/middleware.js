@@ -467,9 +467,27 @@ export async function middleware(context) {
 				//     （头与体不一致），客户端解析必然失败。故此处不实现分片。
 				const cleanRest = restPath.startsWith("/") ? restPath.slice(1) : restPath;
 				const pagesUrl = `https://archivalera.github.io/Octave-UI/${cleanRest}${url.search}`;
+				// 引擎大二进制（octave.wasm ~31MB / octave.data ~9.3MB）与其它路径分开
+				// 治理（issue #30）：max-age=0 意味着每次访问都跨洋回源、浏览器也不落盘。
+				// 这两类文件是引擎固定名字节，发布即换内容（Pages ETag 随构建变）：
+				//   · 浏览器 1h 强缓存（二次访问 0ms、from disk cache）；
+				//   · EdgeOne 侧 s-maxage 24h 驻留国内节点；
+				//   · 过期后条件请求透传上游（Pages 原生支持 304；实测此前带
+				//     If-None-Match 也整包重传 30s+，透传后秒回）。
+				// 版本失效：Octave-UI 发版时 Pages ETag/Last-Modified 变化，再校验立即
+				// 拿到新 200；无需 Zone Purge。
+				const isEngineBinary =
+					/\.wasm$/.test(url.pathname) || /\.data$/.test(url.pathname);
+				const upstreamHeaders = { "Accept-Encoding": "gzip" };
+				if (isEngineBinary) {
+					const inm = request.headers.get("if-none-match");
+					if (inm) upstreamHeaders["If-None-Match"] = inm;
+					const ims = request.headers.get("if-modified-since");
+					if (ims) upstreamHeaders["If-Modified-Since"] = ims;
+				}
 				let upstream = null;
 				try {
-					upstream = await fetch(pagesUrl, { headers: { "Accept-Encoding": "gzip" } });
+					upstream = await fetch(pagesUrl, { headers: upstreamHeaders });
 				} catch (_err) {
 					upstream = null;
 				}
@@ -497,8 +515,27 @@ export async function middleware(context) {
 				// 的 Accept-Encoding 重新协商压缩）；这与实测 B 一致。
 				headers.delete("Content-Encoding");
 				headers.delete("Content-Length");
-				// 与站内其它路径一致：每次校验，推送立即可见（不是「清缓存」，是默认不缓存）。
-				headers.set("Cache-Control", "public, max-age=0, must-revalidate");
+				// 304 必须无实体头（Content-Length: 0 会把浏览器搞糊涂）；上游 304 的
+				// ETag/Last-Modified 已在 headers 里透传，浏览器据此更新缓存条目。
+				if (upstream.status === 304) {
+					const h304 = new Headers();
+					h304.set("ETag", upstream.headers.get("etag") || "");
+					h304.set("Last-Modified", upstream.headers.get("last-modified") || "");
+					h304.set(
+						"Cache-Control",
+						"public, max-age=3600, s-maxage=86400, stale-while-revalidate=600",
+					);
+					return new Response(null, { status: 304, headers: h304 });
+				}
+				if (isEngineBinary) {
+					headers.set(
+						"Cache-Control",
+						"public, max-age=3600, s-maxage=86400, stale-while-revalidate=600",
+					);
+				} else {
+					// 与站内其它路径一致：每次校验，推送立即可见（不是「清缓存」，是默认不缓存）。
+					headers.set("Cache-Control", "public, max-age=0, must-revalidate");
+				}
 				return new Response(upstream.body, { status: upstream.status, headers });
 			}
 
