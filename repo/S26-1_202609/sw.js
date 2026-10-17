@@ -10,7 +10,7 @@
 //
 // 生成：构建期把本文件拷到 dist 根（sw.js），页面里注册。
 
-const VERSION = 'vmvc2yk3h';
+const VERSION = 'vmvc6jvl9';
 
 self.addEventListener('install', (ev) => {
   // 预缓存清单（构建期注入）
@@ -24,9 +24,15 @@ const SW_ASSETS = ["assets/plugins/disclosure-anchor.js","assets/plugins/math-gl
 
 self.addEventListener('activate', (ev) => {
   ev.waitUntil((async () => {
-    // 清掉旧版本缓存
+    // 清掉旧版本缓存。⚠️ pages 例外（2026-10-17 移动端强调泡消失的教训）：
+    // 页面缓存必须与 SW 版本**同生命周期**——旧版 pages 里存的旧页（无 data-path）
+    // 混上新 SPA 代码 = active 全无匹配 = 强调栏消失。所以本版 activate 时
+    // **连本版已有的 pages 也清空重建**，杜绝任何跨版本组合；
+    // assets 保留本版（带 hash 的静态件按版本走，无错配问题）。
     const keys = await caches.keys();
-    await Promise.all(keys.filter((k) => !k.endsWith(VERSION)).map((k) => caches.delete(k)));
+    await Promise.all(keys
+      .filter((k) => !k.endsWith(VERSION) || k.startsWith('pages-'))
+      .map((k) => caches.delete(k)));
     await self.clients.claim();
   })());
 });
