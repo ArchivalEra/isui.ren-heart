@@ -10,7 +10,7 @@
 //
 // 生成：构建期把本文件拷到 dist 根（sw.js），页面里注册。
 
-const VERSION = 'vmvcbs98h';
+const VERSION = 'vmvcg7ejd';
 
 self.addEventListener('install', (ev) => {
   // 预缓存清单（构建期注入）
