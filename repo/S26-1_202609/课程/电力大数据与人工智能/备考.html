@@ -21,7 +21,7 @@
   })();
   </script>
   <link rel="stylesheet" href="../../assets/katex/katex.min.css">
-  <link rel="stylesheet" href="../../assets/theme/shirone-reader.css?v=236ae17420">
+  <link rel="stylesheet" href="../../assets/theme/shirone-reader.css?v=4bceb4199a">
   <link rel="stylesheet" href="../../assets/plugins/site-search.css?v=45716eda6c">
   <!-- 站点图标：动画 GIF 为主（Chrome/Firefox/Edge 会动），静态 PNG 作不支持动画时的回退 -->
   <link rel="icon" type="image/gif" href="../../assets/favicon/favicon.gif">
@@ -1026,40 +1026,15 @@
 <p><strong>本讲最容易混的地方</strong>：有<strong>两组</strong>方法，一组 4 个（评估）、一组 3 个（控制），<strong>别答串</strong>。</p>
 </blockquote>
 <h3 id="考点-评估的四个方法-按出现顺序">考点：评估的四个方法（按出现顺序）</h3><p><strong>要会</strong>：四个方法的名字 + 每个的一句话特征 + 为什么被淘汰/保留。</p>
-<div class="table-scroll-container"><table>
-<thead>
-<tr>
-<th align="center">#</th>
-<th align="left">方法</th>
-<th align="left">一句话</th>
-<th align="left">关键点</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">1</td>
-<td align="left"><strong>时域仿真法</strong></td>
-<td align="left">建全元件模型、解微分代数方程组、看功角曲线</td>
-<td align="left"><strong>精度最高</strong>（其他方法的标准），但<strong>不能在线</strong></td>
-</tr>
-<tr>
-<td align="center">2</td>
-<td align="left"><strong>直接法</strong>（能量函数/李雅普诺夫）</td>
-<td align="left">构造能量函数判稳，不求特征根</td>
-<td align="left"><strong>充分非必要</strong>——找不到函数<strong>不能</strong>说系统不稳</td>
-</tr>
-<tr>
-<td align="center">3</td>
-<td align="left"><strong>基于故障后响应</strong></td>
-<td align="left">直接用故障后实际轨迹判（如故障电流衰减/发散）</td>
-<td align="left">靠 <strong>WAMS/PMU</strong> 实测，可与前两种<strong>结合</strong></td>
-</tr>
-<tr>
-<td align="center">4</td>
-<td align="left"><strong>数据挖掘与机器学习</strong></td>
-<td align="left">离线仿真建库 → 训练模型 → 在线评估</td>
-<td align="left"><strong>当前研究热点</strong>；AI 是<strong>近似计算、可能算错、要筛选</strong></td>
-</tr>
-</tbody></table></div>
+<div class="table-scroll-container t-cards" role="region" aria-label="考点：评估的四个方法（按出现顺序）" tabindex="0">
+<table>
+<thead><tr><th align="center">#</th><th align="left">方法</th><th align="left">一句话</th><th align="left">关键点</th></tr></thead>
+<tr><td data-label="#">1</td><td data-label="方法"><strong>时域仿真法</strong></td><td data-label="一句话">建全元件模型、解微分代数方程组、看功角曲线</td><td data-label="关键点"><strong>精度最高</strong>（其他方法的标准），但<strong>不能在线</strong></td></tr>
+<tr><td data-label="#">2</td><td data-label="方法"><strong>直接法</strong>（能量函数/李雅普诺夫）</td><td data-label="一句话">构造能量函数判稳，不求特征根</td><td data-label="关键点"><strong>充分非必要</strong>——找不到函数<strong>不能</strong>说系统不稳</td></tr>
+<tr><td data-label="#">3</td><td data-label="方法"><strong>基于故障后响应</strong></td><td data-label="一句话">直接用故障后实际轨迹判（如故障电流衰减/发散）</td><td data-label="关键点">靠 <strong>WAMS/PMU</strong> 实测，可与前两种<strong>结合</strong></td></tr>
+<tr><td data-label="#">4</td><td data-label="方法"><strong>数据挖掘与机器学习</strong></td><td data-label="一句话">离线仿真建库 → 训练模型 → 在线评估</td><td data-label="关键点"><strong>当前研究热点</strong>；AI 是<strong>近似计算、可能算错、要筛选</strong></td></tr>
+</table>
+</div>
 <p><strong>AI 方法（第 4 类）单独记一句</strong>：它是<strong>近似计算、可能算错、还要筛选</strong>——<strong>不能盲信</strong>。
 教师把基于数据挖掘的方法划为<strong>当前研究热点</strong>，前三种都是<strong>经典方法</strong>。</p>
 <p><strong>容易记混</strong>：前三类叫<strong>经典方法</strong>，第 4 类才是<strong>热点</strong>；<strong>时域仿真「不能在线」是本讲反复出现的理由</strong>——
@@ -1089,30 +1064,14 @@
 <p><strong>容易记混</strong>：<strong>正定</strong>＝能量逐渐增大（发散）；<strong>负定</strong>＝总能量减少（耗散，稳定系统该有的样子）。</p>
 <p><a href="./%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0/2026-09-22-%E6%9A%82%E6%80%81%E7%A8%B3%E5%AE%9A%E8%AF%84%E4%BC%B0%E6%96%B9%E6%B3%95%E4%B8%8E%E7%B4%A7%E6%80%A5%E6%8E%A7%E5%88%B6.html#%E7%9B%B4%E6%8E%A5%E6%B3%95-%E8%83%BD%E9%87%8F%E5%87%BD%E6%95%B0-%E6%9D%8E%E9%9B%85%E6%99%AE%E8%AF%BA%E5%A4%AB%E6%96%B9%E6%B3%95">笔记原文 ↗</a></p>
 <h3 id="考点-紧急控制的三个方法-与评估组分开记">考点：紧急控制的三个方法（与评估组分开记）</h3><p><strong>要会</strong>：三个方法的名字 + 各自做法要点。</p>
-<div class="table-scroll-container"><table>
-<thead>
-<tr>
-<th align="center">#</th>
-<th align="left">方法</th>
-<th align="left">做法要点</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">1</td>
-<td align="left"><strong>启发式方法</strong></td>
-<td align="left">用<strong>少量仿真</strong>找方案，靠指标排序（如切机切负荷有效性指标）降复杂度</td>
-</tr>
-<tr>
-<td align="center">2</td>
-<td align="left"><strong>基于响应的方法</strong></td>
-<td align="left">直接用 <strong>PMU</strong> 量测；判不稳时把系统<strong>等效为两机模型</strong>，用<strong>加速/减速面积</strong>算切机切负荷量</td>
-</tr>
-<tr>
-<td align="center">3</td>
-<td align="left"><strong>基于安全域/稳定域</strong></td>
-<td align="left">用<strong>切机切负荷</strong>改变稳定边界，把运行点从域外移回域内；边界移动<strong>可近似线性叠加</strong></td>
-</tr>
-</tbody></table></div>
+<div class="table-scroll-container t-compact" role="region" aria-label="考点：紧急控制的三个方法（与评估组分开记）" tabindex="0">
+<table>
+<thead><tr><th align="center">#</th><th align="left">方法</th><th align="left">做法要点</th></tr></thead>
+<tr><td data-label="#">1</td><td data-label="方法"><strong>启发式方法</strong></td><td data-label="做法要点">用<strong>少量仿真</strong>找方案，靠指标排序（如切机切负荷有效性指标）降复杂度</td></tr>
+<tr><td data-label="#">2</td><td data-label="方法"><strong>基于响应的方法</strong></td><td data-label="做法要点">直接用 <strong>PMU</strong> 量测；判不稳时把系统<strong>等效为两机模型</strong>，用<strong>加速/减速面积</strong>算切机切负荷量</td></tr>
+<tr><td data-label="#">3</td><td data-label="方法"><strong>基于安全域/稳定域</strong></td><td data-label="做法要点">用<strong>切机切负荷</strong>改变稳定边界，把运行点从域外移回域内；边界移动<strong>可近似线性叠加</strong></td></tr>
+</table>
+</div>
 <p><strong>关键概念</strong>：<strong>灵敏度 = 参数的一阶导</strong>（如电流对负载电阻的灵敏度）。用灵敏度建优化模型，
 <strong>计算量与备选措施数量无关</strong>——只需<strong>两次积分/仿真</strong>。</p>
 <p><strong>容易记混</strong>：<strong>切机＝切除发电机，切负荷＝摘掉负荷</strong>，本质都是<strong>调频</strong>手段。
@@ -1123,35 +1082,15 @@
 <p><strong>本讲教师按考试题型讲，条条对着考点</strong>——下面是逐条。</p>
 </blockquote>
 <h3 id="考点-大数据-4v-特点-判断题陷阱">考点：大数据 4V 特点（判断题陷阱）</h3><p><strong>要会</strong>：四个 V 的中英文 + <strong>Value 的正确含义</strong>。</p>
-<div class="table-scroll-container"><table>
-<thead>
-<tr>
-<th align="left">V</th>
-<th align="left">中文</th>
-<th align="left">含义</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left"><strong>Volume</strong></td>
-<td align="left">规模大</td>
-<td align="left">发输变配用调度各环节长期积累，且爆炸式增长</td>
-</tr>
-<tr>
-<td align="left"><strong>Variety</strong></td>
-<td align="left">多样性</td>
-<td align="left"><strong>结构化 / 半结构化 / 非结构化</strong>三类并存</td>
-</tr>
-<tr>
-<td align="left"><strong>Velocity</strong></td>
-<td align="left">速度快</td>
-<td align="left">实时系统，异常要<strong>立即切除</strong>，响应要快</td>
-</tr>
-<tr>
-<td align="left"><strong>Value</strong></td>
-<td align="left">价值</td>
-<td align="left"><strong>潜在价值巨大，但价值密度低、藏在海量数据中，需要挖掘</strong></td>
-</tr>
-</tbody></table></div>
+<div class="table-scroll-container t-compact" role="region" aria-label="考点：大数据 4V 特点（判断题陷阱）" tabindex="0">
+<table>
+<thead><tr><th align="left">V</th><th align="left">中文</th><th align="left">含义</th></tr></thead>
+<tr><td data-label="V"><strong>Volume</strong></td><td data-label="中文">规模大</td><td data-label="含义">发输变配用调度各环节长期积累，且爆炸式增长</td></tr>
+<tr><td data-label="V"><strong>Variety</strong></td><td data-label="中文">多样性</td><td data-label="含义"><strong>结构化 / 半结构化 / 非结构化</strong>三类并存</td></tr>
+<tr><td data-label="V"><strong>Velocity</strong></td><td data-label="中文">速度快</td><td data-label="含义">实时系统，异常要<strong>立即切除</strong>，响应要快</td></tr>
+<tr><td data-label="V"><strong>Value</strong></td><td data-label="中文">价值</td><td data-label="含义"><strong>潜在价值巨大，但价值密度低、藏在海量数据中，需要挖掘</strong></td></tr>
+</table>
+</div>
 <p><strong>关键数字</strong>：数据量 GB → TB → PB → EB → ZB → YB，<strong>每级差 3 个数量级</strong>（<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>10</mn><mn>3</mn></msup></mrow><annotation encoding="application/x-tex">10^3</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">3</span></span></span></span></span></span></span></span></span></span></span> 倍）。</p>
 <p><strong>容易记混</strong>：<strong>value 不能简单译成「价值高」</strong>——正确含义是<strong>价值密度低、潜在应用价值巨大</strong>。
 这是判断题专门设的坑。</p>
@@ -1165,22 +1104,13 @@
 <p><strong>容易记混</strong>：教师说<strong>按结构类型分是三种</strong>（书上有五种分法，本课<strong>只按这三种考</strong>）。</p>
 <p><a href="./%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0/2026-09-29-%E7%94%B5%E5%8A%9B%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%89%B9%E7%82%B9%E4%B8%8E%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E7%AE%97%E6%B3%95.html#%E8%80%83%E7%82%B9-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%88%86%E7%B1%BB-%E9%80%89%E6%8B%A9%E9%A2%98">笔记原文 ↗</a></p>
 <h3 id="考点-两类数据来源-电网分析计算-选择题">考点：两类数据来源（电网分析计算，选择题）</h3><p><strong>要会</strong>：两类来源 + <strong>各自的存储/建模形式</strong>（这才是选择题的区分点）。</p>
-<div class="table-scroll-container"><table>
-<thead>
-<tr>
-<th align="left">来源</th>
-<th align="left">存储/建模形式</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left"><strong>离线形成的计算数据文件</strong>（仿真软件输出）</td>
-<td align="left"><strong>母线支路模型</strong></td>
-</tr>
-<tr>
-<td align="left"><strong>能源管理系统（EMS）提供的实时数据</strong>（通常在内存）</td>
-<td align="left"><strong>节点开关模型</strong></td>
-</tr>
-</tbody></table></div>
+<div class="table-scroll-container t-compact" role="region" aria-label="考点：两类数据来源（电网分析计算，选择题）" tabindex="0">
+<table>
+<thead><tr><th align="left">来源</th><th align="left">存储/建模形式</th></tr></thead>
+<tr><td data-label="来源"><strong>离线形成的计算数据文件</strong>（仿真软件输出）</td><td data-label="存储/建模形式"><strong>母线支路模型</strong></td></tr>
+<tr><td data-label="来源"><strong>能源管理系统（EMS）提供的实时数据</strong>（通常在内存）</td><td data-label="存储/建模形式"><strong>节点开关模型</strong></td></tr>
+</table>
+</div>
 <p><strong>容易记混</strong>：选择题考的是**「母线支路模型 vs 节点开关模型」这个对应关系**——
 不是「离线/实时」这两个词本身；别和「数据结构三类型」答混。</p>
 <p><a href="./%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0/2026-09-29-%E7%94%B5%E5%8A%9B%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%89%B9%E7%82%B9%E4%B8%8E%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E7%AE%97%E6%B3%95.html#%E8%80%83%E7%82%B9-%E7%94%B5%E7%BD%91%E5%88%86%E6%9E%90%E8%AE%A1%E7%AE%97%E7%9A%84%E6%95%B0%E6%8D%AE%E6%9D%A5%E6%BA%90%E5%88%86%E4%B8%A4%E7%B1%BB-%E9%80%89%E6%8B%A9%E9%A2%98">笔记原文 ↗</a></p>
@@ -1230,65 +1160,21 @@
 <p><a href="./%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0/2026-10-13-%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E5%B8%B8%E7%94%A8%E7%AE%97%E6%B3%95%E4%B8%8E%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86%E5%BC%80%E7%AF%87.html#%E8%A1%8C%E6%94%BF%E4%B8%8E%E8%80%83%E6%A0%B8">笔记原文 ↗</a> ｜
 <a href="./%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0/2026-09-29-%E7%94%B5%E5%8A%9B%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%89%B9%E7%82%B9%E4%B8%8E%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E7%AE%97%E6%B3%95.html#%E8%80%83%E7%82%B9-%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E9%87%8C%E7%9A%84%E5%86%B3%E7%AD%96%E6%A0%91%E7%AE%97%E6%B3%95-%E6%9C%9F%E6%9C%AB%E8%AE%A1%E7%AE%97%E9%A2%98-20-%E5%88%86">旧记录 ↗</a></p>
 <h3 id="考点-人工智能常用算法地图-10-13-新增">考点：人工智能常用算法地图（10-13 新增）</h3><p><strong>要会</strong>：每种算法<strong>是什么、属于哪一类、用在什么场合</strong>（教师本讲只讲这三样，<strong>不展开流程原理</strong>）。</p>
-<div class="table-scroll-container"><table>
-<thead>
-<tr>
-<th align="left">算法</th>
-<th align="left">一句话定位</th>
-<th align="left">关键点</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left"><strong>支持向量机 SVM</strong></td>
-<td align="left">优化计算方法</td>
-<td align="left">映射到<strong>高维空间</strong>找<strong>间隔最大</strong>的线性超平面；本质是全局最优化（目标函数 + 约束，约束常为不等式）</td>
-</tr>
-<tr>
-<td align="left"><strong>集成学习</strong></td>
-<td align="left">多个弱监督模型 → 一个强监督模型</td>
-<td align="left">原理简单、精度较高、应用广</td>
-</tr>
-<tr>
-<td align="left"><strong>决策树 / 二叉树</strong></td>
-<td align="left">分类树 / 回归树</td>
-<td align="left">叶节点 = 一次运算 = 一个数据样本（数据列表）；过拟合要修剪</td>
-</tr>
-<tr>
-<td align="left"><strong>启发式搜索</strong></td>
-<td align="left">深度优先 + 记忆功能</td>
-<td align="left"><strong>期末大题</strong>（第 28 页第 7 个算法）</td>
-</tr>
-<tr>
-<td align="left"><strong>GBDT 梯度提升决策树</strong></td>
-<td align="left">集成学习中应用最广</td>
-<td align="left">以回归树为子模型迭代叠加、损失函数递减；<strong>预排序</strong>选分裂点，精度高但<strong>耗内存、不适合海量数据</strong></td>
-</tr>
-<tr>
-<td align="left"><strong>LightGBM 轻量级梯度提升</strong></td>
-<td align="left">GBDT 的大数据版（2017）</td>
-<td align="left"><strong>按叶子分裂</strong>（带最大深度）；直方图 + 单边梯度采样（GOSS）+ 互斥特征绑定；<strong>适合大规模/云数据</strong></td>
-</tr>
-<tr>
-<td align="left"><strong>深度信念网络 DBN</strong></td>
-<td align="left">深层次模型</td>
-<td align="left">若干**受限玻尔兹曼机（RBM）**堆叠；逐层无监督贪婪训练</td>
-</tr>
-<tr>
-<td align="left"><strong>堆栈自动编码器</strong></td>
-<td align="left">深层次模型</td>
-<td align="left">多个自动编码器堆叠；<strong>编码</strong>（输入→隐含层）/ <strong>解码</strong>（隐含层→输出层）</td>
-</tr>
-<tr>
-<td align="left"><strong>卷积神经网络 CNN</strong></td>
-<td align="left"><strong>有监督</strong>学习</td>
-<td align="left">卷积层（特征提取）+ 池化层（降维、鲁棒性）+ 全连接层；<strong>图像/机器视觉</strong></td>
-</tr>
-<tr>
-<td align="left"><strong>循环神经网络 RNN / LSTM</strong></td>
-<td align="left">处理<strong>序列数据</strong></td>
-<td align="left">有<strong>记忆</strong>（前一时刻输入也进当前计算）；LSTM 加门控，解决长期依赖、避免梯度消失</td>
-</tr>
-</tbody></table></div>
+<div class="table-scroll-container t-cards" role="region" aria-label="考点：人工智能常用算法地图（10-13 新增）" tabindex="0">
+<table>
+<thead><tr><th align="left">算法</th><th align="left">一句话定位</th><th align="left">关键点</th></tr></thead>
+<tr><td data-label="算法"><strong>支持向量机 SVM</strong></td><td data-label="一句话定位">优化计算方法</td><td data-label="关键点">映射到<strong>高维空间</strong>找<strong>间隔最大</strong>的线性超平面；本质是全局最优化（目标函数 + 约束，约束常为不等式）</td></tr>
+<tr><td data-label="算法"><strong>集成学习</strong></td><td data-label="一句话定位">多个弱监督模型 → 一个强监督模型</td><td data-label="关键点">原理简单、精度较高、应用广</td></tr>
+<tr><td data-label="算法"><strong>决策树 / 二叉树</strong></td><td data-label="一句话定位">分类树 / 回归树</td><td data-label="关键点">叶节点 = 一次运算 = 一个数据样本（数据列表）；过拟合要修剪</td></tr>
+<tr><td data-label="算法"><strong>启发式搜索</strong></td><td data-label="一句话定位">深度优先 + 记忆功能</td><td data-label="关键点"><strong>期末大题</strong>（第 28 页第 7 个算法）</td></tr>
+<tr><td data-label="算法"><strong>GBDT 梯度提升决策树</strong></td><td data-label="一句话定位">集成学习中应用最广</td><td data-label="关键点">以回归树为子模型迭代叠加、损失函数递减；<strong>预排序</strong>选分裂点，精度高但<strong>耗内存、不适合海量数据</strong></td></tr>
+<tr><td data-label="算法"><strong>LightGBM 轻量级梯度提升</strong></td><td data-label="一句话定位">GBDT 的大数据版（2017）</td><td data-label="关键点"><strong>按叶子分裂</strong>（带最大深度）；直方图 + 单边梯度采样（GOSS）+ 互斥特征绑定；<strong>适合大规模/云数据</strong></td></tr>
+<tr><td data-label="算法"><strong>深度信念网络 DBN</strong></td><td data-label="一句话定位">深层次模型</td><td data-label="关键点">若干**受限玻尔兹曼机（RBM）**堆叠；逐层无监督贪婪训练</td></tr>
+<tr><td data-label="算法"><strong>堆栈自动编码器</strong></td><td data-label="一句话定位">深层次模型</td><td data-label="关键点">多个自动编码器堆叠；<strong>编码</strong>（输入→隐含层）/ <strong>解码</strong>（隐含层→输出层）</td></tr>
+<tr><td data-label="算法"><strong>卷积神经网络 CNN</strong></td><td data-label="一句话定位"><strong>有监督</strong>学习</td><td data-label="关键点">卷积层（特征提取）+ 池化层（降维、鲁棒性）+ 全连接层；<strong>图像/机器视觉</strong></td></tr>
+<tr><td data-label="算法"><strong>循环神经网络 RNN / LSTM</strong></td><td data-label="一句话定位">处理<strong>序列数据</strong></td><td data-label="关键点">有<strong>记忆</strong>（前一时刻输入也进当前计算）；LSTM 加门控，解决长期依赖、避免梯度消失</td></tr>
+</table>
+</div>
 <p><strong>容易记混</strong>：<strong>异或门式的「同一符号两种身份」——GBDT 与 LightGBM</strong>：GBDT <strong>不能</strong>用于海量数据，
 LightGBM <strong>就是</strong>为大数据改进的；记「<strong>轻</strong>量级 = 大数据」。</p>
 <p><a href="./%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0/2026-10-13-%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E5%B8%B8%E7%94%A8%E7%AE%97%E6%B3%95%E4%B8%8E%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86%E5%BC%80%E7%AF%87.html#%E6%B2%A1%E7%BC%96%E5%8F%B7%E4%BD%86%E8%AE%B2%E4%BA%86%E7%9A%84%E7%9F%A5%E8%AF%86%E7%82%B9">笔记原文 ↗</a></p>
@@ -1375,7 +1261,8 @@ AI 擅长应对<strong>高维、时变、非线性、强耦合</strong>问题。
        而 embed.js 靠 document.currentScript.src 定位同目录的 widget.html——
        defer 脚本执行时 readyState 已是 interactive，document.write 会毁掉文档。 -->
   <script src="../../assets/plugins/webmcp-relay.js?v=fd5acb480e"></script>
-  <script src="../../assets/plugins/spa-router.js?v=9710c4b371" defer></script>
+  <script src="../../assets/plugins/drawer-sync.js?v=4ee1a794d2" defer></script>
+  <script src="../../assets/plugins/spa-router.js?v=728b1837cf" defer></script>
   <script>if ('serviceWorker' in navigator) { addEventListener('load', function () { navigator.serviceWorker.register('../../sw.js'); }); }</script>
 </body>
 </html>

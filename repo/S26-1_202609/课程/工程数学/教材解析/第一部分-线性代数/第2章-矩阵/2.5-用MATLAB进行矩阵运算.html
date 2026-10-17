@@ -21,7 +21,7 @@
   })();
   </script>
   <link rel="stylesheet" href="../../../../../assets/katex/katex.min.css">
-  <link rel="stylesheet" href="../../../../../assets/theme/shirone-reader.css?v=236ae17420">
+  <link rel="stylesheet" href="../../../../../assets/theme/shirone-reader.css?v=4bceb4199a">
   <link rel="stylesheet" href="../../../../../assets/plugins/site-search.css?v=45716eda6c">
   <!-- 站点图标：动画 GIF 为主（Chrome/Firefox/Edge 会动），静态 PNG 作不支持动画时的回退 -->
   <link rel="icon" type="image/gif" href="../../../../../assets/favicon/favicon.gif">
@@ -1010,34 +1010,14 @@ B=
 <h3 id="2-5-2-矩阵的函数生成法">2.5.2 矩阵的函数生成法</h3><p>MATLAB 提供了一些用来构造特殊矩阵的函数，见表 2.9。</p>
 <p>〔原书 p47〕</p>
 <p><strong>表 2.9 MATLAB 提供的用来构造特殊矩阵的函数</strong></p>
-<div class="table-scroll-container"><table>
-<thead>
-<tr>
-<th align="left">函数名</th>
-<th align="left">功能</th>
-<th align="left">函数名</th>
-<th align="left">功能</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left"><code>zeros</code></td>
-<td align="left">创建全 0 矩阵</td>
-<td align="left"><code>eye</code></td>
-<td align="left">创建单位矩阵</td>
-</tr>
-<tr>
-<td align="left"><code>ones</code></td>
-<td align="left">创建全 1 矩阵</td>
-<td align="left"><code>magic</code></td>
-<td align="left">创建魔方矩阵</td>
-</tr>
-<tr>
-<td align="left"><code>rand</code></td>
-<td align="left">创建均匀分布随机矩阵</td>
-<td align="left"><code>diag</code></td>
-<td align="left">创建对角矩阵</td>
-</tr>
-</tbody></table></div>
+<div class="table-scroll-container t-cards" role="region" aria-label="2.5.2 矩阵的函数生成法" tabindex="0">
+<table>
+<thead><tr><th align="left">函数名</th><th align="left">功能</th><th align="left">函数名</th><th align="left">功能</th></tr></thead>
+<tr><td data-label="函数名"><code>zeros</code></td><td data-label="功能">创建全 0 矩阵</td><td data-label="函数名"><code>eye</code></td><td data-label="功能">创建单位矩阵</td></tr>
+<tr><td data-label="函数名"><code>ones</code></td><td data-label="功能">创建全 1 矩阵</td><td data-label="函数名"><code>magic</code></td><td data-label="功能">创建魔方矩阵</td></tr>
+<tr><td data-label="函数名"><code>rand</code></td><td data-label="功能">创建均匀分布随机矩阵</td><td data-label="函数名"><code>diag</code></td><td data-label="功能">创建对角矩阵</td></tr>
+</table>
+</div>
 <p><strong>【例 2.17】</strong></p>
 <p><div class="code-fence-wrapper">
       <div class="code-fence-header">
@@ -1430,25 +1410,13 @@ c242.7,-294.7,395.3,-681.7,458,-1161c21.3,-164.7,33.3,-350.7,36,-558
 l0,-144c-2,-159.3,-10,-310.7,-24,-454c-53.3,-528,-210,-949.7,
 -470,-1265c-4.7,-6,-9.7,-11.7,-15,-17c-0.7,-0.7,-6.7,-1,-18,-1z"/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.55em;"><span></span></span></span></span></span></span></span></span></span></span>，均与教材输出一致。</p>
 <p><strong>左除与右除的方程含义</strong>（本节最重要的理解）：</p>
-<div class="table-scroll-container"><table>
-<thead>
-<tr>
-<th align="left">写法</th>
-<th align="left">相当于解方程</th>
-<th align="left">与逆的关系</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left"><code>A\B</code></td>
-<td align="left"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mi>X</mi><mo>=</mo><mi>B</mi></mrow><annotation encoding="application/x-tex">AX=B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">A</span><span class="mord mathnormal" style="margin-right:0.0785em;">X</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0502em;">B</span></span></span></span></td>
-<td align="left"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi><mo>=</mo><msup><mi>A</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup><mi>B</mi></mrow><annotation encoding="application/x-tex">X=\htmlData{term=sym-inv}{A^{-1}}B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0785em;">X</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="enclosing" data-term="sym-inv"><span class="mord"><span class="mord mathnormal">A</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mtight">1</span></span></span></span></span></span></span></span></span></span><span class="mord mathnormal" style="margin-right:0.0502em;">B</span></span></span></span>（左乘逆）</td>
-</tr>
-<tr>
-<td align="left"><code>A/B</code></td>
-<td align="left"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi><mi>B</mi><mo>=</mo><mi>A</mi></mrow><annotation encoding="application/x-tex">XB=A</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0785em;">X</span><span class="mord mathnormal" style="margin-right:0.0502em;">B</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">A</span></span></span></span></td>
-<td align="left"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi><mo>=</mo><mi>A</mi><msup><mi>B</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup></mrow><annotation encoding="application/x-tex">X=AB^{-1}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0785em;">X</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord mathnormal">A</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0502em;">B</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mtight">1</span></span></span></span></span></span></span></span></span></span></span></span>（右乘逆）</td>
-</tr>
-</tbody></table></div>
+<div class="table-scroll-container t-cards" role="region" aria-label="解析" tabindex="0">
+<table>
+<thead><tr><th align="left">写法</th><th align="left">相当于解方程</th><th align="left">与逆的关系</th></tr></thead>
+<tr><td data-label="写法"><code>A\B</code></td><td data-label="相当于解方程"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mi>X</mi><mo>=</mo><mi>B</mi></mrow><annotation encoding="application/x-tex">AX=B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">A</span><span class="mord mathnormal" style="margin-right:0.0785em;">X</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0502em;">B</span></span></span></span></td><td data-label="与逆的关系"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi><mo>=</mo><msup><mi>A</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup><mi>B</mi></mrow><annotation encoding="application/x-tex">X=\htmlData{term=sym-inv}{A^{-1}}B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0785em;">X</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="enclosing" data-term="sym-inv"><span class="mord"><span class="mord mathnormal">A</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mtight">1</span></span></span></span></span></span></span></span></span></span><span class="mord mathnormal" style="margin-right:0.0502em;">B</span></span></span></span>（左乘逆）</td></tr>
+<tr><td data-label="写法"><code>A/B</code></td><td data-label="相当于解方程"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi><mi>B</mi><mo>=</mo><mi>A</mi></mrow><annotation encoding="application/x-tex">XB=A</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0785em;">X</span><span class="mord mathnormal" style="margin-right:0.0502em;">B</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">A</span></span></span></span></td><td data-label="与逆的关系"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi><mo>=</mo><mi>A</mi><msup><mi>B</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup></mrow><annotation encoding="application/x-tex">X=AB^{-1}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0785em;">X</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord mathnormal">A</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0502em;">B</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mtight">1</span></span></span></span></span></span></span></span></span></span></span></span>（右乘逆）</td></tr>
+</table>
+</div>
 <p>例 2.20 中 <code>A\B</code> 的解为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo fence="true">(</mo><mtable rowspacing="0.16em" columnalign="center center center" columnspacing="1em"><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>1</mn></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>3</mn></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>5</mn></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>7</mn></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>9</mn></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>11</mn></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>13</mn></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>15</mn></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>16</mn></mstyle></mtd></mtr></mtable><mo fence="true">)</mo></mrow><annotation encoding="application/x-tex">\begin{pmatrix}1&amp;3&amp;5\\7&amp;9&amp;11\\13&amp;15&amp;16\end{pmatrix}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:3.6em;vertical-align:-1.55em;"></span><span class="minner"><span class="mopen"><span class="delimsizing mult"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.05em;"><span style="top:-4.05em;"><span class="pstrut" style="height:5.6em;"></span><span style="width:0.875em;height:3.6em;"><svg xmlns="http://www.w3.org/2000/svg" width="0.875em" height="3.6em" viewBox="0 0 875 3600"><path d="M863,9c0,-2,-2,-5,-6,-9c0,0,-17,0,-17,0c-12.7,0,-19.3,0.3,-20,1
 c-5.3,5.3,-10.3,11,-15,17c-242.7,294.7,-395.3,682,-458,1162c-21.3,163.3,-33.3,349,
 -36,557 l0,84c0.2,6,0,26,0,60c2,159.3,10,310.7,24,454c53.3,528,210,
@@ -1555,34 +1523,14 @@ l0,-144c-2,-159.3,-10,-310.7,-24,-454c-53.3,-528,-210,-949.7,
 <h2 id="本机复现-gnu-octave-11-3-0">本机复现（GNU Octave 11.3.0）</h2><p>复现脚本：<code>工具/教材复现/工程数学MATLAB复现.m</code>。环境：Debian sid，GNU Octave 11.3.0。</p>
 <p><strong>逐条一致（24 项）</strong>：例 2.16 的两个矩阵（含 <code>sin/cos/log/tanh</code> 先求值再入矩阵）、例 2.17 的 <code>zeros/ones/eye/magic/diag</code>、例 2.18 的和与差、例 2.19 的 <code>A*B</code> 与 <code>A*60</code>、例 2.20 的 <code>A\B</code>、例 2.21 的 <code>A/B</code>、例 2.22 的 <code>inv</code>、例 2.24 的 <code>rref</code> 与切片、例 2.25 的两个 <code>rank</code>。这些东西的值由精确算术唯一确定，跨实现一致。</p>
 <p><strong>三处不可跨实现复现</strong>（原书数值取决于发生器/算法/版本，登记时应标注）：</p>
-<div class="table-scroll-container"><table>
-<thead>
-<tr>
-<th align="left">位置</th>
-<th align="left">书页输出</th>
-<th align="left">本机实得</th>
-<th align="left">原因</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">例 2.17 <code>rand(2,3)</code></td>
-<td align="left"><code>0.8147 … / 0.9058 …</code></td>
-<td align="left">每次不同</td>
-<td align="left">取决于随机数发生器与种子；书页是 MATLAB 默认种子（Mersenne Twister）下的值，Octave 取不到</td>
-</tr>
-<tr>
-<td align="left">例 2.23 <code>RCOND</code></td>
-<td align="left"><code>2.202823e-18</code></td>
-<td align="left"><code>1.541976e-18</code></td>
-<td align="left">量级同为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>10</mn><mrow><mo>−</mo><mn>18</mn></mrow></msup></mrow><annotation encoding="application/x-tex">10^{-18}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mtight">18</span></span></span></span></span></span></span></span></span></span></span></span>，但数值取决于所用范数与算法</td>
-</tr>
-<tr>
-<td align="left">例 2.23 <code>inv</code> 量级</td>
-<td align="left"><code>1.0e+16 *</code></td>
-<td align="left"><code>1.80e+16</code></td>
-<td align="left">奇异矩阵的逆在数值上无意义，尺度任意</td>
-</tr>
-</tbody></table></div>
+<div class="table-scroll-container t-cards" role="region" aria-label="本机复现（GNU Octave 11.3.0）" tabindex="0">
+<table>
+<thead><tr><th align="left">位置</th><th align="left">书页输出</th><th align="left">本机实得</th><th align="left">原因</th></tr></thead>
+<tr><td data-label="位置">例 2.17 <code>rand(2,3)</code></td><td data-label="书页输出"><code>0.8147 … / 0.9058 …</code></td><td data-label="本机实得">每次不同</td><td data-label="原因">取决于随机数发生器与种子；书页是 MATLAB 默认种子（Mersenne Twister）下的值，Octave 取不到</td></tr>
+<tr><td data-label="位置">例 2.23 <code>RCOND</code></td><td data-label="书页输出"><code>2.202823e-18</code></td><td data-label="本机实得"><code>1.541976e-18</code></td><td data-label="原因">量级同为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>10</mn><mrow><mo>−</mo><mn>18</mn></mrow></msup></mrow><annotation encoding="application/x-tex">10^{-18}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mtight">18</span></span></span></span></span></span></span></span></span></span></span></span>，但数值取决于所用范数与算法</td></tr>
+<tr><td data-label="位置">例 2.23 <code>inv</code> 量级</td><td data-label="书页输出"><code>1.0e+16 *</code></td><td data-label="本机实得"><code>1.80e+16</code></td><td data-label="原因">奇异矩阵的逆在数值上无意义，尺度任意</td></tr>
+</table>
+</div>
 <p><strong>例 2.23 的补充验证</strong>：虽然量级不可复现，但本机确认了结果的<strong>方向是对的</strong>——
 <code>inv(A)</code> 归一化后与伴随阵 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">adj</mi><mo>⁡</mo><mo stretchy="false">(</mo><mi>A</mi><mo stretchy="false">)</mo><mo>=</mo><mo stretchy="false">(</mo><mo>−</mo><mn>1</mn><mo separator="true">,</mo><mn>2</mn><mo separator="true">,</mo><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\operatorname{adj}(A)=(-1,2,-1)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop"><span class="mord mathrm">adj</span></span><span class="mopen">(</span><span class="mord mathnormal">A</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">−</span><span class="mord">1</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">2</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">−</span><span class="mord">1</span><span class="mclose">)</span></span></span></span> 的排布成正比（比值 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>:</mo><mo stretchy="false">(</mo><mo>−</mo><mn>2</mn><mo stretchy="false">)</mo><mo>:</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">1:(-2):1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">:</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">−</span><span class="mord">2</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">:</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span>）；
 本机 rcond 打印的警告与书页同义（书页是中文 MATLAB 的&quot;矩阵接近奇异值, 或者缩放错误&quot;，
@@ -1642,7 +1590,8 @@ l0,-144c-2,-159.3,-10,-310.7,-24,-454c-53.3,-528,-210,-949.7,
        而 embed.js 靠 document.currentScript.src 定位同目录的 widget.html——
        defer 脚本执行时 readyState 已是 interactive，document.write 会毁掉文档。 -->
   <script src="../../../../../assets/plugins/webmcp-relay.js?v=fd5acb480e"></script>
-  <script src="../../../../../assets/plugins/spa-router.js?v=9710c4b371" defer></script>
+  <script src="../../../../../assets/plugins/drawer-sync.js?v=4ee1a794d2" defer></script>
+  <script src="../../../../../assets/plugins/spa-router.js?v=728b1837cf" defer></script>
   <script>if ('serviceWorker' in navigator) { addEventListener('load', function () { navigator.serviceWorker.register('../../../../../sw.js'); }); }</script>
 </body>
 </html>

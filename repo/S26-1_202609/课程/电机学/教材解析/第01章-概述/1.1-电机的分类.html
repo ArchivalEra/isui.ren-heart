@@ -21,7 +21,7 @@
   })();
   </script>
   <link rel="stylesheet" href="../../../../assets/katex/katex.min.css">
-  <link rel="stylesheet" href="../../../../assets/theme/shirone-reader.css?v=236ae17420">
+  <link rel="stylesheet" href="../../../../assets/theme/shirone-reader.css?v=4bceb4199a">
   <link rel="stylesheet" href="../../../../assets/plugins/site-search.css?v=45716eda6c">
   <!-- 站点图标：动画 GIF 为主（Chrome/Firefox/Edge 会动），静态 PNG 作不支持动画时的回退 -->
   <link rel="icon" type="image/gif" href="../../../../assets/favicon/favicon.gif">
@@ -1014,30 +1014,14 @@
 <p>（<strong>第一节完</strong>；下一节从第 2 页「第二节 电机的磁路和磁路定律」开始。）</p>
 <h2 id="解析">解析</h2><h3 id="一-这一页在整本书里的位置">一、这一页在整本书里的位置</h3><p>第 1 页只做一件事：<strong>给&quot;电机&quot;划范围、立分类</strong>。后面全书就按这里的第三种分法（按原理和运动方式）展开——变压器（第二、三章）、异步电机、同步电机、直流电机各自成篇。所以这一页的作用相当于全书目录的<strong>分类依据</strong>，读的时候要能把&quot;某一台机器属于哪一类&quot;当场判断出来。</p>
 <h3 id="二-三套分法-三种问法-机械记法">二、三套分法，三种问法（机械记法）</h3><p>教材给了三套分类，考/用的时候先看题目问的是哪一套：</p>
-<div class="table-scroll-container"><table>
-<thead>
-<tr>
-<th align="left">题目问的是</th>
-<th align="left">就用哪一套</th>
-<th align="left">判断时先看什么</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left"><strong>能量往哪走</strong></td>
-<td align="left">按<strong>职能</strong>分：发电机／电动机／变压器・变流机・变频机・移相机／控制电机</td>
-<td align="left">输入端是什么能量、输出端是什么能量；<strong>输入输出都是电能</strong>的才进第三组，再看&quot;变的是电压、波形、频率还是相位&quot;</td>
-</tr>
-<tr>
-<td align="left"><strong>用什么电</strong></td>
-<td align="left">按<strong>电流种类</strong>分：直流电机／交流电机</td>
-<td align="left">看电源是直流还是交流</td>
-</tr>
-<tr>
-<td align="left"><strong>怎么动、转速和谁比</strong></td>
-<td align="left">按<strong>原理和运动方式</strong>分：直流、变压器、异步、同步、交流换向器</td>
-<td align="left"><strong>先看它转不转</strong>（变压器是静止设备）→ 再看转速与&quot;同步速度&quot;的关系（小于／等于／可随意调）</td>
-</tr>
-</tbody></table></div>
+<div class="table-scroll-container t-cards" role="region" aria-label="二、三套分法，三种问法（机械记法）" tabindex="0">
+<table>
+<thead><tr><th align="left">题目问的是</th><th align="left">就用哪一套</th><th align="left">判断时先看什么</th></tr></thead>
+<tr><td data-label="题目问的是"><strong>能量往哪走</strong></td><td data-label="就用哪一套">按<strong>职能</strong>分：发电机／电动机／变压器・变流机・变频机・移相机／控制电机</td><td data-label="判断时先看什么">输入端是什么能量、输出端是什么能量；<strong>输入输出都是电能</strong>的才进第三组，再看&quot;变的是电压、波形、频率还是相位&quot;</td></tr>
+<tr><td data-label="题目问的是"><strong>用什么电</strong></td><td data-label="就用哪一套">按<strong>电流种类</strong>分：直流电机／交流电机</td><td data-label="判断时先看什么">看电源是直流还是交流</td></tr>
+<tr><td data-label="题目问的是"><strong>怎么动、转速和谁比</strong></td><td data-label="就用哪一套">按<strong>原理和运动方式</strong>分：直流、变压器、异步、同步、交流换向器</td><td data-label="判断时先看什么"><strong>先看它转不转</strong>（变压器是静止设备）→ 再看转速与&quot;同步速度&quot;的关系（小于／等于／可随意调）</td></tr>
+</table>
+</div>
 <blockquote>
 <p><strong>&quot;同步速度&quot;是本节埋的钩子</strong>：异步电机&quot;作为电动机运行时速度较同步速度小、作为发电机运行时较同步速度大&quot;，同步电机&quot;速度等于同步速度&quot;。这句话现在只能记住结论，<strong>确切意义在后面的异步／同步篇里才说明</strong>（教材原话）。</p>
 </blockquote>
@@ -1094,7 +1078,8 @@
        而 embed.js 靠 document.currentScript.src 定位同目录的 widget.html——
        defer 脚本执行时 readyState 已是 interactive，document.write 会毁掉文档。 -->
   <script src="../../../../assets/plugins/webmcp-relay.js?v=fd5acb480e"></script>
-  <script src="../../../../assets/plugins/spa-router.js?v=9710c4b371" defer></script>
+  <script src="../../../../assets/plugins/drawer-sync.js?v=4ee1a794d2" defer></script>
+  <script src="../../../../assets/plugins/spa-router.js?v=728b1837cf" defer></script>
   <script>if ('serviceWorker' in navigator) { addEventListener('load', function () { navigator.serviceWorker.register('../../../../sw.js'); }); }</script>
 </body>
 </html>

@@ -10,11 +10,11 @@
 //
 // 生成：构建期把本文件拷到 dist 根（sw.js），页面里注册。
 
-const VERSION = 'vmvc6jvl9';
+const VERSION = 'vmvcbs98h';
 
 self.addEventListener('install', (ev) => {
   // 预缓存清单（构建期注入）
-const SW_ASSETS = ["assets/plugins/disclosure-anchor.js","assets/plugins/math-glossary.js","assets/plugins/site-search.css","assets/plugins/site-search.js","assets/plugins/spa-router.js","assets/plugins/webmcp-loader.js","assets/plugins/webmcp-relay.js","assets/plugins/webmcp-shim.js","assets/plugins/webmcp-tools.js","assets/theme/shirone-reader.js","assets/theme/shirone-reader.css","assets/katex/katex.min.css","assets/katex/katex.min.js"];
+const SW_ASSETS = ["assets/plugins/disclosure-anchor.js","assets/plugins/drawer-sync.js","assets/plugins/math-glossary.js","assets/plugins/site-search.css","assets/plugins/site-search.js","assets/plugins/spa-router.js","assets/plugins/webmcp-loader.js","assets/plugins/webmcp-relay.js","assets/plugins/webmcp-shim.js","assets/plugins/webmcp-tools.js","assets/theme/shirone-reader.js","assets/theme/shirone-reader.css","assets/katex/katex.min.css","assets/katex/katex.min.js"];
   ev.waitUntil((async () => {
     const cache = await caches.open(ASSET_CACHE);
     await cache.addAll(SW_ASSETS).catch(() => {/* 单个失败不阻塞安装 */});

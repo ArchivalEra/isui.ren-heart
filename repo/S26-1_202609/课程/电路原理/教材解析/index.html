@@ -21,7 +21,7 @@
   })();
   </script>
   <link rel="stylesheet" href="../../../assets/katex/katex.min.css">
-  <link rel="stylesheet" href="../../../assets/theme/shirone-reader.css?v=236ae17420">
+  <link rel="stylesheet" href="../../../assets/theme/shirone-reader.css?v=4bceb4199a">
   <link rel="stylesheet" href="../../../assets/plugins/site-search.css?v=45716eda6c">
   <!-- 站点图标：动画 GIF 为主（Chrome/Firefox/Edge 会动），静态 PNG 作不支持动画时的回退 -->
   <link rel="icon" type="image/gif" href="../../../assets/favicon/favicon.gif">
@@ -986,22 +986,12 @@
 
             <div class="article-content">
               <h1 id="电路原理教材解析">电路原理教材解析</h1><p><a href="../index.html">返回课程索引</a> · <span class="res-degrade-badge">📋 教材章节解析模板 (模板不随站点发布)</span></p>
-<h2 id="教材登记">教材登记</h2><div class="table-scroll-container"><table>
-<thead>
-<tr>
-<th align="left">书名</th>
-<th align="left">作者</th>
-<th align="left">出版社</th>
-<th align="left">版次</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">电路分析基础</td>
-<td align="left">卢飒</td>
-<td align="left">电子工业出版社</td>
-<td align="left">第 2 版</td>
-</tr>
-</tbody></table></div>
+<h2 id="教材登记">教材登记</h2><div class="table-scroll-container t-compact" role="region" aria-label="教材登记" tabindex="0">
+<table>
+<thead><tr><th align="left">书名</th><th align="left">作者</th><th align="left">出版社</th><th align="left">版次</th></tr></thead>
+<tr><td data-label="书名">电路分析基础</td><td data-label="作者">卢飒</td><td data-label="出版社">电子工业出版社</td><td data-label="版次">第 2 版</td></tr>
+</table>
+</div>
 <p>（2026-10-12 用户提供；转写中原作「卢汉」、近似「邱关源」的失真读音据此更正。）教师当堂说明本教材「好烂」，不逐节做解析；教材正文未提供，本目录只保留<a href="./0.0-%E7%AC%A6%E5%8F%B7%E5%85%A5%E9%97%A8.html">符号入门</a>。</p>
 <p>已入库的自撰工具页：<a href="./0.0-%E7%AC%A6%E5%8F%B7%E5%85%A5%E9%97%A8.html">符号入门</a>——本课实际用到的记号逐个立词条
 （习题册 278 题与课堂口径，21 条；负载电阻 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>R</mi><mi>L</mi></msub></mrow><annotation encoding="application/x-tex">\htmlData{term=sym-RL}{R_L}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="enclosing" data-term="sym-RL"><span class="mord"><span class="mord mathnormal" style="margin-right:0.0077em;">R</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.0077em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">L</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></span> 与通用符号一起在通用包里维护），全站页面按构建期环境锚定即可点出气泡（见 <code>站点/符号环境.mjs</code>）。</p>
@@ -1050,7 +1040,8 @@
        而 embed.js 靠 document.currentScript.src 定位同目录的 widget.html——
        defer 脚本执行时 readyState 已是 interactive，document.write 会毁掉文档。 -->
   <script src="../../../assets/plugins/webmcp-relay.js?v=fd5acb480e"></script>
-  <script src="../../../assets/plugins/spa-router.js?v=9710c4b371" defer></script>
+  <script src="../../../assets/plugins/drawer-sync.js?v=4ee1a794d2" defer></script>
+  <script src="../../../assets/plugins/spa-router.js?v=728b1837cf" defer></script>
   <script>if ('serviceWorker' in navigator) { addEventListener('load', function () { navigator.serviceWorker.register('../../../sw.js'); }); }</script>
 </body>
 </html>

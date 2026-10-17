@@ -21,7 +21,7 @@
   })();
   </script>
   <link rel="stylesheet" href="../../../assets/katex/katex.min.css">
-  <link rel="stylesheet" href="../../../assets/theme/shirone-reader.css?v=236ae17420">
+  <link rel="stylesheet" href="../../../assets/theme/shirone-reader.css?v=4bceb4199a">
   <link rel="stylesheet" href="../../../assets/plugins/site-search.css?v=45716eda6c">
   <!-- 站点图标：动画 GIF 为主（Chrome/Firefox/Edge 会动），静态 PNG 作不支持动画时的回退 -->
   <link rel="icon" type="image/gif" href="../../../assets/favicon/favicon.gif">
@@ -993,25 +993,13 @@
 <li>教师讲完紧急控制三类方法后有一句「也是……我们不考主体」，<strong>原句残缺</strong>（疑为「不考大题」），<strong>不作结论</strong>。</li>
 </ul>
 <h2 id="没编号但讲了的知识点">没编号但讲了的知识点</h2><h3 id="安全域-静态与动态">安全域：静态与动态</h3><p><strong>安全域是什么</strong>：由<strong>数学方程定义的一个范围</strong>（安全范围）。教师说现阶段<strong>不要求</strong>用数学去求解，知道「安全是怎么回事」即可。</p>
-<div class="table-scroll-container"><table>
-<thead>
-<tr>
-<th align="left">类型</th>
-<th align="left">用什么方程描述</th>
-<th align="left">说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left"><strong>静态安全域</strong></td>
-<td align="left"><strong>代数方程</strong>（组）</td>
-<td align="left">描述<strong>平衡态</strong>，完全没有动态的微分／差分方程</td>
-</tr>
-<tr>
-<td align="left"><strong>动态安全域</strong></td>
-<td align="left"><strong>两类方程</strong></td>
-<td align="left">动态的<strong>微分方程或差分方程</strong>（用状态参数描述）＋代数方程</td>
-</tr>
-</tbody></table></div>
+<div class="table-scroll-container t-cards" role="region" aria-label="安全域：静态与动态" tabindex="0">
+<table>
+<thead><tr><th align="left">类型</th><th align="left">用什么方程描述</th><th align="left">说明</th></tr></thead>
+<tr><td data-label="类型"><strong>静态安全域</strong></td><td data-label="用什么方程描述"><strong>代数方程</strong>（组）</td><td data-label="说明">描述<strong>平衡态</strong>，完全没有动态的微分／差分方程</td></tr>
+<tr><td data-label="类型"><strong>动态安全域</strong></td><td data-label="用什么方程描述"><strong>两类方程</strong></td><td data-label="说明">动态的<strong>微分方程或差分方程</strong>（用状态参数描述）＋代数方程</td></tr>
+</table>
+</div>
 <ul>
 <li><strong>动态安全域的性质</strong>（教师列举）：内部<strong>连通</strong>、没有空洞、<strong>可微</strong>（边界连续）、安全域与边界不缠绕交错、不存在扭曲；<strong>同一种失稳模式下</strong>对应的局部边界连续。他说这是专业性概念，由「有限的失稳子模式表面的定义共同决定」。</li>
 <li><strong>线性系统的叠加性</strong>：安全边界具有<strong>线性叠加性</strong>，「所有线性系统都满足」；判定一个系统是否线性，看是否满足<strong>叠加原理</strong>——满足即线性，不满足即非线性（例子是电阻 + 电容／电感的简单电路）。</li>
@@ -1020,28 +1008,13 @@
 <li><strong>规模问题</strong>（本讲反复出现的引子）：维数高、节点多（教师用「一个宿舍楼就是一个节点」打比方），特征根多到<strong>无法手算</strong>——「怎么办？人工智能」。</li>
 </ul>
 <h3 id="物理参数与状态参数">物理参数与状态参数</h3><p>教师说这块**「有个认识就可以了，不用深究」**，但它解释了数据从哪来。</p>
-<div class="table-scroll-container"><table>
-<thead>
-<tr>
-<th align="left">类别</th>
-<th align="left">又叫</th>
-<th align="left">内容</th>
-<th align="left">来源</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left"><strong>物理参数</strong></td>
-<td align="left">结构参数</td>
-<td align="left">描述物理结构：交流电机的电感、电抗、互感，铁心磁性能</td>
-<td align="left">各类<strong>传感器</strong>测得（声、光、温等）——教师原话「这些都是大数据」</td>
-</tr>
-<tr>
-<td align="left"><strong>状态参数</strong></td>
-<td align="left">状态变量</td>
-<td align="left">描述状态连续变化的量：<strong>电流、电压、功率、频率</strong></td>
-<td align="left">由系统运行状态决定</td>
-</tr>
-</tbody></table></div>
+<div class="table-scroll-container t-cards" role="region" aria-label="物理参数与状态参数" tabindex="0">
+<table>
+<thead><tr><th align="left">类别</th><th align="left">又叫</th><th align="left">内容</th><th align="left">来源</th></tr></thead>
+<tr><td data-label="类别"><strong>物理参数</strong></td><td data-label="又叫">结构参数</td><td data-label="内容">描述物理结构：交流电机的电感、电抗、互感，铁心磁性能</td><td data-label="来源">各类<strong>传感器</strong>测得（声、光、温等）——教师原话「这些都是大数据」</td></tr>
+<tr><td data-label="类别"><strong>状态参数</strong></td><td data-label="又叫">状态变量</td><td data-label="内容">描述状态连续变化的量：<strong>电流、电压、功率、频率</strong></td><td data-label="来源">由系统运行状态决定</td></tr>
+</table>
+</div>
 <p><strong>两类参数共同表示能量</strong>：线性电路里电感储能 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mn>1</mn><mn>2</mn></mfrac><mi>L</mi><msup><mi>i</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">\frac{1}{2}Li^2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.1901em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8451em;"><span style="top:-2.655em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mord mathnormal">L</span><span class="mord"><span class="mord mathnormal">i</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span>、电容储能 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mn>1</mn><mn>2</mn></mfrac><mi>C</mi><msup><mi>u</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">\frac{1}{2}Cu^2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.1901em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8451em;"><span style="top:-2.655em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mord mathnormal" style="margin-right:0.0715em;">C</span><span class="mord"><span class="mord mathnormal">u</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span>——一个能量同时由<strong>物理结构参数</strong>与<strong>状态参数</strong>表达。（教师提示这一周会有另一位专业老师把结构建模的内容上线到学习平台，到时再补。）</p>
 <h3 id="潮流与雅可比矩阵">潮流与雅可比矩阵</h3><ul>
 <li><strong>潮流</strong>＝<strong>功率分配</strong>（不要被词吓住）：网络与发电机之间有<strong>潮流交换</strong>。</li>
@@ -1064,26 +1037,14 @@
 <li><strong>用简化模型换速度</strong>：但不能一味求简——「求解出来了跟实际的系统相差十万八千里，没有指导意义」，要在<strong>逼近真实</strong>与<strong>保证快速性</strong>之间折中。</li>
 <li><strong>分布式并行计算</strong>（最高形式是<strong>云计算</strong>：不卖服务器、只卖服务，分解单节点的复杂度与压力）。<strong>三个研究方向（教师要求记住）</strong>：</li>
 </ul>
-<div class="table-scroll-container"><table>
-<thead>
-<tr>
-<th align="left">方向</th>
-<th align="left">做法</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left"><strong>时间并行算法</strong></td>
-<td align="left">把微分方程<strong>差分化（离散化）<strong>后与代数方程</strong>联立求解</strong>，可保持严格<strong>牛顿法</strong>的收敛性</td>
-</tr>
-<tr>
-<td align="left"><strong>空间并行算法</strong></td>
-<td align="left">把大系统按物理分布<strong>分成若干子网</strong>，各子网分别单独计算</td>
-</tr>
-<tr>
-<td align="left"><strong>波形松弛算法</strong></td>
-<td align="left">把大系统拆成若干小系统，用<strong>不同子系统间的交替迭代</strong>计算，每个子系统可多次计算</td>
-</tr>
-</tbody></table></div>
+<div class="table-scroll-container t-compact" role="region" aria-label="时域仿真法（第一类经典方法，讲得最细）" tabindex="0">
+<table>
+<thead><tr><th align="left">方向</th><th align="left">做法</th></tr></thead>
+<tr><td data-label="方向"><strong>时间并行算法</strong></td><td data-label="做法">把微分方程<strong>差分化（离散化）<strong>后与代数方程</strong>联立求解</strong>，可保持严格<strong>牛顿法</strong>的收敛性</td></tr>
+<tr><td data-label="方向"><strong>空间并行算法</strong></td><td data-label="做法">把大系统按物理分布<strong>分成若干子网</strong>，各子网分别单独计算</td></tr>
+<tr><td data-label="方向"><strong>波形松弛算法</strong></td><td data-label="做法">把大系统拆成若干小系统，用<strong>不同子系统间的交替迭代</strong>计算，每个子系统可多次计算</td></tr>
+</table>
+</div>
 <p><strong>结论</strong>：算法与设备都在进步，但<strong>规模庞大时仍不满足实时要求</strong>——「只能说用 AI 了」「只能采用云计算和人工智能」。</p>
 <h3 id="直接法-能量函数-李雅普诺夫方法">直接法（能量函数 / 李雅普诺夫方法）</h3><p>第二类经典方法：<strong>不求全部特征根，而是构造一个能量函数</strong>来判断稳定。</p>
 <ul>
@@ -1123,26 +1084,14 @@
 <li><strong>集中式控制决策</strong>：由<strong>控制中心下发</strong>紧急控制措施，以<strong>尽可能小的代价</strong>让故障后的系统<strong>尽快恢复稳定</strong>。教师顺带讲到我国停电时间在全世界最短、可靠性最高（<strong>课堂叙述，未核实</strong>）。</li>
 <li>离线决策 vs <strong>实时</strong>决策：实时对<strong>计算速度</strong>要求更高，于是有下面三类「可行研究方向」。</li>
 </ul>
-<div class="table-scroll-container"><table>
-<thead>
-<tr>
-<th align="left">方法</th>
-<th align="left">做法要点</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left"><strong>启发式方法</strong></td>
-<td align="left">用<strong>少量仿真</strong>找控制方案，避免大量仿真搜索；用指标排序（如切机切负荷的有效性指标）决定控制动作，显著降低空间复杂度</td>
-</tr>
-<tr>
-<td align="left"><strong>基于响应的方法</strong></td>
-<td align="left">直接用 <strong>PMU</strong> 采集的故障后动态量测，避免复杂时域计算；例如用发电机转速轨迹预测稳定性，若判为不稳定，先把系统<strong>等效为两机模型</strong>，用<strong>加速面积与减速面积</strong>算切机／切负荷量。教师强调<strong>不需要复杂计算</strong>、可直接在线算</td>
-</tr>
-<tr>
-<td align="left"><strong>基于安全域／稳定域的方法</strong></td>
-<td align="left">用<strong>切机、切负荷</strong>等措施<strong>改变稳定边界</strong>，把运行点从域外移回域内；控制措施引起的<strong>边界移动可近似线性叠加</strong>；研究过切机切负荷<strong>时刻</strong>对边界外移距离的影响，并对多摆系统提出<strong>最优时间切机控制策略</strong></td>
-</tr>
-</tbody></table></div>
+<div class="table-scroll-container t-compact" role="region" aria-label="紧急控制决策方法（评估的目的是用于控制）" tabindex="0">
+<table>
+<thead><tr><th align="left">方法</th><th align="left">做法要点</th></tr></thead>
+<tr><td data-label="方法"><strong>启发式方法</strong></td><td data-label="做法要点">用<strong>少量仿真</strong>找控制方案，避免大量仿真搜索；用指标排序（如切机切负荷的有效性指标）决定控制动作，显著降低空间复杂度</td></tr>
+<tr><td data-label="方法"><strong>基于响应的方法</strong></td><td data-label="做法要点">直接用 <strong>PMU</strong> 采集的故障后动态量测，避免复杂时域计算；例如用发电机转速轨迹预测稳定性，若判为不稳定，先把系统<strong>等效为两机模型</strong>，用<strong>加速面积与减速面积</strong>算切机／切负荷量。教师强调<strong>不需要复杂计算</strong>、可直接在线算</td></tr>
+<tr><td data-label="方法"><strong>基于安全域／稳定域的方法</strong></td><td data-label="做法要点">用<strong>切机、切负荷</strong>等措施<strong>改变稳定边界</strong>，把运行点从域外移回域内；控制措施引起的<strong>边界移动可近似线性叠加</strong>；研究过切机切负荷<strong>时刻</strong>对边界外移距离的影响，并对多摆系统提出<strong>最优时间切机控制策略</strong></td></tr>
+</table>
+</div>
 <ul>
 <li><strong>局限</strong>：基于响应的方法效果与「简化、等值」过程关系很大；基于安全域／稳定域的方法<strong>很大程度上依赖算法对安全域／稳定域描述的准确程度</strong>。</li>
 <li><strong>灵敏度＝参数的一阶导</strong>（教师举例：电流对负载电阻的灵敏度，衡量电流受该电阻影响的大小）。用灵敏度建<strong>优化模型</strong>（目标函数最小，属动态规划），<strong>计算量与备选控制措施数量无关</strong>——只需<strong>两次积分／两次仿真</strong>即可求得，能大幅减少仿真搜索。</li>
@@ -1228,7 +1177,8 @@
        而 embed.js 靠 document.currentScript.src 定位同目录的 widget.html——
        defer 脚本执行时 readyState 已是 interactive，document.write 会毁掉文档。 -->
   <script src="../../../assets/plugins/webmcp-relay.js?v=fd5acb480e"></script>
-  <script src="../../../assets/plugins/spa-router.js?v=9710c4b371" defer></script>
+  <script src="../../../assets/plugins/drawer-sync.js?v=4ee1a794d2" defer></script>
+  <script src="../../../assets/plugins/spa-router.js?v=728b1837cf" defer></script>
   <script>if ('serviceWorker' in navigator) { addEventListener('load', function () { navigator.serviceWorker.register('../../../sw.js'); }); }</script>
 </body>
 </html>

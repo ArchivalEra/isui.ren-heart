@@ -21,7 +21,7 @@
   })();
   </script>
   <link rel="stylesheet" href="../../../assets/katex/katex.min.css">
-  <link rel="stylesheet" href="../../../assets/theme/shirone-reader.css?v=236ae17420">
+  <link rel="stylesheet" href="../../../assets/theme/shirone-reader.css?v=4bceb4199a">
   <link rel="stylesheet" href="../../../assets/plugins/site-search.css?v=45716eda6c">
   <!-- 站点图标：动画 GIF 为主（Chrome/Firefox/Edge 会动），静态 PNG 作不支持动画时的回退 -->
   <link rel="icon" type="image/gif" href="../../../assets/favicon/favicon.gif">
@@ -1019,76 +1019,30 @@
 <li><strong>电路的定义</strong>：由电气设备与器件按预定目标连接成的<strong>电流通路</strong>（教师随即说「像这种概念，考试不会考」）。</li>
 <li><strong>组成电路的三个基本部分</strong>（教师反复强调「至少必须要有这三个」，课本第 1 页蓝色字体也写了）：</li>
 </ul>
-<div class="table-scroll-container"><table>
-<thead>
-<tr>
-<th align="left">组成部分</th>
-<th align="left">作用</th>
-<th align="left">实例</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left"><strong>电源</strong></td>
-<td align="left">提供电能的装置</td>
-<td align="left">干电池、手机电池、发电机</td>
-</tr>
-<tr>
-<td align="left"><strong>负载</strong></td>
-<td align="left">消耗、使用电能的装置</td>
-<td align="left">小灯泡、电动机、其他用电设备</td>
-</tr>
-<tr>
-<td align="left"><strong>中间环节</strong></td>
-<td align="left">传输、分配与控制电能</td>
-<td align="left">导线、开关、保险丝</td>
-</tr>
-</tbody></table></div>
+<div class="table-scroll-container t-compact" role="region" aria-label="1.1 电路的组成与电路模型" tabindex="0">
+<table>
+<thead><tr><th align="left">组成部分</th><th align="left">作用</th><th align="left">实例</th></tr></thead>
+<tr><td data-label="组成部分"><strong>电源</strong></td><td data-label="作用">提供电能的装置</td><td data-label="实例">干电池、手机电池、发电机</td></tr>
+<tr><td data-label="组成部分"><strong>负载</strong></td><td data-label="作用">消耗、使用电能的装置</td><td data-label="实例">小灯泡、电动机、其他用电设备</td></tr>
+<tr><td data-label="组成部分"><strong>中间环节</strong></td><td data-label="作用">传输、分配与控制电能</td><td data-label="实例">导线、开关、保险丝</td></tr>
+</table>
+</div>
 <ul>
 <li><strong>两个例子</strong>：<strong>手电筒</strong>（电池 + 灯泡 + 导线与开关，「最简单的电路」）；<strong>远距离输电</strong>（发电机 + 变压器与输电线 + 用户）。</li>
 <li><strong>电路的作用分两类</strong>：<strong>强电电路</strong>（如电网）主要<strong>传输与分配电能</strong>；<strong>弱电电路</strong>实现<strong>信号传递</strong>（教师举的链路是输入放大 → 高频放大 → 低频放大 → 扬声器；手机、电脑属弱电）。</li>
 <li>应试要求：<strong>「你实在不理解你就记住」</strong>——能分清哪部分是电源、中间环节、负载即可。</li>
 </ul>
 <h3 id="1-2-电路元件及模型">1.2 电路元件及模型</h3><p><strong>元件的定义</strong>：「具有<strong>某一单一电磁特性</strong>的元件」。本课程常用：<strong>电阻、电感、电容、电压源、电流源</strong>。</p>
-<div class="table-scroll-container"><table>
-<thead>
-<tr>
-<th align="left">元件</th>
-<th align="left">性质</th>
-<th align="left">符号</th>
-<th align="left">备注</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">电阻元件</td>
-<td align="left">消耗电能</td>
-<td align="left"><strong>R</strong></td>
-<td align="left">前四章的主角；「跟我们初中学的电阻一样，是个固定的值」</td>
-</tr>
-<tr>
-<td align="left">电感元件</td>
-<td align="left">—</td>
-<td align="left"><strong>L</strong></td>
-<td align="left">第五章以后才展开</td>
-</tr>
-<tr>
-<td align="left">电容元件</td>
-<td align="left">—</td>
-<td align="left"><strong>C</strong></td>
-<td align="left">符号是「两条平行的、长短一样的线」</td>
-</tr>
-<tr>
-<td align="left">电压源</td>
-<td align="left">提供电压</td>
-<td align="left">符号「一个长一个短」</td>
-<td align="left"><strong>与电流源容易混</strong>，注意区分</td>
-</tr>
-<tr>
-<td align="left">电流源</td>
-<td align="left">可直接提供电流</td>
-<td align="left">—</td>
-<td align="left">同上</td>
-</tr>
-</tbody></table></div>
+<div class="table-scroll-container t-cards" role="region" aria-label="1.2 电路元件及模型" tabindex="0">
+<table>
+<thead><tr><th align="left">元件</th><th align="left">性质</th><th align="left">符号</th><th align="left">备注</th></tr></thead>
+<tr><td data-label="元件">电阻元件</td><td data-label="性质">消耗电能</td><td data-label="符号"><strong>R</strong></td><td data-label="备注">前四章的主角；「跟我们初中学的电阻一样，是个固定的值」</td></tr>
+<tr><td data-label="元件">电感元件</td><td data-label="性质">—</td><td data-label="符号"><strong>L</strong></td><td data-label="备注">第五章以后才展开</td></tr>
+<tr><td data-label="元件">电容元件</td><td data-label="性质">—</td><td data-label="符号"><strong>C</strong></td><td data-label="备注">符号是「两条平行的、长短一样的线」</td></tr>
+<tr><td data-label="元件">电压源</td><td data-label="性质">提供电压</td><td data-label="符号">符号「一个长一个短」</td><td data-label="备注"><strong>与电流源容易混</strong>，注意区分</td></tr>
+<tr><td data-label="元件">电流源</td><td data-label="性质">可直接提供电流</td><td data-label="符号">—</td><td data-label="备注">同上</td></tr>
+</table>
+</div>
 <ul>
 <li><strong>为什么要认符号</strong>：考试不会单独问「这是什么元件」，但做题时「求电感两端的电压或电流，你至少要知道电感是哪一个」。</li>
 <li><strong>有源／无源</strong>：<strong>无源</strong>＝电阻、电感、电容（「不能够提供电能的」）；<strong>有源</strong>＝电压源、电流源、电池（「提供电能的」）。教师说自己不太习惯这套叫法，介绍它只是「防止大家看到其他课程上会有这么讲」——属通用术语。</li>
@@ -1100,26 +1054,14 @@
 <li><strong>按电磁特性对应模型</strong>：消耗电能 → <strong>电阻</strong>；存储电场能量 → <strong>电容</strong>；存储磁场能量 → <strong>电感</strong>。</li>
 <li><strong>模型取决于工作条件</strong>（本节最值得记的一条）：</li>
 </ul>
-<div class="table-scroll-container"><table>
-<thead>
-<tr>
-<th align="left">工作条件</th>
-<th align="left">用什么模型替代</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">直流线圈</td>
-<td align="left">只用<strong>电阻</strong></td>
-</tr>
-<tr>
-<td align="left">低频交流</td>
-<td align="left"><strong>电感 + 电阻</strong></td>
-</tr>
-<tr>
-<td align="left">高频交流</td>
-<td align="left"><strong>电感与电容并联</strong></td>
-</tr>
-</tbody></table></div>
+<div class="table-scroll-container t-compact" role="region" aria-label="1.2 电路元件及模型" tabindex="0">
+<table>
+<thead><tr><th align="left">工作条件</th><th align="left">用什么模型替代</th></tr></thead>
+<tr><td data-label="工作条件">直流线圈</td><td data-label="用什么模型替代">只用<strong>电阻</strong></td></tr>
+<tr><td data-label="工作条件">低频交流</td><td data-label="用什么模型替代"><strong>电感 + 电阻</strong></td></tr>
+<tr><td data-label="工作条件">高频交流</td><td data-label="用什么模型替代"><strong>电感与电容并联</strong></td></tr>
+</table>
+</div>
 <p>  教师原话：「实际模型当中，要看它的工作条件，才能决定它用什么器件替代」。</p>
 <ul>
 <li>本课程<strong>不深入建模</strong>，一般只分析电路模型图——「最后我们做的元件都是指理想电路当中的元件」。</li>
@@ -1143,28 +1085,13 @@
 <li><strong>电流</strong>：<strong>带电离子的定向运动</strong>形成电流；大小（电流强度）＝单位时间内通过截面的电荷量（教师口述为对电荷量做微分，<strong>未念出公式符号</strong>）。符号 <strong>I</strong>，单位<strong>安培</strong>（常用毫安、微安；单位换算教师说「这里就不说了」）。</li>
 <li><strong>直流与交流（必须记清）</strong>：</li>
 </ul>
-<div class="table-scroll-container"><table>
-<thead>
-<tr>
-<th align="left"></th>
-<th align="left">定义</th>
-<th align="left">符号写法</th>
-<th align="left">出现章节</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left"><strong>直流电</strong></td>
-<td align="left">大小、方向<strong>不随时间变化</strong></td>
-<td align="left"><strong>大写 I</strong></td>
-<td align="left">第 1–4 章</td>
-</tr>
-<tr>
-<td align="left"><strong>交流电</strong></td>
-<td align="left">大小、方向<strong>随时间变化</strong></td>
-<td align="left"><strong>小写 i</strong></td>
-<td align="left">第 5 章起</td>
-</tr>
-</tbody></table></div>
+<div class="table-scroll-container t-cards" role="region" aria-label="1.2 电路的基本物理量：电流与参考方向" tabindex="0">
+<table>
+<thead><tr><th align="left"></th><th align="left">定义</th><th align="left">符号写法</th><th align="left">出现章节</th></tr></thead>
+<tr><td data-label=""><strong>直流电</strong></td><td data-label="定义">大小、方向<strong>不随时间变化</strong></td><td data-label="符号写法"><strong>大写 I</strong></td><td data-label="出现章节">第 1–4 章</td></tr>
+<tr><td data-label=""><strong>交流电</strong></td><td data-label="定义">大小、方向<strong>随时间变化</strong></td><td data-label="符号写法"><strong>小写 i</strong></td><td data-label="出现章节">第 5 章起</td></tr>
+</table>
+</div>
 <p>  补充：直流电路中只要<strong>电路结构不变</strong>，各处电流固定；只有结构变化（开关断开、支路接入与否）才改变。</p>
 <ul>
 <li><strong>电流的实际方向</strong>：<strong>正电荷移动的方向</strong>（国际规定）。</li>
@@ -1251,7 +1178,8 @@
        而 embed.js 靠 document.currentScript.src 定位同目录的 widget.html——
        defer 脚本执行时 readyState 已是 interactive，document.write 会毁掉文档。 -->
   <script src="../../../assets/plugins/webmcp-relay.js?v=fd5acb480e"></script>
-  <script src="../../../assets/plugins/spa-router.js?v=9710c4b371" defer></script>
+  <script src="../../../assets/plugins/drawer-sync.js?v=4ee1a794d2" defer></script>
+  <script src="../../../assets/plugins/spa-router.js?v=728b1837cf" defer></script>
   <script>if ('serviceWorker' in navigator) { addEventListener('load', function () { navigator.serviceWorker.register('../../../sw.js'); }); }</script>
 </body>
 </html>

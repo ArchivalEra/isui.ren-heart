@@ -21,7 +21,7 @@
   })();
   </script>
   <link rel="stylesheet" href="../../../assets/katex/katex.min.css">
-  <link rel="stylesheet" href="../../../assets/theme/shirone-reader.css?v=236ae17420">
+  <link rel="stylesheet" href="../../../assets/theme/shirone-reader.css?v=4bceb4199a">
   <link rel="stylesheet" href="../../../assets/plugins/site-search.css?v=45716eda6c">
   <!-- 站点图标：动画 GIF 为主（Chrome/Firefox/Edge 会动），静态 PNG 作不支持动画时的回退 -->
   <link rel="icon" type="image/gif" href="../../../assets/favicon/favicon.gif">
@@ -1222,138 +1222,42 @@ X = A⁻¹B              （单位矩阵乘任何矩阵等于它本身）</code>
 <li>行列式性质的完整复习——只挑了本节要用到的三条。</li>
 <li>例2.2 中 <code>BA</code> 的完整 9 个元素结果，以及分块的具体分法——老师现场带过，转写不完整。</li>
 </ul>
-<h2 id="转写与术语">转写与术语</h2><div class="table-scroll-container"><table>
-<thead>
-<tr>
-<th align="left">转写原文</th>
-<th align="left">正确写法（说明）</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">方程、方面、方位（如&quot;N 阶方程&quot;）</td>
-<td align="left">方阵（ASR 同音误记）</td>
-</tr>
-<tr>
-<td align="left">同行矩阵</td>
-<td align="left">同型矩阵</td>
-</tr>
-<tr>
-<td align="left">组织表现、组织（如&quot;方阵 A 的组织表现&quot;）</td>
-<td align="left">主对角线</td>
-</tr>
-<tr>
-<td align="left">上三角理论</td>
-<td align="left">上三角矩阵</td>
-</tr>
-<tr>
-<td align="left">下偏角</td>
-<td align="left">下三角矩阵</td>
-</tr>
-<tr>
-<td align="left">&quot;a 等于大于 A₁, a₂, …&quot;</td>
-<td align="left"><code>diag(a₁₁, a₂₂, …, aₙₙ)</code>（对角矩阵记号，ASR 把 diag 听成&quot;大于&quot;）</td>
-</tr>
-<tr>
-<td align="left">演绎2.3</td>
-<td align="left">例2.3</td>
-</tr>
-<tr>
-<td align="left">负数、负矩阵（在讲复数语境处）</td>
-<td align="left">复数（&quot;复数/负数&quot;同音，此处指复数）</td>
-</tr>
-<tr>
-<td align="left">&quot;三就是这个 10 步 / 五就是 10 步&quot;</td>
-<td align="left">实部 / 虚部（讲 3+5i 时）</td>
-</tr>
-<tr>
-<td align="left">代数值、代数矩阵</td>
-<td align="left">代数余子式</td>
-</tr>
-<tr>
-<td align="left">行业、函数（如&quot;把这个函数移过去&quot;&quot;前提是你的行业是固定的&quot;）</td>
-<td align="left">行列式</td>
-</tr>
-<tr>
-<td align="left">力学（&quot;我的力学实际上就是 A 的行列式分之 A 的伴&quot;）</td>
-<td align="left">逆矩阵</td>
-</tr>
-<tr>
-<td align="left">矩阵的 D、矩阵的 B（&quot;矩阵的 D 相当于数字里的…&quot;）</td>
-<td align="left">矩阵的逆</td>
-</tr>
-<tr>
-<td align="left">ap、A1、ap,</td>
-<td align="left">A⁻¹（A 的逆）</td>
-</tr>
-<tr>
-<td align="left">克拉莫</td>
-<td align="left">克拉默（Cramer 法则）</td>
-</tr>
-<tr>
-<td align="left">买的 live、白话</td>
-<td align="left">MATLAB</td>
-</tr>
-<tr>
-<td align="left">左分辨率、右分辨率</td>
-<td align="left">左分配律、右分配律</td>
-</tr>
-<tr>
-<td align="left">消去率</td>
-<td align="left">消去律</td>
-</tr>
-<tr>
-<td align="left">交换对数、交换率</td>
-<td align="left">交换律</td>
-</tr>
-<tr>
-<td align="left">结构率</td>
-<td align="left">结合律</td>
-</tr>
-<tr>
-<td align="left">分号的（&quot;写成是一个这种分号的矩阵&quot;）</td>
-<td align="left">分块的（分块矩阵）</td>
-</tr>
-<tr>
-<td align="left">曲线（&quot;曲线的加法&quot;&quot;曲线长高&quot;）</td>
-<td align="left">矩阵（矩阵的加法 / 矩阵乘法）</td>
-</tr>
-<tr>
-<td align="left">拉姆达、朗达、栏杆</td>
-<td align="left">λ（希腊字母 lambda）</td>
-</tr>
-<tr>
-<td align="left">A 星</td>
-<td align="left">A*（伴随矩阵）</td>
-</tr>
-<tr>
-<td align="left">3 加 5I</td>
-<td align="left">3 + 5i（虚数单位 i）</td>
-</tr>
-<tr>
-<td align="left">单位制</td>
-<td align="left">单位矩阵 E</td>
-</tr>
-<tr>
-<td align="left">转世（&quot;你转世的最后跟没转世一样&quot;）</td>
-<td align="left">转置</td>
-</tr>
-<tr>
-<td align="left">1 乘 N / M 乘 1</td>
-<td align="left">1×n / m×1</td>
-</tr>
-<tr>
-<td align="left">&quot;然后就是 616&quot;</td>
-<td align="left">m×1</td>
-</tr>
-<tr>
-<td align="left">&quot;我们称为是电力学的&quot;</td>
-<td align="left">列矩阵（上下文指列矩阵，转写不清）</td>
-</tr>
-<tr>
-<td align="left">write（讲 MATLAB 读数据处）</td>
-<td align="left">读取命令（读 Excel 常用 readmatrix / xlsread）</td>
-</tr>
-</tbody></table></div>
+<h2 id="转写与术语">转写与术语</h2><div class="table-scroll-container t-cards" role="region" aria-label="转写与术语" tabindex="0">
+<table>
+<thead><tr><th align="left">转写原文</th><th align="left">正确写法（说明）</th></tr></thead>
+<tr><td data-label="转写原文">方程、方面、方位（如&quot;N 阶方程&quot;）</td><td data-label="正确写法（说明）">方阵（ASR 同音误记）</td></tr>
+<tr><td data-label="转写原文">同行矩阵</td><td data-label="正确写法（说明）">同型矩阵</td></tr>
+<tr><td data-label="转写原文">组织表现、组织（如&quot;方阵 A 的组织表现&quot;）</td><td data-label="正确写法（说明）">主对角线</td></tr>
+<tr><td data-label="转写原文">上三角理论</td><td data-label="正确写法（说明）">上三角矩阵</td></tr>
+<tr><td data-label="转写原文">下偏角</td><td data-label="正确写法（说明）">下三角矩阵</td></tr>
+<tr><td data-label="转写原文">&quot;a 等于大于 A₁, a₂, …&quot;</td><td data-label="正确写法（说明）"><code>diag(a₁₁, a₂₂, …, aₙₙ)</code>（对角矩阵记号，ASR 把 diag 听成&quot;大于&quot;）</td></tr>
+<tr><td data-label="转写原文">演绎2.3</td><td data-label="正确写法（说明）">例2.3</td></tr>
+<tr><td data-label="转写原文">负数、负矩阵（在讲复数语境处）</td><td data-label="正确写法（说明）">复数（&quot;复数/负数&quot;同音，此处指复数）</td></tr>
+<tr><td data-label="转写原文">&quot;三就是这个 10 步 / 五就是 10 步&quot;</td><td data-label="正确写法（说明）">实部 / 虚部（讲 3+5i 时）</td></tr>
+<tr><td data-label="转写原文">代数值、代数矩阵</td><td data-label="正确写法（说明）">代数余子式</td></tr>
+<tr><td data-label="转写原文">行业、函数（如&quot;把这个函数移过去&quot;&quot;前提是你的行业是固定的&quot;）</td><td data-label="正确写法（说明）">行列式</td></tr>
+<tr><td data-label="转写原文">力学（&quot;我的力学实际上就是 A 的行列式分之 A 的伴&quot;）</td><td data-label="正确写法（说明）">逆矩阵</td></tr>
+<tr><td data-label="转写原文">矩阵的 D、矩阵的 B（&quot;矩阵的 D 相当于数字里的…&quot;）</td><td data-label="正确写法（说明）">矩阵的逆</td></tr>
+<tr><td data-label="转写原文">ap、A1、ap,</td><td data-label="正确写法（说明）">A⁻¹（A 的逆）</td></tr>
+<tr><td data-label="转写原文">克拉莫</td><td data-label="正确写法（说明）">克拉默（Cramer 法则）</td></tr>
+<tr><td data-label="转写原文">买的 live、白话</td><td data-label="正确写法（说明）">MATLAB</td></tr>
+<tr><td data-label="转写原文">左分辨率、右分辨率</td><td data-label="正确写法（说明）">左分配律、右分配律</td></tr>
+<tr><td data-label="转写原文">消去率</td><td data-label="正确写法（说明）">消去律</td></tr>
+<tr><td data-label="转写原文">交换对数、交换率</td><td data-label="正确写法（说明）">交换律</td></tr>
+<tr><td data-label="转写原文">结构率</td><td data-label="正确写法（说明）">结合律</td></tr>
+<tr><td data-label="转写原文">分号的（&quot;写成是一个这种分号的矩阵&quot;）</td><td data-label="正确写法（说明）">分块的（分块矩阵）</td></tr>
+<tr><td data-label="转写原文">曲线（&quot;曲线的加法&quot;&quot;曲线长高&quot;）</td><td data-label="正确写法（说明）">矩阵（矩阵的加法 / 矩阵乘法）</td></tr>
+<tr><td data-label="转写原文">拉姆达、朗达、栏杆</td><td data-label="正确写法（说明）">λ（希腊字母 lambda）</td></tr>
+<tr><td data-label="转写原文">A 星</td><td data-label="正确写法（说明）">A*（伴随矩阵）</td></tr>
+<tr><td data-label="转写原文">3 加 5I</td><td data-label="正确写法（说明）">3 + 5i（虚数单位 i）</td></tr>
+<tr><td data-label="转写原文">单位制</td><td data-label="正确写法（说明）">单位矩阵 E</td></tr>
+<tr><td data-label="转写原文">转世（&quot;你转世的最后跟没转世一样&quot;）</td><td data-label="正确写法（说明）">转置</td></tr>
+<tr><td data-label="转写原文">1 乘 N / M 乘 1</td><td data-label="正确写法（说明）">1×n / m×1</td></tr>
+<tr><td data-label="转写原文">&quot;然后就是 616&quot;</td><td data-label="正确写法（说明）">m×1</td></tr>
+<tr><td data-label="转写原文">&quot;我们称为是电力学的&quot;</td><td data-label="正确写法（说明）">列矩阵（上下文指列矩阵，转写不清）</td></tr>
+<tr><td data-label="转写原文">write（讲 MATLAB 读数据处）</td><td data-label="正确写法（说明）">读取命令（读 Excel 常用 readmatrix / xlsread）</td></tr>
+</table>
+</div>
 <h2 id="以下内容面向整理者-复核-同学可以不看">以下内容面向整理者/复核，同学可以不看</h2><h3 id="条件备注">条件备注</h3><ul>
 <li>两份转写是同一节课：<code>13301523</code> 是主体（13:30 起，第 1–1692 行），<code>15231545</code> 是收尾段（15:23 起，87 行）。收尾段接在主体最后一节&quot;逆矩阵&quot;之后，内容连续（作业说明 + 逆矩阵引例），已合并成一篇。</li>
 <li>主体转写里两位&quot;讲话人&quot;其实都在复述老师的话（一人在讲、一人在跟读板书），存在大量重复与断句错位，笔记只取有信息量的部分。</li>
@@ -1404,7 +1308,8 @@ X = A⁻¹B              （单位矩阵乘任何矩阵等于它本身）</code>
        而 embed.js 靠 document.currentScript.src 定位同目录的 widget.html——
        defer 脚本执行时 readyState 已是 interactive，document.write 会毁掉文档。 -->
   <script src="../../../assets/plugins/webmcp-relay.js?v=fd5acb480e"></script>
-  <script src="../../../assets/plugins/spa-router.js?v=9710c4b371" defer></script>
+  <script src="../../../assets/plugins/drawer-sync.js?v=4ee1a794d2" defer></script>
+  <script src="../../../assets/plugins/spa-router.js?v=728b1837cf" defer></script>
   <script>if ('serviceWorker' in navigator) { addEventListener('load', function () { navigator.serviceWorker.register('../../../sw.js'); }); }</script>
 </body>
 </html>

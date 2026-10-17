@@ -21,7 +21,7 @@
   })();
   </script>
   <link rel="stylesheet" href="../../../assets/katex/katex.min.css">
-  <link rel="stylesheet" href="../../../assets/theme/shirone-reader.css?v=236ae17420">
+  <link rel="stylesheet" href="../../../assets/theme/shirone-reader.css?v=4bceb4199a">
   <link rel="stylesheet" href="../../../assets/plugins/site-search.css?v=45716eda6c">
   <!-- 站点图标：动画 GIF 为主（Chrome/Firefox/Edge 会动），静态 PNG 作不支持动画时的回退 -->
   <link rel="icon" type="image/gif" href="../../../assets/favicon/favicon.gif">
@@ -1031,34 +1031,14 @@
 <li>原因：<strong>电阻值与电流的数值在转写里含糊</strong>（「3 3000 欧」「3 10 欧」「14.30 除以 3 10 欧」），<strong>教师本人讲到中途也自查过一次</strong>（「我是不是哪里搞错了什么」）。</li>
 </ul>
 <h2 id="没编号但讲了的知识点">没编号但讲了的知识点</h2><h3 id="二极管的结构三类型与选用">二极管的结构三类型与选用</h3><p>先说现实中常见的<strong>发光二极管</strong>：颗粒型显示屏由许多组 LED 组成，「有多少个像素点就有多少个发光二极管」。再看结构分类：</p>
-<div class="table-scroll-container"><table>
-<thead>
-<tr>
-<th align="left">类型</th>
-<th align="left">结构特点</th>
-<th align="left">结电容与电流</th>
-<th align="left">典型用途</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left"><strong>点接触型</strong></td>
-<td align="left">PN 结<strong>截面积很小</strong></td>
-<td align="left">结电容小；<strong>正向电流也小</strong>（教师打比方：管径小，流量自然小）</td>
-<td align="left"><strong>检波、变频</strong>等<strong>高频</strong>场合（老式收音机的检波管）</td>
-</tr>
-<tr>
-<td align="left"><strong>面接触型</strong></td>
-<td align="left">接触面积<strong>很大</strong></td>
-<td align="left">正向电流大，结电容也大</td>
-<td align="left"><strong>工频大电流整流</strong>（我国工频 <strong>50 Hz</strong>，欧美多为 60 Hz）</td>
-</tr>
-<tr>
-<td align="left"><strong>平面型</strong></td>
-<td align="left">结面积<strong>可大可小</strong>，做在芯片上</td>
-<td align="left">—</td>
-<td align="left"><strong>集成电路</strong>内部；也用于<strong>高频整流</strong>与<strong>开关电路</strong></td>
-</tr>
-</tbody></table></div>
+<div class="table-scroll-container t-cards" role="region" aria-label="二极管的结构三类型与选用" tabindex="0">
+<table>
+<thead><tr><th align="left">类型</th><th align="left">结构特点</th><th align="left">结电容与电流</th><th align="left">典型用途</th></tr></thead>
+<tr><td data-label="类型"><strong>点接触型</strong></td><td data-label="结构特点">PN 结<strong>截面积很小</strong></td><td data-label="结电容与电流">结电容小；<strong>正向电流也小</strong>（教师打比方：管径小，流量自然小）</td><td data-label="典型用途"><strong>检波、变频</strong>等<strong>高频</strong>场合（老式收音机的检波管）</td></tr>
+<tr><td data-label="类型"><strong>面接触型</strong></td><td data-label="结构特点">接触面积<strong>很大</strong></td><td data-label="结电容与电流">正向电流大，结电容也大</td><td data-label="典型用途"><strong>工频大电流整流</strong>（我国工频 <strong>50 Hz</strong>，欧美多为 60 Hz）</td></tr>
+<tr><td data-label="类型"><strong>平面型</strong></td><td data-label="结构特点">结面积<strong>可大可小</strong>，做在芯片上</td><td data-label="结电容与电流">—</td><td data-label="典型用途"><strong>集成电路</strong>内部；也用于<strong>高频整流</strong>与<strong>开关电路</strong></td></tr>
+</table>
+</div>
 <p>课件 §1.2 对前两类补了配套信息：<strong>点接触型多为锗管</strong>，只能通过<strong>几十毫安以下</strong>的电流，适用于<strong>高频和小功率</strong>工作，也用作<strong>数字电路中的开关元件</strong>；<strong>面接触型多为硅管</strong>，能通过较大的电流，一般<strong>用作整流</strong>。</p>
 <h3 id="引脚识别与万用表判别">引脚识别与万用表判别</h3><ul>
 <li><strong>看封装</strong>：玻璃封装的圆柱管外面有一圈<strong>色环</strong>，靠近色环的一端是<strong>阴极</strong>；贴片封装的管子，<strong>阴极</strong>一端有<strong>横线标记</strong>。</li>
@@ -1075,26 +1055,14 @@
 <strong>死区电压的数值（课件 §1.2）：硅管约 0.5 V，锗管约 0.1 V</strong>——教师课上口述与之相同。</p>
 </li>
 <li><p><strong>导通压降怎么取（做题关键）</strong>：</p>
-<div class="table-scroll-container"><table>
-<thead>
-<tr>
-<th align="left">题目条件</th>
-<th align="left">处理办法</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left"><strong>理想二极管</strong></td>
-<td align="left">忽略导通压降（当 0）：导通＝<strong>直接短路</strong>，截止＝<strong>断开</strong></td>
-</tr>
-<tr>
-<td align="left"><strong>硅管</strong></td>
-<td align="left">一般取 <strong>0.7 V</strong>（课件 §1.2：正向压降 <strong>0.6～0.8 V</strong>；教师也提到 0.75）</td>
-</tr>
-<tr>
-<td align="left"><strong>锗管</strong></td>
-<td align="left">一般取 <strong>0.3 V</strong>（课件 §1.2：正向压降 <strong>0.2～0.3 V</strong>）</td>
-</tr>
-</tbody></table></div>
+<div class="table-scroll-container t-compact" role="region" aria-label="伏安特性曲线" tabindex="0">
+<table>
+<thead><tr><th align="left">题目条件</th><th align="left">处理办法</th></tr></thead>
+<tr><td data-label="题目条件"><strong>理想二极管</strong></td><td data-label="处理办法">忽略导通压降（当 0）：导通＝<strong>直接短路</strong>，截止＝<strong>断开</strong></td></tr>
+<tr><td data-label="题目条件"><strong>硅管</strong></td><td data-label="处理办法">一般取 <strong>0.7 V</strong>（课件 §1.2：正向压降 <strong>0.6～0.8 V</strong>；教师也提到 0.75）</td></tr>
+<tr><td data-label="题目条件"><strong>锗管</strong></td><td data-label="处理办法">一般取 <strong>0.3 V</strong>（课件 §1.2：正向压降 <strong>0.2～0.3 V</strong>）</td></tr>
+</table>
+</div>
 </li>
 <li><p><strong>第三象限（反向偏置）</strong>：加反向电压会<strong>加强内电场</strong>，只有少量少子的漂移运动，反向电流<strong>很小</strong>、
 曲线几乎贴着横轴——它的大小<strong>基本恒定、不随外加电压变化</strong>，故称<strong>反向漏电流</strong>（反向饱和电流），
@@ -1106,35 +1074,15 @@
 <li><p><strong>导通后的等效模型</strong>：正向导通时二极管等效为一个<strong>恒压源</strong>——硅管 0.7 V、锗管 0.3 V。「这个后面做电路分析时很重要。」</p>
 </li>
 </ul>
-<h3 id="主要参数与选型">主要参数与选型</h3><div class="table-scroll-container"><table>
-<thead>
-<tr>
-<th align="left">参数</th>
-<th align="left">含义</th>
-<th align="left">使用要点</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left"><strong>最大整流电流</strong> <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mrow><mi>O</mi><mi>M</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\htmlData{term=sym-I}{I}_{OM}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="enclosing" data-term="sym-I"><span class="mord mathnormal" style="margin-right:0.0785em;">I</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.0278em;">O</span><span class="mord mathnormal mtight" style="margin-right:0.109em;">M</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></td>
-<td align="left">长时间使用时允许流过的<strong>最大正向平均电流</strong>（课件 §1.2）</td>
-<td align="left"><strong>注意是平均电流，不是瞬时电流</strong>；超过就过热烧坏，是正常使用的限制条件</td>
-</tr>
-<tr>
-<td align="left"><strong>反向工作峰值电压</strong> <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>U</mi><mrow><mi>R</mi><mi>W</mi><mi>M</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\htmlData{term=sym-U}{U}_{RWM}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="enclosing" data-term="sym-U"><span class="mord mathnormal" style="margin-right:0.109em;">U</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.0077em;">R</span><span class="mord mathnormal mtight" style="margin-right:0.1389em;">W</span><span class="mord mathnormal mtight" style="margin-right:0.109em;">M</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></td>
-<td align="left">保证管子<strong>不被击穿</strong>而给出的反向峰值电压（课件 §1.2）</td>
-<td align="left">取<strong>反向击穿电压的一半或三分之二</strong>（课件 §1.2）；点接触型一般为<strong>数十伏</strong>，面接触型可达<strong>数百伏</strong></td>
-</tr>
-<tr>
-<td align="left"><strong>反向峰值电流</strong> <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mrow><mi>R</mi><mi>M</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\htmlData{term=sym-I}{I}_{RM}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="enclosing" data-term="sym-I"><span class="mord mathnormal" style="margin-right:0.0785em;">I</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.0077em;">R</span><span class="mord mathnormal mtight" style="margin-right:0.109em;">M</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></td>
-<td align="left">加上反向工作峰值电压时的<strong>反向电流值</strong>（课件 §1.2）</td>
-<td align="left"><strong>越小越好</strong>（说明单向导电性能好）；<strong>受温度影响</strong>，温度越高越大；<strong>硅管小，锗管大几十到几百倍</strong></td>
-</tr>
-<tr>
-<td align="left"><strong>最高工作频率</strong> <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>f</mi><mi>M</mi></msub></mrow><annotation encoding="application/x-tex">f_{\htmlData{term=sym-M}{M}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.1076em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="enclosing mtight" data-term="sym-M"><span class="mord mathnormal mtight" style="margin-right:0.109em;">M</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></td>
-<td align="left">单向导电性出现<strong>明显差异</strong>的频率（课件 §1.2）</td>
-<td align="left">由 PN 结的<strong>结电容效应</strong>决定：频率大到一定程度，单向导电性明显变差</td>
-</tr>
-</tbody></table></div>
+<h3 id="主要参数与选型">主要参数与选型</h3><div class="table-scroll-container t-cards" role="region" aria-label="主要参数与选型" tabindex="0">
+<table>
+<thead><tr><th align="left">参数</th><th align="left">含义</th><th align="left">使用要点</th></tr></thead>
+<tr><td data-label="参数"><strong>最大整流电流</strong> <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mrow><mi>O</mi><mi>M</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\htmlData{term=sym-I}{I}_{OM}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="enclosing" data-term="sym-I"><span class="mord mathnormal" style="margin-right:0.0785em;">I</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.0278em;">O</span><span class="mord mathnormal mtight" style="margin-right:0.109em;">M</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></td><td data-label="含义">长时间使用时允许流过的<strong>最大正向平均电流</strong>（课件 §1.2）</td><td data-label="使用要点"><strong>注意是平均电流，不是瞬时电流</strong>；超过就过热烧坏，是正常使用的限制条件</td></tr>
+<tr><td data-label="参数"><strong>反向工作峰值电压</strong> <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>U</mi><mrow><mi>R</mi><mi>W</mi><mi>M</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\htmlData{term=sym-U}{U}_{RWM}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="enclosing" data-term="sym-U"><span class="mord mathnormal" style="margin-right:0.109em;">U</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.0077em;">R</span><span class="mord mathnormal mtight" style="margin-right:0.1389em;">W</span><span class="mord mathnormal mtight" style="margin-right:0.109em;">M</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></td><td data-label="含义">保证管子<strong>不被击穿</strong>而给出的反向峰值电压（课件 §1.2）</td><td data-label="使用要点">取<strong>反向击穿电压的一半或三分之二</strong>（课件 §1.2）；点接触型一般为<strong>数十伏</strong>，面接触型可达<strong>数百伏</strong></td></tr>
+<tr><td data-label="参数"><strong>反向峰值电流</strong> <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mrow><mi>R</mi><mi>M</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\htmlData{term=sym-I}{I}_{RM}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="enclosing" data-term="sym-I"><span class="mord mathnormal" style="margin-right:0.0785em;">I</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.0077em;">R</span><span class="mord mathnormal mtight" style="margin-right:0.109em;">M</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></td><td data-label="含义">加上反向工作峰值电压时的<strong>反向电流值</strong>（课件 §1.2）</td><td data-label="使用要点"><strong>越小越好</strong>（说明单向导电性能好）；<strong>受温度影响</strong>，温度越高越大；<strong>硅管小，锗管大几十到几百倍</strong></td></tr>
+<tr><td data-label="参数"><strong>最高工作频率</strong> <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>f</mi><mi>M</mi></msub></mrow><annotation encoding="application/x-tex">f_{\htmlData{term=sym-M}{M}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.1076em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="enclosing mtight" data-term="sym-M"><span class="mord mathnormal mtight" style="margin-right:0.109em;">M</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></td><td data-label="含义">单向导电性出现<strong>明显差异</strong>的频率（课件 §1.2）</td><td data-label="使用要点">由 PN 结的<strong>结电容效应</strong>决定：频率大到一定程度，单向导电性明显变差</td></tr>
+</table>
+</div>
 <p><strong>选型对照</strong>：要导通压降低 → <strong>锗管</strong>；要反向电流小 → <strong>硅管</strong>；要大电流 → <strong>面接触型</strong>；要高频 → <strong>点接触型</strong>；要耐高压耐高温 → <strong>硅管</strong>。</p>
 <h3 id="含二极管电路的分析方法">含二极管电路的分析方法</h3><ol>
 <li><strong>先定性判断</strong>：这个管子工作在<strong>正向导通</strong>还是<strong>反向截止</strong>。</li>
@@ -1155,40 +1103,16 @@
 <li><strong>原理</strong>：工作在<strong>反向击穿</strong>，击穿后<strong>电流变化很大而电压变化很小</strong>，管子两端电压基本恒定，所以能稳压。</li>
 <li><strong>必须加限流电阻</strong>：否则电流无限增大会把管子烧穿。</li>
 </ul>
-<div class="table-scroll-container"><table>
-<thead>
-<tr>
-<th align="left">参数</th>
-<th align="left">含义</th>
-<th align="left">为什么要它</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left"><strong>稳定电压 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>U</mi><mi>z</mi></msub></mrow><annotation encoding="application/x-tex">\htmlData{term=sym-Uz}{U_z}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="enclosing" data-term="sym-Uz"><span class="mord"><span class="mord mathnormal" style="margin-right:0.109em;">U</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.109em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.044em;">z</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></span></strong></td>
-<td align="left">反向击穿时管子两端的电压</td>
-<td align="left"><strong>最主要的参数</strong>：选型号就是看它符不符合需要的稳压值</td>
-</tr>
-<tr>
-<td align="left"><strong>电压温度系数</strong></td>
-<td align="left">温度每变化 1 ℃ 引起稳压值变化的<strong>百分数</strong></td>
-<td align="left">说明稳压值不是绝对不变的</td>
-</tr>
-<tr>
-<td align="left"><strong>动态电阻</strong></td>
-<td align="left">稳压值变化率与电流变化率之比</td>
-<td align="left"><strong>越小越好</strong>：越小 → 曲线越陡 → 稳压性能越好</td>
-</tr>
-<tr>
-<td align="left"><strong>稳定电流 / 最大稳定电流 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mrow><mi>Z</mi><mi>M</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\htmlData{term=sym-Izm}{I_{ZM}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="enclosing" data-term="sym-Izm"><span class="mord"><span class="mord mathnormal" style="margin-right:0.0785em;">I</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.0785em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.0715em;">Z</span><span class="mord mathnormal mtight" style="margin-right:0.109em;">M</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></span></strong></td>
-<td align="left">允许工作电流与上限</td>
-<td align="left">超过上限容易烧坏，所以要限流</td>
-</tr>
-<tr>
-<td align="left"><strong>最大允许耗散功率 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mrow><mi>Z</mi><mi>M</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\htmlData{term=sym-P}{P}_{ZM}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="enclosing" data-term="sym-P"><span class="mord mathnormal" style="margin-right:0.1389em;">P</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.0715em;">Z</span><span class="mord mathnormal mtight" style="margin-right:0.109em;">M</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></strong></td>
-<td align="left"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>U</mi><mi>z</mi></msub><mo>×</mo><msub><mi>I</mi><mrow><mi>Z</mi><mi>M</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\htmlData{term=sym-Uz}{U_z}\times \htmlData{term=sym-Izm}{I_{ZM}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="enclosing" data-term="sym-Uz"><span class="mord"><span class="mord mathnormal" style="margin-right:0.109em;">U</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.109em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.044em;">z</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="enclosing" data-term="sym-Izm"><span class="mord"><span class="mord mathnormal" style="margin-right:0.0785em;">I</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.0785em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.0715em;">Z</span><span class="mord mathnormal mtight" style="margin-right:0.109em;">M</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></span></td>
-<td align="left">超过有<strong>热击穿</strong>危险，管子真正击穿报废</td>
-</tr>
-</tbody></table></div>
+<div class="table-scroll-container t-cards" role="region" aria-label="稳压二极管" tabindex="0">
+<table>
+<thead><tr><th align="left">参数</th><th align="left">含义</th><th align="left">为什么要它</th></tr></thead>
+<tr><td data-label="参数"><strong>稳定电压 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>U</mi><mi>z</mi></msub></mrow><annotation encoding="application/x-tex">\htmlData{term=sym-Uz}{U_z}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="enclosing" data-term="sym-Uz"><span class="mord"><span class="mord mathnormal" style="margin-right:0.109em;">U</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.109em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.044em;">z</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></span></strong></td><td data-label="含义">反向击穿时管子两端的电压</td><td data-label="为什么要它"><strong>最主要的参数</strong>：选型号就是看它符不符合需要的稳压值</td></tr>
+<tr><td data-label="参数"><strong>电压温度系数</strong></td><td data-label="含义">温度每变化 1 ℃ 引起稳压值变化的<strong>百分数</strong></td><td data-label="为什么要它">说明稳压值不是绝对不变的</td></tr>
+<tr><td data-label="参数"><strong>动态电阻</strong></td><td data-label="含义">稳压值变化率与电流变化率之比</td><td data-label="为什么要它"><strong>越小越好</strong>：越小 → 曲线越陡 → 稳压性能越好</td></tr>
+<tr><td data-label="参数"><strong>稳定电流 / 最大稳定电流 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mrow><mi>Z</mi><mi>M</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\htmlData{term=sym-Izm}{I_{ZM}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="enclosing" data-term="sym-Izm"><span class="mord"><span class="mord mathnormal" style="margin-right:0.0785em;">I</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.0785em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.0715em;">Z</span><span class="mord mathnormal mtight" style="margin-right:0.109em;">M</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></span></strong></td><td data-label="含义">允许工作电流与上限</td><td data-label="为什么要它">超过上限容易烧坏，所以要限流</td></tr>
+<tr><td data-label="参数"><strong>最大允许耗散功率 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mrow><mi>Z</mi><mi>M</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\htmlData{term=sym-P}{P}_{ZM}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="enclosing" data-term="sym-P"><span class="mord mathnormal" style="margin-right:0.1389em;">P</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.0715em;">Z</span><span class="mord mathnormal mtight" style="margin-right:0.109em;">M</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></strong></td><td data-label="含义"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>U</mi><mi>z</mi></msub><mo>×</mo><msub><mi>I</mi><mrow><mi>Z</mi><mi>M</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\htmlData{term=sym-Uz}{U_z}\times \htmlData{term=sym-Izm}{I_{ZM}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="enclosing" data-term="sym-Uz"><span class="mord"><span class="mord mathnormal" style="margin-right:0.109em;">U</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.109em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.044em;">z</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="enclosing" data-term="sym-Izm"><span class="mord"><span class="mord mathnormal" style="margin-right:0.0785em;">I</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.0785em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.0715em;">Z</span><span class="mord mathnormal mtight" style="margin-right:0.109em;">M</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></span></td><td data-label="为什么要它">超过有<strong>热击穿</strong>危险，管子真正击穿报废</td></tr>
+</table>
+</div>
 <p><strong>光电二极管与发光二极管</strong>：教师说「作为常识性知识了解一下就行，后面的电路基本不会涉及」。</p>
 <h2 id="课件补充">课件补充</h2><h3 id="理想二极管与限幅电路的定义-课件-1-2">理想二极管与限幅电路的定义（课件 §1.2）</h3><ul>
 <li>课件的理想元件口径：<strong>正向电阻为零、导通压降忽略不计；反向电阻无穷大、反向截止时为开路，反向漏电流不计</strong>——课上讲的「理想管＝短路／断开」就是这一条。</li>
@@ -1291,7 +1215,8 @@
        而 embed.js 靠 document.currentScript.src 定位同目录的 widget.html——
        defer 脚本执行时 readyState 已是 interactive，document.write 会毁掉文档。 -->
   <script src="../../../assets/plugins/webmcp-relay.js?v=fd5acb480e"></script>
-  <script src="../../../assets/plugins/spa-router.js?v=9710c4b371" defer></script>
+  <script src="../../../assets/plugins/drawer-sync.js?v=4ee1a794d2" defer></script>
+  <script src="../../../assets/plugins/spa-router.js?v=728b1837cf" defer></script>
   <script>if ('serviceWorker' in navigator) { addEventListener('load', function () { navigator.serviceWorker.register('../../../sw.js'); }); }</script>
 </body>
 </html>

@@ -21,7 +21,7 @@
   })();
   </script>
   <link rel="stylesheet" href="../../../assets/katex/katex.min.css">
-  <link rel="stylesheet" href="../../../assets/theme/shirone-reader.css?v=236ae17420">
+  <link rel="stylesheet" href="../../../assets/theme/shirone-reader.css?v=4bceb4199a">
   <link rel="stylesheet" href="../../../assets/plugins/site-search.css?v=45716eda6c">
   <!-- 站点图标：动画 GIF 为主（Chrome/Firefox/Edge 会动），静态 PNG 作不支持动画时的回退 -->
   <link rel="icon" type="image/gif" href="../../../assets/favicon/favicon.gif">
@@ -999,45 +999,17 @@
 <li>想把自己的想法写成小论文的，可以找教师改稿并投稿。</li>
 </ul>
 <h2 id="没编号但讲了的知识点">没编号但讲了的知识点</h2><h3 id="课程定位与八章地图">课程定位与八章地图</h3><p><strong>定位</strong>：学校要求的通识课，全校各专业都学大数据与人工智能。对电力方向的学生，本课程只要求<strong>掌握大数据与人工智能的原理</strong>，电力专业课的概念方法<strong>有基本认识</strong>即可（深究属于研究生阶段）。课程回答的是「这些技术怎么用到电力工业上」。</p>
-<div class="table-scroll-container"><table>
-<thead>
-<tr>
-<th align="left">章</th>
-<th align="left">内容</th>
-<th align="left">备注</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">第 1–2 章</td>
-<td align="left">电力工业的发展背景、现状与趋势；新型电力系统与双碳；大数据与人工智能的发展</td>
-<td align="left">背景与认识</td>
-</tr>
-<tr>
-<td align="left">第 3 章</td>
-<td align="left">数据预处理技术</td>
-<td align="left"><strong>教材作者提出的改进预处理方法，教师点名是创新点之一</strong></td>
-</tr>
-<tr>
-<td align="left">第 4–5 章</td>
-<td align="left">本次课未点名</td>
-<td align="left">待课件核实</td>
-</tr>
-<tr>
-<td align="left">第 6 章</td>
-<td align="left">电网安全评估方法</td>
-<td align="left">安全性、可靠性、稳定性、经济性等指标</td>
-</tr>
-<tr>
-<td align="left">第 7 章</td>
-<td align="left">基于深度学习的稳定评估</td>
-<td align="left">教师说人工智能的核心是神经网络，最高程度是深度学习网络</td>
-</tr>
-<tr>
-<td align="left">第 8 章</td>
-<td align="left">基于稳定评估规则的实时紧急控制方法</td>
-<td align="left"><strong>完全基于人工智能，教师点名是作者提出的方法</strong></td>
-</tr>
-</tbody></table></div>
+<div class="table-scroll-container t-cards" role="region" aria-label="课程定位与八章地图" tabindex="0">
+<table>
+<thead><tr><th align="left">章</th><th align="left">内容</th><th align="left">备注</th></tr></thead>
+<tr><td data-label="章">第 1–2 章</td><td data-label="内容">电力工业的发展背景、现状与趋势；新型电力系统与双碳；大数据与人工智能的发展</td><td data-label="备注">背景与认识</td></tr>
+<tr><td data-label="章">第 3 章</td><td data-label="内容">数据预处理技术</td><td data-label="备注"><strong>教材作者提出的改进预处理方法，教师点名是创新点之一</strong></td></tr>
+<tr><td data-label="章">第 4–5 章</td><td data-label="内容">本次课未点名</td><td data-label="备注">待课件核实</td></tr>
+<tr><td data-label="章">第 6 章</td><td data-label="内容">电网安全评估方法</td><td data-label="备注">安全性、可靠性、稳定性、经济性等指标</td></tr>
+<tr><td data-label="章">第 7 章</td><td data-label="内容">基于深度学习的稳定评估</td><td data-label="备注">教师说人工智能的核心是神经网络，最高程度是深度学习网络</td></tr>
+<tr><td data-label="章">第 8 章</td><td data-label="内容">基于稳定评估规则的实时紧急控制方法</td><td data-label="备注"><strong>完全基于人工智能，教师点名是作者提出的方法</strong></td></tr>
+</table>
+</div>
 <p>教材编写者教师说是<strong>胡伟</strong>（称其来自清华大学电力系统相关国家重点实验室，课堂说法未核实）。</p>
 <h3 id="数据链与-为什么必须用智能分析">数据链与「为什么必须用智能分析」</h3><p><strong>数据链</strong>（第 3 章以后都挂在这条线上）：</p>
 <p><strong>采集 → 预处理（采集、存储、传输、计算）→ 特征选择／特征提取 → 辨识 → 执行（决策）</strong></p>
@@ -1059,46 +1031,16 @@
 <li><strong>二阶系统</strong>：一个电感加一个电容（两个储能元件）就是二阶系统，动态方程是二阶微分方程——用它引出下面的判据。</li>
 </ul>
 <p><strong>特征值判据</strong>：把运动写成 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mo>=</mo><mi>σ</mi><mo>+</mo><mi>j</mi><mi>ω</mi></mrow><annotation encoding="application/x-tex">\htmlData{term=sym-lambda}{\lambda}=\htmlData{term=sym-sigma}{\sigma}+j\htmlData{term=sym-omega}{\omega}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="enclosing" data-term="sym-lambda"><span class="mord mathnormal">λ</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="enclosing" data-term="sym-sigma"><span class="mord mathnormal" style="margin-right:0.0359em;">σ</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.854em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.0572em;">j</span><span class="enclosing" data-term="sym-omega"><span class="mord mathnormal" style="margin-right:0.0359em;">ω</span></span></span></span></span>（<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>σ</mi></mrow><annotation encoding="application/x-tex">\htmlData{term=sym-sigma}{\sigma}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="enclosing" data-term="sym-sigma"><span class="mord mathnormal" style="margin-right:0.0359em;">σ</span></span></span></span></span> 实部、<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>j</mi><mi>ω</mi></mrow><annotation encoding="application/x-tex">j\htmlData{term=sym-omega}{\omega}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.854em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.0572em;">j</span><span class="enclosing" data-term="sym-omega"><span class="mord mathnormal" style="margin-right:0.0359em;">ω</span></span></span></span></span> 虚部）——</p>
-<div class="table-scroll-container"><table>
-<thead>
-<tr>
-<th align="left">虚部</th>
-<th align="left">实部</th>
-<th align="left">运动形态</th>
-<th align="left">稳定性</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ω</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\htmlData{term=sym-omega}{\omega}=0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="enclosing" data-term="sym-omega"><span class="mord mathnormal" style="margin-right:0.0359em;">ω</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span></td>
-<td align="left">—</td>
-<td align="left">非振荡（教师说「直线运动」）</td>
-<td align="left">看实部</td>
-</tr>
-<tr>
-<td align="left"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ω</mi><mo mathvariant="normal">≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\htmlData{term=sym-omega}{\omega}\neq0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="enclosing" data-term="sym-omega"><span class="mord mathnormal" style="margin-right:0.0359em;">ω</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="mrel"><span class="mrel"><span class="mord vbox"><span class="thinbox"><span class="rlap"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="inner"><span class="mord"><span class="mrel"></span></span></span><span class="fix"></span></span></span></span></span><span class="mspace nobreak"></span><span class="mrel">=</span></span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span></td>
-<td align="left">—</td>
-<td align="left">振荡（教师用圆周运动类比）</td>
-<td align="left">看实部</td>
-</tr>
-<tr>
-<td align="left">任意</td>
-<td align="left"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>σ</mi><mo>&lt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\htmlData{term=sym-sigma}{\sigma}&lt;0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5782em;vertical-align:-0.0391em;"></span><span class="enclosing" data-term="sym-sigma"><span class="mord mathnormal" style="margin-right:0.0359em;">σ</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span></td>
-<td align="left">收敛、振幅越来越小</td>
-<td align="left"><strong>稳定</strong></td>
-</tr>
-<tr>
-<td align="left">任意</td>
-<td align="left"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>σ</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\htmlData{term=sym-sigma}{\sigma}&gt;0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5782em;vertical-align:-0.0391em;"></span><span class="enclosing" data-term="sym-sigma"><span class="mord mathnormal" style="margin-right:0.0359em;">σ</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="mrel">&gt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span></td>
-<td align="left">发散、振幅越来越大</td>
-<td align="left"><strong>不稳定</strong></td>
-</tr>
-<tr>
-<td align="left">任意</td>
-<td align="left"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>σ</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\htmlData{term=sym-sigma}{\sigma}=0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="enclosing" data-term="sym-sigma"><span class="mord mathnormal" style="margin-right:0.0359em;">σ</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span></td>
-<td align="left">临界</td>
-<td align="left">教师未展开</td>
-</tr>
-</tbody></table></div>
+<div class="table-scroll-container t-cards" role="region" aria-label="安全稳定的概念群：平衡态、扰动与特征值判据" tabindex="0">
+<table>
+<thead><tr><th align="left">虚部</th><th align="left">实部</th><th align="left">运动形态</th><th align="left">稳定性</th></tr></thead>
+<tr><td data-label="虚部"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ω</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\htmlData{term=sym-omega}{\omega}=0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="enclosing" data-term="sym-omega"><span class="mord mathnormal" style="margin-right:0.0359em;">ω</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span></td><td data-label="实部">—</td><td data-label="运动形态">非振荡（教师说「直线运动」）</td><td data-label="稳定性">看实部</td></tr>
+<tr><td data-label="虚部"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ω</mi><mo mathvariant="normal">≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\htmlData{term=sym-omega}{\omega}\neq0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="enclosing" data-term="sym-omega"><span class="mord mathnormal" style="margin-right:0.0359em;">ω</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="mrel"><span class="mrel"><span class="mord vbox"><span class="thinbox"><span class="rlap"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="inner"><span class="mord"><span class="mrel"></span></span></span><span class="fix"></span></span></span></span></span><span class="mspace nobreak"></span><span class="mrel">=</span></span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span></td><td data-label="实部">—</td><td data-label="运动形态">振荡（教师用圆周运动类比）</td><td data-label="稳定性">看实部</td></tr>
+<tr><td data-label="虚部">任意</td><td data-label="实部"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>σ</mi><mo>&lt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\htmlData{term=sym-sigma}{\sigma}&lt;0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5782em;vertical-align:-0.0391em;"></span><span class="enclosing" data-term="sym-sigma"><span class="mord mathnormal" style="margin-right:0.0359em;">σ</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span></td><td data-label="运动形态">收敛、振幅越来越小</td><td data-label="稳定性"><strong>稳定</strong></td></tr>
+<tr><td data-label="虚部">任意</td><td data-label="实部"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>σ</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\htmlData{term=sym-sigma}{\sigma}&gt;0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5782em;vertical-align:-0.0391em;"></span><span class="enclosing" data-term="sym-sigma"><span class="mord mathnormal" style="margin-right:0.0359em;">σ</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="mrel">&gt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span></td><td data-label="运动形态">发散、振幅越来越大</td><td data-label="稳定性"><strong>不稳定</strong></td></tr>
+<tr><td data-label="虚部">任意</td><td data-label="实部"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>σ</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\htmlData{term=sym-sigma}{\sigma}=0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="enclosing" data-term="sym-sigma"><span class="mord mathnormal" style="margin-right:0.0359em;">σ</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span></td><td data-label="运动形态">临界</td><td data-label="稳定性">教师未展开</td></tr>
+</table>
+</div>
 <ul>
 <li>教师用<strong>弹簧加阻尼</strong>类比 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>σ</mi><mo>&lt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\htmlData{term=sym-sigma}{\sigma}&lt;0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5782em;vertical-align:-0.0391em;"></span><span class="enclosing" data-term="sym-sigma"><span class="mord mathnormal" style="margin-right:0.0359em;">σ</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span>：阻力让振幅越来越小，直到停下 → 收敛。</li>
 <li><strong>稳定性的定义来自李雅普诺夫</strong>（教师称他既是数学家也是物理学家），本课程用的稳定性定义就是他提出的。</li>
@@ -1119,96 +1061,32 @@
 <li><strong>求解动态安全域</strong>：有两类方法，转写只说清了其中一类是解析法。</li>
 </ul>
 <p><strong>稳态分析与暂态分析的区分</strong>：</p>
-<div class="table-scroll-container"><table>
-<thead>
-<tr>
-<th align="left">分析类型</th>
-<th align="left">方程类型</th>
-<th align="left">本课程要求</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">稳态分析（用相量／复数表示，相当于微分项为零）</td>
-<td align="left"><strong>代数方程</strong></td>
-<td align="left"><strong>只要求会解代数方程</strong></td>
-</tr>
-<tr>
-<td align="left">暂态／动态分析（量随时间变化）</td>
-<td align="left"><strong>微分方程</strong>（连续）或<strong>差分方程</strong>（离散）</td>
-<td align="left">难度大，只要求有概念、不要求解</td>
-</tr>
-</tbody></table></div>
+<div class="table-scroll-container t-cards" role="region" aria-label="稳定性评估方法、安全域与安全裕度" tabindex="0">
+<table>
+<thead><tr><th align="left">分析类型</th><th align="left">方程类型</th><th align="left">本课程要求</th></tr></thead>
+<tr><td data-label="分析类型">稳态分析（用相量／复数表示，相当于微分项为零）</td><td data-label="方程类型"><strong>代数方程</strong></td><td data-label="本课程要求"><strong>只要求会解代数方程</strong></td></tr>
+<tr><td data-label="分析类型">暂态／动态分析（量随时间变化）</td><td data-label="方程类型"><strong>微分方程</strong>（连续）或<strong>差分方程</strong>（离散）</td><td data-label="本课程要求">难度大，只要求有概念、不要求解</td></tr>
+</table>
+</div>
 <p>暂态再细分：<strong>机电暂态</strong>——原动机与发电机之间的过程（水轮机、汽轮机、风力机驱动发电机）；<strong>电磁暂态</strong>——单纯研究电力系统内部的电磁过程（如故障本身）。现阶段主要学机电暂态，且电网具有<strong>特高维度</strong>。</p>
 <h3 id="名词与术语-名词解释题的来源">名词与术语（名词解释题的来源）</h3><p>左列是课堂上实际出现的说法，<strong>「整理者补正」标出的是转写把术语读错、按标准术语改正的</strong>。</p>
-<div class="table-scroll-container"><table>
-<thead>
-<tr>
-<th align="left">名词</th>
-<th align="left">课堂／转写形态</th>
-<th align="left">规范表述</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">SCADA</td>
-<td align="left">转写作 <code>status</code>，英文全称被拆成 <code>simple weapon control and data occupation</code></td>
-<td align="left"><strong>数据采集与监视控制系统</strong>（Supervisory Control And Data Acquisition）。<strong>教师明确要求答题先写全称</strong>（整理者补正）</td>
-</tr>
-<tr>
-<td align="left">广域测量系统</td>
-<td align="left">「广义测量」「广域测量」</td>
-<td align="left"><strong>广域测量系统</strong>（WAMS）——已积累大量实际运行数据，用于采集与存储，但缺分析手段，才需要数据挖掘</td>
-</tr>
-<tr>
-<td align="left">潮流</td>
-<td align="left">教师口语解释</td>
-<td align="left">实质是<strong>功率分配</strong>（每个节点各分多少功率）。他用教学楼、图书馆、生活区三个节点类比</td>
-</tr>
-<tr>
-<td align="left">安全域／稳定域</td>
-<td align="left">两词混用</td>
-<td align="left">见上文：运行点的集合，可按静稳、电压稳定、小扰动稳定、暂态稳定分类</td>
-</tr>
-<tr>
-<td align="left">预想故障</td>
-<td align="left">—</td>
-<td align="left">事先设想、需要保证系统仍能稳定运行的故障场景</td>
-</tr>
-<tr>
-<td align="left">HVDC</td>
-<td align="left">「HBBC」「高压直流输电」</td>
-<td align="left"><strong>高压直流输电</strong>（整理者补正）</td>
-</tr>
-<tr>
-<td align="left">FACTS</td>
-<td align="left"><code>facts</code>、「柔性交流充电系统」</td>
-<td align="left"><strong>柔性交流输电系统</strong>——叫「柔性」是因为用<strong>电力电子装置</strong>控制（「充电」应为「输电」，整理者补正）</td>
-</tr>
-<tr>
-<td align="left">特高压交直流混联系统</td>
-<td align="left">「大规模特高压交直流混联」</td>
-<td align="left">我国电网的形态背景，后面会学</td>
-</tr>
-<tr>
-<td align="left">数据挖掘与可视化</td>
-<td align="left">—</td>
-<td align="left">把海量数据转成有用的信息与知识，改变「数据丰富但信息贫乏」</td>
-</tr>
-<tr>
-<td align="left">特征选择／特征提取</td>
-<td align="left">「特殊选择」「特殊区域」</td>
-<td align="left">数据链上评估之前的环节；选择算法属专门的数学课，本课程只要求有认识（整理者补正）</td>
-</tr>
-<tr>
-<td align="left">机电暂态／电磁暂态</td>
-<td align="left">「机电谈判」「电池」</td>
-<td align="left"><strong>机电暂态</strong>（原动机—发电机的机电过程）／<strong>电磁暂态</strong>（系统内部的电磁过程）（整理者补正）</td>
-</tr>
-<tr>
-<td align="left">鲁棒性</td>
-<td align="left">「rude 程度」「强壮程度」</td>
-<td align="left"><strong>鲁棒性</strong>：系统在扰动下保持性能的能力（整理者补正）</td>
-</tr>
-</tbody></table></div>
+<div class="table-scroll-container t-cards" role="region" aria-label="名词与术语（名词解释题的来源）" tabindex="0">
+<table>
+<thead><tr><th align="left">名词</th><th align="left">课堂／转写形态</th><th align="left">规范表述</th></tr></thead>
+<tr><td data-label="名词">SCADA</td><td data-label="课堂／转写形态">转写作 <code>status</code>，英文全称被拆成 <code>simple weapon control and data occupation</code></td><td data-label="规范表述"><strong>数据采集与监视控制系统</strong>（Supervisory Control And Data Acquisition）。<strong>教师明确要求答题先写全称</strong>（整理者补正）</td></tr>
+<tr><td data-label="名词">广域测量系统</td><td data-label="课堂／转写形态">「广义测量」「广域测量」</td><td data-label="规范表述"><strong>广域测量系统</strong>（WAMS）——已积累大量实际运行数据，用于采集与存储，但缺分析手段，才需要数据挖掘</td></tr>
+<tr><td data-label="名词">潮流</td><td data-label="课堂／转写形态">教师口语解释</td><td data-label="规范表述">实质是<strong>功率分配</strong>（每个节点各分多少功率）。他用教学楼、图书馆、生活区三个节点类比</td></tr>
+<tr><td data-label="名词">安全域／稳定域</td><td data-label="课堂／转写形态">两词混用</td><td data-label="规范表述">见上文：运行点的集合，可按静稳、电压稳定、小扰动稳定、暂态稳定分类</td></tr>
+<tr><td data-label="名词">预想故障</td><td data-label="课堂／转写形态">—</td><td data-label="规范表述">事先设想、需要保证系统仍能稳定运行的故障场景</td></tr>
+<tr><td data-label="名词">HVDC</td><td data-label="课堂／转写形态">「HBBC」「高压直流输电」</td><td data-label="规范表述"><strong>高压直流输电</strong>（整理者补正）</td></tr>
+<tr><td data-label="名词">FACTS</td><td data-label="课堂／转写形态"><code>facts</code>、「柔性交流充电系统」</td><td data-label="规范表述"><strong>柔性交流输电系统</strong>——叫「柔性」是因为用<strong>电力电子装置</strong>控制（「充电」应为「输电」，整理者补正）</td></tr>
+<tr><td data-label="名词">特高压交直流混联系统</td><td data-label="课堂／转写形态">「大规模特高压交直流混联」</td><td data-label="规范表述">我国电网的形态背景，后面会学</td></tr>
+<tr><td data-label="名词">数据挖掘与可视化</td><td data-label="课堂／转写形态">—</td><td data-label="规范表述">把海量数据转成有用的信息与知识，改变「数据丰富但信息贫乏」</td></tr>
+<tr><td data-label="名词">特征选择／特征提取</td><td data-label="课堂／转写形态">「特殊选择」「特殊区域」</td><td data-label="规范表述">数据链上评估之前的环节；选择算法属专门的数学课，本课程只要求有认识（整理者补正）</td></tr>
+<tr><td data-label="名词">机电暂态／电磁暂态</td><td data-label="课堂／转写形态">「机电谈判」「电池」</td><td data-label="规范表述"><strong>机电暂态</strong>（原动机—发电机的机电过程）／<strong>电磁暂态</strong>（系统内部的电磁过程）（整理者补正）</td></tr>
+<tr><td data-label="名词">鲁棒性</td><td data-label="课堂／转写形态">「rude 程度」「强壮程度」</td><td data-label="规范表述"><strong>鲁棒性</strong>：系统在扰动下保持性能的能力（整理者补正）</td></tr>
+</table>
+</div>
 <h2 id="本篇没讲的">本篇没讲的</h2><ul>
 <li><strong>第 4、5 章的内容</strong>：本次课没有点名，章节全名与顺序待课件核实。</li>
 <li><strong>题型是否含选择题</strong>：转写此处被噪声打断，不补造。</li>
@@ -1268,7 +1146,8 @@
        而 embed.js 靠 document.currentScript.src 定位同目录的 widget.html——
        defer 脚本执行时 readyState 已是 interactive，document.write 会毁掉文档。 -->
   <script src="../../../assets/plugins/webmcp-relay.js?v=fd5acb480e"></script>
-  <script src="../../../assets/plugins/spa-router.js?v=9710c4b371" defer></script>
+  <script src="../../../assets/plugins/drawer-sync.js?v=4ee1a794d2" defer></script>
+  <script src="../../../assets/plugins/spa-router.js?v=728b1837cf" defer></script>
   <script>if ('serviceWorker' in navigator) { addEventListener('load', function () { navigator.serviceWorker.register('../../../sw.js'); }); }</script>
 </body>
 </html>

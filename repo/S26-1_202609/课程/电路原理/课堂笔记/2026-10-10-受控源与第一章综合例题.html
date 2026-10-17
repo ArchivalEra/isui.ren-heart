@@ -21,7 +21,7 @@
   })();
   </script>
   <link rel="stylesheet" href="../../../assets/katex/katex.min.css">
-  <link rel="stylesheet" href="../../../assets/theme/shirone-reader.css?v=236ae17420">
+  <link rel="stylesheet" href="../../../assets/theme/shirone-reader.css?v=4bceb4199a">
   <link rel="stylesheet" href="../../../assets/plugins/site-search.css?v=45716eda6c">
   <!-- 站点图标：动画 GIF 为主（Chrome/Firefox/Edge 会动），静态 PNG 作不支持动画时的回退 -->
   <link rel="icon" type="image/gif" href="../../../assets/favicon/favicon.gif">
@@ -1036,45 +1036,15 @@
 <li>受控源含两条支路：<strong>控制支路</strong>（提供控制量，可以是电压或电流）和<strong>受控支路</strong>（受控源符号所在支路）。它对外有两个端口，是<strong>双口元件</strong>。</li>
 <li>四种类型（由&quot;控制量是电压/电流&quot;×&quot;受控的是电压源/电流源&quot;组合）：</li>
 </ul>
-<div class="table-scroll-container"><table>
-<thead>
-<tr>
-<th align="left">简称</th>
-<th align="left">控制量</th>
-<th align="left">受控量</th>
-<th align="left">关系式</th>
-<th align="left">控制系数量纲</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">CCCS（电流控制电流源）</td>
-<td align="left">电流 I₁</td>
-<td align="left">电流 I₂</td>
-<td align="left"><code>I₂ = β I₁</code></td>
-<td align="left">β 无量纲，称电流放大倍数</td>
-</tr>
-<tr>
-<td align="left">CCVS（电流控制电压源）</td>
-<td align="left">电流 I₁</td>
-<td align="left">电压 U₂</td>
-<td align="left"><code>U₂ = R I₁</code></td>
-<td align="left">R 单位欧姆，称转移电阻</td>
-</tr>
-<tr>
-<td align="left">VCCS（电压控制电流源）</td>
-<td align="left">电压 U₁</td>
-<td align="left">电流 I₂</td>
-<td align="left"><code>I₂ = G U₁</code></td>
-<td align="left">G 单位西门子，称转移电导</td>
-</tr>
-<tr>
-<td align="left">VCVS（电压控制电压源）</td>
-<td align="left">电压 U₁</td>
-<td align="left">电压 U₂</td>
-<td align="left"><code>U₂ = μ U₁</code></td>
-<td align="left">μ 无量纲，称电压放大倍数</td>
-</tr>
-</tbody></table></div>
+<div class="table-scroll-container t-cards" role="region" aria-label="受控源的四种类型与控制系数" tabindex="0">
+<table>
+<thead><tr><th align="left">简称</th><th align="left">控制量</th><th align="left">受控量</th><th align="left">关系式</th><th align="left">控制系数量纲</th></tr></thead>
+<tr><td data-label="简称">CCCS（电流控制电流源）</td><td data-label="控制量">电流 I₁</td><td data-label="受控量">电流 I₂</td><td data-label="关系式"><code>I₂ = β I₁</code></td><td data-label="控制系数量纲">β 无量纲，称电流放大倍数</td></tr>
+<tr><td data-label="简称">CCVS（电流控制电压源）</td><td data-label="控制量">电流 I₁</td><td data-label="受控量">电压 U₂</td><td data-label="关系式"><code>U₂ = R I₁</code></td><td data-label="控制系数量纲">R 单位欧姆，称转移电阻</td></tr>
+<tr><td data-label="简称">VCCS（电压控制电流源）</td><td data-label="控制量">电压 U₁</td><td data-label="受控量">电流 I₂</td><td data-label="关系式"><code>I₂ = G U₁</code></td><td data-label="控制系数量纲">G 单位西门子，称转移电导</td></tr>
+<tr><td data-label="简称">VCVS（电压控制电压源）</td><td data-label="控制量">电压 U₁</td><td data-label="受控量">电压 U₂</td><td data-label="关系式"><code>U₂ = μ U₁</code></td><td data-label="控制系数量纲">μ 无量纲，称电压放大倍数</td></tr>
+</table>
+</div>
 <ul>
 <li>当控制系数为常数时，被控量与控制量成线性关系，称<strong>线性受控源</strong>；本课程只讨论线性受控源。</li>
 <li>图形符号：受控电压源把理想电压源的圆圈改画成<strong>菱形</strong>；受控电流源把理想电流源的圆圈改画成菱形。老师说：拿不准时看符号——四边形/菱形是受控源，横线的是（受控）电压源，竖线的是（受控）电流源。</li>
@@ -1167,7 +1137,8 @@
        而 embed.js 靠 document.currentScript.src 定位同目录的 widget.html——
        defer 脚本执行时 readyState 已是 interactive，document.write 会毁掉文档。 -->
   <script src="../../../assets/plugins/webmcp-relay.js?v=fd5acb480e"></script>
-  <script src="../../../assets/plugins/spa-router.js?v=9710c4b371" defer></script>
+  <script src="../../../assets/plugins/drawer-sync.js?v=4ee1a794d2" defer></script>
+  <script src="../../../assets/plugins/spa-router.js?v=728b1837cf" defer></script>
   <script>if ('serviceWorker' in navigator) { addEventListener('load', function () { navigator.serviceWorker.register('../../../sw.js'); }); }</script>
 </body>
 </html>
