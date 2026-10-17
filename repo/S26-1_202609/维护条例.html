@@ -1006,7 +1006,7 @@
 <li><strong>教材解析：一节一个文件</strong>，放在章目录 <code>教材解析/第NN章-章名/</code> 下，文件名为 <code>第NN章-&lt;节号&gt;-&lt;节名&gt;.md</code>；一节内容过多时在该文件内按二级小节继续拆。<strong>不把整章塞进一个 md。</strong></li>
 <li>每个教材解析文件内部固定先写<strong>原书抄录</strong>（按原书页码抄录印刷正文与原编号），紧跟<strong>解析</strong>（概念、条件、推导、例题解法、易错点、验算）。抄录与解析同文件、分小节呈现，先抄后析，便于逐句对照。</li>
 <li>新建课程：复制 <code>模板/</code> 下对应模板建立各类 <code>index.md</code>（默认五类，确有豁免则建剩余各类），并同步登记课程总索引与课程入口。</li>
-<li><code>knowledge/</code> 是历史兼容入口，只放迁移说明，不再新增正文。</li>
+<li><code>knowledge/</code>（历史兼容入口）已于 2026-10-17 删除；旧链接直接看 <code>课程/</code> 对应目录。</li>
 </ul>
 <h2 id="4-git-流程">4. Git 流程</h2><ol>
 <li><strong>精确白名单</strong>：<code>.gitignore</code> 保持 <code>*</code> → <code>!*/</code> → 逐文件 <code>!/完整相对路径</code>，禁止通配符；每个新文件先加白名单再 <code>git add</code>。</li>
@@ -1059,15 +1059,17 @@
     </div>
   </div>
 
-  <script src="./assets/theme/shirone-reader.js?v=20e5b8a455" defer></script>
-  <script src="./assets/plugins/disclosure-anchor.js?v=7803555f2e" defer></script>
+  <script src="./assets/theme/shirone-reader.js?v=2df1a66073" defer></script>
+  <script src="./assets/plugins/disclosure-anchor.js?v=c242987556" defer></script>
   <script type="application/json" id="sym-glossary-json">{"terms":{}}</script>
-  <script src="./assets/plugins/math-glossary.js?v=8c4ae69ef9" defer></script>
+  <script src="./assets/plugins/math-glossary.js?v=1c51855da2" defer></script>
   <script src="./assets/plugins/site-search.js?v=819ae4ef4d" defer></script>
   <script src="./assets/plugins/webmcp-loader.js?v=d2dff14207" defer></script>
   <!-- relay 连接器**不带 defer**：它要在解析期用 document.write 插入 vendor 的 embed.js，
        而 embed.js 靠 document.currentScript.src 定位同目录的 widget.html——
        defer 脚本执行时 readyState 已是 interactive，document.write 会毁掉文档。 -->
   <script src="./assets/plugins/webmcp-relay.js?v=fd5acb480e"></script>
+  <script src="./assets/plugins/spa-router.js?v=2e64b227e4" defer></script>
+  <script>if ('serviceWorker' in navigator) { addEventListener('load', function () { navigator.serviceWorker.register('./sw.js'); }); }</script>
 </body>
 </html>
