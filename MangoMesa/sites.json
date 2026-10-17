@@ -1,45 +1,12 @@
 {
-	"generatedAt": "2026-10-16T22:12:51.845Z",
+	"generatedAt": "2026-10-17T06:08:54.010Z",
 	"acceleratedDirs": ["Octave", "S26-1_202609"],
 	"entries": [
-		{
-			"name": "isui.ren-heart",
-			"pages": "ready",
-			"accelerated": false,
-			"pushedAt": "2026-10-16T17:43:06Z",
-			"status": "built",
-			"description": "isui.ren 的站点心脏：EdgeOne Pages 静态源、边缘中间件与跨仓部署链",
-			"language": "Rust",
-			"url": "https://github.com/ArchivalEra/isui.ren-heart",
-			"icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMTIgMjAuNUMxMiAyMC41IDQgMTUuNCA0IDEwLjIgNCA3LjYgNiA1LjUgOC42IDUuNWMxLjUgMCAyLjguNyAzLjQgMS44LjYtMS4xIDEuOS0xLjggMy40LTEuOEMxOCA1LjUgMjAgNy42IDIwIDEwLjJjMCA1LjItOCAxMC4zLTggMTAuM1oiLz48L3N2Zz4="
-		},
-		{
-			"name": "LLVM-wasm",
-			"pages": "absent",
-			"accelerated": false,
-			"pushedAt": "2026-10-16T15:53:46Z",
-			"status": null,
-			"description": "",
-			"language": "Python",
-			"url": "https://github.com/ArchivalEra/LLVM-wasm",
-			"icon": ""
-		},
-		{
-			"name": "Octave-UI",
-			"pages": "ready",
-			"accelerated": false,
-			"pushedAt": "2026-10-16T12:26:12Z",
-			"status": null,
-			"description": "",
-			"language": "TypeScript",
-			"url": "https://github.com/ArchivalEra/Octave-UI",
-			"icon": ""
-		},
 		{
 			"name": "Octave-Full-Wasm",
 			"pages": "absent",
 			"accelerated": false,
-			"pushedAt": "2026-10-16T10:25:28Z",
+			"pushedAt": "2026-10-17T05:38:15Z",
 			"status": null,
 			"description": "浏览器里跑满功能 GNU Octave 11.3.0：wasm64 + 多线程 + OpenBLAS 四车道自动选档",
 			"language": "JavaScript",
@@ -47,10 +14,43 @@
 			"icon": ""
 		},
 		{
+			"name": "Octave-UI",
+			"pages": "ready",
+			"accelerated": false,
+			"pushedAt": "2026-10-17T04:50:31Z",
+			"status": null,
+			"description": "",
+			"language": "TypeScript",
+			"url": "https://github.com/ArchivalEra/Octave-UI",
+			"icon": ""
+		},
+		{
+			"name": "LLVM-wasm",
+			"pages": "absent",
+			"accelerated": false,
+			"pushedAt": "2026-10-17T04:44:45Z",
+			"status": null,
+			"description": "",
+			"language": "Python",
+			"url": "https://github.com/ArchivalEra/LLVM-wasm",
+			"icon": ""
+		},
+		{
+			"name": "isui.ren-heart",
+			"pages": "ready",
+			"accelerated": false,
+			"pushedAt": "2026-10-17T03:48:02Z",
+			"status": "built",
+			"description": "isui.ren 的站点心脏：EdgeOne Pages 静态源、边缘中间件与跨仓部署链",
+			"language": "Rust",
+			"url": "https://github.com/ArchivalEra/isui.ren-heart",
+			"icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMTIgMjAuNUMxMiAyMC41IDQgMTUuNCA0IDEwLjIgNCA3LjYgNiA1LjUgOC42IDUuNWMxLjUgMCAyLjguNyAzLjQgMS44LjYtMS4xIDEuOS0xLjggMy40LTEuOEMxOCA1LjUgMjAgNy42IDIwIDEwLjJjMCA1LjItOCAxMC4zLTggMTAuM1oiLz48L3N2Zz4="
+		},
+		{
 			"name": "S26-1_202609",
 			"pages": "ready",
 			"accelerated": true,
-			"pushedAt": "2026-10-16T08:42:25Z",
+			"pushedAt": "2026-10-17T03:47:45Z",
 			"status": null,
 			"description": "一种很便宜的，OKF0.2格式的知识库，人类或机器都能看懂",
 			"language": "JavaScript",
