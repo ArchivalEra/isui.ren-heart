@@ -420,49 +420,13 @@ export async function middleware(context) {
 				return Response.redirect(redirectUrl.toString(), 301);
 			}
 
-			// S26-1_202609：字节经 GitHub Pages（archivalera.github.io/S26-1_202609），
-			// 与 Octave 同款反代形态。2026-10-12 EdgeOne 静态层对非 ASCII 已存在
-			// 路径出现一阵 403（同内容稍后自愈），且平台侧无任何可配的字符/解码
-			// 开关（tccli ExportZoneConfig 全量导出为证）——字节不再经过那一层。
-			// 站点纯相对引用、可挂任意子路径；整包转发、不做分片。
-			// Pages 不可用（fetch 失败/404）时回落 next() 走 EdgeOne 静态树兜底。
-			//
-			// 缓存策略（issue #30 同款治理，参数按内容站定档「短缓存 10 分钟」）：
-			//   · max-age=0 意味着每次访问都跨洋回源、浏览器不落盘，且条件请求
-			//     不透传——「再校验」实际是整包重传。S26 是内容站（学期内推送频繁），
-			//     浏览器与 EdgeOne 各 600s：二次访问 from disk cache，国内节点驻留，
-			//     推送最迟 10 分钟可见；
-			//   · 条件请求透传：过期后再校验，Pages 未变回 304（零字节），已变
-			//     立即拿新 200；发版即 ETag 变化，无需清缓存。
+			// S26-1_202609：EdgeOne 静态树直出（deploy 分支 repo/S26-1_202609/）。
+			// 曾短暂走 GitHub Pages 反代（2026-10-12 中文路径 403 事件后迁的），
+			// 2026-10-21 回退：该事件当天已自愈且平台侧无规则误拦，而 Pages 管线
+			// 与 deploy.yml 两条线同一次 push 各自部署、中间件反代与静态树互相
+			// 覆盖（竞态），回归单一管线——deploy.yml 推 deploy 分支。
+			// 缓存由 EdgeOne 静态层自身策略管（全站 max-age=0 短缓存惯例）。
 			if (repoName === "S26-1_202609") {
-				const cleanRest = restPath.startsWith("/") ? restPath.slice(1) : restPath;
-				const pagesUrl = `https://archivalera.github.io/S26-1_202609/${cleanRest}${url.search}`;
-				const upstreamHeaders = { "Accept-Encoding": "gzip" };
-				const inm = request.headers.get("if-none-match");
-				if (inm) upstreamHeaders["If-None-Match"] = inm;
-				const ims = request.headers.get("if-modified-since");
-				if (ims) upstreamHeaders["If-Modified-Since"] = ims;
-				try {
-					const upstream = await fetch(pagesUrl, { headers: upstreamHeaders });
-					if (upstream && upstream.status !== 404) {
-						// 304 无实体：只带回 ETag/Last-Modified，浏览器据此刷新缓存条目。
-						if (upstream.status === 304) {
-							const h304 = new Headers();
-							h304.set("ETag", upstream.headers.get("etag") || "");
-							h304.set("Last-Modified", upstream.headers.get("last-modified") || "");
-							h304.set("Cache-Control", "public, max-age=600, s-maxage=600");
-							return new Response(null, { status: 304, headers: h304 });
-						}
-						const headers = new Headers(upstream.headers);
-						headers.set("Access-Control-Allow-Origin", "*");
-						headers.delete("Content-Encoding");
-						headers.delete("Content-Length");
-						headers.set("Cache-Control", "public, max-age=600, s-maxage=600");
-						return new Response(upstream.body, { status: upstream.status, headers });
-					}
-				} catch (_err) {
-					// fall through to next() below
-				}
 				return next();
 			}
 
