@@ -284,6 +284,84 @@ export async function middleware(context) {
 	const { request, rewrite, next } = context;
 	const url = new URL(request.url);
 
+	// ── 状态码固化（2026-10-21）────────────────────────────────────────────
+	// EdgeOne 静态层把一切不存在的路径兜底到根 index.html（611B、HTTP 200），
+	// 由它内嵌的 JS 客户端跳转到 /404.html —— 浏览器里「看起来」有 404 页，
+	// 但 HTTP 层永远是假 200：爬虫、监控、wget、API 消费方全被骗。
+	// 这里对 next() 的响应做后处理：体指纹命中兜底页（或本就是 /404.html
+	// 直访）时，改判真 404 并直出 404 页内容，不再依赖客户端跳转。
+	//
+	// 性能护栏：只有「HTML 且 content-length 小（兜底页 611B；真实页面
+	// 最小的 heart/index.html 也 643B 但指纹不同）」才读体比对，其余一律
+	// 原样流式放行——不为状态码固化给大页面加缓冲。
+	const FALLBACK_404_PAGE =
+		'<!doctype html><html lang="de"><head><meta charset="utf-8">' +
+		'<meta name="viewport" content="width=device-width, initial-scale=1">' +
+		'<title>404 — ISUI.REN</title></head><body style="font-family:system-ui,' +
+		'sans-serif;display:flex;align-items:center;justify-content:center;' +
+		'min-height:100vh;margin:0;background:#111;color:#f2efe7;">' +
+		'<div style="text-align:center"><h1 style="font-size:72px;margin:0">404</h1>' +
+		'<p>NICHT GEFUNDEN · <a href="/" style="color:#f59e0b">ZUR STARTSEITE</a></p>' +
+		"</div></body></html>";
+	const finalizeStatus = async (resPromise) => {
+		let res;
+		try {
+			res = await resPromise;
+		} catch (_err) {
+			return new Response(null, { status: 500 });
+		}
+		if (
+			!res ||
+			res.status !== 200 ||
+			request.method !== "GET" ||
+			url.pathname === "/" ||
+			url.pathname === "/index.html"
+		) {
+			return res;
+		}
+		const ct = res.headers.get("content-type") || "";
+		if (!ct.includes("text/html")) return res;
+		// 内部取 404 页字节的旁路标记：那次子请求不再进固化（防自递归）。
+		if (url.searchParams.get("__nf") === "1") return res;
+		const lenHeader = Number(res.headers.get("content-length") || "0");
+		if (lenHeader > 4096) return res; // 大页面绝不可能是 611B 兜底页
+		let body;
+		let probe;
+		try {
+			probe = res.clone();
+			body = await probe.text();
+		} catch (_err) {
+			return res;
+		}
+		const isFallbackRootIndex =
+			body.length < 2048 &&
+			body.includes("<title>ISUI.REN</title>") &&
+			body.includes('location.replace("/404.html?from=');
+		const isNotFoundDirect = url.pathname === "/404.html";
+		if (!isFallbackRootIndex && !isNotFoundDirect) return res;
+		// 取真正的 404 页字节（带旁路参数；失败则用内嵌兜底版）。
+		let html = FALLBACK_404_PAGE;
+		try {
+			const r = await fetch(
+				new URL("/404.html?__nf=1", url.origin).toString(),
+				{ headers: { "Accept-Encoding": "gzip" } },
+			);
+			if (r.ok) {
+				const t = await r.text();
+				if (t && t.includes("<title>404")) html = t;
+			}
+		} catch (_err) {
+			// 内嵌版兜底
+		}
+		return new Response(html, {
+			status: 404,
+			headers: {
+				"Content-Type": "text/html; charset=utf-8",
+				"Cache-Control": "no-store",
+			},
+		});
+	};
+
 	if (url.pathname === "/api/activity") {
 		if (request.method === "OPTIONS") {
 			return new Response(null, {
@@ -427,7 +505,7 @@ export async function middleware(context) {
 			// 覆盖（竞态），回归单一管线——deploy.yml 推 deploy 分支。
 			// 缓存由 EdgeOne 静态层自身策略管（全站 max-age=0 短缓存惯例）。
 			if (repoName === "S26-1_202609") {
-				return next();
+				return finalizeStatus(next());
 			}
 
 			// Octave-UI (repo/Octave): bytes come from GitHub Pages, not the deploy
@@ -719,16 +797,11 @@ export async function middleware(context) {
 		}
 	}
 
-	return next();
+	// 兜底放行也走固化（matcher 全站命中后，所有未匹配上面分支的 HTML 请求
+	// 都从这里过一遍假 200 检测）。
+	return finalizeStatus(next());
 }
 
 export const config = {
-	matcher: [
-		"/api/activity",
-		"/api/activity/:path*",
-		"/api/mp-ticket",
-		"/repo",
-		"/repo/:path*",
-		"/Bahnhof",
-	],
+	matcher: ["/:path*"],
 };
