@@ -478,6 +478,12 @@ export async function middleware(context) {
 				// 同源同频，故给同档缓存（浏览器 1h / 边缘 24h / SWR 600s）。
 				const isFixedNameAsset =
 					/^\/repo\/Octave\/(bridge\/|favicon\.)/.test(url.pathname);
+				// HTML 文档判定：以扩展名/目录形态识别（上游 content-type 已拿到，
+				// 但这里在 fetch 前就要决定超时策略，故用路径判断；末尾无扩展名
+				// 的路径按目录索引处理 = HTML）。
+				const isHtmlDocument =
+					/\.html?$/.test(url.pathname) ||
+					!/\.[a-z0-9]+$/i.test(url.pathname);
 				const upstreamHeaders = { "Accept-Encoding": "gzip" };
 				if (isEngineBinary) {
 					const inm = request.headers.get("if-none-match");
@@ -558,6 +564,15 @@ export async function middleware(context) {
 					headers.set(
 						"Cache-Control",
 						"public, max-age=3600, s-maxage=86400, stale-while-revalidate=600",
+					);
+				} else if (isHtmlDocument) {					// HTML 短缓存（申请五-1，对方 2026-10-24 深夜答复接受）：此前
+					// max-age=0 意味着每次页面加载必有 1 发穿边缘回源，正是他们 12
+					// 样本复验里 2 次整页超时的来源。30s 强缓存 + SWR 600s：发版后
+					// 最长 30s 用户见旧版（对方接受：发版节奏小时级），换掉每次加载
+					// 必中的挂起彩票；SWR 窗口内旧版照常服务、后台再验证。
+					headers.set(
+						"Cache-Control",
+						"public, max-age=30, stale-while-revalidate=600",
 					);
 				} else {
 					// 与站内其它路径一致：每次校验，推送立即可见（不是「清缓存」，是默认不缓存）。
