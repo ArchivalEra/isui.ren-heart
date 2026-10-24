@@ -470,6 +470,14 @@ export async function middleware(context) {
 				// 每次请求都跨洋回源，而边缘间歇挂起正发生在这条 fetch 上
 				// （Octave-UI SITE-ADMIN-REQUEST 附录实测：chunk 8 次里 2 次超时）。
 				const isHashedAsset = url.pathname.includes("/_astro/");
+				// bridge/* 与 favicon 等「固定名、非 HTML、非哈希」静态（申请五）：
+				// index.html 里有 12 个 bridge 经典脚本、0 defer/async（<head> 阻塞），
+				// 每个都 max-age=0 ⇒ 每次页面加载 12 发穿边缘回源。按节点级抖动
+				// 概率 p，整页幸存率 ≈ (1-p)^12（p=5% 时 ≈54%，与对方实测浏览器层
+				// ~50% 失败率吻合）。bridge 内容变更节奏 = 引擎仓更新节奏，与 lanes
+				// 同源同频，故给同档缓存（浏览器 1h / 边缘 24h / SWR 600s）。
+				const isFixedNameAsset =
+					/^\/repo\/Octave\/(bridge\/|favicon\.)/.test(url.pathname);
 				const upstreamHeaders = { "Accept-Encoding": "gzip" };
 				if (isEngineBinary) {
 					const inm = request.headers.get("if-none-match");
@@ -477,17 +485,18 @@ export async function middleware(context) {
 					const ims = request.headers.get("if-modified-since");
 					if (ims) upstreamHeaders["If-Modified-Since"] = ims;
 				}
-				// 边缘挂起兜底：小文件（HTML / _astro / 普通资产）给显式超时，挂住就
-				// 快速失败成 502 而不是让浏览器 pending 到天亮；大二进制不设超时
-				// （74.5MB 实测 142s，卡死它才是事故）。AbortController 是 edge 运行时
-				// 标准 API；若某运行时缺失，降级为无超时 fetch，不影响可用性。
+				// 边缘挂起兜底：小文件（HTML / _astro / bridge / 普通资产）给显式超时，
+				// 挂住就快速失败成 502 而不是让浏览器 pending 到天亮；大二进制不设超时
+				// （74.5MB 实测 142s，卡死它才是事故）。8s 是对方实测的干净分界线：
+				// 成功请求全部落在 0.3–7s，挂住的都是 20s+ 直到底（2026-10-24 双方数据）。
+				// AbortController 是 edge 运行时标准 API；若缺失则降级为无超时 fetch。
 				let upstream = null;
 				try {
 					let signal;
 					let timer;
 					if (!isEngineBinary && typeof AbortController === "function") {
 						const ctrl = new AbortController();
-						timer = setTimeout(() => ctrl.abort(), 20000);
+						timer = setTimeout(() => ctrl.abort(), 8000);
 						signal = ctrl.signal;
 					}
 					try {
@@ -542,6 +551,14 @@ export async function middleware(context) {
 				} else if (isHashedAsset) {
 					// 内容哈希命名 ⇒ 名变即内容变，永久缓存安全（对方已实证）。
 					headers.set("Cache-Control", "public, max-age=31536000, immutable");
+				} else if (isFixedNameAsset) {
+					// 固定名静态（bridge/*、favicon）：内容随引擎构建变，故不能
+					// immutable，给与 lanes 同档的 1h/24h/SWR——把每次加载的 12 发
+					// 穿边缘回源压到 0。
+					headers.set(
+						"Cache-Control",
+						"public, max-age=3600, s-maxage=86400, stale-while-revalidate=600",
+					);
 				} else {
 					// 与站内其它路径一致：每次校验，推送立即可见（不是「清缓存」，是默认不缓存）。
 					headers.set("Cache-Control", "public, max-age=0, must-revalidate");
