@@ -1,0 +1,1726 @@
+(function () {
+"use strict";
+if (typeof document === "undefined") return;
+
+// 纯逻辑从模块派生——测的就是跑的
+var MAX_MESSAGE_CHARS = 20000;
+var parseInline = function parseInline(src) {
+  const s = String(src || '');
+  const ops = [];
+  let i = 0;
+  let textBuf = '';
+  const flush = () => { if (textBuf) { ops.push({ kind: 'text', text: textBuf }); textBuf = ''; } };
+
+  while (i < s.length) {
+    const ch = s[i];
+
+    // 转义
+    if (ch === '\\' && i + 1 < s.length) {
+      textBuf += s[i + 1];
+      i += 2;
+      continue;
+    }
+
+    // 行内公式 $…$
+    if (ch === '$' && isMathOpen(s, i)) {
+      const end = findClosingDollar(s, i + 1);
+      if (end < 0) {
+        // 未闭合：整段尾巴留着（流式时会补上）
+        flush();
+        return { ops, pendingTail: s.slice(i) };
+      }
+      const tex = s.slice(i + 1, end);
+      if (tex.trim()) { flush(); ops.push({ kind: 'math', tex: tex.trim(), display: false }); }
+      else textBuf += s.slice(i, end + 1);
+      i = end + 1;
+      continue;
+    }
+
+    // 行内代码 `…`
+    if (ch === '`') {
+      const end = s.indexOf('`', i + 1);
+      if (end < 0) { flush(); return { ops, pendingTail: s.slice(i) }; }
+      flush();
+      ops.push({ kind: 'code', text: s.slice(i + 1, end) });
+      i = end + 1;
+      continue;
+    }
+
+    // 粗体 **…**
+    if (s.startsWith('**', i)) {
+      const end = s.indexOf('**', i + 2);
+      if (end < 0) { flush(); return { ops, pendingTail: s.slice(i) }; }
+      flush();
+      ops.push({ kind: 'strong', text: s.slice(i + 2, end) });
+      i = end + 2;
+      continue;
+    }
+
+    // 斜体 *…*（避开 ** ）
+    if (ch === '*' && s[i + 1] !== '*') {
+      const end = s.indexOf('*', i + 1);
+      if (end > i + 1 && s[end + 1] !== '*') {
+        flush();
+        ops.push({ kind: 'em', text: s.slice(i + 1, end) });
+        i = end + 1;
+        continue;
+      }
+    }
+
+    // 链接 [text](href)
+    if (ch === '[') {
+      const m = s.slice(i).match(/^\[([^\]]*)\]\(([^)\s]*)\)/);
+      if (m) {
+        const href = safeHref(m[2]);
+        flush();
+        if (href) ops.push({ kind: 'link', href, text: m[1] });
+        else textBuf += m[1];       // 不安全协议：只留文字
+        i += m[0].length;
+        continue;
+      }
+    }
+
+    // 图片 ![alt](src)：只接受同源相对路径，否则丢弃
+    if (ch === '!' && s[i + 1] === '[') {
+      const m = s.slice(i).match(/^!\[([^\]]*)\]\(([^)\s]*)\)/);
+      if (m) {
+        const src = safeSrc(m[2]);
+        flush();
+        if (src) ops.push({ kind: 'img', src, alt: m[1] });
+        else textBuf += m[1];
+        i += m[0].length;
+        continue;
+      }
+    }
+
+    textBuf += ch;
+    i += 1;
+  }
+
+  flush();
+  return { ops, pendingTail: '' };
+};
+var safeHref = function safeHref(href) {
+  const h = String(href || '').trim();
+  if (!h) return null;
+  if (!SAFE_HREF_RE.test(h)) return null;
+  // 额外拦一下 javascript: 的变形（虽然上面的正则已经排除）
+  if (/^javascript:/i.test(h)) return null;
+  return h;
+};
+var safeSrc = function safeSrc(src) {
+  const s = String(src || '').trim();
+  if (!s) return null;
+  if (/^(https?:)?\/\//i.test(s)) return null;   // 外链图丢弃
+  if (/^data:/i.test(s)) return null;            // data URI 也丢弃（体积与安全）
+  if (/^javascript:/i.test(s)) return null;
+  return s;
+};
+var isMathOpen = function isMathOpen(text, i) {
+  const prev = i > 0 ? text[i - 1] : '';
+  const next = text[i + 1] || '';
+  if (/[0-9A-Za-z]/.test(prev)) return false;
+  if (/\s/.test(next)) return false;
+  return true;
+};
+var findClosingDollar = function findClosingDollar(s, from) {
+  for (let i = from; i < s.length; i++) {
+    if (s[i] === '\\') { i += 1; continue; }
+    if (s[i] === '$') {
+      // 闭合 $ 后面不能紧跟数字（`$5 and $10` 这种）
+      const next = s[i + 1] || '';
+      if (/[0-9]/.test(next)) continue;
+      return i;
+    }
+  }
+  return -1;
+};
+var splitRow = function splitRow(line) {
+  let s = line.trim();
+  if (s.startsWith('|')) s = s.slice(1);
+  if (s.endsWith('|')) s = s.slice(0, -1);
+  return s.split('|').map((c) => c.trim());
+};
+var parseIncremental = function parseIncremental(buffer) {
+  const text = String(buffer || '').slice(0, MAX_MESSAGE_CHARS);
+  const blocks = [];
+  let i = 0;
+  const n = text.length;
+
+  /** 从 i 起读一行（含行尾换行），返回 {line, next}。 */
+  const readLine = (at) => {
+    const nl = text.indexOf('\n', at);
+    if (nl < 0) return { line: text.slice(at), next: n, complete: false };
+    return { line: text.slice(at, nl), next: nl + 1, complete: true };
+  };
+
+  while (i < n) {
+    // ① 空行：跳过
+    if (text[i] === '\n') { i += 1; continue; }
+
+    // ② 代码块围栏
+    if (text.startsWith('```', i)) {
+      const open = readLine(i);
+      const lang = open.line.slice(3).trim();
+      let j = open.next;
+      let body = '';
+      let closed = false;
+      while (j < n) {
+        const l = readLine(j);
+        if (!l.complete) break;                    // 最后一行没有换行 → 未闭合
+        if (l.line.trim() === '```') { j = l.next; closed = true; break; }
+        body += l.line + '\n';
+        j = l.next;
+      }
+      if (!closed) return { blocks, rest: text.slice(i), restStart: i };
+      blocks.push({ kind: 'code', lang, text: body.replace(/\n$/, '') });
+      i = j;
+      continue;
+    }
+
+    // ③ 块级公式 $$…$$
+    if (text.startsWith('$$', i)) {
+      const end = text.indexOf('$$', i + 2);
+      if (end < 0) return { blocks, rest: text.slice(i), restStart: i };
+      const tex = text.slice(i + 2, end).trim();
+      if (tex) blocks.push({ kind: 'math', tex, display: true });
+      i = end + 2;
+      continue;
+    }
+
+    // ④ 裸写的 \begin{…}…\end{…}：模型常这么写，包成块级公式
+    if (text.startsWith('\\begin{', i)) {
+      const env = text.slice(i + 7).match(/^([a-zA-Z*]+)\}/);
+      if (env) {
+        const close = '\\end{' + env[1] + '}';
+        const end = text.indexOf(close, i);
+        if (end < 0) return { blocks, rest: text.slice(i), restStart: i };
+        const tex = text.slice(i, end + close.length);
+        blocks.push({ kind: 'math', tex, display: true });
+        i = end + close.length;
+        continue;
+      }
+    }
+
+    // ⑤ 标题
+    const hm = text.slice(i).match(/^(#{1,6})[ \t]+([^\n]*)\n/);
+    if (hm) {
+      blocks.push({ kind: 'h', level: hm[1].length, text: hm[2].trim() });
+      i += hm[0].length;
+      continue;
+    }
+
+    // ⑥ 表格：当前行含 `|`，且下一行是分隔行
+    const line1 = readLine(i);
+    if (line1.line.includes('|') && line1.complete) {
+      const line2 = readLine(line1.next);
+      const isSep = /^\s*\|?[\s:-]+\|[\s:|-]*$/.test(line2.line) && line2.complete;
+      if (isSep) {
+        const rows = [splitRow(line1.line)];
+        let j = line2.next;
+        let terminated = false;   // 遇到了表格之外的行（或空行）⇒ 表格确实结束了
+        while (j < n) {
+          const l = readLine(j);
+          if (!l.complete) { j = -1; break; }           // 最后一行未结束 → 等下一个 delta
+          if (!l.line.includes('|') || l.line.trim() === '') { terminated = true; break; }
+          rows.push(splitRow(l.line));
+          j = l.next;
+        }
+        // j === -1 表示撞到不完整的尾巴；没 terminated 表示读到了文本末尾（也没结束）
+        if (j < 0 || (!terminated && j >= n)) return { blocks, rest: text.slice(i), restStart: i };
+        blocks.push({ kind: 'table', header: rows[0], rows: rows.slice(1) });
+        i = j;
+        continue;
+      }
+    }
+
+    // ⑦ 列表：连续的行以 `- `/`* `/`N. ` 开头
+    // ⚠️ 2026-10-22 修：必须允许**前导缩进**。上游模型的回答里嵌套子列表很常见
+    // （`1. **最紧急**：…` 下面跟 `   - 子项 A`），旧正则 `^(?:[-*]|\d+\.)`
+    // 匹配不到缩进行 ⇒ 列表提前 terminated ⇒ 后续内容全被吞进段落，
+    // 面板上会看到字面的 "   - 子项 A\n   - 子项 B\n3. "。
+    // 现在记录每项的缩进层级（depth），渲染侧据此嵌套。
+    const li0 = text.slice(i).match(/^([ \t]*)(?:[-*]|\d+\.)[ \t]+/);
+    if (li0) {
+      const items = [];
+      let j = i;
+      let terminated = false;
+      while (j < n) {
+        const l = readLine(j);
+        if (!l.complete) { j = -1; break; }             // 最后一行未结束 → 等
+        const m = l.line.match(/^([ \t]*)(?:[-*]|\d+\.)[ \t]+(.*)$/);
+        if (!m) { terminated = true; break; }
+        // 缩进 → 层级（每 2 空格或 1 tab 算一级，上限 4 级防跑飞）
+        const indent = m[1].replace(/\t/g, '  ').length;
+        const depth = Math.min(4, Math.floor(indent / 2));
+        items.push({ text: m[2], depth });
+        j = l.next;
+      }
+      if (j < 0 || (!terminated && j >= n)) return { blocks, rest: text.slice(i), restStart: i };
+      blocks.push({ kind: 'list', ordered: /^\d/.test(li0[0].trim()), items });
+      i = j;
+      continue;
+    }
+
+    // ⑧ 段落：读到空行或特殊块开头为止
+    {
+      let j = i;
+      let buf = '';
+      let hitSpecial = false;
+      while (j < n) {
+        const l = readLine(j);
+        if (!l.complete) break;                         // 最后一行未结束 → 先不渲染
+        if (l.line.trim() === '') { j = l.next; break; }
+        if (/^(#{1,6}[ \t]|```|\$\$|\\begin\{)/.test(l.line)) { hitSpecial = true; break; }
+        buf += (buf ? '\n' : '') + l.line;
+        j = l.next;
+      }
+
+      // ⚠️ 两种情况必须分开处理（2026-10-19 实测死循环）：
+      //   · 撞到特殊块开头（且段内还没内容）⇒ 不能 i=j（j 没动），
+      //     要落到下面「兜底前进」——但那会让特殊块被当文本吃掉。
+      //     正确做法：直接 continue，让外层重新进入分支判断（i 未变，但下一轮会走 ②-⑦）。
+      //     为避免再次进入段落分支，这里在撞特殊块且 buf 为空时**显式跳过一行**的语义不对，
+      //     所以我们改为：撞特殊块时把已累积的段落先产出，然后 i 前进到 j；
+      //     若 buf 为空（i 本身就是特殊块开头）说明上面的 ②-⑦ 没匹配上，
+      //     那是未支持的语法（如 `> 引用`），兜底当普通段落吃掉一行。
+      if (buf) {
+        blocks.push({ kind: 'p', text: buf });
+        i = j;
+        continue;
+      }
+      if (hitSpecial) {
+        // 走到了这里说明 ②-⑦ 都不认这个「特殊块」（例如 `> 引用`、`---` 分隔线）。
+        // 兜底：吃一整行当段落，保证 i 前进。行没结束时**不能**吃掉——
+        // 否则不完整的半行会被当成一段渲染，补全后再来一遍就重了。
+        const l = readLine(i);
+        if (!l.complete) return { blocks, rest: text.slice(i), restStart: i };
+        const raw = l.line.trim();
+        if (raw) blocks.push({ kind: 'p', text: raw });
+        i = l.next;
+        continue;
+      }
+      // 段落没遇到空行就到底了 ⇒ 还没完整，整段留 rest 等下一个 delta。
+      // ⚠️ 判据是「最后一行的 readLine 不完整」（没有换行符），不是 j >= n——
+      // 后者在 `'x'`（长度 1、j=0）时为假，会 i=j=0 死循环（2026-10-19 实测）。
+      const last = readLine(j === i ? i : Math.max(i, j - 1));
+      if (!last.complete) return { blocks, rest: text.slice(i), restStart: i };
+      i = j;
+    }
+  }
+
+  return { blocks, rest: '', restStart: n };
+};
+var renderBlockToOps = function renderBlockToOps(block) {
+  if (!block) return [];
+  switch (block.kind) {
+    case 'h':
+      return [{ kind: 'heading', level: block.level, ops: parseInline(block.text).ops }];
+    case 'p':
+      return [{ kind: 'para', ops: parseInline(block.text).ops }];
+    case 'list':
+      return [{
+        kind: 'list',
+        ordered: !!block.ordered,
+        // items 现为 {text, depth}（2026-10-22 嵌套支持）；兼容旧形态的纯字符串
+        items: block.items.map((it) => {
+          const text = typeof it === 'string' ? it : it.text;
+          const depth = typeof it === 'string' ? 0 : (it.depth || 0);
+          return { ops: parseInline(text).ops, depth };
+        }),
+      }];
+    case 'code':
+      return [{ kind: 'codeblock', lang: block.lang || '', text: block.text }];
+    case 'math':
+      return [{ kind: 'mathblock', tex: block.tex }];
+    case 'table':
+      return [{
+        kind: 'table',
+        header: block.header.map((c) => parseInline(c).ops),
+        rows: block.rows.map((r) => r.map((c) => parseInline(c).ops)),
+      }];
+    default:
+      return [];
+  }
+};
+var applyOps = function applyOps(doc, el, ops, katex) {
+  const mk = (tag) => doc.createElement(tag);
+
+  /** 行内 ops → 一串节点。 */
+  const inlineNodes = (list) => {
+    const out = [];
+    for (const o of (list || [])) {
+      switch (o.kind) {
+        case 'text': {
+          out.push(doc.createTextNode(o.text));
+          break;
+        }
+        case 'strong': { const n = mk('strong'); n.textContent = o.text; out.push(n); break; }
+        case 'em': { const n = mk('em'); n.textContent = o.text; out.push(n); break; }
+        case 'code': { const n = mk('code'); n.textContent = o.text; out.push(n); break; }
+        case 'math': {
+          const n = mk('span');
+          n.className = 'chat-math';
+          renderMathInto(doc, n, o.tex, false, katex);
+          out.push(n);
+          break;
+        }
+        case 'link': {
+          const n = mk('a');
+          n.setAttribute('href', o.href);
+          // 外链新窗口；站内链接（# 或相对）同窗
+          if (/^https?:/i.test(o.href)) { n.setAttribute('target', '_blank'); n.setAttribute('rel', 'noopener noreferrer'); }
+          n.textContent = o.text;
+          out.push(n);
+          break;
+        }
+        case 'img': {
+          const n = mk('img');
+          n.setAttribute('src', o.src);
+          n.setAttribute('alt', o.alt || '');
+          n.setAttribute('loading', 'lazy');
+          n.style.maxWidth = '100%';
+          out.push(n);
+          break;
+        }
+        default: break;
+      }
+    }
+    return out;
+  };
+
+  for (const op of (ops || [])) {
+    let node = null;
+    switch (op.kind) {
+      case 'heading': {
+        const lvl = Math.min(4, Math.max(1, op.level || 2));
+        node = mk('h' + lvl);
+        for (const c of inlineNodes(op.ops)) node.appendChild(c);
+        break;
+      }
+      case 'para': {
+        node = mk('p');
+        for (const c of inlineNodes(op.ops)) node.appendChild(c);
+        break;
+      }
+      case 'list': {
+        node = mk(op.ordered ? 'ol' : 'ul');
+        // 2026-10-22：items 是 {ops, depth}，depth>0 的项按层级缩进（上游回答里
+        // 编号项下面跟缩进子项很常见）。用 marginLeft 表达层级而不重建嵌套 DOM
+        // ——结构保持扁平，复制成纯文本时也不会多出层级噪音。
+        for (const item of op.items) {
+          const li = mk('li');
+          const childOps = item && item.ops ? item.ops : (Array.isArray(item) ? item : []);
+          const depth = (item && item.depth) || 0;
+          if (depth > 0) li.style.marginLeft = (depth * 1.1) + 'em';
+          for (const c of inlineNodes(childOps)) li.appendChild(c);
+          node.appendChild(li);
+        }
+        break;
+      }
+      case 'codeblock': {
+        node = mk('pre');
+        const code = mk('code');
+        if (op.lang) code.className = 'language-' + op.lang;
+        code.textContent = op.text;      // 代码块永远 textContent
+        node.appendChild(code);
+        break;
+      }
+      case 'mathblock': {
+        node = mk('div');
+        node.className = 'chat-math-block';
+        renderMathInto(doc, node, op.tex, true, katex);
+        break;
+      }
+      case 'table': {
+        node = mk('table');
+        const thead = mk('thead');
+        const trh = mk('tr');
+        for (const cell of op.header) {
+          const th = mk('th');
+          for (const c of inlineNodes(cell)) th.appendChild(c);
+          trh.appendChild(th);
+        }
+        thead.appendChild(trh);
+        node.appendChild(thead);
+        if (op.rows && op.rows.length) {
+          const tbody = mk('tbody');
+          for (const row of op.rows) {
+            const tr = mk('tr');
+            for (const cell of row) {
+              const td = mk('td');
+              for (const c of inlineNodes(cell)) td.appendChild(c);
+              tr.appendChild(td);
+            }
+            tbody.appendChild(tr);
+          }
+          node.appendChild(tbody);
+        }
+        // 包一层滚动容器（2026-10-19 截图实测）：
+        // 直接给 table 设 display:block + overflow-x:auto 时，**边框盒**撑满
+        // 整个容器宽度，而列按内容宽排——右侧于是留出一条空白，圆角也画在
+        // 空盒上。改成外层 div 负责滚动与外框、table 按内容宽，二者才对齐。
+        // 这与站点正文的 .table-scroll-container 是同一手法。
+        var tableWrap = mk('div');
+        tableWrap.className = 'chat-table-wrap';
+        tableWrap.appendChild(node);
+        node = tableWrap;
+        break;
+      }
+      default: break;
+    }
+    if (node) el.appendChild(node);
+  }
+};
+var renderMathInto = function renderMathInto(doc, node, tex, display, katex) {
+  if (!katex || typeof katex.renderToString !== 'function') {
+    node.textContent = (display ? '$$' : '$') + tex + (display ? '$$' : '$');
+    return;
+  }
+  try {
+    // trust:false 是默认；显式写出来是给读代码的人看
+    const html = katex.renderToString(tex, {
+      displayMode: !!display,
+      throwOnError: false,
+      trust: false,
+      maxSize: 10,
+      maxExpand: 1000,
+      strict: 'ignore',
+    });
+    node.innerHTML = html;   // ← 全文件唯一一处，且来源受限
+  } catch (e) {
+    node.className = (node.className ? node.className + ' ' : '') + 'chat-math-err';
+    node.textContent = String((e && e.message) || e);   // 错误串走 textContent
+  }
+};
+
+var BRIDGE = "http://127.0.0.1:9345";
+
+/**
+ * 是否允许使用助手（2026-10-19 扩到公网站点）。
+ *
+ * 助手要与**访问者自己机器上**的桥进程通信。127.0.0.1 在浏览器里永远指
+ * 访问者本机，所以「公网页面 + 访客本地程序」这个组合本身是成立的
+ * （和本地下载器助手、IDE 插件同构）——只要访客自己跑了桥。
+ *
+ * 允许的三种情况：
+ *   ① loopback hostname（本机开发/阅读）
+ *   ② 站点部署域名（isui.ren / GitHub Pages）——同学在公网上打开时会命中
+ *   ③ 用户显式开关（?assistant=1 / localStorage.webmcp_bridge=on）
+ *
+ * 注意「允许打开面板」不等于「能连上」：真正连不上时（油猴脚本没生效）
+ * 会走 describeFailure 的提示（2026-10-22 更正：不再指向已废弃的 bridge.mjs）。
+ */
+var SITE_HOSTS = ["isui.ren", "archivalera.github.io"];
+var LOCAL_ONLY = (function () {
+  try {
+    var h = location.hostname;
+    if (h === "127.0.0.1" || h === "localhost" || h === "[::1]" || h === "::1") return true;
+    for (var i = 0; i < SITE_HOSTS.length; i++) if (h === SITE_HOSTS[i]) return true;
+  } catch (e) { /* 无 location */ }
+  try {
+    var qs = new URLSearchParams(location.search);
+    if (qs.get("assistant") === "1") return true;
+  } catch (e) { /* 无 search */ }
+  try {
+    if (localStorage.getItem("webmcp_bridge") === "on") return true;
+  } catch (e) { /* 无存储 */ }
+  return false;
+})();
+
+// ── 状态 ────────────────────────────────────────────────────
+var panel = null, logEl = null, inputEl = null, sendBtn = null, jumpBtn = null, backdrop = null;
+var attachBtn = null, attachBar = null, fileInput = null;
+var open = false;
+var busy = false;
+var sessionKey = "web-" + (Date.now() % 100000);
+var katexLoading = null;
+var stream = null;          // 当前 AbortController
+var stuck = true;           // 是否贴底
+var msgEls = [];            // 消息 DOM 引用（用于流式更新最后一条）
+var pending_attach = [];    // 待发附件：{id, name, dataUrl, fileInfo, status:'uploading'|'ready'|'failed'}
+var stopAnswerRef = function () {};   // 当前提问的停止句柄（askChat 里赋值）
+
+// ── 传输层替换钩子（2026-10-20，油猴脚本形态）──────────────────
+// setTransport(fn)：fn = {ask, cancel, upload}（契约见 .zcode/userscript-impl 的
+// chat-panel-hook.md，合入记录在归档）。null = 恢复本机桥。不装脚本时这个钩子
+// 永远空置——面板行为与原来完全一致（双形态并存，验收 13）。
+// 面板不知道 iframe/通道/密文的存在：它只认这三个函数，换传输层不用再动面板。
+// 2026-10-25：插件形态整体删除，transport 恒为 null（只走本机桥 SSE）。
+var transport = null;
+
+// ── 工具函数 ────────────────────────────────────────────────
+
+/**
+ * 桥 token 的三级来源（2026-10-19 修「永远是连不上助手」）。
+ *
+ * 面板与页面桥各自独立，**不能假设对方先跑过**：用户可能直接把面板叫起来
+ * 而页面桥还没注入完成。所以这里自己解析，顺序与 loader 一致：
+ * window.__bridgeToken → localStorage → GET /bootstrap（桥对本机 Origin 回 token）。
+ */
+var tokenPromise = null;
+function tokenAsync(force) {
+  if (!force && tokenPromise) return tokenPromise;
+  tokenPromise = new Promise(function (resolve) {
+    // 非本机：不向 127.0.0.1 发任何请求（2026-10-19 审计修复）。
+    // 返回空 token，让调用方按「未授权」处理，而不是真的去打本机端口。
+    if (!LOCAL_ONLY) return resolve("");
+    var t = "";
+    try { t = window.__bridgeToken || localStorage.getItem("webmcp_bridge_token") || ""; } catch (e) {}
+    if (t) { window.__bridgeToken = t; return resolve(t); }
+    var ctrl = (typeof AbortController !== "undefined") ? new AbortController() : null;
+    var timer = setTimeout(function () { try { ctrl && ctrl.abort(); } catch (e) {} }, 3000);
+    fetch(BRIDGE + "/bootstrap", { cache: "no-store", signal: ctrl ? ctrl.signal : undefined })
+      .then(function (r) { clearTimeout(timer); return r.ok ? r.json() : null; })
+      .then(function (j) {
+        var v = (j && j.token) ? String(j.token) : "";
+        if (v) {
+          window.__bridgeToken = v;
+          try { localStorage.setItem("webmcp_bridge_token", v); } catch (e) {}
+        }
+        resolve(v);
+      })
+      .catch(function () { clearTimeout(timer); resolve(""); });
+  });
+  return tokenPromise;
+}
+
+function withToken(u, t) {
+  return t ? (u + (u.indexOf("?") >= 0 ? "&" : "?") + "token=" + encodeURIComponent(t)) : u;
+}
+
+/** KaTeX 按需加载（站点已有 katex.min.css，但没有页面引 katex.min.js）。 */
+function ensureKatex() {
+  if (window.katex) return Promise.resolve(window.katex);
+  if (katexLoading) return katexLoading;
+  katexLoading = new Promise(function (resolve) {
+    var root = document.documentElement.getAttribute("data-root") || "./";
+    var s = document.createElement("script");
+    s.src = root + "assets/katex/katex.min.js";
+    s.async = true;
+    s.onload = function () { resolve(window.katex || null); };
+    s.onerror = function () { resolve(null); };
+    document.head.appendChild(s);
+  });
+  return katexLoading;
+}
+
+// ── 附件（2026-10-19 用户要求）──────────────────────────────
+//
+// 上游只收 jpg/png。浏览器里 input[type=file] 能拿到 png/jpeg/webp/heic…
+// 所以这里做两道：
+//   ① 选图时按 **magic bytes** 判真实格式（不信任扩展名）
+//   ② 非 jpg/png 的画到 canvas 上转成 jpeg（和 site_image 的 webp→jpeg 同一套思路）
+//
+// 为什么在浏览器转而不是后端转：转码要解码图片，Node 侧没有可靠的零依赖解码器，
+// 而浏览器本来就要把图画到缩略图上——顺手就转了，零额外成本。
+
+/**
+ * 按文件头判真实类型。返回 'jpeg' | 'png' | 'gif' | 'webp' | 'heic' | 'unknown'。
+ *
+ * HEIC 单独认出来（2026-10-19 实测）：iPhone 拍照默认就是它，而**绝大多数
+ * 桌面浏览器（Chromium/Firefox on Linux/Windows）根本解不了**——
+ * new Image() 直接 onerror、createImageBitmap 报 "could not be decoded"。
+ * 所以这不是「转码失败」，是「这个环境读不了这个格式」，得给用户明确的出路。
+ */
+function sniffImage(bytes) {
+  var b = bytes;
+  if (b.length < 12) return "unknown";
+  if (b[0] === 0xFF && b[1] === 0xD8) return "jpeg";
+  if (b[0] === 0x89 && b[1] === 0x50 && b[2] === 0x4E && b[3] === 0x47) return "png";
+  if (b[0] === 0x47 && b[1] === 0x49 && b[2] === 0x46) return "gif";
+  if (b[0] === 0x52 && b[1] === 0x49 && b[2] === 0x46 && b[3] === 0x46
+      && b[8] === 0x57 && b[9] === 0x45 && b[10] === 0x42 && b[11] === 0x50) return "webp";
+  // HEIF/HEIC：ISO BMFF，第 4..7 字节是 'ftyp'，brand 在 8..11
+  if (b[4] === 0x66 && b[5] === 0x74 && b[6] === 0x79 && b[7] === 0x70) {
+    var brand = "";
+    for (var i = 8; i < 12; i++) brand += String.fromCharCode(b[i]);
+    if (/^(heic|heix|hevc|hevx|heim|heis|mif1|msf1)$/.test(brand)) return "heic";
+  }
+  return "unknown";
+}
+
+/** 把任意可解码图片重绘成 jpeg（透明底铺白），返回 {dataUrl, mimeType}。 */
+function transcodeToJpeg(dataUrl, maxEdge) {
+  return new Promise(function (resolve, reject) {
+    var img = new Image();
+    img.onload = function () {
+      var w = img.naturalWidth || img.width;
+      var h = img.naturalHeight || img.height;
+      if (!w || !h) return reject(new Error("图片尺寸为 0"));
+      var scale = Math.min(1, (maxEdge || 2048) / Math.max(w, h));
+      var cw = Math.max(1, Math.round(w * scale));
+      var ch = Math.max(1, Math.round(h * scale));
+      var canvas = document.createElement("canvas");
+      canvas.width = cw; canvas.height = ch;
+      var g = canvas.getContext("2d");
+      if (!g) return reject(new Error("canvas 不可用"));
+      // jpeg 没有 alpha：先铺白，否则透明区会变黑
+      g.fillStyle = "#ffffff";
+      g.fillRect(0, 0, cw, ch);
+      g.drawImage(img, 0, 0, cw, ch);
+      try {
+        resolve({ dataUrl: canvas.toDataURL("image/jpeg", 0.9), mimeType: "image/jpeg" });
+      } catch (e) { reject(e); }
+    };
+    img.onerror = function () { reject(new Error("图片无法解码")); };
+    img.src = dataUrl;
+  });
+}
+
+/** File → {dataUrl, mimeType}（非 jpg/png 自动转码）。 */
+function prepareImage(file) {
+  return new Promise(function (resolve, reject) {
+    if (file.size > 12 * 1024 * 1024) return reject(new Error("图片太大（上限 12 MB）"));
+    var reader = new FileReader();
+    reader.onload = function () {
+      var dataUrl = String(reader.result || "");
+      var b64 = dataUrl.split(",")[1] || "";
+      var head;
+      try {
+        var bin = atob(b64.slice(0, 16));
+        head = new Uint8Array(bin.length);
+        for (var i = 0; i < bin.length; i++) head[i] = bin.charCodeAt(i);
+      } catch (e) { head = new Uint8Array(0); }
+      var kind = sniffImage(head);
+      if (kind === "jpeg") return resolve({ dataUrl: dataUrl, mimeType: "image/jpeg" });
+      if (kind === "png") return resolve({ dataUrl: dataUrl, mimeType: "image/png" });
+      // 其余先试浏览器转码：Safari（macOS/iOS）能直接解 HEIC，那就照常走。
+      transcodeToJpeg(dataUrl, 2048).then(resolve, function () {
+        // 浏览器解不了（2026-10-19 实测：Chromium/Firefox 在 Linux/Windows 上
+        // 对 HEIC 一律失败）。**不要把原始字节丢掉**——桥那边有 ImageMagick，
+        // 它能解。这里原样交给桥，由它转完再上传。
+        //
+        // 前端不再自己判"能不能转"，也不给用户抛「请改相机设置」这种
+        // 让他去改设备的建议：本机桥能解决的事，不该推给用户。
+        resolve({
+          dataUrl: dataUrl,
+          mimeType: kind === "heic" ? "image/heic"
+            : kind === "gif" ? "image/gif"
+            : kind === "webp" ? "image/webp"
+            : "application/octet-stream",
+          needsServerConvert: true,
+        });
+      });
+    };
+    reader.onerror = function () { reject(new Error("读文件失败")); };
+    reader.readAsDataURL(file);
+  });
+}
+
+/** 把一张图 POST 到桥的 /upload，拿回 fileInfo。 */
+function uploadAttachment(item, tk) {
+  // 非本机不向 127.0.0.1 发请求（2026-10-19 审计修复）
+  if (!LOCAL_ONLY) return Promise.reject(new Error("学习助手只在你自己电脑上可用"));
+  var b64 = String(item.dataUrl || "").split(",")[1] || "";
+  return fetch(withToken(BRIDGE + "/upload", tk), {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      data: b64,
+      mimeType: item.mimeType,
+      filename: item.name,
+      sessionId: sessionKey,
+    }),
+  }).then(function (r) { return r.json(); }).then(function (j) {
+    if (!j || !j.ok) throw new Error((j && j.error) || "上传失败");
+    item.fileInfo = j.fileInfo;
+    item.status = "ready";
+    return item;
+  }).catch(function (e) {
+    item.status = "failed";
+    item.error = String((e && e.message) || e);
+    throw e;
+  });
+}
+
+/** 重画附件条（缩略图 + 删除按钮）。 */
+function renderAttachBar() {
+  if (!attachBar) return;
+  while (attachBar.firstChild) attachBar.removeChild(attachBar.firstChild);
+  for (var i = 0; i < pending_attach.length; i++) {
+    (function (item) {
+      var box = document.createElement("div");
+      box.className = "chat-attach-item" + (item.status === "uploading" ? " uploading" : "")
+        + (item.status === "failed" ? " failed" : "");
+      box.title = item.status === "failed" ? ("上传失败：" + (item.error || "")) : item.name;
+      var img = document.createElement("img");
+      img.src = item.dataUrl;
+      img.alt = item.name;
+      // 浏览器解不了的格式（HEIC 等）画不出缩略图——退成文件名方块，
+      // 别让用户看到破图图标还以为是自己传坏了。
+      img.onerror = function () {
+        img.style.display = "none";
+        if (!box.querySelector(".chat-attach-fallback")) {
+          var fb = document.createElement("span");
+          fb.className = "chat-attach-fallback";
+          fb.textContent = (item.name || "").split(".").pop().toUpperCase() || "IMG";
+          box.appendChild(fb);
+        }
+      };
+      box.appendChild(img);
+      var x = document.createElement("button");
+      x.type = "button";
+      x.className = "chat-attach-x";
+      x.textContent = "×";
+      x.setAttribute("aria-label", "移除这张图");
+      x.onclick = function () {
+        var k = pending_attach.indexOf(item);
+        if (k >= 0) pending_attach.splice(k, 1);
+        renderAttachBar();
+      };
+      box.appendChild(x);
+      attachBar.appendChild(box);
+    })(pending_attach[i]);
+  }
+}
+
+/** 收文件（来自选择器、粘贴、拖拽）。 */
+function acceptFiles(files) {
+  var list = Array.prototype.slice.call(files || []);
+  if (!list.length) return;
+  list.forEach(function (f) {
+    if (!f || !/^image\//.test(f.type || "")) {
+      // HEIC 等有时 type 为空——只要文件名像图就试
+      if (!/\.(jpe?g|png|webp|gif|heic|heif|bmp)$/i.test(f.name || "")) return;
+    }
+    var item = { id: "a" + Date.now() + Math.random().toString(16).slice(2, 6), name: f.name || "image", status: "uploading" };
+    pending_attach.push(item);
+    renderAttachBar();
+    prepareImage(f)
+      .then(function (prep) {
+        item.dataUrl = prep.dataUrl;
+        item.mimeType = prep.mimeType;
+        renderAttachBar();
+        return tokenAsync(false);
+      })
+      .then(function (tk) { return uploadAttachment(item, tk); })
+      .then(function () { renderAttachBar(); })
+      .catch(function (e) {
+        item.status = "failed";
+        item.error = String((e && e.message) || e);
+        renderAttachBar();
+      });
+  });
+}
+
+// ── 滚动吸附（use-stick-to-bottom 思路的极简移植）──────────
+function nearBottom() {
+  if (!logEl) return true;
+  return logEl.scrollHeight - logEl.scrollTop - logEl.clientHeight < 48;
+}
+function scrollToBottom(instant) {
+  if (!logEl) return;
+  logEl.scrollTop = logEl.scrollHeight;
+}
+function onUserScroll() {
+  if (!logEl) return;
+  stuck = nearBottom();
+  if (stuck && jumpBtn) jumpBtn.remove();
+}
+
+// ── 消息渲染 ────────────────────────────────────────────────
+function addMsg(role) {
+  var wrap = document.createElement("div");
+  wrap.className = "chat-msg chat-msg--" + role;
+  var body = document.createElement("div");
+  body.className = "chat-body";
+  wrap.appendChild(body);
+  logEl.appendChild(wrap);
+  msgEls.push({ role: role, body: body, raw: "", restStart: 0 });
+  if (stuck) scrollToBottom();
+  return msgEls[msgEls.length - 1];
+}
+
+/** 给一条消息配一个过程提示槽（**正文之外**，见 chat-status 的注释）。 */
+function attachStatusSlot(msg) {
+  var el = document.createElement("div");
+  el.className = "chat-status";
+  el.textContent = "正在思考…";
+  // 插在 .chat-body 之前：过程提示在视觉与语义上都不属于答案正文，
+  // 放进 body 里会被 renderMessage 当内容、也会被当答案读屏。
+  msg.body.parentNode.insertBefore(el, msg.body);
+  msg.statusEl = el;
+  msg.statusBase = "正在思考…";
+  msg.queryStartedAt = Date.now();
+  // 本地秒表（2026-10-19 实测）：服务端只在**阶段切换**时推 status，
+  // 一次工具调用可能等 60 秒不推帧——秒数会冻在旧值上，看起来又像卡死。
+  // 秒数从**本次提问开始**算：用户关心的是「等了多久」。
+  if (!msg.statusTick) {
+    msg.statusTick = setInterval(function () {
+      if (!msg.statusEl || !msg.queryStartedAt) return;
+      var secs = Math.round((Date.now() - msg.queryStartedAt) / 1000);
+      if (secs < 2) return;
+      msg.statusEl.textContent = msg.statusBase + "（" + secs + " 秒）";
+    }, 1000);
+  }
+  return el;
+}
+
+/** 把累积的原文重新渲染进消息体（增量解析 + 只追加新块）。
+ *
+ * 两处「别重算」的克制（2026-10-19 手机端实测「划一下像磕大」）：
+ *
+ *   ① **续解而不是重解**：parser 返回 restStart，下一轮只把 rest 起点之后
+ *      的新文本交回去。整段重解是 O(n²)，长回答到几千字时每来一个 delta
+ *      就要把前文重扫一遍，主线程被占满 → 页面滚动掉帧。
+ *   ② **不每 delta 动 DOM**：delta 可能一秒来十几个，逐个渲染会让
+ *      scrollHeight 读取与 DOM 写入交替发生（layout thrash）。用 rAF 合并，
+ *      一帧最多渲染一次。SSE 的最终 done 仍然立刻落盘，不等帧。
+ */
+function renderMessage(msg, final) {
+  var parsed = parseIncremental(msg.raw.slice(msg.restStart || 0));
+  for (var i = 0; i < parsed.blocks.length; i++) {
+    applyOps(document, msg.body, renderBlockToOps(parsed.blocks[i]), window.katex);
+  }
+  msg.restStart = (msg.restStart || 0) + parsed.restStart;
+
+  // 尾巴（未闭合）以纯文本预览显示，闭合后会被替换
+  if (msg.tailEl) { msg.tailEl.remove(); msg.tailEl = null; }
+  if (!final && parsed.rest) {
+    var tail = document.createElement("span");
+    tail.textContent = parsed.rest;
+    tail.className = "chat-tail";
+    msg.body.appendChild(tail);
+    msg.tailEl = tail;
+  } else if (final && parsed.rest) {
+    // ⭐ 收尾时还没闭合的尾巴必须**显示出来**（2026-10-19 实测）：
+    // 上游常在最后一句中间结束（或其他原因不再有 delta），
+    // 只清掉 tailEl 会让最后一截正文凭空消失——用户看到的是半句话。
+    // 这里把它当普通段落追加，保证「流结束时面板里的字 >= 已经收到的字」。
+    var lastP = document.createElement("p");
+    lastP.textContent = parsed.rest;
+    msg.body.appendChild(lastP);
+    // 追加后把水位推到末尾：这条尾巴已经被"消费"。
+    // 不推的话，任何后续解析都会从同一位置再取一遍 rest（2026-10-19 调查
+    // 实测的正文重复就是这么来的）。flushRender 现在已幂等，但水位正确是
+    // 更底层的保证，不该依赖调用方只调一次。
+    msg.restStart = msg.raw.length;
+  }
+  if (final) msg.body.classList.remove("chat-cursor");
+  else msg.body.classList.add("chat-cursor");
+
+  // 最后一道保险（2026-10-19 实测）：收尾时若正文仍是空的、而 raw 里明明
+  // 有字，说明解析链在某个边界上把内容全丢了。宁可**降级成纯文本**，
+  // 也不能让用户看到一片空白——这比排版难看严重得多。
+  if (final && msg.raw && !msg.body.textContent.trim()) {
+    msg.body.textContent = msg.raw;
+  }
+
+  if (stuck) scrollToBottom();
+  else if (!jumpBtn) showJump();
+}
+
+/** 合并到下一帧再渲染（同一帧来的多个 delta 只算一次）。 */
+function scheduleRender(msg) {
+  if (msg.pending) return;
+  msg.pending = true;
+  var run = function () {
+    msg.pending = false;
+    if (!msg.done) renderMessage(msg, false);
+  };
+  if (typeof requestAnimationFrame === "function") requestAnimationFrame(run);
+  else setTimeout(run, 16);
+}
+
+/** 立刻渲染并标记收尾（绕过 rAF，保证最终状态不丢）。 */
+function flushRender(msg) {
+  // ⚠️ 幂等（2026-10-19 调查发现的真 bug）：done 事件会 flush 一次，
+  // 随后 SSE 正常结束的 finish() 又 flush 一次；停止分支、error 分支同理。
+  //
+  // 而 renderMessage(final) 会把**未闭合的尾巴**追加成 <p>（答案最后一行
+  // 没有尾换行是最常见的情况），且不推进 restStart ⇒ 第二次 flush 从同一
+  // 位置再解析、再追加一遍，正文重复（实测「第二段第二段」）。
+  //
+  // 收尾只做一次。
+  if (msg.done) return;
+  msg.done = true;
+  renderMessage(msg, true);
+}
+
+// ── 思考 ↔ 输出 的区分（2026-10-19 用户要求）───────────────
+//
+// 面板在模型检索的整段时间里原本完全空白（实测最长 384 秒），用户分不清
+// 是卡死还是在干活。这里给每条机器人消息配一行**过程提示**：
+//   · 灰色、小号、无气泡，与正文（黑字通栏）在视觉上明确分开
+//   · 只在等待期间存在；第一个 delta 到达即移除
+//   · 文案说明「在做什么」，而不是只转圈
+// 标签从 buildToolDefs 派生（文件头 TOOL_LABELS_SRC）——工具改名时这里自动跟随。
+var TOOL_LABEL = {"site_get_page_info":"确认当前页面","site_read":"读取页面正文","site_index":"查看站点目录","site_navigate":"翻到目标页面","site_search":"检索资料库","site_show_symbol":"查符号释义","site_panels":"展开折叠内容","site_view":"显示设置","site_list_images":"查找页面配图","site_image":"查看图片","site_capture_view":"截图查看版面"};
+
+function setStatus(msg, text) {
+  // 过程提示可能已经被 clearStatus 清掉（第一个 delta 到达时就会清）。
+  // 撤回场景需要它「回来」，所以这里允许重建——没有槽就补一个。
+  if (!msg.statusEl) { attachStatusSlot(msg); if (!msg.statusEl) return; }
+  // 秒数一律由本地秒表负责：把服务端可能带的所有「（N 秒）」全剥掉，
+  // 否则会出现「…（15 秒）（16 秒）」这种叠字。
+  // ⚠️ 2026-10-24 修：这里原来写单反斜杠 s/d 形态——本串整体在 CHAT_JS 普通
+  // 模板串里，单个反斜杠会被求值吃掉，产物变成 /（s*d+s*秒s*）/，一个「（N 秒）」
+  // 也剥不掉（防叠字逻辑在产线上是死代码，第六次踩模板串的坑）。
+  // 写双反斜杠才能 cook 出可用的正则；改这里必须在产物里验证。
+  msg.statusBase = String(text).replace(/（\s*\d+\s*秒\s*）/g, "").trim();
+  if (!msg.queryStartedAt) msg.queryStartedAt = Date.now();
+  msg.statusEl.textContent = msg.statusBase;
+}
+
+function clearStatus(msg) {
+  if (msg.statusTick) { clearInterval(msg.statusTick); msg.statusTick = null; }
+  msg.queryStartedAt = 0;
+  if (msg.statusEl && msg.statusEl.parentNode) msg.statusEl.parentNode.removeChild(msg.statusEl);
+  msg.statusEl = null;
+}
+
+/**
+ * 耗时诊断行（2026-10-20）：把每轮耗时折成一行小字附在答案末尾。
+ *
+ * 为什么要显示出来：用户报「每次都 50 秒以上」，而这条链上有四轮工具循环、
+ * 换线重试、上下文重放——只看总时长分不清是哪一种。把每轮摊开，
+ * 「4×12s」和「1×45s」一眼就分开，不用再靠猜。
+ * 只在脚本形态（B 侧）有 timings；本机桥形态没有，就不显示。
+ */
+function attachTimings(msg, timings) {
+  var total = 0;
+  var parts = [];
+  for (var i = 0; i < timings.length; i++) {
+    var t = timings[i] || {};
+    var ms = typeof t.ms === "number" ? t.ms : 0;
+    total += ms;
+    var seg = "第" + (t.round || i + 1) + "轮 " + (ms / 1000).toFixed(1) + "s";
+    if (t.attempts > 1) seg += "（重试 " + (t.attempts - 1) + " 次）";
+    if (t.calls) seg += " · " + t.calls + " 个工具";
+    parts.push(seg);
+  }
+  var el = document.createElement("div");
+  el.className = "chat-timings";
+  el.textContent = "耗时：" + parts.join("；") + "（合计 " + (total / 1000).toFixed(1) + "s）";
+  msg.body.appendChild(el);
+}
+
+/** 把服务端 status 事件翻成一句人话。**不带秒数**——秒数由本地秒表统一追加。 */
+function statusText(ev) {
+  var phase = ev && ev.phase;
+  var what = ev && ev.tool ? (TOOL_LABEL[ev.tool] || ev.tool) : "";
+  if (phase === "thinking") return "正在理解问题…";
+  if (phase === "generating") return "正在检索资料并组织回答…";
+  if (phase === "tool") return "正在" + (what || "查询") + "…";
+  if (phase === "tool-ok") return (what || "查询") + "完成，继续整理…";
+  if (phase === "tool-fail") return (what || "查询") + "失败，换一种方式…";
+  return null;
+}
+
+function showJump() {
+  if (!jumpBtn || !panel) return;
+  jumpBtn = document.createElement("button");
+  jumpBtn.className = "chat-jump";
+  jumpBtn.textContent = "有新消息 ↓";
+  jumpBtn.onclick = function () {
+    stuck = true;
+    scrollToBottom();
+    if (jumpBtn) { jumpBtn.remove(); jumpBtn = null; }
+  };
+  panel.appendChild(jumpBtn);
+}
+
+// ── SSE 请求 ────────────────────────────────────────────────
+function askChat(text) {
+  if (busy) return;
+  // 底层兜底（2026-10-19）：UI 已经禁用了输入框，但 __chatPanel.ask 是暴露的，
+  // 别让任何调用路径在非本机环境发出请求。
+  if (!LOCAL_ONLY) {
+    var nope = addMsg("bot");
+    nope.body.textContent = "学习助手只在你自己电脑上可用（要连本地桥进程）。";
+    nope.done = true;
+    return;
+  }
+  var userMsg = addMsg("user");
+  userMsg.body.textContent = text;
+
+  // 取走已就绪的附件（上传中的不算——它们还没 fileInfo，发出去等于丢图）
+  var ready = [];
+  var stillUploading = 0;
+  for (var ai = 0; ai < pending_attach.length; ai++) {
+    var a = pending_attach[ai];
+    if (a.status === "ready" && a.fileInfo) ready.push(a.fileInfo);
+    else if (a.status === "uploading") stillUploading += 1;
+  }
+  pending_attach = pending_attach.filter(function (x) {
+    return x.status === "uploading" || x.status === "failed";
+  });
+  renderAttachBar();
+  if (stillUploading && !ready.length && !text) {
+    // 只有图还在传、又没写字：别发空消息，等图
+    var wait = addMsg("bot");
+    wait.body.textContent = "（图片还在上传，稍等一下再发）";
+    wait.done = true;
+    return;
+  }
+
+  var botMsg = addMsg("bot");
+  attachStatusSlot(botMsg);
+  busy = true;
+  if (sendBtn) {
+    sendBtn.classList.add("stop");
+    sendBtn.disabled = false;
+    // ▢ 而不是 ⏹：实心方块在一堆图标里显得过重，且部分安卓字体会画成彩色 emoji
+    sendBtn.textContent = "■";
+    sendBtn.setAttribute("aria-label", "停止回答");
+    sendBtn.title = "停止回答";
+  }
+  if (attachBtn) attachBtn.disabled = true;
+  stream = (typeof AbortController !== "undefined") ? new AbortController() : null;
+
+  // 发问前兜一次：SPA 换页/脚本晚到都可能让工具表为空，这里补载最便宜。
+  try { if (window.__webmcpEnable) window.__webmcpEnable(); } catch (e) { /* 无 loader */ }
+  var payload = { text: text, sessionId: sessionKey };
+  if (ready.length) payload.attachments = ready;
+  var body = JSON.stringify(payload);
+
+  /**
+   * 停止回答：**两步都要做**，但顺序不能反。
+   *
+   *   ① POST /chat/cancel —— 让**上游**停下（真正的取消在这里）
+   *   ② 断本地 SSE —— 同时断，让面板立刻不再追字
+   *
+   * ⚠️ 2026-10-19 实测：先 abort 再发 cancel 不行——SSE 一断，
+   * 桥那边的 res.on('close') 立刻触发，/chat 的 handler 认为客户端
+   * 走了就直接收尾，**再来的 cancel 找不到在飞的提问**（返回 cancelled:false）。
+   * 于是上游继续生成、token 照烧，用户看到的「已停止」只是本地假象。
+   *
+   * 现在：cancel 请求**先发出去**（不等响应），下一拍再 abort。
+   * 用 setTimeout(0) 而不是 await —— 取消要立刻生效，不能等网络往返。
+   */
+  /** 事件统一入口（2026-10-20 提升到 askChat 顶层）：
+   *  SSE 行解析后的 ev 与 transport 的 ev 同一词汇，走同一处理。
+   *  ⚠️ 原先定义在 attempt().then 回调内部——transport 分派点在它之前 return，
+   *  作用域不可达（实测报 handleEventPlain is not defined，busy 永卡）。 */
+  function handleEventPlain(ev) {
+      if (ev.type === "delta") {
+        // 答案已开始：过程提示该退了（思考与输出的分界就在这里）
+        clearStatus(botMsg);
+        botMsg.raw += String(ev.text || "");
+        if (botMsg.raw.length > MAX_MESSAGE_CHARS) botMsg.raw = botMsg.raw.slice(0, MAX_MESSAGE_CHARS);
+        scheduleRender(botMsg);
+      } else if (ev.type === "status") {
+        var s = statusText(ev);
+        if (s) setStatus(botMsg, s);
+      } else if (ev.type === "done") {
+        clearStatus(botMsg);
+        // 诊断（2026-10-20 查「每次都 50 秒」）：把每轮耗时附在答案末尾，
+        // 折叠成一行小字。用户据此能直接看出是「一轮就慢」还是「四轮叠加」，
+        // 不用再靠猜。没有 timings（本机桥形态）就什么都不加。
+        if (Array.isArray(ev.timings) && ev.timings.length) {
+          try { attachTimings(botMsg, ev.timings); } catch (e) { /* 诊断不影响正文 */ }
+        }
+        // ⚠️ 2026-10-19 实测 bug：done.text 是**完整答案**，不是增量。
+        // 旧代码只在 raw 为空时把它塞进 raw，然后又走「续解」路径——
+        // 此时 restStart 已经推进到旧文本末尾，raw.slice(restStart) 从
+        // 答案中间开始，解析出来的块全乱、面板显示空白（实测流结束、busy 复位、
+        // 正文一个字都没有）。
+        //
+        // 正确处理分两种：
+        //   · raw 为空（没走流式）⇒ 用它当全文，restStart 归零后整体渲染
+        //   · raw 有值（已流过 delta）⇒ 通常 done.text 是同一份答案的副本；
+        //     但**不总是**：流出去的是未清洗原文，done.text 才是 cleanAnswer
+        //     之后的版本（think 块、工具调用标记都会在服务端被剥掉）。
+        //     2026-10-19 调查实测：先说话再吐 function_calls 时，面板会永久
+        //     保留那段 XML。所以这里以 **done.text 为准**重建一次，
+        //     而不是只在 raw 为空时才用。
+        if (ev.text) {
+          var clean = String(ev.text);
+          if (clean !== botMsg.raw) {
+            botMsg.raw = clean;
+            botMsg.restStart = 0;
+            while (botMsg.body.firstChild) botMsg.body.removeChild(botMsg.body.firstChild);
+            botMsg.tailEl = null;
+          }
+        }
+        flushRender(botMsg);
+      } else if (ev.type === "error") {
+        clearStatus(botMsg);
+        botMsg.raw = botMsg.raw || ("（" + describeFailure(new Error(ev.reason || "未知")) + "）");
+        flushRender(botMsg);
+      }
+      // ev.type === "tool" 不显示
+    }
+
+  /** 收尾（2026-10-20 提升到 askChat 顶层）：
+   *  ⚠️ 原先定义在 attempt().then 回调闭包里——transport 分派（提前 return 的分支）
+   *  引用不到它，实测 ReferenceError 静默吞掉 → busy 永卡、按钮不复位。
+   *  与 handleEventPlain 一同提升，两种传输形态共用。 */
+  function finish() {
+      clearStatus(botMsg);
+      if (!botMsg.raw) {
+        botMsg.body.textContent = "（没有收到回答）";
+        botMsg.done = true;
+      } else {
+        flushRender(botMsg);
+      }
+      busy = false;
+      resetSendButton();
+      if (attachBtn) attachBtn.disabled = false;
+      stream = null;
+    }
+
+  function stopAnswer() {
+    if (!busy) return;
+    var tk = (function () {
+      try { return window.__bridgeToken || localStorage.getItem("webmcp_bridge_token") || ""; } catch (e) { return ""; }
+    })();
+    var cancelReq = fetch(withToken(BRIDGE + "/chat/cancel", tk), {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ sessionId: sessionKey }),
+    }).catch(function () { /* 断网也要把本地停掉 */ });
+    // 先把 cancel 交出去，再断流。0ms 足够让请求离开事件循环（fetch 同步入队），
+    // 又不会让用户感觉「按了没反应」。
+    setTimeout(function () {
+      if (stream) { try { stream.abort(); } catch (e) { /* 已断 */ } }
+    }, 0);
+    return cancelReq;
+  }
+  // 暴露给表单的 submit 处理器（它在 askChat 外面，拿不到闭包里的 stopAnswer）
+  stopAnswerRef = stopAnswer;
+
+  // ── 双形态分派（2026-10-20）──────────────────────────────
+  // ── 脚本形态已删除（2026-10-25 架构收口）──────────────────────
+  // 站长定案：删掉插件与站点侧的衔接层，回到 node 桥形态验证。
+  // 原 transport 分支（走 userscript iframe 通道）整段移除——它引入的重复工具循环、
+  // 参数错位、工具表空、白名单双份等一串缺陷随这段一起消失。面板只走本机桥 SSE。
+  // ── 本机桥形态（现状，原链不动）──────────────────────────
+
+  /** 发一次 /chat。401/403 时刷新一次 token 再试——桥可能重装过（新 token）。 */
+  function attempt(n) {
+    return tokenAsync(n > 1).then(function (tk) {
+      return fetch(withToken(BRIDGE + "/chat", tk), {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: body,
+        signal: stream ? stream.signal : undefined,
+      });
+    }).then(function (res) {
+      if ((res.status === 401 || res.status === 403) && n === 1) return attempt(2);
+      return res;
+    });
+  }
+
+  attempt(1).then(function (res) {
+    if (!res.ok || !res.body) throw new Error("HTTP " + res.status);
+    var reader = res.body.getReader();
+    var dec = new TextDecoder();
+    var buf = "";
+    function pump() {
+      return reader.read().then(function (r) {
+        if (r.done) return finish();
+        buf += dec.decode(r.value, { stream: true });
+        var parts = buf.split("\n\n");
+        buf = parts.pop();
+        for (var i = 0; i < parts.length; i++) handleEvent(parts[i]);
+        return pump();
+      });
+    }
+    function handleEvent(raw) {
+      var line = raw.split("\n").filter(function (l) { return l.indexOf("data:") === 0; })[0];
+      if (!line) return;                     // 注释/心跳
+      var ev;
+      try { ev = JSON.parse(line.slice(5).trim()); } catch (e) { return; }
+      handleEventPlain(ev);
+    }
+
+    return pump();
+  }).catch(function (e) {
+    clearStatus(botMsg);
+    if (e && e.name === "AbortError") {
+      // 用户点的「停止」：保留已收到的正文，补一句收尾标记，
+      // **不当错误**（否则用户会以为请求失败了）。
+      flushRender(botMsg);
+      if (!botMsg.raw) {
+        botMsg.body.textContent = "（已停止）";
+      } else {
+        var tail = document.createElement("span");
+        tail.className = "chat-stopped";
+        tail.textContent = "（已停止）";
+        botMsg.body.appendChild(tail);
+      }
+    } else {
+      botMsg.raw = "";
+      botMsg.done = true;
+      botMsg.body.textContent = "连不上助手（" + describeFailure(e) + "）";
+    }
+    busy = false;
+    resetSendButton();
+    if (attachBtn) attachBtn.disabled = false;
+    stream = null;
+  });
+}
+
+/** 把发送按钮恢复成「发送」态（停止与结束共用）。 */
+function resetSendButton() {
+  if (!sendBtn) return;
+  sendBtn.classList.remove("stop");
+  sendBtn.disabled = false;
+  sendBtn.textContent = "↑";
+  sendBtn.setAttribute("aria-label", "发送");
+  sendBtn.title = "";
+  stopAnswerRef = function () {};
+}
+
+/**
+ * 把请求失败翻译成人能照着做的句子。
+ *
+ * HTTP 401 这种原文对用户毫无信息量——它其实意味着「桥在跑但 token 对不上」
+ * （桥重装过 / 换了 BRIDGE_TOKEN），处理动作是刷新页面让面板重新握手。
+ */
+function describeFailure(e) {
+  var msg = String((e && e.message) || e);
+  // ⚠️ 2026-10-22 修：这里原来写 /^HTTP (\d{3})$/ 的单反斜杠形态。本文件整体是一个
+  // **普通模板字符串**（CHAT_JS 由反引号包住），模板串会把单个反斜杠 d 当成转义吃掉
+  // ⇒ 产物里变成 /^HTTP (d{3})$/，永远匹配不上「HTTP 429」这类消息 ⇒ 下面四个分支
+  // （401/403/404/413/429）全是死代码。修法：写双反斜杠，让模板串求值后得到单反斜杠 d。
+  // **这是本仓第五次踩模板串的坑**（前四次：drawer-sync 正则、注释里的反引号 ×3）。
+  // 改这里务必在产物里验证，注释里也不能出现反引号。
+  var m = msg.match(/^HTTP (\d{3})$/);
+  if (m) {
+    var code = Number(m[1]);
+    if (code === 401 || code === 403) return "本地桥拒绝了这次请求，刷新页面再试（token 可能已更换）";
+    if (code === 404) return "本地桥没有 /chat 端点，先更新桥脚本";
+    if (code === 413) return "这条消息太长";
+    // 速率闸（2026-10-19）：连点或脚本连发时触发。要说清"等一下"，不是"坏了"
+    if (code === 429) return "发得太快了，等几秒再问";
+  }
+  if (/Failed to fetch|NetworkError|Load failed/i.test(msg)) {
+    // 2026-10-22 更正：这句以前写「先在电脑上跑 node bridge.mjs」——两阶段重构后
+    // 那个文件已不存在，提示指向一个做不到的动作，把用户带偏。
+    // 现在链路是「油猴脚本 → 跨 origin 通道 → 上游」，失败的真实原因通常是
+    // 脚本没装/没生效，或两环密文解不开（AES-GCM 认证失败 ⇒ 脚本静默休眠）。
+    return "连不上助手：检查油猴脚本是否已安装并启用（脚本没生效时不会建立通道）";
+  }
+  return msg;
+}
+
+// ── 面板开关 ────────────────────────────────────────────────
+// ── 宽度拖拽（桌面档）──────────────────────────────────────
+// 与左侧边栏同一套手法（shirone-reader.js 的 sidebar-resizer）：按下记起点，
+// 移动改 CSS 变量，松开落 localStorage，双击复位。
+//
+// 两处与左栏不同，都是「右边」这个位置带来的：
+//   ① 方向相反——手柄在面板左缘，往左拖是变宽，所以 dx 取负；
+//   ② 上限更宽——助手要放代码块和表格，允许到 720px（左栏导航到 580 就够）。
+var CHAT_W = "chat-width";
+var CHAT_W_KEY = "shirone-chat-width";
+var CHAT_W_DEFAULT = 240;
+var CHAT_W_MIN = 240;
+var CHAT_W_MAX = 720;
+// 正文列至少留这么宽，否则拖着拖着把文章挤没了
+var CHAT_MAIN_MIN = 420;
+
+function chatMaxWidth() {
+  // 可视宽度减掉左栏与正文的最小宽度；夹在 [MIN, MAX] 之间
+  var sidebar = 0;
+  var d = document.querySelector(".m3-drawer");
+  if (d && window.innerWidth > 860) sidebar = d.getBoundingClientRect().width || 0;
+  var room = Math.floor(window.innerWidth - sidebar - CHAT_MAIN_MIN);
+  if (room < CHAT_W_MIN) return CHAT_W_MIN;
+  return Math.min(CHAT_W_MAX, room);
+}
+
+function applyChatWidth(w, persist) {
+  var max = chatMaxWidth();
+  var v = Math.round(w);
+  if (v < CHAT_W_MIN) v = CHAT_W_MIN;
+  if (v > max) v = max;
+  document.documentElement.style.setProperty("--" + CHAT_W, v + "px");
+  if (persist) {
+    try { localStorage.setItem(CHAT_W_KEY, String(v)); } catch (e) { /* 隐私模式 */ }
+  }
+  return v;
+}
+
+/** 恢复已保存的宽度（只在桌面档有意义；窄屏那条规则根本不用这个变量）。 */
+function restoreChatWidth() {
+  if (window.innerWidth <= 860) return;
+  try {
+    var s = localStorage.getItem(CHAT_W_KEY);
+    if (!s) return;
+    var n = parseInt(s, 10);
+    if (isNaN(n) || n < CHAT_W_MIN) return;
+    applyChatWidth(n, false);
+  } catch (e) { /* 无 localStorage */ }
+}
+
+function buildResizer() {
+  var el = document.createElement("div");
+  el.className = "chat-resizer";
+  el.id = "chat-resizer";
+  el.title = "按住拖拽调整助手宽度，双击恢复默认";
+
+  var dragging = false;
+  var startX = 0;
+  var startW = 0;
+
+  el.addEventListener("mousedown", function (e) {
+    if (window.innerWidth <= 860) return;
+    dragging = true;
+    startX = e.clientX;
+    startW = panel.getBoundingClientRect().width;
+    el.classList.add("dragging");
+    document.body.classList.add("chat-resizing");
+    e.preventDefault();
+  });
+
+  window.addEventListener("mousemove", function (e) {
+    if (!dragging) return;
+    // 往左拖 = 变宽，所以取负
+    applyChatWidth(startW + (startX - e.clientX), false);
+  });
+
+  window.addEventListener("mouseup", function () {
+    if (!dragging) return;
+    dragging = false;
+    el.classList.remove("dragging");
+    document.body.classList.remove("chat-resizing");
+    if (panel) applyChatWidth(panel.getBoundingClientRect().width, true);
+  });
+
+  el.addEventListener("dblclick", function () {
+    applyChatWidth(CHAT_W_DEFAULT, true);
+  });
+
+  // 触屏：桌面档在平板上也可能命中（>1200px 的横屏平板）
+  el.addEventListener("touchstart", function (e) {
+    if (window.innerWidth <= 860 || !e.touches.length) return;
+    dragging = true;
+    startX = e.touches[0].clientX;
+    startW = panel.getBoundingClientRect().width;
+    el.classList.add("dragging");
+    document.body.classList.add("chat-resizing");
+  }, { passive: true });
+  el.addEventListener("touchmove", function (e) {
+    if (!dragging || !e.touches.length) return;
+    applyChatWidth(startW + (startX - e.touches[0].clientX), false);
+  }, { passive: true });
+  el.addEventListener("touchend", function () {
+    if (!dragging) return;
+    dragging = false;
+    el.classList.remove("dragging");
+    document.body.classList.remove("chat-resizing");
+    if (panel) applyChatWidth(panel.getBoundingClientRect().width, true);
+  });
+
+  return el;
+}
+
+function buildPanel() {
+  if (panel) return;
+  panel = document.createElement("aside");
+  panel.id = "chat-panel";
+  panel.className = "chat-panel";
+  panel.setAttribute("aria-label", "学习助手");
+
+  var head = document.createElement("div");
+  head.className = "chat-head";
+  var title = document.createElement("span");
+  title.className = "chat-title";
+  title.textContent = "学习助手";
+  var closeBtn = document.createElement("button");
+  closeBtn.className = "chat-head-btn";
+  closeBtn.setAttribute("aria-label", "关闭");
+  // 叉号用 SVG，不用字符：字符 ✕ 在部分安卓字体里会被渲染成彩色 emoji 或偏移基线
+  var x = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  x.setAttribute("width", "16"); x.setAttribute("height", "16");
+  x.setAttribute("viewBox", "0 0 24 24"); x.setAttribute("fill", "none");
+  x.setAttribute("stroke", "currentColor"); x.setAttribute("stroke-width", "2");
+  x.setAttribute("stroke-linecap", "round");
+  var xp = document.createElementNS("http://www.w3.org/2000/svg", "path");
+  xp.setAttribute("d", "M18 6L6 18M6 6l12 12");
+  x.appendChild(xp);
+  closeBtn.appendChild(x);
+  closeBtn.onclick = close;
+  head.appendChild(title); head.appendChild(closeBtn);
+
+  logEl = document.createElement("div");
+  logEl.className = "chat-log";
+  logEl.setAttribute("role", "log");
+  logEl.setAttribute("aria-live", "polite");
+  logEl.addEventListener("scroll", onUserScroll, { passive: true });
+  logEl.addEventListener("wheel", function () { stuck = false; }, { passive: true });
+  logEl.addEventListener("touchmove", function () { stuck = false; }, { passive: true });
+
+  var form = document.createElement("form");
+  form.className = "chat-input";
+
+  // 附件条（输入区上方）：待发图片缩略图
+  attachBar = document.createElement("div");
+  attachBar.className = "chat-attach-bar";
+
+  // 隐藏的文件选择器：回形针按钮点它就等价于点「选择文件」
+  fileInput = document.createElement("input");
+  fileInput.type = "file";
+  fileInput.accept = "image/*";
+  fileInput.multiple = true;
+  fileInput.style.display = "none";
+  fileInput.addEventListener("change", function () {
+    acceptFiles(fileInput.files);
+    fileInput.value = "";      // 允许连续选同一个文件
+  });
+
+  attachBtn = document.createElement("button");
+  attachBtn.type = "button";
+  attachBtn.className = "chat-attach-btn";
+  attachBtn.setAttribute("aria-label", "添加图片");
+  attachBtn.title = "添加图片（也可以直接粘贴或拖进来）";
+  attachBtn.innerHTML = "";
+  (function () {
+    var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("width", "18"); svg.setAttribute("height", "18");
+    svg.setAttribute("viewBox", "0 0 24 24"); svg.setAttribute("fill", "none");
+    svg.setAttribute("stroke", "currentColor"); svg.setAttribute("stroke-width", "2");
+    svg.setAttribute("stroke-linecap", "round"); svg.setAttribute("stroke-linejoin", "round");
+    var p1 = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    p1.setAttribute("d", "M21.4 11.6l-8.5 8.5a5.5 5.5 0 0 1-7.8-7.8l8.5-8.5a3.7 3.7 0 0 1 5.2 5.2l-8.5 8.5a1.8 1.8 0 0 1-2.6-2.6l7.8-7.8");
+    svg.appendChild(p1);
+    attachBtn.appendChild(svg);
+  })();
+  attachBtn.addEventListener("click", function () { fileInput.click(); });
+
+  inputEl = document.createElement("textarea");
+  inputEl.className = "chat-textarea";
+  inputEl.rows = 1;
+  inputEl.placeholder = "问学习助手…";
+  inputEl.addEventListener("input", function () {
+    inputEl.style.height = "auto";
+    inputEl.style.height = Math.min(132, inputEl.scrollHeight) + "px";
+  });
+  inputEl.addEventListener("keydown", function (e) {
+    if (e.key === "Enter" && !e.shiftKey && !e.isComposing) {
+      e.preventDefault();
+      form.requestSubmit ? form.requestSubmit() : sendNow();
+    }
+  });
+  // 粘贴图片：截图后直接 Ctrl+V 是最自然的上图方式
+  inputEl.addEventListener("paste", function (e) {
+    var items = (e.clipboardData && e.clipboardData.items) || [];
+    var files = [];
+    for (var i = 0; i < items.length; i++) {
+      if (items[i].kind === "file" && /^image\//.test(items[i].type)) {
+        var f = items[i].getAsFile();
+        if (f) files.push(f);
+      }
+    }
+    if (files.length) { e.preventDefault(); acceptFiles(files); }
+  });
+
+  sendBtn = document.createElement("button");
+  sendBtn.className = "chat-send";
+  sendBtn.type = "submit";
+  sendBtn.setAttribute("aria-label", "发送");
+  sendBtn.textContent = "↑";
+  form.appendChild(attachBtn); form.appendChild(inputEl); form.appendChild(sendBtn);
+  form.appendChild(fileInput);
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    // busy 时这个按钮就是「停止」：走真正的取消，不只是断本地流
+    if (busy) { stopAnswerRef(); return; }
+    sendNow();
+  });
+
+  // 拖图进面板 = 附件
+  panel.addEventListener("dragover", function (e) {
+    if (!e.dataTransfer || Array.prototype.indexOf.call(e.dataTransfer.types || [], "Files") < 0) return;
+    e.preventDefault();
+    panel.classList.add("chat-dragover");
+  });
+  panel.addEventListener("dragleave", function (e) {
+    if (e.target === panel) panel.classList.remove("chat-dragover");
+  });
+  panel.addEventListener("drop", function (e) {
+    panel.classList.remove("chat-dragover");
+    if (!e.dataTransfer || !e.dataTransfer.files || !e.dataTransfer.files.length) return;
+    e.preventDefault();
+    acceptFiles(e.dataTransfer.files);
+  });
+
+  panel.appendChild(head);
+  panel.appendChild(logEl);
+  panel.appendChild(attachBar);
+  panel.appendChild(form);
+  // 拖拽手柄放最后（z-index 已够高，顺序只为「不挡已有子元素」）
+  panel.appendChild(buildResizer());
+
+  // 挂载点必须同时满足两件事（2026-10-19 实测桌面档跑到正文上方，就是这里没做对）：
+  //   ① **桌面档**要作为 .layout-container 的 flex 子项排在正文右侧（原来挂在
+  //      #search-panel 后面 = .main-column 里、.layout-container 之前 ⇒ 横在正文上方）；
+  //   ② **手机/中等档**是 position:fixed，祖先不能有 transform / filter / contain:paint，
+  //      否则包含块被改，抽屉就不贴视口边。.layout-container 只有 overflow-x:clip，
+  //      不建立固定定位包含块。
+  // .m3-toc 在 SPA 里会被整块替换，而 panel 是它的**后一个兄弟**，不会跟着被换掉。
+  var anchor = document.querySelector(".layout-container .m3-toc");
+  if (!anchor) anchor = document.querySelector(".layout-container");
+  if (anchor && anchor.parentNode) {
+    anchor.parentNode.insertBefore(panel, anchor.nextSibling);
+  } else {
+    var search = document.getElementById("search-panel");
+    (search && search.parentNode ? search.parentNode : document.body).appendChild(panel);
+  }
+
+  // 手机抽屉遮罩：与左侧边栏同款手法，点它关面板。
+  // 遮罩要 **inset:0 盖全屏**，所以挂在 body 下，避开 .layout-container 的 overflow 裁剪。
+  if (!backdrop) {
+    backdrop = document.createElement("div");
+    backdrop.className = "chat-backdrop";
+    backdrop.addEventListener("click", close);
+    document.body.appendChild(backdrop);
+  }
+
+  ensureKatex();
+}
+
+function sendNow() {
+  var t = String(inputEl && inputEl.value || "").trim();
+  if (busy) return;
+  // 只有图没写字也要能发（「这图里是什么」是最常见的用法，
+  // 让人再打一遍字是多余的）。附件里至少一张 ready 就放行。
+  var hasReadyImage = false;
+  for (var i = 0; i < pending_attach.length; i++) {
+    if (pending_attach[i].status === "ready") { hasReadyImage = true; break; }
+  }
+  if (!t && !hasReadyImage) return;
+  // 桥端要求 text 非空（它没法区分「空问题」和「坏包」）。只发图时补一个问题——
+  // 上游对「图里有什么」这类极简问法配合度最高（实测比任务式描述更少被拦）。
+  if (!t) t = "图里有什么？";
+  inputEl.value = "";
+  inputEl.style.height = "auto";
+  askChat(t.slice(0, MAX_MESSAGE_CHARS));
+}
+
+function showEmpty() {
+  var box = document.createElement("div");
+  box.className = "chat-empty";
+  var p = document.createElement("p");
+  p.textContent = "我可以帮你在这套课程资料里找东西、读页面、看图。试试：";
+  var ul = document.createElement("ul");
+  ["这一页讲了什么？", "电机学有哪些课堂笔记？", "跳到「铁芯损耗」那一节"].forEach(function (s) {
+    var li = document.createElement("li");
+    li.textContent = s;
+    ul.appendChild(li);
+  });
+  box.appendChild(p); box.appendChild(ul);
+  logEl.appendChild(box);
+}
+
+function openPanel() {
+  buildPanel();
+  open = true;
+  document.body.classList.add("chat-open");
+  restoreChatWidth();
+  var btn = document.getElementById("assistant-toggle");
+  if (btn) btn.setAttribute("aria-expanded", "true");
+  if (logEl && !logEl.children.length) {
+    if (LOCAL_ONLY) showEmpty();
+    else showLocalOnlyNotice();
+  }
+  // 手机上不自动抢焦点：会立刻弹键盘，把抽屉顶成半屏
+  if (inputEl && LOCAL_ONLY && !(window.innerWidth <= 860)) inputEl.focus();
+  stuck = true;
+  scrollToBottom();
+}
+
+/**
+ * 非本机环境下的说明（不发任何请求）。
+ *
+ * 为什么不干脆隐藏按钮：站长会在线上域名自测，看不见入口反而困惑。
+ * 为什么不静默禁用：用户会以为坏了。说清楚「这是本机功能」最省事。
+ */
+function showLocalOnlyNotice() {
+  if (inputEl) { inputEl.disabled = true; inputEl.placeholder = "仅本机可用"; }
+  if (sendBtn) sendBtn.disabled = true;
+  if (attachBtn) attachBtn.disabled = true;
+  var box = document.createElement("div");
+  box.className = "chat-empty chat-local-only";
+  var p1 = document.createElement("p");
+  p1.textContent = "学习助手要连你电脑上的油猴脚本，所以只在你自己电脑上打开本站时可用。";
+  var p2 = document.createElement("p");
+  p2.textContent = "在线版可以正常阅读全部课程资料；需要用助手时，先安装并启用学习助手脚本（油猴），再打开本站。";
+  box.appendChild(p1); box.appendChild(p2);
+  logEl.appendChild(box);
+}
+
+function close() {
+  open = false;
+  document.body.classList.remove("chat-open");
+  var btn = document.getElementById("assistant-toggle");
+  if (btn) btn.setAttribute("aria-expanded", "false");
+  if (inputEl) inputEl.blur();
+}
+
+function toggle() { open ? close() : openPanel(); }
+
+// ── 接线 ────────────────────────────────────────────────────
+var toggleBtn = document.getElementById("assistant-toggle");
+if (toggleBtn) toggleBtn.addEventListener("click", function (e) { e.stopPropagation(); toggle(); });
+
+document.addEventListener("keydown", function (e) {
+  if (e.key === "Escape" && open) {
+    // 输入框有内容时先不清空，只关面板
+    close();
+  }
+});
+
+// SPA 导航钩子：面板不销毁，只更新「当前页」感知（历史保留）
+window.__chatSync = function () {
+  if (!open) return;
+  // 目前不需要额外动作：下一轮 ask 时 contextProvider 会取新页信息。
+  // 这里只做滚动位置复位，避免换页后仍停在旧位置。
+  stuck = true;
+  scrollToBottom();
+};
+
+// 窗口变窄时把面板宽度收回合法区间（否则 720px 的记忆值会把正文挤没）。
+// 只夹不存——存了就把用户原本的偏好改掉了，窗口再变宽时回不去。
+var resizeQueued = false;
+window.addEventListener("resize", function () {
+  if (resizeQueued) return;
+  resizeQueued = true;
+  requestAnimationFrame(function () {
+    resizeQueued = false;
+    if (!open || window.innerWidth <= 860) return;
+    if (panel) applyChatWidth(panel.getBoundingClientRect().width, false);
+  });
+}, { passive: true });
+
+window.__chatPanel = { open: openPanel, close: close, toggle: toggle, ask: askChat, get isOpen() { return open; } };
+
+// 2026-10-25（生产验收）：面板是「我要用页面工具」最直接的信号——打开即启用。
+// loader 的形态 3 默认不加载 polyfill（普通读者不付 281KB），但没有这个开关时
+// 用户必须自己记着带 ?webmcp=1 或手写 localStorage，忘了就工具零注册、
+// 提示词整段被跳过、模型只会回「我没有 site_* 工具」。
+try {
+  var __origOpen = openPanel;
+  openPanel = function () { try { if (window.__webmcpEnable) window.__webmcpEnable(); } catch (e) {} return __origOpen.apply(this, arguments); };
+  window.__chatPanel.open = openPanel;
+} catch (e) { /* 只读绑定：忽略 */ }
+
+// ── setTransport 钩子（2026-10-20，契约见 chat-panel-hook 文档）──
+// fn = {ask, cancel, upload} 或 null（恢复本机桥）。ready 超时指引走 showNotice。
+window.__chatPanel.setTransport = function (fn) {
+  var prev = transport;
+  transport = fn || null;
+  // 切换前收尾在飞的一问（若正在跑）——两种形态切换的干净边界。
+  // ⚠️ 2026-10-20 无人值守实测：旧形态的 stopAnswerRef 依赖悬死 Promise 落定
+  // 才复位 busy；transport 形态失联时永不落定。这里直接本地收尾，不赌对端。
+  if (busy) {
+    try { stopAnswerRef(); } catch (e) { /* 已停 */ }
+    // 旧 transport 的在飞状态也要收（它不会因为换了对象就自己清）——
+    // 否则同一个 transport 对象被复用时下一问仍撞「上一问还没结束」。
+    try { if (prev && typeof prev.abandon === "function") prev.abandon("连接方式已切换"); } catch (e) { /* 已收 */ }
+    // 为确保切换立刻干净：再挂一个 2s 的强制复位（比兜底更短）。
+    setTimeout(function () {
+      if (busy) { busy = false; resetSendButton(); if (attachBtn) attachBtn.disabled = false; stream = null; }
+    }, 2000);
+  }
+};
+window.__chatPanel.showNotice = function (text) {
+  var notice = addMsg("bot");
+  notice.body.textContent = String(text || "");
+  notice.done = true;
+};
+})();
