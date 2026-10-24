@@ -463,6 +463,13 @@ export async function middleware(context) {
 				// 拿到新 200；无需 Zone Purge。
 				const isEngineBinary =
 					/\.wasm$/.test(url.pathname) || /\.data$/.test(url.pathname);
+				// Astro 的 _astro/ 产物文件名带内容哈希（Octave-UI 2026-10-24 实证：
+				// 同源重建名集合一致 / 注释被剥名不变 / 真改内容 App.D7owsQ-e →
+				// App.Bq1w34hm 名必变）⇒ 内容变则名变，可永久缓存且永不需 purge。
+				// 这也是消除「最高频穿边缘路径」的关键：chunk 此前 max-age=0，
+				// 每次请求都跨洋回源，而边缘间歇挂起正发生在这条 fetch 上
+				// （Octave-UI SITE-ADMIN-REQUEST 附录实测：chunk 8 次里 2 次超时）。
+				const isHashedAsset = url.pathname.includes("/_astro/");
 				const upstreamHeaders = { "Accept-Encoding": "gzip" };
 				if (isEngineBinary) {
 					const inm = request.headers.get("if-none-match");
@@ -470,9 +477,24 @@ export async function middleware(context) {
 					const ims = request.headers.get("if-modified-since");
 					if (ims) upstreamHeaders["If-Modified-Since"] = ims;
 				}
+				// 边缘挂起兜底：小文件（HTML / _astro / 普通资产）给显式超时，挂住就
+				// 快速失败成 502 而不是让浏览器 pending 到天亮；大二进制不设超时
+				// （74.5MB 实测 142s，卡死它才是事故）。AbortController 是 edge 运行时
+				// 标准 API；若某运行时缺失，降级为无超时 fetch，不影响可用性。
 				let upstream = null;
 				try {
-					upstream = await fetch(pagesUrl, { headers: upstreamHeaders });
+					let signal;
+					let timer;
+					if (!isEngineBinary && typeof AbortController === "function") {
+						const ctrl = new AbortController();
+						timer = setTimeout(() => ctrl.abort(), 20000);
+						signal = ctrl.signal;
+					}
+					try {
+						upstream = await fetch(pagesUrl, { headers: upstreamHeaders, signal });
+					} finally {
+						if (timer) clearTimeout(timer);
+					}
 				} catch (_err) {
 					upstream = null;
 				}
@@ -517,6 +539,9 @@ export async function middleware(context) {
 						"Cache-Control",
 						"public, max-age=3600, s-maxage=86400, stale-while-revalidate=600",
 					);
+				} else if (isHashedAsset) {
+					// 内容哈希命名 ⇒ 名变即内容变，永久缓存安全（对方已实证）。
+					headers.set("Cache-Control", "public, max-age=31536000, immutable");
 				} else {
 					// 与站内其它路径一致：每次校验，推送立即可见（不是「清缓存」，是默认不缓存）。
 					headers.set("Cache-Control", "public, max-age=0, must-revalidate");
