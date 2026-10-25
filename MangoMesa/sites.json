@@ -1,34 +1,23 @@
 {
-	"generatedAt": "2026-10-25T06:48:50.172Z",
+	"generatedAt": "2026-10-25T09:13:05.374Z",
 	"acceleratedDirs": ["Octave", "S26-1_202609"],
 	"entries": [
 		{
-			"name": "isui.ren-heart",
-			"pages": "ready",
-			"accelerated": false,
-			"pushedAt": "2026-10-25T06:03:43Z",
-			"status": "built",
-			"description": "isui.ren 的站点心脏：EdgeOne Pages 静态源、边缘中间件与跨仓部署链",
-			"language": "Rust",
-			"url": "https://github.com/ArchivalEra/isui.ren-heart",
-			"icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMTIgMjAuNUMxMiAyMC41IDQgMTUuNCA0IDEwLjIgNCA3LjYgNiA1LjUgOC42IDUuNWMxLjUgMCAyLjguNyAzLjQgMS44LjYtMS4xIDEuOS0xLjggMy40LTEuOEMxOCA1LjUgMjAgNy42IDIwIDEwLjJjMCA1LjItOCAxMC4zLTggMTAuM1oiLz48L3N2Zz4="
-		},
-		{
-			"name": "S26-1_202609",
+			"name": "Octave-Full-Wasm",
 			"pages": "absent",
-			"accelerated": true,
-			"pushedAt": "2026-10-25T06:03:22Z",
+			"accelerated": false,
+			"pushedAt": "2026-10-25T09:09:11Z",
 			"status": null,
-			"description": "一种很便宜的，OKF0.2格式的知识库，人类或机器都能看懂",
+			"description": "浏览器里跑满功能 GNU Octave 11.3.0：wasm64 + 多线程 + OpenBLAS 四车道自动选档",
 			"language": "JavaScript",
-			"url": "https://github.com/ArchivalEra/S26-1_202609",
-			"icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMTIgN2MtMS40LTEuMi0zLjQtMS45LTUuNi0xLjktLjcgMC0xLjQuMDYtMiAuMTlWMTguM2MuNi0uMTIgMS4zLS4xOSAyLS4xOSAyLjIgMCA0LjIuNyA1LjYgMS45IDEuNC0xLjIgMy40LTEuOSA1LjYtMS45LjcgMCAxLjQuMDcgMiAuMTlWNS4yOWMtLjYtLjEzLTEuMy0uMTktMi0uMTktMi4yIDAtNC4yLjctNS42IDEuOVoiLz48cGF0aCBkPSJNMTIgN3YxMyIvPjwvc3ZnPg=="
+			"url": "https://github.com/ArchivalEra/Octave-Full-Wasm",
+			"icon": ""
 		},
 		{
 			"name": "Octave-UI",
 			"pages": "ready",
 			"accelerated": false,
-			"pushedAt": "2026-10-25T04:14:55Z",
+			"pushedAt": "2026-10-25T09:05:39Z",
 			"status": null,
 			"description": "",
 			"language": "JavaScript",
@@ -39,7 +28,7 @@
 			"name": "OpenModelica-Full-Wasm",
 			"pages": "absent",
 			"accelerated": false,
-			"pushedAt": "2026-10-25T03:58:44Z",
+			"pushedAt": "2026-10-25T08:59:15Z",
 			"status": null,
 			"description": "Run OpenModelica in the browser — official wasm target (Rust route), pure client-side Modelica compile & simulate, .mat handshake to the Octave engine. AGPL-3.0.",
 			"language": "Python",
@@ -47,10 +36,32 @@
 			"icon": ""
 		},
 		{
+			"name": "isui.ren-heart",
+			"pages": "ready",
+			"accelerated": false,
+			"pushedAt": "2026-10-25T08:51:35Z",
+			"status": "built",
+			"description": "isui.ren 的站点心脏：EdgeOne Pages 静态源、边缘中间件与跨仓部署链",
+			"language": "Rust",
+			"url": "https://github.com/ArchivalEra/isui.ren-heart",
+			"icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMTIgMjAuNUMxMiAyMC41IDQgMTUuNCA0IDEwLjIgNCA3LjYgNiA1LjUgOC42IDUuNWMxLjUgMCAyLjguNyAzLjQgMS44LjYtMS4xIDEuOS0xLjggMy40LTEuOEMxOCA1LjUgMjAgNy42IDIwIDEwLjJjMCA1LjItOCAxMC4zLTggMTAuM1oiLz48L3N2Zz4="
+		},
+		{
+			"name": "S26-1_202609",
+			"pages": "absent",
+			"accelerated": true,
+			"pushedAt": "2026-10-25T08:51:12Z",
+			"status": null,
+			"description": "一种很便宜的，OKF0.2格式的知识库，人类或机器都能看懂",
+			"language": "JavaScript",
+			"url": "https://github.com/ArchivalEra/S26-1_202609",
+			"icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMTIgN2MtMS40LTEuMi0zLjQtMS45LTUuNi0xLjktLjcgMC0xLjQuMDYtMiAuMTlWMTguM2MuNi0uMTIgMS4zLS4xOSAyLS4xOSAyLjIgMCA0LjIuNyA1LjYgMS45IDEuNC0xLjIgMy40LTEuOSA1LjYtMS45LjcgMCAxLjQuMDcgMiAuMTlWNS4yOWMtLjYtLjEzLTEuMy0uMTktMi0uMTktMi4yIDAtNC4yLjctNS42IDEuOVoiLz48cGF0aCBkPSJNMTIgN3YxMyIvPjwvc3ZnPg=="
+		},
+		{
 			"name": "Octave-Extra-Content",
 			"pages": "absent",
 			"accelerated": false,
-			"pushedAt": "2026-10-25T02:27:53Z",
+			"pushedAt": "2026-10-25T08:46:27Z",
 			"status": null,
 			"description": "Extra content for the browser Octave (private): package archives + runtime/toolchain provisioning recipes. Formerly Octave-Forge-Shelf.",
 			"language": "Python",
@@ -78,17 +89,6 @@
 			"language": "Python",
 			"url": "https://github.com/ArchivalEra/Einfacht",
 			"icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cmVjdCB4PSI2LjUiIHk9IjQuNSIgd2lkdGg9IjExIiBoZWlnaHQ9IjE1LjUiIHJ4PSIyLjIiLz48cGF0aCBkPSJNOS41IDMuNWg1djIuMmgtNXoiLz48cGF0aCBkPSJNOS4zIDEyLjhsMS45IDEuOSAzLjYtNCIvPjwvc3ZnPg=="
-		},
-		{
-			"name": "Octave-Full-Wasm",
-			"pages": "absent",
-			"accelerated": false,
-			"pushedAt": "2026-10-21T06:51:58Z",
-			"status": null,
-			"description": "浏览器里跑满功能 GNU Octave 11.3.0：wasm64 + 多线程 + OpenBLAS 四车道自动选档",
-			"language": "JavaScript",
-			"url": "https://github.com/ArchivalEra/Octave-Full-Wasm",
-			"icon": ""
 		},
 		{
 			"name": "LLVM-wasm",
