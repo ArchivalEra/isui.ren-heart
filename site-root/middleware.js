@@ -491,27 +491,97 @@ export async function middleware(context) {
 					const ims = request.headers.get("if-modified-since");
 					if (ims) upstreamHeaders["If-Modified-Since"] = ims;
 				}
-				// 边缘挂起兜底：小文件（HTML / _astro / bridge / 普通资产）给显式超时，
-				// 挂住就快速失败成 502 而不是让浏览器 pending 到天亮；大二进制不设超时
-				// （74.5MB 实测 142s，卡死它才是事故）。8s 是对方实测的干净分界线：
-				// 成功请求全部落在 0.3–7s，挂住的都是 20s+ 直到底（2026-10-24 双方数据）。
-				// AbortController 是 edge 运行时标准 API；若缺失则降级为无超时 fetch。
-				let upstream = null;
-				try {
-					let signal;
-					let timer;
-					if (!isEngineBinary && typeof AbortController === "function") {
-						const ctrl = new AbortController();
-						timer = setTimeout(() => ctrl.abort(), 8000);
-						signal = ctrl.signal;
+				// A'：`.gz` 走不透明二进制通道——上游必须 identity（否则 Pages 会
+				// 对 gz 再压一层，Range 就指向二次压缩体，客户端解不出），并把客户端
+				// 的 Range 原样透传（分片加载的前提）。
+				const isPrecompressedReq = url.pathname.endsWith(".gz");
+				if (isPrecompressedReq) {
+					upstreamHeaders["Accept-Encoding"] = "identity";
+					const range = request.headers.get("range");
+					if (range) upstreamHeaders["Range"] = range;
+				}
+				// 边缘挂起兜底 + 对冲请求（hedged request）。
+				//
+				// 实测形态（2026-10-25 07:59，并发 10 路同 URL）：
+				//   边缘 9 路 0.6–1.3s 正常，1–2 路卡到 25s 上限；
+				//   Pages 直连基线同样有 3/10 慢到 5.5s。
+				// ⇒ 劣化是**单请求级随机失败**，不是整条路径死掉（否则 10 路会全卡）。
+				// 这正适合对冲：1.5s 内没拿到响应头就并发第二发，谁先回用谁，
+				// 另一个 abort。最坏延迟 ≈ 对冲延迟 + 正常延迟，不是串行重试的 2×。
+				// 收益：单发失败率 p → p²（假设独立）。p=5% 时 12 发脚本的整页
+				// 幸存率从 (0.95)^12≈54% 升到 (0.9975)^12≈97%。
+				//
+				// 超时：小文件 8s（对方实测成功请求全在 0.3–7s，挂住的都是 20s+ 到底）；
+				// 大二进制不设超时（74.5MB 实测 142s，卡死它才是事故）。
+				const HEDGE_DELAY_MS = 1500;
+				const SMALL_TIMEOUT_MS = 8000;
+				const fetchOnce = async (signal) =>
+					fetch(pagesUrl, { headers: upstreamHeaders, signal });
+				const withTimeout = async () => {
+					if (isEngineBinary || typeof AbortController !== "function") {
+						return fetchOnce(undefined);
 					}
+					const ctrl = new AbortController();
+					const timer = setTimeout(() => ctrl.abort(), SMALL_TIMEOUT_MS);
 					try {
-						upstream = await fetch(pagesUrl, { headers: upstreamHeaders, signal });
+						return await fetchOnce(ctrl.signal);
 					} finally {
-						if (timer) clearTimeout(timer);
+						clearTimeout(timer);
 					}
-				} catch (_err) {
-					upstream = null;
+				};
+				let upstream = null;
+				if (isEngineBinary || typeof AbortController !== "function") {
+					// 大二进制 / 无 AbortController：单发 + 各自超时策略
+					try {
+						upstream = await withTimeout();
+					} catch (_err) {
+						upstream = null;
+					}
+				} else {
+					// 小文件：对冲。第一发 1.5s 未回响应头 ⇒ 立刻发第二发。
+					// 语义：「首个**成功**者胜」——任一发失败不算结果，继续等另一发；
+					// 任一发成功则 settle 并 abort 另一发。
+					const ctrlA = new AbortController();
+					const ctrlB = new AbortController();
+					const timerA = setTimeout(() => ctrlA.abort(), SMALL_TIMEOUT_MS);
+					let timerB = null;
+					let hedgeTimer = null;
+					upstream = await new Promise((resolve) => {
+						let settled = false;
+						const win = (r) => {
+							if (settled || !r) return; // 失败：不 settle，等另一发
+							settled = true;
+							clearTimeout(timerA);
+							clearTimeout(hedgeTimer);
+							if (timerB) clearTimeout(timerB);
+							ctrlA.abort();
+							ctrlB.abort();
+							resolve(r);
+						};
+						// 第一发
+						fetchOnce(ctrlA.signal)
+							.catch(() => null)
+							.then(win);
+						// 对冲发：1.5s 后若仍未 settle 就发第二发
+						hedgeTimer = setTimeout(() => {
+							if (settled) return;
+							timerB = setTimeout(() => ctrlB.abort(), SMALL_TIMEOUT_MS);
+							fetchOnce(ctrlB.signal)
+								.catch(() => null)
+								.then(win);
+						}, HEDGE_DELAY_MS);
+						// 兜底：两发都失败时，等 timerA 触发 abort 后 primary 的 catch
+						// 会走到这里，但 win(null) 不 settle ⇒ 需要一个失败收口。
+						// 用最长等待（SMALL_TIMEOUT + HEDGE_DELAY + SMALL_TIMEOUT）兜底。
+						setTimeout(
+							() => {
+								if (settled) return;
+								settled = true;
+								resolve(null);
+							},
+							SMALL_TIMEOUT_MS * 2 + HEDGE_DELAY_MS,
+						);
+					});
 				}
 				if (!upstream) {
 					return new Response("Octave upstream unreachable", {
@@ -529,14 +599,30 @@ export async function middleware(context) {
 				headers.set("Cross-Origin-Opener-Policy", "same-origin");
 				headers.set("Cross-Origin-Embedder-Policy", "require-corp");
 				headers.set("Access-Control-Allow-Origin", "*");
-				headers.set("Accept-Ranges", "none");
 				if (url.pathname.endsWith(".wasm")) {
 					headers.set("Content-Type", "application/wasm");
 				}
-				// 运行时交给我们的体可能已被解压，故清掉这两个头（由运行时按客户端
-				// 的 Accept-Encoding 重新协商压缩）；这与实测 B 一致。
-				headers.delete("Content-Encoding");
-				headers.delete("Content-Length");
+				// A'（2026-10-25，第三方评估推荐的主线）：`.gz` 文件按**不透明二进制**
+				// 处理——透传 Range/206/Content-Range/Content-Length，**不设**
+				// Content-Encoding。这样出口层「无需解读、不可再压」，规避 1008 那次
+				// 头体来自不同表示的坑（旧形态 EdgeOne 原生 maker；现在是中间件反代，
+				// 且实测 GitHub Pages 对 .gz 的 Range 完全自洽：
+				//   206 / content-range: bytes 0-1048575/7304578 / 实收 1048576B，
+				//   分片拼接 gunzip rc=0、31246819 字节、\0asm 头正确，2.1s 完成）。
+				// 客户端自行按 gz 分片取、拼接、DecompressionStream 解压。
+				// 非 .gz 路径保持原语义（Accept-Ranges: none，整包 + 运行时压缩）。
+				if (isPrecompressedReq) {
+					headers.set("Accept-Ranges", "bytes");
+					headers.set("Content-Type", "application/gzip");
+					// 不设 Content-Encoding：体就是 gz 字节，标签由 Content-Type 表达
+					headers.delete("Content-Encoding");
+				} else {
+					headers.set("Accept-Ranges", "none");
+					// 运行时交给我们的体可能已被解压，故清掉这两个头（由运行时按客户端
+					// 的 Accept-Encoding 重新协商压缩）；这与实测 B 一致。
+					headers.delete("Content-Encoding");
+					headers.delete("Content-Length");
+				}
 				// 304 必须无实体头（Content-Length: 0 会把浏览器搞糊涂）；上游 304 的
 				// ETag/Last-Modified 已在 headers 里透传，浏览器据此更新缓存条目。
 				if (upstream.status === 304) {
