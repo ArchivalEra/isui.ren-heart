@@ -1,12 +1,12 @@
 {
-	"generatedAt": "2026-10-25T17:13:55.734Z",
+	"generatedAt": "2026-10-25T22:02:55.331Z",
 	"acceleratedDirs": ["Octave", "S26-1_202609"],
 	"entries": [
 		{
 			"name": "isui.ren-heart",
 			"pages": "ready",
 			"accelerated": false,
-			"pushedAt": "2026-10-25T15:28:44Z",
+			"pushedAt": "2026-10-25T17:14:23Z",
 			"status": "built",
 			"description": "isui.ren 的站点心脏：EdgeOne Pages 静态源、边缘中间件与跨仓部署链",
 			"language": "Rust",
