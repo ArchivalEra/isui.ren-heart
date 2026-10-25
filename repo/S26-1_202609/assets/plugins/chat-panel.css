@@ -436,7 +436,32 @@ body.chat-resizing .chat-panel {
   cursor: pointer;
 }
 .chat-attach-btn:hover { background-color: var(--md-sys-color-surface-container-high); }
-.chat-attach-btn:disabled { opacity: .4; cursor: default; }
+.chat-attach-btn:disabled { opacity: .4; cursor: not-allowed; }
+
+/* ── 联网搜索开关（2026-10-25，照抄官方语义）────────────────────
+   官方实现（.zcode/会话语义/实测-多会话与联网-20261025.md §五）：
+   开启判据是父级 .tool-button 有 active 类；与附件**互斥**，实现很轻——
+   给附件按钮加 disabled 属性 + cursor:not-allowed，**不改 class、不改
+   pointer-events、不置灰**（opacity 仍为 1）。
+   这里照抄这个轻量做法，避免两套判据。 */
+.chat-web-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px; height: 34px;
+  flex-shrink: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--md-sys-color-on-surface-variant);
+  cursor: pointer;
+}
+.chat-web-btn:hover { background-color: var(--md-sys-color-surface-container-high); }
+.chat-web-btn.active {
+  background-color: var(--md-sys-color-secondary-container, rgba(120,120,255,.18));
+  color: var(--md-sys-color-on-secondary-container, var(--md-sys-color-primary));
+}
+.chat-web-btn[aria-pressed="true"] { font-weight: 600; }
 
 .chat-attach-bar {
   display: flex;
