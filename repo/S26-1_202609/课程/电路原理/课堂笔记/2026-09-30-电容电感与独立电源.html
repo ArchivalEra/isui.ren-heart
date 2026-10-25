@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-depth="3" data-root="../../../" data-canonical-root="/repo/S26-1_202609/">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>电路原理 2026-09-30：电容元件、电感元件与独立电源 | S26-1 课程知识库</title>
+  <script>
+  /* 首帧前应用已保存的主题色与明暗，避免先用默认色渲染再变色（闪光弹 + 二次全量重绘） */
+  (function () {
+    try {
+      var root = document.documentElement;
+      var m = localStorage.getItem("theme") ||
+        (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      root.setAttribute("data-theme", m === "dark" ? "dark" : "light");
+      var hue = localStorage.getItem("theme-hue");
+      if (hue !== null && /^\d+$/.test(hue)) {
+        root.style.setProperty("--hue", hue);
+        root.style.setProperty("--primary-h", hue);
+      }
+    } catch (e) { /* 隐私模式下 localStorage 可能抛错，忽略 */ }
+  })();
+  </script>
+  <link rel="stylesheet" href="../../../assets/katex/katex.min.css">
+  <link rel="stylesheet" href="../../../assets/theme/shirone-reader.css?v=11c46b6674">
+  <link rel="stylesheet" href="../../../assets/plugins/site-search.css?v=45716eda6c">
+  <link rel="stylesheet" href="../../../assets/plugins/chat-panel.css?v=7bb19341c8">
+  <!-- 站点图标：动画 GIF 为主（Chrome/Firefox/Edge 会动），静态 PNG 作不支持动画时的回退 -->
+  <link rel="icon" type="image/gif" href="../../../assets/favicon/favicon.gif">
+  <link rel="alternate icon" type="image/png" href="../../../assets/favicon/favicon.png">
+  <link rel="apple-touch-icon" href="../../../assets/favicon/apple-touch-icon.png">
+</head>
+<body data-site-path="课程/电路原理/课堂笔记/2026-09-30-电容电感与独立电源.html">
+  <div class="drawer-backdrop" id="drawer-backdrop"></div>
+
+  <div class="site-shell">
+    <!-- Left Column: Full-Height Sidebar (整列导航栏) -->
+    <aside class="m3-drawer" id="m3-drawer">
+      <div class="drawer-header-brand">
+        <a href="../../../index.html" class="sidebar-brand">
+          <img class="site-title-icon" src="../../../assets/favicon/brand.gif" alt="" width="48" height="48" aria-hidden="true">
+          <span class="sidebar-brand-text">S26-1 课程知识库</span>
+        </a>
+        <button class="m3-icon-btn drawer-collapse-btn" id="drawer-collapse-btn" aria-label="收起侧边栏" title="收起侧边栏">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M15 18l-6-6 6-6"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="drawer-header-toolbar">
+        <span class="drawer-section-title">课程导航目录</span>
+        <button class="drawer-action-btn" id="toggle-all-groups-btn" title="一键收起或展开所有课程分类">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M7 15l5 5 5-5M7 9l5-5 5 5"/>
+          </svg>
+          <span id="toggle-all-text">全部收起</span>
+        </button>
+      </div>
+
+      <div class="drawer-nav-scroll-area">
+        <ul class="drawer-nav-list"><li class="drawer-nav-item " data-node-id="index.html">
+            <a href="../../../index.html" data-path="index.html" class="drawer-nav-link">
+              <span>首页</span>
+            </a>
+          </li><li class="drawer-nav-group expanded" data-node-id="课程/index.html">
+          <div class="nav-group-header ">
+            <a href="../../../课程/index.html" data-path="课程/index.html" class="drawer-nav-link"><span>课程总览</span></a>
+            <button class="nav-collapse-btn" aria-label="折叠或展开 课程总览" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-group collapsed" data-node-id="课程/工程数学/index.html">
+          <div class="nav-group-header ">
+            <a href="../../../课程/工程数学/index.html" data-path="课程/工程数学/index.html" class="drawer-nav-link"><span>工程数学</span></a>
+            <button class="nav-collapse-btn" aria-label="折叠或展开 工程数学" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item " data-node-id="课程/工程数学/Walkthrough.html">
+            <a href="../../../课程/工程数学/Walkthrough.html" data-path="课程/工程数学/Walkthrough.html" class="drawer-nav-link">
+              <span>Walkthrough</span>
+            </a>
+          </li><li class="drawer-nav-item " data-node-id="课程/工程数学/技法库.html">
+            <a href="../../../课程/工程数学/技法库.html" data-path="课程/工程数学/技法库.html" class="drawer-nav-link">
+              <span>技法库</span>
+            </a>
+          </li><li class="drawer-nav-group collapsed" data-node-id="课程/工程数学/作业/index.html">
+          <div class="nav-group-header ">
+            <a href="../../../课程/工程数学/作业/index.html" data-path="课程/工程数学/作业/index.html" class="drawer-nav-link"><span>作业</span></a>
+            <button class="nav-collapse-btn" aria-label="折叠或展开 作业" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item " data-node-id="课程/工程数学/作业/2026-09-17-作业1.html">
+            <a href="../../../课程/工程数学/作业/2026-09-17-作业1.html" data-path="课程/工程数学/作业/2026-09-17-作业1.html" class="drawer-nav-link">
+              <span>作业1</span>
+            </a>
+          </li><li class="drawer-nav-item " data-node-id="课程/工程数学/作业/2026-10-08-作业2.html">
+            <a href="../../../课程/工程数学/作业/2026-10-08-作业2.html" data-path="课程/工程数学/作业/2026-10-08-作业2.html" class="drawer-nav-link">
+              <span>作业2</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed" data-node-id="课程/工程数学/课堂笔记/index.html">
+          <div class="nav-group-header ">
+            <a href="../../../课程/工程数学/课堂笔记/index.html" data-path="课程/工程数学/课堂笔记/index.html" class="drawer-nav-link"><span>课堂笔记</span></a>
+            <button class="nav-collapse-btn" aria-label="折叠或展开 课堂笔记" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item " data-node-id="课程/工程数学/课堂笔记/2026-09-17-determinants-order-2-3.html">
+            <a href="../../../课程/工程数学/课堂笔记/2026-09-17-determinants-order-2-3.html" data-path="课程/工程数学/课堂笔记/2026-09-17-determinants-order-2-3.html" class="drawer-nav-link">
+              <span>09-17 行列式与沙路法则</span>
+            </a>
+          </li><li class="drawer-nav-item " data-node-id="课程/工程数学/课堂笔记/2026-09-17-determinants-transcript-notes.html">
+            <a href="../../../课程/工程数学/课堂笔记/2026-09-17-determinants-transcript-notes.html" data-path="课程/工程数学/课堂笔记/2026-09-17-determinants-transcript-notes.html" class="drawer-nav-link">
+              <span>09-17 课堂听课整理</span>
+            </a>
+          </li><li class="drawer-nav-item " data-node-id="课程/工程数学/课堂笔记/2026-09-24-降阶法克拉默法则与齐次方程组.html">
+            <a href="../../../课程/工程数学/课堂笔记/2026-09-24-降阶法克拉默法则与齐次方程组.html" data-path="课程/工程数学/课堂笔记/2026-09-24-降阶法克拉默法则与齐次方程组.html" class="drawer-nav-link">
+              <span>09-24 降阶法与克拉默法则</span>
+            </a>
+          </li><li class="drawer-nav-item " data-node-id="课程/工程数学/课堂笔记/2026-10-08-矩阵的定义与运算及逆的引入.html">
+            <a href="../../../课程/工程数学/课堂笔记/2026-10-08-矩阵的定义与运算及逆的引入.html" data-path="课程/工程数学/课堂笔记/2026-10-08-矩阵的定义与运算及逆的引入.html" class="drawer-nav-link">
+              <span>10-08 矩阵的定义与运算及逆的引入</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed" data-node-id="课程/工程数学/教材解析/index.html">
+          <div class="nav-group-header ">
+            <a href="../../../课程/工程数学/教材解析/index.html" data-path="课程/工程数学/教材解析/index.html" class="drawer-nav-link"><span>教材解析</span></a>
+            <button class="nav-collapse-btn" aria-label="折叠或展开 教材解析" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item " data-node-id="课程/工程数学/教材解析/0.0-符号入门.html">
+            <a href="../../../课程/工程数学/教材解析/0.0-符号入门.html" data-path="课程/工程数学/教材解析/0.0-符号入门.html" class="drawer-nav-link">
+              <span>符号入门</span>
+            </a>
+          </li><li class="drawer-nav-group collapsed" data-node-id="课程/工程数学/教材解析/第一部分-线性代数/index.html">
+          <div class="nav-group-header ">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/index.html" data-path="课程/工程数学/教材解析/第一部分-线性代数/index.html" class="drawer-nav-link"><span>第一部分 线性代数</span></a>
+            <button class="nav-collapse-btn" aria-label="折叠或展开 第一部分 线性代数" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-group collapsed" data-node-id="课程/工程数学/教材解析/第一部分-线性代数/index.html#第01章 行列式">
+          <div class="nav-group-header nav-header-clickable">
+            <span class="drawer-section-title-text">第01章 行列式</span>
+            <button class="nav-collapse-btn" aria-label="折叠或展开 第01章 行列式" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item " data-node-id="课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.0-本章通关攻略.html">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.0-本章通关攻略.html" data-path="课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.0-本章通关攻略.html" class="drawer-nav-link">
+              <span>★ 通关攻略</span>
+            </a>
+          </li><li class="drawer-nav-item " data-node-id="课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.1-二阶与三阶行列式.html">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.1-二阶与三阶行列式.html" data-path="课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.1-二阶与三阶行列式.html" class="drawer-nav-link">
+              <span>1.1 二阶与三阶行列式</span>
+            </a>
+          </li><li class="drawer-nav-item " data-node-id="课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.2-n阶行列式.html">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.2-n阶行列式.html" data-path="课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.2-n阶行列式.html" class="drawer-nav-link">
+              <span>1.2 n阶行列式</span>
+            </a>
+          </li><li class="drawer-nav-item " data-node-id="课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.3-克莱姆法则.html">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.3-克莱姆法则.html" data-path="课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.3-克莱姆法则.html" class="drawer-nav-link">
+              <span>1.3 克莱姆法则</span>
+            </a>
+          </li><li class="drawer-nav-item " data-node-id="课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.4-用MATLAB计算行列式.html">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.4-用MATLAB计算行列式.html" data-path="课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.4-用MATLAB计算行列式.html" class="drawer-nav-link">
+              <span>1.4 用MATLAB计算行列式</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed" data-node-id="课程/工程数学/教材解析/第一部分-线性代数/index.html#第02章 矩阵">
+          <div class="nav-group-header nav-header-clickable">
+            <span class="drawer-section-title-text">第02章 矩阵</span>
+            <button class="nav-collapse-btn" aria-label="折叠或展开 第02章 矩阵" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item " data-node-id="课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.0-本章通关攻略.html">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.0-本章通关攻略.html" data-path="课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.0-本章通关攻略.html" class="drawer-nav-link">
+              <span>★ 通关攻略</span>
+            </a>
+          </li><li class="drawer-nav-item " data-node-id="课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.1-矩阵的概念及运算.html">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.1-矩阵的概念及运算.html" data-path="课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.1-矩阵的概念及运算.html" class="drawer-nav-link">
+              <span>2.1 矩阵的概念及运算</span>
+            </a>
+          </li><li class="drawer-nav-item " data-node-id="课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.2-逆矩阵.html">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.2-逆矩阵.html" data-path="课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.2-逆矩阵.html" class="drawer-nav-link">
+              <span>2.2 逆矩阵</span>
+            </a>
+          </li><li class="drawer-nav-item " data-node-id="课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.3-矩阵的初等变换与初等矩阵.html">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.3-矩阵的初等变换与初等矩阵.html" data-path="课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.3-矩阵的初等变换与初等矩阵.html" class="drawer-nav-link">
+              <span>2.3 初等变换与初等矩阵</span>
+            </a>
+          </li><li class="drawer-nav-item " data-node-id="课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.4-矩阵的秩.html">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.4-矩阵的秩.html" data-path="课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.4-矩阵的秩.html" class="drawer-nav-link">
+              <span>2.4 矩阵的秩</span>
+            </a>
+          </li><li class="drawer-nav-item " data-node-id="课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.5-用MATLAB进行矩阵运算.html">
+            <a href="../../../课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.5-用MATLAB进行矩阵运算.html" data-path="课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.5-用MATLAB进行矩阵运算.html" class="drawer-nav-link">
+              <span>2.5 用MATLAB进行矩阵运算</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li></ul>
+            </div>
+          </div>
+        </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-item " data-node-id="课程/工程数学/原始资料/index.html">
+            <a href="../../../课程/工程数学/原始资料/index.html" data-path="课程/工程数学/原始资料/index.html" class="drawer-nav-link">
+              <span>原始资料</span>
+            </a>
+          </li><li class="drawer-nav-item " data-node-id="课程/工程数学/音频/index.html">
+            <a href="../../../课程/工程数学/音频/index.html" data-path="课程/工程数学/音频/index.html" class="drawer-nav-link">
+              <span>音频</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed" data-node-id="课程/电力大数据与人工智能/index.html">
+          <div class="nav-group-header ">
+            <a href="../../../课程/电力大数据与人工智能/index.html" data-path="课程/电力大数据与人工智能/index.html" class="drawer-nav-link"><span>电力大数据与人工智能</span></a>
+            <button class="nav-collapse-btn" aria-label="折叠或展开 电力大数据与人工智能" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item " data-node-id="课程/电力大数据与人工智能/Walkthrough.html">
+            <a href="../../../课程/电力大数据与人工智能/Walkthrough.html" data-path="课程/电力大数据与人工智能/Walkthrough.html" class="drawer-nav-link">
+              <span>Walkthrough</span>
+            </a>
+          </li><li class="drawer-nav-item " data-node-id="课程/电力大数据与人工智能/备考.html">
+            <a href="../../../课程/电力大数据与人工智能/备考.html" data-path="课程/电力大数据与人工智能/备考.html" class="drawer-nav-link">
+              <span>备考</span>
+            </a>
+          </li><li class="drawer-nav-group collapsed" data-node-id="课程/电力大数据与人工智能/作业/index.html">
+          <div class="nav-group-header ">
+            <a href="../../../课程/电力大数据与人工智能/作业/index.html" data-path="课程/电力大数据与人工智能/作业/index.html" class="drawer-nav-link"><span>作业</span></a>
+            <button class="nav-collapse-btn" aria-label="折叠或展开 作业" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item " data-node-id="课程/电力大数据与人工智能/作业/2026-09-29-大数据特点与AI算法.html">
+            <a href="../../../课程/电力大数据与人工智能/作业/2026-09-29-大数据特点与AI算法.html" data-path="课程/电力大数据与人工智能/作业/2026-09-29-大数据特点与AI算法.html" class="drawer-nav-link">
+              <span>2026-09-29作业（大数据特点、AI 算法、运行状态）</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-item " data-node-id="课程/电力大数据与人工智能/教材解析/index.html">
+            <a href="../../../课程/电力大数据与人工智能/教材解析/index.html" data-path="课程/电力大数据与人工智能/教材解析/index.html" class="drawer-nav-link">
+              <span>教材解析</span>
+            </a>
+          </li><li class="drawer-nav-group collapsed" data-node-id="课程/电力大数据与人工智能/课堂笔记/index.html">
+          <div class="nav-group-header ">
+            <a href="../../../课程/电力大数据与人工智能/课堂笔记/index.html" data-path="课程/电力大数据与人工智能/课堂笔记/index.html" class="drawer-nav-link"><span>课堂笔记</span></a>
+            <button class="nav-collapse-btn" aria-label="折叠或展开 课堂笔记" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item " data-node-id="课程/电力大数据与人工智能/课堂笔记/2026-09-20-课程定位与考核要求.html">
+            <a href="../../../课程/电力大数据与人工智能/课堂笔记/2026-09-20-课程定位与考核要求.html" data-path="课程/电力大数据与人工智能/课堂笔记/2026-09-20-课程定位与考核要求.html" class="drawer-nav-link">
+              <span>09-20 开课第一讲</span>
+            </a>
+          </li><li class="drawer-nav-item " data-node-id="课程/电力大数据与人工智能/课堂笔记/2026-09-22-暂态稳定评估方法与紧急控制.html">
+            <a href="../../../课程/电力大数据与人工智能/课堂笔记/2026-09-22-暂态稳定评估方法与紧急控制.html" data-path="课程/电力大数据与人工智能/课堂笔记/2026-09-22-暂态稳定评估方法与紧急控制.html" class="drawer-nav-link">
+              <span>09-22 暂态稳定评估与紧急控制</span>
+            </a>
+          </li><li class="drawer-nav-item " data-node-id="课程/电力大数据与人工智能/课堂笔记/2026-09-29-电力大数据特点与人工智能算法.html">
+            <a href="../../../课程/电力大数据与人工智能/课堂笔记/2026-09-29-电力大数据特点与人工智能算法.html" data-path="课程/电力大数据与人工智能/课堂笔记/2026-09-29-电力大数据特点与人工智能算法.html" class="drawer-nav-link">
+              <span>09-29 电力大数据特点与人工智能算法</span>
+            </a>
+          </li><li class="drawer-nav-item " data-node-id="课程/电力大数据与人工智能/课堂笔记/2026-10-13-人工智能常用算法与数据预处理开篇.html">
+            <a href="../../../课程/电力大数据与人工智能/课堂笔记/2026-10-13-人工智能常用算法与数据预处理开篇.html" data-path="课程/电力大数据与人工智能/课堂笔记/2026-10-13-人工智能常用算法与数据预处理开篇.html" class="drawer-nav-link">
+              <span>10-13 人工智能常用算法与数据预处理开篇</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-item " data-node-id="课程/电力大数据与人工智能/原始资料/index.html">
+            <a href="../../../课程/电力大数据与人工智能/原始资料/index.html" data-path="课程/电力大数据与人工智能/原始资料/index.html" class="drawer-nav-link">
+              <span>原始资料</span>
+            </a>
+          </li><li class="drawer-nav-item " data-node-id="课程/电力大数据与人工智能/音频/index.html">
+            <a href="../../../课程/电力大数据与人工智能/音频/index.html" data-path="课程/电力大数据与人工智能/音频/index.html" class="drawer-nav-link">
+              <span>音频</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed" data-node-id="课程/形势与政策/index.html">
+          <div class="nav-group-header ">
+            <a href="../../../课程/形势与政策/index.html" data-path="课程/形势与政策/index.html" class="drawer-nav-link"><span>形势与政策</span></a>
+            <button class="nav-collapse-btn" aria-label="折叠或展开 形势与政策" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item " data-node-id="课程/形势与政策/Walkthrough.html">
+            <a href="../../../课程/形势与政策/Walkthrough.html" data-path="课程/形势与政策/Walkthrough.html" class="drawer-nav-link">
+              <span>Walkthrough</span>
+            </a>
+          </li><li class="drawer-nav-item " data-node-id="课程/形势与政策/备考.html">
+            <a href="../../../课程/形势与政策/备考.html" data-path="课程/形势与政策/备考.html" class="drawer-nav-link">
+              <span>备考</span>
+            </a>
+          </li><li class="drawer-nav-item " data-node-id="课程/形势与政策/作业/index.html">
+            <a href="../../../课程/形势与政策/作业/index.html" data-path="课程/形势与政策/作业/index.html" class="drawer-nav-link">
+              <span>作业</span>
+            </a>
+          </li><li class="drawer-nav-group collapsed" data-node-id="课程/形势与政策/课堂笔记/index.html">
+          <div class="nav-group-header ">
+            <a href="../../../课程/形势与政策/课堂笔记/index.html" data-path="课程/形势与政策/课堂笔记/index.html" class="drawer-nav-link"><span>课堂笔记</span></a>
+            <button class="nav-collapse-btn" aria-label="折叠或展开 课堂笔记" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item " data-node-id="课程/形势与政策/课堂笔记/2026-09-21-经济热点专题与考试安排.html">
+            <a href="../../../课程/形势与政策/课堂笔记/2026-09-21-经济热点专题与考试安排.html" data-path="课程/形势与政策/课堂笔记/2026-09-21-经济热点专题与考试安排.html" class="drawer-nav-link">
+              <span>09-21 经济热点专题与考试安排</span>
+            </a>
+          </li><li class="drawer-nav-item " data-node-id="课程/形势与政策/课堂笔记/2026-09-28-人工智能专题.html">
+            <a href="../../../课程/形势与政策/课堂笔记/2026-09-28-人工智能专题.html" data-path="课程/形势与政策/课堂笔记/2026-09-28-人工智能专题.html" class="drawer-nav-link">
+              <span>09-28 人工智能专题</span>
+            </a>
+          </li><li class="drawer-nav-item " data-node-id="课程/形势与政策/课堂笔记/2026-10-12-美丽中国建设专题与考试规则.html">
+            <a href="../../../课程/形势与政策/课堂笔记/2026-10-12-美丽中国建设专题与考试规则.html" data-path="课程/形势与政策/课堂笔记/2026-10-12-美丽中国建设专题与考试规则.html" class="drawer-nav-link">
+              <span>10-12 美丽中国建设专题与考试规则</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-item " data-node-id="课程/形势与政策/原始资料/index.html">
+            <a href="../../../课程/形势与政策/原始资料/index.html" data-path="课程/形势与政策/原始资料/index.html" class="drawer-nav-link">
+              <span>原始资料</span>
+            </a>
+          </li><li class="drawer-nav-item " data-node-id="课程/形势与政策/音频/index.html">
+            <a href="../../../课程/形势与政策/音频/index.html" data-path="课程/形势与政策/音频/index.html" class="drawer-nav-link">
+              <span>音频</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group expanded" data-node-id="课程/电路原理/index.html">
+          <div class="nav-group-header ">
+            <a href="../../../课程/电路原理/index.html" data-path="课程/电路原理/index.html" class="drawer-nav-link"><span>电路原理</span></a>
+            <button class="nav-collapse-btn" aria-label="折叠或展开 电路原理" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item " data-node-id="课程/电路原理/Walkthrough.html">
+            <a href="../../../课程/电路原理/Walkthrough.html" data-path="课程/电路原理/Walkthrough.html" class="drawer-nav-link">
+              <span>Walkthrough</span>
+            </a>
+          </li><li class="drawer-nav-group collapsed" data-node-id="课程/电路原理/作业/index.html">
+          <div class="nav-group-header ">
+            <a href="../../../课程/电路原理/作业/index.html" data-path="课程/电路原理/作业/index.html" class="drawer-nav-link"><span>作业</span></a>
+            <button class="nav-collapse-btn" aria-label="折叠或展开 作业" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item " data-node-id="课程/电路原理/作业/2026-09-28-习题册第一章.html">
+            <a href="../../../课程/电路原理/作业/2026-09-28-习题册第一章.html" data-path="课程/电路原理/作业/2026-09-28-习题册第一章.html" class="drawer-nav-link">
+              <span>习题册第一章（43 题）</span>
+            </a>
+          </li><li class="drawer-nav-item " data-node-id="课程/电路原理/作业/2026-09-28-习题册第二章.html">
+            <a href="../../../课程/电路原理/作业/2026-09-28-习题册第二章.html" data-path="课程/电路原理/作业/2026-09-28-习题册第二章.html" class="drawer-nav-link">
+              <span>习题册第二章（34 题）</span>
+            </a>
+          </li><li class="drawer-nav-item " data-node-id="课程/电路原理/作业/2026-09-28-习题册第三章.html">
+            <a href="../../../课程/电路原理/作业/2026-09-28-习题册第三章.html" data-path="课程/电路原理/作业/2026-09-28-习题册第三章.html" class="drawer-nav-link">
+              <span>习题册第三章（28 题）</span>
+            </a>
+          </li><li class="drawer-nav-item " data-node-id="课程/电路原理/作业/2026-09-28-习题册第四章.html">
+            <a href="../../../课程/电路原理/作业/2026-09-28-习题册第四章.html" data-path="课程/电路原理/作业/2026-09-28-习题册第四章.html" class="drawer-nav-link">
+              <span>习题册第四章（21 题）</span>
+            </a>
+          </li><li class="drawer-nav-item " data-node-id="课程/电路原理/作业/2026-09-28-习题册第五章.html">
+            <a href="../../../课程/电路原理/作业/2026-09-28-习题册第五章.html" data-path="课程/电路原理/作业/2026-09-28-习题册第五章.html" class="drawer-nav-link">
+              <span>习题册第五章（62 题）</span>
+            </a>
+          </li><li class="drawer-nav-item " data-node-id="课程/电路原理/作业/2026-09-28-习题册第六章.html">
+            <a href="../../../课程/电路原理/作业/2026-09-28-习题册第六章.html" data-path="课程/电路原理/作业/2026-09-28-习题册第六章.html" class="drawer-nav-link">
+              <span>习题册第六章（33 题）</span>
+            </a>
+          </li><li class="drawer-nav-item " data-node-id="课程/电路原理/作业/2026-09-28-习题册第七章.html">
+            <a href="../../../课程/电路原理/作业/2026-09-28-习题册第七章.html" data-path="课程/电路原理/作业/2026-09-28-习题册第七章.html" class="drawer-nav-link">
+              <span>习题册第七章（31 题）</span>
+            </a>
+          </li><li class="drawer-nav-item " data-node-id="课程/电路原理/作业/2026-09-28-习题册第九章.html">
+            <a href="../../../课程/电路原理/作业/2026-09-28-习题册第九章.html" data-path="课程/电路原理/作业/2026-09-28-习题册第九章.html" class="drawer-nav-link">
+              <span>习题册第九章（26 题）</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed" data-node-id="课程/电路原理/教材解析/index.html">
+          <div class="nav-group-header ">
+            <a href="../../../课程/电路原理/教材解析/index.html" data-path="课程/电路原理/教材解析/index.html" class="drawer-nav-link"><span>教材解析</span></a>
+            <button class="nav-collapse-btn" aria-label="折叠或展开 教材解析" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item " data-node-id="课程/电路原理/教材解析/0.0-符号入门.html">
+            <a href="../../../课程/电路原理/教材解析/0.0-符号入门.html" data-path="课程/电路原理/教材解析/0.0-符号入门.html" class="drawer-nav-link">
+              <span>符号入门</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group expanded" data-node-id="课程/电路原理/课堂笔记/index.html">
+          <div class="nav-group-header ">
+            <a href="../../../课程/电路原理/课堂笔记/index.html" data-path="课程/电路原理/课堂笔记/index.html" class="drawer-nav-link"><span>课堂笔记</span></a>
+            <button class="nav-collapse-btn" aria-label="折叠或展开 课堂笔记" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item " data-node-id="课程/电路原理/课堂笔记/2026-09-21-开课说明与电路的基本概念.html">
+            <a href="../../../课程/电路原理/课堂笔记/2026-09-21-开课说明与电路的基本概念.html" data-path="课程/电路原理/课堂笔记/2026-09-21-开课说明与电路的基本概念.html" class="drawer-nav-link">
+              <span>09-21 开课说明与电路的基本概念</span>
+            </a>
+          </li><li class="drawer-nav-item " data-node-id="课程/电路原理/课堂笔记/2026-09-23-电压电位与电路名词.html">
+            <a href="../../../课程/电路原理/课堂笔记/2026-09-23-电压电位与电路名词.html" data-path="课程/电路原理/课堂笔记/2026-09-23-电压电位与电路名词.html" class="drawer-nav-link">
+              <span>09-23 电压电位与电路名词</span>
+            </a>
+          </li><li class="drawer-nav-item " data-node-id="课程/电路原理/课堂笔记/2026-10-10-受控源与第一章综合例题.html">
+            <a href="../../../课程/电路原理/课堂笔记/2026-10-10-受控源与第一章综合例题.html" data-path="课程/电路原理/课堂笔记/2026-10-10-受控源与第一章综合例题.html" class="drawer-nav-link">
+              <span>10-10 受控源与第一章综合例题</span>
+            </a>
+          </li><li class="drawer-nav-item " data-node-id="课程/电路原理/课堂笔记/2026-10-12-习题册收尾与电路的等效变换.html">
+            <a href="../../../课程/电路原理/课堂笔记/2026-10-12-习题册收尾与电路的等效变换.html" data-path="课程/电路原理/课堂笔记/2026-10-12-习题册收尾与电路的等效变换.html" class="drawer-nav-link">
+              <span>10-12 习题册收尾与电路的等效变换</span>
+            </a>
+          </li><li class="drawer-nav-item " data-node-id="课程/电路原理/课堂笔记/2026-10-14-电源等效变换与无源二端网络等效.html">
+            <a href="../../../课程/电路原理/课堂笔记/2026-10-14-电源等效变换与无源二端网络等效.html" data-path="课程/电路原理/课堂笔记/2026-10-14-电源等效变换与无源二端网络等效.html" class="drawer-nav-link">
+              <span>10-14 电源等效变换与无源二端网络等效</span>
+            </a>
+          </li><li class="drawer-nav-item active" data-node-id="课程/电路原理/课堂笔记/2026-09-30-电容电感与独立电源.html">
+            <a href="../../../课程/电路原理/课堂笔记/2026-09-30-电容电感与独立电源.html" data-path="课程/电路原理/课堂笔记/2026-09-30-电容电感与独立电源.html" class="drawer-nav-link">
+              <span>09-30 电容电感与独立电源</span>
+            </a>
+          </li><li class="drawer-nav-item " data-node-id="课程/电路原理/课堂笔记/2026-09-28-KCL与KVL及电阻元件.html">
+            <a href="../../../课程/电路原理/课堂笔记/2026-09-28-KCL与KVL及电阻元件.html" data-path="课程/电路原理/课堂笔记/2026-09-28-KCL与KVL及电阻元件.html" class="drawer-nav-link">
+              <span>09-28 KCL 与 KVL 及电阻元件</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-item " data-node-id="课程/电路原理/原始资料/index.html">
+            <a href="../../../课程/电路原理/原始资料/index.html" data-path="课程/电路原理/原始资料/index.html" class="drawer-nav-link">
+              <span>原始资料</span>
+            </a>
+          </li><li class="drawer-nav-item " data-node-id="课程/电路原理/音频/index.html">
+            <a href="../../../课程/电路原理/音频/index.html" data-path="课程/电路原理/音频/index.html" class="drawer-nav-link">
+              <span>音频</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed" data-node-id="课程/电子技术/index.html">
+          <div class="nav-group-header ">
+            <a href="../../../课程/电子技术/index.html" data-path="课程/电子技术/index.html" class="drawer-nav-link"><span>电子技术</span></a>
+            <button class="nav-collapse-btn" aria-label="折叠或展开 电子技术" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item " data-node-id="课程/电子技术/Walkthrough.html">
+            <a href="../../../课程/电子技术/Walkthrough.html" data-path="课程/电子技术/Walkthrough.html" class="drawer-nav-link">
+              <span>Walkthrough</span>
+            </a>
+          </li><li class="drawer-nav-group collapsed" data-node-id="课程/电子技术/作业/index.html">
+          <div class="nav-group-header ">
+            <a href="../../../课程/电子技术/作业/index.html" data-path="课程/电子技术/作业/index.html" class="drawer-nav-link"><span>作业</span></a>
+            <button class="nav-collapse-btn" aria-label="折叠或展开 作业" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item " data-node-id="课程/电子技术/作业/2026-09-23-第一章简答题.html">
+            <a href="../../../课程/电子技术/作业/2026-09-23-第一章简答题.html" data-path="课程/电子技术/作业/2026-09-23-第一章简答题.html" class="drawer-nav-link">
+              <span>2026-9-23作业（习题 1.1、1.3、1.5）</span>
+            </a>
+          </li><li class="drawer-nav-item " data-node-id="课程/电子技术/作业/2026-09-28-第一章填空与简答.html">
+            <a href="../../../课程/电子技术/作业/2026-09-28-第一章填空与简答.html" data-path="课程/电子技术/作业/2026-09-28-第一章填空与简答.html" class="drawer-nav-link">
+              <span>2026-9-28作业（习题 1.6、1.7）</span>
+            </a>
+          </li><li class="drawer-nav-item " data-node-id="课程/电子技术/作业/2026-09-30-数制转换与8421BCD码.html">
+            <a href="../../../课程/电子技术/作业/2026-09-30-数制转换与8421BCD码.html" data-path="课程/电子技术/作业/2026-09-30-数制转换与8421BCD码.html" class="drawer-nav-link">
+              <span>2026-9-30作业（习题 7.1、7.2）</span>
+            </a>
+          </li><li class="drawer-nav-item " data-node-id="课程/电子技术/作业/2026-10-09-逻辑等式证明.html">
+            <a href="../../../课程/电子技术/作业/2026-10-09-逻辑等式证明.html" data-path="课程/电子技术/作业/2026-10-09-逻辑等式证明.html" class="drawer-nav-link">
+              <span>2026-10-09作业（习题 7.8 证明）</span>
+            </a>
+          </li><li class="drawer-nav-item " data-node-id="课程/电子技术/作业/2026-10-10-逻辑化简与状态表.html">
+            <a href="../../../课程/电子技术/作业/2026-10-10-逻辑化简与状态表.html" data-path="课程/电子技术/作业/2026-10-10-逻辑化简与状态表.html" class="drawer-nav-link">
+              <span>2026-10-10作业（习题 7.9 化简）</span>
+            </a>
+          </li><li class="drawer-nav-item " data-node-id="课程/电子技术/作业/2026-10-12-门电路输出波形.html">
+            <a href="../../../课程/电子技术/作业/2026-10-12-门电路输出波形.html" data-path="课程/电子技术/作业/2026-10-12-门电路输出波形.html" class="drawer-nav-link">
+              <span>2026-10-12作业（习题 7.4 波形）</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed" data-node-id="课程/电子技术/教材解析/index.html">
+          <div class="nav-group-header ">
+            <a href="../../../课程/电子技术/教材解析/index.html" data-path="课程/电子技术/教材解析/index.html" class="drawer-nav-link"><span>教材解析</span></a>
+            <button class="nav-collapse-btn" aria-label="折叠或展开 教材解析" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item " data-node-id="课程/电子技术/教材解析/0.0-符号入门.html">
+            <a href="../../../课程/电子技术/教材解析/0.0-符号入门.html" data-path="课程/电子技术/教材解析/0.0-符号入门.html" class="drawer-nav-link">
+              <span>符号入门</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed" data-node-id="课程/电子技术/课堂笔记/index.html">
+          <div class="nav-group-header ">
+            <a href="../../../课程/电子技术/课堂笔记/index.html" data-path="课程/电子技术/课堂笔记/index.html" class="drawer-nav-link"><span>课堂笔记</span></a>
+            <button class="nav-collapse-btn" aria-label="折叠或展开 课堂笔记" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item " data-node-id="课程/电子技术/课堂笔记/2026-09-21-开课说明与半导体基础到PN结.html">
+            <a href="../../../课程/电子技术/课堂笔记/2026-09-21-开课说明与半导体基础到PN结.html" data-path="课程/电子技术/课堂笔记/2026-09-21-开课说明与半导体基础到PN结.html" class="drawer-nav-link">
+              <span>09-21 开课说明与半导体基础到 PN 结</span>
+            </a>
+          </li><li class="drawer-nav-item " data-node-id="课程/电子技术/课堂笔记/2026-09-23-二极管与含二极管电路.html">
+            <a href="../../../课程/电子技术/课堂笔记/2026-09-23-二极管与含二极管电路.html" data-path="课程/电子技术/课堂笔记/2026-09-23-二极管与含二极管电路.html" class="drawer-nav-link">
+              <span>09-23 二极管与含二极管电路</span>
+            </a>
+          </li><li class="drawer-nav-item " data-node-id="课程/电子技术/课堂笔记/2026-10-10-逻辑代数与公式法化简.html">
+            <a href="../../../课程/电子技术/课堂笔记/2026-10-10-逻辑代数与公式法化简.html" data-path="课程/电子技术/课堂笔记/2026-10-10-逻辑代数与公式法化简.html" class="drawer-nav-link">
+              <span>10-10 逻辑代数与公式法化简</span>
+            </a>
+          </li><li class="drawer-nav-item " data-node-id="课程/电子技术/课堂笔记/2026-09-28-三极管与场效应管.html">
+            <a href="../../../课程/电子技术/课堂笔记/2026-09-28-三极管与场效应管.html" data-path="课程/电子技术/课堂笔记/2026-09-28-三极管与场效应管.html" class="drawer-nav-link">
+              <span>09-28 三极管与场效应管</span>
+            </a>
+          </li><li class="drawer-nav-item " data-node-id="课程/电子技术/课堂笔记/2026-10-12-卡诺图化简法与无关项.html">
+            <a href="../../../课程/电子技术/课堂笔记/2026-10-12-卡诺图化简法与无关项.html" data-path="课程/电子技术/课堂笔记/2026-10-12-卡诺图化简法与无关项.html" class="drawer-nav-link">
+              <span>10-12 卡诺图化简法与无关项</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-item " data-node-id="课程/电子技术/原始资料/index.html">
+            <a href="../../../课程/电子技术/原始资料/index.html" data-path="课程/电子技术/原始资料/index.html" class="drawer-nav-link">
+              <span>原始资料</span>
+            </a>
+          </li><li class="drawer-nav-item " data-node-id="课程/电子技术/音频/index.html">
+            <a href="../../../课程/电子技术/音频/index.html" data-path="课程/电子技术/音频/index.html" class="drawer-nav-link">
+              <span>音频</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed" data-node-id="课程/电机学/index.html">
+          <div class="nav-group-header ">
+            <a href="../../../课程/电机学/index.html" data-path="课程/电机学/index.html" class="drawer-nav-link"><span>电机学</span></a>
+            <button class="nav-collapse-btn" aria-label="折叠或展开 电机学" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item " data-node-id="课程/电机学/Walkthrough.html">
+            <a href="../../../课程/电机学/Walkthrough.html" data-path="课程/电机学/Walkthrough.html" class="drawer-nav-link">
+              <span>Walkthrough</span>
+            </a>
+          </li><li class="drawer-nav-group collapsed" data-node-id="课程/电机学/作业/index.html">
+          <div class="nav-group-header ">
+            <a href="../../../课程/电机学/作业/index.html" data-path="课程/电机学/作业/index.html" class="drawer-nav-link"><span>作业</span></a>
+            <button class="nav-collapse-btn" aria-label="折叠或展开 作业" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item " data-node-id="课程/电机学/作业/2026-09-22-第1章概述客观题.html">
+            <a href="../../../课程/电机学/作业/2026-09-22-第1章概述客观题.html" data-path="课程/电机学/作业/2026-09-22-第1章概述客观题.html" class="drawer-nav-link">
+              <span>09-22 第1章概述客观题（25题）</span>
+            </a>
+          </li><li class="drawer-nav-item " data-node-id="课程/电机学/作业/2026-10-15-变压器额定电流与变比.html">
+            <a href="../../../课程/电机学/作业/2026-10-15-变压器额定电流与变比.html" data-path="课程/电机学/作业/2026-10-15-变压器额定电流与变比.html" class="drawer-nav-link">
+              <span>10-15 变压器额定电流与变比（§2.1 主观题）</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed" data-node-id="课程/电机学/教材解析/index.html">
+          <div class="nav-group-header ">
+            <a href="../../../课程/电机学/教材解析/index.html" data-path="课程/电机学/教材解析/index.html" class="drawer-nav-link"><span>教材解析</span></a>
+            <button class="nav-collapse-btn" aria-label="折叠或展开 教材解析" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item " data-node-id="课程/电机学/教材解析/0.0-符号入门.html">
+            <a href="../../../课程/电机学/教材解析/0.0-符号入门.html" data-path="课程/电机学/教材解析/0.0-符号入门.html" class="drawer-nav-link">
+              <span>符号入门</span>
+            </a>
+          </li><li class="drawer-nav-group collapsed" data-node-id="课程/电机学/教材解析/第01章-概述/1.1-电机的分类.html">
+          <div class="nav-group-header nav-header-clickable">
+            <span class="drawer-section-title-text">第01章 概述</span>
+            <button class="nav-collapse-btn" aria-label="折叠或展开 第01章 概述" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item " data-node-id="课程/电机学/教材解析/第01章-概述/1.1-电机的分类.html">
+            <a href="../../../课程/电机学/教材解析/第01章-概述/1.1-电机的分类.html" data-path="课程/电机学/教材解析/第01章-概述/1.1-电机的分类.html" class="drawer-nav-link">
+              <span>1.1 电机的分类</span>
+            </a>
+          </li><li class="drawer-nav-item " data-node-id="课程/电机学/教材解析/第01章-概述/1.2-电机的磁路和磁路定律.html">
+            <a href="../../../课程/电机学/教材解析/第01章-概述/1.2-电机的磁路和磁路定律.html" data-path="课程/电机学/教材解析/第01章-概述/1.2-电机的磁路和磁路定律.html" class="drawer-nav-link">
+              <span>1.2 电机的磁路和磁路定律</span>
+            </a>
+          </li><li class="drawer-nav-item " data-node-id="课程/电机学/教材解析/第01章-概述/1.3-电机的电磁基本理论.html">
+            <a href="../../../课程/电机学/教材解析/第01章-概述/1.3-电机的电磁基本理论.html" data-path="课程/电机学/教材解析/第01章-概述/1.3-电机的电磁基本理论.html" class="drawer-nav-link">
+              <span>1.3 电机的电磁基本理论</span>
+            </a>
+          </li><li class="drawer-nav-item " data-node-id="课程/电机学/教材解析/第01章-概述/1.4-电机的制造材料.html">
+            <a href="../../../课程/电机学/教材解析/第01章-概述/1.4-电机的制造材料.html" data-path="课程/电机学/教材解析/第01章-概述/1.4-电机的制造材料.html" class="drawer-nav-link">
+              <span>1.4 电机的制造材料</span>
+            </a>
+          </li><li class="drawer-nav-item " data-node-id="课程/电机学/教材解析/第01章-概述/第01章-小结与思考题习题.html">
+            <a href="../../../课程/电机学/教材解析/第01章-概述/第01章-小结与思考题习题.html" data-path="课程/电机学/教材解析/第01章-概述/第01章-小结与思考题习题.html" class="drawer-nav-link">
+              <span>第01章 小结与思考题习题</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed" data-node-id="课程/电机学/教材解析/第02章-变压器的基本作用原理与理论分析/2.0-本章通关攻略.html">
+          <div class="nav-group-header nav-header-clickable">
+            <span class="drawer-section-title-text">第02章 变压器</span>
+            <button class="nav-collapse-btn" aria-label="折叠或展开 第02章 变压器" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item " data-node-id="课程/电机学/教材解析/第02章-变压器的基本作用原理与理论分析/2.0-本章通关攻略.html">
+            <a href="../../../课程/电机学/教材解析/第02章-变压器的基本作用原理与理论分析/2.0-本章通关攻略.html" data-path="课程/电机学/教材解析/第02章-变压器的基本作用原理与理论分析/2.0-本章通关攻略.html" class="drawer-nav-link">
+              <span>2.0 通关攻略</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed" data-node-id="课程/电机学/课堂笔记/index.html">
+          <div class="nav-group-header ">
+            <a href="../../../课程/电机学/课堂笔记/index.html" data-path="课程/电机学/课堂笔记/index.html" class="drawer-nav-link"><span>课堂笔记</span></a>
+            <button class="nav-collapse-btn" aria-label="折叠或展开 课堂笔记" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item " data-node-id="课程/电机学/课堂笔记/2026-09-24-绪论电机概述与磁路基础.html">
+            <a href="../../../课程/电机学/课堂笔记/2026-09-24-绪论电机概述与磁路基础.html" data-path="课程/电机学/课堂笔记/2026-09-24-绪论电机概述与磁路基础.html" class="drawer-nav-link">
+              <span>09-24 绪论·电机概述与磁路基础</span>
+            </a>
+          </li><li class="drawer-nav-item " data-node-id="课程/电机学/课堂笔记/2026-10-08-磁路例题与变压器概述.html">
+            <a href="../../../课程/电机学/课堂笔记/2026-10-08-磁路例题与变压器概述.html" data-path="课程/电机学/课堂笔记/2026-10-08-磁路例题与变压器概述.html" class="drawer-nav-link">
+              <span>10-08 磁路例题与变压器概述</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-item " data-node-id="课程/电机学/原始资料/index.html">
+            <a href="../../../课程/电机学/原始资料/index.html" data-path="课程/电机学/原始资料/index.html" class="drawer-nav-link">
+              <span>原始资料</span>
+            </a>
+          </li><li class="drawer-nav-item " data-node-id="课程/电机学/音频/index.html">
+            <a href="../../../课程/电机学/音频/index.html" data-path="课程/电机学/音频/index.html" class="drawer-nav-link">
+              <span>音频</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-group collapsed" data-node-id="#仓库规约">
+          <div class="nav-group-header nav-header-clickable">
+            <span class="drawer-section-title-text">仓库规约</span>
+            <button class="nav-collapse-btn" aria-label="折叠或展开 仓库规约" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item " data-node-id="维护条例.html">
+            <a href="../../../维护条例.html" data-path="维护条例.html" class="drawer-nav-link">
+              <span>维护条例</span>
+            </a>
+          </li><li class="drawer-nav-item " data-node-id="维护细则.html">
+            <a href="../../../维护细则.html" data-path="维护细则.html" class="drawer-nav-link">
+              <span>维护细则</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li></ul>
+      </div>
+
+      <div class="sidebar-resizer" id="sidebar-resizer" title="按住拖拽调整侧边栏宽度，双击恢复默认宽度"></div>
+    </aside>
+
+    <!-- Right Column: Main Content Column (主内容列) -->
+    <div class="main-column">
+      <!-- Top App Bar -->
+      <header class="m3-top-app-bar">
+        <div class="top-bar-left">
+          <button class="m3-icon-btn" id="drawer-toggle" aria-label="展开/收起侧边栏" title="展开/收起侧边栏">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+          </button>
+          <a href="../../../index.html" class="top-bar-mobile-title">
+            <span>S26-1 课程知识库</span>
+          </a>
+          <nav class="top-bar-breadcrumbs" aria-label="当前路径">
+            <a href="../../../index.html" data-path="index.html">首页</a><span class="m3-breadcrumb-sep">/</span><span class="current-crumb">电路原理 2026-09-30：电容元件、电感元件与独立电源</span>
+          </nav>
+        </div>
+
+        <div class="top-bar-right">
+          <button class="m3-icon-btn" id="palette-toggle" aria-label="调色盘" title="主题与调色盘" aria-expanded="false">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/>
+              <circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/>
+              <circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/>
+              <circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/>
+              <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/>
+            </svg>
+          </button>
+
+          <!-- Palette Popover -->
+          <div class="palette-popover" id="palette-popover">
+            <div class="palette-header">
+              <span class="palette-title">主题强调色调色盘</span>
+              <button class="palette-reset-btn" id="palette-reset-btn" title="重置为默认色">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+              </button>
+            </div>
+            <div class="palette-current-row">
+              <span class="palette-hue-badge" id="palette-hue-badge">Hue 248°</span>
+              <div class="palette-color-dot" id="palette-color-dot"></div>
+            </div>
+            <div class="palette-mode-row">
+              <span class="palette-mode-label">明暗</span>
+              <div class="palette-mode-switch" role="group" aria-label="明暗主题">
+                <button class="palette-mode-btn" data-theme-set="light" title="浅色">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+                  <span>浅色</span>
+                </button>
+                <button class="palette-mode-btn" data-theme-set="dark" title="深色">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a6.6 6.6 0 0 0 9.8 9.8z"/></svg>
+                  <span>深色</span>
+                </button>
+              </div>
+            </div>
+            <div class="palette-slider-container">
+              <span class="palette-slider-label">色相微调 (0° - 360°)</span>
+              <input type="range" min="0" max="360" value="248" class="palette-slider" id="hue-slider">
+            </div>
+            <div>
+              <div class="palette-swatches-title">预设配色</div>
+              <div class="palette-swatches-grid">
+                <button class="palette-swatch-item" data-hue="315" title="经典粉紫">
+                  <span class="palette-swatch-dot" style="background: hsl(315, 75%, 45%);"></span>
+                  <span class="palette-swatch-name">粉紫</span>
+                </button>
+                <button class="palette-swatch-item" data-hue="280" title="紫罗兰">
+                  <span class="palette-swatch-dot" style="background: hsl(280, 75%, 45%);"></span>
+                  <span class="palette-swatch-name">紫罗兰</span>
+                </button>
+                <button class="palette-swatch-item active" data-hue="248" title="学术深蓝">
+                  <span class="palette-swatch-dot" style="background: hsl(248, 75%, 45%);"></span>
+                  <span class="palette-swatch-name">深蓝</span>
+                </button>
+                <button class="palette-swatch-item" data-hue="205" title="天青蓝">
+                  <span class="palette-swatch-dot" style="background: hsl(205, 75%, 45%);"></span>
+                  <span class="palette-swatch-name">天青</span>
+                </button>
+                <button class="palette-swatch-item" data-hue="150" title="翡翠绿">
+                  <span class="palette-swatch-dot" style="background: hsl(150, 75%, 40%);"></span>
+                  <span class="palette-swatch-name">翡翠</span>
+                </button>
+                <button class="palette-swatch-item" data-hue="75" title="琥珀黄">
+                  <span class="palette-swatch-dot" style="background: hsl(75, 75%, 40%);"></span>
+                  <span class="palette-swatch-name">琥珀</span>
+                </button>
+                <button class="palette-swatch-item" data-hue="30" title="晚霞橙">
+                  <span class="palette-swatch-dot" style="background: hsl(30, 80%, 48%);"></span>
+                  <span class="palette-swatch-name">晚霞</span>
+                </button>
+                <button class="palette-swatch-item" data-hue="355" title="绯红">
+                  <span class="palette-swatch-dot" style="background: hsl(355, 75%, 45%);"></span>
+                  <span class="palette-swatch-name">绯红</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <button class="m3-icon-btn" id="search-toggle" aria-label="全站搜索" title="全站搜索">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+          </button>
+
+          <!-- 学习助手入口：图标简化自 r-906《In My Hands》封面的左手。
+               识别特征保留：四指分开向上、碎片白缝、拇指外撇、掌心圆洞、分离的腕部。 -->
+          <button class="m3-icon-btn hand-btn" id="assistant-toggle" aria-label="学习助手" title="学习助手" aria-expanded="false">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <!-- 四指：指缝留 0.8px 以上，22px 下才不糊成一坨 -->
+              <rect x="6.2" y="3.4" width="2.3" height="9.2" rx="1.15"/>
+              <rect x="9.3" y="2.2" width="2.3" height="10.4" rx="1.15"/>
+              <rect x="12.4" y="3.0" width="2.3" height="9.6" rx="1.15"/>
+              <rect x="15.5" y="5.6" width="2.2" height="7.0" rx="1.1"/>
+              <!-- 掌部 -->
+              <path d="M6.1 11.4h11.8v4.4a2.3 2.3 0 0 1-2.3 2.3H8.4a2.3 2.3 0 0 1-2.3-2.3z"/>
+              <!-- 拇指：外撇，与掌留白缝 -->
+              <path d="M6.0 12.4 3.9 14.5a1.3 1.3 0 1 0 1.84 1.84l2.1-2.1z"/>
+              <!-- 掌心空洞 -->
+              <circle cx="11.5" cy="14.0" r="1.3" fill="#fff"/>
+              <!-- 腕部：分离的一截 -->
+              <path d="M8.6 19.4h6.8v1.3a1.6 1.6 0 0 1-1.6 1.6h-3.6a1.6 1.6 0 0 1-1.6-1.6z"/>
+            </svg>
+          </button>
+
+
+        </div>
+      </header>
+
+      <!-- 全站搜索面板（点击顶栏放大镜展开；ESC 或点外部关闭） -->
+      <div class="search-panel" id="search-panel" hidden>
+        <div class="search-panel-inner" role="dialog" aria-modal="true" aria-label="全站搜索">
+          <div class="search-panel-head">
+            <svg class="search-panel-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+            <input type="search" id="search-input" class="search-panel-input" placeholder="搜索知识点、例题、习题…" autocomplete="off" spellcheck="false">
+            <button class="m3-icon-btn" id="search-close" aria-label="关闭搜索" title="关闭（ESC）">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
+          </div>
+          <div class="search-panel-body" id="search-results">
+            <p class="search-hint">输入关键词开始搜索。中文按字面子串匹配——搜「沙路法则」只出真正连着出现这四个字的地方；结果按相关度排序，回车打开第一条。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="layout-container">
+        <!-- Content Area -->
+        <main class="content-wrapper">
+          <article class="article-container">
+            <!-- Breadcrumb in page body -->
+            <nav class="m3-breadcrumb">
+              <a href="../../../index.html" data-path="index.html">首页</a><span class="m3-breadcrumb-sep">/</span><span>电路原理 2026-09-30：电容元件、电感元件与独立电源</span>
+            </nav>
+
+            <div class="meta-chip-bar"><span class="meta-chip primary">📚 电路原理</span><span class="meta-chip">🏷️ 课堂笔记</span><span class="meta-chip">⚡ 状态: 开课</span><span class="meta-chip">📅 更新: 2026-10-12</span><span class="meta-chip">📖 来源: 原始资料/20260930_09501115-原文.txt</span></div>
+
+            <div class="article-content">
+              <h1 id="电路原理-2026-09-30-电容元件-电感元件与独立电源">电路原理 2026-09-30：电容元件、电感元件与独立电源</h1><p><strong>这节课在干什么</strong>：先复习 KCL、KVL 和电阻元件，然后讲三个新元件——电容元件、电感元件，最后讲有源元件里的独立电源（电压源、电流源）。要会三件事：写出电容和电感的电压电流关系式（微分、积分两种形式），说清它们在直流电路里分别相当于什么（电容开路、电感短路），以及电压源、电流源各自的&quot;谁定电压、谁定电流&quot;和开路短路的允许性。</p>
+<p><strong>行政与考核</strong>：老师说明本课第一章的固定套路是&quot;每个元件怎么求电压、怎么求电流、怎么求功率&quot;；第二章起才把元件放进电路图里综合。第一章不理解单个元件，后面综合题就更做不出来。电容/电感这节最重要的只有两点：电压电流关系式，以及直流电路里相当于什么。老师自称已讲第五六遍，PPT 内容是自己的理解，考试够用，考研需自己加深。</p>
+<h2 id="题号条目">题号条目</h2><h3 id="例题-电流源被短路求电流-i-含-2-v-电源支路">例题：电流源被短路求电流 I（含 2 V 电源支路）</h3><p><strong>解析</strong>：电路中一个电流源的两端被导线直接短接，所以它两端电压为 0（电流源允许短路，此时只是有电流、无电压）。</p>
+<ol>
+<li>由该短路支路列 KVL：设支路电流为 I，沿顺时针绕行，<code>U − 2 = 0</code>（2 V 电压源方向向下），得该支路电流 <code>I = 2</code>。</li>
+<li>两条支路电流都流入同一节点，I 从该节点流出。由 KCL：<code>I = 2 + I₁</code>，而 I₁ 支路电流也是 2，故 <code>I = 4</code>。</li>
+</ol>
+<p><strong>这一题在讲什么</strong>：练&quot;电流源短路&quot;这一特殊情形——短路后电压为 0，但电流仍由电流源本身决定，所以还要照常列 KVL/KCL 求解。老师强调这类简单电路分析用得最多的就是 KCL、KVL。</p>
+<h3 id="例题-求电流源电压及各电源发出功率">例题：求电流源电压及各电源发出功率</h3><p><strong>解析</strong>：电路里电流源与电压源串联，所以整条回路的电流都由电流源决定，为 2 A。</p>
+<ol>
+<li>先由 KVL 求电流源两端的电压：沿回路列式 <code>12 + 20 + 6 − U = 0</code>（12 V、20 V 电源方向一致，6 V 为电阻上电压方向向上），解得 <code>U = 38 V</code>。</li>
+<li>电压源功率：电压 20 V、电流 2 A，二者非关联，<code>P发出 = 20 × 2 = 40 W</code>（转写中老师先报吸收功率 40 W，随即说明非关联时即发出功率 −40 W）。</li>
+<li>电流源功率：电压 38 V、电流 2 A，非关联，发出功率 <code>38 × 2 = 76 W</code>。</li>
+</ol>
+<p><strong>这一题在讲什么</strong>：把&quot;电流源定电流 → KVL 求电压源电压 → 电压电流相乘求功率&quot;这条链走一遍；关键提醒是求功率前必须先把电压和电流都求出来，且要判断关联/非关联。</p>
+<h3 id="例题-电压源与电流源并联-求-i-和各元件功率">例题：电压源与电流源并联，求 I 和各元件功率</h3><p><strong>解析</strong>：电流源与电压源并联，所以这条支路（以及与之并联的 5 Ω 电阻）两端电压都是 2 V。</p>
+<ol>
+<li>5 Ω 支路电流 <code>2 / 5 = 0.4 A</code>。</li>
+<li>由节点 KCL：电流源注入 1 A，一路 0.4 A 向下，另一路即 <code>I = 1 − 0.4 = 0.6 A</code>。</li>
+<li>各元件功率（均已算出电压、电流）：<ul>
+<li>电流源：电压电流方向相反，发出功率 <code>1 × 2 = 2 W</code>；</li>
+<li>电压源：方向相同，吸收功率 <code>0.6 × 2 = 1.2 W</code>；</li>
+<li>5 Ω 电阻：吸收功率 <code>2 × 0.4 = 0.8 W</code>。</li>
+</ul>
+</li>
+<li>校验：吸收功率之和等于发出功率，功率平衡。</li>
+</ol>
+<p><strong>这一题在讲什么</strong>：讲&quot;并联支路电压相等&quot;这一条如何直接给出未知量，并用功率平衡做验算。以后遇到并联结构，先找公共电压，是最省事的入口。</p>
+<h3 id="例题-广义节点求-u_ab">例题：广义节点求 U_AB</h3><p><strong>解析</strong>：题目要求两点间电压 U_AB，属于必须用广义 KCL/KVL 的类型。</p>
+<ol>
+<li>先把两条支路的电流求出来：两段电阻串联共 9 Ω，支路电流 <code>6 / 9</code>；分别乘各段电阻得 <code>U₁ = (6/9) × 3 = 2 V</code>，<code>U₂ = (6/9) × 6 = 4 V</code>。</li>
+<li>取顺时针绕行方向列 KVL：<code>U_AB + U₂ − U₁ = 0</code>（U₂ 与绕行同向取正，U₁ 反向取负），得 <code>U_AB = −2 V</code>。</li>
+</ol>
+<p><strong>这一题在讲什么</strong>：两点间电压要用假想回路（广义 KVL）来求，且必须先算出相关支路电流才能得到各电阻电压。这是上一节&quot;两点间电压与路径无关&quot;的直接应用。</p>
+<h3 id="例题-kvl-求电流-i-含-6-v-14-v-5-等元件">例题：KVL 求电流 I（含 6 V、14 V、5 等元件）</h3><p><strong>解析</strong>：把电路看成一个闭合回路，取顺时针绕行方向（与电流方向一致）。</p>
+<p>列式：<code>2I + I + 14 − 6 − 5 − U_AB = 0</code> 型方程，其中 2I、I 为电阻电压（与绕行同向取正），6、5 等电源项按与绕行方向是否一致定正负，U_AB 反向取负。整理后解出 I。</p>
+<p><strong>这一题在讲什么</strong>：KVL 综合列式练习，重点仍是&quot;先定绕行方向、再逐项定正负&quot;。</p>
+<h3 id="例题-求电流源两端电压-电流源与-5-并联">例题：求电流源两端电压（电流源与 5 Ω 并联）</h3><p><strong>解析</strong>：电流源与 5 Ω 电阻并联，二者电压相等，所以只要求出 5 Ω 上的电压即可。</p>
+<ol>
+<li>设电阻支路电流为 I。对含 5 Ω 的小回路（不能选大回路，因为大回路有两个未知量：一个电流、一个电压）列 KVL：<code>5(I − 5) + 5I − 10 = 0</code>，整理 <code>10I = 10</code> 型，解得 <code>I = 3.5 A</code>。</li>
+<li>5 Ω 上电压 <code>= 5 × 3.5 = 17.5 V</code>，即电流源两端电压为 17.5 V。</li>
+</ol>
+<p><strong>这一题在讲什么</strong>：讲&quot;回路怎么选&quot;——当某条支路电压未知（如电流源）时，避开含它的回路，选能一次消去未知量的那个回路。并联关系用来把&quot;电阻电压&quot;直接转成&quot;电流源电压&quot;。</p>
+<h3 id="教材例题-1-5-1-1-5-2-1-5-3-p22">教材例题 1.5.1、1.5.2、1.5.3（P22）</h3><p><strong>解析</strong>：1.5.1 和 1.5.2 直接可做。1.5.3 求<strong>开路电压</strong>：A、B 之间断开，则 10 Ω 和 5 Ω 上都没有电流，电阻上也没有电压；但左侧 10 V 电源仍然有电压，因此 A、B 之间存在 10 V 的电位差。老师用干电池打比方——没接通时没有电流，用万用表去测仍能测出它的电压。</p>
+<p><strong>这一题在讲什么</strong>：讲开路的准确理解——开路时电阻上没有电压（无电流），但电源电压依然存在，所以开路电压不等于 0。后面讲戴维南等定理时经常要用开路电压。</p>
+<h3 id="练习册纠错-第三页第四题">练习册纠错：第三页第四题</h3><p><strong>解析</strong>：老师指出练习册第三页第四题（图 1.16）印刷有误：题目写的是求 U_AB，实际已知条件应为 <strong>U_BC = 8 V</strong>（不是 U_AB）。题目由各老师分工手抄，难免有错，遇到就到群里或钉钉上问。该题涉及受控源，本次还没讲，暂时做不了。</p>
+<p><strong>这一题在讲什么</strong>：行政性纠错，避免同学按错误条件做。</p>
+<h2 id="没编号但讲了的知识点">没编号但讲了的知识点</h2><h3 id="上节复习-kcl-kvl-电阻元件">上节复习：KCL、KVL、电阻元件</h3><ul>
+<li>KCL：节点上电流代数和为零，正负取决于参考方向；老师更倾向用&quot;流入的电流 = 流出的电流&quot;。</li>
+<li>KVL：先找闭合回路，可顺时针或逆时针绕行，所有元件电压和为零；电压前的正负取决于电压参考方向与绕行方向是否一致。</li>
+<li>这两个定律是后面所有定理的基础，都从它推导出来。</li>
+<li>电阻元件：欧姆定律、单位、电导。</li>
+</ul>
+<h3 id="电容元件">电容元件</h3><ul>
+<li>结构：两块平行金属板，中间是绝缘介质（云母、陶瓷等）。实际电容有电解电容、瓷片电容等；电容容量取决于金属板材质与绝缘介质，出厂后固定，与所加电压、电流无关。实际电容除标型号、容量外，还要标正负和<strong>耐压值</strong>。</li>
+<li>本课程只关心电容在电路里的电压电流关系和功率，不关心实物。</li>
+<li><strong>线性电容</strong>：任何时刻电荷量与电压成正比，<code>Q = C·U</code>。C 称电容量（简称电容），单位<strong>法拉（F）</strong>，常用微法（μF）。符号是两条等长的平行线（注意与电池符号区分：电池正极长、负极短）。</li>
+<li>伏安特性：电荷量与电压是线性关系。</li>
+<li><strong>电流电压关系（微分形式）</strong>：由电流定义（单位时间通过的电荷量）得 <code>i = C · du/dt</code>。即电流取决于<strong>电压的变化率</strong>，与该时刻电压大小无关；对常数求微分为 0。</li>
+<li><strong>直流电路中电容相当于开路</strong>：直流时电压恒定，<code>du/dt = 0</code>，故 <code>i = 0</code>，电容如同没接进去，所以电容有<strong>隔直流</strong>作用。前四章直流电路几乎不涉及电容。</li>
+<li><strong>交流中电容通高频、阻低频</strong>：频率越高电流通过能力越强，可用于信号耦合、滤波。</li>
+<li><strong>积分形式</strong>：<code>u = (1/C)∫i dt</code>（从 −∞ 到 t），说明电容具有<strong>记忆电流</strong>的作用。研究某时刻以后的电压必须知道初始状态（初始值），这部分在第九章用得多。</li>
+<li><strong>功率</strong>：<code>P = u·i = C·u·(du/dt)</code>。P &gt; 0 是充电（吸收功率），P &lt; 0 是放电（发出功率）。电容是<strong>储能元件</strong>。</li>
+<li><strong>储能</strong>：对功率积分，<code>W = ½C·u²</code>（老师指出课本 1.4.9 式把平方印在错误位置，应在电压上）。储能只与当时电压值有关，电压不跃变则储能不跃变；储能恒 ≥ 0，故电容是<strong>无源元件</strong>。</li>
+<li><strong>串并联</strong>：电容串联越串越小，<code>1/C总 = Σ1/Cᵢ</code>（与电阻并联相似）；并联越并越大，<code>C总 = ΣCᵢ</code>（与电阻串联相似）。要加电容就并联，要减小就串联。</li>
+<li>记住两点即可：电压电流关系式；直流电路中相当于开路。</li>
+</ul>
+<h3 id="电感元件">电感元件</h3><ul>
+<li>结构：导线绕在骨架上构成的线圈。电流流过线圈产生磁通，是抵抗电流变化、存储磁场的元件；小电流经绕制可产生大磁场，电动机里就是这种线圈。</li>
+<li>实际电感除标型号、电感值外，还要标<strong>额定电流值</strong>（电流过大会烧坏）。</li>
+<li><strong>线性电感</strong>：任何时刻磁链与电流成正比，<code>Ψ = L·i</code>。L 称电感值，单位<strong>亨利（H）</strong>，常用毫亨（mH）、微亨（μH）。</li>
+<li><strong>电压电流关系（微分形式）</strong>：由电磁感应定律和楞次定律，电压是对磁链微分，代入 <code>Ψ = L·i</code> 得 <code>u = L · di/dt</code>。即电压取决于<strong>电流的变化率</strong>，与该时刻电流大小无关；恒定电流求导为 0。</li>
+<li><strong>直流电路中电感相当于短路</strong>：直流时电流恒定，<code>di/dt = 0</code>，故 <code>u = 0</code>，电感如同一根导线。前四章直流电路几乎不涉及电感。</li>
+<li><strong>交流中电感通低频、阻高频</strong>：频率越高电压越大，可制成滤波器。</li>
+<li><strong>积分形式</strong>：<code>i = (1/L)∫u dt</code>，说明电感具有<strong>记忆电压</strong>的作用；同样需要初始值。</li>
+<li><strong>功率</strong>：<code>P = u·i = L·i·(di/dt)</code>。电流增大时吸收功率（存储磁场），减小时发出功率（释放磁场）。电感是<strong>储能元件</strong>。</li>
+<li><strong>储能</strong>：对功率积分得 <code>W = ½L·i²</code>。储能只与该时刻电流值有关，与电压无关；电流不跃变则储能不跃变；储能恒 ≥ 0，故电感是<strong>无源元件</strong>。</li>
+<li><strong>串并联</strong>：与电阻类似，电感串联越串越大（<code>L总 = ΣLᵢ</code>），并联越并越小（<code>1/L总 = Σ1/Lᵢ</code>）。</li>
+<li>记住三点：电压电流关系式；直流电路中相当于短路；关联参考方向下的关系。</li>
+</ul>
+<h3 id="有源元件与独立电源">有源元件与独立电源</h3><ul>
+<li>有源元件分两种：独立电源、受控源。本节只讲独立电源，受控源下次课讲。</li>
+<li><strong>电源</strong>是电路里提供能量的装置，也称<strong>激励</strong>；由激励在电路里产生的电压、电流称<strong>响应</strong>。这两个词后面常用。</li>
+<li>独立电源分两种：<ul>
+<li><strong>电压源</strong>：提供电压的装置（干电池、手机电池、发电机）。可以直流、交流，本课程只研究直流和交流。符号用 U_S（直流大写 U，交流小写 u）。电压的正负号代表参考特性。</li>
+<li><strong>电流源</strong>：提供电流的装置。符号是圆圈里一竖线（电压源是一横线），箭头表示电流参考方向。</li>
+</ul>
+</li>
+<li><strong>电压源特点</strong>：电压由自身决定（几伏就提供几伏），电流由外电路决定。例如 10 V 电源接 10 Ω 时电流 1 A，接 5 Ω 时电流 2 A，不接时电流为 0；同一电压源电压不变，电流随外电路变。</li>
+<li><strong>电压源可以开路、不能短路</strong>：短路时电流极大，会烧坏电压源。</li>
+<li><strong>理想电压源与实际的电压源</strong>：理想电压源内阻为 0；实际电压源等效成&quot;理想电压源串联一个内阻&quot;。实际电压源也不允许短路（内阻小、短路电流大）。</li>
+<li><strong>电流源特点</strong>：电流由自身决定（提供 5 A 就处处 5 A），电压由外电路决定。接 10 Ω 时电压 10 V，接 5 Ω 时电压 5 V，短路（不接）时电压为 0。</li>
+<li><strong>理想电流源可以短路、不能开路</strong>：开路时两端电压极大，会出问题；强迫断开电流源回路会使电路出现病态。</li>
+<li>光电池、晶体管（电极电流与负载无关）等可提供电流。理想电流源日常不常见，实验室有专用电流源。</li>
+<li>因为理想电压源输出电压固定、理想电流源输出电流固定，所以统称<strong>独立电源</strong>。</li>
+<li>后续章节位置：第五章第三节讲交流电时会用到电容和电感。</li>
+</ul>
+<h2 id="本篇没讲的">本篇没讲的</h2><ul>
+<li>受控源（下次课，即 10 月 10 日讲）。</li>
+<li>电阻元件只是复习，未展开。</li>
+<li>教材 P22 的 1.5.3 只讲了开路电压概念，未完整演算。</li>
+<li>交流电路中电容、电感的具体关系式（留到第五章第三节）。</li>
+</ul>
+<h2 id="转写与术语">转写与术语</h2><ul>
+<li>「流动电容」「图片电容」→ 电解电容、瓷片电容（实际电容类型，具体名称转写含糊）。</li>
+<li>「电脑」→ 电导。</li>
+<li>「中高频主低频」→ 通高频、阻低频（电容）；「中低频辅高频」→ 通低频、阻高频（电感）。</li>
+<li>「核直流」→ 隔直流。</li>
+<li>「机翼元件」→ 记忆元件（电容记忆电流、电感记忆电压）。</li>
+<li>「希尔霍夫」→ 基尔霍夫。</li>
+<li>「电压表」在讲电流源处应为「电流源」（转写 46:00 处口误）。</li>
+<li>「6 倍的 U1」→ 应为 μ 倍的 U1（受控源电压放大倍数，见下篇 10-10 转写对应内容；本篇未涉及）。</li>
+<li>1.4.9 式课本印刷错误：平方位置应在电压上。</li>
+</ul>
+<h2 id="以下内容面向整理者-复核-同学可以不看">以下内容面向整理者/复核，同学可以不看</h2><h3 id="条件备注">条件备注</h3><ul>
+<li>例题中多个方程的各项在转写里只有口述，符号与数值含糊。</li>
+<li>电容储能式子课本编号转写为 1.4.9。</li>
+<li>电感单位&quot;微横力&quot;转写含糊，按上下文应为微亨。</li>
+<li>实际电容类型名称（&quot;流动电容&quot;&quot;图片电容&quot;）转写不清。</li>
+</ul>
+
+            </div>
+
+            
+
+            <footer class="site-footer">
+              <p class="site-footer__legal">
+                © 2026 ArchivalEra · 本站自研代码与解析文字以
+                <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank" rel="license noopener">AGPL-3.0</a>
+                许可发布 · <a href="https://github.com/ArchivalEra/S26-1_202609" target="_blank" rel="noopener">仓库源码</a>
+              </p>
+              <p class="site-footer__disclaimer">
+                本站涉及的教材题目原文与章节结构，版权归各原书作者与出版社所有，本站解析为个人学习笔记；
+                页面主题样式来自 Shirone Material 3 Reader（MIT）；KaTeX、marked 等第三方库依其自身许可证分发。
+              </p>
+            </footer>
+          </article>
+        </main>
+
+        <!-- Table of Contents -->
+        <aside class="m3-toc">
+      <div class="toc-title">目录</div>
+      <ul class="toc-list">
+        <li class="toc-item level-2"><a href="#题号条目">题号条目</a></li><li class="toc-item level-3"><a href="#例题-电流源被短路求电流-i-含-2-v-电源支路">例题：电流源被短路求电流 I（含 2 V 电源支路）</a></li><li class="toc-item level-3"><a href="#例题-求电流源电压及各电源发出功率">例题：求电流源电压及各电源发出功率</a></li><li class="toc-item level-3"><a href="#例题-电压源与电流源并联-求-i-和各元件功率">例题：电压源与电流源并联，求 I 和各元件功率</a></li><li class="toc-item level-3"><a href="#例题-广义节点求-u_ab">例题：广义节点求 U_AB</a></li><li class="toc-item level-3"><a href="#例题-kvl-求电流-i-含-6-v-14-v-5-等元件">例题：KVL 求电流 I（含 6 V、14 V、5 等元件）</a></li><li class="toc-item level-3"><a href="#例题-求电流源两端电压-电流源与-5-并联">例题：求电流源两端电压（电流源与 5 Ω 并联）</a></li><li class="toc-item level-3"><a href="#教材例题-1-5-1-1-5-2-1-5-3-p22">教材例题 1.5.1、1.5.2、1.5.3（P22）</a></li><li class="toc-item level-3"><a href="#练习册纠错-第三页第四题">练习册纠错：第三页第四题</a></li><li class="toc-item level-2"><a href="#没编号但讲了的知识点">没编号但讲了的知识点</a></li><li class="toc-item level-3"><a href="#上节复习-kcl-kvl-电阻元件">上节复习：KCL、KVL、电阻元件</a></li><li class="toc-item level-3"><a href="#电容元件">电容元件</a></li><li class="toc-item level-3"><a href="#电感元件">电感元件</a></li><li class="toc-item level-3"><a href="#有源元件与独立电源">有源元件与独立电源</a></li><li class="toc-item level-2"><a href="#本篇没讲的">本篇没讲的</a></li><li class="toc-item level-2"><a href="#转写与术语">转写与术语</a></li><li class="toc-item level-2"><a href="#以下内容面向整理者-复核-同学可以不看">以下内容面向整理者/复核，同学可以不看</a></li><li class="toc-item level-3"><a href="#条件备注">条件备注</a></li>
+      </ul>
+    </aside>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../../assets/theme/shirone-reader.js?v=05701c2568" defer></script>
+  <script src="../../../assets/plugins/disclosure-anchor.js?v=c242987556" defer></script>
+  <script type="application/json" id="sym-glossary-json">{"terms":{}}</script>
+  <!-- 侧栏形状烘焙（阶段一）：nav-structure.mjs（buildNavModel）产出的归一化树 + 判定结果。
+       site_index / site_navigate / drawer-sync 三个消费者都读这一份，不再爬侧栏 DOM。 -->
+  <script type="application/json" id="nav-structure-json">{"v":1,"current":"课程/电路原理/课堂笔记/2026-09-30-电容电感与独立电源.html","activeIds":["课程/电路原理/课堂笔记/2026-09-30-电容电感与独立电源.html"],"expandedIds":["课程/index.html","课程/电路原理/index.html","课程/电路原理/课堂笔记/index.html","课程/电路原理/课堂笔记/2026-09-30-电容电感与独立电源.html"],"nodes":[{"id":"index.html","label":"首页","path":"README.md","href":"index.html","depth":0,"indexHref":null,"children":null},{"id":"课程/index.html","label":"课程总览","path":"课程/index.md","href":"课程/index.html","depth":0,"indexHref":"课程/index.html","children":[{"id":"课程/工程数学/index.html","label":"工程数学","path":"课程/工程数学/index.md","href":"课程/工程数学/index.html","depth":1,"indexHref":"课程/工程数学/index.html","children":[{"id":"课程/工程数学/Walkthrough.html","label":"Walkthrough","path":"课程/工程数学/Walkthrough.md","href":"课程/工程数学/Walkthrough.html","depth":2,"indexHref":null,"children":null},{"id":"课程/工程数学/技法库.html","label":"技法库","path":"课程/工程数学/技法库.md","href":"课程/工程数学/技法库.html","depth":2,"indexHref":null,"children":null},{"id":"课程/工程数学/作业/index.html","label":"作业","path":"课程/工程数学/作业/index.md","href":"课程/工程数学/作业/index.html","depth":2,"indexHref":"课程/工程数学/作业/index.html","children":[{"id":"课程/工程数学/作业/2026-09-17-作业1.html","label":"作业1","path":"课程/工程数学/作业/2026-09-17-作业1.md","href":"课程/工程数学/作业/2026-09-17-作业1.html","depth":3,"indexHref":null,"children":null},{"id":"课程/工程数学/作业/2026-10-08-作业2.html","label":"作业2","path":"课程/工程数学/作业/2026-10-08-作业2.md","href":"课程/工程数学/作业/2026-10-08-作业2.html","depth":3,"indexHref":null,"children":null}]},{"id":"课程/工程数学/课堂笔记/index.html","label":"课堂笔记","path":"课程/工程数学/课堂笔记/index.md","href":"课程/工程数学/课堂笔记/index.html","depth":2,"indexHref":"课程/工程数学/课堂笔记/index.html","children":[{"id":"课程/工程数学/课堂笔记/2026-09-17-determinants-order-2-3.html","label":"09-17 行列式与沙路法则","path":"课程/工程数学/课堂笔记/2026-09-17-determinants-order-2-3.md","href":"课程/工程数学/课堂笔记/2026-09-17-determinants-order-2-3.html","depth":3,"indexHref":null,"children":null},{"id":"课程/工程数学/课堂笔记/2026-09-17-determinants-transcript-notes.html","label":"09-17 课堂听课整理","path":"课程/工程数学/课堂笔记/2026-09-17-determinants-transcript-notes.md","href":"课程/工程数学/课堂笔记/2026-09-17-determinants-transcript-notes.html","depth":3,"indexHref":null,"children":null},{"id":"课程/工程数学/课堂笔记/2026-09-24-降阶法克拉默法则与齐次方程组.html","label":"09-24 降阶法与克拉默法则","path":"课程/工程数学/课堂笔记/2026-09-24-降阶法克拉默法则与齐次方程组.md","href":"课程/工程数学/课堂笔记/2026-09-24-降阶法克拉默法则与齐次方程组.html","depth":3,"indexHref":null,"children":null},{"id":"课程/工程数学/课堂笔记/2026-10-08-矩阵的定义与运算及逆的引入.html","label":"10-08 矩阵的定义与运算及逆的引入","path":"课程/工程数学/课堂笔记/2026-10-08-矩阵的定义与运算及逆的引入.md","href":"课程/工程数学/课堂笔记/2026-10-08-矩阵的定义与运算及逆的引入.html","depth":3,"indexHref":null,"children":null}]},{"id":"课程/工程数学/教材解析/index.html","label":"教材解析","path":"课程/工程数学/教材解析/index.md","href":"课程/工程数学/教材解析/index.html","depth":2,"indexHref":"课程/工程数学/教材解析/index.html","children":[{"id":"课程/工程数学/教材解析/0.0-符号入门.html","label":"符号入门","path":"课程/工程数学/教材解析/0.0-符号入门.md","href":"课程/工程数学/教材解析/0.0-符号入门.html","depth":3,"indexHref":null,"children":null},{"id":"课程/工程数学/教材解析/第一部分-线性代数/index.html","label":"第一部分 线性代数","path":"课程/工程数学/教材解析/第一部分-线性代数/index.md","href":"课程/工程数学/教材解析/第一部分-线性代数/index.html","depth":3,"indexHref":"课程/工程数学/教材解析/第一部分-线性代数/index.html","children":[{"id":"课程/工程数学/教材解析/第一部分-线性代数/index.html#第01章 行列式","label":"第01章 行列式","path":null,"href":null,"depth":4,"indexHref":null,"children":[{"id":"课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.0-本章通关攻略.html","label":"★ 通关攻略","path":"课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.0-本章通关攻略.md","href":"课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.0-本章通关攻略.html","depth":5,"indexHref":null,"children":null},{"id":"课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.1-二阶与三阶行列式.html","label":"1.1 二阶与三阶行列式","path":"课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.1-二阶与三阶行列式.md","href":"课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.1-二阶与三阶行列式.html","depth":5,"indexHref":null,"children":null},{"id":"课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.2-n阶行列式.html","label":"1.2 n阶行列式","path":"课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.2-n阶行列式.md","href":"课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.2-n阶行列式.html","depth":5,"indexHref":null,"children":null},{"id":"课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.3-克莱姆法则.html","label":"1.3 克莱姆法则","path":"课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.3-克莱姆法则.md","href":"课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.3-克莱姆法则.html","depth":5,"indexHref":null,"children":null},{"id":"课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.4-用MATLAB计算行列式.html","label":"1.4 用MATLAB计算行列式","path":"课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.4-用MATLAB计算行列式.md","href":"课程/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.4-用MATLAB计算行列式.html","depth":5,"indexHref":null,"children":null}]},{"id":"课程/工程数学/教材解析/第一部分-线性代数/index.html#第02章 矩阵","label":"第02章 矩阵","path":null,"href":null,"depth":4,"indexHref":null,"children":[{"id":"课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.0-本章通关攻略.html","label":"★ 通关攻略","path":"课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.0-本章通关攻略.md","href":"课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.0-本章通关攻略.html","depth":5,"indexHref":null,"children":null},{"id":"课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.1-矩阵的概念及运算.html","label":"2.1 矩阵的概念及运算","path":"课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.1-矩阵的概念及运算.md","href":"课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.1-矩阵的概念及运算.html","depth":5,"indexHref":null,"children":null},{"id":"课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.2-逆矩阵.html","label":"2.2 逆矩阵","path":"课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.2-逆矩阵.md","href":"课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.2-逆矩阵.html","depth":5,"indexHref":null,"children":null},{"id":"课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.3-矩阵的初等变换与初等矩阵.html","label":"2.3 初等变换与初等矩阵","path":"课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.3-矩阵的初等变换与初等矩阵.md","href":"课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.3-矩阵的初等变换与初等矩阵.html","depth":5,"indexHref":null,"children":null},{"id":"课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.4-矩阵的秩.html","label":"2.4 矩阵的秩","path":"课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.4-矩阵的秩.md","href":"课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.4-矩阵的秩.html","depth":5,"indexHref":null,"children":null},{"id":"课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.5-用MATLAB进行矩阵运算.html","label":"2.5 用MATLAB进行矩阵运算","path":"课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.5-用MATLAB进行矩阵运算.md","href":"课程/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.5-用MATLAB进行矩阵运算.html","depth":5,"indexHref":null,"children":null}]}]}]},{"id":"课程/工程数学/原始资料/index.html","label":"原始资料","path":"课程/工程数学/原始资料/index.md","href":"课程/工程数学/原始资料/index.html","depth":2,"indexHref":null,"children":null},{"id":"课程/工程数学/音频/index.html","label":"音频","path":"课程/工程数学/音频/index.md","href":"课程/工程数学/音频/index.html","depth":2,"indexHref":null,"children":null}]},{"id":"课程/电力大数据与人工智能/index.html","label":"电力大数据与人工智能","path":"课程/电力大数据与人工智能/index.md","href":"课程/电力大数据与人工智能/index.html","depth":1,"indexHref":"课程/电力大数据与人工智能/index.html","children":[{"id":"课程/电力大数据与人工智能/Walkthrough.html","label":"Walkthrough","path":"课程/电力大数据与人工智能/Walkthrough.md","href":"课程/电力大数据与人工智能/Walkthrough.html","depth":2,"indexHref":null,"children":null},{"id":"课程/电力大数据与人工智能/备考.html","label":"备考","path":"课程/电力大数据与人工智能/备考.md","href":"课程/电力大数据与人工智能/备考.html","depth":2,"indexHref":null,"children":null},{"id":"课程/电力大数据与人工智能/作业/index.html","label":"作业","path":"课程/电力大数据与人工智能/作业/index.md","href":"课程/电力大数据与人工智能/作业/index.html","depth":2,"indexHref":"课程/电力大数据与人工智能/作业/index.html","children":[{"id":"课程/电力大数据与人工智能/作业/2026-09-29-大数据特点与AI算法.html","label":"2026-09-29作业（大数据特点、AI 算法、运行状态）","path":"课程/电力大数据与人工智能/作业/2026-09-29-大数据特点与AI算法.md","href":"课程/电力大数据与人工智能/作业/2026-09-29-大数据特点与AI算法.html","depth":3,"indexHref":null,"children":null}]},{"id":"课程/电力大数据与人工智能/教材解析/index.html","label":"教材解析","path":"课程/电力大数据与人工智能/教材解析/index.md","href":"课程/电力大数据与人工智能/教材解析/index.html","depth":2,"indexHref":null,"children":null},{"id":"课程/电力大数据与人工智能/课堂笔记/index.html","label":"课堂笔记","path":"课程/电力大数据与人工智能/课堂笔记/index.md","href":"课程/电力大数据与人工智能/课堂笔记/index.html","depth":2,"indexHref":"课程/电力大数据与人工智能/课堂笔记/index.html","children":[{"id":"课程/电力大数据与人工智能/课堂笔记/2026-09-20-课程定位与考核要求.html","label":"09-20 开课第一讲","path":"课程/电力大数据与人工智能/课堂笔记/2026-09-20-课程定位与考核要求.md","href":"课程/电力大数据与人工智能/课堂笔记/2026-09-20-课程定位与考核要求.html","depth":3,"indexHref":null,"children":null},{"id":"课程/电力大数据与人工智能/课堂笔记/2026-09-22-暂态稳定评估方法与紧急控制.html","label":"09-22 暂态稳定评估与紧急控制","path":"课程/电力大数据与人工智能/课堂笔记/2026-09-22-暂态稳定评估方法与紧急控制.md","href":"课程/电力大数据与人工智能/课堂笔记/2026-09-22-暂态稳定评估方法与紧急控制.html","depth":3,"indexHref":null,"children":null},{"id":"课程/电力大数据与人工智能/课堂笔记/2026-09-29-电力大数据特点与人工智能算法.html","label":"09-29 电力大数据特点与人工智能算法","path":"课程/电力大数据与人工智能/课堂笔记/2026-09-29-电力大数据特点与人工智能算法.md","href":"课程/电力大数据与人工智能/课堂笔记/2026-09-29-电力大数据特点与人工智能算法.html","depth":3,"indexHref":null,"children":null},{"id":"课程/电力大数据与人工智能/课堂笔记/2026-10-13-人工智能常用算法与数据预处理开篇.html","label":"10-13 人工智能常用算法与数据预处理开篇","path":"课程/电力大数据与人工智能/课堂笔记/2026-10-13-人工智能常用算法与数据预处理开篇.md","href":"课程/电力大数据与人工智能/课堂笔记/2026-10-13-人工智能常用算法与数据预处理开篇.html","depth":3,"indexHref":null,"children":null}]},{"id":"课程/电力大数据与人工智能/原始资料/index.html","label":"原始资料","path":"课程/电力大数据与人工智能/原始资料/index.md","href":"课程/电力大数据与人工智能/原始资料/index.html","depth":2,"indexHref":null,"children":null},{"id":"课程/电力大数据与人工智能/音频/index.html","label":"音频","path":"课程/电力大数据与人工智能/音频/index.md","href":"课程/电力大数据与人工智能/音频/index.html","depth":2,"indexHref":null,"children":null}]},{"id":"课程/形势与政策/index.html","label":"形势与政策","path":"课程/形势与政策/index.md","href":"课程/形势与政策/index.html","depth":1,"indexHref":"课程/形势与政策/index.html","children":[{"id":"课程/形势与政策/Walkthrough.html","label":"Walkthrough","path":"课程/形势与政策/Walkthrough.md","href":"课程/形势与政策/Walkthrough.html","depth":2,"indexHref":null,"children":null},{"id":"课程/形势与政策/备考.html","label":"备考","path":"课程/形势与政策/备考.md","href":"课程/形势与政策/备考.html","depth":2,"indexHref":null,"children":null},{"id":"课程/形势与政策/作业/index.html","label":"作业","path":"课程/形势与政策/作业/index.md","href":"课程/形势与政策/作业/index.html","depth":2,"indexHref":null,"children":null},{"id":"课程/形势与政策/课堂笔记/index.html","label":"课堂笔记","path":"课程/形势与政策/课堂笔记/index.md","href":"课程/形势与政策/课堂笔记/index.html","depth":2,"indexHref":"课程/形势与政策/课堂笔记/index.html","children":[{"id":"课程/形势与政策/课堂笔记/2026-09-21-经济热点专题与考试安排.html","label":"09-21 经济热点专题与考试安排","path":"课程/形势与政策/课堂笔记/2026-09-21-经济热点专题与考试安排.md","href":"课程/形势与政策/课堂笔记/2026-09-21-经济热点专题与考试安排.html","depth":3,"indexHref":null,"children":null},{"id":"课程/形势与政策/课堂笔记/2026-09-28-人工智能专题.html","label":"09-28 人工智能专题","path":"课程/形势与政策/课堂笔记/2026-09-28-人工智能专题.md","href":"课程/形势与政策/课堂笔记/2026-09-28-人工智能专题.html","depth":3,"indexHref":null,"children":null},{"id":"课程/形势与政策/课堂笔记/2026-10-12-美丽中国建设专题与考试规则.html","label":"10-12 美丽中国建设专题与考试规则","path":"课程/形势与政策/课堂笔记/2026-10-12-美丽中国建设专题与考试规则.md","href":"课程/形势与政策/课堂笔记/2026-10-12-美丽中国建设专题与考试规则.html","depth":3,"indexHref":null,"children":null}]},{"id":"课程/形势与政策/原始资料/index.html","label":"原始资料","path":"课程/形势与政策/原始资料/index.md","href":"课程/形势与政策/原始资料/index.html","depth":2,"indexHref":null,"children":null},{"id":"课程/形势与政策/音频/index.html","label":"音频","path":"课程/形势与政策/音频/index.md","href":"课程/形势与政策/音频/index.html","depth":2,"indexHref":null,"children":null}]},{"id":"课程/电路原理/index.html","label":"电路原理","path":"课程/电路原理/index.md","href":"课程/电路原理/index.html","depth":1,"indexHref":"课程/电路原理/index.html","children":[{"id":"课程/电路原理/Walkthrough.html","label":"Walkthrough","path":"课程/电路原理/Walkthrough.md","href":"课程/电路原理/Walkthrough.html","depth":2,"indexHref":null,"children":null},{"id":"课程/电路原理/作业/index.html","label":"作业","path":"课程/电路原理/作业/index.md","href":"课程/电路原理/作业/index.html","depth":2,"indexHref":"课程/电路原理/作业/index.html","children":[{"id":"课程/电路原理/作业/2026-09-28-习题册第一章.html","label":"习题册第一章（43 题）","path":"课程/电路原理/作业/2026-09-28-习题册第一章.md","href":"课程/电路原理/作业/2026-09-28-习题册第一章.html","depth":3,"indexHref":null,"children":null},{"id":"课程/电路原理/作业/2026-09-28-习题册第二章.html","label":"习题册第二章（34 题）","path":"课程/电路原理/作业/2026-09-28-习题册第二章.md","href":"课程/电路原理/作业/2026-09-28-习题册第二章.html","depth":3,"indexHref":null,"children":null},{"id":"课程/电路原理/作业/2026-09-28-习题册第三章.html","label":"习题册第三章（28 题）","path":"课程/电路原理/作业/2026-09-28-习题册第三章.md","href":"课程/电路原理/作业/2026-09-28-习题册第三章.html","depth":3,"indexHref":null,"children":null},{"id":"课程/电路原理/作业/2026-09-28-习题册第四章.html","label":"习题册第四章（21 题）","path":"课程/电路原理/作业/2026-09-28-习题册第四章.md","href":"课程/电路原理/作业/2026-09-28-习题册第四章.html","depth":3,"indexHref":null,"children":null},{"id":"课程/电路原理/作业/2026-09-28-习题册第五章.html","label":"习题册第五章（62 题）","path":"课程/电路原理/作业/2026-09-28-习题册第五章.md","href":"课程/电路原理/作业/2026-09-28-习题册第五章.html","depth":3,"indexHref":null,"children":null},{"id":"课程/电路原理/作业/2026-09-28-习题册第六章.html","label":"习题册第六章（33 题）","path":"课程/电路原理/作业/2026-09-28-习题册第六章.md","href":"课程/电路原理/作业/2026-09-28-习题册第六章.html","depth":3,"indexHref":null,"children":null},{"id":"课程/电路原理/作业/2026-09-28-习题册第七章.html","label":"习题册第七章（31 题）","path":"课程/电路原理/作业/2026-09-28-习题册第七章.md","href":"课程/电路原理/作业/2026-09-28-习题册第七章.html","depth":3,"indexHref":null,"children":null},{"id":"课程/电路原理/作业/2026-09-28-习题册第九章.html","label":"习题册第九章（26 题）","path":"课程/电路原理/作业/2026-09-28-习题册第九章.md","href":"课程/电路原理/作业/2026-09-28-习题册第九章.html","depth":3,"indexHref":null,"children":null}]},{"id":"课程/电路原理/教材解析/index.html","label":"教材解析","path":"课程/电路原理/教材解析/index.md","href":"课程/电路原理/教材解析/index.html","depth":2,"indexHref":"课程/电路原理/教材解析/index.html","children":[{"id":"课程/电路原理/教材解析/0.0-符号入门.html","label":"符号入门","path":"课程/电路原理/教材解析/0.0-符号入门.md","href":"课程/电路原理/教材解析/0.0-符号入门.html","depth":3,"indexHref":null,"children":null}]},{"id":"课程/电路原理/课堂笔记/index.html","label":"课堂笔记","path":"课程/电路原理/课堂笔记/index.md","href":"课程/电路原理/课堂笔记/index.html","depth":2,"indexHref":"课程/电路原理/课堂笔记/index.html","children":[{"id":"课程/电路原理/课堂笔记/2026-09-21-开课说明与电路的基本概念.html","label":"09-21 开课说明与电路的基本概念","path":"课程/电路原理/课堂笔记/2026-09-21-开课说明与电路的基本概念.md","href":"课程/电路原理/课堂笔记/2026-09-21-开课说明与电路的基本概念.html","depth":3,"indexHref":null,"children":null},{"id":"课程/电路原理/课堂笔记/2026-09-23-电压电位与电路名词.html","label":"09-23 电压电位与电路名词","path":"课程/电路原理/课堂笔记/2026-09-23-电压电位与电路名词.md","href":"课程/电路原理/课堂笔记/2026-09-23-电压电位与电路名词.html","depth":3,"indexHref":null,"children":null},{"id":"课程/电路原理/课堂笔记/2026-10-10-受控源与第一章综合例题.html","label":"10-10 受控源与第一章综合例题","path":"课程/电路原理/课堂笔记/2026-10-10-受控源与第一章综合例题.md","href":"课程/电路原理/课堂笔记/2026-10-10-受控源与第一章综合例题.html","depth":3,"indexHref":null,"children":null},{"id":"课程/电路原理/课堂笔记/2026-10-12-习题册收尾与电路的等效变换.html","label":"10-12 习题册收尾与电路的等效变换","path":"课程/电路原理/课堂笔记/2026-10-12-习题册收尾与电路的等效变换.md","href":"课程/电路原理/课堂笔记/2026-10-12-习题册收尾与电路的等效变换.html","depth":3,"indexHref":null,"children":null},{"id":"课程/电路原理/课堂笔记/2026-10-14-电源等效变换与无源二端网络等效.html","label":"10-14 电源等效变换与无源二端网络等效","path":"课程/电路原理/课堂笔记/2026-10-14-电源等效变换与无源二端网络等效.md","href":"课程/电路原理/课堂笔记/2026-10-14-电源等效变换与无源二端网络等效.html","depth":3,"indexHref":null,"children":null},{"id":"课程/电路原理/课堂笔记/2026-09-30-电容电感与独立电源.html","label":"09-30 电容电感与独立电源","path":"课程/电路原理/课堂笔记/2026-09-30-电容电感与独立电源.md","href":"课程/电路原理/课堂笔记/2026-09-30-电容电感与独立电源.html","depth":3,"indexHref":null,"children":null},{"id":"课程/电路原理/课堂笔记/2026-09-28-KCL与KVL及电阻元件.html","label":"09-28 KCL 与 KVL 及电阻元件","path":"课程/电路原理/课堂笔记/2026-09-28-KCL与KVL及电阻元件.md","href":"课程/电路原理/课堂笔记/2026-09-28-KCL与KVL及电阻元件.html","depth":3,"indexHref":null,"children":null}]},{"id":"课程/电路原理/原始资料/index.html","label":"原始资料","path":"课程/电路原理/原始资料/index.md","href":"课程/电路原理/原始资料/index.html","depth":2,"indexHref":null,"children":null},{"id":"课程/电路原理/音频/index.html","label":"音频","path":"课程/电路原理/音频/index.md","href":"课程/电路原理/音频/index.html","depth":2,"indexHref":null,"children":null}]},{"id":"课程/电子技术/index.html","label":"电子技术","path":"课程/电子技术/index.md","href":"课程/电子技术/index.html","depth":1,"indexHref":"课程/电子技术/index.html","children":[{"id":"课程/电子技术/Walkthrough.html","label":"Walkthrough","path":"课程/电子技术/Walkthrough.md","href":"课程/电子技术/Walkthrough.html","depth":2,"indexHref":null,"children":null},{"id":"课程/电子技术/作业/index.html","label":"作业","path":"课程/电子技术/作业/index.md","href":"课程/电子技术/作业/index.html","depth":2,"indexHref":"课程/电子技术/作业/index.html","children":[{"id":"课程/电子技术/作业/2026-09-23-第一章简答题.html","label":"2026-9-23作业（习题 1.1、1.3、1.5）","path":"课程/电子技术/作业/2026-09-23-第一章简答题.md","href":"课程/电子技术/作业/2026-09-23-第一章简答题.html","depth":3,"indexHref":null,"children":null},{"id":"课程/电子技术/作业/2026-09-28-第一章填空与简答.html","label":"2026-9-28作业（习题 1.6、1.7）","path":"课程/电子技术/作业/2026-09-28-第一章填空与简答.md","href":"课程/电子技术/作业/2026-09-28-第一章填空与简答.html","depth":3,"indexHref":null,"children":null},{"id":"课程/电子技术/作业/2026-09-30-数制转换与8421BCD码.html","label":"2026-9-30作业（习题 7.1、7.2）","path":"课程/电子技术/作业/2026-09-30-数制转换与8421BCD码.md","href":"课程/电子技术/作业/2026-09-30-数制转换与8421BCD码.html","depth":3,"indexHref":null,"children":null},{"id":"课程/电子技术/作业/2026-10-09-逻辑等式证明.html","label":"2026-10-09作业（习题 7.8 证明）","path":"课程/电子技术/作业/2026-10-09-逻辑等式证明.md","href":"课程/电子技术/作业/2026-10-09-逻辑等式证明.html","depth":3,"indexHref":null,"children":null},{"id":"课程/电子技术/作业/2026-10-10-逻辑化简与状态表.html","label":"2026-10-10作业（习题 7.9 化简）","path":"课程/电子技术/作业/2026-10-10-逻辑化简与状态表.md","href":"课程/电子技术/作业/2026-10-10-逻辑化简与状态表.html","depth":3,"indexHref":null,"children":null},{"id":"课程/电子技术/作业/2026-10-12-门电路输出波形.html","label":"2026-10-12作业（习题 7.4 波形）","path":"课程/电子技术/作业/2026-10-12-门电路输出波形.md","href":"课程/电子技术/作业/2026-10-12-门电路输出波形.html","depth":3,"indexHref":null,"children":null}]},{"id":"课程/电子技术/教材解析/index.html","label":"教材解析","path":"课程/电子技术/教材解析/index.md","href":"课程/电子技术/教材解析/index.html","depth":2,"indexHref":"课程/电子技术/教材解析/index.html","children":[{"id":"课程/电子技术/教材解析/0.0-符号入门.html","label":"符号入门","path":"课程/电子技术/教材解析/0.0-符号入门.md","href":"课程/电子技术/教材解析/0.0-符号入门.html","depth":3,"indexHref":null,"children":null}]},{"id":"课程/电子技术/课堂笔记/index.html","label":"课堂笔记","path":"课程/电子技术/课堂笔记/index.md","href":"课程/电子技术/课堂笔记/index.html","depth":2,"indexHref":"课程/电子技术/课堂笔记/index.html","children":[{"id":"课程/电子技术/课堂笔记/2026-09-21-开课说明与半导体基础到PN结.html","label":"09-21 开课说明与半导体基础到 PN 结","path":"课程/电子技术/课堂笔记/2026-09-21-开课说明与半导体基础到PN结.md","href":"课程/电子技术/课堂笔记/2026-09-21-开课说明与半导体基础到PN结.html","depth":3,"indexHref":null,"children":null},{"id":"课程/电子技术/课堂笔记/2026-09-23-二极管与含二极管电路.html","label":"09-23 二极管与含二极管电路","path":"课程/电子技术/课堂笔记/2026-09-23-二极管与含二极管电路.md","href":"课程/电子技术/课堂笔记/2026-09-23-二极管与含二极管电路.html","depth":3,"indexHref":null,"children":null},{"id":"课程/电子技术/课堂笔记/2026-10-10-逻辑代数与公式法化简.html","label":"10-10 逻辑代数与公式法化简","path":"课程/电子技术/课堂笔记/2026-10-10-逻辑代数与公式法化简.md","href":"课程/电子技术/课堂笔记/2026-10-10-逻辑代数与公式法化简.html","depth":3,"indexHref":null,"children":null},{"id":"课程/电子技术/课堂笔记/2026-09-28-三极管与场效应管.html","label":"09-28 三极管与场效应管","path":"课程/电子技术/课堂笔记/2026-09-28-三极管与场效应管.md","href":"课程/电子技术/课堂笔记/2026-09-28-三极管与场效应管.html","depth":3,"indexHref":null,"children":null},{"id":"课程/电子技术/课堂笔记/2026-10-12-卡诺图化简法与无关项.html","label":"10-12 卡诺图化简法与无关项","path":"课程/电子技术/课堂笔记/2026-10-12-卡诺图化简法与无关项.md","href":"课程/电子技术/课堂笔记/2026-10-12-卡诺图化简法与无关项.html","depth":3,"indexHref":null,"children":null}]},{"id":"课程/电子技术/原始资料/index.html","label":"原始资料","path":"课程/电子技术/原始资料/index.md","href":"课程/电子技术/原始资料/index.html","depth":2,"indexHref":null,"children":null},{"id":"课程/电子技术/音频/index.html","label":"音频","path":"课程/电子技术/音频/index.md","href":"课程/电子技术/音频/index.html","depth":2,"indexHref":null,"children":null}]},{"id":"课程/电机学/index.html","label":"电机学","path":"课程/电机学/index.md","href":"课程/电机学/index.html","depth":1,"indexHref":"课程/电机学/index.html","children":[{"id":"课程/电机学/Walkthrough.html","label":"Walkthrough","path":"课程/电机学/Walkthrough.md","href":"课程/电机学/Walkthrough.html","depth":2,"indexHref":null,"children":null},{"id":"课程/电机学/作业/index.html","label":"作业","path":"课程/电机学/作业/index.md","href":"课程/电机学/作业/index.html","depth":2,"indexHref":"课程/电机学/作业/index.html","children":[{"id":"课程/电机学/作业/2026-09-22-第1章概述客观题.html","label":"09-22 第1章概述客观题（25题）","path":"课程/电机学/作业/2026-09-22-第1章概述客观题.md","href":"课程/电机学/作业/2026-09-22-第1章概述客观题.html","depth":3,"indexHref":null,"children":null},{"id":"课程/电机学/作业/2026-10-15-变压器额定电流与变比.html","label":"10-15 变压器额定电流与变比（§2.1 主观题）","path":"课程/电机学/作业/2026-10-15-变压器额定电流与变比.md","href":"课程/电机学/作业/2026-10-15-变压器额定电流与变比.html","depth":3,"indexHref":null,"children":null}]},{"id":"课程/电机学/教材解析/index.html","label":"教材解析","path":"课程/电机学/教材解析/index.md","href":"课程/电机学/教材解析/index.html","depth":2,"indexHref":"课程/电机学/教材解析/index.html","children":[{"id":"课程/电机学/教材解析/0.0-符号入门.html","label":"符号入门","path":"课程/电机学/教材解析/0.0-符号入门.md","href":"课程/电机学/教材解析/0.0-符号入门.html","depth":3,"indexHref":null,"children":null},{"id":"课程/电机学/教材解析/第01章-概述/1.1-电机的分类.html","label":"第01章 概述","path":"课程/电机学/教材解析/第01章-概述/1.1-电机的分类.md","href":"课程/电机学/教材解析/第01章-概述/1.1-电机的分类.html","depth":3,"indexHref":null,"children":[{"id":"课程/电机学/教材解析/第01章-概述/1.1-电机的分类.html","label":"1.1 电机的分类","path":"课程/电机学/教材解析/第01章-概述/1.1-电机的分类.md","href":"课程/电机学/教材解析/第01章-概述/1.1-电机的分类.html","depth":4,"indexHref":null,"children":null},{"id":"课程/电机学/教材解析/第01章-概述/1.2-电机的磁路和磁路定律.html","label":"1.2 电机的磁路和磁路定律","path":"课程/电机学/教材解析/第01章-概述/1.2-电机的磁路和磁路定律.md","href":"课程/电机学/教材解析/第01章-概述/1.2-电机的磁路和磁路定律.html","depth":4,"indexHref":null,"children":null},{"id":"课程/电机学/教材解析/第01章-概述/1.3-电机的电磁基本理论.html","label":"1.3 电机的电磁基本理论","path":"课程/电机学/教材解析/第01章-概述/1.3-电机的电磁基本理论.md","href":"课程/电机学/教材解析/第01章-概述/1.3-电机的电磁基本理论.html","depth":4,"indexHref":null,"children":null},{"id":"课程/电机学/教材解析/第01章-概述/1.4-电机的制造材料.html","label":"1.4 电机的制造材料","path":"课程/电机学/教材解析/第01章-概述/1.4-电机的制造材料.md","href":"课程/电机学/教材解析/第01章-概述/1.4-电机的制造材料.html","depth":4,"indexHref":null,"children":null},{"id":"课程/电机学/教材解析/第01章-概述/第01章-小结与思考题习题.html","label":"第01章 小结与思考题习题","path":"课程/电机学/教材解析/第01章-概述/第01章-小结与思考题习题.md","href":"课程/电机学/教材解析/第01章-概述/第01章-小结与思考题习题.html","depth":4,"indexHref":null,"children":null}]},{"id":"课程/电机学/教材解析/第02章-变压器的基本作用原理与理论分析/2.0-本章通关攻略.html","label":"第02章 变压器","path":"课程/电机学/教材解析/第02章-变压器的基本作用原理与理论分析/2.0-本章通关攻略.md","href":"课程/电机学/教材解析/第02章-变压器的基本作用原理与理论分析/2.0-本章通关攻略.html","depth":3,"indexHref":null,"children":[{"id":"课程/电机学/教材解析/第02章-变压器的基本作用原理与理论分析/2.0-本章通关攻略.html","label":"2.0 通关攻略","path":"课程/电机学/教材解析/第02章-变压器的基本作用原理与理论分析/2.0-本章通关攻略.md","href":"课程/电机学/教材解析/第02章-变压器的基本作用原理与理论分析/2.0-本章通关攻略.html","depth":4,"indexHref":null,"children":null}]}]},{"id":"课程/电机学/课堂笔记/index.html","label":"课堂笔记","path":"课程/电机学/课堂笔记/index.md","href":"课程/电机学/课堂笔记/index.html","depth":2,"indexHref":"课程/电机学/课堂笔记/index.html","children":[{"id":"课程/电机学/课堂笔记/2026-09-24-绪论电机概述与磁路基础.html","label":"09-24 绪论·电机概述与磁路基础","path":"课程/电机学/课堂笔记/2026-09-24-绪论电机概述与磁路基础.md","href":"课程/电机学/课堂笔记/2026-09-24-绪论电机概述与磁路基础.html","depth":3,"indexHref":null,"children":null},{"id":"课程/电机学/课堂笔记/2026-10-08-磁路例题与变压器概述.html","label":"10-08 磁路例题与变压器概述","path":"课程/电机学/课堂笔记/2026-10-08-磁路例题与变压器概述.md","href":"课程/电机学/课堂笔记/2026-10-08-磁路例题与变压器概述.html","depth":3,"indexHref":null,"children":null}]},{"id":"课程/电机学/原始资料/index.html","label":"原始资料","path":"课程/电机学/原始资料/index.md","href":"课程/电机学/原始资料/index.html","depth":2,"indexHref":null,"children":null},{"id":"课程/电机学/音频/index.html","label":"音频","path":"课程/电机学/音频/index.md","href":"课程/电机学/音频/index.html","depth":2,"indexHref":null,"children":null}]}]},{"id":"#仓库规约","label":"仓库规约","path":null,"href":null,"depth":0,"indexHref":null,"children":[{"id":"维护条例.html","label":"维护条例","path":"维护条例.md","href":"维护条例.html","depth":1,"indexHref":null,"children":null},{"id":"维护细则.html","label":"维护细则","path":"维护细则.md","href":"维护细则.html","depth":1,"indexHref":null,"children":null}]}]}</script>
+  <script src="../../../assets/plugins/math-glossary.js?v=1c51855da2" defer></script>
+  <script src="../../../assets/plugins/site-search.js?v=819ae4ef4d" defer></script>
+  <script src="../../../assets/plugins/webmcp-loader.js?v=44d133af7f" defer></script>
+  <!-- relay 连接器**不带 defer**：它要在解析期用 document.write 插入 vendor 的 embed.js，
+       而 embed.js 靠 document.currentScript.src 定位同目录的 widget.html——
+       defer 脚本执行时 readyState 已是 interactive，document.write 会毁掉文档。 -->
+  <script src="../../../assets/plugins/webmcp-relay.js?v=fd5acb480e"></script>
+  <!-- site-root：部署根探测与链接修正。同步执行、先于一切读 data-root 的脚本
+       （drawer-sync / spa-router / chat-panel / loader），否则它们拿到错误的相对根。 -->
+  <script src="../../../assets/plugins/site-root.js?v=4ec41094a7"></script>
+  <script>try { fixSiteRoot(); } catch (e) { /* 探测失败保持构建期相对路径 */ }</script>
+  <!-- 侧栏形状运行时：先于 drawer-sync，暴露 window.__navStructure（读 JSON + 共享判定）。 -->
+  <script src="../../../assets/plugins/nav-structure.js?v=7de3047e94" defer></script>
+  <script src="../../../assets/plugins/drawer-sync.js?v=8abc0d05f2" defer></script>
+  <script src="../../../assets/plugins/chat-panel.js?v=fcfffb7ffa" defer></script>
+  <script src="../../../assets/plugins/spa-router.js?v=45f78f58de" defer></script>
+  <!-- SW 已根除（2026-10-23）：只保留一次性清理，反注册老用户的旧 SW + 清 caches。
+       localStorage 标记去重，清完一次后本脚本自动变 no-op。 -->
+  <script src="../../../assets/plugins/sw-kill.js?v=af296685f6" defer></script>
+</body>
+</html>
