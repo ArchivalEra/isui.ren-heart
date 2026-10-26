@@ -1,17 +1,13 @@
 
 /* ── 学习助手面板与会话书签条（重构版）────────────────────────
    布局三档：
-     · > 1200px  右侧热区悬停滑出书签条，面板浮层覆盖（可拖拽 240-720px）
-     · 861-1200  右侧热区悬停滑出书签条，面板浮层（最大宽度受限）
+     · > 1200px  融入 site-shell 桌面三栏流（左侧会话列表，右侧对话区）
+     · 861-1200  融入 site-shell 三栏流
      · ≤ 860px   右缘常驻 20×56px 把手，点击滑出书签抽屉，面板全屏抽屉
    与 TOC 互斥由 body.chat-open 控制。 */
 
 :root {
-  --chat-width: 360px;
-}
-
-body.chat-open .m3-toc {
-  display: none;
+  --chat-width: 380px;
 }
 
 body.chat-resizing {
@@ -20,6 +16,12 @@ body.chat-resizing {
 }
 
 body.chat-resizing .chat-panel {
+  transition: none !important;
+  user-select: none;
+}
+
+body.chat-resizing aside.chat-sessions,
+body.chat-resizing aside.chat-dialog {
   transition: none !important;
   user-select: none;
 }
@@ -37,14 +39,18 @@ body.chat-resizing .chat-panel {
 .chat-resizer:hover, .chat-resizer.dragging {
   background-color: color-mix(in srgb, var(--md-sys-color-primary) 30%, transparent);
 }
+.chat-resizer-right {
+  left: auto;
+  right: -3px;
+}
 
 .chat-panel {
-  display: none;
+  display: flex;
   flex-direction: column;
   min-height: 0;
   background-color: var(--md-sys-color-surface-container-lowest);
   border-left: 1px solid var(--md-sys-color-outline-variant);
-  box-shadow: -4px 0 24px rgba(0, 0, 0, 0.12);
+  box-shadow: none;
   z-index: 90;
   box-sizing: border-box;
 }
@@ -55,77 +61,25 @@ body.chat-open .chat-panel {
 
 /* ── 桌面档 (≥ 1201px) ── */
 @media (min-width: 1201px) {
-  #chat-dock {
-    position: fixed;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    z-index: 70;
-    pointer-events: none;
-  }
   #chat-dock .chat-edge {
-    position: fixed;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    width: 3px;
-    background: color-mix(in srgb, var(--md-sys-color-primary) 35%, transparent);
-    cursor: pointer;
-    pointer-events: auto;
-    transition: background 150ms;
-  }
-  #chat-dock .chat-edge::before {
-    content: '';
-    position: absolute;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    width: 13px;
-  }
-  #chat-dock .chat-edge:hover,
-  #chat-dock .chat-edge:focus-visible {
-    background: var(--md-sys-color-primary);
+    display: none;
   }
   #chat-dock .chat-mobile-handle {
     display: none;
   }
   #chat-dock .chat-bookmarks {
-    position: fixed;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    width: 240px;
-    background: var(--md-sys-color-surface-container-low);
-    border-left: 1px solid var(--md-sys-color-outline-variant);
-    box-shadow: -4px 0 16px rgba(0, 0, 0, 0.08);
+    position: static;
+    width: 100%;
+    height: 100%;
+    transform: none;
+    box-shadow: none;
+    border-left: none;
     display: flex;
     flex-direction: column;
-    transform: translateX(100%);
-    transition: transform 220ms cubic-bezier(.2, .8, .2, 1);
     pointer-events: auto;
-    /* ⚠️ 2026-10-26 修（真机实测）：书签条必须**浮在对话面板之上**。
-       面板 z-index 90，原先书签条只有 72 ⇒ 面板一打开就把书签条整个盖住
-       （elementFromPoint 在书签条区域返回的是 chat-log）。取 92：高于面板 90，
-       低于 #search-panel 的 95，保证任何面板状态下都能切会话。 */
-    z-index: 92;
-  }
-  #chat-dock.open .chat-bookmarks,
-  #chat-dock:focus-within .chat-bookmarks {
-    transform: translateX(0);
-  }
-  .chat-panel {
-    position: fixed;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    width: var(--chat-width);
-    max-width: 720px;
-    min-width: 240px;
-    transform: translateX(100%);
-    transition: transform 220ms cubic-bezier(.2, .8, .2, 1);
   }
   body.chat-open .chat-panel {
-    transform: translateX(0);
+    width: var(--chat-width);
   }
   .chat-resizer {
     display: block;
@@ -134,83 +88,33 @@ body.chat-open .chat-panel {
 
 /* ── 平板档 (861px – 1200px) ── */
 @media (min-width: 861px) and (max-width: 1200px) {
-  #chat-dock {
-    position: fixed;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    z-index: 70;
-    pointer-events: none;
-  }
   #chat-dock .chat-edge {
-    position: fixed;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    width: 3px;
-    background: color-mix(in srgb, var(--md-sys-color-primary) 35%, transparent);
-    cursor: pointer;
-    pointer-events: auto;
-    transition: background 150ms;
-  }
-  #chat-dock .chat-edge::before {
-    content: '';
-    position: absolute;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    width: 13px;
-  }
-  #chat-dock .chat-edge:hover,
-  #chat-dock .chat-edge:focus-visible {
-    background: var(--md-sys-color-primary);
+    display: none;
   }
   #chat-dock .chat-mobile-handle {
     display: none;
   }
   #chat-dock .chat-bookmarks {
-    position: fixed;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    width: 220px;
-    background: var(--md-sys-color-surface-container-low);
-    border-left: 1px solid var(--md-sys-color-outline-variant);
-    box-shadow: -4px 0 16px rgba(0, 0, 0, 0.08);
+    position: static;
+    width: 100%;
+    height: 100%;
+    transform: none;
+    box-shadow: none;
+    border-left: none;
     display: flex;
     flex-direction: column;
-    transform: translateX(100%);
-    transition: transform 220ms cubic-bezier(.2, .8, .2, 1);
     pointer-events: auto;
-    /* ⚠️ 2026-10-26 修（真机实测）：书签条必须**浮在对话面板之上**。
-       面板 z-index 90，原先书签条只有 72 ⇒ 面板一打开就把书签条整个盖住
-       （elementFromPoint 在书签条区域返回的是 chat-log）。取 92：高于面板 90，
-       低于 #search-panel 的 95，保证任何面板状态下都能切会话。 */
-    z-index: 92;
-  }
-  #chat-dock.open .chat-bookmarks,
-  #chat-dock:focus-within .chat-bookmarks {
-    transform: translateX(0);
-  }
-  .chat-panel {
-    position: fixed;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    width: min(380px, 85vw);
-    transform: translateX(100%);
-    transition: transform 220ms cubic-bezier(.2, .8, .2, 1);
-  }
-  body.chat-open .chat-panel {
-    transform: translateX(0);
   }
   .chat-resizer {
-    display: none;
+    display: block;
   }
 }
 
 /* ── 手机档 (≤ 860px 独立设计) ── */
 @media (max-width: 860px) {
+  body.chat-open .m3-toc {
+    display: none;
+  }
   #chat-dock .chat-edge {
     display: none;
   }
