@@ -531,10 +531,7 @@ var LOCAL_ONLY = (function () {
 // ── 状态 ────────────────────────────────────────────────────
 var panel = null, logEl = null, inputEl = null, sendBtn = null, jumpBtn = null, backdrop = null;
 var attachBtn = null, attachBar = null, fileInput = null;
-// 联网搜索开关（2026-10-25）：与附件互斥，语义照抄官方页面。
-// 开着就禁附件——两路输入都会改变上游的检索策略，同时用会互相干扰。
-var webBtn = null;
-var webSearch = false;
+// 2026-10-26 站长定案：联网开关删除（协议里无此字段，按钮骗人）；旧实现见 git 历史。
 var open = false;
 var busy = false;
 var katexLoading = null;
@@ -1501,32 +1498,8 @@ function buildPanel() {
     fileInput.value = "";      // 允许连续选同一个文件
   });
 
-  // 联网 ↔ 附件互斥（2026-10-25，官方语义照抄）。
-  //
-  // 为什么互斥：联网会让上游去检索外部网页，附件是给上游一份本地材料——
-  // 两路输入同时开，上游的检索策略会互相干扰（官方页面同样不让同时用）。
-  //
-  // 为什么判据是 disabled 属性而不是 class：官方 .upload-trigger 就是这么做的，
-  // 只有 disabled 属性 + cursor:not-allowed，**没有** .disabled 类、不改
-  // pointer-events、不置灰。照抄它，避免我们造出第二套判据。
-  function setWebSearch(on) {
-    webSearch = !!on;
-    if (webBtn) {
-      webBtn.classList.toggle("active", webSearch);
-      webBtn.setAttribute("aria-pressed", webSearch ? "true" : "false");
-      webBtn.title = webSearch ? "联网搜索已开启（关闭后才能加附件）" : "联网搜索（开启后不能用附件）";
-    }
-    if (attachBtn) {
-      if (webSearch) {
-        attachBtn.disabled = true;
-        attachBtn.title = "联网搜索已开启，先关掉才能加附件";
-      } else {
-        // 只在「不是发送中」时恢复——发送中也禁附件（见 askChat）
-        attachBtn.disabled = false;
-        attachBtn.title = "添加图片（也可以直接粘贴或拖进来）";
-      }
-    }
-  }
+  // 2026-10-26 站长定案：联网开关整块删除（协议无字段、按钮骗人，见上方 CSS 注释）。
+  // 旧实现与互斥逻辑在 git 历史里，官方真实通道找到后从历史复活，别凭记忆重写。
 
   attachBtn = document.createElement("button");
   attachBtn.type = "button";
@@ -1546,30 +1519,6 @@ function buildPanel() {
     attachBtn.appendChild(svg);
   })();
   attachBtn.addEventListener("click", function () { fileInput.click(); });
-
-  // 联网搜索开关（2026-10-25）。图标用地球网格，与官方 icon-lianwangsousuo1 同义。
-  webBtn = document.createElement("button");
-  webBtn.type = "button";
-  webBtn.className = "chat-web-btn";
-  webBtn.setAttribute("aria-label", "联网搜索");
-  webBtn.setAttribute("aria-pressed", "false");
-  webBtn.title = "联网搜索（开启后不能用附件）";
-  (function () {
-    var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-    svg.setAttribute("width", "18"); svg.setAttribute("height", "18");
-    svg.setAttribute("viewBox", "0 0 24 24"); svg.setAttribute("fill", "none");
-    svg.setAttribute("stroke", "currentColor"); svg.setAttribute("stroke-width", "2");
-    svg.setAttribute("stroke-linecap", "round"); svg.setAttribute("stroke-linejoin", "round");
-    var c = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-    c.setAttribute("cx", "12"); c.setAttribute("cy", "12"); c.setAttribute("r", "9");
-    var g1 = document.createElementNS("http://www.w3.org/2000/svg", "path");
-    g1.setAttribute("d", "M3 12h18");
-    var g2 = document.createElementNS("http://www.w3.org/2000/svg", "path");
-    g2.setAttribute("d", "M12 3a15 15 0 0 1 0 18a15 15 0 0 1 0-18");
-    svg.appendChild(c); svg.appendChild(g1); svg.appendChild(g2);
-    webBtn.appendChild(svg);
-  })();
-  webBtn.addEventListener("click", function () { setWebSearch(!webSearch); });
 
   inputEl = document.createElement("textarea");
   inputEl.className = "chat-textarea";
@@ -1603,7 +1552,7 @@ function buildPanel() {
   sendBtn.type = "submit";
   sendBtn.setAttribute("aria-label", "发送");
   sendBtn.textContent = "↑";
-  form.appendChild(attachBtn); form.appendChild(webBtn); form.appendChild(inputEl); form.appendChild(sendBtn);
+  form.appendChild(attachBtn); form.appendChild(inputEl); form.appendChild(sendBtn);
   form.appendChild(fileInput);
   form.addEventListener("submit", function (e) {
     e.preventDefault();
