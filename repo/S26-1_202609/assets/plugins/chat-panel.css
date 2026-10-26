@@ -1,155 +1,395 @@
 
-/* ── 学习助手面板（2026-10-19）────────────────────────────────
+/* ── 学习助手面板与会话书签条（重构版）────────────────────────
    布局三档：
-     · > 1200px  右栏，接管 TOC 的 240px
-     · 861-1200  浮层 360px（该区间 TOC 本就隐藏）
-     · ≤ 860px   右侧抽屉，与左侧边栏同一套手法（fixed + translateX）
+     · > 1200px  右侧热区悬停滑出书签条，面板浮层覆盖（可拖拽 240-720px）
+     · 861-1200  右侧热区悬停滑出书签条，面板浮层（最大宽度受限）
+     · ≤ 860px   右缘常驻 20×56px 把手，点击滑出书签抽屉，面板全屏抽屉
    与 TOC 互斥由 body.chat-open 控制。 */
+
+:root {
+  --chat-width: 360px;
+}
+
+body.chat-open .m3-toc {
+  display: none;
+}
+
+body.chat-resizing {
+  cursor: col-resize;
+  user-select: none;
+}
+
+body.chat-resizing .chat-panel {
+  transition: none !important;
+  user-select: none;
+}
+
+.chat-resizer {
+  display: none;
+  position: absolute;
+  left: -3px;
+  top: 0;
+  bottom: 0;
+  width: 8px;
+  cursor: col-resize;
+  z-index: 95;
+}
+.chat-resizer:hover, .chat-resizer.dragging {
+  background-color: color-mix(in srgb, var(--md-sys-color-primary) 30%, transparent);
+}
 
 .chat-panel {
   display: none;
   flex-direction: column;
   min-height: 0;
   background-color: var(--md-sys-color-surface-container-lowest);
-  color: var(--md-sys-color-on-surface);
+  border-left: 1px solid var(--md-sys-color-outline-variant);
+  box-shadow: -4px 0 24px rgba(0, 0, 0, 0.12);
+  z-index: 90;
+  box-sizing: border-box;
 }
 
-/* 面板宽度：桌面档可拖拽（2026-10-20，与左侧边栏同一套手法）。
-   变量挂在 :root 上，由本文件的 JS 读写 + localStorage 记忆。
-   默认值直接继承 TOC 的宽度，保持「打开助手就接管目录栏位置」的原始观感。 */
-:root { --chat-width: var(--toc-width); }
-
-/* 拖拽手柄：贴面板左缘（宽度向右增长，所以手柄在西侧）。
-   命中区 6px 比视觉竖线宽——细线好抓。 */
-.chat-resizer {
-  display: none;
-  position: absolute;
-  top: 0;
-  left: -3px;
-  width: 6px;
-  height: 100%;
-  cursor: col-resize;
-  z-index: 50;
-  transition: background-color 0.15s;
-}
-.chat-resizer:hover,
-.chat-resizer.dragging {
-  background-color: var(--md-sys-color-primary);
+body.chat-open .chat-panel {
+  display: flex;
 }
 
-/* 拖拽期间：全局竖光标、禁选中，并掐掉面板自身的过渡（否则跟手迟滞） */
-body.chat-resizing,
-body.chat-resizing * {
-  cursor: col-resize !important;
-  user-select: none !important;
-}
-body.chat-resizing .chat-panel {
-  transition: none !important;
-}
-
-/* 桌面：右栏，位置与宽度对齐 TOC */
+/* ── 桌面档 (≥ 1201px) ── */
 @media (min-width: 1201px) {
-  .chat-panel {
-    /* 拖拽改的是 --chat-width；未拖过时它就是 TOC 的默认宽度 */
-    width: var(--chat-width);
-    flex-shrink: 0;
-    height: calc(100vh - var(--header-height));
-    /* sticky 本身就给 .chat-resizer 提供包含块（非 static 即可），
-       不需要另写 position:relative——那条会覆盖手机档的 fixed（见上）。 */
-    position: sticky;
-    top: var(--header-height);
-    border-left: 1px solid var(--md-sys-color-outline-variant);
-  }
-  body.chat-open .chat-panel { display: flex; }
-  body.chat-open .m3-toc { display: none; }
-  /* 桌面档才给手柄 */
-  body.chat-open .chat-resizer { display: block; }
-}
-
-/* 中等：浮层 */
-@media (min-width: 861px) and (max-width: 1200px) {
-  .chat-panel {
+  #chat-dock {
     position: fixed;
-    right: 16px;
-    top: calc(var(--header-height) + 16px);
-    bottom: 16px;
-    width: 360px;
-    border-radius: 16px;
-    border: 1px solid var(--md-sys-color-outline-variant);
-    box-shadow: var(--shadow-3);
-    z-index: 150;
-  }
-  body.chat-open .chat-panel { display: flex; }
-}
-
-/* 手机：右侧抽屉（与左侧边栏同一套手法，只是方向相反） */
-@media (max-width: 860px) {
-  .chat-panel {
-    /* 常驻 display:flex —— 与左侧抽屉一致，靠 visibility+transform 显隐。
-       若用 display:none 切显隐，滑入过渡不会播（元素从无到有）。 */
-    display: flex;
-    position: fixed;
-    top: 0;
     right: 0;
+    top: 0;
     bottom: 0;
-    left: auto;
-    width: 380px;
-    max-width: 88vw;
-    height: 100vh;
-    height: 100dvh;
-    border-radius: 0;
-    border: none;
+    z-index: 70;
+    pointer-events: none;
+  }
+  #chat-dock .chat-edge {
+    position: fixed;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: color-mix(in srgb, var(--md-sys-color-primary) 35%, transparent);
+    cursor: pointer;
+    pointer-events: auto;
+    transition: background 150ms;
+  }
+  #chat-dock .chat-edge::before {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 13px;
+  }
+  #chat-dock .chat-edge:hover,
+  #chat-dock .chat-edge:focus-visible {
+    background: var(--md-sys-color-primary);
+  }
+  #chat-dock .chat-mobile-handle {
+    display: none;
+  }
+  #chat-dock .chat-bookmarks {
+    position: fixed;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 240px;
+    background: var(--md-sys-color-surface-container-low);
     border-left: 1px solid var(--md-sys-color-outline-variant);
-    box-shadow: var(--shadow-3);
-    z-index: 100;
-    /* 收起态：整块滑到视口外，且不可聚焦/不可命中 */
+    box-shadow: -4px 0 16px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+    transform: translateX(100%);
+    transition: transform 220ms cubic-bezier(.2, .8, .2, 1);
+    pointer-events: auto;
+    /* ⚠️ 2026-10-26 修（真机实测）：书签条必须**浮在对话面板之上**。
+       面板 z-index 90，原先书签条只有 72 ⇒ 面板一打开就把书签条整个盖住
+       （elementFromPoint 在书签条区域返回的是 chat-log）。取 92：高于面板 90，
+       低于 #search-panel 的 95，保证任何面板状态下都能切会话。 */
+    z-index: 92;
+  }
+  #chat-dock.open .chat-bookmarks,
+  #chat-dock:focus-within .chat-bookmarks {
+    transform: translateX(0);
+  }
+  .chat-panel {
+    position: fixed;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: var(--chat-width);
+    max-width: 720px;
+    min-width: 240px;
+    transform: translateX(100%);
+    transition: transform 220ms cubic-bezier(.2, .8, .2, 1);
+  }
+  body.chat-open .chat-panel {
+    transform: translateX(0);
+  }
+  .chat-resizer {
+    display: block;
+  }
+}
+
+/* ── 平板档 (861px – 1200px) ── */
+@media (min-width: 861px) and (max-width: 1200px) {
+  #chat-dock {
+    position: fixed;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 70;
+    pointer-events: none;
+  }
+  #chat-dock .chat-edge {
+    position: fixed;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: color-mix(in srgb, var(--md-sys-color-primary) 35%, transparent);
+    cursor: pointer;
+    pointer-events: auto;
+    transition: background 150ms;
+  }
+  #chat-dock .chat-edge::before {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 13px;
+  }
+  #chat-dock .chat-edge:hover,
+  #chat-dock .chat-edge:focus-visible {
+    background: var(--md-sys-color-primary);
+  }
+  #chat-dock .chat-mobile-handle {
+    display: none;
+  }
+  #chat-dock .chat-bookmarks {
+    position: fixed;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 220px;
+    background: var(--md-sys-color-surface-container-low);
+    border-left: 1px solid var(--md-sys-color-outline-variant);
+    box-shadow: -4px 0 16px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+    transform: translateX(100%);
+    transition: transform 220ms cubic-bezier(.2, .8, .2, 1);
+    pointer-events: auto;
+    /* ⚠️ 2026-10-26 修（真机实测）：书签条必须**浮在对话面板之上**。
+       面板 z-index 90，原先书签条只有 72 ⇒ 面板一打开就把书签条整个盖住
+       （elementFromPoint 在书签条区域返回的是 chat-log）。取 92：高于面板 90，
+       低于 #search-panel 的 95，保证任何面板状态下都能切会话。 */
+    z-index: 92;
+  }
+  #chat-dock.open .chat-bookmarks,
+  #chat-dock:focus-within .chat-bookmarks {
+    transform: translateX(0);
+  }
+  .chat-panel {
+    position: fixed;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: min(380px, 85vw);
+    transform: translateX(100%);
+    transition: transform 220ms cubic-bezier(.2, .8, .2, 1);
+  }
+  body.chat-open .chat-panel {
+    transform: translateX(0);
+  }
+  .chat-resizer {
+    display: none;
+  }
+}
+
+/* ── 手机档 (≤ 860px 独立设计) ── */
+@media (max-width: 860px) {
+  #chat-dock .chat-edge {
+    display: none;
+  }
+  #chat-dock .chat-mobile-handle {
+    position: fixed;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 56px;
+    background: color-mix(in srgb, var(--md-sys-color-surface-container-high) 85%, transparent);
+    border: 1px solid var(--md-sys-color-outline-variant);
+    border-right: none;
+    border-radius: 12px 0 0 12px;
+    box-shadow: -2px 0 8px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    z-index: 75;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: auto;
+    color: var(--md-sys-color-on-surface-variant);
+    padding: 0;
+  }
+  #chat-dock .chat-mobile-handle svg {
+    width: 14px;
+    height: 14px;
+  }
+  #chat-dock .chat-bookmarks {
+    position: fixed;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: min(72vw, 280px);
+    background: var(--md-sys-color-surface-container-low);
+    border-left: 1px solid var(--md-sys-color-outline-variant);
+    box-shadow: -4px 0 24px rgba(0, 0, 0, 0.18);
+    display: flex;
+    flex-direction: column;
+    transform: translateX(100%);
+    transition: transform 220ms cubic-bezier(.2, .8, .2, 1);
+    pointer-events: auto;
+    z-index: 94;   /* 手机档面板是 92，书签条要更高才能浮在它上面 */
+  }
+  #chat-dock.open .chat-bookmarks {
+    transform: translateX(0);
+  }
+  .chat-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.32);
+    z-index: 76;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 220ms;
+  }
+  #chat-dock.open ~ .chat-backdrop,
+  body.chat-open .chat-backdrop {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .chat-panel {
+    position: fixed;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 100vw;
+    max-width: 100vw;
+    border-left: none;
     transform: translateX(100%);
     visibility: hidden;
     pointer-events: none;
-    transition: transform .3s cubic-bezier(.2, 0, 0, 1), visibility .3s;
-    /* 抽屉自身独立成层：页面滚动不带着它重排 */
-    contain: layout paint style;
+    transition: transform 220ms cubic-bezier(.2, .8, .2, 1);
+    z-index: 92;
   }
   body.chat-open .chat-panel {
     transform: translateX(0);
     visibility: visible;
     pointer-events: auto;
   }
-}
-
-/* 助手抽屉的遮罩：复用 .drawer-backdrop 的观感，独立一个元素避免与左侧互抢 */
-.chat-backdrop {
-  display: none;
-}
-@media (max-width: 860px) {
-  .chat-backdrop {
-    display: block;
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.4);
-    z-index: 99;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity .3s;
+  .chat-resizer {
+    display: none;
   }
-  body.chat-open .chat-backdrop {
-    opacity: 1;
-    pointer-events: auto;
+  .bm-item {
+    min-height: 44px;
+  }
+  .bm-del {
+    min-width: 32px;
+    min-height: 32px;
   }
 }
 
-/* ── 头部 ── */
+/* ── 书签条内部元素 ── */
+.bm-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.bm-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 10px;
+  border-radius: 8px;
+  font-size: 13px;
+  color: var(--md-sys-color-on-surface);
+  cursor: pointer;
+  border: 1px solid transparent;
+  user-select: none;
+  transition: background 120ms;
+  background: transparent;
+}
+.bm-item:hover {
+  background: var(--md-sys-color-surface-container-high);
+}
+.bm-item.active {
+  background: color-mix(in srgb, var(--md-sys-color-primary) 12%, transparent);
+  color: var(--md-sys-color-primary);
+  font-weight: 500;
+  border-color: color-mix(in srgb, var(--md-sys-color-primary) 25%, transparent);
+}
+.bm-title {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.bm-del {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border: none;
+  background: transparent;
+  border-radius: 4px;
+  color: var(--md-sys-color-on-surface-variant);
+  cursor: pointer;
+  flex-shrink: 0;
+  margin-left: 4px;
+  padding: 0;
+}
+.bm-del:hover {
+  background: var(--md-sys-color-surface-container-highest);
+  color: var(--md-sys-color-error, #b3261e);
+}
+.bm-new {
+  font-weight: 500;
+  color: var(--md-sys-color-primary);
+  border: 1px dashed color-mix(in srgb, var(--md-sys-color-primary) 40%, transparent);
+  margin-bottom: 6px;
+}
+.bm-new:hover {
+  background: color-mix(in srgb, var(--md-sys-color-primary) 8%, transparent);
+}
+.bm-empty {
+  padding: 16px 8px;
+  font-size: 12px;
+  color: var(--md-sys-color-on-surface-variant);
+  text-align: center;
+}
+
+/* ── 对话面板内部 ── */
 .chat-head {
   display: flex;
   align-items: center;
-  gap: .5rem;
-  padding: .7rem .9rem;
+  justify-content: space-between;
+  padding: .65rem .9rem;
   border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  background-color: var(--md-sys-color-surface-container-low);
   flex-shrink: 0;
 }
 .chat-title {
-  font-size: 0.85rem;
-  font-weight: 700;
+  font-size: 0.88rem;
+  font-weight: 600;
   color: var(--md-sys-color-on-surface);
   flex: 1;
 }
@@ -157,35 +397,50 @@ body.chat-resizing .chat-panel {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 28px; height: 28px;
+  width: 28px;
+  height: 28px;
   border: none;
   border-radius: 8px;
   background: transparent;
   color: var(--md-sys-color-on-surface-variant);
   cursor: pointer;
 }
-.chat-head-btn:hover { background-color: var(--md-sys-color-surface-container-high); }
+.chat-head-btn:hover {
+  background-color: var(--md-sys-color-surface-container-high);
+}
 
-/* ── 消息区 ── */
 .chat-log {
   flex: 1;
   min-height: 0;
   overflow-y: auto;
-  overflow-anchor: none;   /* Safari 不支持，靠 JS 的 stuck 状态位 */
-  overscroll-behavior: contain;  /* 滚到边界不回传给页面——手机上尤为明显 */
+  overflow-anchor: none;
+  overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
   padding: .8rem .9rem 1rem;
   display: flex;
   flex-direction: column;
   gap: .9rem;
-  /* 只把这一个元素提升成独立合成层：流式追加不触发整页重绘 */
   contain: layout paint style;
 }
 
-.chat-msg { display: flex; flex-direction: column; gap: .35rem; }
+.chat-skeleton {
+  padding: 16px 8px;
+  font-size: 0.78rem;
+  color: var(--md-sys-color-on-surface-variant);
+  font-style: italic;
+  animation: chat-pulse 1.4s ease-in-out infinite;
+  text-align: center;
+}
 
-/* 用户消息：气泡，右对齐 */
-.chat-msg--user { align-items: flex-end; }
+.chat-msg {
+  display: flex;
+  flex-direction: column;
+  gap: .35rem;
+}
+
+.chat-msg--user {
+  align-items: flex-end;
+}
 .chat-msg--user .chat-body {
   max-width: 88%;
   padding: .5rem .75rem;
@@ -198,7 +453,6 @@ body.chat-resizing .chat-panel {
   word-break: break-word;
 }
 
-/* 助手消息：通栏无气泡（Shirone 的正文气质） */
 .chat-msg--bot .chat-body {
   font-size: 0.82rem;
   line-height: 1.65;
@@ -206,7 +460,6 @@ body.chat-resizing .chat-panel {
   word-break: break-word;
 }
 
-/* 助手消息里的块级元素 */
 .chat-body p { margin: 0 0 .55rem; }
 .chat-body p:last-child { margin-bottom: 0; }
 .chat-body h1, .chat-body h2, .chat-body h3, .chat-body h4 {
@@ -221,7 +474,7 @@ body.chat-resizing .chat-panel {
 .chat-body strong { font-weight: 700; }
 .chat-body em { font-style: italic; }
 .chat-body code {
-  font-family: var(--font-mono);
+  font-family: var(--font-mono, monospace);
   font-size: 0.78em;
   padding: .08em .3em;
   border-radius: 4px;
@@ -240,23 +493,12 @@ body.chat-resizing .chat-panel {
   text-decoration: underline;
   text-underline-offset: 2px;
 }
-/* ── 表格（2026-10-19 用户报「表格不美观」）─────────────────────
-   原来为了宽内容不撑破 240px，把 table 直接设成 display:block + 四边全框，
-   结果是「一堆格子」而不是一张表：没有表头分区、没有行分隔层次、
-   内边距挤成 0.25rem、首尾还多出边框。
 
-   现在与站点正文表格同一套观感（shirone-reader.css 的 table 段），
-   并补上一个滚动包裹层：
-     · .chat-table-wrap 负责**横滚 + 外框 + 圆角**（宽度随容器）
-     · table 用 width:max-content 按内容排，不被拉伸
-   早先把 overflow 挂在 table 上时，边框盒撑满整行而列只有内容宽，
-   右侧会留一条空白、圆角画在空盒上（截图实测）。 */
 .chat-table-wrap {
   overflow-x: auto;
   max-width: 100%;
   margin: .2rem 0 .7rem;
   border-radius: 10px;
-  /* 只留外圈一道淡边，避免"每个格子都是框"的网格感 */
   box-shadow: 0 0 0 1px var(--md-sys-color-outline-variant);
 }
 .chat-body table {
@@ -277,11 +519,9 @@ body.chat-resizing .chat-panel {
   background-color: var(--md-sys-color-surface-container);
   font-weight: 600;
   color: var(--md-sys-color-on-surface);
-  /* 表头下沿加重一档：一眼分得出哪行是表头 */
   border-bottom-color: var(--md-sys-color-outline);
 }
 .chat-body tr:last-child td { border-bottom: none; }
-/* 斑马纹：数字型表格最容易看串行 */
 .chat-body tbody tr:nth-child(even) {
   background-color: color-mix(in srgb, var(--md-sys-color-surface-container) 45%, transparent);
 }
@@ -292,12 +532,11 @@ body.chat-resizing .chat-panel {
   margin: .35rem 0;
 }
 .chat-body .chat-math-err {
-  font-family: var(--font-mono);
+  font-family: var(--font-mono, monospace);
   font-size: 0.75rem;
   color: var(--md-sys-color-error, #b3261e);
 }
 
-/* 流式光标 */
 .chat-cursor::after {
   content: '▍';
   margin-left: 1px;
@@ -305,10 +544,6 @@ body.chat-resizing .chat-panel {
 }
 @keyframes chat-blink { 50% { opacity: 0; } }
 
-/* ── 过程提示（思考 ↔ 输出的分界，2026-10-19）─────────────────
-   模型检索期间显示的一行灰字：小号、无气泡、不在正文流里。
-   与助手正文（黑字通栏、0.82rem）刻意拉开差别，一眼能看出
-   「这不是答案，它在干活」。答案第一个字到达时由 JS 移除。 */
 .chat-status {
   color: var(--md-sys-color-on-surface-variant);
   font-size: 0.74rem;
@@ -320,7 +555,8 @@ body.chat-resizing .chat-panel {
 .chat-status::before {
   content: '';
   display: inline-block;
-  width: 6px; height: 6px;
+  width: 6px;
+  height: 6px;
   margin-right: .4rem;
   border-radius: 50%;
   background-color: var(--md-sys-color-primary);
@@ -332,8 +568,6 @@ body.chat-resizing .chat-panel {
   50% { opacity: 1; }
 }
 
-/* 耗时诊断行（2026-10-20 查「每次都 50 秒」）：安静地待在答案末尾。
-   用户据此能直接看出是「一轮就慢」还是「四轮叠加」。 */
 .chat-timings {
   margin-top: .6rem;
   padding-top: .4rem;
@@ -345,7 +579,6 @@ body.chat-resizing .chat-panel {
   opacity: .75;
 }
 
-/* 空状态 */
 .chat-empty {
   color: var(--md-sys-color-on-surface-variant);
   font-size: 0.78rem;
@@ -355,7 +588,6 @@ body.chat-resizing .chat-panel {
 .chat-empty ul { margin: .4rem 0 0; padding-left: 1.1rem; }
 .chat-empty li { margin-bottom: .3rem; }
 
-/* 「有新消息」提示 */
 .chat-jump {
   position: absolute;
   left: 50%;
@@ -368,15 +600,10 @@ body.chat-resizing .chat-panel {
   color: var(--md-sys-color-on-primary);
   font-size: 0.72rem;
   cursor: pointer;
-  box-shadow: var(--shadow-2);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
   z-index: 2;
 }
-/* 注意：这里不能写无条件的 position: relative。
-   它是给 .chat-jump 做包含块的，但会覆盖手机档的 position: fixed——
-   CSS 里同特异度后者胜，而这条写在媒体查询之后。三个档位各自都已
-   建立了包含块（sticky / fixed），所以这条不需要存在。 */
 
-/* ── 输入区 ── */
 .chat-input {
   flex-shrink: 0;
   display: flex;
@@ -388,7 +615,7 @@ body.chat-resizing .chat-panel {
 .chat-textarea {
   flex: 1;
   min-height: 34px;
-  max-height: 132px;   /* 约 6 行 */
+  max-height: 132px;
   resize: none;
   padding: .45rem .6rem;
   border: 1px solid var(--md-sys-color-outline-variant);
@@ -396,103 +623,81 @@ body.chat-resizing .chat-panel {
   background-color: var(--md-sys-color-surface-container-lowest);
   color: var(--md-sys-color-on-surface);
   font-family: inherit;
-  font-size: 16px;     /* iOS 防自动放大（<16px 会缩放） */
+  font-size: 16px;
   line-height: 1.45;
   outline: none;
 }
 .chat-textarea:focus { border-color: var(--md-sys-color-primary); }
-.chat-send {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 34px; height: 34px;
-  flex-shrink: 0;
-  border: none;
-  border-radius: 50%;
-  background-color: var(--md-sys-color-primary);
-  color: var(--md-sys-color-on-primary);
-  cursor: pointer;
-}
-.chat-send:disabled { opacity: .45; cursor: default; }
-.chat-send.stop { background-color: var(--md-sys-color-error, #b3261e); }
-/* 停止态：正方形（▢）比圆更符合「中止」的语义，也让「正在回答」一眼可辨 */
-.chat-send.stop {
-  border-radius: 10px;
-}
 
-/* ── 附件（2026-10-19 用户要求）─────────────────────────────
-   回形针按钮 + 待发图片缩略图条。
-   缩略图条在输入区**上方**：发送前能看到自己附了什么，发完自动收起。 */
 .chat-attach-btn {
+  flex-shrink: 0;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 34px; height: 34px;
-  flex-shrink: 0;
-  border: none;
-  border-radius: 50%;
-  background: transparent;
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 10px;
+  background-color: transparent;
   color: var(--md-sys-color-on-surface-variant);
   cursor: pointer;
 }
 .chat-attach-btn:hover { background-color: var(--md-sys-color-surface-container-high); }
-.chat-attach-btn:disabled { opacity: .4; cursor: not-allowed; }
 
-/* 2026-10-26 站长定案：联网按钮删除——上游 WS 协议里没有联网字段（实测
-   .zcode/会话语义/实测-多会话与联网-20261025.md §5.1），按钮只能改自己的
-   UI 态、影响不到上游，等于骗用户。官方那条真实通道未找到之前不做。 */
+.chat-send {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: none;
+  border-radius: 10px;
+  background-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+.chat-send:hover { opacity: .9; }
+.chat-send:disabled {
+  opacity: .4;
+  cursor: not-allowed;
+}
+.chat-send.stop {
+  background-color: var(--md-sys-color-error, #b3261e);
+  color: var(--md-sys-color-on-primary);
+}
 
 .chat-attach-bar {
   display: flex;
-  gap: .4rem;
-  padding: .5rem .9rem .1rem;
-  flex-shrink: 0;
+  gap: .5rem;
+  padding: 0 .9rem .4rem;
   overflow-x: auto;
 }
-.chat-attach-bar:empty { display: none; }
 .chat-attach-item {
   position: relative;
-  flex: 0 0 auto;
-  width: 56px; height: 56px;
-  border-radius: 10px;
-  overflow: hidden;
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
   border: 1px solid var(--md-sys-color-outline-variant);
+  overflow: hidden;
+  flex-shrink: 0;
   background-color: var(--md-sys-color-surface-container);
 }
 .chat-attach-item img {
-  width: 100%; height: 100%;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  display: block;
-}
-.chat-attach-item.uploading::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: color-mix(in srgb, var(--md-sys-color-surface) 60%, transparent);
-  animation: chat-pulse 1.2s ease-in-out infinite;
-}
-.chat-attach-item.failed { border-color: var(--md-sys-color-error, #b3261e); }
-/* 浏览器解不了的格式（HEIC）画不出缩略图：显示扩展名方块，别露出破图图标 */
-.chat-attach-fallback {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%; height: 100%;
-  font-size: 0.62rem;
-  font-weight: 700;
-  letter-spacing: .04em;
-  color: var(--md-sys-color-on-surface-variant);
-  background-color: var(--md-sys-color-surface-container-high);
 }
 .chat-attach-x {
   position: absolute;
-  top: 1px; right: 1px;
-  width: 18px; height: 18px;
-  padding: 0;
+  top: 2px;
+  right: 2px;
+  width: 18px;
+  height: 18px;
   border: none;
   border-radius: 50%;
-  /* 缩略图上叠的删除键：底色必须与图片内容解耦（图片可能是任意颜色），
-     所以用半透明黑而不是主题色——换成 primary 会在浅色图上消失。 */
   background: color-mix(in srgb, #000 55%, transparent);
   color: var(--md-sys-color-on-primary);
   font-size: 12px;
@@ -500,14 +705,31 @@ body.chat-resizing .chat-panel {
   text-align: center;
   cursor: pointer;
 }
-/* 拖拽悬停：整块面板给个提示色 */
+
 .chat-panel.chat-dragover {
   outline: 2px dashed var(--md-sys-color-primary);
   outline-offset: -6px;
 }
 
+.chat-toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 100;
+  background: var(--md-sys-color-inverse-surface);
+  color: var(--md-sys-color-inverse-on-surface);
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  transition: opacity 220ms;
+}
+.chat-toast.fade-out {
+  opacity: 0;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .chat-panel { transition: none; }
-  .chat-cursor::after { animation: none; }
-  .chat-attach-item.uploading::after { animation: none; }
+  .chat-panel, #chat-dock .chat-bookmarks, .chat-backdrop { transition: none !important; }
+  .chat-cursor::after { animation: none !important; }
+  .chat-skeleton { animation: none !important; }
 }
