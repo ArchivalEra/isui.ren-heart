@@ -1793,6 +1793,24 @@ var registerTools = function registerTools(doc, nav) {
 };
 // ⚠️ 2026-10-26：feedText 必须与 runTool 一起内联——runTool 里调用它，
 // 漏了就是运行时「feedText is not defined」（实测踩到，整条工具链直接挂）。
+// ⚠️ 2026-10-27（同一坑第二次）：feedHead 也必须内联。它是「抬头随机化」抽出的
+// 顶层函数，忘了加进这一行 ⇒ 浏览器里每次 site_* 都抛「feedHead is not defined」
+// ⇒ 工具调用全失败、桥侧只看到 30 秒超时。**凡是被 toString() 内联的函数的依赖，
+// 都得手动加进这里，没有自动追踪**。加完请在页面内跑一次 __mcpTools.runTool 冒烟。
+var feedHead = function feedHead(tool, argStr, failed) {
+  const HEADS = [
+    '我帮你查了', '顺手查了一下', '这就去看了', '按你说的查了',
+    '我刚跑了一趟', '查回来了', '结果拿到了', '这个我看过了',
+    '帮你跑了一下', '我去翻了一遍', '已经查完', '你要的东西在这里',
+    '照着做了', '给你捞回来了', '刚查的', '跑完了',
+  ];
+  const key = String(tool) + '|' + String(argStr || '') + '|' + (failed ? '0' : '1');
+  let seed = 0;
+  for (let i = 0; i < key.length; i++) seed = (seed * 31 + key.charCodeAt(i)) >>> 0;
+  const phrase = HEADS[seed % HEADS.length];
+  const detail = tool + (argStr ? '（' + argStr + '）' : '') + (failed ? ' · 没成' : '');
+  return phrase + ' · ' + detail + '：';
+};
 var feedText = function feedText(name, args, r) {
   const SINGLE_MSG_LIMIT = 950;
   const a = args || {};
