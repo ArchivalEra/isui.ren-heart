@@ -1800,7 +1800,7 @@ var feedText = function feedText(name, args, r) {
     .filter((k) => a[k] !== undefined && a[k] !== '' && k !== '_positional')
     .map((k) => k + '=' + String(a[k]).slice(0, 40))
     .join(' | ');
-  const head = '[工具返回：' + name + (argStr ? ' | ' + argStr : '') + (r && r.ok ? '' : ' | 失败') + ']';
+  const head = feedHead(name, argStr, !(r && r.ok));
 
   if (!r || !r.ok) {
     const err = String((r && r.error) || '执行失败');

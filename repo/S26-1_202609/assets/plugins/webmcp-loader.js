@@ -40,7 +40,7 @@ function inject(rel) {
   // ⚠️ 2026-10-23 修（Node 桥实测抓到）：这两个脚本原先**不带内容哈希**，
   // 而站点其他资产（主题/插件）都由 build 的 assetUrl() 追加 ?v=<内容哈希>。
   // 结果：改了 webmcp-tools.js 之后浏览器一直用旧副本——工具行为怎么改都不生效，
-  // 只有手动硬刷新（或换浏览器）才看得见。821f7ef6f6 / 4109d69907 是
+  // 只有手动硬刷新（或换浏览器）才看得见。3dbb66083b / 4109d69907 是
   // build 期替换的内容哈希（空串 = 未替换，退化为原行为，不报错）。
   // ⚠️ 2026-10-23（审计二抓到）：原来只列了 shim/tools，**漏了 webmcp-bridge.js**——
   // 它同样由 loader 动态注入，URL 无 ?v=，还配 fetch(cache:"force-cache")。
@@ -50,7 +50,7 @@ function inject(rel) {
   // EdgeOne 边缘给 288KB 的 polyfill 卖了份 32KB 截断副本（源仓完好，CDN 毒缓存），
   // 无内容戳的 URL 永远绕不开它，脚本加载即抛错 ⇒ 工具零注册 ⇒ 面板裸文本问答。
   // 内容戳让每次内容变化都换新 URL，毒缓存/旧缓存一律自然绕行。
-  var VERS = { "webmcp-shim.js": "4109d69907", "webmcp-tools.js": "821f7ef6f6", "webmcp-bridge.js": "deb509bf38", "../vendor/webmcp/polyfill.iife.js": "5b9f4b2a3a" };
+  var VERS = { "webmcp-shim.js": "4109d69907", "webmcp-tools.js": "3dbb66083b", "webmcp-bridge.js": "deb509bf38", "../vendor/webmcp/polyfill.iife.js": "5b9f4b2a3a" };
   var v = VERS[rel] || "";
   el.src = baseDir() + rel + (v && v.indexOf("__") !== 0 ? "?v=" + v : "");
   el.async = false;
