@@ -50,7 +50,7 @@ function inject(rel) {
   // EdgeOne 边缘给 288KB 的 polyfill 卖了份 32KB 截断副本（源仓完好，CDN 毒缓存），
   // 无内容戳的 URL 永远绕不开它，脚本加载即抛错 ⇒ 工具零注册 ⇒ 面板裸文本问答。
   // 内容戳让每次内容变化都换新 URL，毒缓存/旧缓存一律自然绕行。
-  var VERS = { "webmcp-shim.js": "4109d69907", "webmcp-tools.js": "96d27532a7", "webmcp-bridge.js": "deb509bf38", "../vendor/webmcp/polyfill.iife.js": "5b9f4b2a3a" };
+  var VERS = { "webmcp-shim.js": "4109d69907", "webmcp-tools.js": "96d27532a7", "webmcp-bridge.js": "9847fd0f1c", "../vendor/webmcp/polyfill.iife.js": "5b9f4b2a3a" };
   var v = VERS[rel] || "";
   el.src = baseDir() + rel + (v && v.indexOf("__") !== 0 ? "?v=" + v : "");
   el.async = false;
