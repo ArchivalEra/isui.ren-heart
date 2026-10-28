@@ -101,6 +101,31 @@
     svg.setAttribute("viewBox", [cx - w / 2, cy - h / 2, w, h].join(" "));
   }
 
+  /**
+   * 自动贴合：用 getBBox() 量真实内容包围盒（**含文字实际宽度**），
+   * 把 viewBox 设成「包围盒 + 四边等距的边距」。
+   *
+   * 为什么必须由浏览器量：文字宽度取决于实际字体、字距、上下标的组合 tspan，
+   * 构建期估不准。2026-10-28 站长指出「这图偏左」，我先按字数估、又加固定槽位，
+   * 两次都是人肉调常数——估大右侧空一块、估小裁掉字。排版交给排版引擎。
+   *
+   * 只在首帧跑一次；缩放/复位都基于这个校正后的 viewBox。
+   */
+  function fitViewBox(fig) {
+    var svg = fig.querySelector("svg");
+    if (!svg || typeof svg.getBBox !== "function") return;
+    var b;
+    try { b = svg.getBBox(); } catch (e) { return; }
+    if (!b || !isFinite(b.width) || !isFinite(b.height) || b.width <= 0 || b.height <= 0) return;
+    // 四边同一个边距：内容在画布里天然居中，不偏左也不偏右
+    var M = Math.max(6, Math.round(Math.min(b.width, b.height) * 0.12));
+    var vb = [b.x - M, b.y - M, b.width + M * 2, b.height + M * 2]
+      .map(function (n) { return Math.round(n * 100) / 100; }).join(" ");
+    svg.setAttribute("viewBox", vb);
+    // 记下校正后的 viewBox 供「复位」用（覆盖构建期那个宽松值）
+    fig.setAttribute("data-viewbox", vb);
+  }
+
   function setupFig(fig) {
     if (fig.__figReady) return;
     fig.__figReady = true;
@@ -109,6 +134,11 @@
 
     var svg = fig.querySelector("svg");
     if (!svg) return;
+    // 首帧贴合：字体加载完再量才准（webfont 晚到会改变文字宽度）
+    fitViewBox(fig);
+    if (document.fonts && document.fonts.ready && document.fonts.ready.then) {
+      document.fonts.ready.then(function () { fitViewBox(fig); }).catch(function () {});
+    }
     // 元件可聚焦：给每个门加 tabindex（SVG 元素也能收焦点）
     var comps = fig.querySelectorAll(".fig-comp");
     for (var i = 0; i < comps.length; i++) {
@@ -139,16 +169,142 @@
       ev.preventDefault();
       zoom(fig, ev.deltaY > 0 ? 1.15 : 0.87);
     }, { passive: false });
+    // 双击复位。**必须排除缩放条与符号锚点**——否则连点两下「＋」会既放大又复位，
+    // 读者看到的是「按了没反应」（2026-10-28 站长实测指出）。
     fig.addEventListener("dblclick", function (ev) {
-      if (ev.target.closest && ev.target.closest("a.sym-gloss")) return;
+      var t = ev.target;
+      if (t.closest && (t.closest("a.sym-gloss") || t.closest(".fig-zoom"))) return;
       var orig = fig.getAttribute("data-viewbox");
       if (orig) svg.setAttribute("viewBox", orig);
     });
   }
 
+  /**
+   * 全屏查看（灯箱）。**所有图**都能点开——图元渲染的 SVG 与位图（<img>）都算。
+   *
+   * 纯前端、零依赖、**不进 MCP**：这是给人用的阅读体验，不是给 AI 的数据通道。
+   * AI 读的仍是 <details> 结构表与 figure-index JSON，与这里无关。
+   *
+   * 打开方式：点图本身；关闭：点背景 / 按 Esc / 再点一次图。
+   */
+  var lb = null;
+  function ensureLightbox() {
+    if (lb) return lb;
+    lb = document.createElement("div");
+    lb.className = "fig-lightbox";
+    lb.setAttribute("role", "dialog");
+    lb.setAttribute("aria-modal", "true");
+    lb.setAttribute("aria-label", "全屏查看");
+    lb.innerHTML = '<button type="button" class="fig-lightbox-close" aria-label="关闭">×</button>' +
+                   '<div class="fig-lightbox-body"></div>';
+    lb.addEventListener("click", function (ev) {
+      // 点背景或关闭按钮即关；点图本身不关（允许在灯箱里缩放）
+      if (ev.target === lb || (ev.target.closest && ev.target.closest(".fig-lightbox-close"))) closeLightbox();
+    });
+    document.body.appendChild(lb);
+    document.addEventListener("keydown", function (ev) {
+      if (ev.key === "Escape" && lb && lb.classList.contains("is-open")) closeLightbox();
+    });
+    return lb;
+  }
+
+  function openLightbox(sourceEl, label) {
+    var box = ensureLightbox();
+    var body = box.querySelector(".fig-lightbox-body");
+    body.innerHTML = "";
+    var clone;
+    if (sourceEl.tagName && sourceEl.tagName.toLowerCase() === "img") {
+      clone = document.createElement("img");
+      clone.src = sourceEl.getAttribute("src");
+      clone.alt = sourceEl.getAttribute("alt") || "";
+    } else {
+      // SVG：整块克隆（含图内符号的锚点，气泡仍可用）
+      clone = sourceEl.cloneNode(true);
+      clone.removeAttribute("style");
+      clone.style.maxWidth = "none";
+      clone.style.width = "auto";
+      clone.style.height = "auto";
+    }
+    // ⚠️ SVGElement 的 className 是**只读**的（SVGAnimatedString），
+    // 用 clone.className 赋值会抛 TypeError 并中断整个 openLightbox——
+    // 表现为「点了完全没反应」（2026-10-28 实测抓到）。SVG 走 setAttribute，
+    // HTML 元素两法皆可。
+    if (clone.tagName && clone.tagName.toLowerCase() === "svg") {
+      clone.setAttribute("class", "fig-lightbox-content");
+    } else {
+      clone.className = "fig-lightbox-content";
+    }
+    body.appendChild(clone);
+    if (label) {
+      var cap = document.createElement("p");
+      cap.className = "fig-lightbox-caption";
+      cap.textContent = label;
+      body.appendChild(cap);
+    }
+    box.classList.add("is-open");
+    document.documentElement.style.overflow = "hidden";
+  }
+
+  function closeLightbox() {
+    if (!lb) return;
+    lb.classList.remove("is-open");
+    document.documentElement.style.overflow = "";
+    var body = lb.querySelector(".fig-lightbox-body");
+    if (body) body.innerHTML = "";
+  }
+
+  /** 给「所有图」挂全屏入口：figure.fig 里的 svg、正文里的 img。 */
+  function setupLightbox() {
+    // ① 图元渲染的 SVG
+    var figs = document.querySelectorAll("figure.fig");
+    for (var i = 0; i < figs.length; i++) {
+      if (figs[i].__lbReady) continue;
+      var svg = figs[i].querySelector("svg");
+      // ⚠️ 标记必须在**成功绑定之后**才设。先前写成「先设 __lbReady 再检查 svg」，
+      // 首轮若 SVG 还没进 DOM 就永久跳过——灯箱对这张图永远不生效，
+      // 而 __lbReady 已经是 true，后续 boot() 也不会重试（2026-10-28 实测踩到）。
+      if (!svg) continue;
+      svg.classList.add("fig-zoomable");
+      svg.setAttribute("title", "点击全屏查看");
+      (function (figEl, svgEl) {
+        svgEl.addEventListener("click", function (ev) {
+          // 点图内符号时先让气泡处理，不全屏
+          if (ev.target.closest && ev.target.closest("a.sym-gloss")) return;
+          // 点元件/连线时是「选中」，也不全屏
+          if (ev.target.closest && (ev.target.closest(".fig-comp") || ev.target.closest(".fig-wire"))) return;
+          var capEl = figEl.querySelector("figcaption");
+          openLightbox(svgEl, capEl ? capEl.textContent.trim() : "");
+        });
+      })(figs[i], svg);
+      figs[i].__lbReady = true;   // 绑定成功才标记
+    }
+    // ② 位图（习题册那 169 张走这条）
+    var imgs = document.querySelectorAll(".article-content img");
+    for (var j = 0; j < imgs.length; j++) {
+      var im = imgs[j];
+      if (im.__lbReady) continue;
+      im.__lbReady = true;
+      im.classList.add("fig-zoomable");
+      im.setAttribute("title", "点击全屏查看");
+      im.setAttribute("tabindex", "0");
+      (function (img) {
+        img.addEventListener("click", function () {
+          openLightbox(img, img.getAttribute("alt") || "");
+        });
+        img.addEventListener("keydown", function (ev) {
+          if (ev.key === "Enter" || ev.key === " ") {
+            ev.preventDefault();
+            openLightbox(img, img.getAttribute("alt") || "");
+          }
+        });
+      })(im);
+    }
+  }
+
   function boot() {
     var figs = document.querySelectorAll("figure.fig");
     for (var i = 0; i < figs.length; i++) setupFig(figs[i]);
+    setupLightbox();
   }
 
   if (document.readyState === "loading") {

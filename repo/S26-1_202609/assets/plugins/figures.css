@@ -28,6 +28,43 @@
   cursor: pointer; font-size: .85em; line-height: 1; }
 .fig-zoom button:hover { background: var(--md-sys-color-surface-container, #f2f2f6); }
 .fig { position: relative; }
+/* ── 全屏查看（灯箱）：所有图都能点开，纯前端、不进 MCP ─────────────────── */
+.fig-zoomable { cursor: zoom-in; }
+.article-content img.fig-zoomable { transition: opacity .15s; }
+.article-content img.fig-zoomable:hover { opacity: .9; }
+.fig-lightbox {
+  display: none; position: fixed; inset: 0; z-index: 9999;
+  background: rgba(0, 0, 0, .88);
+  align-items: center; justify-content: center;
+  padding: 2vmin; cursor: zoom-out;
+}
+.fig-lightbox.is-open { display: flex; }
+.fig-lightbox-body {
+  display: flex; flex-direction: column; align-items: center; gap: .8em;
+  max-width: 100%; max-height: 100%;
+}
+.fig-lightbox-content {
+  max-width: 96vw; max-height: 86vh; width: auto; height: auto;
+  background: var(--md-sys-color-surface, #fff); border-radius: 8px;
+  cursor: default;
+}
+svg.fig-lightbox-content { padding: 1.2vmin; }
+.fig-lightbox-caption {
+  margin: 0; color: #e6e1e5; font-size: .9em; text-align: center;
+  max-width: 90vw;
+}
+.fig-lightbox-close {
+  position: absolute; top: 1.2vmin; right: 1.6vmin;
+  width: 2.6em; height: 2.6em; border-radius: 50%;
+  border: none; background: rgba(255, 255, 255, .14); color: #fff;
+  font-size: 1.4em; line-height: 1; cursor: pointer;
+}
+.fig-lightbox-close:hover { background: rgba(255, 255, 255, .28); }
+@media (max-width: 600px) {
+  .fig-lightbox { padding: 1vmin; }
+  .fig-lightbox-content { max-height: 80vh; }
+}
+
 /* 图中的符号锚点：只加下划线提示，不抢正文气泡的样式 */
 .fig-svg a.sym-gloss { text-decoration: underline; text-decoration-style: dotted; text-underline-offset: 3px; cursor: pointer; }
 .fig-svg a.sym-gloss:focus-visible { outline: 2px solid var(--md-sys-color-primary, #3b82f6); outline-offset: 2px; }
