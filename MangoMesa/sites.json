@@ -1,12 +1,12 @@
 {
-	"generatedAt": "2026-10-28T10:39:13.247Z",
+	"generatedAt": "2026-10-28T14:29:01.816Z",
 	"acceleratedDirs": ["Octave", "S26-1_202609"],
 	"entries": [
 		{
 			"name": "isui.ren-heart",
 			"pages": "ready",
 			"accelerated": false,
-			"pushedAt": "2026-10-28T09:55:45Z",
+			"pushedAt": "2026-10-28T13:52:26Z",
 			"status": "built",
 			"description": "isui.ren 的站点心脏：EdgeOne Pages 静态源、边缘中间件与跨仓部署链",
 			"language": "Rust",
@@ -17,7 +17,7 @@
 			"name": "S26-1_202609",
 			"pages": "absent",
 			"accelerated": true,
-			"pushedAt": "2026-10-28T09:55:22Z",
+			"pushedAt": "2026-10-28T13:52:00Z",
 			"status": null,
 			"description": "一种很便宜的，OKF0.2格式的知识库，人类或机器都能看懂",
 			"language": "JavaScript",
@@ -25,25 +25,25 @@
 			"icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMTIgN2MtMS40LTEuMi0zLjQtMS45LTUuNi0xLjktLjcgMC0xLjQuMDYtMiAuMTlWMTguM2MuNi0uMTIgMS4zLS4xOSAyLS4xOSAyLjIgMCA0LjIuNyA1LjYgMS45IDEuNC0xLjIgMy40LTEuOSA1LjYtMS45LjcgMCAxLjQuMDcgMiAuMTlWNS4yOWMtLjYtLjEzLTEuMy0uMTktMi0uMTktMi4yIDAtNC4yLjctNS42IDEuOVoiLz48cGF0aCBkPSJNMTIgN3YxMyIvPjwvc3ZnPg=="
 		},
 		{
-			"name": "Octave-Extra-Content",
-			"pages": "absent",
-			"accelerated": false,
-			"pushedAt": "2026-10-28T08:41:53Z",
-			"status": null,
-			"description": "Extra content for the browser Octave (private): package archives + runtime/toolchain provisioning recipes. Formerly Octave-Forge-Shelf.",
-			"language": "Python",
-			"url": "https://github.com/ArchivalEra/Octave-Extra-Content",
-			"icon": ""
-		},
-		{
 			"name": "Octave-UI",
 			"pages": "ready",
 			"accelerated": false,
-			"pushedAt": "2026-10-28T07:47:53Z",
+			"pushedAt": "2026-10-28T13:49:59Z",
 			"status": null,
 			"description": "",
 			"language": "JavaScript",
 			"url": "https://github.com/ArchivalEra/Octave-UI",
+			"icon": ""
+		},
+		{
+			"name": "Octave-Extra-Content",
+			"pages": "absent",
+			"accelerated": false,
+			"pushedAt": "2026-10-28T12:29:59Z",
+			"status": null,
+			"description": "Extra content for the browser Octave (private): package archives + runtime/toolchain provisioning recipes. Formerly Octave-Forge-Shelf.",
+			"language": "Python",
+			"url": "https://github.com/ArchivalEra/Octave-Extra-Content",
 			"icon": ""
 		},
 		{
