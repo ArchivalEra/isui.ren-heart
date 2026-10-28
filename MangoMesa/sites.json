@@ -1,12 +1,23 @@
 {
-	"generatedAt": "2026-10-27T23:09:10.129Z",
+	"generatedAt": "2026-10-28T07:23:04.977Z",
 	"acceleratedDirs": ["Octave", "S26-1_202609"],
 	"entries": [
+		{
+			"name": "Octave-Full-Wasm",
+			"pages": "absent",
+			"accelerated": false,
+			"pushedAt": "2026-10-28T05:43:13Z",
+			"status": null,
+			"description": "浏览器里跑满功能 GNU Octave 11.3.0：wasm64 + 多线程 + OpenBLAS 四车道自动选档",
+			"language": "JavaScript",
+			"url": "https://github.com/ArchivalEra/Octave-Full-Wasm",
+			"icon": ""
+		},
 		{
 			"name": "isui.ren-heart",
 			"pages": "ready",
 			"accelerated": false,
-			"pushedAt": "2026-10-27T18:58:15Z",
+			"pushedAt": "2026-10-28T04:57:59Z",
 			"status": "built",
 			"description": "isui.ren 的站点心脏：EdgeOne Pages 静态源、边缘中间件与跨仓部署链",
 			"language": "Rust",
@@ -17,12 +28,23 @@
 			"name": "S26-1_202609",
 			"pages": "absent",
 			"accelerated": true,
-			"pushedAt": "2026-10-27T15:19:30Z",
+			"pushedAt": "2026-10-28T04:57:36Z",
 			"status": null,
 			"description": "一种很便宜的，OKF0.2格式的知识库，人类或机器都能看懂",
 			"language": "JavaScript",
 			"url": "https://github.com/ArchivalEra/S26-1_202609",
 			"icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMTIgN2MtMS40LTEuMi0zLjQtMS45LTUuNi0xLjktLjcgMC0xLjQuMDYtMiAuMTlWMTguM2MuNi0uMTIgMS4zLS4xOSAyLS4xOSAyLjIgMCA0LjIuNyA1LjYgMS45IDEuNC0xLjIgMy40LTEuOSA1LjYtMS45LjcgMCAxLjQuMDcgMiAuMTlWNS4yOWMtLjYtLjEzLTEuMy0uMTktMi0uMTktMi4yIDAtNC4yLjctNS42IDEuOVoiLz48cGF0aCBkPSJNMTIgN3YxMyIvPjwvc3ZnPg=="
+		},
+		{
+			"name": "Octave-Extra-Content",
+			"pages": "absent",
+			"accelerated": false,
+			"pushedAt": "2026-10-28T04:17:51Z",
+			"status": null,
+			"description": "Extra content for the browser Octave (private): package archives + runtime/toolchain provisioning recipes. Formerly Octave-Forge-Shelf.",
+			"language": "Python",
+			"url": "https://github.com/ArchivalEra/Octave-Extra-Content",
+			"icon": ""
 		},
 		{
 			"name": "Octave-UI",
@@ -33,28 +55,6 @@
 			"description": "",
 			"language": "JavaScript",
 			"url": "https://github.com/ArchivalEra/Octave-UI",
-			"icon": ""
-		},
-		{
-			"name": "Octave-Full-Wasm",
-			"pages": "absent",
-			"accelerated": false,
-			"pushedAt": "2026-10-25T11:42:45Z",
-			"status": null,
-			"description": "浏览器里跑满功能 GNU Octave 11.3.0：wasm64 + 多线程 + OpenBLAS 四车道自动选档",
-			"language": "JavaScript",
-			"url": "https://github.com/ArchivalEra/Octave-Full-Wasm",
-			"icon": ""
-		},
-		{
-			"name": "Octave-Extra-Content",
-			"pages": "absent",
-			"accelerated": false,
-			"pushedAt": "2026-10-25T11:16:09Z",
-			"status": null,
-			"description": "Extra content for the browser Octave (private): package archives + runtime/toolchain provisioning recipes. Formerly Octave-Forge-Shelf.",
-			"language": "Python",
-			"url": "https://github.com/ArchivalEra/Octave-Extra-Content",
 			"icon": ""
 		},
 		{
