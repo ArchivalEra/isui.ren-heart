@@ -6,6 +6,28 @@
 .fig-structure-table { border-collapse: collapse; margin-top: .5em; width: 100%; }
 .fig-structure-table th, .fig-structure-table td { border: 1px solid var(--md-sys-color-outline-variant, #c9c9d1); padding: .28em .55em; text-align: left; }
 .fig-structure-table th { background: var(--md-sys-color-surface-container, #f2f2f6); font-weight: 600; }
+/* ── 交互态（2026-10-28 补：图必须真的能操作）────────────────────────── */
+/* 元件可选：hover 提亮、选中加粗描边 */
+.fig-svg .fig-comp { cursor: pointer; transition: opacity .15s; }
+.fig-svg .fig-comp:hover { opacity: .75; }
+.fig-svg .fig-comp:focus-visible { outline: none; }
+.fig-svg .fig-comp:focus-visible rect { stroke-width: 3; stroke-dasharray: 4 2; }
+.fig-svg .fig-comp.is-selected rect { stroke-width: 3; stroke: var(--md-sys-color-primary, #3b82f6); }
+/* 连线可点：命中区加宽（细线不好点，靠 stroke-width 放大命中范围） */
+.fig-svg .fig-wire { cursor: pointer; }
+.fig-svg .fig-wire.is-hot { stroke: var(--md-sys-color-primary, #3b82f6); stroke-width: 2.6; }
+/* 属性面板 */
+.fig-inspector { margin-top: .6em; padding: .55em .75em; border-radius: 8px; font-size: .875em;
+  background: var(--md-sys-color-surface-container, #f2f2f6);
+  color: var(--md-sys-color-on-surface, #1b1b1f); }
+/* 缩放条 */
+.fig-zoom { position: absolute; right: .5em; top: .5em; display: flex; gap: .25em; opacity: .35; transition: opacity .2s; }
+.fig:hover .fig-zoom, .fig-zoom:focus-within { opacity: 1; }
+.fig-zoom button { width: 1.9em; height: 1.9em; border: 1px solid var(--md-sys-color-outline-variant, #c9c9d1);
+  border-radius: 6px; background: var(--md-sys-color-surface, #fff); color: inherit;
+  cursor: pointer; font-size: .85em; line-height: 1; }
+.fig-zoom button:hover { background: var(--md-sys-color-surface-container, #f2f2f6); }
+.fig { position: relative; }
 /* 图中的符号锚点：只加下划线提示，不抢正文气泡的样式 */
 .fig-svg a.sym-gloss { text-decoration: underline; text-decoration-style: dotted; text-underline-offset: 3px; cursor: pointer; }
 .fig-svg a.sym-gloss:focus-visible { outline: 2px solid var(--md-sys-color-primary, #3b82f6); outline-offset: 2px; }
