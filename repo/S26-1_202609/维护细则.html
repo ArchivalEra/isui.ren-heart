@@ -1105,7 +1105,13 @@ HEIC→JXL 是无损转<strong>像素</strong>、不保留原容器字节，原�
 涉及答案相关文字则<strong>重跑双签</strong>，再写三签行。</p>
 <p><strong>落笔</strong>：完成边界写 <code>三签：&lt;日期&gt;，独立子代理只读依赖试做，可独立完成；解答过程合理（定理闭合、无跳步）</code>；
 有缺口则改完再写（写明改了什么）。详见 <code>.agents/skills/triple-sign/SKILL.md</code>。</p>
-<h3 id="3-4-资料与索引同进同出-hook-强制">3.4 资料与索引同进同出（hook 强制）</h3><p><code>课程/&lt;课程&gt;/&lt;类别&gt;/</code> 下任何资料（不含 <code>index.md</code>）<strong>新增、删除或修改</strong>，同一次提交必须同时改对应类别的 <code>index.md</code>，否则 pre-commit 直接拒绝。索引是资料的登记处；资料变了索引不动，索引就已过期；<code>last_updated</code> 由 pre-commit 按各文件自己的提交日期自动写入，不手抄。作业记录照此办理：新增作业要登记进 <code>作业/index.md</code>，改正文要同步索引里的状态与时间。</p>
+<h3 id="3-4-资料与索引同进同出-hook-强制-层层递进">3.4 资料与索引同进同出（hook 强制，<strong>层层递进</strong>）</h3><p><code>课程/</code> 下任何<strong>页面</strong>（<code>.md</code>）<strong>新增、删除或修改</strong>，同一次提交必须同时更新它<strong>每一层</strong>祖先目录的 <code>index.md</code>，直到 <code>课程/index.md</code>——由 pre-commit 强制，缺一层就拒绝，并在报错里点名是哪几层、因哪个文件。索引是资料的登记处；资料变了索引不动，索引就已过期。<code>last_updated</code> 由 pre-commit 按各文件自己的提交日期自动写入，不手抄。作业记录照此办理：新增作业要登记进 <code>作业/index.md</code>，改正文要同步索引里的状态与时间。</p>
+<p><strong>链条有多长由目录结构决定，不写死层数</strong>。例：改 <code>工程数学/教材解析/第一部分-线性代数/第3章-…/3.1-n维向量.md</code> ⇒
+<code>第一部分-线性代数/index.md</code>、<code>教材解析/index.md</code>、<code>工程数学/index.md</code>、<code>课程/index.md</code> <strong>四层全要动</strong>。
+中间目录没有 <code>index.md</code> 的（如章节目录）跳过，层级并入最近的上级索引。原始资料里的 <code>.heic</code> / <code>.txt</code> / <code>figures/</code> 是<strong>内嵌资产不是页面</strong>，换一张图不触发级联——但它们归属的登记页（<code>原始资料/index.md</code> 等）是 <code>.md</code>，登记变了自然往上传导。</p>
+<p><strong>为什么要有这条（2026-10-28 定案）</strong>：此前只校验「资料 → 分类索引」一层，上面两层从无校验。结果是 <code>课程/index.md</code> 里
+电子技术长期写着「两次作业」（实际 9 份）、工程数学写着「第 1–2 章教材解析」（实际到第 3 章）——<strong>摘要页不更新就会腐烂，
+而且腐烂时没有任何信号</strong>：构建照过、链接照通，读者看到的是一句过期概述。现在这条把「上层摘要必须跟着下层事实走」交给钩子守。</p>
 <h2 id="4-命名与目录速查">4. 命名与目录速查</h2><div class="table-scroll-container t-cards" role="region" aria-label="4. 命名与目录速查" tabindex="0">
 <table>
 <thead><tr><th align="left">类别</th><th align="left">位置</th><th align="left">命名</th></tr></thead>
@@ -1141,7 +1147,7 @@ HEIC→JXL 是无损转<strong>像素</strong>、不保留原容器字节，原�
 <ul>
 <li>课程 <strong>6</strong> 门；正式资料 <strong>278</strong> 份（不含索引、模板和历史入口）。</li>
 <li>精确白名单 <strong>521</strong> 条逐文件路径（无通配符），仓库共 <strong>512</strong> 个受管文件。</li>
-<li>暂存内容摘要（不含本文件与 README）：<code>9ea458971762762a061d09749c08d03dc58a35d34873673d8a5fdef01d804303</code>。任何正文改动都会改变这一行。</li>
+<li>暂存内容摘要（不含本文件与 README）：<code>4bbe04f82a8a8052b4efd3e0c1575f32cc7d89b3815706d478f5e99cfb6ec2f7</code>。任何正文改动都会改变这一行。</li>
 </ul>
 <h3 id="课程分类一览">课程分类一览</h3><div class="table-scroll-container t-matrix" role="region" aria-label="课程分类一览" tabindex="0">
 <table>
@@ -1184,7 +1190,7 @@ HEIC→JXL 是无损转<strong>像素</strong>、不保留原容器字节，原�
         <aside class="m3-toc">
       <div class="toc-title">目录</div>
       <ul class="toc-list">
-        <li class="toc-item level-2"><a href="#1-每次编辑后的固定动作-强制">1. 每次编辑后的固定动作（强制）</a></li><li class="toc-item level-3"><a href="#1-1-事实系统-数字的唯一产地">1.1 事实系统（数字的唯一产地）</a></li><li class="toc-item level-2"><a href="#2-新增一门课程">2. 新增一门课程</a></li><li class="toc-item level-2"><a href="#3-教材照片归档与读图">3. 教材照片归档与读图</a></li><li class="toc-item level-3"><a href="#3-1-归档">3.1 归档</a></li><li class="toc-item level-3"><a href="#3-2-读图-强制交给子代理">3.2 读图（强制交给子代理）</a></li><li class="toc-item level-3"><a href="#3-3-教材解析写作-先抄后析">3.3 教材解析写作（先抄后析）</a></li><li class="toc-item level-3"><a href="#3-5-未竟条目归-issue-2026-10-12-定案">3.5 未竟条目归 issue（2026-10-12 定案）</a></li><li class="toc-item level-3"><a href="#3-6-题面必须完整-图必须画在题面里-2026-10-13-定案-全仓适用">3.6 题面必须完整，图必须画在题面里（2026-10-13 定案，全仓适用）</a></li><li class="toc-item level-3"><a href="#3-7-三签-读了依赖-做不做得出来-2026-10-14-定案">3.7 三签：读了依赖，做不做得出来（2026-10-14 定案）</a></li><li class="toc-item level-3"><a href="#3-4-资料与索引同进同出-hook-强制">3.4 资料与索引同进同出（hook 强制）</a></li><li class="toc-item level-2"><a href="#4-命名与目录速查">4. 命名与目录速查</a></li><li class="toc-item level-2"><a href="#5-白名单与提交">5. 白名单与提交</a></li><li class="toc-item level-2"><a href="#6-禁止事项">6. 禁止事项</a></li><li class="toc-item level-2"><a href="#7-故障处理">7. 故障处理</a></li><li class="toc-item level-2"><a href="#仓库状态-自动生成">仓库状态（自动生成）</a></li><li class="toc-item level-3"><a href="#课程分类一览">课程分类一览</a></li><li class="toc-item level-3"><a href="#验证基线">验证基线</a></li>
+        <li class="toc-item level-2"><a href="#1-每次编辑后的固定动作-强制">1. 每次编辑后的固定动作（强制）</a></li><li class="toc-item level-3"><a href="#1-1-事实系统-数字的唯一产地">1.1 事实系统（数字的唯一产地）</a></li><li class="toc-item level-2"><a href="#2-新增一门课程">2. 新增一门课程</a></li><li class="toc-item level-2"><a href="#3-教材照片归档与读图">3. 教材照片归档与读图</a></li><li class="toc-item level-3"><a href="#3-1-归档">3.1 归档</a></li><li class="toc-item level-3"><a href="#3-2-读图-强制交给子代理">3.2 读图（强制交给子代理）</a></li><li class="toc-item level-3"><a href="#3-3-教材解析写作-先抄后析">3.3 教材解析写作（先抄后析）</a></li><li class="toc-item level-3"><a href="#3-5-未竟条目归-issue-2026-10-12-定案">3.5 未竟条目归 issue（2026-10-12 定案）</a></li><li class="toc-item level-3"><a href="#3-6-题面必须完整-图必须画在题面里-2026-10-13-定案-全仓适用">3.6 题面必须完整，图必须画在题面里（2026-10-13 定案，全仓适用）</a></li><li class="toc-item level-3"><a href="#3-7-三签-读了依赖-做不做得出来-2026-10-14-定案">3.7 三签：读了依赖，做不做得出来（2026-10-14 定案）</a></li><li class="toc-item level-3"><a href="#3-4-资料与索引同进同出-hook-强制-层层递进">3.4 资料与索引同进同出（hook 强制，层层递进）</a></li><li class="toc-item level-2"><a href="#4-命名与目录速查">4. 命名与目录速查</a></li><li class="toc-item level-2"><a href="#5-白名单与提交">5. 白名单与提交</a></li><li class="toc-item level-2"><a href="#6-禁止事项">6. 禁止事项</a></li><li class="toc-item level-2"><a href="#7-故障处理">7. 故障处理</a></li><li class="toc-item level-2"><a href="#仓库状态-自动生成">仓库状态（自动生成）</a></li><li class="toc-item level-3"><a href="#课程分类一览">课程分类一览</a></li><li class="toc-item level-3"><a href="#验证基线">验证基线</a></li>
       </ul>
     </aside>
       </div>
