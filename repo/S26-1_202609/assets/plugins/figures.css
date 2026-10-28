@@ -1,0 +1,11 @@
+.fig { margin: 1.4em 0; padding: 0; }
+.fig-svg { display: block; width: 100%; max-width: 720px; height: auto; margin: 0 auto; color: var(--md-sys-color-on-surface, #1b1b1f); }
+.fig figcaption { margin-top: .6em; text-align: center; font-size: .875em; color: var(--md-sys-color-on-surface-variant, #5c5c66); }
+.fig-structure { margin-top: .8em; font-size: .875em; }
+.fig-structure summary { cursor: pointer; color: var(--md-sys-color-on-surface-variant, #5c5c66); }
+.fig-structure-table { border-collapse: collapse; margin-top: .5em; width: 100%; }
+.fig-structure-table th, .fig-structure-table td { border: 1px solid var(--md-sys-color-outline-variant, #c9c9d1); padding: .28em .55em; text-align: left; }
+.fig-structure-table th { background: var(--md-sys-color-surface-container, #f2f2f6); font-weight: 600; }
+/* 图中的符号锚点：只加下划线提示，不抢正文气泡的样式 */
+.fig-svg a.sym-gloss { text-decoration: underline; text-decoration-style: dotted; text-underline-offset: 3px; cursor: pointer; }
+.fig-svg a.sym-gloss:focus-visible { outline: 2px solid var(--md-sys-color-primary, #3b82f6); outline-offset: 2px; }
