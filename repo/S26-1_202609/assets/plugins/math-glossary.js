@@ -109,16 +109,17 @@ function () {
   }
   document.addEventListener("click", function (e) {
     var link = e.target.closest
-      ? e.target.closest("a.sym-gloss, .katex [data-term]")
+      ? e.target.closest("a.sym-gloss, .ML__latex [data-term], .katex [data-term]")
       : null;
     // 公式内的几何回退（2026-10-12 用户实测「公式框里符号点击范围严重漂移、几乎点不了」）：
     // KaTeX 的透明堆叠结构盒（.vlist 一套，position:relative）会抢走点击让 closest 落空，
-    // 相邻/嵌套符号的 inline 盒也会互相覆盖。所以只要点在 .katex 里，就按几何重挑一次：
+    // 相邻/嵌套符号的 inline 盒也会互相覆盖。所以只要点在公式容器里，就按几何重挑一次：
+   // 2026-10-29 换引擎后容器类名是 .ML__latex（旧 .katex 保留兼容）。
     // 取「包含该点、面积最小」的 [data-term] 盒——嵌套角标里最小 = 最内层，
     // 重叠邻居里最小 = 更该点的那个；同面积取中心最近。实测把 14 个堆叠公式的
     // 104 个符号从 25 个点不动降到 0。CSS 侧的提层（.katex [data-term] 提 z-index）
     // 是同批的另一半修法，两者互为兜底。
-    if (e.target.closest && e.target.closest(".katex")) {
+    if (e.target.closest && (e.target.closest(".ML__latex") || e.target.closest(".katex"))) {
       var geo = termAtPoint(e.clientX, e.clientY);
       if (geo) link = geo;
     }

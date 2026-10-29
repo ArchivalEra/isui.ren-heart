@@ -342,7 +342,7 @@ var renderBlockToOps = function renderBlockToOps(block) {
       return [];
   }
 };
-var applyOps = function applyOps(doc, el, ops, katex) {
+var applyOps = function applyOps(doc, el, ops, maths) {
   const mk = (tag) => doc.createElement(tag);
 
   /** 行内 ops → 一串节点。 */
@@ -360,7 +360,7 @@ var applyOps = function applyOps(doc, el, ops, katex) {
         case 'math': {
           const n = mk('span');
           n.className = 'chat-math';
-          renderMathInto(doc, n, o.tex, false, katex);
+          renderMathInto(doc, n, o.tex, false, maths);
           out.push(n);
           break;
         }
@@ -424,7 +424,7 @@ var applyOps = function applyOps(doc, el, ops, katex) {
       case 'mathblock': {
         node = mk('div');
         node.className = 'chat-math-block';
-        renderMathInto(doc, node, op.tex, true, katex);
+        renderMathInto(doc, node, op.tex, true, maths);
         break;
       }
       case 'table': {
@@ -462,24 +462,24 @@ var applyOps = function applyOps(doc, el, ops, katex) {
     if (node) el.appendChild(node);
   }
 };
-var renderMathInto = function renderMathInto(doc, node, tex, display, katex) {
-  if (!katex || typeof katex.renderToString !== 'function') {
+var renderMathInto = function renderMathInto(doc, node, tex, display, maths) {
+  if (!maths || typeof maths.convertLatexToMarkup !== 'function') {
     node.textContent = (display ? '$$' : '$') + tex + (display ? '$$' : '$');
     return;
   }
   try {
-    const html = katex.renderToString(tex, {
-      displayMode: !!display,
-      throwOnError: false,
-      trust: false,
-      maxSize: 10,
-      maxExpand: 1000,
-      strict: 'ignore',
-    });
-    node.innerHTML = html;
+    // 显示公式用外层容器控制横向滚动（与正文 `.math-display` 同一套做法）
+    const src = display ? `\\displaystyle ${tex}` : tex;
+    const html = maths.convertLatexToMarkup(src);
+    if (/ML__error/.test(html)) throw new Error('公式无法排版');
+    if (display) {
+      node.innerHTML = '<div class="chat-math-display">' + html + '</div>';
+    } else {
+      node.innerHTML = html;
+    }
   } catch (e) {
     node.className = (node.className ? node.className + ' ' : '') + 'chat-math-err';
-    node.textContent = String((e && e.message) || e);
+    node.textContent = (display ? '$$' : '$') + tex + (display ? '$$' : '$');
   }
 };
 
@@ -523,7 +523,7 @@ var attachBtn = null;
 var attachBar = null;
 var fileInput = null;
 
-var katexLoading = null;
+
 var stream = null;
 var stuck = true;
 var msgEls = [];
@@ -563,19 +563,26 @@ function withToken(u, t) {
   return t ? (u + (u.indexOf("?") >= 0 ? "&" : "?") + "token=" + encodeURIComponent(t)) : u;
 }
 
-function ensureKatex() {
-  if (window.katex) return Promise.resolve(window.katex);
-  if (katexLoading) return katexLoading;
-  katexLoading = new Promise(function (resolve) {
+// 公式引擎懒加载（2026-10-29 换引擎）：MathLive 的 **SSR 版**模块。
+// 为什么用 SSR 版而不是浏览器版：398KB vs 843KB，而聊天只需要「TeX → 静态 HTML」
+// 这一个能力（convertLatexToMarkup），不需要可编辑的 math-field 元素。
+// 实测在浏览器里经 module script 加载即可用。
+var mathsLoading = null;
+function ensureMaths() {
+  if (window.__maths) return Promise.resolve(window.__maths);
+  if (mathsLoading) return mathsLoading;
+  mathsLoading = new Promise(function (resolve) {
     var root = document.documentElement.getAttribute("data-root") || "./";
     var s = document.createElement("script");
-    s.src = root + "assets/katex/katex.min.js";
-    s.async = true;
-    s.onload = function () { resolve(window.katex || null); };
-    s.onerror = function () { resolve(null); };
+    s.type = "module";
+    s.textContent = 'import * as M from "' + root + 'assets/mathlive/mathlive-ssr.min.mjs";'
+      + 'window.__maths = M; window.dispatchEvent(new Event("maths-ready"));';
     document.head.appendChild(s);
+    var done = function () { resolve(window.__maths || null); };
+    window.addEventListener("maths-ready", done, { once: true });
+    setTimeout(done, 8000);   // 兜底：模块加载失败也不能让提问永久挂住
   });
-  return katexLoading;
+  return mathsLoading;
 }
 
 function sniffImage(bytes) {
@@ -788,7 +795,7 @@ function attachStatusSlot(msg) {
 function renderMessage(msg, final) {
   var parsed = parseIncremental(msg.raw.slice(msg.restStart || 0));
   for (var i = 0; i < parsed.blocks.length; i++) {
-    applyOps(document, msg.body, renderBlockToOps(parsed.blocks[i]), window.katex);
+    applyOps(document, msg.body, renderBlockToOps(parsed.blocks[i]), window.__maths);
   }
   msg.restStart = (msg.restStart || 0) + parsed.restStart;
 
@@ -1867,7 +1874,7 @@ function ensureInitialized() {
   }
 
   try { if (window.__webmcpEnable) window.__webmcpEnable(); } catch (e) {}
-  ensureKatex();
+  ensureMaths();
   loadSessions();
 }
 

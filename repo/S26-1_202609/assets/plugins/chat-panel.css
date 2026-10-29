@@ -429,7 +429,9 @@ body.chat-open .chat-panel {
 .chat-body tbody tr:nth-child(even) {
   background-color: color-mix(in srgb, var(--md-sys-color-surface-container) 45%, transparent);
 }
-.chat-body .katex-display {
+/* 显示公式的横向滚动：旧选择器是 KaTeX 时代的 katex-display 类，
+   现在公式由 MathLive 排版，容器是本面板自己包的 chat-math-display。 */
+.chat-body .chat-math-display {
   overflow-x: auto;
   overflow-y: hidden;
   padding: .2rem 0;
