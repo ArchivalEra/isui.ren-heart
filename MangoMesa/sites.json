@@ -1,23 +1,12 @@
 {
-	"generatedAt": "2026-10-29T10:57:45.093Z",
+	"generatedAt": "2026-10-29T14:40:36.619Z",
 	"acceleratedDirs": ["Octave", "S26-1_202609"],
 	"entries": [
-		{
-			"name": "OpenModelica-Full-Wasm",
-			"pages": "absent",
-			"accelerated": false,
-			"pushedAt": "2026-10-29T10:57:10Z",
-			"status": null,
-			"description": "Run OpenModelica in the browser — official wasm target (Rust route), pure client-side Modelica compile & simulate, .mat handshake to the Octave engine. AGPL-3.0.",
-			"language": "Python",
-			"url": "https://github.com/ArchivalEra/OpenModelica-Full-Wasm",
-			"icon": ""
-		},
 		{
 			"name": "isui.ren-heart",
 			"pages": "ready",
 			"accelerated": false,
-			"pushedAt": "2026-10-29T10:57:06Z",
+			"pushedAt": "2026-10-29T14:20:54Z",
 			"status": "built",
 			"description": "isui.ren 的站点心脏：EdgeOne Pages 静态源、边缘中间件与跨仓部署链",
 			"language": "Rust",
@@ -28,7 +17,7 @@
 			"name": "S26-1_202609",
 			"pages": "absent",
 			"accelerated": true,
-			"pushedAt": "2026-10-29T10:56:33Z",
+			"pushedAt": "2026-10-29T14:20:11Z",
 			"status": null,
 			"description": "一种很便宜的，OKF0.2格式的知识库，人类或机器都能看懂",
 			"language": "JavaScript",
@@ -39,11 +28,22 @@
 			"name": "Octave-Full-Wasm",
 			"pages": "absent",
 			"accelerated": false,
-			"pushedAt": "2026-10-29T10:49:37Z",
+			"pushedAt": "2026-10-29T14:13:40Z",
 			"status": null,
 			"description": "浏览器里跑满功能 GNU Octave 11.3.0：wasm64 + 多线程 + OpenBLAS 四车道自动选档",
 			"language": "JavaScript",
 			"url": "https://github.com/ArchivalEra/Octave-Full-Wasm",
+			"icon": ""
+		},
+		{
+			"name": "OpenModelica-Full-Wasm",
+			"pages": "absent",
+			"accelerated": false,
+			"pushedAt": "2026-10-29T13:08:26Z",
+			"status": null,
+			"description": "Run OpenModelica in the browser — official wasm target (Rust route), pure client-side Modelica compile & simulate, .mat handshake to the Octave engine. AGPL-3.0.",
+			"language": "Python",
+			"url": "https://github.com/ArchivalEra/OpenModelica-Full-Wasm",
 			"icon": ""
 		},
 		{
