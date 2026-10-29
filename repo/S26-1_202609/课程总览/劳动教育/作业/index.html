@@ -17,6 +17,13 @@
         root.style.setProperty("--hue", hue);
         root.style.setProperty("--primary-h", hue);
       }
+      // 字号也必须在**首帧**恢复，否则会先按 16px 排一次版、脚本跑完再跳一下
+      // （主题闪光弹的同款问题，2026-10-13 已为明暗修过，字号同理）。
+      var fs = localStorage.getItem("site-font-size");
+      if (fs !== null && /^\d+$/.test(fs)) {
+        root.style.fontSize = fs + "px";
+        root.style.setProperty("--base-font-size", fs + "px");
+      }
     } catch (e) { /* 隐私模式下 localStorage 可能抛错，忽略 */ }
   })();
   </script>
@@ -25,8 +32,8 @@
        ⚠️ 必须走 assetUrl（同其余四张样式表）：此前它是唯一裸引用的 CSS，没有内容哈希戳，
        于是**改了它浏览器永远读旧缓存**——补丁明明写进 dist、页面就是不生效，
        排查时会误判成「CSS 规则不对」。（2026-10-29 实测踩到。） -->
-  <link rel="stylesheet" href="../../../assets/mathlive/mathlive-static.css?v=d9639a3724">
-  <link rel="stylesheet" href="../../../assets/theme/shirone-reader.css?v=4241d72c12">
+  <link rel="stylesheet" href="../../../assets/mathlive/mathlive-static.css?v=47fe940c65">
+  <link rel="stylesheet" href="../../../assets/theme/shirone-reader.css?v=07b1bbb960">
   <link rel="stylesheet" href="../../../assets/plugins/site-search.css?v=45716eda6c">
   <link rel="stylesheet" href="../../../assets/plugins/chat-panel.css?v=b2e28efb46">
   <link rel="stylesheet" href="../../../assets/plugins/figures.css?v=e7bdc5cd97">
@@ -978,6 +985,17 @@
               <span class="palette-slider-label">色相微调 (0° - 360°)</span>
               <input type="range" min="0" max="360" value="248" class="palette-slider" id="hue-slider">
             </div>
+            <!-- 字号（2026-10-29 站长定案）：全站缩放。站内所有尺寸都用 rem，
+                 所以改 html 的 font-size 一处即全站生效——正文、侧栏、代码块、
+                 连同公式（MathLive 字号继承）一起缩放。范围与默认值参照 Octave-UI 的
+                 ThemeManager（12–20px，默认 16）。 -->
+            <div class="palette-slider-container">
+              <span class="palette-slider-label">
+                字号 <span class="palette-font-sample" id="font-sample">Aa</span>
+                <span class="palette-font-value" id="font-size-value">16px</span>
+              </span>
+              <input type="range" min="12" max="20" step="1" value="16" class="palette-slider" id="font-size-slider">
+            </div>
             <div>
               <div class="palette-swatches-title">预设配色</div>
               <div class="palette-swatches-grid">
@@ -1100,7 +1118,7 @@
     </div>
   </div>
 
-  <script src="../../../assets/theme/shirone-reader.js?v=05701c2568" defer></script>
+  <script src="../../../assets/theme/shirone-reader.js?v=2e0488878d" defer></script>
   <script src="../../../assets/plugins/disclosure-anchor.js?v=c242987556" defer></script>
   <script src="../../../assets/plugins/figures.js?v=7cad82fee1" defer></script>
   <script type="application/json" id="sym-glossary-json">{"terms":{}}</script>
