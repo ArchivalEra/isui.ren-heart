@@ -1,34 +1,23 @@
 {
-	"generatedAt": "2026-10-29T07:40:26.897Z",
+	"generatedAt": "2026-10-29T10:57:45.093Z",
 	"acceleratedDirs": ["Octave", "S26-1_202609"],
 	"entries": [
 		{
-			"name": "Octave-Extra-Content",
+			"name": "OpenModelica-Full-Wasm",
 			"pages": "absent",
 			"accelerated": false,
-			"pushedAt": "2026-10-29T07:32:20Z",
+			"pushedAt": "2026-10-29T10:57:10Z",
 			"status": null,
-			"description": "Extra content for the browser Octave (private): package archives + runtime/toolchain provisioning recipes. Formerly Octave-Forge-Shelf.",
+			"description": "Run OpenModelica in the browser — official wasm target (Rust route), pure client-side Modelica compile & simulate, .mat handshake to the Octave engine. AGPL-3.0.",
 			"language": "Python",
-			"url": "https://github.com/ArchivalEra/Octave-Extra-Content",
-			"icon": ""
-		},
-		{
-			"name": "Octave-UI",
-			"pages": "ready",
-			"accelerated": false,
-			"pushedAt": "2026-10-29T07:29:59Z",
-			"status": null,
-			"description": "",
-			"language": "JavaScript",
-			"url": "https://github.com/ArchivalEra/Octave-UI",
+			"url": "https://github.com/ArchivalEra/OpenModelica-Full-Wasm",
 			"icon": ""
 		},
 		{
 			"name": "isui.ren-heart",
 			"pages": "ready",
 			"accelerated": false,
-			"pushedAt": "2026-10-28T23:32:14Z",
+			"pushedAt": "2026-10-29T10:57:06Z",
 			"status": "built",
 			"description": "isui.ren 的站点心脏：EdgeOne Pages 静态源、边缘中间件与跨仓部署链",
 			"language": "Rust",
@@ -39,7 +28,7 @@
 			"name": "S26-1_202609",
 			"pages": "absent",
 			"accelerated": true,
-			"pushedAt": "2026-10-28T13:52:00Z",
+			"pushedAt": "2026-10-29T10:56:33Z",
 			"status": null,
 			"description": "一种很便宜的，OKF0.2格式的知识库，人类或机器都能看懂",
 			"language": "JavaScript",
@@ -50,7 +39,7 @@
 			"name": "Octave-Full-Wasm",
 			"pages": "absent",
 			"accelerated": false,
-			"pushedAt": "2026-10-28T05:43:13Z",
+			"pushedAt": "2026-10-29T10:49:37Z",
 			"status": null,
 			"description": "浏览器里跑满功能 GNU Octave 11.3.0：wasm64 + 多线程 + OpenBLAS 四车道自动选档",
 			"language": "JavaScript",
@@ -58,14 +47,25 @@
 			"icon": ""
 		},
 		{
-			"name": "OpenModelica-Full-Wasm",
+			"name": "Octave-Extra-Content",
 			"pages": "absent",
 			"accelerated": false,
-			"pushedAt": "2026-10-25T11:03:27Z",
+			"pushedAt": "2026-10-29T10:27:18Z",
 			"status": null,
-			"description": "Run OpenModelica in the browser — official wasm target (Rust route), pure client-side Modelica compile & simulate, .mat handshake to the Octave engine. AGPL-3.0.",
+			"description": "Extra content for the browser Octave (private): package archives + runtime/toolchain provisioning recipes. Formerly Octave-Forge-Shelf.",
 			"language": "Python",
-			"url": "https://github.com/ArchivalEra/OpenModelica-Full-Wasm",
+			"url": "https://github.com/ArchivalEra/Octave-Extra-Content",
+			"icon": ""
+		},
+		{
+			"name": "Octave-UI",
+			"pages": "ready",
+			"accelerated": false,
+			"pushedAt": "2026-10-29T08:05:17Z",
+			"status": null,
+			"description": "",
+			"language": "JavaScript",
+			"url": "https://github.com/ArchivalEra/Octave-UI",
 			"icon": ""
 		},
 		{
