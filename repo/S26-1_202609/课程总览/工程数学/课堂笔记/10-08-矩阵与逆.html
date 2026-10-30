@@ -33,7 +33,7 @@
        KaTeX 的 CSS 自带 @font-face 指向 ./fonts/，那份字体也在 assets/katex/fonts/。
        ⚠️ 必须走 assetUrl（带内容哈希戳）：否则改了它浏览器永远读旧缓存。 -->
   <link rel="stylesheet" href="../../../assets/katex/katex.min.css?v=383e7b8d45">
-  <link rel="stylesheet" href="../../../assets/theme/shirone-reader.css?v=cc71b5e997">
+  <link rel="stylesheet" href="../../../assets/theme/shirone-reader.css?v=9128e0dac2">
   <link rel="stylesheet" href="../../../assets/plugins/site-search.css?v=45716eda6c">
   <link rel="stylesheet" href="../../../assets/plugins/chat-panel.css?v=b2e28efb46">
   <link rel="stylesheet" href="../../../assets/plugins/figures.css?v=e7bdc5cd97">
@@ -913,7 +913,7 @@
             <span>S26-1 课程知识库</span>
           </a>
           <nav class="top-bar-breadcrumbs" aria-label="当前路径">
-            <a href="../../../">首页</a><span class="m3-breadcrumb-sep">/</span><a href="../../../课程总览/" data-path="课程总览/">课程总览</a><span class="m3-breadcrumb-sep">/</span><a href="../../../课程总览/工程数学/" data-path="课程总览/工程数学/">工程数学</a><span class="m3-breadcrumb-sep">/</span><a href="../../../课程总览/工程数学/课堂笔记/" data-path="课程总览/工程数学/课堂笔记/">课堂笔记</a><span class="m3-breadcrumb-sep">/</span><span class="current-crumb">10-08-矩阵与逆</span>
+            <a href="../../../课程总览/" data-path="课程总览/">课程总览</a><span class="m3-breadcrumb-sep">/</span><a href="../../../课程总览/工程数学/" data-path="课程总览/工程数学/">工程数学</a><span class="m3-breadcrumb-sep">/</span><a href="../../../课程总览/工程数学/课堂笔记/" data-path="课程总览/工程数学/课堂笔记/">课堂笔记</a><span class="m3-breadcrumb-sep">/</span><span class="current-crumb">10-08-矩阵与逆</span>
           </nav>
         </div>
 
@@ -1105,12 +1105,8 @@
         <!-- Content Area -->
         <main class="content-wrapper">
           <article class="article-container">
-            <!-- Breadcrumb in page body -->
-            <nav class="m3-breadcrumb">
-              <a href="../../../">首页</a><span class="m3-breadcrumb-sep">/</span><a href="../../../课程总览/" data-path="课程总览/">课程总览</a><span class="m3-breadcrumb-sep">/</span><a href="../../../课程总览/工程数学/" data-path="课程总览/工程数学/">工程数学</a><span class="m3-breadcrumb-sep">/</span><a href="../../../课程总览/工程数学/课堂笔记/" data-path="课程总览/工程数学/课堂笔记/">课堂笔记</a><span class="m3-breadcrumb-sep">/</span><span>10-08-矩阵与逆</span>
-            </nav>
-
-            <div class="meta-chip-bar"><span class="meta-chip primary">📚 工程数学</span><span class="meta-chip">🏷️ 课堂笔记</span><span class="meta-chip">⚡ 状态: 开课</span><span class="meta-chip">📅 更新: 2026-10-29</span><span class="meta-chip">📖 来源: 原始资料/20261008_13301523-原文.txt（13:30–）, 原始资料/20261008_15231545-原文.txt（15:23–，收尾段）</span></div>
+            
+            <div class="meta-chip-bar"><span class="meta-chip primary">📚 工程数学</span><span class="meta-chip">🏷️ 课堂笔记</span><span class="meta-chip">⚡ 状态: 开课</span><span class="meta-chip">📅 更新: 2026-10-30</span><span class="meta-chip">📖 来源: 课堂转写 10-08</span></div>
 
             <div class="article-content">
               <h1 id="10-08-矩阵与逆">10-08-矩阵与逆</h1><p><strong>这节课在干什么</strong>：上周刚把行列式算完，这一节正式进入矩阵。老师先补一串定义（方阵、同型矩阵、零矩阵、主对角线，以及三角、对角、数量、单位四种常见方阵），再讲运算：相等、加法与负矩阵、数乘、乘法、转置。全课的重心和难点是<strong>矩阵乘法</strong>——先把&quot;行乘列、对应相乘再相加&quot;这条定义讲透，再用一个零元素很多的三阶例子演示<strong>分块</strong>的省力做法。课末用&quot;两个工厂、两种产品、已知总收入求单价&quot;的引例引出<strong>逆矩阵</strong>：解 <code>AX=B</code> 需要两边左乘 <code>A⁻¹</code>，所以要知道矩阵的逆；逆的定义、唯一性、伴随矩阵与公式 <code>A⁻¹ = A*/|A|</code> 都在这节课给出。</p>
@@ -1387,9 +1383,8 @@ X = A⁻¹B              （单位矩阵乘任何矩阵等于它本身）</code>
 </table>
 </div>
 <h2 id="完成边界">完成边界</h2><ul>
-<li>已解析：矩阵的定义与记法、加法与数乘、乘法（含分块）、转置、几类特殊矩阵，以及逆矩阵的引入（产量—单价引例）。</li>
-<li>已验证：本节课无独立数值答案可重算，未跑双签。</li>
-<li>来源与口径：<code>13301523</code>（主体，13:30 起）与 <code>15231545</code>（收尾段，15:23 起）是同一节课的两份转写，内容连续，已合并成一篇。</li>
+<li>已解析：矩阵的定义与记法、加法与数乘、乘法（含分块）、转置、几类特殊矩阵</li>
+<li>已验证：本节课无独立数值答案可重算，未跑双签</li>
 </ul>
 <h3 id="条件备注">条件备注</h3><ul>
 <li>主体两位「讲话人」都在复述老师的话（一人在讲、一人在跟读板书），重复与断句错位多，笔记只取有信息量的部分。</li>
@@ -1459,13 +1454,13 @@ X = A⁻¹B              （单位矩阵乘任何矩阵等于它本身）</code>
   <script src="../../../assets/plugins/webmcp-relay.js?v=fd5acb480e"></script>
   <!-- site-root：部署根探测与链接修正。同步执行、先于一切读 data-root 的脚本
        （drawer-sync / spa-router / chat-panel / loader），否则它们拿到错误的相对根。 -->
-  <script src="../../../assets/plugins/site-root.js?v=a751a5be05"></script>
+  <script src="../../../assets/plugins/site-root.js?v=5b3fec5c26"></script>
   <script>try { fixSiteRoot(); } catch (e) { /* 探测失败保持构建期相对路径 */ }</script>
   <!-- 侧栏形状运行时：先于 drawer-sync，暴露 window.__navStructure（读 JSON + 共享判定）。 -->
   <script src="../../../assets/plugins/nav-structure.js?v=7de3047e94" defer></script>
   <script src="../../../assets/plugins/drawer-sync.js?v=8abc0d05f2" defer></script>
   <script src="../../../assets/plugins/chat-panel.js?v=b4a20a8f42" defer></script>
-  <script src="../../../assets/plugins/spa-router.js?v=6cf5fcfeb8" defer></script>
+  <script src="../../../assets/plugins/spa-router.js?v=e6156b30ad" defer></script>
   <!-- 能力包（2026-10-30）：装配层 + 纯逻辑模块。
        **页面加载时不做任何事**——不查状态、不加载 824 KB 编辑器、不碰 38 MB 内核。
        只有用户点右上角 package 图标时，装配层才查一次状态；下载/运行各按各的时机。 -->

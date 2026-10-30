@@ -33,7 +33,7 @@
        KaTeX 的 CSS 自带 @font-face 指向 ./fonts/，那份字体也在 assets/katex/fonts/。
        ⚠️ 必须走 assetUrl（带内容哈希戳）：否则改了它浏览器永远读旧缓存。 -->
   <link rel="stylesheet" href="../../assets/katex/katex.min.css?v=383e7b8d45">
-  <link rel="stylesheet" href="../../assets/theme/shirone-reader.css?v=cc71b5e997">
+  <link rel="stylesheet" href="../../assets/theme/shirone-reader.css?v=9128e0dac2">
   <link rel="stylesheet" href="../../assets/plugins/site-search.css?v=45716eda6c">
   <link rel="stylesheet" href="../../assets/plugins/chat-panel.css?v=b2e28efb46">
   <link rel="stylesheet" href="../../assets/plugins/figures.css?v=e7bdc5cd97">
@@ -913,7 +913,7 @@
             <span>S26-1 课程知识库</span>
           </a>
           <nav class="top-bar-breadcrumbs" aria-label="当前路径">
-            <a href="../../">首页</a><span class="m3-breadcrumb-sep">/</span><a href="../../课程总览/" data-path="课程总览/">课程总览</a><span class="m3-breadcrumb-sep">/</span><a href="../../课程总览/工程数学/" data-path="课程总览/工程数学/">工程数学</a><span class="m3-breadcrumb-sep">/</span><span class="current-crumb">技法库</span>
+            <a href="../../课程总览/" data-path="课程总览/">课程总览</a><span class="m3-breadcrumb-sep">/</span><a href="../../课程总览/工程数学/" data-path="课程总览/工程数学/">工程数学</a><span class="m3-breadcrumb-sep">/</span><span class="current-crumb">技法库</span>
           </nav>
         </div>
 
@@ -1105,11 +1105,7 @@
         <!-- Content Area -->
         <main class="content-wrapper">
           <article class="article-container">
-            <!-- Breadcrumb in page body -->
-            <nav class="m3-breadcrumb">
-              <a href="../../">首页</a><span class="m3-breadcrumb-sep">/</span><a href="../../课程总览/" data-path="课程总览/">课程总览</a><span class="m3-breadcrumb-sep">/</span><a href="../../课程总览/工程数学/" data-path="课程总览/工程数学/">工程数学</a><span class="m3-breadcrumb-sep">/</span><span>技法库</span>
-            </nav>
-
+            
             <div class="meta-chip-bar"><span class="meta-chip primary">📚 工程数学</span><span class="meta-chip">🏷️ 技法库</span><span class="meta-chip">⚡ 状态: 开课</span><span class="meta-chip">📅 更新: 2026-10-29</span></div>
 
             <div class="article-content">
@@ -2356,13 +2352,13 @@ c-10,0,-16.667,5,-20,15z M188 15 H145 v585 v1200 v585 h43z"/></svg></span></span
   <script src="../../assets/plugins/webmcp-relay.js?v=fd5acb480e"></script>
   <!-- site-root：部署根探测与链接修正。同步执行、先于一切读 data-root 的脚本
        （drawer-sync / spa-router / chat-panel / loader），否则它们拿到错误的相对根。 -->
-  <script src="../../assets/plugins/site-root.js?v=a751a5be05"></script>
+  <script src="../../assets/plugins/site-root.js?v=5b3fec5c26"></script>
   <script>try { fixSiteRoot(); } catch (e) { /* 探测失败保持构建期相对路径 */ }</script>
   <!-- 侧栏形状运行时：先于 drawer-sync，暴露 window.__navStructure（读 JSON + 共享判定）。 -->
   <script src="../../assets/plugins/nav-structure.js?v=7de3047e94" defer></script>
   <script src="../../assets/plugins/drawer-sync.js?v=8abc0d05f2" defer></script>
   <script src="../../assets/plugins/chat-panel.js?v=b4a20a8f42" defer></script>
-  <script src="../../assets/plugins/spa-router.js?v=6cf5fcfeb8" defer></script>
+  <script src="../../assets/plugins/spa-router.js?v=e6156b30ad" defer></script>
   <!-- 能力包（2026-10-30）：装配层 + 纯逻辑模块。
        **页面加载时不做任何事**——不查状态、不加载 824 KB 编辑器、不碰 38 MB 内核。
        只有用户点右上角 package 图标时，装配层才查一次状态；下载/运行各按各的时机。 -->

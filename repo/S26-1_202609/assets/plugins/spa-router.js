@@ -77,17 +77,14 @@ function navigate(rawUrl, hash, push, opts4) {
     var sp = doc.body && doc.body.getAttribute("data-site-path");
     if (sp) document.body.setAttribute("data-site-path", sp);
 
-    // ③d 面包屑两份 + meta chip 条：这三处烘死在每页 HTML 里、又都在
+    // ③d 面包屑 + meta chip 条：这两处烘死在每页 HTML 里、又都在
     // .article-content 之外，SPA 不换就永远是初页的信息（2026-10-28 修）。
     // 整块 replaceWith 而不是改文字：面包屑的**层级深度随页面变**
-    // （首页 1 段、课程页 2 段、教材解析章节页 5 段），逐段改会留下残段。
-    var crumbSelectors = [".top-bar-breadcrumbs", ".m3-breadcrumb"];
-    for (var ci = 0; ci < crumbSelectors.length; ci++) {
-      var sel = crumbSelectors[ci];
-      var nextCrumb = doc.querySelector(sel);
-      var curCrumb = document.querySelector(sel);
-      if (nextCrumb && curCrumb) curCrumb.replaceWith(nextCrumb);
-    }
+    // （课程页 2 段、教材解析章节页 5 段），逐段改会留下残段。
+    // 只有顶栏一条（正文那条 2026-10-30 已删，见 build.mjs 模板注释）。
+    var nextCrumb = doc.querySelector(".top-bar-breadcrumbs");
+    var curCrumb = document.querySelector(".top-bar-breadcrumbs");
+    if (nextCrumb && curCrumb) curCrumb.replaceWith(nextCrumb);
     // meta chip 条可能在新页不存在（例如 README / 课程索引没有 course 字段）——
     // 那种情况要**删掉旧页的**，否则会挂着上一页的课程/状态标签。
     var nextChips = doc.querySelector(".meta-chip-bar");

@@ -33,7 +33,7 @@
        KaTeX 的 CSS 自带 @font-face 指向 ./fonts/，那份字体也在 assets/katex/fonts/。
        ⚠️ 必须走 assetUrl（带内容哈希戳）：否则改了它浏览器永远读旧缓存。 -->
   <link rel="stylesheet" href="./assets/katex/katex.min.css?v=383e7b8d45">
-  <link rel="stylesheet" href="./assets/theme/shirone-reader.css?v=cc71b5e997">
+  <link rel="stylesheet" href="./assets/theme/shirone-reader.css?v=9128e0dac2">
   <link rel="stylesheet" href="./assets/plugins/site-search.css?v=45716eda6c">
   <link rel="stylesheet" href="./assets/plugins/chat-panel.css?v=b2e28efb46">
   <link rel="stylesheet" href="./assets/plugins/figures.css?v=e7bdc5cd97">
@@ -913,7 +913,7 @@
             <span>S26-1 课程知识库</span>
           </a>
           <nav class="top-bar-breadcrumbs" aria-label="当前路径">
-            <a href="./">首页</a><span class="m3-breadcrumb-sep">/</span><span class="current-crumb">维护细则</span>
+            <span class="current-crumb">维护细则</span>
           </nav>
         </div>
 
@@ -1105,11 +1105,7 @@
         <!-- Content Area -->
         <main class="content-wrapper">
           <article class="article-container">
-            <!-- Breadcrumb in page body -->
-            <nav class="m3-breadcrumb">
-              <a href="./">首页</a><span class="m3-breadcrumb-sep">/</span><span>维护细则</span>
-            </nav>
-
+            
             <div class="meta-chip-bar"><span class="meta-chip">📅 更新: 2026-10-30</span></div>
 
             <div class="article-content">
@@ -1245,9 +1241,8 @@ HEIC→JXL 是无损转<strong>像素</strong>、不保留原容器字节，原�
       <pre><code>## 完成边界
 
 - 已解析：……          ← 做完了什么（一句话层级概括，不逐题罗列）
-- 已验证：……          ← 用什么手段验过（Octave / 双签 / 三签，各自一行）
+- 已验证：……          ← 用什么手段验过、结论是一致还是不一致
 - 已知限制：……        ← 站得住的能力边界（如「模拟波形暂用位图」）
-- 来源与口径：……      ← 题面来源、命名依据
 
 ### 条件备注（仅当有需要说明的条件时）
 ### 双签 / 三签记录（仅当跑过时）</code></pre>
@@ -1257,8 +1252,11 @@ HEIC→JXL 是无损转<strong>像素</strong>、不保留原容器字节，原�
 <strong>不允许</strong>写：哪个子代理第几轮发现了什么、改了几处措辞、逐小问的核对细节、
 「这一轮三签直接改了作业页的……」这类施工日志——那些进 <code>.zcode/handoff.md</code> 或 issue。</p>
 <p>判据一句话：<strong>读者要知道「这份资料能不能信、信到什么程度」，不需要知道「它经过几轮修改」。</strong></p>
-<p><strong>规矩三：篇幅上限 400 字（不含双签/三签记录里的日期与结论行）。</strong></p>
-<p>超出就砍过程只留结论。41 个文件里最长那份 2,323 字，压缩目标 ≤400 字。</p>
+<p><strong>规矩三：篇幅上限 150 字（2026-10-30 站长定案，原为 400 字）。</strong></p>
+<p>四条固定项各一句：<code>已解析</code>、<code>已验证</code>、<code>已知限制</code>、<code>不猜补</code>（按需）。
+<strong><code>来源与口径</code> 一栏删除</strong>——出处在 frontmatter 的 <code>sources</code>（≤30 字，显示为页面顶部的
+气泡芯片）与[原始资料索引]里，正文不再重抄一遍。判据：主列表 ≤150 字、<code>已解析</code> 与
+<code>已验证</code> 两项必须在场、公式 <code>$</code> 与括号必须配对（压缩不许切在公式或括注中间）。</p>
 <p><strong>规矩四：不改技术结论。</strong></p>
 <p>压缩只删过程描述，<strong>不许动</strong>：验算用什么工具、结论是「一致」还是「不一致」、
 有哪些已知限制、双签三签的日期与判定。这些是事实，删掉等于抹掉证据。</p>
@@ -1354,8 +1352,8 @@ HEIC→JXL 是无损转<strong>像素</strong>、不保留原容器字节，原�
 </blockquote>
 <ul>
 <li>课程 <strong>7</strong> 门；正式资料 <strong>312</strong> 份（不含索引、模板和历史入口）。</li>
-<li>精确白名单 <strong>577</strong> 条逐文件路径（无通配符），仓库共 <strong>568</strong> 个受管文件。</li>
-<li>暂存内容摘要（不含本文件与 README）：<code>de0d25a9d5b001edddb617e116d5946c17fb3b5b4690b4dc1929e92a8eb5be45</code>。任何正文改动都会改变这一行。</li>
+<li>精确白名单 <strong>578</strong> 条逐文件路径（无通配符），仓库共 <strong>569</strong> 个受管文件。</li>
+<li>暂存内容摘要（不含本文件与 README）：<code>3f6f6ab355211716230ad226e1e9a6c30119bac8a781f8ac929835ca54836c11</code>。任何正文改动都会改变这一行。</li>
 </ul>
 <h3 id="课程分类一览">课程分类一览</h3><div class="table-scroll-container t-matrix" role="region" aria-label="课程分类一览" tabindex="0">
 <table>
@@ -1478,13 +1476,13 @@ HEIC→JXL 是无损转<strong>像素</strong>、不保留原容器字节，原�
   <script src="./assets/plugins/webmcp-relay.js?v=fd5acb480e"></script>
   <!-- site-root：部署根探测与链接修正。同步执行、先于一切读 data-root 的脚本
        （drawer-sync / spa-router / chat-panel / loader），否则它们拿到错误的相对根。 -->
-  <script src="./assets/plugins/site-root.js?v=a751a5be05"></script>
+  <script src="./assets/plugins/site-root.js?v=5b3fec5c26"></script>
   <script>try { fixSiteRoot(); } catch (e) { /* 探测失败保持构建期相对路径 */ }</script>
   <!-- 侧栏形状运行时：先于 drawer-sync，暴露 window.__navStructure（读 JSON + 共享判定）。 -->
   <script src="./assets/plugins/nav-structure.js?v=7de3047e94" defer></script>
   <script src="./assets/plugins/drawer-sync.js?v=8abc0d05f2" defer></script>
   <script src="./assets/plugins/chat-panel.js?v=b4a20a8f42" defer></script>
-  <script src="./assets/plugins/spa-router.js?v=6cf5fcfeb8" defer></script>
+  <script src="./assets/plugins/spa-router.js?v=e6156b30ad" defer></script>
   <!-- 能力包（2026-10-30）：装配层 + 纯逻辑模块。
        **页面加载时不做任何事**——不查状态、不加载 824 KB 编辑器、不碰 38 MB 内核。
        只有用户点右上角 package 图标时，装配层才查一次状态；下载/运行各按各的时机。 -->

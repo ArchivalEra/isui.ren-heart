@@ -33,7 +33,7 @@
        KaTeX 的 CSS 自带 @font-face 指向 ./fonts/，那份字体也在 assets/katex/fonts/。
        ⚠️ 必须走 assetUrl（带内容哈希戳）：否则改了它浏览器永远读旧缓存。 -->
   <link rel="stylesheet" href="../../../assets/katex/katex.min.css?v=383e7b8d45">
-  <link rel="stylesheet" href="../../../assets/theme/shirone-reader.css?v=cc71b5e997">
+  <link rel="stylesheet" href="../../../assets/theme/shirone-reader.css?v=9128e0dac2">
   <link rel="stylesheet" href="../../../assets/plugins/site-search.css?v=45716eda6c">
   <link rel="stylesheet" href="../../../assets/plugins/chat-panel.css?v=b2e28efb46">
   <link rel="stylesheet" href="../../../assets/plugins/figures.css?v=e7bdc5cd97">
@@ -913,7 +913,7 @@
             <span>S26-1 课程知识库</span>
           </a>
           <nav class="top-bar-breadcrumbs" aria-label="当前路径">
-            <a href="../../../">首页</a><span class="m3-breadcrumb-sep">/</span><a href="../../../课程总览/" data-path="课程总览/">课程总览</a><span class="m3-breadcrumb-sep">/</span><a href="../../../课程总览/电路原理/" data-path="课程总览/电路原理/">电路原理</a><span class="m3-breadcrumb-sep">/</span><a href="../../../课程总览/电路原理/课堂笔记/" data-path="课程总览/电路原理/课堂笔记/">课堂笔记</a><span class="m3-breadcrumb-sep">/</span><span class="current-crumb">09-23-电压电位与电路名词</span>
+            <a href="../../../课程总览/" data-path="课程总览/">课程总览</a><span class="m3-breadcrumb-sep">/</span><a href="../../../课程总览/电路原理/" data-path="课程总览/电路原理/">电路原理</a><span class="m3-breadcrumb-sep">/</span><a href="../../../课程总览/电路原理/课堂笔记/" data-path="课程总览/电路原理/课堂笔记/">课堂笔记</a><span class="m3-breadcrumb-sep">/</span><span class="current-crumb">09-23-电压电位与电路名词</span>
           </nav>
         </div>
 
@@ -1105,12 +1105,8 @@
         <!-- Content Area -->
         <main class="content-wrapper">
           <article class="article-container">
-            <!-- Breadcrumb in page body -->
-            <nav class="m3-breadcrumb">
-              <a href="../../../">首页</a><span class="m3-breadcrumb-sep">/</span><a href="../../../课程总览/" data-path="课程总览/">课程总览</a><span class="m3-breadcrumb-sep">/</span><a href="../../../课程总览/电路原理/" data-path="课程总览/电路原理/">电路原理</a><span class="m3-breadcrumb-sep">/</span><a href="../../../课程总览/电路原理/课堂笔记/" data-path="课程总览/电路原理/课堂笔记/">课堂笔记</a><span class="m3-breadcrumb-sep">/</span><span>09-23-电压电位与电路名词</span>
-            </nav>
-
-            <div class="meta-chip-bar"><span class="meta-chip primary">📚 电路原理</span><span class="meta-chip">🏷️ 课堂笔记</span><span class="meta-chip">⚡ 状态: 开课</span><span class="meta-chip">📅 更新: 2026-10-29</span><span class="meta-chip">📖 来源: 原始资料/20260923_09501115-原文.txt（09:50–11:15；录音 1:00:52，未覆盖全程，转写相对时间 00:00–1:00:52）</span></div>
+            
+            <div class="meta-chip-bar"><span class="meta-chip primary">📚 电路原理</span><span class="meta-chip">🏷️ 课堂笔记</span><span class="meta-chip">⚡ 状态: 开课</span><span class="meta-chip">📅 更新: 2026-10-30</span><span class="meta-chip">📖 来源: 课堂转写 09-23</span></div>
 
             <div class="article-content">
               <h1 id="09-23-电压电位与电路名词">09-23-电压电位与电路名词</h1><p><strong>这节课在干什么</strong>（第二次课）：先把上一讲没讲完的<strong>电流与参考方向</strong>收尾，再往下讲<strong>电压、电位、关联／非关联参考方向、功率</strong>，最后进 1.3 开头的<strong>四个名词</strong>（支路、节点、回路、网孔）与关系式 <span class="katex" role="math" aria-label="M=B-(N-1)" data-math-plain="M=B-(N-1)"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><a class="sym-gloss" data-term="通用:sym-M" href="../../../%E7%AB%99%E7%82%B9/%E7%AC%A6%E5%8F%B7%E5%8C%85/%E9%80%9A%E7%94%A8.html#sym-M" aria-label="$M$：互感 / 网孔数"><span class="mord mathnormal" style="margin-right:0.10903em;">M</span><span class="mspace" style="margin-right:0.2778em;"></span></a><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord">1</span><span class="mclose">)</span></span></span></span></span>。教师说这一节本该一次课讲完，因为第一讲讲了太多上课与考试要求，「拖了几乎接近两节课」。<strong>基尔霍夫定律下次讲</strong>。</p>
@@ -1227,10 +1223,9 @@
 </ul>
 <hr>
 <h2 id="完成边界">完成边界</h2><ul>
-<li>已解析：题号条目 8 条（教材 P5 例题、1.2.2–1.2.7、数支路节点回路网孔），另整理电压、电位、参考方向与功率判定。</li>
-<li>已验证：双签 2026-09-24，独立子代理只拿题面重算六项，五项条件自足、结论与正文一致。</li>
-<li>已知限制：1.2.3 缺电源极性，只能记教师结论；1.2.4／1.2.5／1.2.7 的数值在转写中不可靠。</li>
-<li>来源与口径：录音 <code>1:00:52</code> 未覆盖全程；<code>1:00:46</code> 起为课后杂音，不入笔记。</li>
+<li>已解析：题号条目 8 条（教材 P5 例题、1.2.2–1.2.7、数支路节点回路网孔），另整理电压</li>
+<li>已验证：双签 2026-09-24，独立子代理只拿题面重算六项，五项条件自足、结论与正文一致</li>
+<li>已知限制：1.2.3 缺电源极性，只能记教师结论</li>
 </ul>
 <h3 id="条件备注">条件备注</h3><ul>
 <li>1.2.4 电阻值「15 欧／16 欧」不可靠，只记方法与 <span class="katex" role="math" aria-label="Vb=5" data-math-plain="Vb=5"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><a class="sym-gloss" data-term="电路原理:sym-Va" href="../%E6%95%99%E6%9D%90%E8%A7%A3%E6%9E%90/%E7%AC%A6%E5%8F%B7%E5%85%A5%E9%97%A8.html#sym-Va" aria-label="$V_a$：a 点电位"><span class="mord"><span class="mord mathnormal" style="margin-right:0.22222em;">V</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.2222em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">b</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span></a><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mord">5</span></span></span></span></span> V；1.2.5 缺额定功率，只留电费估算法；1.2.7 只记 <span class="katex" role="math" aria-label="0.15/0.01=15" data-math-plain="0.15/0.01=15"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord">0.15/0.01</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mord">15</span></span></span></span></span> V。</li>
@@ -1293,13 +1288,13 @@
   <script src="../../../assets/plugins/webmcp-relay.js?v=fd5acb480e"></script>
   <!-- site-root：部署根探测与链接修正。同步执行、先于一切读 data-root 的脚本
        （drawer-sync / spa-router / chat-panel / loader），否则它们拿到错误的相对根。 -->
-  <script src="../../../assets/plugins/site-root.js?v=a751a5be05"></script>
+  <script src="../../../assets/plugins/site-root.js?v=5b3fec5c26"></script>
   <script>try { fixSiteRoot(); } catch (e) { /* 探测失败保持构建期相对路径 */ }</script>
   <!-- 侧栏形状运行时：先于 drawer-sync，暴露 window.__navStructure（读 JSON + 共享判定）。 -->
   <script src="../../../assets/plugins/nav-structure.js?v=7de3047e94" defer></script>
   <script src="../../../assets/plugins/drawer-sync.js?v=8abc0d05f2" defer></script>
   <script src="../../../assets/plugins/chat-panel.js?v=b4a20a8f42" defer></script>
-  <script src="../../../assets/plugins/spa-router.js?v=6cf5fcfeb8" defer></script>
+  <script src="../../../assets/plugins/spa-router.js?v=e6156b30ad" defer></script>
   <!-- 能力包（2026-10-30）：装配层 + 纯逻辑模块。
        **页面加载时不做任何事**——不查状态、不加载 824 KB 编辑器、不碰 38 MB 内核。
        只有用户点右上角 package 图标时，装配层才查一次状态；下载/运行各按各的时机。 -->
