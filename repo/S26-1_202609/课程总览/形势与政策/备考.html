@@ -33,7 +33,7 @@
        于是**改了它浏览器永远读旧缓存**——补丁明明写进 dist、页面就是不生效，
        排查时会误判成「CSS 规则不对」。（2026-10-29 实测踩到。） -->
   <link rel="stylesheet" href="../../assets/mathlive/mathlive-static.css?v=b55a5e6654">
-  <link rel="stylesheet" href="../../assets/theme/shirone-reader.css?v=07b1bbb960">
+  <link rel="stylesheet" href="../../assets/theme/shirone-reader.css?v=cc71b5e997">
   <link rel="stylesheet" href="../../assets/plugins/site-search.css?v=45716eda6c">
   <link rel="stylesheet" href="../../assets/plugins/chat-panel.css?v=b2e28efb46">
   <link rel="stylesheet" href="../../assets/plugins/figures.css?v=e7bdc5cd97">
@@ -946,6 +946,17 @@
         </div>
 
         <div class="top-bar-right">
+          <!-- 能力包入口（2026-10-30）：右上角 package 图样。
+               点开是**两个独立的下载按钮**（编辑器 / 计算内核）——不绑在一起，
+               因为两者成功率差一个数量级（824 KB vs 38 MB），绑了会白丢「能编辑但算不了」的中间态。
+               缺任一件就退回只读静态渲染，不做「半启用」。 -->
+          <button class="m3-icon-btn" id="pack-toggle" aria-label="能力包" title="下载编辑器与计算内核" aria-expanded="false">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+              <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+              <line x1="12" y1="22.08" x2="12" y2="12"/>
+            </svg>
+          </button>
           <button class="m3-icon-btn" id="palette-toggle" aria-label="调色盘" title="主题与调色盘" aria-expanded="false">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/>
@@ -1034,6 +1045,45 @@
               </div>
             </div>
           </div>
+
+          <!-- 能力包弹窗：两个**独立**下载按钮 + 各自的体积与状态 -->
+          <div class="palette-popover pack-popover" id="pack-popover" hidden>
+            <div class="palette-header">
+              <span class="palette-title">能力包</span>
+            </div>
+            <p class="pack-intro" id="pack-intro">下载后公式可以点击编辑、可以当场求值。缺任一件就保持现在的只读。</p>
+
+            <div class="pack-item" data-pack="editor">
+              <div class="pack-item-head">
+                <span class="pack-item-name">公式编辑器</span>
+                <span class="pack-item-size">824 KB</span>
+              </div>
+              <p class="pack-item-hint">公式可以点击、编辑、复制 LaTeX</p>
+              <div class="pack-item-actions">
+                <button class="pack-btn" data-pack-download="editor">下载</button>
+                <span class="pack-state" id="pack-state-editor">未下载</span>
+              </div>
+              <div class="pack-progress" id="pack-progress-editor" hidden><div class="pack-progress-bar"></div></div>
+            </div>
+
+            <div class="pack-item" data-pack="engine">
+              <div class="pack-item-head">
+                <span class="pack-item-name">计算内核</span>
+                <span class="pack-item-size">9.9 MB</span>
+              </div>
+              <p class="pack-item-hint">用 Octave 真算公式。体积较大，点「运行」时才加载到内存。</p>
+              <div class="pack-item-actions">
+                <button class="pack-btn" data-pack-download="engine">下载</button>
+                <span class="pack-state" id="pack-state-engine">未下载</span>
+              </div>
+              <div class="pack-progress" id="pack-progress-engine" hidden><div class="pack-progress-bar"></div></div>
+            </div>
+
+            <div class="pack-mode-row">
+              当前：<strong id="pack-mode-label">只读</strong>
+            </div>
+          </div>
+
 
           <button class="m3-icon-btn" id="search-toggle" aria-label="全站搜索" title="全站搜索">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
@@ -1343,6 +1393,37 @@
   <script src="../../assets/plugins/drawer-sync.js?v=8abc0d05f2" defer></script>
   <script src="../../assets/plugins/chat-panel.js?v=b4a20a8f42" defer></script>
   <script src="../../assets/plugins/spa-router.js?v=6cf5fcfeb8" defer></script>
+  <!-- 能力包（2026-10-30）：装配层 + 纯逻辑模块。
+       **页面加载时不做任何事**——不查状态、不加载 824 KB 编辑器、不碰 38 MB 内核。
+       只有用户点右上角 package 图标时，装配层才查一次状态；下载/运行各按各的时机。 -->
+  <script src="../../assets/plugins/pack-runtime.js?v=c76a1f8596" defer></script>
+  <script type="module">
+    // 装配：把纯逻辑模块接进装配层。
+    // ⚠️ 这里是全站唯一的「能力包接线点」，改接口只改这一处。
+    (async () => {
+      try {
+        const rootRel = document.documentElement.getAttribute('data-root') || './';
+        const mod = await import(rootRel + 'assets/plugins/capability-pack.mjs');
+        const pack = mod.createCapabilityPack({ store: mod.createOpfsStore(), root: rootRel });
+        // 计算适配器：上游 OctaveEmbed 就位后才可用；先占位，运行时再补。
+        window.__packCompute = async (latex, Embed) => {
+          if (!Embed || typeof Embed.create !== 'function') {
+            return { ok: false, error: '计算内核未就绪' };
+          }
+          const embed = await Embed.create({
+            lane: { js: 'octave.js', wasm: 'octave.wasm', data: 'octave.data' },
+          });
+          const code = String(latex || '');
+          const r = await embed.eval(code);
+          return { ok: !!(r && r.ok), output: (r && r.output) || '' };
+        };
+        if (window.__initPackRuntime) window.__initPackRuntime(pack);
+      } catch (e) {
+        // 能力包不可用就当它不存在 —— 页面保持只读，这本来就是默认态。
+        console.warn('[pack] 装配失败，保持只读', e);
+      }
+    })();
+  </script>
   <!-- SW 已根除（2026-10-23）：只保留一次性清理，反注册老用户的旧 SW + 清 caches。
        localStorage 标记去重，清完一次后本脚本自动变 no-op。 -->
   <script src="../../assets/plugins/sw-kill.js?v=af296685f6" defer></script>
