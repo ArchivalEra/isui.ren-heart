@@ -27,12 +27,12 @@
     } catch (e) { /* 隐私模式下 localStorage 可能抛错，忽略 */ }
   })();
   </script>
-  <!-- 数学排版样式（2026-10-29 换引擎）：MathLive 静态样式。
-       它复用同一批 woff2 字体（assets/mathlive/fonts/），字体文件不用另备。
-       ⚠️ 必须走 assetUrl（同其余四张样式表）：此前它是唯一裸引用的 CSS，没有内容哈希戳，
-       于是**改了它浏览器永远读旧缓存**——补丁明明写进 dist、页面就是不生效，
-       排查时会误判成「CSS 规则不对」。（2026-10-29 实测踩到。） -->
-  <link rel="stylesheet" href="../../assets/mathlive/mathlive-static.css?v=b55a5e6654">
+  <!-- 数学排版样式（2026-10-30 展示引擎换回 KaTeX）。
+       为什么换回来：MathLive 的拉伸括号由「⎛⎜⎝ / ⎞⎟⎠」小片拼成，接缝处有亚像素缝；
+       KaTeX 用字形伸展机制，没有这个毛病（站长定案）。
+       KaTeX 的 CSS 自带 @font-face 指向 ./fonts/，那份字体也在 assets/katex/fonts/。
+       ⚠️ 必须走 assetUrl（带内容哈希戳）：否则改了它浏览器永远读旧缓存。 -->
+  <link rel="stylesheet" href="../../assets/katex/katex.min.css?v=383e7b8d45">
   <link rel="stylesheet" href="../../assets/theme/shirone-reader.css?v=cc71b5e997">
   <link rel="stylesheet" href="../../assets/plugins/site-search.css?v=45716eda6c">
   <link rel="stylesheet" href="../../assets/plugins/chat-panel.css?v=b2e28efb46">
@@ -1247,7 +1247,7 @@
 <tr><td data-label="V"><strong>Value</strong></td><td data-label="中文">价值</td><td data-label="含义"><strong>潜在价值巨大，但价值密度低、藏在海量数据中，需要挖掘</strong></td></tr>
 </table>
 </div>
-<p><strong>关键数字</strong>：数据量 GB → TB → PB → EB → ZB → YB，<strong>每级差 3 个数量级</strong>（<span class="ML__latex" role="math" aria-label="103" data-math-plain="103"><span class="ML__strut" style="height:0.87em"></span><span class="ML__base"><span class="ML__cmr">10</span><span class="ML__msubsup"><span class="ML__vlist-t"><span class="ML__vlist-r"><span class="ML__vlist" style="height:0.87em"><span style="top:-3.41em;margin-right:0.05em"><span class="ML__pstrut" style="height:3em"></span><span style="height:0.46em;display:inline-block;font-size: 70%"><span class="ML__cmr">3</span></span></span></span></span></span></span></span></span> 倍）。</p>
+<p><strong>关键数字</strong>：数据量 GB → TB → PB → EB → ZB → YB，<strong>每级差 3 个数量级</strong>（<span class="katex" role="math" aria-label="103" data-math-plain="103"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord"><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">3</span></span></span></span></span></span></span></span></span></span></span></span></span> 倍）。</p>
 <p><strong>容易记混</strong>：<strong>value 不能简单译成「价值高」</strong>——正确含义是<strong>价值密度低、潜在应用价值巨大</strong>。
 这是判断题专门设的坑。</p>
 <p><a href="./%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0/09-29-%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%8EAI%E7%AE%97%E6%B3%95.html#%E7%94%B5%E5%8A%9B%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%9A%84%E6%9D%A5%E6%BA%90%E4%B8%8E%E7%89%B9%E7%82%B9-4v">笔记原文 ↗</a></p>
@@ -1356,7 +1356,7 @@ AI 擅长应对<strong>高维、时变、非线性、强耦合</strong>问题。
 <h3 id="考点-两类常用算法-svm-与集成学习">考点：两类常用算法（SVM 与集成学习）</h3><p><strong>要会</strong>：各解决什么问题、在算法谱系里的位置。</p>
 <ul>
 <li><strong>支持向量机（SVM）</strong>：<strong>监督学习</strong>算法；用映射函数把样本映射到<strong>高维空间</strong>，
-找一个<strong>间隔最大</strong>的线性超平面做分类。电力系统里用于<strong>稳定评估</strong>（输出 <span class="ML__latex" role="math" aria-label="+1" data-math-plain="+1"><span class="ML__strut" style="height:0.65em"></span><span class="ML__strut--bottom" style="height:0.73em;vertical-align:-0.08em"></span><span class="ML__base"><span class="ML__cmr">+1</span></span></span> 稳定／<span class="ML__latex" role="math" aria-label="-1" data-math-plain="-1"><span class="ML__strut" style="height:0.65em"></span><span class="ML__strut--bottom" style="height:0.73em;vertical-align:-0.08em"></span><span class="ML__base"><span class="ML__cmr">−1</span></span></span> 不稳定）。</li>
+找一个<strong>间隔最大</strong>的线性超平面做分类。电力系统里用于<strong>稳定评估</strong>（输出 <span class="katex" role="math" aria-label="+1" data-math-plain="+1"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord">+</span><span class="mord">1</span></span></span></span></span> 稳定／<span class="katex" role="math" aria-label="-1" data-math-plain="-1"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord">−</span><span class="mord">1</span></span></span></span></span> 不稳定）。</li>
 <li><strong>集成学习</strong>：按策略训练<strong>多个「弱监督模型」</strong>，<strong>组合</strong>成一个<strong>强监督模型</strong>，性能大幅提升。
 为什么会有弱学习器：理论上「各方面都好」的模型几乎不存在。</li>
 </ul>

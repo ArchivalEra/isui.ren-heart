@@ -27,12 +27,12 @@
     } catch (e) { /* 隐私模式下 localStorage 可能抛错，忽略 */ }
   })();
   </script>
-  <!-- 数学排版样式（2026-10-29 换引擎）：MathLive 静态样式。
-       它复用同一批 woff2 字体（assets/mathlive/fonts/），字体文件不用另备。
-       ⚠️ 必须走 assetUrl（同其余四张样式表）：此前它是唯一裸引用的 CSS，没有内容哈希戳，
-       于是**改了它浏览器永远读旧缓存**——补丁明明写进 dist、页面就是不生效，
-       排查时会误判成「CSS 规则不对」。（2026-10-29 实测踩到。） -->
-  <link rel="stylesheet" href="../../assets/mathlive/mathlive-static.css?v=b55a5e6654">
+  <!-- 数学排版样式（2026-10-30 展示引擎换回 KaTeX）。
+       为什么换回来：MathLive 的拉伸括号由「⎛⎜⎝ / ⎞⎟⎠」小片拼成，接缝处有亚像素缝；
+       KaTeX 用字形伸展机制，没有这个毛病（站长定案）。
+       KaTeX 的 CSS 自带 @font-face 指向 ./fonts/，那份字体也在 assets/katex/fonts/。
+       ⚠️ 必须走 assetUrl（带内容哈希戳）：否则改了它浏览器永远读旧缓存。 -->
+  <link rel="stylesheet" href="../../assets/katex/katex.min.css?v=383e7b8d45">
   <link rel="stylesheet" href="../../assets/theme/shirone-reader.css?v=cc71b5e997">
   <link rel="stylesheet" href="../../assets/plugins/site-search.css?v=45716eda6c">
   <link rel="stylesheet" href="../../assets/plugins/chat-panel.css?v=b2e28efb46">
@@ -1142,10 +1142,10 @@
 
             <div class="article-content">
               <h1 id="通用符号包">通用符号包</h1><blockquote>
-<p><strong>这一页是跨课程共用的符号定义</strong>——同一个符号在多门课里含义相同（<span class="ML__latex" role="math" aria-label="U" data-math-plain="U"><span class="ML__strut" style="height:0.69em"></span><span class="ML__base"><span class="ML__mathit" style="margin-right:0.11em">U</span></span></span> 是电压、<span class="ML__latex" role="math" aria-label="I" data-math-plain="I"><span class="ML__strut" style="height:0.69em"></span><span class="ML__base"><span class="ML__mathit" style="margin-right:0.08em">I</span></span></span> 是电流、
-<span class="ML__latex" role="math" aria-label="ω" data-math-plain="ω"><span class="ML__strut" style="height:0.44em"></span><span class="ML__base"><span class="lcGreek ML__mathit" style="margin-right:0.04em">ω</span></span></span> 是角频率……），不该被某一门课独占名字。各课的环境用 <code>通用+&lt;本课包&gt;</code> 锚定：
+<p><strong>这一页是跨课程共用的符号定义</strong>——同一个符号在多门课里含义相同（<span class="katex" role="math" aria-label="U" data-math-plain="U"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10903em;">U</span></span></span></span></span> 是电压、<span class="katex" role="math" aria-label="I" data-math-plain="I"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">I</span></span></span></span></span> 是电流、
+<span class="katex" role="math" aria-label="ω" data-math-plain="ω"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">ω</span></span></span></span></span> 是角频率……），不该被某一门课独占名字。各课的环境用 <code>通用+&lt;本课包&gt;</code> 锚定：
 <strong>通用包提供共用词条，本课包覆盖同名</strong>（本课特有的优先）。</p>
-<p><strong>多义项</strong>：同一个符号在不同课程下含义<strong>不同</strong>时（如 <span class="ML__latex" role="math" aria-label="Z" data-math-plain="Z"><span class="ML__strut" style="height:0.69em"></span><span class="ML__base"><span class="ML__mathit" style="margin-right:0.08em">Z</span></span></span> 在电路原理是阻抗、在电机学是槽数），
+<p><strong>多义项</strong>：同一个符号在不同课程下含义<strong>不同</strong>时（如 <span class="katex" role="math" aria-label="Z" data-math-plain="Z"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07153em;">Z</span></span></span></span></span> 在电路原理是阻抗、在电机学是槽数），
 词条用 <code>语境=含义；语境=含义</code> 列出全部义项——气泡会<strong>列出所有含义</strong>并标出当前页面
 所属语境那一条。这就是「一个符号给个 option 值，1 是啥 2 是啥，实时能查到」。</p>
 </blockquote>

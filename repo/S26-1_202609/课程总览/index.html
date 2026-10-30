@@ -27,12 +27,12 @@
     } catch (e) { /* 隐私模式下 localStorage 可能抛错，忽略 */ }
   })();
   </script>
-  <!-- 数学排版样式（2026-10-29 换引擎）：MathLive 静态样式。
-       它复用同一批 woff2 字体（assets/mathlive/fonts/），字体文件不用另备。
-       ⚠️ 必须走 assetUrl（同其余四张样式表）：此前它是唯一裸引用的 CSS，没有内容哈希戳，
-       于是**改了它浏览器永远读旧缓存**——补丁明明写进 dist、页面就是不生效，
-       排查时会误判成「CSS 规则不对」。（2026-10-29 实测踩到。） -->
-  <link rel="stylesheet" href="../assets/mathlive/mathlive-static.css?v=b55a5e6654">
+  <!-- 数学排版样式（2026-10-30 展示引擎换回 KaTeX）。
+       为什么换回来：MathLive 的拉伸括号由「⎛⎜⎝ / ⎞⎟⎠」小片拼成，接缝处有亚像素缝；
+       KaTeX 用字形伸展机制，没有这个毛病（站长定案）。
+       KaTeX 的 CSS 自带 @font-face 指向 ./fonts/，那份字体也在 assets/katex/fonts/。
+       ⚠️ 必须走 assetUrl（带内容哈希戳）：否则改了它浏览器永远读旧缓存。 -->
+  <link rel="stylesheet" href="../assets/katex/katex.min.css?v=383e7b8d45">
   <link rel="stylesheet" href="../assets/theme/shirone-reader.css?v=cc71b5e997">
   <link rel="stylesheet" href="../assets/plugins/site-search.css?v=45716eda6c">
   <link rel="stylesheet" href="../assets/plugins/chat-panel.css?v=b2e28efb46">
