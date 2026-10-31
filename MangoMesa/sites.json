@@ -1,23 +1,45 @@
 {
-	"generatedAt": "2026-10-31T07:29:50.839Z",
+	"generatedAt": "2026-10-31T10:27:00.561Z",
 	"acceleratedDirs": ["Octave", "S26-1_202609"],
 	"entries": [
 		{
-			"name": "Static-Contract",
+			"name": "Octave-Full-Wasm",
 			"pages": "absent",
 			"accelerated": false,
-			"pushedAt": "2026-10-31T07:12:14Z",
+			"pushedAt": "2026-10-31T10:20:33Z",
 			"status": null,
-			"description": "apt-style contract for static distribution",
-			"language": null,
-			"url": "https://github.com/ArchivalEra/Static-Contract",
+			"description": "浏览器里跑满功能 GNU Octave 11.3.0：wasm64 + 多线程 + OpenBLAS 四车道自动选档",
+			"language": "JavaScript",
+			"url": "https://github.com/ArchivalEra/Octave-Full-Wasm",
 			"icon": ""
+		},
+		{
+			"name": "Einfacht",
+			"pages": "absent",
+			"accelerated": false,
+			"pushedAt": "2026-10-31T10:15:05Z",
+			"status": null,
+			"description": "让 agent 的每句「现在如此」都能被复跑证明 —— 反幻觉事实系统：事实台账 / 翻案台账 / 悬案台账 + 必须能红的闸门",
+			"language": "Python",
+			"url": "https://github.com/ArchivalEra/Einfacht",
+			"icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cmVjdCB4PSI2LjUiIHk9IjQuNSIgd2lkdGg9IjExIiBoZWlnaHQ9IjE1LjUiIHJ4PSIyLjIiLz48cGF0aCBkPSJNOS41IDMuNWg1djIuMmgtNXoiLz48cGF0aCBkPSJNOS4zIDEyLjhsMS45IDEuOSAzLjYtNCIvPjwvc3ZnPg=="
+		},
+		{
+			"name": "Anti-Laborer-Skills",
+			"pages": "ready",
+			"accelerated": false,
+			"pushedAt": "2026-10-31T09:41:27Z",
+			"status": "built",
+			"description": "反力工思维方法论：高信息密度、科学风味的论证知识库",
+			"language": "JavaScript",
+			"url": "https://github.com/ArchivalEra/Anti-Laborer-Skills",
+			"icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMTIgNC4ydjE2TTYuNSAyMC4yaDExTTQgOWgxNiIvPjxwYXRoIGQ9Ik00IDlMMiAxMy4yYTMgMyAwIDAgMCA1IDB6Ii8+PHBhdGggZD0iTTIwIDlsMiA0LjJhMyAzIDAgMCAxLTUgMHoiLz48L3N2Zz4="
 		},
 		{
 			"name": "Octave-Extra-Content",
 			"pages": "absent",
 			"accelerated": false,
-			"pushedAt": "2026-10-31T07:01:43Z",
+			"pushedAt": "2026-10-31T08:45:54Z",
 			"status": null,
 			"description": "Extra content for the browser Octave (private): package archives + runtime/toolchain provisioning recipes. Formerly Octave-Forge-Shelf.",
 			"language": "Python",
@@ -28,12 +50,23 @@
 			"name": "isui.ren-heart",
 			"pages": "ready",
 			"accelerated": false,
-			"pushedAt": "2026-10-31T05:12:57Z",
+			"pushedAt": "2026-10-31T07:30:23Z",
 			"status": "built",
 			"description": "isui.ren 的站点心脏：EdgeOne Pages 静态源、边缘中间件与跨仓部署链",
 			"language": "Rust",
 			"url": "https://github.com/ArchivalEra/isui.ren-heart",
 			"icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMTIgMjAuNUMxMiAyMC41IDQgMTUuNCA0IDEwLjIgNCA3LjYgNiA1LjUgOC42IDUuNWMxLjUgMCAyLjguNyAzLjQgMS44LjYtMS4xIDEuOS0xLjggMy40LTEuOEMxOCA1LjUgMjAgNy42IDIwIDEwLjJjMCA1LjItOCAxMC4zLTggMTAuM1oiLz48L3N2Zz4="
+		},
+		{
+			"name": "Static-Contract",
+			"pages": "absent",
+			"accelerated": false,
+			"pushedAt": "2026-10-31T07:12:14Z",
+			"status": null,
+			"description": "apt-style contract for static distribution",
+			"language": null,
+			"url": "https://github.com/ArchivalEra/Static-Contract",
+			"icon": ""
 		},
 		{
 			"name": "S26-1_202609",
@@ -58,17 +91,6 @@
 			"icon": ""
 		},
 		{
-			"name": "Octave-Full-Wasm",
-			"pages": "absent",
-			"accelerated": false,
-			"pushedAt": "2026-10-30T05:39:22Z",
-			"status": null,
-			"description": "浏览器里跑满功能 GNU Octave 11.3.0：wasm64 + 多线程 + OpenBLAS 四车道自动选档",
-			"language": "JavaScript",
-			"url": "https://github.com/ArchivalEra/Octave-Full-Wasm",
-			"icon": ""
-		},
-		{
 			"name": "Octave-UI",
 			"pages": "ready",
 			"accelerated": false,
@@ -89,17 +111,6 @@
 			"language": "Rust",
 			"url": "https://github.com/ArchivalEra/uTLS-Gone",
 			"icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNNSAxMmE3IDcgMCAwIDEgMTQgMCIvPjxwYXRoIGQ9Ik04LjUgMTIuNWEzLjUgMy41IDAgMCAxIDcgMHYyLjUiLz48cGF0aCBkPSJNMTIgMTV2NCIvPjwvc3ZnPg=="
-		},
-		{
-			"name": "Einfacht",
-			"pages": "absent",
-			"accelerated": false,
-			"pushedAt": "2026-10-22T12:30:30Z",
-			"status": null,
-			"description": "让 agent 的每句「现在如此」都能被复跑证明 —— 反幻觉事实系统：事实台账 / 翻案台账 / 悬案台账 + 必须能红的闸门",
-			"language": "Python",
-			"url": "https://github.com/ArchivalEra/Einfacht",
-			"icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cmVjdCB4PSI2LjUiIHk9IjQuNSIgd2lkdGg9IjExIiBoZWlnaHQ9IjE1LjUiIHJ4PSIyLjIiLz48cGF0aCBkPSJNOS41IDMuNWg1djIuMmgtNXoiLz48cGF0aCBkPSJNOS4zIDEyLjhsMS45IDEuOSAzLjYtNCIvPjwvc3ZnPg=="
 		},
 		{
 			"name": "LLVM-wasm",
@@ -177,17 +188,6 @@
 			"language": "Shell",
 			"url": "https://github.com/ArchivalEra/hi3798mv310-debian",
 			"icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cmVjdCB4PSIzLjUiIHk9IjYuNSIgd2lkdGg9IjE3IiBoZWlnaHQ9IjExIiByeD0iMi4yIi8+PHBhdGggZD0iTTcuNSAxMC41djNNMTAgMTAuNXYzTTEyLjUgMTAuNXYzTTE1IDEwLjV2MyIvPjwvc3ZnPg=="
-		},
-		{
-			"name": "Anti-Laborer-Skills",
-			"pages": "ready",
-			"accelerated": false,
-			"pushedAt": "2026-10-04T03:32:27Z",
-			"status": "built",
-			"description": "反力工思维方法论：高信息密度、科学风味的论证知识库",
-			"language": "JavaScript",
-			"url": "https://github.com/ArchivalEra/Anti-Laborer-Skills",
-			"icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMTIgNC4ydjE2TTYuNSAyMC4yaDExTTQgOWgxNiIvPjxwYXRoIGQ9Ik00IDlMMiAxMy4yYTMgMyAwIDAgMCA1IDB6Ii8+PHBhdGggZD0iTTIwIDlsMiA0LjJhMyAzIDAgMCAxLTUgMHoiLz48L3N2Zz4="
 		},
 		{
 			"name": "cachyos-kernel-debian-clang",
