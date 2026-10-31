@@ -1,1 +1,16 @@
-{"_why": ["翻案台账。本仓刚接入（2026-10-31），空是合法状态。"], "retractions": []}
+{
+  "_why": [
+    "翻案台账：每条 = 一条**已被推翻**的断言。`text` 是它的特征片段（会被当搜索串在活状态文档里找）。",
+    "`why` 说它为什么错，`evidence` 给复跑方式或出处，`fixed_in` 说现在哪里说对了。",
+    "check_retractions.py 的判据：活状态文档里只要出现 `text`，该行必须带更正标记。"
+  ],
+  "retractions": [
+    {
+      "id": "R-001",
+      "text": "对冲逻辑实测无效",
+      "why": "2026-10-25 一次测量（10 路里 1-2 路卡 25s）就下了「AbortController 无法中断 fetch ⇒ 中间件内对冲无效」的结论。2026-10-31 复测 20 次单发全部正常（最慢 4.75s，17.5s 兜底零触发），形态与旧测量完全不同——旧结论可能来自部署未生效或环境差异。错误性质：用一次测量下了「禁止」级别的判断。",
+      "evidence": "20 次单发：for i in $(seq 1 20); do curl -s -o /dev/null --max-time 45 -w '%{http_code}:%{time_total}\\n' \"https://isui.ren/repo/Octave/<当前bundle>?t=$i\"; done",
+      "fixed_in": "STATE.md 已知边界（改为「复测有效，此前结论已翻案」）+ questions/01 + mail/118 给 extra-content 的更正"
+    }
+  ]
+}
