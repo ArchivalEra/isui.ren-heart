@@ -33,7 +33,7 @@
        KaTeX 的 CSS 自带 @font-face 指向 ./fonts/，那份字体也在 assets/katex/fonts/。
        ⚠️ 必须走 assetUrl（带内容哈希戳）：否则改了它浏览器永远读旧缓存。 -->
   <link rel="stylesheet" href="../../../assets/katex/katex.min.css?v=383e7b8d45">
-  <link rel="stylesheet" href="../../../assets/theme/shirone-reader.css?v=f59fc43cbb">
+  <link rel="stylesheet" href="../../../assets/theme/shirone-reader.css?v=69a1a59988">
   <link rel="stylesheet" href="../../../assets/plugins/site-search.css?v=45716eda6c">
   <link rel="stylesheet" href="../../../assets/plugins/chat-panel.css?v=af8495f4d2">
   <link rel="stylesheet" href="../../../assets/plugins/figures.css?v=e7bdc5cd97">
@@ -1191,8 +1191,8 @@ GBDT、LightGBM、深度信念网络、堆栈自动编码器、卷积神经网�
 <strong>梯度提升决策树</strong>。</li>
 <li><strong>构造方式</strong>：由<strong>一系列子模型的线性组合</strong>构成，<strong>基于迭代</strong>算法，<strong>以回归树作为子模型</strong>，
 <strong>逐一添加子模型</strong>，使学习器的<strong>损失函数不断减小</strong>。</li>
-<li><strong>原理要点</strong>：目标函数是一个<strong>概率分布</strong>（条件分布）——条件变量是样本 <span class="katex" role="math" aria-label="X" data-math-plain="X"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">X</span></span></span></span></span>，
-参数 <span class="katex" role="math" aria-label="θ" data-math-plain="θ"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">θ</span></span></span></span></span> 由<strong>损失函数最小化</strong>求得。用到概率论的知识。</li>
+<li><strong>原理要点</strong>：目标函数是一个<strong>概率分布</strong>（条件分布）——条件变量是样本 <span class="katex" role="math" aria-label="X" data-math-plain="X" data-math-tex="X"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">X</span></span></span></span></span>，
+参数 <span class="katex" role="math" aria-label="θ" data-math-plain="θ" data-math-tex="\theta"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">θ</span></span></span></span></span> 由<strong>损失函数最小化</strong>求得。用到概率论的知识。</li>
 <li><strong>特征与分裂点选择</strong>：采用<strong>预排序算法</strong>——对所有特征的数值<strong>预排序</strong>、遍历所有数值，
 在一个特征上<strong>寻找最好的分割点</strong>，再基于该分割点把数据分成左右两个子节点。</li>
 <li><strong>优缺点</strong>：<strong>精度高、不易过拟合</strong>，采用预排序能<strong>精确找到最佳分割点</strong>；
@@ -1215,7 +1215,7 @@ GBDT、LightGBM、深度信念网络、堆栈自动编码器、卷积神经网�
 <strong>分裂特征时排除大部分小梯度样本</strong>，用<strong>剩下的样本</strong>计算信息增益，在<strong>减小数据量</strong>与<strong>保护精度</strong>之间取得平衡。
 丢掉小梯度样本会<strong>改变数据分布</strong>，故用乘常数补偿。思路五步：① 按梯度对样本<strong>降序排列</strong>；
 ② 取梯度最大的前 A 个样本；③ 从剩下的小梯度数据集中<strong>随机选 B 个样本</strong>；
-④ 把这 B 个样本<strong>乘以常数</strong> <span class="katex" role="math" aria-label="(1-A)/B" data-math-plain="(1-A)/B"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mopen">(</span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord mathnormal">A</span><span class="mclose">)</span><span class="mord">/</span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span></span></span></span></span>（一个概率量，用于控制概率不小于 0）；
+④ 把这 B 个样本<strong>乘以常数</strong> <span class="katex" role="math" aria-label="(1-A)/B" data-math-plain="(1-A)/B" data-math-tex="(1-A)/B"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mopen">(</span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord mathnormal">A</span><span class="mclose">)</span><span class="mord">/</span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span></span></span></span></span>（一个概率量，用于控制概率不小于 0）；
 ⑤ 用这些数据<strong>计算信息增益</strong>。</li>
 <li><strong>互斥特征绑定</strong>：把互斥的特征绑定在一起，减少特征数。</li>
 </ol>
@@ -1419,7 +1419,7 @@ GBDT、LightGBM、深度信念网络、堆栈自动编码器、卷积神经网�
   <!-- 能力包（2026-10-30）：装配层 + 纯逻辑模块。
        **页面加载时不做任何事**——不查状态、不加载 824 KB 编辑器、不碰 38 MB 内核。
        只有用户点右上角 package 图标时，装配层才查一次状态；下载/运行各按各的时机。 -->
-  <script src="../../../assets/plugins/pack-runtime.js?v=c76a1f8596" defer></script>
+  <script src="../../../assets/plugins/pack-runtime.js?v=39b8996f1b" defer></script>
   <script type="module">
     // 装配：把纯逻辑模块接进装配层。
     // ⚠️ 这里是全站唯一的「能力包接线点」，改接口只改这一处。

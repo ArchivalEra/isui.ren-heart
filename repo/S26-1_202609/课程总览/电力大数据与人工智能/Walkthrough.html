@@ -33,7 +33,7 @@
        KaTeX 的 CSS 自带 @font-face 指向 ./fonts/，那份字体也在 assets/katex/fonts/。
        ⚠️ 必须走 assetUrl（带内容哈希戳）：否则改了它浏览器永远读旧缓存。 -->
   <link rel="stylesheet" href="../../assets/katex/katex.min.css?v=383e7b8d45">
-  <link rel="stylesheet" href="../../assets/theme/shirone-reader.css?v=f59fc43cbb">
+  <link rel="stylesheet" href="../../assets/theme/shirone-reader.css?v=69a1a59988">
   <link rel="stylesheet" href="../../assets/plugins/site-search.css?v=45716eda6c">
   <link rel="stylesheet" href="../../assets/plugins/chat-panel.css?v=af8495f4d2">
   <link rel="stylesheet" href="../../assets/plugins/figures.css?v=e7bdc5cd97">
@@ -1188,7 +1188,7 @@ LightGBM（按叶子分裂，直方图 + GOSS + 互斥特征绑定，适合大�
 <p><strong>带走这四条</strong>：</p>
 <ul>
 <li><strong>为什么先讲「不智能」的方法</strong>：K 平均、K 中心点这些是靠距离的经典划分法，它们是后面神经网络的<strong>对照组</strong>——说清它们的短板，才说得出神经网络好在哪。</li>
-<li><strong>K 平均法（k-means）</strong>：随机选 <span class="katex" role="math" aria-label="k" data-math-plain="k"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03148em;">k</span></span></span></span></span> 个初始中心 → 按最近距离归类 → 用每类均值更新中心 → 迭代到不动。<strong>缺点：对初始值敏感、对离群点敏感、<span class="katex" role="math" aria-label="k" data-math-plain="k"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03148em;">k</span></span></span></span></span> 要人为定。</strong></li>
+<li><strong>K 平均法（k-means）</strong>：随机选 <span class="katex" role="math" aria-label="k" data-math-plain="k" data-math-tex="k"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03148em;">k</span></span></span></span></span> 个初始中心 → 按最近距离归类 → 用每类均值更新中心 → 迭代到不动。<strong>缺点：对初始值敏感、对离群点敏感、<span class="katex" role="math" aria-label="k" data-math-plain="k" data-math-tex="k"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03148em;">k</span></span></span></span></span> 要人为定。</strong></li>
 <li><strong>K 中心点法（k-medoids）</strong>：把「均值」换成「类内实际存在的一个点」，对离群点更稳，代价是计算量更大。</li>
 <li><strong>聚类的五大类方法</strong>：划分、层次（凝聚／分裂）、基于密度、基于网格、基于模型——考试 5 分简答就按这五类答。</li>
 </ul>
@@ -1272,7 +1272,7 @@ LightGBM（按叶子分裂，直方图 + GOSS + 互斥特征绑定，适合大�
   <!-- 能力包（2026-10-30）：装配层 + 纯逻辑模块。
        **页面加载时不做任何事**——不查状态、不加载 824 KB 编辑器、不碰 38 MB 内核。
        只有用户点右上角 package 图标时，装配层才查一次状态；下载/运行各按各的时机。 -->
-  <script src="../../assets/plugins/pack-runtime.js?v=c76a1f8596" defer></script>
+  <script src="../../assets/plugins/pack-runtime.js?v=39b8996f1b" defer></script>
   <script type="module">
     // 装配：把纯逻辑模块接进装配层。
     // ⚠️ 这里是全站唯一的「能力包接线点」，改接口只改这一处。

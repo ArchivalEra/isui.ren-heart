@@ -33,7 +33,7 @@
        KaTeX 的 CSS 自带 @font-face 指向 ./fonts/，那份字体也在 assets/katex/fonts/。
        ⚠️ 必须走 assetUrl（带内容哈希戳）：否则改了它浏览器永远读旧缓存。 -->
   <link rel="stylesheet" href="../../assets/katex/katex.min.css?v=383e7b8d45">
-  <link rel="stylesheet" href="../../assets/theme/shirone-reader.css?v=f59fc43cbb">
+  <link rel="stylesheet" href="../../assets/theme/shirone-reader.css?v=69a1a59988">
   <link rel="stylesheet" href="../../assets/plugins/site-search.css?v=45716eda6c">
   <link rel="stylesheet" href="../../assets/plugins/chat-panel.css?v=af8495f4d2">
   <link rel="stylesheet" href="../../assets/plugins/figures.css?v=e7bdc5cd97">
@@ -1215,7 +1215,7 @@
 <tr><td data-label="V"><strong>Value</strong></td><td data-label="中文">价值</td><td data-label="含义"><strong>潜在价值巨大，但价值密度低、藏在海量数据中，需要挖掘</strong></td></tr>
 </table>
 </div>
-<p><strong>关键数字</strong>：数据量 GB → TB → PB → EB → ZB → YB，<strong>每级差 3 个数量级</strong>（<span class="katex" role="math" aria-label="103" data-math-plain="103"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord"><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">3</span></span></span></span></span></span></span></span></span></span></span></span></span> 倍）。</p>
+<p><strong>关键数字</strong>：数据量 GB → TB → PB → EB → ZB → YB，<strong>每级差 3 个数量级</strong>（<span class="katex" role="math" aria-label="103" data-math-plain="103" data-math-tex="10^3"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord"><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">3</span></span></span></span></span></span></span></span></span></span></span></span></span> 倍）。</p>
 <p><strong>容易记混</strong>：<strong>value 不能简单译成「价值高」</strong>——正确含义是<strong>价值密度低、潜在应用价值巨大</strong>。
 这是判断题专门设的坑。</p>
 <p><a href="./%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0/09-29-%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%8EAI%E7%AE%97%E6%B3%95.html#%E7%94%B5%E5%8A%9B%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%9A%84%E6%9D%A5%E6%BA%90%E4%B8%8E%E7%89%B9%E7%82%B9-4v">笔记原文 ↗</a></p>
@@ -1324,7 +1324,7 @@ AI 擅长应对<strong>高维、时变、非线性、强耦合</strong>问题。
 <h3 id="考点-两类常用算法-svm-与集成学习">考点：两类常用算法（SVM 与集成学习）</h3><p><strong>要会</strong>：各解决什么问题、在算法谱系里的位置。</p>
 <ul>
 <li><strong>支持向量机（SVM）</strong>：<strong>监督学习</strong>算法；用映射函数把样本映射到<strong>高维空间</strong>，
-找一个<strong>间隔最大</strong>的线性超平面做分类。电力系统里用于<strong>稳定评估</strong>（输出 <span class="katex" role="math" aria-label="+1" data-math-plain="+1"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord">+</span><span class="mord">1</span></span></span></span></span> 稳定／<span class="katex" role="math" aria-label="-1" data-math-plain="-1"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord">−</span><span class="mord">1</span></span></span></span></span> 不稳定）。</li>
+找一个<strong>间隔最大</strong>的线性超平面做分类。电力系统里用于<strong>稳定评估</strong>（输出 <span class="katex" role="math" aria-label="+1" data-math-plain="+1" data-math-tex="+1"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord">+</span><span class="mord">1</span></span></span></span></span> 稳定／<span class="katex" role="math" aria-label="-1" data-math-plain="-1" data-math-tex="-1"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord">−</span><span class="mord">1</span></span></span></span></span> 不稳定）。</li>
 <li><strong>集成学习</strong>：按策略训练<strong>多个「弱监督模型」</strong>，<strong>组合</strong>成一个<strong>强监督模型</strong>，性能大幅提升。
 为什么会有弱学习器：理论上「各方面都好」的模型几乎不存在。</li>
 </ul>
@@ -1339,7 +1339,7 @@ AI 擅长应对<strong>高维、时变、非线性、强耦合</strong>问题。
 <div class="table-scroll-container t-compact" role="region" aria-label="考点：聚类的五大类方法（期末 5 分简答）" tabindex="0">
 <table>
 <thead><tr><th align="left">类别</th><th align="left">基本思路</th></tr></thead>
-<tr><td data-label="类别">划分</td><td data-label="基本思路">把样本切成 <span class="katex" role="math" aria-label="k" data-math-plain="k"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03148em;">k</span></span></span></span></span> 堆，迭代优化到「堆内够紧、堆间够开」</td></tr>
+<tr><td data-label="类别">划分</td><td data-label="基本思路">把样本切成 <span class="katex" role="math" aria-label="k" data-math-plain="k" data-math-tex="k"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03148em;">k</span></span></span></span></span> 堆，迭代优化到「堆内够紧、堆间够开」</td></tr>
 <tr><td data-label="类别">层次</td><td data-label="基本思路">凝聚（自下而上合并）或分裂（自上而下拆分），形成一棵树</td></tr>
 <tr><td data-label="类别">基于密度</td><td data-label="基本思路">邻域内点数够多就连成一簇，能找出任意形状、能识别噪声</td></tr>
 <tr><td data-label="类别">基于网格</td><td data-label="基本思路">把对象空间量化为有限单元形成网格，一切操作在网格上做</td></tr>
@@ -1347,8 +1347,8 @@ AI 擅长应对<strong>高维、时变、非线性、强耦合</strong>问题。
 </table>
 </div>
 <p><a href="./%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0/10-20-%E8%81%9A%E7%B1%BB%E4%B8%8E%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C.html#%E8%81%9A%E7%B1%BB%E6%96%B9%E6%B3%95%E7%9A%84%E4%BA%94%E7%B1%BB-%E6%9C%9F%E6%9C%AB-5-%E5%88%86%E7%AE%80%E7%AD%94%E9%A2%98%E7%9A%84%E9%AA%A8%E6%9E%B6">笔记原文 ↗</a></p>
-<h3 id="考点-k-平均法-k-means">考点：K 平均法（k-means）</h3><p><strong>要会步骤</strong>：随机选 <span class="katex" role="math" aria-label="k" data-math-plain="k"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03148em;">k</span></span></span></span></span> 个初始中心 → 按最近距离归类 → 用<strong>每类均值</strong>更新中心 → 迭代到不动。</p>
-<p><strong>缺点（简答要写）</strong>：对<strong>初始值</strong>敏感、对<strong>离群点</strong>敏感、<span class="katex" role="math" aria-label="k" data-math-plain="k"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03148em;">k</span></span></span></span></span> 要<strong>人为定</strong>。隐含假定簇是凸的、大小相近的一团。</p>
+<h3 id="考点-k-平均法-k-means">考点：K 平均法（k-means）</h3><p><strong>要会步骤</strong>：随机选 <span class="katex" role="math" aria-label="k" data-math-plain="k" data-math-tex="k"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03148em;">k</span></span></span></span></span> 个初始中心 → 按最近距离归类 → 用<strong>每类均值</strong>更新中心 → 迭代到不动。</p>
+<p><strong>缺点（简答要写）</strong>：对<strong>初始值</strong>敏感、对<strong>离群点</strong>敏感、<span class="katex" role="math" aria-label="k" data-math-plain="k" data-math-tex="k"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03148em;">k</span></span></span></span></span> 要<strong>人为定</strong>。隐含假定簇是凸的、大小相近的一团。</p>
 <p><a href="./%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0/10-20-%E8%81%9A%E7%B1%BB%E4%B8%8E%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C.html#%E5%88%92%E5%88%86%E6%96%B9%E6%B3%95%E4%B9%8B%E4%B8%80-k-%E5%B9%B3%E5%9D%87%E6%B3%95-k-means">笔记原文 ↗</a></p>
 <h3 id="考点-k-中心点法-k-medoids">考点：K 中心点法（k-medoids）</h3><p><strong>与 K 平均只差一处</strong>：代表每类的不是<strong>均值</strong>，而是「<strong>类内实际存在的一个点</strong>」（medoid）。</p>
 <p><strong>取舍</strong>：对离群点更稳（均值会被离群点拽走，实际点不会），代价是<strong>计算量更大</strong>。</p>
@@ -1456,7 +1456,7 @@ AI 擅长应对<strong>高维、时变、非线性、强耦合</strong>问题。
   <!-- 能力包（2026-10-30）：装配层 + 纯逻辑模块。
        **页面加载时不做任何事**——不查状态、不加载 824 KB 编辑器、不碰 38 MB 内核。
        只有用户点右上角 package 图标时，装配层才查一次状态；下载/运行各按各的时机。 -->
-  <script src="../../assets/plugins/pack-runtime.js?v=c76a1f8596" defer></script>
+  <script src="../../assets/plugins/pack-runtime.js?v=39b8996f1b" defer></script>
   <script type="module">
     // 装配：把纯逻辑模块接进装配层。
     // ⚠️ 这里是全站唯一的「能力包接线点」，改接口只改这一处。
