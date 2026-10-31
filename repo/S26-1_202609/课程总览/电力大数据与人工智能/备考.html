@@ -33,9 +33,9 @@
        KaTeX 的 CSS 自带 @font-face 指向 ./fonts/，那份字体也在 assets/katex/fonts/。
        ⚠️ 必须走 assetUrl（带内容哈希戳）：否则改了它浏览器永远读旧缓存。 -->
   <link rel="stylesheet" href="../../assets/katex/katex.min.css?v=383e7b8d45">
-  <link rel="stylesheet" href="../../assets/theme/shirone-reader.css?v=9128e0dac2">
+  <link rel="stylesheet" href="../../assets/theme/shirone-reader.css?v=f59fc43cbb">
   <link rel="stylesheet" href="../../assets/plugins/site-search.css?v=45716eda6c">
-  <link rel="stylesheet" href="../../assets/plugins/chat-panel.css?v=b2e28efb46">
+  <link rel="stylesheet" href="../../assets/plugins/chat-panel.css?v=af8495f4d2">
   <link rel="stylesheet" href="../../assets/plugins/figures.css?v=e7bdc5cd97">
   <!-- 站点图标：动画 GIF 为主（Chrome/Firefox/Edge 会动），静态 PNG 作不支持动画时的回退 -->
   <link rel="icon" type="image/gif" href="../../assets/favicon/favicon.gif">
@@ -1106,7 +1106,7 @@
         <main class="content-wrapper">
           <article class="article-container">
             
-            <div class="meta-chip-bar"><span class="meta-chip primary">📚 电力大数据与人工智能</span><span class="meta-chip">🏷️ 备考</span><span class="meta-chip">⚡ 状态: 开课</span><span class="meta-chip">📅 更新: 2026-10-29</span></div>
+            <div class="meta-chip-bar"><span class="meta-chip primary">📚 电力大数据与人工智能</span><span class="meta-chip">🏷️ 备考</span><span class="meta-chip">⚡ 状态: 开课</span><span class="meta-chip">📅 更新: 2026-10-31</span></div>
 
             <div class="article-content">
               <h1 id="备考">备考</h1><blockquote>
@@ -1332,6 +1332,52 @@ AI 擅长应对<strong>高维、时变、非线性、强耦合</strong>问题。
 答题写这两类即可，别硬凑九个（其余没念出来的名字不要编）。</p>
 <p><a href="./%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0/09-29-%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%B8%8EAI%E7%AE%97%E6%B3%95.html#%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA-svm-%E5%8E%9F%E7%90%86%E4%B8%8E%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5">笔记原文 ↗</a></p>
 <hr>
+<h2 id="2026-10-20-聚类方法与神经网络">2026-10-20 ｜ 聚类方法与神经网络</h2><h3 id="考点-为什么先讲-不智能-的方法">考点：为什么先讲「不智能」的方法</h3><p><strong>要会</strong>：神经网络是<strong>基于距离的聚类方法</strong>的继承者——教师原话「神经网络算法它这个最基础的，它的基础是基于……聚类方法」。
+先讲 K 平均这类<strong>自动化但不智能</strong>的方法，是为了看清它们错在哪，才说得出神经网络智能在哪、代价是什么。</p>
+<p><a href="./%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0/10-20-%E8%81%9A%E7%B1%BB%E4%B8%8E%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C.html#%E4%B8%BA%E4%BB%80%E4%B9%88%E5%85%88%E8%AE%B2%E8%BF%99%E4%BA%9B-%E4%B8%8D%E6%99%BA%E8%83%BD-%E7%9A%84%E6%96%B9%E6%B3%95">笔记原文 ↗</a></p>
+<h3 id="考点-聚类的五大类方法-期末-5-分简答">考点：聚类的五大类方法（期末 5 分简答）</h3><p><strong>要会背五类名字与各自一句话思路</strong>：</p>
+<div class="table-scroll-container t-compact" role="region" aria-label="考点：聚类的五大类方法（期末 5 分简答）" tabindex="0">
+<table>
+<thead><tr><th align="left">类别</th><th align="left">基本思路</th></tr></thead>
+<tr><td data-label="类别">划分</td><td data-label="基本思路">把样本切成 <span class="katex" role="math" aria-label="k" data-math-plain="k"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03148em;">k</span></span></span></span></span> 堆，迭代优化到「堆内够紧、堆间够开」</td></tr>
+<tr><td data-label="类别">层次</td><td data-label="基本思路">凝聚（自下而上合并）或分裂（自上而下拆分），形成一棵树</td></tr>
+<tr><td data-label="类别">基于密度</td><td data-label="基本思路">邻域内点数够多就连成一簇，能找出任意形状、能识别噪声</td></tr>
+<tr><td data-label="类别">基于网格</td><td data-label="基本思路">把对象空间量化为有限单元形成网格，一切操作在网格上做</td></tr>
+<tr><td data-label="类别">基于模型</td><td data-label="基本思路">先假定一个模型，再找最贴合该模型的那一族数据</td></tr>
+</table>
+</div>
+<p><a href="./%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0/10-20-%E8%81%9A%E7%B1%BB%E4%B8%8E%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C.html#%E8%81%9A%E7%B1%BB%E6%96%B9%E6%B3%95%E7%9A%84%E4%BA%94%E7%B1%BB-%E6%9C%9F%E6%9C%AB-5-%E5%88%86%E7%AE%80%E7%AD%94%E9%A2%98%E7%9A%84%E9%AA%A8%E6%9E%B6">笔记原文 ↗</a></p>
+<h3 id="考点-k-平均法-k-means">考点：K 平均法（k-means）</h3><p><strong>要会步骤</strong>：随机选 <span class="katex" role="math" aria-label="k" data-math-plain="k"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03148em;">k</span></span></span></span></span> 个初始中心 → 按最近距离归类 → 用<strong>每类均值</strong>更新中心 → 迭代到不动。</p>
+<p><strong>缺点（简答要写）</strong>：对<strong>初始值</strong>敏感、对<strong>离群点</strong>敏感、<span class="katex" role="math" aria-label="k" data-math-plain="k"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03148em;">k</span></span></span></span></span> 要<strong>人为定</strong>。隐含假定簇是凸的、大小相近的一团。</p>
+<p><a href="./%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0/10-20-%E8%81%9A%E7%B1%BB%E4%B8%8E%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C.html#%E5%88%92%E5%88%86%E6%96%B9%E6%B3%95%E4%B9%8B%E4%B8%80-k-%E5%B9%B3%E5%9D%87%E6%B3%95-k-means">笔记原文 ↗</a></p>
+<h3 id="考点-k-中心点法-k-medoids">考点：K 中心点法（k-medoids）</h3><p><strong>与 K 平均只差一处</strong>：代表每类的不是<strong>均值</strong>，而是「<strong>类内实际存在的一个点</strong>」（medoid）。</p>
+<p><strong>取舍</strong>：对离群点更稳（均值会被离群点拽走，实际点不会），代价是<strong>计算量更大</strong>。</p>
+<p><a href="./%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0/10-20-%E8%81%9A%E7%B1%BB%E4%B8%8E%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C.html#%E5%88%92%E5%88%86%E6%96%B9%E6%B3%95%E4%B9%8B%E4%BA%8C-k-%E4%B8%AD%E5%BF%83%E7%82%B9%E6%B3%95-k-medoids">笔记原文 ↗</a></p>
+<h2 id="2026-10-27-密度初筛-智能校核系统与一次调频">2026-10-27 ｜ 密度初筛、智能校核系统与一次调频</h2><h3 id="考点-预处理这一步做的是-剔除">考点：预处理这一步做的是「剔除」</h3><p><strong>要会</strong>：预处理<strong>不是把数据变好看</strong>，而是把不该参与计算的脏数据<strong>剔出去</strong>——两大类：
+<strong>控制数据</strong>（不该参与计算的）与<strong>失真数据</strong>（测错、传错的）。</p>
+<p><strong>流程</strong>：数据准备 → 数据预处理 → 数据清洗。第三章只开了个头，具体技术后续再展开。</p>
+<p><a href="./%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0/10-27-%E5%AF%86%E5%BA%A6%E5%88%9D%E7%AD%9B%E4%B8%8E%E8%B0%83%E9%A2%91.html#%E5%BC%80%E5%9C%BA%E5%AE%9A%E4%BD%8D-%E9%A2%84%E5%A4%84%E7%90%86%E8%BF%99%E4%B8%80%E6%AD%A5%E5%81%9A%E7%9A%84%E6%98%AF-%E5%89%94%E9%99%A4">笔记原文 ↗</a></p>
+<h3 id="考点-密度聚类的基本思想">考点：密度聚类的基本思想</h3><p><strong>要会</strong>：「<strong>密度</strong>」在 DBSCAN 里的定义是<strong>某点给定半径的邻域内数据点的个数</strong>（教师重复两遍，是要背的），
+<strong>不是</strong>空间意义上的密度。邻域密度超过阈值就连成一簇；高密度区域被低密度区域分割。</p>
+<p><strong>一维改进</strong>：一维场合可以直接按「相邻点距离」判孤立点，比多维省算，这就是「基于密度的一维孤立点检测」。</p>
+<p><a href="./%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0/10-27-%E5%AF%86%E5%BA%A6%E5%88%9D%E7%AD%9B%E4%B8%8E%E8%B0%83%E9%A2%91.html#%E5%AF%86%E5%BA%A6%E8%81%9A%E7%B1%BB%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%80%9D%E6%83%B3-%E4%BB%A5%E5%8F%8A-%E5%AF%86%E5%BA%A6-%E5%88%B0%E5%BA%95%E6%8C%87%E4%BB%80%E4%B9%88">笔记原文 ↗</a></p>
+<h3 id="考点-智能校核系统的四个模块">考点：智能校核系统的四个模块</h3><p><strong>要会四个模块名与职责</strong>（教材第 60 页一带）：</p>
+<div class="table-scroll-container t-compact" role="region" aria-label="考点：智能校核系统的四个模块" tabindex="0">
+<table>
+<thead><tr><th align="left">模块</th><th align="left">职责</th></tr></thead>
+<tr><td data-label="模块">数据接口模块</td><td data-label="职责">数据适配器，接收任何格式 → 转成本系统格式</td></tr>
+<tr><td data-label="模块">数据预处理模块</td><td data-label="职责">历史数据清洗转换筛选 → 统一输入格式 + 模型库</td></tr>
+<tr><td data-label="模块">核心算法模块</td><td data-label="职责">按模型库做<strong>实时在线</strong>监测与评估</td></tr>
+<tr><td data-label="模块">可视化模块</td><td data-label="职责">提供一个视窗</td></tr>
+</table>
+</div>
+<p><strong>顺带一条</strong>：四条系统特性要按<strong>多选题 ABCD</strong> 准备（教师原话点名）。</p>
+<p><a href="./%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0/10-27-%E5%AF%86%E5%BA%A6%E5%88%9D%E7%AD%9B%E4%B8%8E%E8%B0%83%E9%A2%91.html#%E5%9B%9B%E4%B8%AA%E6%A8%A1%E5%9D%97-%E6%95%99%E6%9D%90%E7%AC%AC-60-%E9%A1%B5%E4%B8%80%E5%B8%A6-%E8%BD%AC%E5%86%99%E8%AF%BB%E4%BD%9C-5-60-%E9%A1%B5">笔记原文 ↗</a></p>
+<h3 id="考点-一次调频是什么">考点：一次调频是什么</h3><p><strong>要会定义</strong>：电网频率偏离额定值时，发电机组<strong>靠调速器自动</strong>增减有功出力，<strong>无需调度指令、秒级响应</strong>。</p>
+<p><strong>配套记忆</strong>：频率我国固定 <strong>50 Hz</strong>；<strong>有功管频率、无功管电压</strong>；调差系数留到下学期考，本学期只给概念。</p>
+<p><strong>不考的部分</strong>：一次调频评估指标的<strong>计算</strong>不考（教师原力「这个评估指标的计算，我们不不考」），只要知道概念。</p>
+<p><a href="./%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0/10-27-%E5%AF%86%E5%BA%A6%E5%88%9D%E7%AD%9B%E4%B8%8E%E8%B0%83%E9%A2%91.html#%E7%AC%AC%E5%9B%9B%E7%AB%A0%E5%BC%80%E7%AF%87-%E8%BF%90%E8%A1%8C%E6%8E%A7%E5%88%B6%E4%B8%8E%E4%B8%80%E6%AC%A1%E8%B0%83%E9%A2%91">笔记原文 ↗</a></p>
+<hr>
 <h2 id="开卷怎么答">开卷怎么答</h2><ul>
 <li><strong>先定位、后翻书</strong>：教师强调「至少要知道每个知识点在课本什么位置」——复习时<strong>把页码标在术语旁边</strong>。</li>
 <li><strong>抓「三处现状」</strong>：名词解释与简答集中在这里（见「考试形式」）。</li>
@@ -1368,14 +1414,14 @@ AI 擅长应对<strong>高维、时变、非线性、强耦合</strong>问题。
         <aside class="m3-toc">
       <div class="toc-title">目录</div>
       <ul class="toc-list">
-        <li class="toc-item level-2"><a href="#考试形式-只记与答题有关的">考试形式（只记与答题有关的）</a></li><li class="toc-item level-2"><a href="#2026-09-20-课程定位-安全稳定概念群">2026-09-20 ｜ 课程定位、安全稳定概念群</a></li><li class="toc-item level-3"><a href="#考点-为什么必须用智能分析-数据链论证">考点：为什么必须用智能分析（数据链论证）</a></li><li class="toc-item level-3"><a href="#考点-稳定的判据是特征值">考点：稳定的判据是特征值</a></li><li class="toc-item level-3"><a href="#考点-安全域与安全裕度">考点：安全域与安全裕度</a></li><li class="toc-item level-3"><a href="#考点-名词解释-本课术语来源">考点：名词解释（本课术语来源）</a></li><li class="toc-item level-2"><a href="#2026-09-22-暂态稳定评估方法与紧急控制">2026-09-22 ｜ 暂态稳定评估方法与紧急控制</a></li><li class="toc-item level-3"><a href="#考点-评估的四个方法-按出现顺序">考点：评估的四个方法（按出现顺序）</a></li><li class="toc-item level-3"><a href="#考点-时域仿真法的两条提速路线">考点：时域仿真法的两条提速路线</a></li><li class="toc-item level-3"><a href="#考点-直接法-能量函数-的三个要点">考点：直接法（能量函数）的三个要点</a></li><li class="toc-item level-3"><a href="#考点-紧急控制的三个方法-与评估组分开记">考点：紧急控制的三个方法（与评估组分开记）</a></li><li class="toc-item level-2"><a href="#2026-09-29-电力大数据特点与人工智能算法">2026-09-29 ｜ 电力大数据特点与人工智能算法</a></li><li class="toc-item level-3"><a href="#考点-大数据-4v-特点-判断题陷阱">考点：大数据 4V 特点（判断题陷阱）</a></li><li class="toc-item level-3"><a href="#考点-数据结构的三种类型-选择题">考点：数据结构的三种类型（选择题）</a></li><li class="toc-item level-3"><a href="#考点-两类数据来源-电网分析计算-选择题">考点：两类数据来源（电网分析计算，选择题）</a></li><li class="toc-item level-3"><a href="#考点-电力系统运行状态分几类-5-分简答题">考点：电力系统运行状态分几类（5 分简答题）</a></li><li class="toc-item level-3"><a href="#考点-人工智能的定位与沿革">考点：人工智能的定位与沿革</a></li><li class="toc-item level-3"><a href="#考点-人工智能的两个技术范式-多选题">考点：人工智能的两个技术范式（多选题）</a></li><li class="toc-item level-3"><a href="#考点-人工智能的三个发展阶段">考点：人工智能的三个发展阶段</a></li><li class="toc-item level-3"><a href="#考点-决策树算法-期末计算题-20-分">考点：决策树算法（期末计算题 20 分）</a></li><li class="toc-item level-3"><a href="#考点-人工智能常用算法地图-10-13-新增">考点：人工智能常用算法地图（10-13 新增）</a></li><li class="toc-item level-3"><a href="#考点-为什么电力系统要上-ai-10-13-新增">考点：为什么电力系统要上 AI（10-13 新增）</a></li><li class="toc-item level-3"><a href="#考点-ai-在电力系统的三个发展阶段-10-13-新增">考点：AI 在电力系统的三个发展阶段（10-13 新增）</a></li><li class="toc-item level-3"><a href="#考点-第三章数据预处理-10-13-开篇">考点：第三章数据预处理（10-13 开篇）</a></li><li class="toc-item level-3"><a href="#考点-两类常用算法-svm-与集成学习">考点：两类常用算法（SVM 与集成学习）</a></li><li class="toc-item level-2"><a href="#开卷怎么答">开卷怎么答</a></li><li class="toc-item level-2"><a href="#相关">相关</a></li>
+        <li class="toc-item level-2"><a href="#考试形式-只记与答题有关的">考试形式（只记与答题有关的）</a></li><li class="toc-item level-2"><a href="#2026-09-20-课程定位-安全稳定概念群">2026-09-20 ｜ 课程定位、安全稳定概念群</a></li><li class="toc-item level-3"><a href="#考点-为什么必须用智能分析-数据链论证">考点：为什么必须用智能分析（数据链论证）</a></li><li class="toc-item level-3"><a href="#考点-稳定的判据是特征值">考点：稳定的判据是特征值</a></li><li class="toc-item level-3"><a href="#考点-安全域与安全裕度">考点：安全域与安全裕度</a></li><li class="toc-item level-3"><a href="#考点-名词解释-本课术语来源">考点：名词解释（本课术语来源）</a></li><li class="toc-item level-2"><a href="#2026-09-22-暂态稳定评估方法与紧急控制">2026-09-22 ｜ 暂态稳定评估方法与紧急控制</a></li><li class="toc-item level-3"><a href="#考点-评估的四个方法-按出现顺序">考点：评估的四个方法（按出现顺序）</a></li><li class="toc-item level-3"><a href="#考点-时域仿真法的两条提速路线">考点：时域仿真法的两条提速路线</a></li><li class="toc-item level-3"><a href="#考点-直接法-能量函数-的三个要点">考点：直接法（能量函数）的三个要点</a></li><li class="toc-item level-3"><a href="#考点-紧急控制的三个方法-与评估组分开记">考点：紧急控制的三个方法（与评估组分开记）</a></li><li class="toc-item level-2"><a href="#2026-09-29-电力大数据特点与人工智能算法">2026-09-29 ｜ 电力大数据特点与人工智能算法</a></li><li class="toc-item level-3"><a href="#考点-大数据-4v-特点-判断题陷阱">考点：大数据 4V 特点（判断题陷阱）</a></li><li class="toc-item level-3"><a href="#考点-数据结构的三种类型-选择题">考点：数据结构的三种类型（选择题）</a></li><li class="toc-item level-3"><a href="#考点-两类数据来源-电网分析计算-选择题">考点：两类数据来源（电网分析计算，选择题）</a></li><li class="toc-item level-3"><a href="#考点-电力系统运行状态分几类-5-分简答题">考点：电力系统运行状态分几类（5 分简答题）</a></li><li class="toc-item level-3"><a href="#考点-人工智能的定位与沿革">考点：人工智能的定位与沿革</a></li><li class="toc-item level-3"><a href="#考点-人工智能的两个技术范式-多选题">考点：人工智能的两个技术范式（多选题）</a></li><li class="toc-item level-3"><a href="#考点-人工智能的三个发展阶段">考点：人工智能的三个发展阶段</a></li><li class="toc-item level-3"><a href="#考点-决策树算法-期末计算题-20-分">考点：决策树算法（期末计算题 20 分）</a></li><li class="toc-item level-3"><a href="#考点-人工智能常用算法地图-10-13-新增">考点：人工智能常用算法地图（10-13 新增）</a></li><li class="toc-item level-3"><a href="#考点-为什么电力系统要上-ai-10-13-新增">考点：为什么电力系统要上 AI（10-13 新增）</a></li><li class="toc-item level-3"><a href="#考点-ai-在电力系统的三个发展阶段-10-13-新增">考点：AI 在电力系统的三个发展阶段（10-13 新增）</a></li><li class="toc-item level-3"><a href="#考点-第三章数据预处理-10-13-开篇">考点：第三章数据预处理（10-13 开篇）</a></li><li class="toc-item level-3"><a href="#考点-两类常用算法-svm-与集成学习">考点：两类常用算法（SVM 与集成学习）</a></li><li class="toc-item level-2"><a href="#2026-10-20-聚类方法与神经网络">2026-10-20 ｜ 聚类方法与神经网络</a></li><li class="toc-item level-3"><a href="#考点-为什么先讲-不智能-的方法">考点：为什么先讲「不智能」的方法</a></li><li class="toc-item level-3"><a href="#考点-聚类的五大类方法-期末-5-分简答">考点：聚类的五大类方法（期末 5 分简答）</a></li><li class="toc-item level-3"><a href="#考点-k-平均法-k-means">考点：K 平均法（k-means）</a></li><li class="toc-item level-3"><a href="#考点-k-中心点法-k-medoids">考点：K 中心点法（k-medoids）</a></li><li class="toc-item level-2"><a href="#2026-10-27-密度初筛-智能校核系统与一次调频">2026-10-27 ｜ 密度初筛、智能校核系统与一次调频</a></li><li class="toc-item level-3"><a href="#考点-预处理这一步做的是-剔除">考点：预处理这一步做的是「剔除」</a></li><li class="toc-item level-3"><a href="#考点-密度聚类的基本思想">考点：密度聚类的基本思想</a></li><li class="toc-item level-3"><a href="#考点-智能校核系统的四个模块">考点：智能校核系统的四个模块</a></li><li class="toc-item level-3"><a href="#考点-一次调频是什么">考点：一次调频是什么</a></li><li class="toc-item level-2"><a href="#开卷怎么答">开卷怎么答</a></li><li class="toc-item level-2"><a href="#相关">相关</a></li>
       </ul>
     </aside>
       </div>
     </div>
   </div>
 
-  <script src="../../assets/theme/shirone-reader.js?v=2e0488878d" defer></script>
+  <script src="../../assets/theme/shirone-reader.js?v=f300c004c8" defer></script>
   <script src="../../assets/plugins/disclosure-anchor.js?v=c242987556" defer></script>
   <script src="../../assets/plugins/figures.js?v=7cad82fee1" defer></script>
   <script type="application/json" id="sym-glossary-json">{"terms":{}}</script>
@@ -1405,7 +1451,7 @@ AI 擅长应对<strong>高维、时变、非线性、强耦合</strong>问题。
   <!-- 侧栏形状运行时：先于 drawer-sync，暴露 window.__navStructure（读 JSON + 共享判定）。 -->
   <script src="../../assets/plugins/nav-structure.js?v=7de3047e94" defer></script>
   <script src="../../assets/plugins/drawer-sync.js?v=8abc0d05f2" defer></script>
-  <script src="../../assets/plugins/chat-panel.js?v=b4a20a8f42" defer></script>
+  <script src="../../assets/plugins/chat-panel.js?v=c641b359ac" defer></script>
   <script src="../../assets/plugins/spa-router.js?v=e6156b30ad" defer></script>
   <!-- 能力包（2026-10-30）：装配层 + 纯逻辑模块。
        **页面加载时不做任何事**——不查状态、不加载 824 KB 编辑器、不碰 38 MB 内核。

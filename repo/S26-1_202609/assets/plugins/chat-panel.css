@@ -429,13 +429,19 @@ body.chat-open .chat-panel {
 .chat-body tbody tr:nth-child(even) {
   background-color: color-mix(in srgb, var(--md-sys-color-surface-container) 45%, transparent);
 }
-/* 显示公式的横向滚动：旧选择器是 KaTeX 时代的 katex-display 类，
-   现在公式由 MathLive 排版，容器是本面板自己包的 chat-math-display。 */
+/* 显示公式的横向滚动（2026-10-31 换回 KaTeX）：KaTeX 自己会包一层
+   katex-display，而它只设 overflow 不设宽度约束，长公式在窄面板里会
+   被右边缘裁掉。外层 chat-math-display 负责滚动，两层一起才不裁。 */
 .chat-body .chat-math-display {
   overflow-x: auto;
   overflow-y: hidden;
   padding: .2rem 0;
   margin: .35rem 0;
+}
+/* KaTeX 的 display 模式自带上下 margin，面板里显得空太多——压掉，
+   间距交给 chat-math-display 统一控制。 */
+.chat-body .chat-math-display .katex-display {
+  margin: 0;
 }
 .chat-body .chat-math-err {
   font-family: var(--font-mono, monospace);

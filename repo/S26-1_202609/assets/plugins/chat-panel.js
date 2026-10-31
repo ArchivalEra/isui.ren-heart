@@ -463,16 +463,23 @@ var applyOps = function applyOps(doc, el, ops, maths) {
   }
 };
 var renderMathInto = function renderMathInto(doc, node, tex, display, maths) {
-  if (!maths || typeof maths.convertLatexToMarkup !== 'function') {
+  if (!maths || typeof maths.renderToString !== 'function') {
     node.textContent = (display ? '$$' : '$') + tex + (display ? '$$' : '$');
     return;
   }
   try {
-    // 显示公式用外层容器控制横向滚动（与正文 `.math-display` 同一套做法）
-    const src = display ? `\\displaystyle ${tex}` : tex;
-    const html = maths.convertLatexToMarkup(src);
-    if (/ML__error/.test(html)) throw new Error('公式无法排版');
+    // `throwOnError:false` 让 KaTeX 把排不了的公式画成红色错误块而不是抛异常，
+    // 但我们仍然按失败处理：聊天里宁可显示原始 TeX，也不要一个红块。
+    const html = maths.renderToString(tex, {
+      throwOnError: false,
+      errorColor: 'inherit',
+      displayMode: !!display,
+      output: 'html',
+      strict: false,
+    });
+    if (/katex-error/.test(html)) throw new Error('公式无法排版');
     if (display) {
+      // 显示公式用外层容器控制横向滚动（与正文 `.math-display` 同一套做法）
       node.innerHTML = '<div class="chat-math-display">' + html + '</div>';
     } else {
       node.innerHTML = html;
@@ -563,24 +570,28 @@ function withToken(u, t) {
   return t ? (u + (u.indexOf("?") >= 0 ? "&" : "?") + "token=" + encodeURIComponent(t)) : u;
 }
 
-// 公式引擎懒加载（2026-10-29 换引擎）：MathLive 的 **SSR 版**模块。
-// 为什么用 SSR 版而不是浏览器版：398KB vs 843KB，而聊天只需要「TeX → 静态 HTML」
-// 这一个能力（convertLatexToMarkup），不需要可编辑的 math-field 元素。
-// 实测在浏览器里经 module script 加载即可用。
+// 公式引擎懒加载（2026-10-31 换回 KaTeX）：katex.min.js（UMD，277 KB）。
+//
+// 为什么是 UMD 而不是 katex.mjs：UMD 版 277 KB，ESM 版 610 KB——聊天只需要
+// 「TeX → 静态 HTML」这一个能力（renderToString），不值得为它多付 333 KB。
+// UMD 的尾部是「e.katex = t()」（e 就是 self），所以经典 script 标签加载后
+// 直接挂上 window.katex，不需要 module script。
+//
+// ⚠️ **不能改成 import**：实测在 ESM 上下文里加载 UMD 会抛
+// 「Cannot set properties of undefined (setting 'katex')」（构建期用 katex.mjs
+// 正是因为这个）。所以这里必须走 script src，让它按 UMD 的路径挂全局。
 var mathsLoading = null;
 function ensureMaths() {
-  if (window.__maths) return Promise.resolve(window.__maths);
+  if (window.katex) return Promise.resolve(window.katex);
   if (mathsLoading) return mathsLoading;
   mathsLoading = new Promise(function (resolve) {
     var root = document.documentElement.getAttribute("data-root") || "./";
     var s = document.createElement("script");
-    s.type = "module";
-    s.textContent = 'import * as M from "' + root + 'assets/mathlive/mathlive-ssr.min.mjs";'
-      + 'window.__maths = M; window.dispatchEvent(new Event("maths-ready"));';
+    s.src = root + "assets/katex/katex.min.js";
+    s.onload = function () { resolve(window.katex || null); };
+    s.onerror = function () { resolve(null); };     // 加载失败不能把提问永久挂住
     document.head.appendChild(s);
-    var done = function () { resolve(window.__maths || null); };
-    window.addEventListener("maths-ready", done, { once: true });
-    setTimeout(done, 8000);   // 兜底：模块加载失败也不能让提问永久挂住
+    setTimeout(function () { resolve(window.katex || null); }, 8000);
   });
   return mathsLoading;
 }
@@ -795,7 +806,7 @@ function attachStatusSlot(msg) {
 function renderMessage(msg, final) {
   var parsed = parseIncremental(msg.raw.slice(msg.restStart || 0));
   for (var i = 0; i < parsed.blocks.length; i++) {
-    applyOps(document, msg.body, renderBlockToOps(parsed.blocks[i]), window.__maths);
+    applyOps(document, msg.body, renderBlockToOps(parsed.blocks[i]), window.katex);
   }
   msg.restStart = (msg.restStart || 0) + parsed.restStart;
 
