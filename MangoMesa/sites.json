@@ -1,17 +1,72 @@
 {
-	"generatedAt": "2026-10-31T10:27:00.561Z",
+	"generatedAt": "2026-10-31T13:52:50.016Z",
 	"acceleratedDirs": ["Octave", "S26-1_202609"],
 	"entries": [
+		{
+			"name": "OpenModelica-Full-Wasm",
+			"pages": "absent",
+			"accelerated": false,
+			"pushedAt": "2026-10-31T13:26:42Z",
+			"status": null,
+			"description": "Run OpenModelica in the browser — official wasm target (Rust route), pure client-side Modelica compile & simulate, .mat handshake to the Octave engine. AGPL-3.0.",
+			"language": "Python",
+			"url": "https://github.com/ArchivalEra/OpenModelica-Full-Wasm",
+			"icon": ""
+		},
+		{
+			"name": "LLVM-wasm",
+			"pages": "absent",
+			"accelerated": false,
+			"pushedAt": "2026-10-31T13:02:36Z",
+			"status": null,
+			"description": "",
+			"language": "Python",
+			"url": "https://github.com/ArchivalEra/LLVM-wasm",
+			"icon": ""
+		},
+		{
+			"name": "Octave-Extra-Content",
+			"pages": "absent",
+			"accelerated": false,
+			"pushedAt": "2026-10-31T12:22:46Z",
+			"status": null,
+			"description": "Extra content for the browser Octave (private): package archives + runtime/toolchain provisioning recipes. Formerly Octave-Forge-Shelf.",
+			"language": "Python",
+			"url": "https://github.com/ArchivalEra/Octave-Extra-Content",
+			"icon": ""
+		},
 		{
 			"name": "Octave-Full-Wasm",
 			"pages": "absent",
 			"accelerated": false,
-			"pushedAt": "2026-10-31T10:20:33Z",
+			"pushedAt": "2026-10-31T11:51:34Z",
 			"status": null,
 			"description": "浏览器里跑满功能 GNU Octave 11.3.0：wasm64 + 多线程 + OpenBLAS 四车道自动选档",
 			"language": "JavaScript",
 			"url": "https://github.com/ArchivalEra/Octave-Full-Wasm",
 			"icon": ""
+		},
+		{
+			"name": "Static-Contract",
+			"pages": "absent",
+			"accelerated": false,
+			"pushedAt": "2026-10-31T10:54:34Z",
+			"status": null,
+			"description": "apt-style contract for static distribution",
+			"language": "Python",
+			"url": "https://github.com/ArchivalEra/Static-Contract",
+			"icon": ""
+		},
+		{
+			"name": "isui.ren-heart",
+			"pages": "ready",
+			"accelerated": false,
+			"pushedAt": "2026-10-31T10:27:35Z",
+			"status": "built",
+			"description": "isui.ren 的站点心脏：EdgeOne Pages 静态源、边缘中间件与跨仓部署链",
+			"language": "Rust",
+			"url": "https://github.com/ArchivalEra/isui.ren-heart",
+			"icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMTIgMjAuNUMxMiAyMC41IDQgMTUuNCA0IDEwLjIgNCA3LjYgNiA1LjUgOC42IDUuNWMxLjUgMCAyLjguNyAzLjQgMS44LjYtMS4xIDEuOS0xLjggMy40LTEuOEMxOCA1LjUgMjAgNy42IDIwIDEwLjJjMCA1LjItOCAxMC4zLTggMTAuM1oiLz48L3N2Zz4="
 		},
 		{
 			"name": "Einfacht",
@@ -36,39 +91,6 @@
 			"icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMTIgNC4ydjE2TTYuNSAyMC4yaDExTTQgOWgxNiIvPjxwYXRoIGQ9Ik00IDlMMiAxMy4yYTMgMyAwIDAgMCA1IDB6Ii8+PHBhdGggZD0iTTIwIDlsMiA0LjJhMyAzIDAgMCAxLTUgMHoiLz48L3N2Zz4="
 		},
 		{
-			"name": "Octave-Extra-Content",
-			"pages": "absent",
-			"accelerated": false,
-			"pushedAt": "2026-10-31T08:45:54Z",
-			"status": null,
-			"description": "Extra content for the browser Octave (private): package archives + runtime/toolchain provisioning recipes. Formerly Octave-Forge-Shelf.",
-			"language": "Python",
-			"url": "https://github.com/ArchivalEra/Octave-Extra-Content",
-			"icon": ""
-		},
-		{
-			"name": "isui.ren-heart",
-			"pages": "ready",
-			"accelerated": false,
-			"pushedAt": "2026-10-31T07:30:23Z",
-			"status": "built",
-			"description": "isui.ren 的站点心脏：EdgeOne Pages 静态源、边缘中间件与跨仓部署链",
-			"language": "Rust",
-			"url": "https://github.com/ArchivalEra/isui.ren-heart",
-			"icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMTIgMjAuNUMxMiAyMC41IDQgMTUuNCA0IDEwLjIgNCA3LjYgNiA1LjUgOC42IDUuNWMxLjUgMCAyLjguNyAzLjQgMS44LjYtMS4xIDEuOS0xLjggMy40LTEuOEMxOCA1LjUgMjAgNy42IDIwIDEwLjJjMCA1LjItOCAxMC4zLTggMTAuM1oiLz48L3N2Zz4="
-		},
-		{
-			"name": "Static-Contract",
-			"pages": "absent",
-			"accelerated": false,
-			"pushedAt": "2026-10-31T07:12:14Z",
-			"status": null,
-			"description": "apt-style contract for static distribution",
-			"language": null,
-			"url": "https://github.com/ArchivalEra/Static-Contract",
-			"icon": ""
-		},
-		{
 			"name": "S26-1_202609",
 			"pages": "absent",
 			"accelerated": true,
@@ -78,17 +100,6 @@
 			"language": "JavaScript",
 			"url": "https://github.com/ArchivalEra/S26-1_202609",
 			"icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMTIgN2MtMS40LTEuMi0zLjQtMS45LTUuNi0xLjktLjcgMC0xLjQuMDYtMiAuMTlWMTguM2MuNi0uMTIgMS4zLS4xOSAyLS4xOSAyLjIgMCA0LjIuNyA1LjYgMS45IDEuNC0xLjIgMy40LTEuOSA1LjYtMS45LjcgMCAxLjQuMDcgMiAuMTlWNS4yOWMtLjYtLjEzLTEuMy0uMTktMi0uMTktMi4yIDAtNC4yLjctNS42IDEuOVoiLz48cGF0aCBkPSJNMTIgN3YxMyIvPjwvc3ZnPg=="
-		},
-		{
-			"name": "OpenModelica-Full-Wasm",
-			"pages": "absent",
-			"accelerated": false,
-			"pushedAt": "2026-10-30T06:48:02Z",
-			"status": null,
-			"description": "Run OpenModelica in the browser — official wasm target (Rust route), pure client-side Modelica compile & simulate, .mat handshake to the Octave engine. AGPL-3.0.",
-			"language": "Python",
-			"url": "https://github.com/ArchivalEra/OpenModelica-Full-Wasm",
-			"icon": ""
 		},
 		{
 			"name": "Octave-UI",
@@ -111,17 +122,6 @@
 			"language": "Rust",
 			"url": "https://github.com/ArchivalEra/uTLS-Gone",
 			"icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNNSAxMmE3IDcgMCAwIDEgMTQgMCIvPjxwYXRoIGQ9Ik04LjUgMTIuNWEzLjUgMy41IDAgMCAxIDcgMHYyLjUiLz48cGF0aCBkPSJNMTIgMTV2NCIvPjwvc3ZnPg=="
-		},
-		{
-			"name": "LLVM-wasm",
-			"pages": "absent",
-			"accelerated": false,
-			"pushedAt": "2026-10-19T03:54:25Z",
-			"status": null,
-			"description": "",
-			"language": "Python",
-			"url": "https://github.com/ArchivalEra/LLVM-wasm",
-			"icon": ""
 		},
 		{
 			"name": "Octave-Forge-Shelf",
