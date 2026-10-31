@@ -22,7 +22,7 @@ sh gates-selftest.sh                             # 闸门自证
 ## 已知边界
 
 - **deploy 分支不装 Einfacht**：它是每次重建的产物分支，装任何钩子都会在下次构建时消失。
-- 中间件里的对冲逻辑实测无效（`questions/01`）。
+- 中间件里的对冲逻辑**2026-10-31 复测有效**（20/20 正常、最慢 4.75s）；此前判为「死代码」的结论已翻案，见 `questions/01`。
 
 <!-- AUTO:FACTS -->
 > 本区块由 `zreflect/facts.py --render-doc` 从 `FACTS.json` 渲染，**不要手改**（pre-commit 会重算并 `git add`）。
