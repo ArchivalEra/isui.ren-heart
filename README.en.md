@@ -1,6 +1,6 @@
 # isui.ren/heart
 
-English | [中文](README.md)
+[English](README.en.md) | [中文](README.md)
 
 The origin: a week before being diagnosed with otitis media with
 effusion, I had found isui's songs — and the doctor told me my ears are

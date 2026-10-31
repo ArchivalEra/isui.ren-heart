@@ -1,6 +1,6 @@
 # isui.ren/heart
 
-[English](README.en.md) | 中文
+[English](README.en.md) | [中文](README.md)
 
 初心:在被诊断出无菌性中耳炎前一周收听了isui的歌，被医生告知天生耳朵过于敏感且单侧耳道负压持续超4年，接下来几年尽量少听音乐，无治疗手段。
 悲痛万分，做个网站背后藏个小本本记一下过几年想听的歌。
