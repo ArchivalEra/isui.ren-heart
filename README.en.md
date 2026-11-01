@@ -28,12 +28,10 @@ performance-sensitive places get no compromises.
   deploy branch served directly by EdgeOne Makers; the middleware takes no
   part in it (there is no `/static` in its matcher, and the EdgeOne static
   layer already handles directory indexing and the missing-trailing-slash
-  redirect). The tree is produced in CI by running that repo's own
-  `scripts/build-site.py` (not by copying `site/dist`, which is a
-  gitignored build artifact there and would raise the question of *which*
-  build got copied). `index.html` carries a `STATIC-CONTRACT-BUILD`
-  fingerprint that can be compared byte-for-byte against the other two
-  channels.
+  redirect). The bytes are taken from **that repo's `deploy` branch** (their
+  single origin, strictly derived by `sync-catalogue.py`); neither a local
+  build (which yields only the empty source-fallback catalogue) nor a copy of
+  `site/dist` (which does not exist there — it is gitignored) would be right.
 - **Window stage**: the logo and the three balls share one coordinate
   system (a borderless 1280×720 window) that scales uniformly with
   `scale()` — composition stays locked at any screen size.
