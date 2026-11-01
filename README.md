@@ -11,6 +11,14 @@ isui.ren 的入口页（`/heart`）：tayori 粉丝站的门面——三球队�
 
 ## 亮点
 
+- **`/static` 契约站通道**：`Static-Contract` 契约文档站（三通道并行的第三路：
+  GitHub Pages、Cloudflare `static.mango-mesa.ccwu.cc/static/`、以及本站
+  `isui.ren/static`）。中间件反代那个 Worker——该站 13 个文件、最大 22KB、
+  发布即换内容，Worker 直连比 Pages 那条实测有挂起率的跨洋链路稳得多，
+  所以不套用 `/repo/Octave` 的对冲机制。字节仍只有一份产地（对方仓的
+  `site/dist`），本站是镜像；精确 `Content-Type` / `ETag` / `Cache-Control`
+  全由上游钉死，中间件只透传（只删 `Content-Length`，理由同 `/repo/Octave`
+  非 `.gz` 分支）。
 - **窗口舞台**：logo 与三球固定在同一坐标系（1280×720 无边框窗口），窗口整体
   `scale()` 等比缩放——任何屏幕尺寸下构图恒定，没有"响应式坐标换算"的生存空间。
 - **三球引擎**（Rust/wasm）：一球一链、弧长共享链、云中心（Frenet 偏移 + EMA）、

@@ -21,6 +21,17 @@ performance-sensitive places get no compromises.
 
 ## Highlights
 
+- **`/static` contract-site channel**: the `Static-Contract` specification
+  site (the third of three parallel channels: GitHub Pages, Cloudflare at
+  `static.mango-mesa.ccwu.cc/static/`, and `isui.ren/static` here). The
+  middleware reverse-proxies that Worker — 13 files, 22KB max, replaced
+  whenever the contract is published, so a direct Worker origin is far
+  steadier than the cross-Pacific Pages link that measured with hangs;
+  the `/repo/Octave` hedge is therefore not reused. Bytes still have a
+  single origin (that repo's `site/dist`); this route is a mirror. Exact
+  `Content-Type` / `ETag` / `Cache-Control` are pinned upstream and only
+  passed through (only `Content-Length` is dropped, for the same reason
+  as the non-`.gz` branch under `/repo/Octave`).
 - **Window stage**: the logo and the three balls share one coordinate
   system (a borderless 1280×720 window) that scales uniformly with
   `scale()` — composition stays locked at any screen size.
