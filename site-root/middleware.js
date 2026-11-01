@@ -383,6 +383,68 @@ export async function middleware(context) {
 		return Response.redirect(redirectUrl.toString(), 301);
 	}
 
+	// ── /static：Static-Contract 契约站的国内通道 ────────────────────────────
+	//
+	// 三通道并行（用户裁定「一份产物三地部署」）：GitHub Pages（archivalera.github.io/
+	// Static-Contract/）、Cloudflare（static.mango-mesa.ccwu.cc/static/，本反代的
+	// 上游）、EdgeOne（本条，把前两者之一挂到 isui.ren 的国内路径）。
+	//
+	// 为什么反代 Worker 而不是 GitHub Pages：该站产物 13 个文件、最大 22KB，
+	// 且发布即换内容——Cloudflare Worker 直连比 Pages 那条约 25s 挂起率的跨洋
+	// 链路稳得多，也不需要套用 /repo/Octave 那套对冲机制。字节仍只有一份产地
+	// （Static-Contract 仓的 site/dist），两条通道都是镜像。
+	//
+	// 响应头由上游 Worker 钉死（精确 Content-Type / ETag / Cache-Control），
+	// 这里只透传，不改语义——上游是同一个我，头语义没有第二处产地。
+	if (url.pathname === "/static" || url.pathname.startsWith("/static/")) {
+		const upstreamUrl = new URL(request.url);
+		upstreamUrl.protocol = "https:";
+		upstreamUrl.host = "static.mango-mesa.ccwu.cc";
+		// 上游把契约站挂在 /static 前缀下，路径原样对拷即可。
+		// （不改写成别的形状：上游路由表本身就是 /static/<rel>。）
+
+		const upstreamHeaders = {};
+		// 条件请求透传：上游对 ETag 命中直接回 304，省一次整包传输
+		const inm = request.headers.get("if-none-match");
+		if (inm) upstreamHeaders["If-None-Match"] = inm;
+
+		let upstream = null;
+		try {
+			upstream = await fetch(upstreamUrl.toString(), {
+				method: request.method,
+				headers: upstreamHeaders,
+			});
+		} catch (_err) {
+			upstream = null;
+		}
+
+		if (!upstream) {
+			return new Response("Static site upstream unreachable", {
+				status: 502,
+				headers: { "Content-Type": "text/plain; charset=utf-8" },
+			});
+		}
+		if (upstream.status === 404) {
+			return new Response("Static site page not found", {
+				status: 404,
+				headers: { "Content-Type": "text/plain; charset=utf-8" },
+			});
+		}
+
+		const headers = new Headers(upstream.headers);
+		// 上游体可能是运行时按 Accept-Encoding 协商过的，Content-Length 未必
+		// 对应这个表示；清掉交给运行时重新生成（与 /repo/Octave 非 .gz 分支同理）。
+		headers.delete("Content-Length");
+		headers.set("Access-Control-Allow-Origin", "*");
+		headers.set("X-Content-Type-Options", "nosniff");
+
+		return new Response(upstream.body, {
+			status: upstream.status,
+			statusText: upstream.statusText,
+			headers,
+		});
+	}
+
 	// Reverse-proxy /repo/<repoName>/* to https://archivalera.github.io/<repoName>/*
 	if (url.pathname === "/repo" || url.pathname === "/repo/") {
 		return Response.redirect("https://isui.ren/MangoMesa/projects/", 302);
@@ -873,5 +935,7 @@ export const config = {
 		"/repo",
 		"/repo/:path*",
 		"/Bahnhof",
+		"/static",
+		"/static/:path*",
 	],
 };
