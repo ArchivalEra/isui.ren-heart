@@ -96,6 +96,30 @@ jobs:
           mkdir -p /tmp/deploy-out/heart
           cp -r web-ui/dist/. /tmp/deploy-out/heart/
           cp -r site-root/. /tmp/deploy-out/
+          # ── static/：Static-Contract 契约站（三通道并行的 EdgeOne 那一路）──
+          # 三条线独立部署：Pages 由对方仓自己的管线发、Cloudflare 由我维护的
+          # static-host Worker 发、EdgeOne 这条由本仓 deploy 分支的静态树直出。
+          # **不做「eo 反代 cf」**——那不是独立部署，响应头还会带出 CF-RAY。
+          #
+          # 取字节的方式：clone 对方仓后用**它自己的构建器** `scripts/build-site.py`
+          # 现场产出。不拷 `site/dist`——那个目录在对方仓里是 gitignore 的构建物
+          # （实测 clone 下来只有 site/*.json 源文件），拷不到。
+          # 用同一条构建管线也就是「三通道同源」在字节层的落地。
+          # 对方仓设了 BUILD_FINGERPRINT 写进 index.html，可用于事后核对哪个
+          # 通道吃到了哪次产物（他们 scripts/verify-channels.py 就靠这个抓
+          # 「EO 返回旧构建」那类事故）。
+          if git clone --depth 1 https://github.com/ArchivalEra/Static-Contract.git /tmp/sc 2>/dev/null; then
+            if python3 /tmp/sc/scripts/build-site.py --out /tmp/sc/dist 2>&1; then
+              mkdir -p /tmp/deploy-out/static
+              cp -r /tmp/sc/dist/. /tmp/deploy-out/static/
+              echo "static/: $(find /tmp/deploy-out/static -type f | wc -l) files"
+              grep -o 'BUILD_FINGERPRINT[^<]*' /tmp/deploy-out/static/index.html 2>/dev/null | head -1 || true
+            else
+              echo "::warning::Static-Contract 构建失败 —— /static 将 404"
+            fi
+          else
+            echo "::warning::clone Static-Contract 失败 —— /static 将 404"
+          fi
           # 先删本地分支——deploy 已存在时 checkout --orphan 会游离,绿勾假象
           git branch -D deploy 2>/dev/null || true
           git checkout --orphan deploy

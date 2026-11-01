@@ -13,12 +13,12 @@ isui.ren 的入口页（`/heart`）：tayori 粉丝站的门面——三球队�
 
 - **`/static` 契约站通道**：`Static-Contract` 契约文档站（三通道并行的第三路：
   GitHub Pages、Cloudflare `static.mango-mesa.ccwu.cc/static/`、以及本站
-  `isui.ren/static`）。中间件反代那个 Worker——该站 13 个文件、最大 22KB、
-  发布即换内容，Worker 直连比 Pages 那条实测有挂起率的跨洋链路稳得多，
-  所以不套用 `/repo/Octave` 的对冲机制。字节仍只有一份产地（对方仓的
-  `site/dist`），本站是镜像；精确 `Content-Type` / `ETag` / `Cache-Control`
-  全由上游钉死，中间件只透传（只删 `Content-Length`，理由同 `/repo/Octave`
-  非 `.gz` 分支）。
+  `isui.ren/static`）。**三条线各自独立部署**——本站这条是 deploy 分支里的
+  `static/` 静态树由 EdgeOne Makers 直出，中间件完全不参与（matcher 里没有
+  `/static`；EO 静态层自带目录索引与无斜杠 301）。产物由 CI 现场跑对方仓的
+  `scripts/build-site.py` 产出（不拷现成 `site/dist`——那是对方仓 gitignore 的
+  构建物，拷不到，也会引入「拷到的是哪次构建」的歧义）。`index.html` 里带
+  `STATIC-CONTRACT-BUILD` 指纹，可与另外两条通道逐字核对。
 - **窗口舞台**：logo 与三球固定在同一坐标系（1280×720 无边框窗口），窗口整体
   `scale()` 等比缩放——任何屏幕尺寸下构图恒定，没有"响应式坐标换算"的生存空间。
 - **三球引擎**（Rust/wasm）：一球一链、弧长共享链、云中心（Frenet 偏移 + EMA）、

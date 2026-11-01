@@ -1,21 +1,21 @@
 {
  "schema": 1,
- "generated": "2026-11-01T12:43:24+0800",
+ "generated": "2026-11-01T18:02:18+0800",
  "_why": "事实台账：每条 = 一个**测出来**的值 + 复跑命令 + 出处。别手改，跑 zreflect/facts.py。",
  "facts": {
   "middleware_lines": {
-   "value": 941,
+   "value": 898,
    "cmd": "wc -l < site-root/middleware.js",
    "source": "site-root/middleware.js",
-   "measured_at": "2026-11-01T12:43:24+0800",
+   "measured_at": "2026-11-01T18:02:18+0800",
    "first_seen": "2026-11-01",
    "note": "边缘中间件行数（反代 / 缓存 / COOP-COEP 全部契约在这个文件里）"
   },
   "middleware_routes": {
-   "value": 6,
+   "value": 5,
    "cmd": "grep -cE 'url\\.pathname[[:space:]]*===?[[:space:]]*\"' site-root/middleware.js",
    "source": "site-root/middleware.js",
-   "measured_at": "2026-11-01T12:43:24+0800",
+   "measured_at": "2026-11-01T18:02:18+0800",
    "first_seen": "2026-11-01",
    "note": "按 pathname 精确匹配的路由分支数（每个都是对外承诺的一个端点）"
   },
@@ -23,7 +23,7 @@
    "value": 6,
    "cmd": "find site-root -maxdepth 1 -type f ! -name '.*' | wc -l",
    "source": "site-root/",
-   "measured_at": "2026-11-01T12:43:24+0800",
+   "measured_at": "2026-11-01T18:02:18+0800",
    "first_seen": "2026-10-31",
    "note": "站点根级文件数（index/404/logo/edgeone.json 等，EdgeOne 直出）"
   },
@@ -31,7 +31,7 @@
    "value": 2,
    "cmd": "find site-root/edge-functions -name '*.js' 2>/dev/null | wc -l",
    "source": "site-root/edge-functions/",
-   "measured_at": "2026-11-01T12:43:24+0800",
+   "measured_at": "2026-11-01T18:02:18+0800",
    "first_seen": "2026-10-31",
    "note": "边缘函数文件数（独立于 middleware 的函数端点）"
   },
@@ -39,7 +39,7 @@
    "value": 15,
    "cmd": "find web-rust -name '*.rs' -not -path '*/target/*' | wc -l",
    "source": "web-rust/",
-   "measured_at": "2026-11-01T12:43:24+0800",
+   "measured_at": "2026-11-01T18:02:18+0800",
    "first_seen": "2026-10-31",
    "note": "Rust 源码文件数（wasm 动画引擎）"
   }

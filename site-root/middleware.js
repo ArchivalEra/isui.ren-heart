@@ -383,67 +383,24 @@ export async function middleware(context) {
 		return Response.redirect(redirectUrl.toString(), 301);
 	}
 
-	// ── /static：Static-Contract 契约站的国内通道 ────────────────────────────
+	// ── /static：Static-Contract 契约站（三通道并行的 EdgeOne 那一路）────────
 	//
-	// 三通道并行（用户裁定「一份产物三地部署」）：GitHub Pages（archivalera.github.io/
-	// Static-Contract/）、Cloudflare（static.mango-mesa.ccwu.cc/static/，本反代的
-	// 上游）、EdgeOne（本条，把前两者之一挂到 isui.ren 的国内路径）。
+	// 三通道并行（用户裁定「一份产物三地部署」），**三条线独立部署**：
+	//   · GitHub Pages —— 对方仓自己的 Pages 管线；
+	//   · Cloudflare   —— 我维护的 static-host Worker（字节内联）；
+	//   · EdgeOne      —— deploy 分支里的 static/ 静态树，EdgeOne Makers 直出。
 	//
-	// 为什么反代 Worker 而不是 GitHub Pages：该站产物 13 个文件、最大 22KB，
-	// 且发布即换内容——Cloudflare Worker 直连比 Pages 那条约 25s 挂起率的跨洋
-	// 链路稳得多，也不需要套用 /repo/Octave 那套对冲机制。字节仍只有一份产地
-	// （Static-Contract 仓的 site/dist），两条通道都是镜像。
+	// ⚠️ 这里曾经反向实现过两次，都被否掉，原因记在这里免得第三个人重走：
+	//   ① 反代 Cloudflare Worker —— 用户当即否掉：EO 反代 CF 不是独立部署，
+	//      响应头还带出 CF-RAY / cf-nel（跨平台耦合的直接证据）。
+	//   ② 中间件拦 /static 再 next() —— 多此一举：EO 静态层**自带**目录索引与
+	//      无斜杠 301（/repo/S26-1_202609/ 就是纯静态树直出 200、无斜杠 301
+	//      到带斜杠，实测过）。中间件不拦，静态树照样正确解析。
 	//
-	// 响应头由上游 Worker 钉死（精确 Content-Type / ETag / Cache-Control），
-	// 这里只透传，不改语义——上游是同一个我，头语义没有第二处产地。
-	if (url.pathname === "/static" || url.pathname.startsWith("/static/")) {
-		const upstreamUrl = new URL(request.url);
-		upstreamUrl.protocol = "https:";
-		upstreamUrl.host = "static.mango-mesa.ccwu.cc";
-		// 上游把契约站挂在 /static 前缀下，路径原样对拷即可。
-		// （不改写成别的形状：上游路由表本身就是 /static/<rel>。）
-
-		const upstreamHeaders = {};
-		// 条件请求透传：上游对 ETag 命中直接回 304，省一次整包传输
-		const inm = request.headers.get("if-none-match");
-		if (inm) upstreamHeaders["If-None-Match"] = inm;
-
-		let upstream = null;
-		try {
-			upstream = await fetch(upstreamUrl.toString(), {
-				method: request.method,
-				headers: upstreamHeaders,
-			});
-		} catch (_err) {
-			upstream = null;
-		}
-
-		if (!upstream) {
-			return new Response("Static site upstream unreachable", {
-				status: 502,
-				headers: { "Content-Type": "text/plain; charset=utf-8" },
-			});
-		}
-		if (upstream.status === 404) {
-			return new Response("Static site page not found", {
-				status: 404,
-				headers: { "Content-Type": "text/plain; charset=utf-8" },
-			});
-		}
-
-		const headers = new Headers(upstream.headers);
-		// 上游体可能是运行时按 Accept-Encoding 协商过的，Content-Length 未必
-		// 对应这个表示；清掉交给运行时重新生成（与 /repo/Octave 非 .gz 分支同理）。
-		headers.delete("Content-Length");
-		headers.set("Access-Control-Allow-Origin", "*");
-		headers.set("X-Content-Type-Options", "nosniff");
-
-		return new Response(upstream.body, {
-			status: upstream.status,
-			statusText: upstream.statusText,
-			headers,
-		});
-	}
+	// ⇒ 中间件对本路径**不做任何事**：不在 matcher 里（见文件末尾 config），
+	//   请求直接落到部署产物。字节在 deploy 分支的 static/ 目录里（由
+	//   deploy.yml 从 Static-Contract 仓的 site/dist 拷入），响应头由 EdgeOne
+	//   静态层按文件类型自己生成。中间件不参与，也就不存在第二处头语义产地。
 
 	// Reverse-proxy /repo/<repoName>/* to https://archivalera.github.io/<repoName>/*
 	if (url.pathname === "/repo" || url.pathname === "/repo/") {
@@ -935,7 +892,7 @@ export const config = {
 		"/repo",
 		"/repo/:path*",
 		"/Bahnhof",
-		"/static",
-		"/static/:path*",
+		// 注意：**没有** /static。那条路是纯静态树直出，中间件不参与
+		// （理由见上方 /static 注释块）。
 	],
 };

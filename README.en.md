@@ -23,15 +23,17 @@ performance-sensitive places get no compromises.
 
 - **`/static` contract-site channel**: the `Static-Contract` specification
   site (the third of three parallel channels: GitHub Pages, Cloudflare at
-  `static.mango-mesa.ccwu.cc/static/`, and `isui.ren/static` here). The
-  middleware reverse-proxies that Worker — 13 files, 22KB max, replaced
-  whenever the contract is published, so a direct Worker origin is far
-  steadier than the cross-Pacific Pages link that measured with hangs;
-  the `/repo/Octave` hedge is therefore not reused. Bytes still have a
-  single origin (that repo's `site/dist`); this route is a mirror. Exact
-  `Content-Type` / `ETag` / `Cache-Control` are pinned upstream and only
-  passed through (only `Content-Length` is dropped, for the same reason
-  as the non-`.gz` branch under `/repo/Octave`).
+  `static.mango-mesa.ccwu.cc/static/`, and `isui.ren/static` here). **Each
+  channel is deployed independently** — this one is a `static/` tree on the
+  deploy branch served directly by EdgeOne Makers; the middleware takes no
+  part in it (there is no `/static` in its matcher, and the EdgeOne static
+  layer already handles directory indexing and the missing-trailing-slash
+  redirect). The tree is produced in CI by running that repo's own
+  `scripts/build-site.py` (not by copying `site/dist`, which is a
+  gitignored build artifact there and would raise the question of *which*
+  build got copied). `index.html` carries a `STATIC-CONTRACT-BUILD`
+  fingerprint that can be compared byte-for-byte against the other two
+  channels.
 - **Window stage**: the logo and the three balls share one coordinate
   system (a borderless 1280×720 window) that scales uniformly with
   `scale()` — composition stays locked at any screen size.
