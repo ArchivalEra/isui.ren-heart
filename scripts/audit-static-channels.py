@@ -46,7 +46,7 @@ SOURCE_BASE = "https://raw.githubusercontent.com/ArchivalEra/Static-Contract/dep
 # 三条通道。名字与对方 `site/channels.json` 一致，便于两边对账。
 CHANNELS = [
     ("github-pages", "https://archivalera.github.io/Static-Contract"),
-    ("cloudflare", "https://static.mango-mesa.ccwu.cc/static"),
+    ("cloudflare", "https://static.mango-mesa.ccwu.cc"),
     ("edgeone", "https://isui.ren/static"),
 ]
 

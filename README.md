@@ -24,7 +24,8 @@ isui.ren 的入口页（`/heart`）：tayori 粉丝站的门面——三球队�
   **搬运按对方的 `files.json` 清单执行**（`scripts/stage-static-tree.py`），不手写
   文件名——手写列表漏过 `LICENSE`，而 EO 对缺失路径返回 **200 + 兜底页**，
   只看状态码的检查会被骗过去。在线审计用 `scripts/audit-static-channels.py`
-  （6 条自证）：按 `files.json` 逐条比**内容指纹**，既判「是不是兜底页伪装」
+  （6 条自证，两条通道的 base 与各自部署位置一致：Cloudflare 已移到根
+  `static.mango-mesa.ccwu.cc/`）：按 `files.json` 逐条比**内容指纹**，既判「是不是兜底页伪装」
   也判「与源产物是否逐字节相同」——通道之间「一致」不算证据。
 - **窗口舞台**：logo 与三球固定在同一坐标系（1280×720 无边框窗口），窗口整体
   `scale()` 等比缩放——任何屏幕尺寸下构图恒定，没有"响应式坐标换算"的生存空间。

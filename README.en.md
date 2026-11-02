@@ -43,7 +43,9 @@ performance-sensitive places get no compromises.
   rather than a hand-written file list — a hand list once missed `LICENSE`, and
   EdgeOne answers missing paths with **200 + a fallback page**, so status-only
   checks pass while the file is actually dead. Online auditing lives in
-  `scripts/audit-static-channels.py` (6 self-tests): per-file **content
+  `scripts/audit-static-channels.py` (6 self-tests; its per-channel bases
+  follow each channel's real mount point — Cloudflare moved to the root at
+  `static.mango-mesa.ccwu.cc/`): per-file **content
   fingerprint** checks that catch both the fallback-page disguise and any drift
   from the source artifact — agreement between channels is not evidence.
 - **Window stage**: the logo and the three balls share one coordinate
