@@ -28,9 +28,11 @@ performance-sensitive places get no compromises.
   deploy branch served directly by EdgeOne Makers; the middleware takes no
   part in it (there is no `/static` in its matcher, and the EdgeOne static
   layer already handles directory indexing and the missing-trailing-slash
-  redirect). The middleware does exactly one thing here: `/static` (no
-  trailing slash) → 301 to `/static/`. **Nothing else.** EdgeOne's static
-  layer does not add the trailing slash (measured: 200, not 301), and the
+  redirect). **The middleware takes no part in it at all** (there is no `/static` in
+  its matcher). The trailing-slash 301 is declared in
+  `site-root/edgeone.json` — the platform mechanism, the same place that
+  serves `/blog → /Blog`. EdgeOne's static layer does not add the slash
+  itself (measured: 200, not 301), and the
   page uses relative links with no `<base>`, so without the slash the
   browser resolves `contract/x.md` to `/contract/x.md`, hits the 611B
   fallback page and — crucially — **gets a 200**, which reads as "link

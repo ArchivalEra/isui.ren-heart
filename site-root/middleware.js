@@ -383,30 +383,6 @@ export async function middleware(context) {
 		return Response.redirect(redirectUrl.toString(), 301);
 	}
 
-	// ── /static：Static-Contract 契约站（三通道并行的 EdgeOne 那一路）────────
-	//
-	// 三条线**独立部署**（用户裁定）：Pages 由对方管线发、Cloudflare 由我维护的
-	// static-host Worker 发、EdgeOne 这条由 deploy 分支的 static/ 静态树直出。
-	// 不做 EO 反代 CF（那不是独立部署，响应头还会带出 CF-RAY —— 实测过）。
-	//
-	// ★ 中间件在这里**只做一件事：补尾斜杠**（2026-11-02 用户实测踩到的坑）。
-	//
-	//   页面产物里全是**相对链接**（'contract/x.md'、'LICENSE'）且没有 <base>。
-	//   浏览器在 '/static'（无斜杠）上会把 'contract/x.md' 解析成 '/contract/x.md'
-	//   —— 那个路径不存在，EdgeOne 会落到 611B 站点兜底页，而且**返回 200**，
-	//   所以表现为「链接点不开」而不是 404。
-	//
-	//   GitHub Pages 自己会 301 补斜杠（所以那条通道没这个病）；EdgeOne 静态层
-	//   不会（实测 /static → 200 而非 301）。⇒ 这道跳转必须由中间件补上。
-	//
-	// 为什么其余一概不碰：字节在 deploy 分支的 static/ 目录里，响应头由静态层按
-	// 文件类型生成。中间件不参与内容，也就不存在第二处头语义产地。
-	if (url.pathname === "/static") {
-		const redirectUrl = new URL(request.url);
-		redirectUrl.pathname = "/static/";
-		return Response.redirect(redirectUrl.toString(), 301);
-	}
-
 	// Reverse-proxy /repo/<repoName>/* to https://archivalera.github.io/<repoName>/*
 	if (url.pathname === "/repo" || url.pathname === "/repo/") {
 		return Response.redirect("https://isui.ren/MangoMesa/projects/", 302);
@@ -897,8 +873,7 @@ export const config = {
 		"/repo",
 		"/repo/:path*",
 		"/Bahnhof",
-		// /static 只需拦「无斜杠」那一条（补 301）；其余 /static/* 交给静态树直出，
-		// 所以 matcher 只列裸路径，不列通配。
-		"/static",
+		// 注意：**没有 /static**。Static-Contract 那条是纯静态树直出，
+		// 三线独立部署，中间件不参与它（补斜杠的 301 也交给 edgeone.json）。
 	],
 };

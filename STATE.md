@@ -30,11 +30,11 @@ sh gates-selftest.sh                             # 闸门自证
 
 | 键 | 值 | 测于 | 复跑命令 |
 |---|---|---|---|
-| `edge_functions` | **2** | 2026-11-02T20:43:26+0800 | `find site-root/edge-functions -name '*.js' 2>/dev/null | wc -l` |
-| `middleware_lines` | **904** | 2026-11-02T20:43:26+0800 | `wc -l < site-root/middleware.js` |
-| `middleware_routes` | **6** | 2026-11-02T20:43:26+0800 | `grep -cE 'url\.pathname[[:space:]]*===?[[:space:]]*"' site-root/middleware.js` |
-| `rust_sources` | **15** | 2026-11-02T20:43:26+0800 | `find web-rust -name '*.rs' -not -path '*/target/*' | wc -l` |
-| `site_root_files` | **6** | 2026-11-02T20:43:26+0800 | `find site-root -maxdepth 1 -type f ! -name '.*' | wc -l` |
+| `edge_functions` | **2** | 2026-11-02T22:41:19+0800 | `find site-root/edge-functions -name '*.js' 2>/dev/null | wc -l` |
+| `middleware_lines` | **879** | 2026-11-02T22:41:19+0800 | `wc -l < site-root/middleware.js` |
+| `middleware_routes` | **5** | 2026-11-02T22:41:19+0800 | `grep -cE 'url\.pathname[[:space:]]*===?[[:space:]]*"' site-root/middleware.js` |
+| `rust_sources` | **15** | 2026-11-02T22:41:19+0800 | `find web-rust -name '*.rs' -not -path '*/target/*' | wc -l` |
+| `site_root_files` | **6** | 2026-11-02T22:41:19+0800 | `find site-root -maxdepth 1 -type f ! -name '.*' | wc -l` |
 
 5 条事实。
 <!-- /AUTO:FACTS -->
