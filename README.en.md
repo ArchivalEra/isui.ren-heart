@@ -32,6 +32,10 @@ performance-sensitive places get no compromises.
   single origin, strictly derived by `sync-catalogue.py`); neither a local
   build (which yields only the empty source-fallback catalogue) nor a copy of
   `site/dist` (which does not exist there — it is gitignored) would be right.
+  The copy follows **their `files.json` manifest** (`scripts/stage-static-tree.py`)
+  rather than a hand-written file list — a hand list once missed `LICENSE`, and
+  EdgeOne answers missing paths with **200 + a fallback page**, so status-only
+  checks pass while the file is actually dead.
 - **Window stage**: the logo and the three balls share one coordinate
   system (a borderless 1280×720 window) that scales uniformly with
   `scale()` — composition stays locked at any screen size.

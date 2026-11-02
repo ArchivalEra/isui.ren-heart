@@ -113,16 +113,15 @@ jobs:
           # 逐字核对（对方 scripts/verify-channels.py 的判据就是这个）。
           if git clone --depth 1 --branch deploy \
                https://github.com/ArchivalEra/Static-Contract.git /tmp/sc 2>/dev/null; then
-            # 只搬站点产物，不搬仓库杂物；tools/ 下的 __pycache__ 之类也一并排除
-            mkdir -p /tmp/deploy-out/static
-            for item in index.html catalogue.json sources.json README.md STATE.md maintaince.md contract tools; do
-              if [ -e "/tmp/sc/$item" ]; then
-                cp -r "/tmp/sc/$item" /tmp/deploy-out/static/
-              fi
-            done
-            rm -rf /tmp/deploy-out/static/tools/__pycache__
+            # ★ 按对方的 files.json 搬，**不再手写文件名列表**。
+            # 手写列表必漂：原来的列表漏了 LICENSE（AGPL 合规文件，对方 11-01
+            # 才加进产物），于是 /static/LICENSE 落到 611B 的站点兜底页 ——
+            # 而那页返回 **200**，只看状态码的检查全部通过（对方 `009` 抓到的死链）。
+            # files.json 是对方构建时写进产物的精确清单（带「与实际产物逐条相等」
+            # 的自证），镜像方照抄它，对方再加文件这里自动跟上。
+            # 脚本自证：python3 scripts/stage-static-tree.py --selftest（5 PASS）。
+            python3 scripts/stage-static-tree.py --src /tmp/sc --out /tmp/deploy-out/static
             echo "static/: $(find /tmp/deploy-out/static -type f | wc -l) files"
-            grep -o 'STATIC-CONTRACT-BUILD [0-9a-f]*' /tmp/deploy-out/static/index.html 2>/dev/null | head -1 || true
             python3 -c "import json;d=json.load(open('/tmp/deploy-out/static/catalogue.json'));print('catalogue releases:',len(d.get('releases',[])))"
           else
             echo "::warning::取 Static-Contract deploy 分支失败 —— /static 将 404"
