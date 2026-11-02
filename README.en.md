@@ -35,7 +35,10 @@ performance-sensitive places get no compromises.
   The copy follows **their `files.json` manifest** (`scripts/stage-static-tree.py`)
   rather than a hand-written file list — a hand list once missed `LICENSE`, and
   EdgeOne answers missing paths with **200 + a fallback page**, so status-only
-  checks pass while the file is actually dead.
+  checks pass while the file is actually dead. Online auditing lives in
+  `scripts/audit-static-channels.py` (6 self-tests): per-file **content
+  fingerprint** checks that catch both the fallback-page disguise and any drift
+  from the source artifact — agreement between channels is not evidence.
 - **Window stage**: the logo and the three balls share one coordinate
   system (a borderless 1280×720 window) that scales uniformly with
   `scale()` — composition stays locked at any screen size.
