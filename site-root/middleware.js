@@ -385,22 +385,27 @@ export async function middleware(context) {
 
 	// ── /static：Static-Contract 契约站（三通道并行的 EdgeOne 那一路）────────
 	//
-	// 三通道并行（用户裁定「一份产物三地部署」），**三条线独立部署**：
-	//   · GitHub Pages —— 对方仓自己的 Pages 管线；
-	//   · Cloudflare   —— 我维护的 static-host Worker（字节内联）；
-	//   · EdgeOne      —— deploy 分支里的 static/ 静态树，EdgeOne Makers 直出。
+	// 三条线**独立部署**（用户裁定）：Pages 由对方管线发、Cloudflare 由我维护的
+	// static-host Worker 发、EdgeOne 这条由 deploy 分支的 static/ 静态树直出。
+	// 不做 EO 反代 CF（那不是独立部署，响应头还会带出 CF-RAY —— 实测过）。
 	//
-	// ⚠️ 这里曾经反向实现过两次，都被否掉，原因记在这里免得第三个人重走：
-	//   ① 反代 Cloudflare Worker —— 用户当即否掉：EO 反代 CF 不是独立部署，
-	//      响应头还带出 CF-RAY / cf-nel（跨平台耦合的直接证据）。
-	//   ② 中间件拦 /static 再 next() —— 多此一举：EO 静态层**自带**目录索引与
-	//      无斜杠 301（/repo/S26-1_202609/ 就是纯静态树直出 200、无斜杠 301
-	//      到带斜杠，实测过）。中间件不拦，静态树照样正确解析。
+	// ★ 中间件在这里**只做一件事：补尾斜杠**（2026-11-02 用户实测踩到的坑）。
 	//
-	// ⇒ 中间件对本路径**不做任何事**：不在 matcher 里（见文件末尾 config），
-	//   请求直接落到部署产物。字节在 deploy 分支的 static/ 目录里（由
-	//   deploy.yml 从 Static-Contract 仓的 site/dist 拷入），响应头由 EdgeOne
-	//   静态层按文件类型自己生成。中间件不参与，也就不存在第二处头语义产地。
+	//   页面产物里全是**相对链接**（'contract/x.md'、'LICENSE'）且没有 <base>。
+	//   浏览器在 '/static'（无斜杠）上会把 'contract/x.md' 解析成 '/contract/x.md'
+	//   —— 那个路径不存在，EdgeOne 会落到 611B 站点兜底页，而且**返回 200**，
+	//   所以表现为「链接点不开」而不是 404。
+	//
+	//   GitHub Pages 自己会 301 补斜杠（所以那条通道没这个病）；EdgeOne 静态层
+	//   不会（实测 /static → 200 而非 301）。⇒ 这道跳转必须由中间件补上。
+	//
+	// 为什么其余一概不碰：字节在 deploy 分支的 static/ 目录里，响应头由静态层按
+	// 文件类型生成。中间件不参与内容，也就不存在第二处头语义产地。
+	if (url.pathname === "/static") {
+		const redirectUrl = new URL(request.url);
+		redirectUrl.pathname = "/static/";
+		return Response.redirect(redirectUrl.toString(), 301);
+	}
 
 	// Reverse-proxy /repo/<repoName>/* to https://archivalera.github.io/<repoName>/*
 	if (url.pathname === "/repo" || url.pathname === "/repo/") {
@@ -892,7 +897,8 @@ export const config = {
 		"/repo",
 		"/repo/:path*",
 		"/Bahnhof",
-		// 注意：**没有** /static。那条路是纯静态树直出，中间件不参与
-		// （理由见上方 /static 注释块）。
+		// /static 只需拦「无斜杠」那一条（补 301）；其余 /static/* 交给静态树直出，
+		// 所以 matcher 只列裸路径，不列通配。
+		"/static",
 	],
 };

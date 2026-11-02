@@ -28,7 +28,14 @@ performance-sensitive places get no compromises.
   deploy branch served directly by EdgeOne Makers; the middleware takes no
   part in it (there is no `/static` in its matcher, and the EdgeOne static
   layer already handles directory indexing and the missing-trailing-slash
-  redirect). The bytes are taken from **that repo's `deploy` branch** (their
+  redirect). The middleware does exactly one thing here: `/static` (no
+  trailing slash) → 301 to `/static/`. **Nothing else.** EdgeOne's static
+  layer does not add the trailing slash (measured: 200, not 301), and the
+  page uses relative links with no `<base>`, so without the slash the
+  browser resolves `contract/x.md` to `/contract/x.md`, hits the 611B
+  fallback page and — crucially — **gets a 200**, which reads as "link
+  opens nothing" rather than 404. GitHub Pages adds the slash itself, so
+  that channel never had the problem. The bytes are taken from **that repo's `deploy` branch** (their
   single origin, strictly derived by `sync-catalogue.py`); neither a local
   build (which yields only the empty source-fallback catalogue) nor a copy of
   `site/dist` (which does not exist there — it is gitignored) would be right.

@@ -14,8 +14,11 @@ isui.ren 的入口页（`/heart`）：tayori 粉丝站的门面——三球队�
 - **`/static` 契约站通道**：`Static-Contract` 契约文档站（三通道并行的第三路：
   GitHub Pages、Cloudflare `static.mango-mesa.ccwu.cc/static/`、以及本站
   `isui.ren/static`）。**三条线各自独立部署**——本站这条是 deploy 分支里的
-  `static/` 静态树由 EdgeOne Makers 直出，中间件完全不参与（matcher 里没有
-  `/static`；EO 静态层自带目录索引与无斜杠 301）。产物**取自对方仓的 `deploy`
+  `static/` 静态树由 EdgeOne Makers 直出，中间件只做一件事：
+  `/static`（无斜杠）→ 301 补斜杠。**其余一概不参与**——EO 静态层
+  不做目录补斜杠（实测返回 200 而非 301），而页面全是相对链接且无 `<base>`，
+  缺斜杠时浏览器会把 `contract/x.md` 解析成 `/contract/x.md`，落到 611B 兜底页
+  且**返回 200**，表现为「链接点不开」。GitHub Pages 自己会补，所以那条没这个病。产物**取自对方仓的 `deploy`
   分支**（那是他们的唯一产地，经 `sync-catalogue.py` 严格派生）；不跑构建器、
   也不拷 `site/dist`——前者只出源码兜底的空 catalogue，后者在对方仓里根本不存在。
   **搬运按对方的 `files.json` 清单执行**（`scripts/stage-static-tree.py`），不手写
