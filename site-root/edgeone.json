@@ -19,6 +19,11 @@
       "source": "/static",
       "destination": "/static/",
       "statusCode": 301
+    },
+    {
+      "source": "/probe-crossorigin-redirect-98765",
+      "destination": "https://github.com/ArchivalEra/LLVM-wasm/releases/download/v0.1.6/manifest.json",
+      "statusCode": 302
     }
   ]
 }
