@@ -21,18 +21,18 @@
       "statusCode": 301
     },
     {
-      "source": "/probe-wild-one/:path*",
-      "destination": "https://github.com/ArchivalEra/LLVM-wasm/releases/download/v0.1.6/manifest.json",
+      "source": "/probe-cap-dollar1/*",
+      "destination": "https://raw.githubusercontent.com/ArchivalEra/Static-Contract/deploy/:$1",
       "statusCode": 302
     },
     {
-      "source": "/probe-wild-two/:splat",
-      "destination": "https://github.com/ArchivalEra/LLVM-wasm/releases/download/v0.1.6/manifest.json",
+      "source": "/probe-cap-splat/*",
+      "destination": "https://raw.githubusercontent.com/ArchivalEra/Static-Contract/deploy/:splat",
       "statusCode": 302
     },
     {
-      "source": "/probe-wild-three/*",
-      "destination": "https://github.com/ArchivalEra/LLVM-wasm/releases/download/v0.1.6/manifest.json",
+      "source": "/probe-cap-star/*",
+      "destination": "https://raw.githubusercontent.com/ArchivalEra/Static-Contract/deploy/*",
       "statusCode": 302
     }
   ]

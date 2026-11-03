@@ -47,6 +47,9 @@ performance-sensitive places get no compromises.
   `static.mango-mesa.ccwu.cc/`): per-file **content
   fingerprint** checks that catch both the fallback-page disguise and any drift
   from the source artifact — agreement between channels is not evidence.
+  **Release bytes are fetched** through a cross-origin **302 with wildcards**
+  declared in `edgeone.json` (measured: `302 Found` +
+  `Location: https://github.com/...`); this site still hosts zero bytes.
 - **Window stage**: the logo and the three balls share one coordinate
   system (a borderless 1280×720 window) that scales uniformly with
   `scale()` — composition stays locked at any screen size.
