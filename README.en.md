@@ -50,6 +50,8 @@ performance-sensitive places get no compromises.
   **Release bytes are fetched** through a cross-origin **302 with wildcards**
   declared in `edgeone.json` (measured: `302 Found` +
   `Location: https://github.com/...`); this site still hosts zero bytes.
+  Wildcards use `:splat*`; whether its own files or the redirect wins
+  when both match is measured, not assumed.
 - **Window stage**: the logo and the three balls share one coordinate
   system (a borderless 1280×720 window) that scales uniformly with
   `scale()` — composition stays locked at any screen size.
