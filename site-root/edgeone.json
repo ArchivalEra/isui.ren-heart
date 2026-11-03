@@ -19,11 +19,6 @@
       "source": "/static",
       "destination": "/static/",
       "statusCode": 301
-    },
-    {
-      "source": "/static/catalogue.json",
-      "destination": "https://raw.githubusercontent.com/ArchivalEra/Static-Contract/deploy/index.html",
-      "statusCode": 302
     }
   ]
 }
