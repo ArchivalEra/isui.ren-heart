@@ -29,7 +29,9 @@ performance-sensitive places get no compromises.
   part in it (there is no `/static` in its matcher, and the EdgeOne static
   layer already handles directory indexing and the missing-trailing-slash
   redirect). **The middleware takes no part in it at all** (there is no `/static` in
-  its matcher). The trailing-slash 301 is declared in
+  its matcher). Release bytes are reached by a cross-origin 302 rule in
+  `edgeone.json` that sends `/static/<owner>/<repo>/<tag>/<file>` to GitHub
+  releases — the site itself still hosts zero bytes. The trailing-slash 301 is declared in
   `site-root/edgeone.json` — the platform mechanism, the same place that
   serves `/blog → /Blog`. EdgeOne's static layer does not add the slash
   itself (measured: 200, not 301), and the

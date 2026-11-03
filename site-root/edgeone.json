@@ -19,6 +19,11 @@
       "source": "/static",
       "destination": "/static/",
       "statusCode": 301
+    },
+    {
+      "source": "/static/LLVM-wasm/v0.1.6/manifest.json",
+      "destination": "https://github.com/ArchivalEra/LLVM-wasm/releases/download/v0.1.6/manifest.json",
+      "statusCode": 302
     }
   ]
 }
