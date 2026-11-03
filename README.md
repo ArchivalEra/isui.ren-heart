@@ -14,9 +14,7 @@ isui.ren 的入口页（`/heart`）：tayori 粉丝站的门面——三球队�
 - **`/static` 契约站通道**：`Static-Contract` 契约文档站（三通道并行的第三路：
   GitHub Pages、Cloudflare `static.mango-mesa.ccwu.cc/static/`、以及本站
   `isui.ren/static`）。**三条线各自独立部署**——本站这条是 deploy 分支里的
-  `static/` 静态树由 EdgeOne Makers 直出，**中间件完全不参与它**（matcher 里没有 `/static`）。release 产物的取货路径由
-  `edgeone.json` 的跨域 302 规则把 `/static/<owner>/<repo>/<tag>/<file>` 指到
-  GitHub releases —— 站点自身仍零字节托管。补斜杠那道 301 由
+  `static/` 静态树由 EdgeOne Makers 直出，**中间件完全不参与它**（matcher 里没有 `/static`）。补斜杠那道 301 由
   `site-root/edgeone.json` 声明（平台机制，跟 `/blog → /Blog` 同一处）——
   EO 静态层不自动补斜杠（实测 `/static` 返回 200 而非 301），而页面全是
   相对链接且无 `<base>`，缺斜杠时浏览器把 `contract/x.md` 解析成
