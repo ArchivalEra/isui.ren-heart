@@ -23,13 +23,10 @@ performance-sensitive places get no compromises.
 
 - **`/static` contract-site channel**: the `Static-Contract` specification
   site (the third of three parallel channels: GitHub Pages, Cloudflare at
-  `static.mango-mesa.ccwu.cc/static/`, and `isui.ren/static` here). **Each
+  `static.mango-mesa.ccwu.cc/` (root), and `isui.ren/static` here). **Each
   channel is deployed independently** — this one is a `static/` tree on the
-  deploy branch served directly by EdgeOne Makers; the middleware takes no
-  part in it (there is no `/static` in its matcher, and the EdgeOne static
-  layer already handles directory indexing and the missing-trailing-slash
-  redirect). **The middleware takes no part in it at all** (there is no `/static` in
-  its matcher). The trailing-slash 301 is declared in
+  deploy branch served directly by EdgeOne Makers; **the middleware takes no
+  part in it at all** (there is no `/static` in its matcher). The trailing-slash 301 is declared in
   `site-root/edgeone.json` — the platform mechanism, the same place that
   serves `/blog → /Blog`. EdgeOne's static layer does not add the slash
   itself (measured: 200, not 301), and the

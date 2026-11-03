@@ -12,7 +12,7 @@ isui.ren 的入口页（`/heart`）：tayori 粉丝站的门面——三球队�
 ## 亮点
 
 - **`/static` 契约站通道**：`Static-Contract` 契约文档站（三通道并行的第三路：
-  GitHub Pages、Cloudflare `static.mango-mesa.ccwu.cc/static/`、以及本站
+  GitHub Pages、Cloudflare `static.mango-mesa.ccwu.cc/`（根路径）、以及本站
   `isui.ren/static`）。**三条线各自独立部署**——本站这条是 deploy 分支里的
   `static/` 静态树由 EdgeOne Makers 直出，**中间件完全不参与它**（matcher 里没有 `/static`）。补斜杠那道 301 由
   `site-root/edgeone.json` 声明（平台机制，跟 `/blog → /Blog` 同一处）——
@@ -28,6 +28,8 @@ isui.ren 的入口页（`/heart`）：tayori 粉丝站的门面——三球队�
   （6 条自证，两条通道的 base 与各自部署位置一致：Cloudflare 已移到根
   `static.mango-mesa.ccwu.cc/`）：按 `files.json` 逐条比**内容指纹**，既判「是不是兜底页伪装」
   也判「与源产物是否逐字节相同」——通道之间「一致」不算证据。
+  **release 产物的取货**走 `edgeone.json` 的**跨域 302**（实测有效：
+  `302 Found` + `Location: https://github.com/...`），本站仍零字节托管。
 - **窗口舞台**：logo 与三球固定在同一坐标系（1280×720 无边框窗口），窗口整体
   `scale()` 等比缩放——任何屏幕尺寸下构图恒定，没有"响应式坐标换算"的生存空间。
 - **三球引擎**（Rust/wasm）：一球一链、弧长共享链、云中心（Frenet 偏移 + EMA）、

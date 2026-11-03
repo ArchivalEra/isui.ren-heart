@@ -21,7 +21,17 @@
       "statusCode": 301
     },
     {
-      "source": "/probe-crossorigin-redirect-98765",
+      "source": "/probe-wild-one/:path*",
+      "destination": "https://github.com/ArchivalEra/LLVM-wasm/releases/download/v0.1.6/manifest.json",
+      "statusCode": 302
+    },
+    {
+      "source": "/probe-wild-two/:splat",
+      "destination": "https://github.com/ArchivalEra/LLVM-wasm/releases/download/v0.1.6/manifest.json",
+      "statusCode": 302
+    },
+    {
+      "source": "/probe-wild-three/*",
       "destination": "https://github.com/ArchivalEra/LLVM-wasm/releases/download/v0.1.6/manifest.json",
       "statusCode": 302
     }
