@@ -114,6 +114,19 @@ cd web-rust && cargo test
 python3 serve.py 8080          # http://127.0.0.1:8080/#/heart
 ```
 
+## Deployment
+
+Push to `main` -> Actions builds wasm + dist -> pushes the `deploy` branch
+-> EdgeOne Makers pulls and deploys it. A separate accelerated domain,
+`static.isui.ren`, is split by the EdgeOne rule engine on path (site files
+go to the `deploy-eo` branch of `raw`; release paths go to `github.com`
+and follow the 302 to fetch bytes).
+
+The rule engine has sharp edges. **Read `docs/edgeone-rules-verified-config.md`
+before touching this zone** — the core point: multiple rules **merge**
+rather than being mutually exclusive, so a higher-priority rule must
+declare every action it wants to change.
+
 ## Debugger
 
 Bottom-left **debug** button:

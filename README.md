@@ -76,6 +76,15 @@ cd web-rust && cargo test
 python3 serve.py 8080          # http://127.0.0.1:8080/#/heart
 ```
 
+## 部署
+
+推 `main` → Actions 构建 wasm + dist → 推 `deploy` 分支 → EdgeOne Makers 拉取部署。
+另有独立加速域名 `static.isui.ren` 由 EdgeOne 规则引擎按路径分流（站点文件回 `raw` 的
+`deploy-eo` 分支，release 路径回 `github.com` 并跟随 302 取字节）。
+
+规则引擎的坑很深，改这个 zone 之前**必读** `docs/edgeone-rules-verified-config.md`
+（核心：多条规则是**合并**不是独占，高优先级必须显式声明每一个要改的动作）。
+
 ## 调试器
 
 页面左下角 **调试**：

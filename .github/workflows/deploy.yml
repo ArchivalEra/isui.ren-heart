@@ -92,7 +92,8 @@ jobs:
           fi
           rm -rf /tmp/deploy-out
           # 应用住在 /heart/ 子目录（vite base 同步为 /heart/）；
-          # 站点根 = 跳转页 + 404 页（site-root/），死路径由 404.html 接管
+          # 站点根 = edgeone.json 重定向表 + 404 页（site-root/）。
+          # 不再有兜底 index.html——未知路径必须是真 404，不能被 200 吞掉。
           mkdir -p /tmp/deploy-out/heart
           cp -r web-ui/dist/. /tmp/deploy-out/heart/
           cp -r site-root/. /tmp/deploy-out/
