@@ -14,11 +14,6 @@
       "source": "/mangomesa/",
       "destination": "/MangoMesa/",
       "statusCode": 301
-    },
-    {
-      "source": "/static",
-      "destination": "/static/",
-      "statusCode": 301
     }
   ]
 }
