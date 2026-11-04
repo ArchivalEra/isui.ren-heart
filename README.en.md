@@ -25,10 +25,12 @@ performance-sensitive places get no compromises.
   site (the third of three parallel channels: GitHub Pages, Cloudflare at
   `static.mango-mesa.ccwu.cc/` (root), and `isui.ren/static` here). **Each
   channel is deployed independently** — this one is a `static/` tree on the
-  deploy branch served directly by EdgeOne Makers. The middleware takes **no part** in it (no `/static` in its matcher).
-  Release bytes are fetched through a separate acceleration host,
-  `static.isui.ren` (EdgeOne rule engine `ModifyOrigin` + `UpstreamFollowRedirect`;
-  bytes really pass through the edge — see mail/032). The trailing-slash 301 is declared in
+  deploy branch served directly by EdgeOne Makers. **Moved to a dedicated acceleration host `static.isui.ren` on 2026-11-04**
+  (the apex `/static` path was deleted so the two copies cannot drift apart).
+  EdgeOne rules split it by path: site paths → `raw.githubusercontent.com`
+  branch `deploy-eo` (path rewrite + Host header + Content-Type fix), release
+  paths → `github.com` with `UpstreamFollowRedirect` chasing release-assets.
+  Bytes really pass through the edge and are cached (`eo-cache-status` / `age`). The trailing-slash 301 is declared in
   `site-root/edgeone.json` — the platform mechanism, the same place that
   serves `/blog → /Blog`. EdgeOne's static layer does not add the slash
   itself (measured: 200, not 301), and the

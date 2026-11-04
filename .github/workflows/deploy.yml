@@ -96,40 +96,10 @@ jobs:
           mkdir -p /tmp/deploy-out/heart
           cp -r web-ui/dist/. /tmp/deploy-out/heart/
           cp -r site-root/. /tmp/deploy-out/
-          # ── static/：Static-Contract 契约站（三通道并行的 EdgeOne 那一路）──
-          # 三条线独立部署：Pages 由对方仓自己的管线发、Cloudflare 由我维护的
-          # static-host Worker 发、EdgeOne 这条由本仓 deploy 分支的静态树直出。
-          # **不做「eo 反代 cf」**——那不是独立部署，响应头还会带出 CF-RAY。
-          #
-          # 取字节的方式：**取对方仓 `deploy` 分支**（那是他们的唯一产地）。
-          # 曾试过另外两种，都不对，记下来免得重走：
-          #   ① 拷 site/dist —— 那是对方仓 gitignore 的构建物，clone 下来不存在。
-          #   ② 跑 scripts/build-site.py —— 产出的是「源码兜底」的空 catalogue
-          #      （0 条），而真产物是 sync-catalogue.py 派生出来的（16 条，要打
-          #      GitHub API 逐个 release 验字节）。两条路产出**不同东西**，
-          #      「一份产物」就不成立 —— 对方 `007` 就是这么抓到通道停在旧快照的。
-          #
-          # deploy 分支产物自带 STATIC-CONTRACT-BUILD 指纹，可与 Pages、Cloudflare
-          # 逐字核对（对方 scripts/verify-channels.py 的判据就是这个）。
-          # 分支按镜像源拆分（用户裁定 2026-11-04，对方 mail/013）：deploy-eo 的
-          # catalogue.base 指向 static.isui.ren（本仓这条镜像），deploy-cf 指向 CF。
-          # 旧的 deploy 分支已停更 —— 继续读它会让站点产物冻结在旧版本
-          # （对方 CI 的 P3 指纹判据就是这么抓到的）。
-          if git clone --depth 1 --branch deploy-eo \
-               https://github.com/ArchivalEra/Static-Contract.git /tmp/sc 2>/dev/null; then
-            # ★ 按对方的 files.json 搬，**不再手写文件名列表**。
-            # 手写列表必漂：原来的列表漏了 LICENSE（AGPL 合规文件，对方 11-01
-            # 才加进产物），于是 /static/LICENSE 落到 611B 的站点兜底页 ——
-            # 而那页返回 **200**，只看状态码的检查全部通过（对方 `009` 抓到的死链）。
-            # files.json 是对方构建时写进产物的精确清单（带「与实际产物逐条相等」
-            # 的自证），镜像方照抄它，对方再加文件这里自动跟上。
-            # 脚本自证：python3 scripts/stage-static-tree.py --selftest（5 PASS）。
-            python3 scripts/stage-static-tree.py --src /tmp/sc --out /tmp/deploy-out/static
-            echo "static/: $(find /tmp/deploy-out/static -type f | wc -l) files"
-            python3 -c "import json;d=json.load(open('/tmp/deploy-out/static/catalogue.json'));print('catalogue releases:',len(d.get('releases',[])))"
-          else
-            echo "::warning::取 Static-Contract deploy 分支失败 —— /static 将 404"
-          fi
+          # ── static/ 已移除（2026-11-04 用户裁定）──
+          # 契约站迁到独立加速域名 static.isui.ren（EdgeOne 规则引擎按路径分流：
+          # 站点路径 → raw deploy-eo，release 路径 → github.com）。
+          # 主域 /static 删掉，避免两处同内容各自漂移。
           # 先删本地分支——deploy 已存在时 checkout --orphan 会游离,绿勾假象
           git branch -D deploy 2>/dev/null || true
           git checkout --orphan deploy
