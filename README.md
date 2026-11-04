@@ -54,13 +54,14 @@ web-rust/   三球动画核心（Rust → wasm32）
 web-ui/     Preact 10 + Vite 8 + TS（性能要求低的部分）
   ├─ src/       Heart（窗口舞台）/ BallsCanvas / Typewriter / CardWall
   └─ build.sh   cargo → wasm-bindgen → wasm-opt → vite 一键构建
-site-root/  部署到站点根的静态文件（根跳转页、404 页、logo）
+site-root/  部署到站点根的静态文件（edgeone.json 重定向、404 页、logo、中间件）
 docs/       架构文档、ADR、部署笔记、研究档案
 CONTEXT.md  领域术语表
 ```
 
-应用固定部署在 `isui.ren/heart/` 子目录（vite `base: "/heart/"`）；站点根只有跳转页与 404 页，
-死路径由 EdgeOne 的 `404.html` 约定接管。`Bahnhof/` 子目录归 [Bahnhof](https://github.com/ArchivalEra/isui.ren-Bahnhof) 仓库的流水线所有。
+应用固定部署在 `isui.ren/heart/` 子目录（vite `base: "/heart/"`）；站点根携带 404 页与
+`edgeone.json` 重定向表，不再有兜底 `index.html` —— 未知路径返回**真 404**（不再 200 吞掉），
+`/` 的跳转由 `edgeone.json` 的 301 承担。`Bahnhof/` 子目录归 [Bahnhof](https://github.com/ArchivalEra/isui.ren-Bahnhof) 仓库的流水线所有。
 
 ## 构建 / 测试 / 预览
 

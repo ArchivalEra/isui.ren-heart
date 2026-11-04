@@ -86,16 +86,19 @@ web-rust/   three-ball animation core (Rust -> wasm32)
   └─ lib.rs     wasm exports: start_balls / toggle_trail_style / debug API
 web-ui/     Preact 10 + Vite 8 + TS (the less performance-critical parts)
   └─ build.sh   cargo -> wasm-bindgen -> wasm-opt -> vite, one shot
-site-root/  static files deployed to the site root (hop page, 404 page, logos)
+site-root/  static files deployed to the site root (edgeone.json redirects,
+            404 page, logos, middleware)
 docs/       architecture docs, ADRs, deploy notes, research archive
 CONTEXT.md  domain glossary (Chinese)
 ```
 
-The app lives under `isui.ren/heart/` (vite `base: "/heart/"`); the site
-root carries only the hop page and the 404 page — dead paths are handled
-by EdgeOne's `404.html` convention. The `Bahnhof/` subdirectory belongs
-to the [Bahnhof](https://github.com/ArchivalEra/isui.ren-Bahnhof)
-repository's pipeline.
+The app lives under `isui.ren/heart/` (vite `base: "/heart/"`). The site
+root carries the 404 page and the `edgeone.json` redirect table — there is
+no fallback `index.html` any more, so unknown paths return a **real 404**
+instead of being swallowed as 200, and the `/` hop is a 301 from
+`edgeone.json`. The `Bahnhof/` subdirectory belongs to the
+[Bahnhof](https://github.com/ArchivalEra/isui.ren-Bahnhof) repository's
+pipeline.
 
 ## Build / test / preview
 
