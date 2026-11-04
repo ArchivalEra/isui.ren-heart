@@ -19,8 +19,8 @@ isui.ren 的入口页（`/heart`）：tayori 粉丝站的门面——三球队�
   EO 静态层不自动补斜杠（实测 `/static` 返回 200 而非 301），而页面全是
   相对链接且无 `<base>`，缺斜杠时浏览器把 `contract/x.md` 解析成
   `/contract/x.md`，落到 611B 兜底页且**返回 200**，表现为「链接点不开」。
-  GitHub Pages 自己会补，所以那条没这个病。产物**取自对方仓的 `deploy`
-  分支**（那是他们的唯一产地，经 `sync-catalogue.py` 严格派生）；不跑构建器、
+  GitHub Pages 自己会补，所以那条没这个病。产物**取自对方仓的 `deploy-eo`
+  分支**（2026-11-04 起按镜像源拆分支：deploy-eo 的 base 指向 static.isui.ren，deploy-cf 指向 CF）（那是他们的唯一产地，经 `sync-catalogue.py` 严格派生）；不跑构建器、
   也不拷 `site/dist`——前者只出源码兜底的空 catalogue，后者在对方仓里根本不存在。
   **搬运按对方的 `files.json` 清单执行**（`scripts/stage-static-tree.py`），不手写
   文件名——手写列表漏过 `LICENSE`，而 EO 对缺失路径返回 **200 + 兜底页**，

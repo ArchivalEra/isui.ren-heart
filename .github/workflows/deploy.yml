@@ -111,7 +111,11 @@ jobs:
           #
           # deploy 分支产物自带 STATIC-CONTRACT-BUILD 指纹，可与 Pages、Cloudflare
           # 逐字核对（对方 scripts/verify-channels.py 的判据就是这个）。
-          if git clone --depth 1 --branch deploy \
+          # 分支按镜像源拆分（用户裁定 2026-11-04，对方 mail/013）：deploy-eo 的
+          # catalogue.base 指向 static.isui.ren（本仓这条镜像），deploy-cf 指向 CF。
+          # 旧的 deploy 分支已停更 —— 继续读它会让站点产物冻结在旧版本
+          # （对方 CI 的 P3 指纹判据就是这么抓到的）。
+          if git clone --depth 1 --branch deploy-eo \
                https://github.com/ArchivalEra/Static-Contract.git /tmp/sc 2>/dev/null; then
             # ★ 按对方的 files.json 搬，**不再手写文件名列表**。
             # 手写列表必漂：原来的列表漏了 LICENSE（AGPL 合规文件，对方 11-01

@@ -36,7 +36,7 @@ performance-sensitive places get no compromises.
   browser resolves `contract/x.md` to `/contract/x.md`, hits the 611B
   fallback page and — crucially — **gets a 200**, which reads as "link
   opens nothing" rather than 404. GitHub Pages adds the slash itself, so
-  that channel never had the problem. The bytes are taken from **that repo's `deploy` branch** (their
+  that channel never had the problem. The bytes are taken from **that repo's `deploy-eo` branch** (branches split per mirror on 2026-11-04: deploy-eo's base points at static.isui.ren, deploy-cf at Cloudflare) (their
   single origin, strictly derived by `sync-catalogue.py`); neither a local
   build (which yields only the empty source-fallback catalogue) nor a copy of
   `site/dist` (which does not exist there — it is gitignored) would be right.
