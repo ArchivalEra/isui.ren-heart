@@ -32,7 +32,7 @@ performance-sensitive places get no compromises.
   paths → `github.com` with `UpstreamFollowRedirect` chasing release-assets.
   Bytes really pass through the edge and are cached (`eo-cache-status` / `age`).
   The `/static → /static/` redirect in `edgeone.json` was removed along with the path.
-  Probing a `notFound` field so unknown paths return a real 404 (kept or dropped by result). The trailing-slash 301 is declared in
+The trailing-slash 301 is declared in
   `site-root/edgeone.json` — the platform mechanism, the same place that
   serves `/blog → /Blog`. EdgeOne's static layer does not add the slash
   itself (measured: 200, not 301), and the
