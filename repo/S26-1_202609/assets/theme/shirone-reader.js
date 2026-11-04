@@ -1,0 +1,393 @@
+// Shirone M3E Reader Interactive Script
+(function () {
+  // Theme Toggle
+  // 2026-10-19：明暗切换从顶栏按钮**收进调色盘**（用户定案）。
+  // 顶栏位置改成调色盘的手形图标；切换在弹层里做。
+  const currentTheme = localStorage.getItem("theme") ||
+    (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+
+  if (currentTheme === "dark") {
+    document.documentElement.setAttribute("data-theme", "dark");
+  } else {
+    document.documentElement.setAttribute("data-theme", "light");
+  }
+
+  /** 把当前主题同步到弹层里的两个按钮（选中态 + aria-pressed）。 */
+  function syncThemeButtons() {
+    const active = document.documentElement.getAttribute("data-theme") || "light";
+    document.querySelectorAll("[data-theme-set]").forEach((btn) => {
+      const on = btn.getAttribute("data-theme-set") === active;
+      btn.classList.toggle("active", on);
+      btn.setAttribute("aria-pressed", on ? "true" : "false");
+    });
+  }
+
+  function setTheme(next) {
+    if (next !== "light" && next !== "dark") return;
+    document.documentElement.setAttribute("data-theme", next);
+    localStorage.setItem("theme", next);
+    syncThemeButtons();
+  }
+
+  syncThemeButtons();
+  document.querySelectorAll("[data-theme-set]").forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();   // 别让弹层的「点外部关闭」把这次点击吃掉
+      setTheme(btn.getAttribute("data-theme-set"));
+    });
+  });
+
+  // Drawer Toggle (Mobile slide-out & Desktop sidebar collapse)
+  const drawerToggleBtn = document.getElementById("drawer-toggle");
+  const drawer = document.getElementById("m3-drawer");
+  const backdrop = document.getElementById("drawer-backdrop");
+
+  function toggleDrawer() {
+    if (window.innerWidth <= 860) {
+      if (!drawer) return;
+      const isOpen = drawer.classList.contains("open");
+      if (isOpen) {
+        drawer.classList.remove("open");
+        if (backdrop) backdrop.classList.remove("open");
+      } else {
+        drawer.classList.add("open");
+        if (backdrop) backdrop.classList.add("open");
+      }
+    } else {
+      document.body.classList.toggle("sidebar-collapsed");
+    }
+  }
+
+  if (drawerToggleBtn) drawerToggleBtn.addEventListener("click", toggleDrawer);
+  if (backdrop) backdrop.addEventListener("click", toggleDrawer);
+
+  // Desktop Brand Collapse Button
+  const drawerCollapseBtn = document.getElementById("drawer-collapse-btn");
+  if (drawerCollapseBtn) {
+    drawerCollapseBtn.addEventListener("click", () => {
+      document.body.classList.toggle("sidebar-collapsed");
+    });
+  }
+
+  // Keyboard shortcut: "[" to toggle sidebar
+  window.addEventListener("keydown", (e) => {
+    if (e.key === "[" && !["INPUT", "TEXTAREA"].includes(document.activeElement?.tagName)) {
+      e.preventDefault();
+      toggleDrawer();
+    }
+  });
+
+  // Sidebar Resizer (Desktop drag-to-resize & double-click reset)
+  const resizer = document.getElementById("sidebar-resizer");
+  const DEFAULT_SIDEBAR_WIDTH = 320;
+  const MIN_SIDEBAR_WIDTH = 240;
+  const MAX_SIDEBAR_WIDTH = 580;
+
+  // Restore saved width on desktop
+  const savedWidth = localStorage.getItem("shirone-sidebar-width");
+  if (savedWidth && window.innerWidth > 860) {
+    const num = parseInt(savedWidth, 10);
+    if (!isNaN(num) && num >= MIN_SIDEBAR_WIDTH && num <= MAX_SIDEBAR_WIDTH) {
+      document.documentElement.style.setProperty("--sidebar-width", num + "px");
+    }
+  }
+
+  if (resizer) {
+    let isResizing = false;
+    let startX = 0;
+    let startWidth = 0;
+
+    resizer.addEventListener("mousedown", (e) => {
+      if (window.innerWidth <= 860) return;
+      isResizing = true;
+      startX = e.clientX;
+      const currentW = drawer ? drawer.getBoundingClientRect().width : DEFAULT_SIDEBAR_WIDTH;
+      startWidth = currentW;
+      resizer.classList.add("resizing");
+      document.body.classList.add("sidebar-resizing");
+      document.body.style.cursor = "col-resize";
+      document.body.style.userSelect = "none";
+      e.preventDefault();
+    });
+
+    window.addEventListener("mousemove", (e) => {
+      if (!isResizing) return;
+      const dx = e.clientX - startX;
+      let newWidth = Math.round(startWidth + dx);
+      if (newWidth < MIN_SIDEBAR_WIDTH) newWidth = MIN_SIDEBAR_WIDTH;
+      if (newWidth > MAX_SIDEBAR_WIDTH) newWidth = MAX_SIDEBAR_WIDTH;
+      document.documentElement.style.setProperty("--sidebar-width", newWidth + "px");
+    });
+
+    window.addEventListener("mouseup", () => {
+      if (!isResizing) return;
+      isResizing = false;
+      resizer.classList.remove("resizing");
+      document.body.classList.remove("sidebar-resizing");
+      document.body.style.cursor = "";
+      document.body.style.userSelect = "";
+      if (drawer) {
+        const finalW = Math.round(drawer.getBoundingClientRect().width);
+        localStorage.setItem("shirone-sidebar-width", finalW);
+      }
+    });
+
+    resizer.addEventListener("dblclick", () => {
+      document.documentElement.style.setProperty("--sidebar-width", DEFAULT_SIDEBAR_WIDTH + "px");
+      localStorage.setItem("shirone-sidebar-width", DEFAULT_SIDEBAR_WIDTH);
+    });
+  }
+
+  // Collapsible Navigation Groups (Accordion & Collapse-All)
+  const navGroups = document.querySelectorAll(".drawer-nav-group");
+  const toggleAllBtn = document.getElementById("toggle-all-groups-btn");
+  const toggleAllText = document.getElementById("toggle-all-text");
+
+  function updateToggleAllButtonState() {
+    if (!toggleAllBtn || !toggleAllText) return;
+    const hasExpanded = Array.from(navGroups).some(g => g.classList.contains("expanded"));
+    toggleAllText.textContent = hasExpanded ? "全部收起" : "全部展开";
+  }
+
+  navGroups.forEach(group => {
+    const collapseBtn = group.querySelector(":scope > .nav-group-header .nav-collapse-btn");
+    const clickableHeader = group.querySelector(":scope > .nav-group-header.nav-header-clickable");
+
+    function toggleGroup(e) {
+      if (e) e.stopPropagation();
+      const isExpanded = group.classList.contains("expanded");
+      if (isExpanded) {
+        group.classList.remove("expanded");
+        group.classList.add("collapsed");
+      } else {
+        group.classList.remove("collapsed");
+        group.classList.add("expanded");
+      }
+      updateToggleAllButtonState();
+    }
+
+    if (collapseBtn) {
+      collapseBtn.addEventListener("click", toggleGroup);
+    }
+    if (clickableHeader) {
+      clickableHeader.addEventListener("click", toggleGroup);
+    }
+  });
+
+  if (toggleAllBtn) {
+    toggleAllBtn.addEventListener("click", () => {
+      const hasExpanded = Array.from(navGroups).some(g => g.classList.contains("expanded"));
+      navGroups.forEach(group => {
+        if (hasExpanded) {
+          group.classList.remove("expanded");
+          group.classList.add("collapsed");
+        } else {
+          group.classList.remove("collapsed");
+          group.classList.add("expanded");
+        }
+      });
+      updateToggleAllButtonState();
+    });
+  }
+
+  // Copy Code —— **事件委托**（2026-10-31 修 issue #17）。
+  //
+  // 旧实现是启动时 `querySelectorAll(".copy-btn").forEach(绑定)`：只在首屏那一次
+  // 生效，而 copy-btn 在 `.article-content` **内**——SPA 换页换掉正文 DOM 之后，
+  // 新页的按钮没有监听器，点了没反应（首屏直达正常，站内跳转后失效）。
+  // 委托到 document 上就没有「换页要重绑」这回事，与 spa-router 的点击委托同一套手法。
+  //
+  // ⚠️ 用 closest 而不是 e.target.classList：按钮里可能有子节点，
+  // 点到的可能是子节点而不是按钮本身。
+  document.addEventListener("click", async (e) => {
+    const btn = e.target && e.target.closest ? e.target.closest(".copy-btn") : null;
+    if (!btn) return;
+    const wrap = btn.closest(".code-fence-wrapper");
+    const codeBlock = wrap && wrap.querySelector("code");
+    if (!codeBlock) return;
+    try {
+      await navigator.clipboard.writeText(codeBlock.innerText);
+      const originalText = btn.textContent;
+      btn.textContent = "已复制";
+      btn.style.color = "var(--md-sys-color-primary)";
+      setTimeout(() => {
+        btn.textContent = originalText;
+        btn.style.color = "";
+      }, 1800);
+    } catch (err) {
+      console.error("复制失败", err);
+    }
+  });
+
+  // Theme Palette (Color Picker & Presets)
+  const DEFAULT_HUE = 248;
+  const paletteToggleBtn = document.getElementById("palette-toggle");
+  const palettePopover = document.getElementById("palette-popover");
+  const hueSlider = document.getElementById("hue-slider");
+  const hueBadge = document.getElementById("palette-hue-badge");
+  const resetBtn = document.getElementById("palette-reset-btn");
+  const swatchButtons = document.querySelectorAll(".palette-swatch-item");
+  const fontSlider = document.getElementById("font-size-slider");
+  const fontSizeValue = document.getElementById("font-size-value");
+  const fontSample = document.getElementById("font-sample");
+
+  function applyHue(hue, save = true) {
+    const val = parseInt(hue, 10);
+    document.documentElement.style.setProperty("--hue", val);
+    document.documentElement.style.setProperty("--primary-h", val);
+    if (hueBadge) hueBadge.textContent = `Hue ${val}°`;
+    if (hueSlider) hueSlider.value = val;
+
+    swatchButtons.forEach(btn => {
+      const btnHue = parseInt(btn.getAttribute("data-hue"), 10);
+      if (btnHue === val) {
+        btn.classList.add("active");
+      } else {
+        btn.classList.remove("active");
+      }
+    });
+
+    if (save) {
+      localStorage.setItem("theme-hue", val);
+    }
+  }
+
+  // Load saved hue or default
+  const savedHue = localStorage.getItem("theme-hue");
+  if (savedHue !== null) {
+    applyHue(savedHue, false);
+  } else {
+    applyHue(DEFAULT_HUE, false);
+  }
+
+  if (paletteToggleBtn && palettePopover) {
+    paletteToggleBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      palettePopover.classList.toggle("open");
+    });
+
+    palettePopover.addEventListener("click", (e) => {
+      e.stopPropagation();
+    });
+
+    document.addEventListener("click", () => {
+      palettePopover.classList.remove("open");
+    });
+  }
+
+  if (hueSlider) {
+    hueSlider.addEventListener("input", (e) => {
+      applyHue(e.target.value, true);
+    });
+  }
+
+  swatchButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      const hue = btn.getAttribute("data-hue");
+      if (hue) {
+        applyHue(hue, true);
+      }
+    });
+  });
+
+  // 字号（2026-10-29）：全站缩放只改一处 —— html 的 font-size。
+  // 站内所有尺寸都是 rem，所以正文/侧栏/代码块/公式（MathLive 继承字号）一起变。
+  // 范围与默认值照 Octave-UI 的 ThemeManager（12–20px / 16px）。
+  const FONT_KEY = "site-font-size";
+  const FONT_DEFAULT = 16;
+  const FONT_MIN = 12;
+  const FONT_MAX = 20;
+
+  function applyFontSize(px, save = true) {
+    const n = Math.max(FONT_MIN, Math.min(FONT_MAX, parseInt(px, 10) || FONT_DEFAULT));
+    document.documentElement.style.fontSize = n + "px";
+    document.documentElement.style.setProperty("--base-font-size", n + "px");
+    if (fontSizeValue) fontSizeValue.textContent = n + "px";
+    if (fontSlider) fontSlider.value = n;
+    if (fontSample) fontSample.style.fontSize = n + "px";
+    if (save) {
+      try { localStorage.setItem(FONT_KEY, String(n)); } catch (e) { /* 隐私模式 */ }
+    }
+  }
+
+  const savedFont = localStorage.getItem(FONT_KEY);
+  applyFontSize(savedFont !== null ? savedFont : FONT_DEFAULT, false);
+
+  if (fontSlider) {
+    fontSlider.addEventListener("input", (e) => applyFontSize(e.target.value, true));
+  }
+
+  if (resetBtn) {
+    resetBtn.addEventListener("click", () => {
+      localStorage.removeItem("theme-hue");
+      applyHue(DEFAULT_HUE, false);
+      // 字号也一并复位——这个按钮的语义是「回到默认」，两样都算默认的一部分。
+      try { localStorage.removeItem(FONT_KEY); } catch (e) { /* 隐私模式 */ }
+      applyFontSize(FONT_DEFAULT, false);
+    });
+  }
+
+  // Table of Contents ScrollSpy
+  // SPA 换页钩子（2026-10-17）：tocLinks/headings 换页后要重扫。
+  let tocLinks = document.querySelectorAll(".toc-item a");
+  let headings = Array.from(document.querySelectorAll(".article-content h2, .article-content h3"))
+    .filter((h) => h.id);
+  window.__readerRescan = function () {
+    tocLinks = document.querySelectorAll(".toc-item a");
+    headings = Array.from(document.querySelectorAll(".article-content h2, .article-content h3"))
+      .filter((h) => h.id);
+    onScroll();
+  };
+  if (tocLinks.length > 0) {
+
+    function onScroll() {
+      const scrollY = window.scrollY || window.pageYOffset;
+      let currentHeadingId = "";
+      let currentTop = -Infinity;
+
+      // 取「已越过视口顶线、且文档位置最靠下」的那个标题 = 当前所在。
+      // 不能像以前那样遇到第一个未越过的就 break：折叠面板（:::collapse）里的标题
+      // 是**收起面板中的 h3**，原生 <details> 收起时其内容仍占布局位、位置与展开后
+      // 不一致，DOM 顺序与纵向顺序就此错开——一 break 就永远停在错的那一项
+      // （2026-10-13 用户报「跟着算一遍相关锚点会漂移」）。
+      // 同时跳过收起面板里的标题：它此刻并不可见，不该被高亮。
+      for (let i = 0; i < headings.length; i++) {
+        const h = headings[i];
+        const det = h.closest("details");
+        if (det && !det.open) continue;
+        const top = h.getBoundingClientRect().top + scrollY - 90;
+        if (scrollY >= top && top > currentTop) {
+          currentTop = top;
+          currentHeadingId = h.id;
+        }
+      }
+
+      tocLinks.forEach((link) => {
+        const item = link.closest(".toc-item");
+        if (!item) return;
+        if (link.getAttribute("href") === "#" + currentHeadingId) {
+          item.classList.add("active");
+        } else {
+          item.classList.remove("active");
+        }
+      });
+    }
+
+    // 高亮除了滚动，还要在**导航发生时**重算：点目录/深链接会让
+    // disclosure-anchor.mjs 展开折叠面板并重滚，页面位置由脚本改变，
+    // 只靠 scroll 事件可能漏掉（且 hashchange 先于展开后的重滚）。
+    window.addEventListener("hashchange", onScroll);
+    // 用户手动开合面板同样改变布局，重算一次。
+    document.addEventListener("toggle", onScroll, true);
+    // 滚动用 rAF 合并（2026-10-19）：onScroll 对每个标题调 getBoundingClientRect，
+    // 会强制同步布局。移动端 scroll 事件的密度高于帧率，逐个处理就是白烧主线程——
+    // 一帧最多算一次。
+    let scrollQueued = false;
+    window.addEventListener("scroll", () => {
+      if (scrollQueued) return;
+      scrollQueued = true;
+      requestAnimationFrame(() => { scrollQueued = false; onScroll(); });
+    }, { passive: true });
+    onScroll();
+  }
+})();

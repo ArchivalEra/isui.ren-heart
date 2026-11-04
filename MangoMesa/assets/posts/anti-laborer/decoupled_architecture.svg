@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 490" width="100%" height="auto" style="font-family: var(--font-sans), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; display: block; margin: 1.5rem auto;">
+  <defs>
+    <!-- Arrow marker for dependency direction -->
+    <marker id="arrow-down" viewBox="0 0 10 10" refX="5" refY="7" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 1.5 0 L 5 8 L 8.5 0 z" fill="var(--outline, #938f99)" />
+    </marker>
+  </defs>
+
+  <!-- Canvas Background with Material 3 Surface & Outline -->
+  <rect width="1000" height="490" rx="18" fill="var(--surface-container-lowest, #141218)" stroke="var(--outline-variant, rgba(255,255,255,0.12))" stroke-width="1.5" />
+
+  <!-- Main Title -->
+  <text x="500" y="52" text-anchor="middle" fill="var(--on-surface, #e6e1e5)" font-size="22" font-weight="700" letter-spacing="0.5">
+    核心架构：知识沉淀与话语生成的彻底解耦
+  </text>
+
+  <!-- ==================== Top Card: Knowledge Layer ==================== -->
+  <g transform="translate(100, 85)">
+    <rect width="800" height="145" rx="16" fill="var(--surface-container-low, #1d1b20)" stroke="var(--primary, #6750a4)" stroke-width="2.5" />
+    <text x="400" y="44" text-anchor="middle" fill="var(--primary, #6750a4)" font-size="18" font-weight="700" letter-spacing="0.3">
+      1. 知识库层 (knowledge/) - OKF v0.2 标准规范
+    </text>
+    <text x="400" y="82" text-anchor="middle" fill="var(--on-surface, #e6e1e5)" font-size="14.5" font-weight="500">
+      纯粹客观中立的同行评审实证、控制论与运筹学机理拆解
+    </text>
+    <text x="400" y="112" text-anchor="middle" fill="var(--on-surface-variant, #cac4d0)" font-size="13.5">
+      绝对禁止话术模板、辩论提示词与情绪反调
+    </text>
+  </g>
+
+  <!-- ==================== Arrow with Dependency Label ==================== -->
+  <g>
+    <line x1="500" y1="235" x2="500" y2="288" stroke="var(--outline, #938f99)" stroke-width="2.5" stroke-linecap="round" marker-end="url(#arrow-down)" />
+    <text x="520" y="267" fill="var(--on-surface-variant, #cac4d0)" font-size="13" font-weight="500" letter-spacing="0.2">
+      只读客观依赖 (Read-Only Dependency)
+    </text>
+  </g>
+
+  <!-- ==================== Bottom Card: Skills Execution Layer ==================== -->
+  <g transform="translate(100, 295)">
+    <rect width="800" height="145" rx="16" fill="var(--surface-container-low, #1d1b20)" stroke="var(--tertiary, #4ea395)" stroke-width="2.5" />
+    <text x="400" y="44" text-anchor="middle" fill="var(--tertiary, #4ea395)" font-size="18" font-weight="700" letter-spacing="0.3">
+      2. 技能与执行层 (skills/) - Agent 执行规范
+    </text>
+    <text x="400" y="82" text-anchor="middle" fill="var(--on-surface, #e6e1e5)" font-size="14.5" font-weight="500">
+      source-evaluator (三层信噪比筛查) + anti-laborer-output (说人话、无装饰表情、超低上下文负载)
+    </text>
+    <text x="400" y="112" text-anchor="middle" fill="var(--on-surface-variant, #cac4d0)" font-size="13.5">
+      前置盘问探底 (Grill-Me) + 挂载知识库主索引速查矩阵直达靶点
+    </text>
+  </g>
+</svg>
