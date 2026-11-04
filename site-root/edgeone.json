@@ -16,5 +16,5 @@
       "statusCode": 301
     }
   ],
-  "notFound": "/404.html"
+  "spa": false
 }
