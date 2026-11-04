@@ -32,6 +32,9 @@ performance-sensitive places get no compromises.
   paths → `github.com` with `UpstreamFollowRedirect` chasing release-assets.
   Bytes really pass through the edge and are cached (`eo-cache-status` / `age`).
   The `/static → /static/` redirect in `edgeone.json` was removed along with the path.
+  The root redirect is now a 301 in `edgeone.json` (it used to be the JS in
+  `index.html`), so `index.html` can go and EdgeOne's **global** 404-to-index
+  fallback goes with it.
 The trailing-slash 301 is declared in
   `site-root/edgeone.json` — the platform mechanism, the same place that
   serves `/blog → /Blog`. EdgeOne's static layer does not add the slash
