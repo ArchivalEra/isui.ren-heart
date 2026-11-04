@@ -165,6 +165,7 @@ sleep 35
 curl -s -D- -o /dev/null \
   "https://static.isui.ren/ArchivalEra/LLVM-wasm/releases/download/v0.1.6/toolchain__driver__toolchain.mjs.identity.000" | head -5
 #   ⇒ 200 + server: Windows-Azure-Blob + eo-cache-status: MISS
+#   ⚠️ manifest.json 也在 release 路径下，不要在站点根探它
 
 # ② 站点文件（02 规则仍在工作）
 for p in / /index.html /catalogue.json /files.json /LICENSE /contract/2026-10-30-release-contract-v4.md; do
@@ -186,19 +187,26 @@ done
 ### 2026-11-04 实测结果（本配置下）
 
 ```
-取货   manifest.json                     200 / 28602B
+取货   release manifest.json             200 / 28602B   （⚠️ 是 release 资产，不是站点根！）
        toolchain__LICENSE.zstd.000       200 / 11215B
+       toolchain__LICENSE.gzip.000       200 / 11770B
+       toolchain__LICENSE.identity.000   200 / 34523B
        toolchain__clang.wasm.zstd.000    200 / 1333243B
-       toolchain__sysroot-headers...002  200 / 5242880B
-       冷取（purge 后）                  200 MISS + Windows-Azure-Blob ✓
+       toolchain__sysroot-headers..002   200 / 455317B
+       冷取（未缓存）                    200 MISS + server: Windows-Azure-Blob ✓
 
 端到端 manifest → 分片 11215B sha=c7e4de27…（一致）
                 → zstd 解压 → 34523B sha=8486a10c…（= entry 声明）
 
 站点   / / index.html / catalogue.json / files.json / LICENSE / contract/*.md  全 200
 主站   / 301（→/heart/）、/heart/ /repo/Octave/ /Bahnhof/ 全 200
-404    不存在的 asset → 404 + MISS（不缓存）；isui.ren/nope → 真 404
+404    不存在的 asset → 404 + MISS（连打两次仍 MISS，不缓存）；isui.ren/nope → 真 404
 ```
+
+> **探测陷阱**：`manifest.json` 是 **release 资产**，正确 URL 是
+> `https://static.isui.ren/<owner>/<repo>/releases/download/<tag>/manifest.json`。
+> 直接打 `https://static.isui.ren/manifest.json` 会 404 —— **这是对的**，
+> 因为站点根（契约站）本来就没有这个文件。别把它当成故障。
 
 ---
 

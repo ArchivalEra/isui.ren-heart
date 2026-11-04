@@ -85,6 +85,15 @@ python3 serve.py 8080          # http://127.0.0.1:8080/#/heart
 规则引擎的坑很深，改这个 zone 之前**必读** `docs/edgeone-rules-verified-config.md`
 （核心：多条规则是**合并**不是独占，高优先级必须显式声明每一个要改的动作）。
 
+冒烟验证（**注意 `manifest.json` 在 release 路径下，不是站点根**——打
+`/manifest.json` 得 404 是正确的，别当故障）：
+
+```bash
+curl -s -o /dev/null -w '%{http_code} %{size_download}\n' \
+  https://static.isui.ren/ArchivalEra/LLVM-wasm/releases/download/v0.1.6/manifest.json
+#   ⇒ 200 28602
+```
+
 ## 调试器
 
 页面左下角 **调试**：

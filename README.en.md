@@ -127,6 +127,15 @@ before touching this zone** — the core point: multiple rules **merge**
 rather than being mutually exclusive, so a higher-priority rule must
 declare every action it wants to change.
 
+Smoke test (**note: `manifest.json` lives under the release path, not the
+site root** — `/manifest.json` returning 404 is correct, not a fault):
+
+```bash
+curl -s -o /dev/null -w '%{http_code} %{size_download}\n' \
+  https://static.isui.ren/ArchivalEra/LLVM-wasm/releases/download/v0.1.6/manifest.json
+#   => 200 28602
+```
+
 ## Debugger
 
 Bottom-left **debug** button:
