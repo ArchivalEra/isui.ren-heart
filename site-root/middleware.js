@@ -383,40 +383,6 @@ export async function middleware(context) {
 		return Response.redirect(redirectUrl.toString(), 301);
 	}
 
-	// ── /static/<owner>/<repo>/releases/download/<tag>/<file> → 302 GitHub ──
-	//
-	// ★ 这是 Static-Contract 取货通道（base_proxy = base 换 host，host=isui.ren，
-	//   见 mail/012 裁定）：**纯重定向，零字节经过本站**。
-	//
-	//   为什么由中间件发 302：Pages 静态直出优先于 L7 规则引擎（实测：同一条
-	//   ModifyOrigin+UpstreamFollowRedirect 规则在加速域名上生效、在主域被静态
-	//   树截胡），所以规则引擎在主域够不到这条路径；而 edgeone.json 的 redirects
-	//   又不支持通配捕获（:splat 实测可用但通配会盖住站点自有文件）。
-	//   中间件是唯一能在这条路径上插手的层。
-	//
-	//   不是反代：字节流在浏览器与 GitHub 之间直接发生，本站只给一个 Location。
-	//   与"三线独立"不冲突——这条线 serve 的是**指针**，不是字节。
-	//
-	// 安全：只放行 releases/download 形状，owner/repo/tag/file 字符白名单。
-	if (url.pathname.startsWith("/static/")) {
-		const m = url.pathname.match(
-			/^\/static\/([A-Za-z0-9._-]+)\/([A-Za-z0-9._-]+)\/releases\/download\/([A-Za-z0-9._-]+)\/(.+)$/,
-		);
-		if (!m) return next(); // 非 release 形状 ⇒ 静态树直出（站点文件等）
-
-		const SAFE = /^[A-Za-z0-9._-]+$/;
-		const [, owner, repo, tag, file] = m;
-		if (!SAFE.test(file) || file.includes("..")) {
-			return new Response("Bad asset path", {
-				status: 400,
-				headers: { "Content-Type": "text/plain; charset=utf-8" },
-			});
-		}
-		const target =
-			`https://github.com/${owner}/${repo}/releases/download/${tag}/${file}`;
-		return Response.redirect(target, 302);
-	}
-
 	// Reverse-proxy /repo/<repoName>/* to https://archivalera.github.io/<repoName>/*
 	if (url.pathname === "/repo" || url.pathname === "/repo/") {
 		return Response.redirect("https://isui.ren/MangoMesa/projects/", 302);
@@ -907,6 +873,7 @@ export const config = {
 		"/repo",
 		"/repo/:path*",
 		"/Bahnhof",
-		"/static/:path*", // 取货通道：release 形状 302 指向 GitHub；其余形状 next() 交还静态树
+		// 没有 /static：站点是纯静态树直出；release 字节走 static.isui.ren
+		// （EdgeOne 规则引擎 ModifyOrigin + UpstreamFollowRedirect，见 edgeone 侧配置）。
 	],
 };
