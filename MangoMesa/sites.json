@@ -1,12 +1,12 @@
 {
-	"generatedAt": "2026-11-05T12:27:58.163Z",
+	"generatedAt": "2026-11-05T20:50:29.479Z",
 	"acceleratedDirs": ["Octave", "S26-1_202609"],
 	"entries": [
 		{
 			"name": "Static-Contract",
 			"pages": "absent",
 			"accelerated": false,
-			"pushedAt": "2026-11-05T12:26:30Z",
+			"pushedAt": "2026-11-05T20:41:52Z",
 			"status": null,
 			"description": "apt-style contract for static distribution",
 			"language": "Python",
@@ -17,7 +17,7 @@
 			"name": "Octave-UI",
 			"pages": "ready",
 			"accelerated": false,
-			"pushedAt": "2026-11-05T12:22:35Z",
+			"pushedAt": "2026-11-05T14:40:48Z",
 			"status": null,
 			"description": "",
 			"language": "JavaScript",
@@ -28,7 +28,7 @@
 			"name": "isui.ren-heart",
 			"pages": "ready",
 			"accelerated": false,
-			"pushedAt": "2026-11-05T08:30:32Z",
+			"pushedAt": "2026-11-05T12:28:23Z",
 			"status": "built",
 			"description": "isui.ren 的站点心脏：EdgeOne Pages 静态源、边缘中间件与跨仓部署链",
 			"language": "Python",
