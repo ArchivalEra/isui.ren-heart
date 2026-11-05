@@ -12,7 +12,7 @@ function dual(self, other) {
   var unreg = (typeof self.unregisterTool === "function") ? self.unregisterTool.bind(self) : null;
 
   self.registerTool = function (tool) {
-    var name = tool && tool.name;
+    var name = tool?.name;
     return Promise.resolve(reg(tool)).then(function (r) {
       if (!name || seen[name]) return r;
       seen[name] = true;
@@ -23,7 +23,7 @@ function dual(self, other) {
 
   if (unreg) {
     self.unregisterTool = function (arg) {
-      var name = (arg && arg.name) ? arg.name : arg;
+      var name = (arg?.name) ? arg.name : arg;
       return Promise.resolve(unreg(arg)).then(function (r) {
         if (name && seen[name]) {
           delete seen[name];

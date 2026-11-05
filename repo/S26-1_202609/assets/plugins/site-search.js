@@ -188,12 +188,16 @@ function loadText(id) {
 function openPanel() {
   panel.hidden = false;
   document.body.classList.add("search-open");
+  // aria-expanded 是顶栏按钮「展开态高亮」的判据（2026-11-01 统一）：
+  // 五个入口按钮都靠这个属性点亮，搜索不能漏。
+  if (toggleBtn) toggleBtn.setAttribute("aria-expanded", "true");
   input.focus();
 }
 function closePanel() {
   panel.hidden = true;
   document.body.classList.remove("search-open");
   activeIndex = -1;
+  if (toggleBtn) toggleBtn.setAttribute("aria-expanded", "false");
 }
 
 function showProgress(percent, label) {
@@ -254,11 +258,11 @@ function collectHits(data, bucketsByNumber, query) {
   const bucketOf = (gram) => bucketsByNumber.get(hashGram(gram) % data.buckets);
   const postingsFor = (gram) => {
     const bucket = bucketOf(gram);
-    return bucket && bucket.grams ? bucket.grams[gram] : undefined;
+    return bucket?.grams ? bucket.grams[gram] : undefined;
   };
   const unigramDocsFor = (ch) => {
     const bucket = bucketOf(ch);
-    return bucket && bucket.uni ? bucket.uni[ch] : undefined;
+    return bucket?.uni ? bucket.uni[ch] : undefined;
   };
 
   const hits = [];
@@ -405,7 +409,19 @@ input.addEventListener("keydown", (e) => {
   }
 });
 
-toggleBtn.addEventListener("click", () => { if (panel.hidden) openPanel(); else closePanel(); });
+toggleBtn.addEventListener("click", () => {
+  // ⚠️ 顶栏四个面板**互斥**（2026-11-01 站长报「调色盘与这个会互相遮挡」）。
+  // 统一入口是 pack-runtime 暴露的 window.__panelToggle。
+  // 它没装配好时（能力包整体失败）退回本地开关，搜索自己至少能用。
+  const bridge = window.__panelToggle;
+  if (bridge && typeof bridge.toggle === "function") {
+    const willOpen = panel.hidden;
+    bridge.toggle("search");
+    if (willOpen) { input.focus(); }
+    return;
+  }
+  if (panel.hidden) openPanel(); else closePanel();
+});
 if (closeBtn) closeBtn.addEventListener("click", closePanel);
 panel.addEventListener("click", (e) => { if (e.target === panel) closePanel(); });
 

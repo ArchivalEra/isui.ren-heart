@@ -1,4 +1,5 @@
 (function () {
+  var SYMBOL_SELECTOR = "a.sym-gloss, .ML__latex [data-term], .katex [data-term]";
   "use strict";
   var SVG_NS = "http://www.w3.org/2000/svg";
 
@@ -39,7 +40,7 @@
     var t = e.target;
 
     // 符号气泡优先：它自己会处理，别抢
-    if (t.closest && t.closest("a.sym-gloss")) return;
+    if (t.closest && t.closest(SYMBOL_SELECTOR)) return;
 
     // 点元件
     var comp = t.closest && t.closest(".fig-comp");
@@ -173,7 +174,7 @@
     // 读者看到的是「按了没反应」（2026-10-28 站长实测指出）。
     fig.addEventListener("dblclick", function (ev) {
       var t = ev.target;
-      if (t.closest && (t.closest("a.sym-gloss") || t.closest(".fig-zoom"))) return;
+      if (t.closest && (t.closest(SYMBOL_SELECTOR) || t.closest(".fig-zoom"))) return;
       var orig = fig.getAttribute("data-viewbox");
       if (orig) svg.setAttribute("viewBox", orig);
     });
@@ -269,7 +270,7 @@
       (function (figEl, svgEl) {
         svgEl.addEventListener("click", function (ev) {
           // 点图内符号时先让气泡处理，不全屏
-          if (ev.target.closest && ev.target.closest("a.sym-gloss")) return;
+          if (ev.target.closest && ev.target.closest(SYMBOL_SELECTOR)) return;
           // 点元件/连线时是「选中」，也不全屏
           if (ev.target.closest && (ev.target.closest(".fig-comp") || ev.target.closest(".fig-wire"))) return;
           var capEl = figEl.querySelector("figcaption");

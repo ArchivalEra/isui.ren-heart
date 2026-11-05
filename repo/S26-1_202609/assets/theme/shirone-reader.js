@@ -261,9 +261,22 @@
   }
 
   if (paletteToggleBtn && palettePopover) {
+    // aria-expanded 是顶栏按钮「展开态高亮」的判据（2026-11-01 统一）：
+    // 五个入口按钮都靠这个属性点亮，调色盘不能只切 .open 类。
+    const setExpanded = (open) => paletteToggleBtn.setAttribute("aria-expanded", open ? "true" : "false");
     paletteToggleBtn.addEventListener("click", (e) => {
       e.stopPropagation();
+      // ⚠️ 顶栏四个面板**互斥**（2026-11-01 站长报「调色盘与这个会互相遮挡」）。
+      // 统一入口是 pack-runtime 暴露的 window.__panelToggle；它还没装配好时
+      // （例如能力包整体失败）退回本地开关，保证调色盘自己至少能用。
+      const bridge = window.__panelToggle;
+      if (bridge && typeof bridge.toggle === "function") {
+        bridge.toggle("palette");
+        setExpanded(palettePopover.classList.contains("open"));
+        return;
+      }
       palettePopover.classList.toggle("open");
+      setExpanded(palettePopover.classList.contains("open"));
     });
 
     palettePopover.addEventListener("click", (e) => {
@@ -271,7 +284,10 @@
     });
 
     document.addEventListener("click", () => {
+      const bridge = window.__panelToggle;
+      if (bridge && typeof bridge.close === "function") { bridge.close("palette"); setExpanded(false); return; }
       palettePopover.classList.remove("open");
+      setExpanded(false);
     });
   }
 
