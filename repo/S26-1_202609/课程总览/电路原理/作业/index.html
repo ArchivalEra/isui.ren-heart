@@ -1146,6 +1146,36 @@
               <div class="pack-progress" id="pack-progress-engine" hidden><div class="pack-progress-bar"></div></div>
             </div>
 
+            <!-- 2026-11-06 站长定案：KaTeX 与 Pyodide 都进下载列表。
+                 KaTeX（277 KB）管「编辑完公式立刻重绘」——不下它也能改，
+                 只是退出编辑后显示刷新要重进页面。
+                 Pyodide 从 Static-Contract 的 supply 包拉（core+sympy+mpmath）。 -->
+            <div class="pack-item" data-pack="katex">
+              <div class="pack-item-head">
+                <span class="pack-item-name">公式渲染器</span>
+                <span class="pack-item-size">270 KB</span>
+              </div>
+              <p class="pack-item-hint">编辑过的公式立刻按新内容重绘（不下也能改，只是显示刷新要重进页面）。</p>
+              <div class="pack-item-actions">
+                <button class="pack-btn" data-pack-action="katex">下载</button>
+                <span class="pack-state" id="pack-state-katex">未下载</span>
+              </div>
+              <div class="pack-progress" id="pack-progress-katex" hidden><div class="pack-progress-bar"></div></div>
+            </div>
+
+            <div class="pack-item" data-pack="pyodide">
+              <div class="pack-item-head">
+                <span class="pack-item-name">Python 内核</span>
+                <span class="pack-item-size">13 MB</span>
+              </div>
+              <p class="pack-item-hint">用 Pyodide 做符号计算（sympy / mpmath）。从 Static-Contract 分块拉。</p>
+              <div class="pack-item-actions">
+                <button class="pack-btn" data-pack-action="pyodide">下载</button>
+                <span class="pack-state" id="pack-state-pyodide">未下载</span>
+              </div>
+              <div class="pack-progress" id="pack-progress-pyodide" hidden><div class="pack-progress-bar"></div></div>
+            </div>
+
             <!-- 两个能力开关（2026-10-31）：iOS 风格滑块。
                  状态存 localStorage —— 站长原话「我希望记忆功能发挥作用」。
                  之前「两件都下载了还得点一下按钮才能编辑」就是因为没有持久状态。 -->
@@ -1386,7 +1416,7 @@ KaTeX 不认，会渲染成红色错误块（构建期 katex-error 计数会报�
   <!-- 能力包（2026-10-30）：装配层 + 纯逻辑模块。
        **页面加载时不做任何事**——不查状态、不加载 824 KB 编辑器、不碰计算内核（三件套改由 Static-Contract 分块下载到 OPFS）。
        只有用户点右上角 package 图标时，装配层才查一次状态；下载/运行各按各的时机。 -->
-  <script src="../../../assets/plugins/pack-runtime.js?v=7158b36281" defer></script>
+  <script src="../../../assets/plugins/pack-runtime.js?v=5404aa211b" defer></script>
   <script type="module">
     // 装配：把纯逻辑模块接进装配层。
     // ⚠️ 这里是全站唯一的「能力包接线点」，改接口只改这一处。
@@ -1407,7 +1437,7 @@ KaTeX 不认，会渲染成红色错误块（构建期 katex-error 计数会报�
         // 调用（模块 URL 反正只加载一次，版本戳不变）；OCT_BASE 与 parser 的
         // import 改成在函数里现取。
         const assetRoot = () => document.documentElement.getAttribute('data-root') || './';
-        const mod = await import(assetRoot() + 'assets/plugins/capability-pack.js?v=b5818b006e');
+        const mod = await import(assetRoot() + 'assets/plugins/capability-pack.js?v=0b3381fcd8');
         // Static-Contract 客户端：只在用户真的点了「下载计算内核」时才 import，
         // 首屏零开销。releaseLoader 把「从哪个 release 取哪个 entry」交给纯逻辑层，
         // 装配层只负责拼版本戳与缓存一次 openRelease（多处文件复用同一 manifest）。
@@ -1430,7 +1460,7 @@ KaTeX 不认，会渲染成红色错误块（构建期 katex-error 计数会报�
         // 在需要时自己 createFormulaCells —— 两层分工：本层管 import 与版本戳，
         // 装配层管「什么时候装、装在哪个容器上」。
         try {
-          const cellsMod = await import(assetRoot() + 'assets/plugins/formula-cells.js?v=6c83d422cc');
+          const cellsMod = await import(assetRoot() + 'assets/plugins/formula-cells.js?v=591f19efa0');
           window.__createFormulaCells = cellsMod.createFormulaCells;
         } catch (e) {
           console.warn('[pack] formula-cells 载入失败，页内单元格不可用', e);
