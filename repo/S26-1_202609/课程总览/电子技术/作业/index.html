@@ -1429,7 +1429,7 @@ frontmatter 的 sources（≤30 字，显示为页面顶部芯片）与 <code>�
   <!-- 能力包（2026-10-30）：装配层 + 纯逻辑模块。
        **页面加载时不做任何事**——不查状态、不加载 824 KB 编辑器、不碰计算内核（三件套改由 Static-Contract 分块下载到 OPFS）。
        只有用户点右上角 package 图标时，装配层才查一次状态；下载/运行各按各的时机。 -->
-  <script src="../../../assets/plugins/pack-runtime.js?v=77abce42cf" defer></script>
+  <script src="../../../assets/plugins/pack-runtime.js?v=b9122d218b" defer></script>
   <script type="module">
     // 装配：把纯逻辑模块接进装配层。
     // ⚠️ 这里是全站唯一的「能力包接线点」，改接口只改这一处。
@@ -1450,7 +1450,7 @@ frontmatter 的 sources（≤30 字，显示为页面顶部芯片）与 <code>�
         // 调用（模块 URL 反正只加载一次，版本戳不变）；OCT_BASE 与 parser 的
         // import 改成在函数里现取。
         const assetRoot = () => document.documentElement.getAttribute('data-root') || './';
-        const mod = await import(assetRoot() + 'assets/plugins/capability-pack.js?v=c7dfa0e7d3');
+        const mod = await import(assetRoot() + 'assets/plugins/capability-pack.js?v=3cf14e9b0a');
         // Static-Contract 客户端：只在用户真的点了「下载计算内核」时才 import，
         // 首屏零开销。releaseLoader 把「从哪个 release 取哪个 entry」交给纯逻辑层，
         // 装配层只负责拼版本戳与缓存一次 openRelease（多处文件复用同一 manifest）。
