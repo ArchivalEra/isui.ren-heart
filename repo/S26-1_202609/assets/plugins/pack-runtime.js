@@ -264,7 +264,7 @@ function ensureEditor() {
  *
  * 2026-10-31 重写：「window.__packCompute」 现在是**真的**（上游 002 那个
  * 「execute_interp()」 + 「promising(_eval_wait)」 的最小实现），它自己管引擎
- * 生命周期（首次调用时载入三件 38 MB），所以这里**不要再传 Embed**——
+ * 生命周期（首次调用时从 OPFS 读入三件套），所以这里**不要再传 Embed**——
  * 旧代码等 「ensureEngine()」 拿一个 「OctaveEmbed.create()」，而那个接口压根不存在。
  *
  * 结果展示分三种，读者要能分清是哪一种：
@@ -278,7 +278,7 @@ function runFormula(latex, outEl, btn) {
     return;
   }
   if (btn) { btn.disabled = true; btn.textContent = "运行中…"; }
-  if (outEl) { outEl.textContent = "（首次运行要载入约 38 MB 内核，慢一点）"; outEl.className = "pack-editor-result"; }
+  if (outEl) { outEl.textContent = "（首次运行要从 OPFS 载入计算内核，慢一点）"; outEl.className = "pack-editor-result"; }
   var restore = function () {
     if (btn) { btn.disabled = false; btn.textContent = "运行"; }
   };
@@ -635,9 +635,9 @@ function init() {
 
       if (!ready) { downloadAsset(which, btn); return; }
 
-      // 已下载 ⇒ 删除。确认一次：删掉要重下 824 KB / 38 MB，不可逆。
+      // 已下载 ⇒ 删除。确认一次：删掉要重下 824 KB / 三件套（从 Static-Contract 分块拉），不可逆。
       var label = which === "editor" ? "公式编辑器" : "计算内核";
-      var size = which === "editor" ? "824 KB" : "38 MB";
+      var size = which === "editor" ? "824 KB" : "约 38 MB（分块下载）";
       if (!window.confirm("删除" + label + "？\n\n下次要用得重新下载（" + size + "）。")) return;
       btn.disabled = true;
       btn.textContent = "删除中…";

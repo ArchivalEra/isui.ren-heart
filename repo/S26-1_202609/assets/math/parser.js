@@ -22,10 +22,10 @@
  *     （旧代码的 "Unexpected end of input in a macro argument" 事故没有发生的位置）
  */
 
-import { tokenize, checkEnvironments } from './lexer.mjs';
+import { tokenize, checkEnvironments } from './lexer.js';
 import {
   classifyCommand, isSpaceCommand, ENVIRONMENTS,
-} from './commands.mjs';
+} from './commands.js';
 
 /** 二元运算符：两侧都是操作数时，它自己是 `operator` 角色。 */
 const BIN_OPS = new Set([
