@@ -48,11 +48,11 @@
  * 返回以 / 开头、以 / 结尾的绝对路径；无法探测时返回 null。
  */
 function detectSiteRoot() {
-  const sp = (document.body && document.body.getAttribute('data-site-path')) || '';
+  const sp = document.body?.getAttribute('data-site-path') || '';
   if (!sp) return null;
   // pathname 解码后与 sitePath 对齐（构建期写的是未编码的仓库路径）
   let pathname;
-  try { pathname = decodeURIComponent(location.pathname); } catch (e) { pathname = location.pathname; }
+  try { pathname = decodeURIComponent(location.pathname); } catch { pathname = location.pathname; }  // 坏编码按原样对齐
   // 后缀对齐：sitePath 必须是 pathname 的尾部
   const idx = pathname.lastIndexOf(sp);
   if (idx >= 0 && idx + sp.length === pathname.length) return ensureSlash(pathname.slice(0, idx));
@@ -131,9 +131,9 @@ function fixSiteRoot() {
 function rewriteLinks(root) {
   // 1) 侧栏 data-path 链接：仓库相对路径直接拼
   const links = document.querySelectorAll('a[data-path]');
-  for (let i = 0; i < links.length; i++) {
-    let dp = links[i].getAttribute('data-path');
-    if (dp) links[i].setAttribute('href', root + dp);
+  for (const link of links) {
+    const dp = link.getAttribute('data-path');
+    if (dp) link.setAttribute('href', root + dp);
   }
   // 2) 无 data-path 的站内导航（品牌/移动标题/旧式链接）：
   //    它们的 href 是 data-root 相对值（如 ../../index.html），先解析成
@@ -148,8 +148,7 @@ function rewriteLinks(root) {
   //    形态现代浏览器均支持，无兼容顾虑。
   const navs = document.querySelectorAll('.sidebar-brand, .top-bar-mobile-title, .top-bar-breadcrumbs a:not([data-path]), .paging-card:not([data-path])');
   const actual = siteRoot();
-  for (let j = 0; j < navs.length; j++) {
-    let a = navs[j];
+  for (const a of navs) {
     let href = a.getAttribute('href');
     if (!href || /^(https?:|mailto:|#|javascript:)/i.test(href)) continue;
     try {

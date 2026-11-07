@@ -48,27 +48,12 @@ var renderMarkdown = function renderMarkdown(root, opts) {
   const out = [];
 
   const push = (s) => { if (s) out.push(s); };
-  const endsWith = (ch) => {
-    for (let i = out.length - 1; i >= 0; i--) {
-      if (!out[i]) continue;
-      return out[i].slice(-1) === ch;
-    }
-    return false;
-  };
   const ensureNl = (n) => {
     let tail = '';
     for (let i = out.length - 1; i >= 0 && tail.length < n; i--) tail = out[i] + tail;
-    const have = (tail.match(/\n/g) || []).length;
+    const have = (tail.match(/\n/g) || []).length;   // 计数场景：要全部匹配（exec 只给第一个）
     for (let i = have; i < n; i++) out.push('\n');
   };
-  const trimTail = () => {
-    for (let i = out.length - 1; i >= 0; i--) {
-      if (!out[i]) continue;
-      out[i] = out[i].replace(/[ \t]+$/, '');
-      return;
-    }
-  };
-
   /** KaTeX：优先用 annotation 里的 LaTeX 源（模型读公式最准），退化到可见文本。
    *
    *  ⚠️ 2026-10-19 两个真缺陷（实测页面读出 BBBHHH 与 \htmlData{...}）：
@@ -191,7 +176,7 @@ var renderMarkdown = function renderMarkdown(root, opts) {
         ? '$$' + formula + '$$' + (shown ? ' = ' + shown : '')
         : '$' + formula + '$' + (shown ? ' = ' + shown : '');
     }
-    if (hasClass(node, 'katex') || hasClass(node, 'ML__latex') || (node.getAttribute && node.getAttribute('data-math-plain'))) return katexText(node);
+    if (hasClass(node, 'katex') || hasClass(node, 'ML__latex') || node.getAttribute?.('data-math-plain')) return katexText(node);
     // KaTeX 的**内部**节点：外层 .katex 已经整体处理过，这里再遇到就是重复
     //（实测正文里出现孤立的 `$...$` 行与 BBBHHH——都是 katex-html 副本被二次读取）
     if (hasClass(node, 'katex-html') || hasClass(node, 'katex-mathml')) return '';
@@ -203,7 +188,7 @@ var renderMarkdown = function renderMarkdown(root, opts) {
       return k ? katexText(k) : (node.textContent || '');
     }
     if (tag === 'A' && withLinks) {
-      const t = linkTarget(node.getAttribute && node.getAttribute('href'));
+      const t = linkTarget(node.getAttribute?.('href'));
       const label = walkInlineAll(node).trim();
       if (!t || !label) return label;
       // 外链加 ⧉ 前缀：模型据此知道 site_navigate 处理不了
@@ -268,7 +253,7 @@ var renderMarkdown = function renderMarkdown(root, opts) {
       return;
     }
 
-    if (hasClass(node, 'katex') || hasClass(node, 'ML__latex') || (node.getAttribute && node.getAttribute('data-math-plain'))) { push(katexText(node)); return; }
+    if (hasClass(node, 'katex') || hasClass(node, 'ML__latex') || node.getAttribute?.('data-math-plain')) { push(katexText(node)); return; }
     if (hasClass(node, 'katex-html') || hasClass(node, 'katex-mathml')) return;
     if (tag === 'A') { push(walkInline(node)); return; }
 
@@ -331,6 +316,10 @@ var renderMarkdown = function renderMarkdown(root, opts) {
         return '| ' + cells.join(' | ') + ' |';
       });
       if (lines.length) {
+        // 数列分隔符：原写法 `lines[0].match(/\|/g).length` 被 A4 机械替换成了
+        // `/\|/g.exec(...)` —— exec 带 g 也只返回**第一个**匹配，列数恒为 0，
+        // 分隔行塌成 `||`（2026-11-07 插件测试抓出）。这里要的是**全部匹配的
+        // 个数**，用 match(g)（GitRoll 的 RegExp.exec 建议不适用于计数场景）。
         const cols = (lines[0].match(/\|/g) || []).length - 1;
         lines.splice(1, 0, '|' + Array(cols).fill(' --- ').join('|') + '|');
         push(lines.join('\n') + '\n\n');
@@ -344,7 +333,7 @@ var renderMarkdown = function renderMarkdown(root, opts) {
       const lang = codeEl
         ? (codeEl.getAttribute && codeEl.getAttribute('class')) || codeEl.className || ''
         : '';
-      const m = String(lang).match(/language-([\w-]+)/);
+      const m = /language-([\w-]+)/.exec(String(lang));
       push('```' + (m ? m[1] : '') + '\n' + ((codeEl || node).textContent || '').replace(/\n$/, '') + '\n```\n\n');
       return;
     }
@@ -388,12 +377,12 @@ var createPageView = function createPageView(doc, loc, winOverride) {
   const win = winOverride || (doc?.defaultView) || null;
 
   const all = (sel) => {
-    try { return Array.prototype.slice.call(doc.querySelectorAll(sel)); } catch (e) { return []; }
+    try { return Array.prototype.slice.call(doc.querySelectorAll(sel)); } catch { return []; }   // 坏选择器按空集
   };
   const first = (sel) => {
-    try { return doc.querySelector(sel); } catch (e) { return null; }
+    try { return doc.querySelector(sel); } catch { return null; }   // 坏选择器按未找到
   };
-  const byId = (id) => { try { return doc.getElementById(id); } catch (e) { return null; } };
+  const byId = (id) => { try { return doc.getElementById(id); } catch { return null; } };
 
   /** 当前页的小节清单（标题、层级、锚点）。 */
   function headings() {
@@ -436,7 +425,7 @@ var createPageView = function createPageView(doc, loc, winOverride) {
     } catch (e) { /* 无计算样式 */ }
     if (!Number.isFinite(hue) && rootEl) {
       try {
-        const inline = rootEl.style && rootEl.style.getPropertyValue
+        const inline = typeof rootEl.style?.getPropertyValue === 'function'
           ? rootEl.style.getPropertyValue('--hue') : '';
         if (inline) hue = parseInt(inline, 10);
         if (!Number.isFinite(hue) && rootEl.getAttribute) {
@@ -589,7 +578,7 @@ var createPageView = function createPageView(doc, loc, winOverride) {
       const data = JSON.parse(tag.textContent || '');
       if (!data || !Array.isArray(data.nodes)) return null;
       return data;
-    } catch (e) { return null; }
+    } catch { return null; }   // 块缺失/坏 JSON 按未找到
   }
 
   /**
@@ -610,7 +599,7 @@ var createPageView = function createPageView(doc, loc, winOverride) {
     try {
       const data = JSON.parse(tag.textContent || '');
       return Array.isArray(data) ? data : null;
-    } catch (e) { return null; }
+    } catch { return null; }   // 块缺失/坏 JSON 按未找到
   }
 
   /**
@@ -1128,11 +1117,11 @@ var createPageView = function createPageView(doc, loc, winOverride) {
 
     if (to === 'top' || to === 'bottom') {
       try {
-        const y = to === 'top' ? 0 : ((doc.documentElement && doc.documentElement.scrollHeight) || 0);
+        const y = to === 'top' ? 0 : (doc.documentElement?.scrollHeight || 0);
         if (w.scrollTo) w.scrollTo({ top: y, behavior: 'smooth' });
         else if (w.scrollTo) w.scrollTo(0, y);
         return { ok: true, to, y };
-      } catch (e) { return { ok: false, reason: 'scroll_unavailable' }; }
+      } catch { return { ok: false, reason: 'scroll_unavailable' }; }
     }
 
     if (to === 'back') {
@@ -1323,7 +1312,7 @@ var createPageView = function createPageView(doc, loc, winOverride) {
     }
     if (opt.hue !== undefined && opt.hue !== null) {
       const hue = Math.max(0, Math.min(360, parseInt(opt.hue, 10) || 0));
-      if (rootEl?.style && rootEl.style.setProperty) {
+      if (typeof rootEl?.style?.setProperty === 'function') {
         rootEl.style.setProperty('--hue', String(hue));
         rootEl.style.setProperty('--primary-h', String(hue));
       }
@@ -1440,12 +1429,12 @@ var createPageView = function createPageView(doc, loc, winOverride) {
     let target = null;
 
     if (o.selector) {
-      try { target = doc.querySelector(String(o.selector)); } catch (e) { target = null; }
+      try { target = doc.querySelector(String(o.selector)); } catch { target = null; }   // 坏选择器按未找到
       if (!target) return Promise.resolve({ ...meta, ok: false, reason: 'selector_not_found', selector: o.selector });
       try {
         const r = target.getBoundingClientRect();
         rect = { x: r.left, y: r.top, w: r.width, h: r.height };
-      } catch (e) { return Promise.resolve({ ...meta, ok: false, reason: 'no_layout' }); }
+      } catch { return Promise.resolve({ ...meta, ok: false, reason: 'no_layout' }); }
     } else {
       const r = o.rect || {};
       rect = { x: Number(r.x) || 0, y: Number(r.y) || 0, w: Number(r.w) || 0, h: Number(r.h) || 0 };
@@ -1481,7 +1470,7 @@ var createPageView = function createPageView(doc, loc, winOverride) {
       const img = new SvgImage();
       let settled = false;
       const done = (v) => { if (!settled) { settled = true; resolve(v); } };
-      const setT = w.setTimeout ? w.setTimeout : setTimeout;
+      const setT = w.setTimeout ?? setTimeout;
       const clrT = w.clearTimeout ? w.clearTimeout : clearTimeout;
       const timer = setT(() => done({ ...meta, ok: false, reason: 'region_timeout' }), 15000);
       img.onerror = () => { clrT(timer); done({ ...meta, ok: false, reason: 'region_render_failed', hint: 'SVG 渲染失败（可能是跨域字体/图片）' }); };
@@ -1524,7 +1513,7 @@ var createPageView = function createPageView(doc, loc, winOverride) {
         + 'transform:scale(' + scale + ');transform-origin:0 0;background:#fff">'
         + '<style>' + css + '</style>' + html + '</div>'
         + '</foreignObject></svg>';
-    } catch (e) { return null; }
+    } catch { return null; }   // SVG 序列化失败 ⇒ 截图降级路径接管
   }
 
   /**
@@ -1624,7 +1613,7 @@ var createPageView = function createPageView(doc, loc, winOverride) {
 
     // JSON 节点 → site_index 输出形态：组节点带 indexHref（若有）作 path，叶子带 href。
     const toNode = (n) => {
-      const isGroup = !!(n.children && n.children.length);
+      const isGroup = !!n.children?.length;
       const node = { name: n.label, depth: n.depth };
       if (isGroup) {
         if (n.indexHref) node.path = n.indexHref;
@@ -1757,7 +1746,7 @@ var createPageView = function createPageView(doc, loc, winOverride) {
       out.push({
         index: out.length,
         src, abs, ext: ext.toLowerCase(),
-        alt: (el.getAttribute && el.getAttribute('alt')) || '',
+        alt: el.getAttribute?.('alt') || '',
         natural: el.naturalWidth ? { w: el.naturalWidth, h: el.naturalHeight } : undefined,
         box: box || undefined,
         // 学习通能直接收的格式；webp/jxl/avif/gif 都要先转

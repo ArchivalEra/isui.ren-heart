@@ -60,7 +60,10 @@ export function parse(src, opts = {}) {
   const problems = [...lexProblems, ...checkEnvironments(tokens)];
 
   let nextId = 0;
-  const newId = () => `n${(nextId += 1)}`;
+  const newId = () => {
+    nextId += 1;
+    return `n${nextId}`;
+  };
 
   /** 读一个「原子」：一个字符、一个命令、或一个花括号组。 */
   let pos = 0;
@@ -416,7 +419,8 @@ export function parse(src, opts = {}) {
         || t.value === 'vdots' || t.value === 'ddots') {
         return node('ellipsis', 'operator', { tex: `\\${t.value}`, glyph }, start, t.end);
       }
-      if (t.value === 'int' || t.value === 'oint' || t.value === 'sum') {
+      if (t.value === 'int' || t.value === 'oint' || t.value === 'sum'
+        || t.value === 'prod' || t.value === 'coprod') {
         return node('bigop', 'operator', { tex: `\\${t.value}`, glyph }, start, t.end);
       }
       return node('sym', role, { tex: `\\${t.value}`, glyph }, start, t.end);
@@ -618,7 +622,6 @@ export function parse(src, opts = {}) {
     // 读到配对的 \end{同名}
     const rows = [];
     let curRow = [];
-    let depth = 0;
     let end = beginTok.end;
     while (pos < tokens.length) {
       const cur = peek();

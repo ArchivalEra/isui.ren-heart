@@ -46,7 +46,7 @@ const verifyPhrase = function verifyPhrase(postingsList) {
   if (!postingsList || !postingsList.length) return [];
   let anchor = 0;
   for (let k = 1; k < postingsList.length; k++) {
-    if (!postingsList[k] || !postingsList[k].length) return [];
+    if (!postingsList[k]?.length) return [];
     if (postingsList[k].length < postingsList[anchor].length) anchor = k;
   }
   if (!postingsList[anchor].length) return [];
@@ -65,7 +65,7 @@ const verifyPhrase = function verifyPhrase(postingsList) {
   return found;
 };
 const sectionForPosition = function sectionForPosition(headings, position) {
-  if (!headings || !headings.length) return null;
+  if (!headings?.length) return null;
   let found = null;
   for (const heading of headings) {
     if (heading.s <= position) found = heading;

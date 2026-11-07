@@ -68,7 +68,7 @@ var parseInline = function parseInline(src) {
 
     // 链接 [text](href)
     if (ch === '[') {
-      const m = s.slice(i).match(/^\[([^\]]*)\]\(([^)\s]*)\)/);
+      const m = /^\[([^\]]*)\]\(([^)\s]*)\)/.exec(s.slice(i));
       if (m) {
         const href = safeHref(m[2]);
         flush();
@@ -81,7 +81,7 @@ var parseInline = function parseInline(src) {
 
     // 图片 ![alt](src)：只接受同源相对路径，否则丢弃
     if (ch === '!' && s[i + 1] === '[') {
-      const m = s.slice(i).match(/^!\[([^\]]*)\]\(([^)\s]*)\)/);
+      const m = /^!\[([^\]]*)\]\(([^)\s]*)\)/.exec(s.slice(i));
       if (m) {
         const src = safeSrc(m[2]);
         flush();
@@ -189,7 +189,7 @@ var parseIncremental = function parseIncremental(buffer) {
 
     // ④ 裸写的 \begin{…}…\end{…}：模型常这么写，包成块级公式
     if (text.startsWith('\\begin{', i)) {
-      const env = text.slice(i + 7).match(/^([a-zA-Z*]+)\}/);
+      const env = /^([a-zA-Z*]+)\}/.exec(text.slice(i + 7));
       if (env) {
         const close = '\\end{' + env[1] + '}';
         const end = text.indexOf(close, i);
@@ -202,7 +202,7 @@ var parseIncremental = function parseIncremental(buffer) {
     }
 
     // ⑤ 标题
-    const hm = text.slice(i).match(/^(#{1,6})[ \t]+([^\n]*)\n/);
+    const hm = /^(#{1,6})[ \t]+([^\n]*)\n/.exec(text.slice(i));
     if (hm) {
       blocks.push({ kind: 'h', level: hm[1].length, text: hm[2].trim() });
       i += hm[0].length;
@@ -239,7 +239,7 @@ var parseIncremental = function parseIncremental(buffer) {
     // 匹配不到缩进行 ⇒ 列表提前 terminated ⇒ 后续内容全被吞进段落，
     // 面板上会看到字面的 "   - 子项 A\n   - 子项 B\n3. "。
     // 现在记录每项的缩进层级（depth），渲染侧据此嵌套。
-    const li0 = text.slice(i).match(/^([ \t]*)(?:[-*]|\d+\.)[ \t]+/);
+    const li0 = /^([ \t]*)(?:[-*]|\d+\.)[ \t]+/.exec(text.slice(i));
     if (li0) {
       const items = [];
       let j = i;
@@ -405,7 +405,7 @@ var applyOps = function applyOps(doc, el, ops, maths) {
         node = mk(op.ordered ? 'ol' : 'ul');
         for (const item of op.items) {
           const li = mk('li');
-          const childOps = item?.ops ? item.ops : (Array.isArray(item) ? item : []);
+          const childOps = item?.ops ?? (Array.isArray(item) ? item : []);
           const depth = (item?.depth) || 0;
           if (depth > 0) li.style.marginLeft = (depth * 1.1) + 'em';
           for (const c of inlineNodes(childOps)) li.appendChild(c);
@@ -438,7 +438,7 @@ var applyOps = function applyOps(doc, el, ops, maths) {
         }
         thead.appendChild(trh);
         node.appendChild(thead);
-        if (op.rows && op.rows.length) {
+        if (op.rows?.length) {
           const tbody = mk('tbody');
           for (const row of op.rows) {
             const tr = mk('tr');
