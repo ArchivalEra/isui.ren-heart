@@ -1561,6 +1561,19 @@ M834 80h400000v40h-400000z"/></svg></span></span></span><span class="vlist-s">�
         // 调用（模块 URL 反正只加载一次，版本戳不变）；OCT_BASE 与 parser 的
         // import 改成在函数里现取。
         const assetRoot = () => document.documentElement.getAttribute('data-root') || './';
+        // ⚠️ 2026-11-07 站长线上实报「公式解析失败：error loading dynamically
+        // imported module: https://isui.ren/assets/math/parser.js」——URL **不带**
+        // /repo/S26-1_202609/ 前缀且 404（带前缀的那条实测 200）。
+        // 数学模块的动态 import 只在「点 ▶ 计算」那一刻才跑，晚于首屏；
+        // 若那一刻 data-root 仍是构建期的相对值（site-root 探测被跳过/失配，
+        // 或 SPA 换页竞态），相对解析就落在域名根 ⇒ 404。
+        // 资产是按「正式根 + 仓库相对路径」部署的，所以这类**运行期动态 import**
+        // 一律优先 canonical（构建期写死的绝对前缀，页面在哪个入口打开都成立）；
+        // canonical 缺失（老页面/裸构建）才退回 data-root。
+        const moduleRoot = () => {
+          const c = document.documentElement.getAttribute('data-canonical-root');
+          return (c && c !== '/') ? c : assetRoot();
+        };
         const mod = await import(assetRoot() + 'assets/plugins/capability-pack.js?v=d8a711ff35');
         // Static-Contract 客户端：只在用户真的点了「下载计算内核」时才 import，
         // 首屏零开销。releaseLoader 把「从哪个 release 取哪个 entry」交给纯逻辑层，
@@ -1707,8 +1720,11 @@ M834 80h400000v40h-400000z"/></svg></span></span></span><span class="vlist-s">�
 
           let code;
           try {
-            const { parse } = await import(assetRoot() + 'assets/math/parser.js');
-            const { translate } = await import(assetRoot() + 'assets/math/to-octave.js');
+            // ⚠️ moduleRoot() + ?v=（2026-11-07）：绝对正式根 + 内容哈希。
+            // 裸 assetRoot()+…js 两个坑各踩过一次：相对前缀在镜像入口下落域名根
+            // 404（线上实报）；无戳则 EdgeOne 缓存旧副本（handoff §0.218 同类）。
+            const { parse } = await import(moduleRoot() + 'assets/math/parser.js?v=44618a7ab7');
+            const { translate } = await import(moduleRoot() + 'assets/math/to-octave.js?v=a6ca69e4fb');
             const t = translate(parse(src).expr.root);
             if (!t.ok) return { ok: false, error: t.reason };
             code = t.code;
