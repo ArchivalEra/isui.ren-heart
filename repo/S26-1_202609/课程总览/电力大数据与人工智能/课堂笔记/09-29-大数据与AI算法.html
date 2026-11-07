@@ -33,7 +33,7 @@
        KaTeX 的 CSS 自带 @font-face 指向 ./fonts/，那份字体也在 assets/katex/fonts/。
        ⚠️ 必须走 assetUrl（带内容哈希戳）：否则改了它浏览器永远读旧缓存。 -->
   <link rel="stylesheet" href="../../../assets/katex/katex.min.css?v=383e7b8d45">
-  <link rel="stylesheet" href="../../../assets/theme/shirone-reader.css?v=adf4043c05">
+  <link rel="stylesheet" href="../../../assets/theme/shirone-reader.css?v=2405086745">
   <link rel="stylesheet" href="../../../assets/plugins/site-search.css?v=45716eda6c">
   <link rel="stylesheet" href="../../../assets/plugins/chat-panel.css?v=af8495f4d2">
   <link rel="stylesheet" href="../../../assets/plugins/figures.css?v=e7bdc5cd97">
@@ -1622,7 +1622,7 @@ Value（价值）</strong>。教师特别把 <strong>value</strong> 拎出来做
   <!-- 能力包（2026-10-30）：装配层 + 纯逻辑模块。
        **页面加载时不做任何事**——不查状态、不加载 824 KB 编辑器、不碰计算内核（三件套改由 Static-Contract 分块下载到 OPFS）。
        只有用户点右上角 package 图标时，装配层才查一次状态；下载/运行各按各的时机。 -->
-  <script src="../../../assets/plugins/pack-runtime.js?v=ba017f2e0e" defer></script>
+  <script src="../../../assets/plugins/pack-runtime.js?v=cc8ec812bd" defer></script>
   <script type="module">
     // 装配：把纯逻辑模块接进装配层。
     // ⚠️ 这里是全站唯一的「能力包接线点」，改接口只改这一处。
@@ -1681,7 +1681,7 @@ Value（价值）</strong>。教师特别把 <strong>value</strong> 拎出来做
         // 在需要时自己 createFormulaCells —— 两层分工：本层管 import 与版本戳，
         // 装配层管「什么时候装、装在哪个容器上」。
         try {
-          const cellsMod = await import(assetRoot() + 'assets/plugins/formula-cells.js?v=591f19efa0');
+          const cellsMod = await import(assetRoot() + 'assets/plugins/formula-cells.js?v=e255b36de8');
           window.__createFormulaCells = cellsMod.createFormulaCells;
         } catch (e) {
           console.warn('[pack] formula-cells 载入失败，页内单元格不可用', e);
