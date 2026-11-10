@@ -1,23 +1,12 @@
 {
-	"generatedAt": "2026-11-10T12:44:18.227Z",
+	"generatedAt": "2026-11-10T20:37:01.672Z",
 	"acceleratedDirs": ["Octave", "S26-1_202609"],
 	"entries": [
-		{
-			"name": "W-o_U",
-			"pages": "absent",
-			"accelerated": false,
-			"pushedAt": "2026-11-10T12:38:05Z",
-			"status": null,
-			"description": "W／o U         r-906      A session driven communication tool for every agent.",
-			"language": null,
-			"url": "https://github.com/ArchivalEra/W-o_U",
-			"icon": ""
-		},
 		{
 			"name": "Static-Contract",
 			"pages": "absent",
 			"accelerated": false,
-			"pushedAt": "2026-11-10T09:54:36Z",
+			"pushedAt": "2026-11-10T17:52:55Z",
 			"status": null,
 			"description": "apt-style contract for static distribution",
 			"language": "Python",
@@ -25,10 +14,32 @@
 			"icon": ""
 		},
 		{
+			"name": "Octave-Full-Wasm",
+			"pages": "absent",
+			"accelerated": false,
+			"pushedAt": "2026-11-10T15:27:44Z",
+			"status": null,
+			"description": "浏览器里跑满功能 GNU Octave 11.3.0：wasm64 + 多线程 + OpenBLAS 四车道自动选档",
+			"language": "JavaScript",
+			"url": "https://github.com/ArchivalEra/Octave-Full-Wasm",
+			"icon": ""
+		},
+		{
+			"name": "W-o_U",
+			"pages": "absent",
+			"accelerated": false,
+			"pushedAt": "2026-11-10T14:31:17Z",
+			"status": null,
+			"description": "W／o U         r-906      A session driven communication tool for every agent.Also the first Kimi Code session-level communication tool.",
+			"language": "JavaScript",
+			"url": "https://github.com/ArchivalEra/W-o_U",
+			"icon": ""
+		},
+		{
 			"name": "isui.ren-heart",
 			"pages": "ready",
 			"accelerated": false,
-			"pushedAt": "2026-11-10T08:51:08Z",
+			"pushedAt": "2026-11-10T12:44:56Z",
 			"status": "built",
 			"description": "isui.ren 的站点心脏：EdgeOne Pages 静态源、边缘中间件与跨仓部署链",
 			"language": "Python",
@@ -45,17 +56,6 @@
 			"language": "JavaScript",
 			"url": "https://github.com/ArchivalEra/S26-1_202609",
 			"icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMTIgN2MtMS40LTEuMi0zLjQtMS45LTUuNi0xLjktLjcgMC0xLjQuMDYtMiAuMTlWMTguM2MuNi0uMTIgMS4zLS4xOSAyLS4xOSAyLjIgMCA0LjIuNyA1LjYgMS45IDEuNC0xLjIgMy40LTEuOSA1LjYtMS45LjcgMCAxLjQuMDcgMiAuMTlWNS4yOWMtLjYtLjEzLTEuMy0uMTktMi0uMTktMi4yIDAtNC4yLjctNS42IDEuOVoiLz48cGF0aCBkPSJNMTIgN3YxMyIvPjwvc3ZnPg=="
-		},
-		{
-			"name": "Octave-Full-Wasm",
-			"pages": "absent",
-			"accelerated": false,
-			"pushedAt": "2026-11-10T03:02:34Z",
-			"status": null,
-			"description": "浏览器里跑满功能 GNU Octave 11.3.0：wasm64 + 多线程 + OpenBLAS 四车道自动选档",
-			"language": "JavaScript",
-			"url": "https://github.com/ArchivalEra/Octave-Full-Wasm",
-			"icon": ""
 		},
 		{
 			"name": "Octave-Extra-Content",
