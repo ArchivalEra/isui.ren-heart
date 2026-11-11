@@ -290,14 +290,14 @@
       "pages": 8
     },
     {
+      "label": "\\overline{S}_D",
+      "count": 59,
+      "pages": 7
+    },
+    {
       "label": "O",
       "count": 58,
       "pages": 9
-    },
-    {
-      "label": "\\overline{S}_D",
-      "count": 58,
-      "pages": 7
     },
     {
       "label": "F",
@@ -316,7 +316,7 @@
     },
     {
       "label": "\\overline{R}_D",
-      "count": 55,
+      "count": 56,
       "pages": 7
     },
     {
@@ -1535,6 +1535,11 @@
       "pages": 1
     },
     {
+      "label": "\\odot",
+      "count": 11,
+      "pages": 7
+    },
+    {
       "label": "Q_{2,n}",
       "count": 11,
       "pages": 1
@@ -1728,11 +1733,6 @@
       "label": "I_{M2}",
       "count": 9,
       "pages": 1
-    },
-    {
-      "label": "\\odot",
-      "count": 9,
-      "pages": 6
     },
     {
       "label": "m_7",
@@ -6944,7 +6944,7 @@
       "html": "课程总览/电子技术/作业/2026-10-19作业.html",
       "anchors": 32,
       "uncovered": 0,
-      "gaps": 26
+      "gaps": 27
     },
     {
       "page": "课程总览/电子技术/作业/2026-10-21作业.md",
