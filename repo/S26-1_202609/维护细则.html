@@ -1374,7 +1374,7 @@
         <main class="content-wrapper">
           <article class="article-container">
             
-            <div class="meta-chip-bar"><span class="meta-chip">📅 更新: 2026-11-10</span></div>
+            <div class="meta-chip-bar"><span class="meta-chip">📅 更新: 2026-11-11</span></div>
 
             <div class="article-content">
               <h1 id="维护细则">维护细则</h1><p>本细则适用于<strong>任意数量课程</strong>的学习仓库：增加课程、增加资料类别、迁移目录都不需要改写本细则，只需要按下面的固定动作执行。原则性规定见<a href="./%E7%BB%B4%E6%8A%A4%E6%9D%A1%E4%BE%8B.html">仓库维护条例</a>；两者冲突时以条例为准，并同步修订本细则。</p>
@@ -1632,9 +1632,9 @@ HEIC→JXL 是无损转<strong>像素</strong>、不保留原容器字节，原�
 <p>本区块由 <code>.githooks/hook_lib.py</code> 在<strong>每次提交时从暂存内容重新生成</strong>，推送前校验一致性；手工修改会在下次提交时被覆盖。要改内容请改这一节之外的正文。</p>
 </blockquote>
 <ul>
-<li>课程 <strong>8</strong> 门；正式资料 <strong>291</strong> 份（不含索引、模板和历史入口）。</li>
-<li>精确白名单 <strong>709</strong> 条逐文件路径（无通配符），仓库共 <strong>700</strong> 个受管文件。</li>
-<li>暂存内容摘要（不含本文件与 README）：<code>5e2006dda73f2d72fde3f9570669636e4fce8215916393396ffa07a5bb3ef9f0</code>。任何正文改动都会改变这一行。</li>
+<li>课程 <strong>8</strong> 门；正式资料 <strong>309</strong> 份（不含索引、模板和历史入口）。</li>
+<li>精确白名单 <strong>752</strong> 条逐文件路径（无通配符），仓库共 <strong>743</strong> 个受管文件。</li>
+<li>暂存内容摘要（不含本文件与 README）：<code>89bd74430f4fb88cb50e2a920c7e07f35ccff0e75a82a85765eb0e930e5e6cb4</code>。任何正文改动都会改变这一行。</li>
 </ul>
 <h3 id="课程分类一览">课程分类一览</h3><div class="table-scroll-container t-matrix" role="region" aria-label="课程分类一览" tabindex="0">
 <table>
@@ -1643,7 +1643,7 @@ HEIC→JXL 是无损转<strong>像素</strong>、不保留原容器字节，原�
 <tr><td data-label="课程">工程数学</td><td data-label="作业">4</td><td data-label="教材解析">22</td><td data-label="课堂笔记">8</td><td data-label="原始资料">0</td><td data-label="分类索引">齐全</td></tr>
 <tr><td data-label="课程">形势与政策</td><td data-label="作业">0</td><td data-label="教材解析">—</td><td data-label="课堂笔记">4</td><td data-label="原始资料">0</td><td data-label="分类索引">齐全</td></tr>
 <tr><td data-label="课程">电力大数据与人工智能</td><td data-label="作业">1</td><td data-label="教材解析">0</td><td data-label="课堂笔记">7</td><td data-label="原始资料">0</td><td data-label="分类索引">齐全</td></tr>
-<tr><td data-label="课程">电子技术</td><td data-label="作业">12</td><td data-label="教材解析">1</td><td data-label="课堂笔记">15</td><td data-label="原始资料">0</td><td data-label="分类索引">齐全</td></tr>
+<tr><td data-label="课程">电子技术</td><td data-label="作业">30</td><td data-label="教材解析">1</td><td data-label="课堂笔记">15</td><td data-label="原始资料">0</td><td data-label="分类索引">齐全</td></tr>
 <tr><td data-label="课程">电机学</td><td data-label="作业">4</td><td data-label="教材解析">7</td><td data-label="课堂笔记">6</td><td data-label="原始资料">0</td><td data-label="分类索引">齐全</td></tr>
 <tr><td data-label="课程">电气前沿</td><td data-label="作业">0</td><td data-label="教材解析">—</td><td data-label="课堂笔记">1</td><td data-label="原始资料">0</td><td data-label="分类索引">齐全</td></tr>
 <tr><td data-label="课程">电路原理</td><td data-label="作业">182</td><td data-label="教材解析">1</td><td data-label="课堂笔记">15</td><td data-label="原始资料">0</td><td data-label="分类索引">齐全</td></tr>
@@ -1656,7 +1656,12 @@ HEIC→JXL 是无损转<strong>像素</strong>、不保留原容器字节，原�
 <li><code>git fsck --no-progress</code>：仓库对象完整性，不应有输出。</li>
 <li>推送由 <code>.githooks/pre-push</code> 校验待推送提交的两处自动区块。</li>
 </ul>
-<h3 id="3-4-2-图元-电路图-波形-卡诺图-的质量闸">3.4.2 图元（电路图 / 波形 / 卡诺图）的质量闸</h3><p>图由数据渲染（<code>站点/plugins/figures.mjs</code> + <code>站点/图库/&lt;课程&gt;.figures.txt</code>）之后，<strong>「能渲染出来」不等于「能读懂」</strong>。
+<h3 id="3-4-2-图元-电路图-波形-卡诺图-的质量闸">3.4.2 图元（电路图 / 波形 / 卡诺图）的质量闸</h3><p><strong>2026-11-11 口径更新</strong>：新配图一律走 <code>课程总览/&lt;课&gt;/作业/figures/</code> 下的独立 SVG
+（页面写 <code>&lt;figure class="fig"&gt;</code> + <code>&lt;img src="figures/…"&gt;</code> + <code>&lt;figcaption&gt;</code>，构建器原样拷进 dist），
+<code>站点/图库/电子技术.figures.txt</code> <strong>冻结、不再新增图元</strong>；自研 DSL 布局引擎不再投入维护。
+电子技术 10-14 之前三页的 23 处旧图元仍按下面的数据渲染通道出图，收口后一并退役。
+新 SVG 入库前照下表「读图自足」一栏派独立子代理只给图与图注复核。</p>
+<p>图由数据渲染（<code>站点/plugins/figures.mjs</code> + <code>站点/图库/&lt;课程&gt;.figures.txt</code>）之后，<strong>「能渲染出来」不等于「能读懂」</strong>。
 2026-10-28 实测：图渲染、气泡、结构表全通，但存在三处真实缺陷——逻辑变量 <code>B</code> 被挂上晶体管词条 <code>sym-VB</code>
 （弹「基极电位」，纯误导）、连点两下缩放键会触发双击复位、输入端点铺满画布导致两个输入端一上一下。
 这三处都是<strong>人眼一句话就能看出、而所有自动化闸门都绿</strong>的类型。</p>
