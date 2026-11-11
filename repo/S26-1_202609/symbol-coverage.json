@@ -81,7 +81,7 @@
     },
     {
       "label": "j",
-      "count": 197,
+      "count": 195,
       "pages": 28
     },
     {
@@ -365,11 +365,6 @@
       "pages": 14
     },
     {
-      "label": "\\omega",
-      "count": 52,
-      "pages": 7
-    },
-    {
       "label": "180^\\circ",
       "count": 51,
       "pages": 6
@@ -383,6 +378,11 @@
       "label": "I_3",
       "count": 50,
       "pages": 9
+    },
+    {
+      "label": "\\omega",
+      "count": 50,
+      "pages": 7
     },
     {
       "label": "a^2",
