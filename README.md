@@ -79,6 +79,14 @@ python3 serve.py 8080          # http://127.0.0.1:8080/#/heart
 ## 部署
 
 推 `main` → Actions 构建 wasm + dist → 推 `deploy` 分支 → EdgeOne Makers 拉取部署。
+
+`deploy` 分支是**多个 slot 仓共用的平面**，heart 只拥有根目录（`heart/` 与站点根
+文件），其余目录由各自的仓维护。「各仓自己的产物自己写，heart 只写自己那份」——
+这条纪律是这样落地的：`--force` 重建整条分支已退役（旧实现靠 `PRESERVE_SLOTS`
+手写名单抢救别的 slot，漏一个就永久丢失，2026-08-22 冲掉过 `Bahnhof/`、
+2026-10-08 冲掉过 `repo/`）；现在改为增量推送 + `git pull --rebase`。
+`/Mijo` 由本 workflow 主动从 `ArchivalEra/Mijo` 拉取 `site/` 派生（该仓不持有
+本仓写权限，只负责产出）。
 另有独立加速域名 `static.isui.ren` 由 EdgeOne 规则引擎按路径分流（站点文件回 `raw` 的
 `deploy-eo` 分支，release 路径回 `github.com` 并跟随 302 取字节）。
 

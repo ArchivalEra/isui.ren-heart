@@ -96,9 +96,17 @@ The app lives under `isui.ren/heart/` (vite `base: "/heart/"`). The site
 root carries the 404 page and the `edgeone.json` redirect table — there is
 no fallback `index.html` any more, so unknown paths return a **real 404**
 instead of being swallowed as 200, and the `/` hop is a 301 from
-`edgeone.json`. The `Bahnhof/` subdirectory belongs to the
-[Bahnhof](https://github.com/ArchivalEra/isui.ren-Bahnhof) repository's
-pipeline.
+`edgeone.json`. The `deploy` branch is a **plane shared by several slot repositories**:
+heart owns only the root (`heart/` and the site-root files), and every other
+directory belongs to its own repo's pipeline. Rebuilding the branch with
+`--force` is retired — the old implementation relied on a hand-written
+`PRESERVE_SLOTS` list to rescue sibling slots, and a missing entry meant
+permanent loss (it wiped `Bahnhof/` on 2026-08-22 and `repo/` on 2026-10-08).
+It is now an incremental push with `git pull --rebase` before pushing.
+
+`/Mijo` is pulled by this workflow from
+[ArchivalEra/Mijo](https://github.com/ArchivalEra/Mijo) — that repo holds no
+write permission here and only produces its `site/` tree.
 
 ## Build / test / preview
 
