@@ -1,0 +1,10 @@
+/home/runner/work/isui.ren-heart/isui.ren-heart/web-rust/target/wasm32-unknown-unknown/release/deps/js_sys-ca0e021709479627.d: /home/runner/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/js-sys-0.3.103/src/lib.rs /home/runner/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/js-sys-0.3.103/src/futures/mod.rs /home/runner/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/js-sys-0.3.103/src/futures/queue.rs /home/runner/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/js-sys-0.3.103/src/futures/task/singlethread.rs
+
+/home/runner/work/isui.ren-heart/isui.ren-heart/web-rust/target/wasm32-unknown-unknown/release/deps/libjs_sys-ca0e021709479627.rlib: /home/runner/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/js-sys-0.3.103/src/lib.rs /home/runner/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/js-sys-0.3.103/src/futures/mod.rs /home/runner/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/js-sys-0.3.103/src/futures/queue.rs /home/runner/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/js-sys-0.3.103/src/futures/task/singlethread.rs
+
+/home/runner/work/isui.ren-heart/isui.ren-heart/web-rust/target/wasm32-unknown-unknown/release/deps/libjs_sys-ca0e021709479627.rmeta: /home/runner/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/js-sys-0.3.103/src/lib.rs /home/runner/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/js-sys-0.3.103/src/futures/mod.rs /home/runner/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/js-sys-0.3.103/src/futures/queue.rs /home/runner/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/js-sys-0.3.103/src/futures/task/singlethread.rs
+
+/home/runner/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/js-sys-0.3.103/src/lib.rs:
+/home/runner/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/js-sys-0.3.103/src/futures/mod.rs:
+/home/runner/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/js-sys-0.3.103/src/futures/queue.rs:
+/home/runner/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/js-sys-0.3.103/src/futures/task/singlethread.rs:
