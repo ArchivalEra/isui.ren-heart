@@ -1671,6 +1671,36 @@ HEIC→JXL 是无损转<strong>像素</strong>、不保留原容器字节，原�
 <li>提交信息用中文，说明做了什么；不提交音频二进制、不写入任何凭据。</li>
 <li>每次提交后确认工作区干净；推送前确认 pre-push 通过。</li>
 </ul>
+<h3 id="5-1-干净克隆里的闸门行为-2026-11-12-实测">5.1 干净克隆里的闸门行为（2026-11-12 实测）</h3><p>「本地全绿」不等于「拿到不加任何工作文件的树也全绿」。实测方式：<code>git clone</code> 到干净目录，
+在里面跑 <code>python3 zreflect/registry.py --run commit</code>。</p>
+<div class="table-scroll-container t-cards" role="region" aria-label="5.1 干净克隆里的闸门行为（2026-11-12 实测）" tabindex="0">
+<table>
+<thead><tr><th align="left">类别</th><th align="left">干净克隆里的表现</th><th align="left">为什么</th></tr></thead>
+<tr><td data-label="类别">构建 + 站点测试</td><td data-label="干净克隆里的表现">全绿（构建公式 0 错、<code>node --test plugins/</code> 1054 项 0 失败）</td><td data-label="为什么">这两项正是 CI（<code>deploy.yml</code>）跑的东西</td></tr>
+<tr><td data-label="类别">Einfacht 闸门</td><td data-label="干净克隆里的表现">15 ran 变 12 ran、1 红</td><td data-label="为什么"><code>check_facts_replay</code> 的 4 条事实源在 <code>.kimi-code/</code> 或 <code>站点/dist/</code>（构建产物）里，干净克隆没有</td></tr>
+<tr><td data-label="类别"><code>check_doc_paths</code></td><td data-label="干净克隆里的表现">报「3 处本环境不适用」，不是失败</td><td data-label="为什么">判据改成问 git「这条路径被排除吗」；被排除且不存在 ⇒ 说明不适用，不豁免不静默</td></tr>
+<tr><td data-label="类别"><code>check_handoff</code> / <code>check_identity</code></td><td data-label="干净克隆里的表现"><strong>从 ran 掉到 off</strong></td><td data-label="为什么">规格文件在 <code>.kimi-code/</code>（按规则不入库）；两处都没有 ⇒ 明说未启用、退 0</td></tr>
+</table>
+</div>
+<p>⚠️ <strong>只看计数会漏掉最要紧的一类</strong>：干净克隆汇总行是 <code>ran 12 / off 8 / failed 1</code>，
+而本地是 <code>ran 15 / off 6 / failed 0</code>——两个 8 和 6 的<strong>名单不同</strong>。
+<code>check_handoff</code> / <code>check_identity</code> 在十分之九的工作里都在跑，干净克隆里却悄悄进了 off，
+计数上看只是「多关了 2 道」。<strong>干净克隆那一跑，除了看 rc，还要逐条比对 ran/off 的名单</strong>
+（<code>--run commit</code> 的 off 行会逐个点名，直接 diff 本地与克隆的清单即可）。</p>
+<p><strong>CI 只验构建与站点测试，不跑任何 Einfacht 闸门。</strong> 所以「CI 绿」不能读成「闸门绿」——
+闸门的覆盖面只在本地钩子这一侧。给 CI 加闸门之前，上表这四项必须先处置（上游 #38 在议）。</p>
+<p><strong>两条判据的真相，跑过才算</strong>（2026-11-12 追查记下的两条错）：</p>
+<ol>
+<li><strong><code>check_handoff</code> / <code>check_identity</code> 不是「两种情形长得一样」</strong>。它们本来就把
+「配了但文件不在」判成 <code>FATAL</code>，只有「没配且默认位置也没有」才 <code>off</code>。
+我曾从代码注释推断成相反形态、并当成缺陷写进了给上游的信——<strong>读代码推断出的分支形态，
+必须跑一次才能当事实</strong>（<code>HANDOFF_SPEC=&lt;不存在&gt; python3 zreflect/check_handoff.py</code> 一行就能验）。</li>
+<li><strong><code>.gitignore</code> 的语义只能问 git</strong>。<code>check_doc_paths</code> 的豁免判据是
+<code>git check-ignore -q -- &lt;路径&gt;</code>（rc=0 ⇒ 被排除）。两个失败版本都栽在这儿：
+按「目录在不在」判——<code>.kimi-code/</code> 里有两个入库的 hook，目录永远在，分支跑不到；
+按前缀白名单判——自证于是依赖跑它的那台机器。<strong>干净克隆要用 <code>git clone</code> 而不是
+<code>git archive</code></strong>，导出包没有 <code>.git</code>，<code>check-ignore</code> 返回 128，那时按「未排除」处理（宁可红）。</li>
+</ol>
 <h2 id="6-禁止事项">6. 禁止事项</h2><ol>
 <li>猜补看不清的题面、数值、下标。</li>
 <li>在资料页写未做表述（<code>待核对</code>/<code>待办</code>/<code>待补</code>/<code>整理中</code>）——这些归 issue（§3.5）。</li>
@@ -1689,8 +1719,8 @@ HEIC→JXL 是无损转<strong>像素</strong>、不保留原容器字节，原�
 </blockquote>
 <ul>
 <li>课程 <strong>9</strong> 门；正式资料 <strong>309</strong> 份（不含索引、模板和历史入口）。</li>
-<li>精确白名单 <strong>781</strong> 条逐文件路径（无通配符），仓库共 <strong>763</strong> 个受管文件。</li>
-<li>暂存内容摘要（不含本文件与 README）：<code>0d934f82ceafe75c6ebcb66b23504c3579ddcf3478eba7aca94050a2cfb8407f</code>。任何正文改动都会改变这一行。</li>
+<li>精确白名单 <strong>781</strong> 条逐文件路径（无通配符），仓库共 <strong>764</strong> 个受管文件。</li>
+<li>暂存内容摘要（不含本文件与 README）：<code>09dfb8842ca6ecd7ac4696837e41720a5faf94938f13171c9997c96ca4936591</code>。任何正文改动都会改变这一行。</li>
 </ul>
 <h3 id="课程分类一览">课程分类一览</h3><div class="table-scroll-container t-matrix" role="region" aria-label="课程分类一览" tabindex="0">
 <table>
@@ -1788,7 +1818,7 @@ HEIC→JXL 是无损转<strong>像素</strong>、不保留原容器字节，原�
         <aside class="m3-toc">
       <div class="toc-title">目录</div>
       <ul class="toc-list">
-        <li class="toc-item level-2"><a href="#1-每次编辑后的固定动作-强制">1. 每次编辑后的固定动作（强制）</a></li><li class="toc-item level-3"><a href="#1-1-事实系统-数字的唯一产地">1.1 事实系统（数字的唯一产地）</a></li><li class="toc-item level-2"><a href="#2-新增一门课程">2. 新增一门课程</a></li><li class="toc-item level-2"><a href="#3-教材照片归档与读图">3. 教材照片归档与读图</a></li><li class="toc-item level-3"><a href="#3-1-归档">3.1 归档</a></li><li class="toc-item level-3"><a href="#3-2-读图-强制交给子代理">3.2 读图（强制交给子代理）</a></li><li class="toc-item level-3"><a href="#3-3-教材解析写作-先抄后析">3.3 教材解析写作（先抄后析）</a></li><li class="toc-item level-3"><a href="#3-5-未竟条目归-issue-2026-10-12-定案">3.5 未竟条目归 issue（2026-10-12 定案）</a></li><li class="toc-item level-3"><a href="#3-5-1-复核内容只有一栏-且只写结论-2026-10-29-定案">3.5.1 复核内容只有一栏，且只写结论（2026-10-29 定案）</a></li><li class="toc-item level-3"><a href="#3-6-题面必须完整-图必须画在题面里-2026-10-13-定案-全仓适用">3.6 题面必须完整，图必须画在题面里（2026-10-13 定案，全仓适用）</a></li><li class="toc-item level-3"><a href="#3-7-三签-读了依赖-做不做得出来-2026-10-14-定案">3.7 三签：读了依赖，做不做得出来（2026-10-14 定案）</a></li><li class="toc-item level-3"><a href="#3-4-资料与索引同进同出-hook-强制-层层递进">3.4 资料与索引同进同出（hook 强制，层层递进）</a></li><li class="toc-item level-3"><a href="#3-4-1-侧栏标签-页面-h1-正式短名-hook-强制">3.4.1 侧栏标签 = 页面 H1 = 正式短名（hook 强制）</a></li><li class="toc-item level-2"><a href="#4-命名与目录速查">4. 命名与目录速查</a></li><li class="toc-item level-2"><a href="#5-白名单与提交">5. 白名单与提交</a></li><li class="toc-item level-2"><a href="#6-禁止事项">6. 禁止事项</a></li><li class="toc-item level-2"><a href="#7-故障处理">7. 故障处理</a></li><li class="toc-item level-2"><a href="#仓库状态-自动生成">仓库状态（自动生成）</a></li><li class="toc-item level-3"><a href="#课程分类一览">课程分类一览</a></li><li class="toc-item level-3"><a href="#验证基线">验证基线</a></li><li class="toc-item level-3"><a href="#3-4-2-图元-电路图-波形-卡诺图-的质量闸">3.4.2 图元（电路图 / 波形 / 卡诺图）的质量闸</a></li>
+        <li class="toc-item level-2"><a href="#1-每次编辑后的固定动作-强制">1. 每次编辑后的固定动作（强制）</a></li><li class="toc-item level-3"><a href="#1-1-事实系统-数字的唯一产地">1.1 事实系统（数字的唯一产地）</a></li><li class="toc-item level-2"><a href="#2-新增一门课程">2. 新增一门课程</a></li><li class="toc-item level-2"><a href="#3-教材照片归档与读图">3. 教材照片归档与读图</a></li><li class="toc-item level-3"><a href="#3-1-归档">3.1 归档</a></li><li class="toc-item level-3"><a href="#3-2-读图-强制交给子代理">3.2 读图（强制交给子代理）</a></li><li class="toc-item level-3"><a href="#3-3-教材解析写作-先抄后析">3.3 教材解析写作（先抄后析）</a></li><li class="toc-item level-3"><a href="#3-5-未竟条目归-issue-2026-10-12-定案">3.5 未竟条目归 issue（2026-10-12 定案）</a></li><li class="toc-item level-3"><a href="#3-5-1-复核内容只有一栏-且只写结论-2026-10-29-定案">3.5.1 复核内容只有一栏，且只写结论（2026-10-29 定案）</a></li><li class="toc-item level-3"><a href="#3-6-题面必须完整-图必须画在题面里-2026-10-13-定案-全仓适用">3.6 题面必须完整，图必须画在题面里（2026-10-13 定案，全仓适用）</a></li><li class="toc-item level-3"><a href="#3-7-三签-读了依赖-做不做得出来-2026-10-14-定案">3.7 三签：读了依赖，做不做得出来（2026-10-14 定案）</a></li><li class="toc-item level-3"><a href="#3-4-资料与索引同进同出-hook-强制-层层递进">3.4 资料与索引同进同出（hook 强制，层层递进）</a></li><li class="toc-item level-3"><a href="#3-4-1-侧栏标签-页面-h1-正式短名-hook-强制">3.4.1 侧栏标签 = 页面 H1 = 正式短名（hook 强制）</a></li><li class="toc-item level-2"><a href="#4-命名与目录速查">4. 命名与目录速查</a></li><li class="toc-item level-2"><a href="#5-白名单与提交">5. 白名单与提交</a></li><li class="toc-item level-3"><a href="#5-1-干净克隆里的闸门行为-2026-11-12-实测">5.1 干净克隆里的闸门行为（2026-11-12 实测）</a></li><li class="toc-item level-2"><a href="#6-禁止事项">6. 禁止事项</a></li><li class="toc-item level-2"><a href="#7-故障处理">7. 故障处理</a></li><li class="toc-item level-2"><a href="#仓库状态-自动生成">仓库状态（自动生成）</a></li><li class="toc-item level-3"><a href="#课程分类一览">课程分类一览</a></li><li class="toc-item level-3"><a href="#验证基线">验证基线</a></li><li class="toc-item level-3"><a href="#3-4-2-图元-电路图-波形-卡诺图-的质量闸">3.4.2 图元（电路图 / 波形 / 卡诺图）的质量闸</a></li>
       </ul>
     </aside>
       </div>
