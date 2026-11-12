@@ -1,0 +1,99 @@
+name: Code quality assessment
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '37 6 * * 1'
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+# Local equivalent of GitHub Code Quality for the heart source repository
+# (branch main-wip pushes to origin/main). Runs the gates already owned here:
+# Einfacht zreflect suite, Rust animation core, and front-end type checks.
+jobs:
+  assess:
+    name: Assess isui.ren-heart source
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Set up Rust (wasm target)
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install ruff (suite static gate)
+        run: pip install 'ruff==0.17.3'
+
+      - name: Run checks
+        id: checks
+        shell: bash
+        run: |
+          set +e
+          : > results.tsv
+          record() { printf '%s\t%s\t%s\n' "$1" "$2" "$3" >> results.tsv; }
+
+          bash -c 'set -a; . ./Einfacht.env 2>/dev/null || . ./reflect-hooks/Einfacht.env 2>/dev/null; set +a; python3 zreflect/registry.py --run commit' > /tmp/gates.log 2>&1
+          record 'zreflect-commit-gates' 'registry.py --run commit' "$?"
+
+          bash -c 'set -a; . ./Einfacht.env 2>/dev/null || . ./reflect-hooks/Einfacht.env 2>/dev/null; set +a; python3 zreflect/harness.py' > /tmp/harness.log 2>&1
+          record 'harness-selftest' 'zreflect/harness.py' "$?"
+
+          (cd web-rust && cargo check --target wasm32-unknown-unknown) > /tmp/cargo-check.log 2>&1
+          record 'rust-wasm-check' 'cargo check --target wasm32-unknown-unknown' "$?"
+
+          (cd web-rust && CARGO_BUILD_JOBS=2 cargo test) > /tmp/cargo-test.log 2>&1
+          record 'rust-tests' 'cargo test' "$?"
+
+          if [ -f web-ui/package.json ]; then
+            (cd web-ui && npm ci --no-audit --no-fund) > /tmp/npm.log 2>&1
+            (cd web-ui && npx tsc --noEmit) > /tmp/webui-tsc.log 2>&1
+            record 'web-ui-typescript' 'tsc --noEmit' "$?"
+          fi
+
+          cat results.tsv
+
+      - name: Publish summary
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo "## Code quality assessment — isui.ren-heart source"
+            echo ""
+            echo "| Check | Command | Result |"
+            echo "|---|---|---|"
+          } >> "$GITHUB_STEP_SUMMARY"
+          if [ -f results.tsv ]; then
+            while IFS=$'\t' read -r n c rc; do
+              badge=$([ "$rc" = "0" ] && echo PASS || echo "FAIL (rc=$rc)")
+              printf '| %s | \`%s\` | %s |\n' "$n" "$c" "$badge" >> "$GITHUB_STEP_SUMMARY"
+            done < results.tsv
+          else
+            echo "| (no results) | — | — |" >> "$GITHUB_STEP_SUMMARY"
+          fi
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "Note: deploy branch carries its own test.yml; this workflow assesses the source branch." >> "$GITHUB_STEP_SUMMARY"
+          echo "Baseline: web-ui tsc has pre-existing errors (missing generated wasm binding + implicit any); this workflow reports them, it does not introduce them." >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: quality-logs
+          path: /tmp/*.log
+          if-no-files-found: ignore
