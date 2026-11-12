@@ -84,10 +84,12 @@ jobs:
             echo "::warning::Mijo 仓没有 site/index.html——跳过"
             exit 0
           fi
-          rm -rf /tmp/deploy-out/Mijo
-          mkdir -p /tmp/deploy-out/Mijo
-          cp -r /tmp/mijo-src/site/. /tmp/deploy-out/Mijo/
-          echo "Mijo slot staged: $(find /tmp/deploy-out/Mijo -type f | wc -l) files"
+          # 存到独立目录：下一步会 rm -rf /tmp/deploy-out 重建它，
+          # 放进去就被删了（实测 2026-11-12：推送时 "No changes to deploy"）。
+          rm -rf /tmp/mijo-slot
+          mkdir -p /tmp/mijo-slot
+          cp -r /tmp/mijo-src/site/. /tmp/mijo-slot/
+          echo "Mijo slot staged: $(find /tmp/mijo-slot -type f | wc -l) files"
 
       - name: Push dist to deploy branch (incremental, no force)
         run: |
@@ -129,6 +131,12 @@ jobs:
           done
 
           cp -r /tmp/deploy-out/. .
+          # Mijo slot 单独拷（它不能被 rm -rf /tmp/deploy-out 波及）
+          if [ -d /tmp/mijo-slot ]; then
+            rm -rf Mijo
+            cp -r /tmp/mijo-slot ./Mijo
+            echo "Mijo slot copied: $(find Mijo -type f | wc -l) files"
+          fi
 
           git add -A
           if git diff --staged --quiet; then

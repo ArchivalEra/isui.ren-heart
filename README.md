@@ -89,7 +89,8 @@ python3 serve.py 8080          # http://127.0.0.1:8080/#/heart
 「untracked files would be overwritten」拒掉。
 `/Mijo` 由本 workflow 主动从 `ArchivalEra/Mijo` 拉取 `site/` 派生——不是权限问题
 （dispatch token 对本仓有写权限），而是**单点写入**：让 heart 一个人写 deploy，
-避免多个仓同时改同一条分支。
+避免多个仓同时改同一条分支。拉下来的 `site/` 先落在独立的 `/tmp/mijo-slot`，
+到最后的拷贝阶段才并进去——放进 `/tmp/deploy-out` 会被那一步的 `rm -rf` 删掉。
 另有独立加速域名 `static.isui.ren` 由 EdgeOne 规则引擎按路径分流（站点文件回 `raw` 的
 `deploy-eo` 分支，release 路径回 `github.com` 并跟随 302 取字节）。
 

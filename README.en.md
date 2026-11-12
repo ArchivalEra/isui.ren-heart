@@ -111,7 +111,9 @@ refuses to overwrite them otherwise.
 [ArchivalEra/Mijo](https://github.com/ArchivalEra/Mijo). This is not about
 permissions — the dispatch token can write here — but about **single-writer
 ownership**: only heart writes the deploy branch, so several repos never race
-on the same branch.
+on the same branch. The fetched `site/` is staged in its own `/tmp/mijo-slot`
+and merged in only at the copy stage — anything placed under `/tmp/deploy-out`
+is wiped when that directory is rebuilt.
 
 ## Build / test / preview
 
