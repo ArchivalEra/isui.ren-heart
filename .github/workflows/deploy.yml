@@ -112,7 +112,15 @@ jobs:
           cp -r site-root/. /tmp/deploy-out/
 
           git fetch origin deploy:refs/remotes/origin/deploy
+          # 构建在工作区留下未跟踪产物（wasm-bindgen 的 tarball 等），
+          # 直接 checkout 会被「untracked working tree files would be
+          # overwritten」拒掉（实测 2026-11-12）。切分支前先清干净：
+          # 这里的工作区内容已经全部复制到 /tmp/deploy-out，删掉是安全的。
+          git clean -ffdx -e .git >/dev/null 2>&1 || true
+          git reset --hard HEAD >/dev/null 2>&1 || true
           git checkout deploy 2>/dev/null || git checkout -b deploy refs/remotes/origin/deploy
+          # 切到 deploy 后，工作区是分支内容；再清一次，确保只剩分支自己的文件
+          git clean -fdx -e .git >/dev/null 2>&1 || true
 
           # 只清自己拥有的：heart/ 目录 + 站点根文件
           rm -rf heart

@@ -84,7 +84,9 @@ python3 serve.py 8080          # http://127.0.0.1:8080/#/heart
 文件），其余目录由各自的仓维护。「各仓自己的产物自己写，heart 只写自己那份」——
 这条纪律是这样落地的：`--force` 重建整条分支已退役（旧实现靠 `PRESERVE_SLOTS`
 手写名单抢救别的 slot，漏一个就永久丢失，2026-08-22 冲掉过 `Bahnhof/`、
-2026-10-08 冲掉过 `repo/`）；现在改为增量推送 + `git pull --rebase`。
+2026-10-08 冲掉过 `repo/`）；现在改为增量推送 + `git pull --rebase`；切分支前先 `git clean -ffdx`——构建会留下
+未跟踪产物（wasm-bindgen 的 tarball 之类），不清掉 `git checkout deploy` 会被
+「untracked files would be overwritten」拒掉。
 `/Mijo` 由本 workflow 主动从 `ArchivalEra/Mijo` 拉取 `site/` 派生——不是权限问题
 （dispatch token 对本仓有写权限），而是**单点写入**：让 heart 一个人写 deploy，
 避免多个仓同时改同一条分支。

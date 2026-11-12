@@ -102,7 +102,10 @@ directory belongs to its own repo's pipeline. Rebuilding the branch with
 `--force` is retired — the old implementation relied on a hand-written
 `PRESERVE_SLOTS` list to rescue sibling slots, and a missing entry meant
 permanent loss (it wiped `Bahnhof/` on 2026-08-22 and `repo/` on 2026-10-08).
-It is now an incremental push with `git pull --rebase` before pushing.
+It is now an incremental push with `git pull --rebase` before pushing, and the
+branch switch is preceded by `git clean -ffdx` — the build leaves untracked
+artifacts (the wasm-bindgen tarball among them), and `git checkout deploy`
+refuses to overwrite them otherwise.
 
 `/Mijo` is pulled by this workflow from
 [ArchivalEra/Mijo](https://github.com/ArchivalEra/Mijo). This is not about
