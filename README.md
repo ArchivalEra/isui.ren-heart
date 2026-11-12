@@ -85,8 +85,9 @@ python3 serve.py 8080          # http://127.0.0.1:8080/#/heart
 这条纪律是这样落地的：`--force` 重建整条分支已退役（旧实现靠 `PRESERVE_SLOTS`
 手写名单抢救别的 slot，漏一个就永久丢失，2026-08-22 冲掉过 `Bahnhof/`、
 2026-10-08 冲掉过 `repo/`）；现在改为增量推送 + `git pull --rebase`。
-`/Mijo` 由本 workflow 主动从 `ArchivalEra/Mijo` 拉取 `site/` 派生（该仓不持有
-本仓写权限，只负责产出）。
+`/Mijo` 由本 workflow 主动从 `ArchivalEra/Mijo` 拉取 `site/` 派生——不是权限问题
+（dispatch token 对本仓有写权限），而是**单点写入**：让 heart 一个人写 deploy，
+避免多个仓同时改同一条分支。
 另有独立加速域名 `static.isui.ren` 由 EdgeOne 规则引擎按路径分流（站点文件回 `raw` 的
 `deploy-eo` 分支，release 路径回 `github.com` 并跟随 302 取字节）。
 

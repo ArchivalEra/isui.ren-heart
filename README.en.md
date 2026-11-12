@@ -105,8 +105,10 @@ permanent loss (it wiped `Bahnhof/` on 2026-08-22 and `repo/` on 2026-10-08).
 It is now an incremental push with `git pull --rebase` before pushing.
 
 `/Mijo` is pulled by this workflow from
-[ArchivalEra/Mijo](https://github.com/ArchivalEra/Mijo) — that repo holds no
-write permission here and only produces its `site/` tree.
+[ArchivalEra/Mijo](https://github.com/ArchivalEra/Mijo). This is not about
+permissions — the dispatch token can write here — but about **single-writer
+ownership**: only heart writes the deploy branch, so several repos never race
+on the same branch.
 
 ## Build / test / preview
 
