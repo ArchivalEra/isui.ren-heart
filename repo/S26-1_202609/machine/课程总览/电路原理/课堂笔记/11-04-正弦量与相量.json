@@ -1,0 +1,658 @@
+{
+ "url": "课程总览/电路原理/课堂笔记/11-04-正弦量与相量.html",
+ "title": "11-04 正弦量与相量",
+ "math": [
+  {
+   "tex": "\\cos(\\omega t+\\theta)=\\sin(\\omega t+\\theta+90^\\circ)",
+   "display": true
+  },
+  {
+   "tex": "\\omega=\\frac{2\\pi}{T}=2\\pi f,\\qquad f=\\frac{1}{T}",
+   "display": true
+  },
+  {
+   "tex": "I=\\frac{I_m}{\\sqrt{2}}",
+   "display": true
+  },
+  {
+   "tex": "i(t)=\\sqrt{2}\\,I\\sin(\\omega t+\\varphi),\\qquad u(t)=\\sqrt{2}\\,U\\sin(\\omega t+\\varphi)",
+   "display": true
+  },
+  {
+   "tex": "A=\\sqrt{a^2+b^2}=\\sqrt{3^2+4^2}=5",
+   "display": true
+  },
+  {
+   "tex": "i(t)=50\\sqrt{2}\\sin(314t+15^\\circ)\\ \\mathrm{A}",
+   "display": true
+  },
+  {
+   "tex": "\\dot U_a=220\\angle 0^\\circ\\ \\mathrm{V},\\qquad\n  \\dot U_b=220\\angle(-120^\\circ)\\ \\mathrm{V},\\qquad\n  \\dot U_c=220\\angle 120^\\circ\\ \\mathrm{V}",
+   "display": true
+  },
+  {
+   "tex": "I=I_m/\\sqrt{2}",
+   "display": false
+  },
+  {
+   "tex": "U_1",
+   "display": false
+  },
+  {
+   "tex": "U_2",
+   "display": false
+  },
+  {
+   "tex": "U_1",
+   "display": false
+  },
+  {
+   "tex": "I_3",
+   "display": false
+  },
+  {
+   "tex": "180^\\circ",
+   "display": false
+  },
+  {
+   "tex": "180^\\circ",
+   "display": false
+  },
+  {
+   "tex": "180^\\circ",
+   "display": false
+  },
+  {
+   "tex": "180^\\circ",
+   "display": false
+  },
+  {
+   "tex": "\\pm 180^\\circ",
+   "display": false
+  },
+  {
+   "tex": "\\pm 180^\\circ",
+   "display": false
+  },
+  {
+   "tex": "180^\\circ",
+   "display": false
+  },
+  {
+   "tex": "360^\\circ",
+   "display": false
+  },
+  {
+   "tex": "-180^\\circ",
+   "display": false
+  },
+  {
+   "tex": "360^\\circ",
+   "display": false
+  },
+  {
+   "tex": "U_2",
+   "display": false
+  },
+  {
+   "tex": "50^\\circ",
+   "display": false
+  },
+  {
+   "tex": "50^\\circ",
+   "display": false
+  },
+  {
+   "tex": "I",
+   "display": false
+  },
+  {
+   "tex": "\\sin",
+   "display": false
+  },
+  {
+   "tex": "\\pm 180^\\circ",
+   "display": false
+  },
+  {
+   "tex": "A=\\sqrt{a^2+b^2}",
+   "display": false
+  },
+  {
+   "tex": "\\varphi=\\arctan(b/a)",
+   "display": false
+  },
+  {
+   "tex": "a=A\\cos\\varphi",
+   "display": false
+  },
+  {
+   "tex": "b=A\\sin\\varphi",
+   "display": false
+  },
+  {
+   "tex": "2\\pi",
+   "display": false
+  },
+  {
+   "tex": "2\\pi",
+   "display": false
+  },
+  {
+   "tex": "I_m",
+   "display": false
+  },
+  {
+   "tex": "-I_m",
+   "display": false
+  },
+  {
+   "tex": "m",
+   "display": false
+  },
+  {
+   "tex": "I_m",
+   "display": false
+  },
+  {
+   "tex": "U_m",
+   "display": false
+  },
+  {
+   "tex": "-I_m",
+   "display": false
+  },
+  {
+   "tex": "I_m",
+   "display": false
+  },
+  {
+   "tex": "2I_m",
+   "display": false
+  },
+  {
+   "tex": "\\omega",
+   "display": false
+  },
+  {
+   "tex": "\\omega",
+   "display": false
+  },
+  {
+   "tex": "f",
+   "display": false
+  },
+  {
+   "tex": "\\omega",
+   "display": false
+  },
+  {
+   "tex": "50\\ \\mathrm{Hz}",
+   "display": false
+  },
+  {
+   "tex": "\\omega=2\\pi\\times50=314\\ \\mathrm{rad/s}",
+   "display": false
+  },
+  {
+   "tex": "\\varphi",
+   "display": false
+  },
+  {
+   "tex": "t=0",
+   "display": false
+  },
+  {
+   "tex": "0\\sim\\pm180^\\circ",
+   "display": false
+  },
+  {
+   "tex": "U=U_m/\\sqrt{2}",
+   "display": false
+  },
+  {
+   "tex": "i",
+   "display": false
+  },
+  {
+   "tex": "u",
+   "display": false
+  },
+  {
+   "tex": "I_m",
+   "display": false
+  },
+  {
+   "tex": "U_m",
+   "display": false
+  },
+  {
+   "tex": "I",
+   "display": false
+  },
+  {
+   "tex": "U",
+   "display": false
+  },
+  {
+   "tex": "\\varphi",
+   "display": false
+  },
+  {
+   "tex": "\\varphi",
+   "display": false
+  },
+  {
+   "tex": "90^\\circ",
+   "display": false
+  },
+  {
+   "tex": "\\cos(\\omega t+\\theta)=\\sin(\\omega t+\\theta+90^\\circ)",
+   "display": false
+  },
+  {
+   "tex": "180^\\circ",
+   "display": false
+  },
+  {
+   "tex": "\\pm 180^\\circ",
+   "display": false
+  },
+  {
+   "tex": "180^\\circ",
+   "display": false
+  },
+  {
+   "tex": "360^\\circ",
+   "display": false
+  },
+  {
+   "tex": "-180^\\circ",
+   "display": false
+  },
+  {
+   "tex": "360^\\circ",
+   "display": false
+  },
+  {
+   "tex": "I_1=A\\sin(\\omega t-30^\\circ)",
+   "display": false
+  },
+  {
+   "tex": "I_2=B\\cos(\\omega t+\\theta)",
+   "display": false
+  },
+  {
+   "tex": "I_2",
+   "display": false
+  },
+  {
+   "tex": "I_2=B\\sin(\\omega t+\\theta+90^\\circ)",
+   "display": false
+  },
+  {
+   "tex": "I_1",
+   "display": false
+  },
+  {
+   "tex": "I_2",
+   "display": false
+  },
+  {
+   "tex": "I_1",
+   "display": false
+  },
+  {
+   "tex": "180^\\circ",
+   "display": false
+  },
+  {
+   "tex": "180^\\circ",
+   "display": false
+  },
+  {
+   "tex": "180^\\circ",
+   "display": false
+  },
+  {
+   "tex": "\\pm 180^\\circ",
+   "display": false
+  },
+  {
+   "tex": "a+jb",
+   "display": false
+  },
+  {
+   "tex": "A\\angle\\varphi",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "\\varphi",
+   "display": false
+  },
+  {
+   "tex": "\\pm3",
+   "display": false
+  },
+  {
+   "tex": "\\pm4",
+   "display": false
+  },
+  {
+   "tex": "3+4j",
+   "display": false
+  },
+  {
+   "tex": ">0",
+   "display": false
+  },
+  {
+   "tex": ">0",
+   "display": false
+  },
+  {
+   "tex": "3-4j",
+   "display": false
+  },
+  {
+   "tex": ">0",
+   "display": false
+  },
+  {
+   "tex": "<0",
+   "display": false
+  },
+  {
+   "tex": "-3+4j",
+   "display": false
+  },
+  {
+   "tex": "<0",
+   "display": false
+  },
+  {
+   "tex": ">0",
+   "display": false
+  },
+  {
+   "tex": "-3-4j",
+   "display": false
+  },
+  {
+   "tex": "<0",
+   "display": false
+  },
+  {
+   "tex": "<0",
+   "display": false
+  },
+  {
+   "tex": "\\arctan(4/3)=53.1^\\circ",
+   "display": false
+  },
+  {
+   "tex": "180^\\circ",
+   "display": false
+  },
+  {
+   "tex": "\\varphi=53.1^\\circ",
+   "display": false
+  },
+  {
+   "tex": "\\varphi=-53.1^\\circ",
+   "display": false
+  },
+  {
+   "tex": "\\varphi=180^\\circ-53.1^\\circ=126.9^\\circ",
+   "display": false
+  },
+  {
+   "tex": "\\varphi=53.1^\\circ-180^\\circ=-126.9^\\circ",
+   "display": false
+  },
+  {
+   "tex": "5\\angle 53.1^\\circ",
+   "display": false
+  },
+  {
+   "tex": "5\\angle(-53.1^\\circ)",
+   "display": false
+  },
+  {
+   "tex": "5\\angle 126.9^\\circ",
+   "display": false
+  },
+  {
+   "tex": "5\\angle(-126.9^\\circ)",
+   "display": false
+  },
+  {
+   "tex": "a=A\\cos\\varphi",
+   "display": false
+  },
+  {
+   "tex": "b=A\\sin\\varphi",
+   "display": false
+  },
+  {
+   "tex": "5\\angle(-32.15^\\circ)",
+   "display": false
+  },
+  {
+   "tex": "-2.66",
+   "display": false
+  },
+  {
+   "tex": "32.15^\\circ",
+   "display": false
+  },
+  {
+   "tex": "-2.66",
+   "display": false
+  },
+  {
+   "tex": "126.9^\\circ",
+   "display": false
+  },
+  {
+   "tex": "53.1^\\circ",
+   "display": false
+  },
+  {
+   "tex": "30^\\circ",
+   "display": false
+  },
+  {
+   "tex": "45^\\circ",
+   "display": false
+  },
+  {
+   "tex": "60^\\circ",
+   "display": false
+  },
+  {
+   "tex": "\\sqrt{2}",
+   "display": false
+  },
+  {
+   "tex": "\\dot I",
+   "display": false
+  },
+  {
+   "tex": "\\dot U",
+   "display": false
+  },
+  {
+   "tex": "\\sqrt{2}",
+   "display": false
+  },
+  {
+   "tex": "\\sqrt{2}",
+   "display": false
+  },
+  {
+   "tex": "141.4",
+   "display": false
+  },
+  {
+   "tex": "141.4/\\sqrt{2}=100",
+   "display": false
+  },
+  {
+   "tex": "141.4 \\to 100",
+   "display": false
+  },
+  {
+   "tex": "\\sqrt{2}",
+   "display": false
+  },
+  {
+   "tex": "50\\angle 15^\\circ",
+   "display": false
+  },
+  {
+   "tex": "50\\ \\mathrm{Hz}",
+   "display": false
+  },
+  {
+   "tex": "220",
+   "display": false
+  },
+  {
+   "tex": "0^\\circ",
+   "display": false
+  },
+  {
+   "tex": "-120^\\circ",
+   "display": false
+  },
+  {
+   "tex": "120^\\circ",
+   "display": false
+  },
+  {
+   "tex": "220\\sqrt{2}",
+   "display": false
+  },
+  {
+   "tex": "\\varphi",
+   "display": false
+  },
+  {
+   "tex": "B/A",
+   "display": false
+  },
+  {
+   "tex": "\\pi",
+   "display": false
+  },
+  {
+   "tex": "0\\sim\\pm180^\\circ",
+   "display": false
+  },
+  {
+   "tex": "2\\pi",
+   "display": false
+  },
+  {
+   "tex": "-4/3",
+   "display": false
+  },
+  {
+   "tex": "50^\\circ",
+   "display": false
+  },
+  {
+   "tex": "50^\\circ",
+   "display": false
+  },
+  {
+   "tex": "\\sin",
+   "display": false
+  },
+  {
+   "tex": "I_2",
+   "display": false
+  },
+  {
+   "tex": "I_1",
+   "display": false
+  },
+  {
+   "tex": "\\pm 180^\\circ",
+   "display": false
+  },
+  {
+   "tex": "360^\\circ",
+   "display": false
+  },
+  {
+   "tex": "180^\\circ",
+   "display": false
+  },
+  {
+   "tex": "2\\pi",
+   "display": false
+  },
+  {
+   "tex": "\\pi",
+   "display": false
+  },
+  {
+   "tex": "-180^\\circ\\sim180^\\circ",
+   "display": false
+  },
+  {
+   "tex": "\\pm180^\\circ",
+   "display": false
+  },
+  {
+   "tex": "180^\\circ",
+   "display": false
+  },
+  {
+   "tex": "U_1",
+   "display": false
+  },
+  {
+   "tex": "U_2",
+   "display": false
+  },
+  {
+   "tex": "I_3",
+   "display": false
+  },
+  {
+   "tex": "\\arctan(4/3)=53.1^\\circ",
+   "display": false
+  },
+  {
+   "tex": "53.1/-53.1/126.9/-126.9",
+   "display": false
+  },
+  {
+   "tex": "+4.23",
+   "display": false
+  },
+  {
+   "tex": "-2.66",
+   "display": false
+  },
+  {
+   "tex": "i(t)=50\\sqrt2\\sin(314t+15^\\circ)",
+   "display": false
+  },
+  {
+   "tex": "\\approx8.5\\times10^{-14}",
+   "display": false
+  },
+  {
+   "tex": "220\\sqrt2=311.13",
+   "display": false
+  }
+ ]
+}

@@ -1,0 +1,22 @@
+{
+ "url": "课程总览/电子技术/作业/index.html",
+ "title": "作业",
+ "math": [
+  {
+   "tex": "0.6",
+   "display": false
+  },
+  {
+   "tex": "12",
+   "display": false
+  },
+  {
+   "tex": "\\overline{B}+\\overline{C}",
+   "display": false
+  },
+  {
+   "tex": "\\overline{B+C}",
+   "display": false
+  }
+ ]
+}

@@ -1,0 +1,1014 @@
+{
+ "url": "课程总览/电子技术/课堂笔记/10-21-编码器与译码器.html",
+ "title": "10-21 编码器与译码器",
+ "math": [
+  {
+   "tex": "Y_2=I_4+I_5+I_6+I_7",
+   "display": true
+  },
+  {
+   "tex": "Y_1=I_2+I_3+I_6+I_7,\\qquad Y_0=I_1+I_3+I_5+I_7",
+   "display": true
+  },
+  {
+   "tex": "Y_2=\\overline{\\overline{I_4+I_5+I_6+I_7}}=\\overline{\\overline{I_4}\\cdot\\overline{I_5}\\cdot\\overline{I_6}\\cdot\\overline{I_7}}",
+   "display": true
+  },
+  {
+   "tex": "Y_3=I_8+I_9,\\quad Y_2=I_4+I_5+I_6+I_7",
+   "display": true
+  },
+  {
+   "tex": "Y_1=I_2+I_3+I_6+I_7,\\quad Y_0=I_1+I_3+I_5+I_7+I_9",
+   "display": true
+  },
+  {
+   "tex": "Y_0=\\overline{\\overline{A_2}\\,\\overline{A_1}\\,\\overline{A_0}},\\qquad\n     Y_1=\\overline{\\overline{A_2}\\,\\overline{A_1}A_0},\\qquad\n     \\dots,\\qquad\n     Y_7=\\overline{A_2A_1A_0}",
+   "display": true
+  },
+  {
+   "tex": "Y=\\overline{A}\\,\\overline{B}\\,\\overline{C}+\\overline{A}BC+AB\\overline{C}+ABC=\\sum m(0,3,6,7)",
+   "display": true
+  },
+  {
+   "tex": "Y=\\overline{Y_0\\cdot Y_3\\cdot Y_6\\cdot Y_7}",
+   "display": true
+  },
+  {
+   "tex": "N",
+   "display": false
+  },
+  {
+   "tex": "2^N",
+   "display": false
+  },
+  {
+   "tex": "I_0",
+   "display": false
+  },
+  {
+   "tex": "I_1",
+   "display": false
+  },
+  {
+   "tex": "I_7",
+   "display": false
+  },
+  {
+   "tex": "2^N\\ge 8",
+   "display": false
+  },
+  {
+   "tex": "N=3",
+   "display": false
+  },
+  {
+   "tex": "I_0\\sim I_7",
+   "display": false
+  },
+  {
+   "tex": "Y_2Y_1Y_0",
+   "display": false
+  },
+  {
+   "tex": "Y_2",
+   "display": false
+  },
+  {
+   "tex": "Y_1",
+   "display": false
+  },
+  {
+   "tex": "Y_0",
+   "display": false
+  },
+  {
+   "tex": "I_0",
+   "display": false
+  },
+  {
+   "tex": "I_1",
+   "display": false
+  },
+  {
+   "tex": "I_2",
+   "display": false
+  },
+  {
+   "tex": "I_3",
+   "display": false
+  },
+  {
+   "tex": "I_4",
+   "display": false
+  },
+  {
+   "tex": "I_5",
+   "display": false
+  },
+  {
+   "tex": "I_6",
+   "display": false
+  },
+  {
+   "tex": "I_7",
+   "display": false
+  },
+  {
+   "tex": "Y_2",
+   "display": false
+  },
+  {
+   "tex": "I_4",
+   "display": false
+  },
+  {
+   "tex": "I_5",
+   "display": false
+  },
+  {
+   "tex": "I_6",
+   "display": false
+  },
+  {
+   "tex": "I_7",
+   "display": false
+  },
+  {
+   "tex": "I_4=1",
+   "display": false
+  },
+  {
+   "tex": "I_4\\overline{I_0}\\,\\overline{I_1}\\overline{I_2}\\overline{I_3}\\overline{I_5}\\overline{I_6}\\overline{I_7}",
+   "display": false
+  },
+  {
+   "tex": "I_4",
+   "display": false
+  },
+  {
+   "tex": "Y_1",
+   "display": false
+  },
+  {
+   "tex": "Y_0",
+   "display": false
+  },
+  {
+   "tex": "I",
+   "display": false
+  },
+  {
+   "tex": "I_1\\sim I_7",
+   "display": false
+  },
+  {
+   "tex": "I_0",
+   "display": false
+  },
+  {
+   "tex": "I_0",
+   "display": false
+  },
+  {
+   "tex": "I_0",
+   "display": false
+  },
+  {
+   "tex": "I_0",
+   "display": false
+  },
+  {
+   "tex": "I_7",
+   "display": false
+  },
+  {
+   "tex": "I_7=1",
+   "display": false
+  },
+  {
+   "tex": "I_7",
+   "display": false
+  },
+  {
+   "tex": "111",
+   "display": false
+  },
+  {
+   "tex": "I_6",
+   "display": false
+  },
+  {
+   "tex": "\\overline{I_6}=0",
+   "display": false
+  },
+  {
+   "tex": "Y_2",
+   "display": false
+  },
+  {
+   "tex": "Y_1",
+   "display": false
+  },
+  {
+   "tex": "I_6",
+   "display": false
+  },
+  {
+   "tex": "Y_0",
+   "display": false
+  },
+  {
+   "tex": "110",
+   "display": false
+  },
+  {
+   "tex": "2^N\\ge",
+   "display": false
+  },
+  {
+   "tex": "N",
+   "display": false
+  },
+  {
+   "tex": "I_i=1",
+   "display": false
+  },
+  {
+   "tex": "Y_2Y_1Y_0",
+   "display": false
+  },
+  {
+   "tex": "i",
+   "display": false
+  },
+  {
+   "tex": "i=0\\sim7",
+   "display": false
+  },
+  {
+   "tex": "0\\sim9",
+   "display": false
+  },
+  {
+   "tex": "I_0\\sim I_9",
+   "display": false
+  },
+  {
+   "tex": "2^3=8<10\\le 16=2^4",
+   "display": false
+  },
+  {
+   "tex": "0000\\sim 1001",
+   "display": false
+  },
+  {
+   "tex": "1010\\sim 1111",
+   "display": false
+  },
+  {
+   "tex": "I_0\\sim I_9",
+   "display": false
+  },
+  {
+   "tex": "Y_3Y_2Y_1Y_0",
+   "display": false
+  },
+  {
+   "tex": "I_i",
+   "display": false
+  },
+  {
+   "tex": "i",
+   "display": false
+  },
+  {
+   "tex": "Y_3",
+   "display": false
+  },
+  {
+   "tex": "Y_2",
+   "display": false
+  },
+  {
+   "tex": "Y_1",
+   "display": false
+  },
+  {
+   "tex": "Y_0",
+   "display": false
+  },
+  {
+   "tex": "I_0",
+   "display": false
+  },
+  {
+   "tex": "I_1",
+   "display": false
+  },
+  {
+   "tex": "I_2",
+   "display": false
+  },
+  {
+   "tex": "I_3",
+   "display": false
+  },
+  {
+   "tex": "I_4",
+   "display": false
+  },
+  {
+   "tex": "I_5",
+   "display": false
+  },
+  {
+   "tex": "I_6",
+   "display": false
+  },
+  {
+   "tex": "I_7",
+   "display": false
+  },
+  {
+   "tex": "I_8",
+   "display": false
+  },
+  {
+   "tex": "I_9",
+   "display": false
+  },
+  {
+   "tex": "8\\to4\\to2\\to1",
+   "display": false
+  },
+  {
+   "tex": "I_1\\sim I_9",
+   "display": false
+  },
+  {
+   "tex": "Y_3",
+   "display": false
+  },
+  {
+   "tex": "Y_2",
+   "display": false
+  },
+  {
+   "tex": "Y_1",
+   "display": false
+  },
+  {
+   "tex": "Y_0",
+   "display": false
+  },
+  {
+   "tex": "I_0",
+   "display": false
+  },
+  {
+   "tex": "I_0",
+   "display": false
+  },
+  {
+   "tex": "Y_1",
+   "display": false
+  },
+  {
+   "tex": "Y_2",
+   "display": false
+  },
+  {
+   "tex": "Y_0",
+   "display": false
+  },
+  {
+   "tex": "Y_0",
+   "display": false
+  },
+  {
+   "tex": "Y_3",
+   "display": false
+  },
+  {
+   "tex": "Y_2",
+   "display": false
+  },
+  {
+   "tex": "Y_1",
+   "display": false
+  },
+  {
+   "tex": "Y_0",
+   "display": false
+  },
+  {
+   "tex": "9=1001",
+   "display": false
+  },
+  {
+   "tex": "I_9",
+   "display": false
+  },
+  {
+   "tex": "Y_0",
+   "display": false
+  },
+  {
+   "tex": "Y_0=I_1+I_3+I_5+I_7",
+   "display": false
+  },
+  {
+   "tex": "I_9",
+   "display": false
+  },
+  {
+   "tex": "1000=8",
+   "display": false
+  },
+  {
+   "tex": "I_9",
+   "display": false
+  },
+  {
+   "tex": "I_i=1",
+   "display": false
+  },
+  {
+   "tex": "Y_3Y_2Y_1Y_0",
+   "display": false
+  },
+  {
+   "tex": "i",
+   "display": false
+  },
+  {
+   "tex": "i=0\\sim9",
+   "display": false
+  },
+  {
+   "tex": "Y_0",
+   "display": false
+  },
+  {
+   "tex": "I_9",
+   "display": false
+  },
+  {
+   "tex": "i=9",
+   "display": false
+  },
+  {
+   "tex": "A_2A_1A_0",
+   "display": false
+  },
+  {
+   "tex": "A_2A_1A_0",
+   "display": false
+  },
+  {
+   "tex": "Y_0",
+   "display": false
+  },
+  {
+   "tex": "Y_1",
+   "display": false
+  },
+  {
+   "tex": "Y_2",
+   "display": false
+  },
+  {
+   "tex": "Y_3",
+   "display": false
+  },
+  {
+   "tex": "Y_4",
+   "display": false
+  },
+  {
+   "tex": "Y_5",
+   "display": false
+  },
+  {
+   "tex": "Y_6",
+   "display": false
+  },
+  {
+   "tex": "Y_7",
+   "display": false
+  },
+  {
+   "tex": "A_2A_1A_0=011",
+   "display": false
+  },
+  {
+   "tex": "Y_3",
+   "display": false
+  },
+  {
+   "tex": "Y_3",
+   "display": false
+  },
+  {
+   "tex": "Y=\\sum m(0,3,6,7)",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "C",
+   "display": false
+  },
+  {
+   "tex": "A_2",
+   "display": false
+  },
+  {
+   "tex": "A_1",
+   "display": false
+  },
+  {
+   "tex": "A_0",
+   "display": false
+  },
+  {
+   "tex": "2^3=8",
+   "display": false
+  },
+  {
+   "tex": "m_0",
+   "display": false
+  },
+  {
+   "tex": "Y_0",
+   "display": false
+  },
+  {
+   "tex": "m_3\\to Y_3",
+   "display": false
+  },
+  {
+   "tex": "m_6\\to Y_6",
+   "display": false
+  },
+  {
+   "tex": "m_7\\to Y_7",
+   "display": false
+  },
+  {
+   "tex": "Y_i",
+   "display": false
+  },
+  {
+   "tex": "m_i",
+   "display": false
+  },
+  {
+   "tex": "Y=1",
+   "display": false
+  },
+  {
+   "tex": "S_1",
+   "display": false
+  },
+  {
+   "tex": "\\overline{S_2}",
+   "display": false
+  },
+  {
+   "tex": "\\overline{S_3}",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "C",
+   "display": false
+  },
+  {
+   "tex": "A_2",
+   "display": false
+  },
+  {
+   "tex": "A_1",
+   "display": false
+  },
+  {
+   "tex": "A_0",
+   "display": false
+  },
+  {
+   "tex": "Y_0",
+   "display": false
+  },
+  {
+   "tex": "Y_3",
+   "display": false
+  },
+  {
+   "tex": "Y_6",
+   "display": false
+  },
+  {
+   "tex": "Y_7",
+   "display": false
+  },
+  {
+   "tex": "Y_0",
+   "display": false
+  },
+  {
+   "tex": "Y_3",
+   "display": false
+  },
+  {
+   "tex": "Y_6",
+   "display": false
+  },
+  {
+   "tex": "Y_7",
+   "display": false
+  },
+  {
+   "tex": "\\overline{Y_0Y_3Y_6Y_7}",
+   "display": false
+  },
+  {
+   "tex": "\\sum m(0,3,6,7)",
+   "display": false
+  },
+  {
+   "tex": "\\overline{A}\\,\\overline{B}\\,\\overline{C}+BC+AB",
+   "display": false
+  },
+  {
+   "tex": "2^N",
+   "display": false
+  },
+  {
+   "tex": "N",
+   "display": false
+  },
+  {
+   "tex": "2^N",
+   "display": false
+  },
+  {
+   "tex": "2^N",
+   "display": false
+  },
+  {
+   "tex": "2^N\\ge",
+   "display": false
+  },
+  {
+   "tex": "N",
+   "display": false
+  },
+  {
+   "tex": "2^3=8<10",
+   "display": false
+  },
+  {
+   "tex": "I_9",
+   "display": false
+  },
+  {
+   "tex": "I_8\\sim I_1",
+   "display": false
+  },
+  {
+   "tex": "I_8",
+   "display": false
+  },
+  {
+   "tex": "I_9",
+   "display": false
+  },
+  {
+   "tex": "I_7",
+   "display": false
+  },
+  {
+   "tex": "I_1\\sim I_9",
+   "display": false
+  },
+  {
+   "tex": "9=1001",
+   "display": false
+  },
+  {
+   "tex": "5=0101",
+   "display": false
+  },
+  {
+   "tex": "7=0111",
+   "display": false
+  },
+  {
+   "tex": "N",
+   "display": false
+  },
+  {
+   "tex": "2^N",
+   "display": false
+  },
+  {
+   "tex": "N",
+   "display": false
+  },
+  {
+   "tex": "2^N",
+   "display": false
+  },
+  {
+   "tex": "2^N",
+   "display": false
+  },
+  {
+   "tex": "N",
+   "display": false
+  },
+  {
+   "tex": "A_2A_1A_0",
+   "display": false
+  },
+  {
+   "tex": "\\overline{Y_0}\\sim\\overline{Y_7}",
+   "display": false
+  },
+  {
+   "tex": "S_1",
+   "display": false
+  },
+  {
+   "tex": "\\overline{S_2}",
+   "display": false
+  },
+  {
+   "tex": "\\overline{S_3}",
+   "display": false
+  },
+  {
+   "tex": "S_1=1",
+   "display": false
+  },
+  {
+   "tex": "\\overline{S_2}=0",
+   "display": false
+  },
+  {
+   "tex": "\\overline{S_3}=0",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "S_1",
+   "display": false
+  },
+  {
+   "tex": "\\overline{S_2}/\\overline{S_3}",
+   "display": false
+  },
+  {
+   "tex": "D=0",
+   "display": false
+  },
+  {
+   "tex": "S_1=D=0",
+   "display": false
+  },
+  {
+   "tex": "0000\\sim0111",
+   "display": false
+  },
+  {
+   "tex": "Y_0\\sim Y_7",
+   "display": false
+  },
+  {
+   "tex": "\\overline{S_2}/\\overline{S_3}=1",
+   "display": false
+  },
+  {
+   "tex": "S_1=1",
+   "display": false
+  },
+  {
+   "tex": "\\overline{S_2}/\\overline{S_3}",
+   "display": false
+  },
+  {
+   "tex": "1000\\sim1111",
+   "display": false
+  },
+  {
+   "tex": "Y_0\\sim Y_7",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "C",
+   "display": false
+  },
+  {
+   "tex": "A_2",
+   "display": false
+  },
+  {
+   "tex": "A_1",
+   "display": false
+  },
+  {
+   "tex": "A_0",
+   "display": false
+  },
+  {
+   "tex": "S_1",
+   "display": false
+  },
+  {
+   "tex": "\\overline{S_2}/\\overline{S_3}",
+   "display": false
+  },
+  {
+   "tex": "\\overline{S_2}",
+   "display": false
+  },
+  {
+   "tex": "\\overline{S_3}",
+   "display": false
+  },
+  {
+   "tex": "S_1",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "S_1",
+   "display": false
+  },
+  {
+   "tex": "\\overline{S_2}/\\overline{S_3}",
+   "display": false
+  },
+  {
+   "tex": "D=0",
+   "display": false
+  },
+  {
+   "tex": "D=1",
+   "display": false
+  },
+  {
+   "tex": "DCBA",
+   "display": false
+  },
+  {
+   "tex": "0\\sim7",
+   "display": false
+  },
+  {
+   "tex": "8\\sim15",
+   "display": false
+  },
+  {
+   "tex": "\\sum m(\\cdots)",
+   "display": false
+  },
+  {
+   "tex": "a\\sim g",
+   "display": false
+  },
+  {
+   "tex": "a",
+   "display": false
+  },
+  {
+   "tex": "b",
+   "display": false
+  },
+  {
+   "tex": "c",
+   "display": false
+  },
+  {
+   "tex": "d",
+   "display": false
+  },
+  {
+   "tex": "e",
+   "display": false
+  },
+  {
+   "tex": "f",
+   "display": false
+  },
+  {
+   "tex": "g",
+   "display": false
+  },
+  {
+   "tex": "g",
+   "display": false
+  },
+  {
+   "tex": "a,b,c,d,e,f",
+   "display": false
+  },
+  {
+   "tex": "g",
+   "display": false
+  },
+  {
+   "tex": "b,c",
+   "display": false
+  },
+  {
+   "tex": "a",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "Y",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "C",
+   "display": false
+  },
+  {
+   "tex": "Y_2Y_1Y_0",
+   "display": false
+  },
+  {
+   "tex": "Y_3Y_2Y_1Y_0",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "C",
+   "display": false
+  },
+  {
+   "tex": "2^N",
+   "display": false
+  },
+  {
+   "tex": "Y_0",
+   "display": false
+  },
+  {
+   "tex": "I_9",
+   "display": false
+  }
+ ]
+}

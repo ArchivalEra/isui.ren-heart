@@ -1,0 +1,306 @@
+{
+ "url": "课程总览/电机学/课堂笔记/10-08-磁路例题与变压器概述.html",
+ "title": "10-08 磁路例题与变压器概述",
+ "math": [
+  {
+   "tex": "NI=\\sum H l=H_{Fe}\\,l_{Fe}+H_g\\,l_g",
+   "display": true
+  },
+  {
+   "tex": "B=\\frac{\\Phi}{S}=\\frac{1\\times10^{-3}}{20\\times40\\times10^{-6}}=\\frac{1\\times10^{-3}}{8\\times10^{-4}}\\ \\mathrm{T}",
+   "display": true
+  },
+  {
+   "tex": "H_g l_g=\\frac{B}{\\mu_0}\\,l_g",
+   "display": true
+  },
+  {
+   "tex": "I\\approx\\frac{6166}{1000}\\approx 6.166\\ \\mathrm{A}",
+   "display": true
+  },
+  {
+   "tex": "I_{1N}=\\frac{S_N}{U_{1N}}=\\frac{5000}{10}=500\\ \\mathrm{A},\\qquad\nI_{2N}=\\frac{S_N}{U_{2N}}=\\frac{5000}{6.3}\\approx 793.65\\ \\mathrm{A}",
+   "display": true
+  },
+  {
+   "tex": "I_{1N}=\\frac{S_N}{\\sqrt{3}\\,U_{1N}}=\\frac{5000}{\\sqrt{3}\\times35}\\approx 82.48\\ \\mathrm{A},\\qquad\nI_{2N}=\\frac{S_N}{\\sqrt{3}\\,U_{2N}}=\\frac{5000}{\\sqrt{3}\\times10.5}\\approx 274.9\\ \\mathrm{A}",
+   "display": true
+  },
+  {
+   "tex": "k=\\frac{U_{1\\phi}}{U_{2\\phi}}=\\frac{35/\\sqrt3}{10.5}\\approx 1.925",
+   "display": true
+  },
+  {
+   "tex": "e_1=-N_1\\frac{\\mathrm{d}\\Phi}{\\mathrm{d}t},\\qquad e_2=-N_2\\frac{\\mathrm{d}\\Phi}{\\mathrm{d}t}",
+   "display": true
+  },
+  {
+   "tex": "\\frac{E_1}{E_2}=\\frac{N_1}{N_2}",
+   "display": true
+  },
+  {
+   "tex": "\\frac{U_1}{U_2}\\approx\\frac{N_1}{N_2}=k",
+   "display": true
+  },
+  {
+   "tex": "l_g=6\\ \\mathrm{mm}",
+   "display": false
+  },
+  {
+   "tex": "20\\ \\mathrm{mm}\\times40\\ \\mathrm{mm}",
+   "display": false
+  },
+  {
+   "tex": "N=1000",
+   "display": false
+  },
+  {
+   "tex": "\\Phi=1\\times10^{-3}\\ \\mathrm{Wb}",
+   "display": false
+  },
+  {
+   "tex": "N",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "1.33\\ \\mathrm{T}",
+   "display": false
+  },
+  {
+   "tex": "20\\times40",
+   "display": false
+  },
+  {
+   "tex": "1.25\\ \\mathrm{T}",
+   "display": false
+  },
+  {
+   "tex": "\\mu_0=4\\pi\\times10^{-7}",
+   "display": false
+  },
+  {
+   "tex": "NI_g\\approx5967",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "H_{Fe}",
+   "display": false
+  },
+  {
+   "tex": "l_{Fe}",
+   "display": false
+  },
+  {
+   "tex": "l_{Fe}",
+   "display": false
+  },
+  {
+   "tex": "NI\\approx5967+198\\approx6166",
+   "display": false
+  },
+  {
+   "tex": "N=1000",
+   "display": false
+  },
+  {
+   "tex": "\\mu_0=4\\pi\\times10^{-7}",
+   "display": false
+  },
+  {
+   "tex": "S_N=5000\\ \\mathrm{kVA}",
+   "display": false
+  },
+  {
+   "tex": "U_{1N}=10\\ \\mathrm{kV}",
+   "display": false
+  },
+  {
+   "tex": "U_{2N}=6.3\\ \\mathrm{kV}",
+   "display": false
+  },
+  {
+   "tex": "S_N=5000\\ \\mathrm{kVA}",
+   "display": false
+  },
+  {
+   "tex": "k",
+   "display": false
+  },
+  {
+   "tex": "U_{1\\phi}=U_{1N}/\\sqrt3",
+   "display": false
+  },
+  {
+   "tex": "U_{2\\phi}=U_{2N}",
+   "display": false
+  },
+  {
+   "tex": "\\sqrt3",
+   "display": false
+  },
+  {
+   "tex": "\\sqrt3",
+   "display": false
+  },
+  {
+   "tex": "\\sqrt3",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "\\Phi",
+   "display": false
+  },
+  {
+   "tex": "H",
+   "display": false
+  },
+  {
+   "tex": "\\oint H\\,\\mathrm{d}l=\\sum I",
+   "display": false
+  },
+  {
+   "tex": "I",
+   "display": false
+  },
+  {
+   "tex": "NI",
+   "display": false
+  },
+  {
+   "tex": "\\Phi=F/R_m=NI/R_m",
+   "display": false
+  },
+  {
+   "tex": "e=BLv",
+   "display": false
+  },
+  {
+   "tex": "L=\\psi/I=N^2\\mu S/l",
+   "display": false
+  },
+  {
+   "tex": "N_1",
+   "display": false
+  },
+  {
+   "tex": "N_2",
+   "display": false
+  },
+  {
+   "tex": "U_1\\approx E_1",
+   "display": false
+  },
+  {
+   "tex": "U_2\\approx E_2",
+   "display": false
+  },
+  {
+   "tex": "k",
+   "display": false
+  },
+  {
+   "tex": "k\\ge1",
+   "display": false
+  },
+  {
+   "tex": "k=1",
+   "display": false
+  },
+  {
+   "tex": "S_N",
+   "display": false
+  },
+  {
+   "tex": "U_{1N}",
+   "display": false
+  },
+  {
+   "tex": "U_{2N}",
+   "display": false
+  },
+  {
+   "tex": "S_N=U_N I_N",
+   "display": false
+  },
+  {
+   "tex": "S_N=\\sqrt3\\,U_N I_N",
+   "display": false
+  },
+  {
+   "tex": "U_N",
+   "display": false
+  },
+  {
+   "tex": "I_N",
+   "display": false
+  },
+  {
+   "tex": "\\sqrt3\\times\\sqrt3",
+   "display": false
+  },
+  {
+   "tex": "U_\\Phi=U_N/\\sqrt3",
+   "display": false
+  },
+  {
+   "tex": "I_\\Phi=I_N",
+   "display": false
+  },
+  {
+   "tex": "U_\\Phi=U_N",
+   "display": false
+  },
+  {
+   "tex": "I_\\Phi=I_N/\\sqrt3",
+   "display": false
+  },
+  {
+   "tex": "U_N",
+   "display": false
+  },
+  {
+   "tex": "I_N",
+   "display": false
+  },
+  {
+   "tex": "k",
+   "display": false
+  },
+  {
+   "tex": "k=\\dfrac{U_{1\\Phi}}{U_{2\\Phi}}",
+   "display": false
+  },
+  {
+   "tex": "k",
+   "display": false
+  },
+  {
+   "tex": "\\sqrt3",
+   "display": false
+  },
+  {
+   "tex": "k=\\dfrac{U_{1N}}{U_{2N}/\\sqrt3}",
+   "display": false
+  },
+  {
+   "tex": "k",
+   "display": false
+  }
+ ]
+}

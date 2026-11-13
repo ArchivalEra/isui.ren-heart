@@ -1,0 +1,362 @@
+{
+ "url": "课程总览/电子技术/作业/2026-9-28作业.html",
+ "title": "2026-9-28作业",
+ "math": [
+  {
+   "tex": "V_C>V_B>V_E",
+   "display": false
+  },
+  {
+   "tex": "V_E>V_B>V_C",
+   "display": false
+  },
+  {
+   "tex": "\\approx 0.7",
+   "display": false
+  },
+  {
+   "tex": "\\approx 0.2",
+   "display": false
+  },
+  {
+   "tex": "P_{CM}",
+   "display": false
+  },
+  {
+   "tex": "I_{CM}",
+   "display": false
+  },
+  {
+   "tex": "U_{(BR)CEO}",
+   "display": false
+  },
+  {
+   "tex": "P_C=U_{CE}I_C",
+   "display": false
+  },
+  {
+   "tex": "\\approx 0.7",
+   "display": false
+  },
+  {
+   "tex": "\\approx 0.2",
+   "display": false
+  },
+  {
+   "tex": "0.2",
+   "display": false
+  },
+  {
+   "tex": "0.7",
+   "display": false
+  },
+  {
+   "tex": "V_C>V_B>V_E",
+   "display": false
+  },
+  {
+   "tex": "V_E>V_B>V_C",
+   "display": false
+  },
+  {
+   "tex": "|-9-(-6)|=3",
+   "display": false
+  },
+  {
+   "tex": "|-9-(-6.2)|=2.8",
+   "display": false
+  },
+  {
+   "tex": "|-6-(-6.2)|=\\mathbf{0.2}",
+   "display": false
+  },
+  {
+   "tex": "0.2",
+   "display": false
+  },
+  {
+   "tex": "-6",
+   "display": false
+  },
+  {
+   "tex": "-6.2",
+   "display": false
+  },
+  {
+   "tex": "-9",
+   "display": false
+  },
+  {
+   "tex": "0.2",
+   "display": false
+  },
+  {
+   "tex": "0.7",
+   "display": false
+  },
+  {
+   "tex": "V_B",
+   "display": false
+  },
+  {
+   "tex": "V_E",
+   "display": false
+  },
+  {
+   "tex": "V_C",
+   "display": false
+  },
+  {
+   "tex": "V_C=-9",
+   "display": false
+  },
+  {
+   "tex": "-6",
+   "display": false
+  },
+  {
+   "tex": "-6.2",
+   "display": false
+  },
+  {
+   "tex": "-6",
+   "display": false
+  },
+  {
+   "tex": "-6.2",
+   "display": false
+  },
+  {
+   "tex": "V_E=-6>V_B=-6.2>V_C=-9",
+   "display": false
+  },
+  {
+   "tex": "V_E>V_B>V_C",
+   "display": false
+  },
+  {
+   "tex": "-6",
+   "display": false
+  },
+  {
+   "tex": "-6.2",
+   "display": false
+  },
+  {
+   "tex": "V_B>V_E",
+   "display": false
+  },
+  {
+   "tex": "V_C=-9",
+   "display": false
+  },
+  {
+   "tex": "<V_B=-6",
+   "display": false
+  },
+  {
+   "tex": "V_C>V_B",
+   "display": false
+  },
+  {
+   "tex": "-9",
+   "display": false
+  },
+  {
+   "tex": "-6",
+   "display": false
+  },
+  {
+   "tex": "-6.2",
+   "display": false
+  },
+  {
+   "tex": "P_{CM}=100",
+   "display": false
+  },
+  {
+   "tex": "I_{CM}=20",
+   "display": false
+  },
+  {
+   "tex": "U_{(BR)CEO}=15",
+   "display": false
+  },
+  {
+   "tex": "U_{CE}=6",
+   "display": false
+  },
+  {
+   "tex": "I_C=20",
+   "display": false
+  },
+  {
+   "tex": "U_{CE}=2",
+   "display": false
+  },
+  {
+   "tex": "I_C=40",
+   "display": false
+  },
+  {
+   "tex": "U_{CE}=3",
+   "display": false
+  },
+  {
+   "tex": "I_C=10",
+   "display": false
+  },
+  {
+   "tex": "U_{CE}\\cdot I_C\\le P_{CM}",
+   "display": false
+  },
+  {
+   "tex": "I_C\\le I_{CM}",
+   "display": false
+  },
+  {
+   "tex": "U_{CE}\\le U_{(BR)CEO}",
+   "display": false
+  },
+  {
+   "tex": "U_{CE}=6",
+   "display": false
+  },
+  {
+   "tex": "I_C=20",
+   "display": false
+  },
+  {
+   "tex": "6\\times20=\\mathbf{120}",
+   "display": false
+  },
+  {
+   "tex": ">100",
+   "display": false
+  },
+  {
+   "tex": "P_{CM}",
+   "display": false
+  },
+  {
+   "tex": "20",
+   "display": false
+  },
+  {
+   "tex": "=I_{CM}",
+   "display": false
+  },
+  {
+   "tex": "6",
+   "display": false
+  },
+  {
+   "tex": "<15",
+   "display": false
+  },
+  {
+   "tex": "U_{CE}=2",
+   "display": false
+  },
+  {
+   "tex": "I_C=40",
+   "display": false
+  },
+  {
+   "tex": "2\\times40=80",
+   "display": false
+  },
+  {
+   "tex": "<100",
+   "display": false
+  },
+  {
+   "tex": "40",
+   "display": false
+  },
+  {
+   "tex": "\\mathbf{>20}",
+   "display": false
+  },
+  {
+   "tex": "I_{CM}",
+   "display": false
+  },
+  {
+   "tex": "U_{CE}=3",
+   "display": false
+  },
+  {
+   "tex": "I_C=10",
+   "display": false
+  },
+  {
+   "tex": "3\\times10=30",
+   "display": false
+  },
+  {
+   "tex": "<100",
+   "display": false
+  },
+  {
+   "tex": "10",
+   "display": false
+  },
+  {
+   "tex": "<20",
+   "display": false
+  },
+  {
+   "tex": "3",
+   "display": false
+  },
+  {
+   "tex": "<15",
+   "display": false
+  },
+  {
+   "tex": "I_{CM}",
+   "display": false
+  },
+  {
+   "tex": "I_C=20",
+   "display": false
+  },
+  {
+   "tex": "U_{CE}",
+   "display": false
+  },
+  {
+   "tex": "P_{CM}/I_C=5",
+   "display": false
+  },
+  {
+   "tex": "6",
+   "display": false
+  },
+  {
+   "tex": "80",
+   "display": false
+  },
+  {
+   "tex": "U_{CE}",
+   "display": false
+  },
+  {
+   "tex": "I_C",
+   "display": false
+  },
+  {
+   "tex": "V_B",
+   "display": false
+  },
+  {
+   "tex": "0.2",
+   "display": false
+  },
+  {
+   "tex": "0.7",
+   "display": false
+  }
+ ]
+}

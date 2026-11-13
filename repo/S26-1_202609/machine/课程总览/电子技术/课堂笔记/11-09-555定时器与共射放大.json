@@ -1,0 +1,798 @@
+{
+ "url": "课程总览/电子技术/课堂笔记/11-09-555定时器与共射放大.html",
+ "title": "11-09 555 定时器与共射放大电路",
+ "math": [
+  {
+   "tex": "T_P = RC\\ln 3 \\approx 1.1RC",
+   "display": true
+  },
+  {
+   "tex": "I_B=\\frac{U_{CC}-U_{BE}}{R_B+(1+\\beta)R_E}",
+   "display": true
+  },
+  {
+   "tex": "r_{be} = 200\\,\\Omega + (1+\\beta)\\,\\frac{26\\ \\text{mV}}{I_E}",
+   "display": true
+  },
+  {
+   "tex": "A_u = \\frac{u_o}{u_i} = -\\beta\\,\\frac{R_C \\parallel R_L}{r_{be}}",
+   "display": true
+  },
+  {
+   "tex": "T_P \\approx 1.1RC",
+   "display": false
+  },
+  {
+   "tex": "A_u",
+   "display": false
+  },
+  {
+   "tex": "r_i",
+   "display": false
+  },
+  {
+   "tex": "r_o",
+   "display": false
+  },
+  {
+   "tex": "T_P",
+   "display": false
+  },
+  {
+   "tex": "T_P",
+   "display": false
+  },
+  {
+   "tex": "\\tfrac{1}{3}U_{CC}",
+   "display": false
+  },
+  {
+   "tex": "u_C",
+   "display": false
+  },
+  {
+   "tex": "\\tfrac{2}{3}U_{CC}",
+   "display": false
+  },
+  {
+   "tex": "Q=0",
+   "display": false
+  },
+  {
+   "tex": "\\overline Q=1",
+   "display": false
+  },
+  {
+   "tex": "u_O=0",
+   "display": false
+  },
+  {
+   "tex": "\\overline Q=1",
+   "display": false
+  },
+  {
+   "tex": "u_C=0",
+   "display": false
+  },
+  {
+   "tex": "\\tfrac{1}{3}U_{CC}",
+   "display": false
+  },
+  {
+   "tex": "Q=1",
+   "display": false
+  },
+  {
+   "tex": "\\overline Q=0",
+   "display": false
+  },
+  {
+   "tex": "u_C",
+   "display": false
+  },
+  {
+   "tex": "u_O=Q=1",
+   "display": false
+  },
+  {
+   "tex": "\\tfrac{2}{3}U_{C C}",
+   "display": false
+  },
+  {
+   "tex": "Q=0",
+   "display": false
+  },
+  {
+   "tex": "\\tfrac{2}{3}U_{CC}",
+   "display": false
+  },
+  {
+   "tex": "T_P=RC\\ln 3\\approx 1.1RC",
+   "display": false
+  },
+  {
+   "tex": "u_I",
+   "display": false
+  },
+  {
+   "tex": "T_P=1.1RC",
+   "display": false
+  },
+  {
+   "tex": "T_P",
+   "display": false
+  },
+  {
+   "tex": "T_P",
+   "display": false
+  },
+  {
+   "tex": "T_P=1.1RC",
+   "display": false
+  },
+  {
+   "tex": "\\overline{TR}",
+   "display": false
+  },
+  {
+   "tex": "\\tfrac{1}{3}U_{CC}",
+   "display": false
+  },
+  {
+   "tex": "V_{CO}",
+   "display": false
+  },
+  {
+   "tex": "\\tfrac{2}{3}U_{CC}",
+   "display": false
+  },
+  {
+   "tex": "\\tfrac{2}{3}U_{CC}",
+   "display": false
+  },
+  {
+   "tex": "\\overline Q=1",
+   "display": false
+  },
+  {
+   "tex": "V_{CC}",
+   "display": false
+  },
+  {
+   "tex": "u_O=Q",
+   "display": false
+  },
+  {
+   "tex": "\\tfrac{2}{3}U_{CC}",
+   "display": false
+  },
+  {
+   "tex": "\\tfrac{1}{3}U_{CC}",
+   "display": false
+  },
+  {
+   "tex": "\\tfrac{1}{3}",
+   "display": false
+  },
+  {
+   "tex": "\\overline R_D",
+   "display": false
+  },
+  {
+   "tex": "\\overline S_D",
+   "display": false
+  },
+  {
+   "tex": "v_6 > \\tfrac{2}{3}U_{CC}",
+   "display": false
+  },
+  {
+   "tex": "\\overline R_D\\,\\overline S_D=10",
+   "display": false
+  },
+  {
+   "tex": "Q=0",
+   "display": false
+  },
+  {
+   "tex": "v_6 < \\tfrac{2}{3}U_{CC}",
+   "display": false
+  },
+  {
+   "tex": "v_2 > \\tfrac{1}{3}U_{CC}",
+   "display": false
+  },
+  {
+   "tex": "v_6 < \\tfrac{2}{3}U_{CC}",
+   "display": false
+  },
+  {
+   "tex": "v_2 < \\tfrac{1}{3}U_{CC}",
+   "display": false
+  },
+  {
+   "tex": "Q=1",
+   "display": false
+  },
+  {
+   "tex": "v_6 > \\tfrac{2}{3}U_{CC}",
+   "display": false
+  },
+  {
+   "tex": "v_2 < \\tfrac{1}{3}U_{CC}",
+   "display": false
+  },
+  {
+   "tex": "\\overline Q",
+   "display": false
+  },
+  {
+   "tex": "u_O=Q",
+   "display": false
+  },
+  {
+   "tex": "Q=1",
+   "display": false
+  },
+  {
+   "tex": "\\overline Q=0",
+   "display": false
+  },
+  {
+   "tex": "Q=0",
+   "display": false
+  },
+  {
+   "tex": "\\overline Q=1",
+   "display": false
+  },
+  {
+   "tex": "Q=0",
+   "display": false
+  },
+  {
+   "tex": "Q=1",
+   "display": false
+  },
+  {
+   "tex": "\\overline R_D",
+   "display": false
+  },
+  {
+   "tex": "\\overline S_D",
+   "display": false
+  },
+  {
+   "tex": "\\overline R_D=\\overline S_D=1",
+   "display": false
+  },
+  {
+   "tex": "U_{CC}",
+   "display": false
+  },
+  {
+   "tex": "R_S",
+   "display": false
+  },
+  {
+   "tex": "u_{BE}",
+   "display": false
+  },
+  {
+   "tex": "i_C",
+   "display": false
+  },
+  {
+   "tex": "i_B",
+   "display": false
+  },
+  {
+   "tex": "u_{CE}",
+   "display": false
+  },
+  {
+   "tex": "i_C",
+   "display": false
+  },
+  {
+   "tex": "u_{CE}=U_{CC}-i_C R_C",
+   "display": false
+  },
+  {
+   "tex": "i_C",
+   "display": false
+  },
+  {
+   "tex": "u_{CE}",
+   "display": false
+  },
+  {
+   "tex": "A_u",
+   "display": false
+  },
+  {
+   "tex": "R_S",
+   "display": false
+  },
+  {
+   "tex": "u_i",
+   "display": false
+  },
+  {
+   "tex": "u_o'",
+   "display": false
+  },
+  {
+   "tex": "r_o",
+   "display": false
+  },
+  {
+   "tex": "R_L",
+   "display": false
+  },
+  {
+   "tex": "A_u = u_o/u_i",
+   "display": false
+  },
+  {
+   "tex": "A_{us}",
+   "display": false
+  },
+  {
+   "tex": "R_S",
+   "display": false
+  },
+  {
+   "tex": "r_i",
+   "display": false
+  },
+  {
+   "tex": "A_{us}=A_u \\cdot \\frac{r_i}{R_S+r_i}",
+   "display": false
+  },
+  {
+   "tex": "r_i",
+   "display": false
+  },
+  {
+   "tex": "r_i\\to\\infty",
+   "display": false
+  },
+  {
+   "tex": "r_i = u_i/i_i",
+   "display": false
+  },
+  {
+   "tex": "r_o",
+   "display": false
+  },
+  {
+   "tex": "u_o'",
+   "display": false
+  },
+  {
+   "tex": "r_o",
+   "display": false
+  },
+  {
+   "tex": "R_L=\\infty",
+   "display": false
+  },
+  {
+   "tex": "r_o = u_o/i_o",
+   "display": false
+  },
+  {
+   "tex": "r_o",
+   "display": false
+  },
+  {
+   "tex": "r_o",
+   "display": false
+  },
+  {
+   "tex": "r_o",
+   "display": false
+  },
+  {
+   "tex": "\\tfrac{1}{\\sqrt2}",
+   "display": false
+  },
+  {
+   "tex": "\\approx 0.707",
+   "display": false
+  },
+  {
+   "tex": "I_B",
+   "display": false
+  },
+  {
+   "tex": "U_{BE}",
+   "display": false
+  },
+  {
+   "tex": "I_C",
+   "display": false
+  },
+  {
+   "tex": "U_{CE}",
+   "display": false
+  },
+  {
+   "tex": "U_{CC} \\to R_B \\to",
+   "display": false
+  },
+  {
+   "tex": "U_{CC} \\to R_C \\to",
+   "display": false
+  },
+  {
+   "tex": "U_{CC}=12",
+   "display": false
+  },
+  {
+   "tex": "R_C=4",
+   "display": false
+  },
+  {
+   "tex": "R_B=300",
+   "display": false
+  },
+  {
+   "tex": "U_{BE}=0.6",
+   "display": false
+  },
+  {
+   "tex": "I_B=(U_{CC}-U_{BE})/R_B=(12-0.6)/300\\text{k}=38\\ \\mu A",
+   "display": false
+  },
+  {
+   "tex": "I_C = \\beta I_B = 37.5\\times 38\\mu A = 1.425",
+   "display": false
+  },
+  {
+   "tex": "U_{CE}=U_{CC}-I_C R_C = 12-1.425\\times 4 = 6.3",
+   "display": false
+  },
+  {
+   "tex": "I_B",
+   "display": false
+  },
+  {
+   "tex": "I_C",
+   "display": false
+  },
+  {
+   "tex": "U_{CE}",
+   "display": false
+  },
+  {
+   "tex": "I_B",
+   "display": false
+  },
+  {
+   "tex": "I_C",
+   "display": false
+  },
+  {
+   "tex": "I_B",
+   "display": false
+  },
+  {
+   "tex": "I_{C}",
+   "display": false
+  },
+  {
+   "tex": "U_{CC} = I_B R_B + U_{BE} + I_E R_E",
+   "display": false
+  },
+  {
+   "tex": "I_E=(1+\\beta)I_B",
+   "display": false
+  },
+  {
+   "tex": "I_E=(1+\\beta)I_B",
+   "display": false
+  },
+  {
+   "tex": "I_E=(1+\\beta)I_B",
+   "display": false
+  },
+  {
+   "tex": "(1+\\beta)I_B",
+   "display": false
+  },
+  {
+   "tex": "R_B",
+   "display": false
+  },
+  {
+   "tex": "R_B+(1+\\beta)R_E",
+   "display": false
+  },
+  {
+   "tex": "I_B",
+   "display": false
+  },
+  {
+   "tex": "I_C=βI_B",
+   "display": false
+  },
+  {
+   "tex": "U_{CE}",
+   "display": false
+  },
+  {
+   "tex": "I_E R_E",
+   "display": false
+  },
+  {
+   "tex": "U_{CE}=U_{CC}-I_C R_C - I_E R_E",
+   "display": false
+  },
+  {
+   "tex": "(1+\\beta)R_E",
+   "display": false
+  },
+  {
+   "tex": "(1+\\beta)",
+   "display": false
+  },
+  {
+   "tex": "r_{be}=200+(1+\\beta)\\frac{26}{I_E}",
+   "display": false
+  },
+  {
+   "tex": "(1+\\beta)\\frac{26}{I_E}",
+   "display": false
+  },
+  {
+   "tex": "I_B",
+   "display": false
+  },
+  {
+   "tex": "I_B",
+   "display": false
+  },
+  {
+   "tex": "I_B=(U_{CC}-U_{BE})/R_B",
+   "display": false
+  },
+  {
+   "tex": "U_{CE}=U_{CC}-I_C R_C",
+   "display": false
+  },
+  {
+   "tex": "I_C=0",
+   "display": false
+  },
+  {
+   "tex": "U_{CE}=U_{CC}",
+   "display": false
+  },
+  {
+   "tex": "(U_{CC},0)",
+   "display": false
+  },
+  {
+   "tex": "U_{CE}=0",
+   "display": false
+  },
+  {
+   "tex": "I_C=U_{CC}/R_C",
+   "display": false
+  },
+  {
+   "tex": "(0,U_{CC}/R_C)",
+   "display": false
+  },
+  {
+   "tex": "I_B",
+   "display": false
+  },
+  {
+   "tex": "I_B",
+   "display": false
+  },
+  {
+   "tex": "I_C",
+   "display": false
+  },
+  {
+   "tex": "U_{CE}",
+   "display": false
+  },
+  {
+   "tex": "U_{BE}",
+   "display": false
+  },
+  {
+   "tex": "I_B",
+   "display": false
+  },
+  {
+   "tex": "I_B",
+   "display": false
+  },
+  {
+   "tex": "r_{be}",
+   "display": false
+  },
+  {
+   "tex": "u_{BE}/i_B",
+   "display": false
+  },
+  {
+   "tex": "r_{be}",
+   "display": false
+  },
+  {
+   "tex": "i_C=\\beta i_B",
+   "display": false
+  },
+  {
+   "tex": "i_C",
+   "display": false
+  },
+  {
+   "tex": "i_B",
+   "display": false
+  },
+  {
+   "tex": "u_s",
+   "display": false
+  },
+  {
+   "tex": "R_S",
+   "display": false
+  },
+  {
+   "tex": "R_B",
+   "display": false
+  },
+  {
+   "tex": "R_C",
+   "display": false
+  },
+  {
+   "tex": "R_L",
+   "display": false
+  },
+  {
+   "tex": "r_{be}",
+   "display": false
+  },
+  {
+   "tex": "u_i",
+   "display": false
+  },
+  {
+   "tex": "u_i = i_B\\, r_{be}",
+   "display": false
+  },
+  {
+   "tex": "u_o",
+   "display": false
+  },
+  {
+   "tex": "i_C",
+   "display": false
+  },
+  {
+   "tex": "R_L' = R_C \\parallel R_L",
+   "display": false
+  },
+  {
+   "tex": "u_o = -i_C R_L'",
+   "display": false
+  },
+  {
+   "tex": "i_B",
+   "display": false
+  },
+  {
+   "tex": "R_L' = R_C \\parallel R_L",
+   "display": false
+  },
+  {
+   "tex": "A_{us} = A_u \\cdot \\frac{r_i}{R_S+r_i}",
+   "display": false
+  },
+  {
+   "tex": "A_u",
+   "display": false
+  },
+  {
+   "tex": "r_i",
+   "display": false
+  },
+  {
+   "tex": "r_o",
+   "display": false
+  },
+  {
+   "tex": "A_u",
+   "display": false
+  },
+  {
+   "tex": "r_i",
+   "display": false
+  },
+  {
+   "tex": "r_o",
+   "display": false
+  },
+  {
+   "tex": "r_i = R_B \\parallel r_{be}",
+   "display": false
+  },
+  {
+   "tex": "r_o \\approx R_C",
+   "display": false
+  },
+  {
+   "tex": "1/\\sqrt2",
+   "display": false
+  },
+  {
+   "tex": "I_B",
+   "display": false
+  },
+  {
+   "tex": "I_E=(1+\\beta)I_B",
+   "display": false
+  },
+  {
+   "tex": "R_E",
+   "display": false
+  },
+  {
+   "tex": "R_B",
+   "display": false
+  },
+  {
+   "tex": "r_i",
+   "display": false
+  },
+  {
+   "tex": "r_o",
+   "display": false
+  },
+  {
+   "tex": "I_C",
+   "display": false
+  },
+  {
+   "tex": "U_{C E}",
+   "display": false
+  },
+  {
+   "tex": "I_E=(1+\\beta)I_B",
+   "display": false
+  },
+  {
+   "tex": "r_i",
+   "display": false
+  },
+  {
+   "tex": "r_o",
+   "display": false
+  },
+  {
+   "tex": "r_o",
+   "display": false
+  },
+  {
+   "tex": "A_u",
+   "display": false
+  },
+  {
+   "tex": "r_i=R_B\\parallel r_{be}",
+   "display": false
+  },
+  {
+   "tex": "r_o\\approx R_C",
+   "display": false
+  }
+ ]
+}

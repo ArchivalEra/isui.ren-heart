@@ -1,0 +1,654 @@
+{
+ "url": "课程总览/电路原理/课堂笔记/10-28-戴维南与诺顿.html",
+ "title": "10-28 戴维南与诺顿",
+ "math": [
+  {
+   "tex": "V_1:\\quad\\left(\\tfrac{1}{10}+\\tfrac{1}{10}\\right)V_1-\\tfrac{1}{10}V_2=2",
+   "display": true
+  },
+  {
+   "tex": "V_2:\\quad-\\tfrac{1}{10}V_1+\\left(\\tfrac{1}{10}+\\tfrac{1}{20}\\right)V_2=1+\\tfrac{5}{25}",
+   "display": true
+  },
+  {
+   "tex": "U_{OC}=I\\,(R_{eq}+R)",
+   "display": true
+  },
+  {
+   "tex": "\\left(\\tfrac11+\\tfrac12\\right)V_A-\\tfrac11 V_C=-1,\\qquad V_C=4",
+   "display": true
+  },
+  {
+   "tex": "I_{SC}=\\frac{U_{OC}}{R_{eq}}",
+   "display": true
+  },
+  {
+   "tex": "P_L=I^2R_L=\\left(\\frac{U_{OC}}{R_{eq}+R_L}\\right)^2R_L",
+   "display": true
+  },
+  {
+   "tex": "P_{\\max}=\\frac{U_{OC}^2}{4R_{eq}}",
+   "display": true
+  },
+  {
+   "tex": "R_L=R_{eq}",
+   "display": false
+  },
+  {
+   "tex": "P_{\\max}=\\dfrac{U_{OC}^2}{4R_{eq}}",
+   "display": false
+  },
+  {
+   "tex": "I_{SC}",
+   "display": false
+  },
+  {
+   "tex": "R_{eq}",
+   "display": false
+  },
+  {
+   "tex": "R_{eq}=0",
+   "display": false
+  },
+  {
+   "tex": "R_{eq}\\to\\infty",
+   "display": false
+  },
+  {
+   "tex": "R_L=R_{eq}",
+   "display": false
+  },
+  {
+   "tex": "P_{\\max}=U_{OC}^2/(4R_{eq})",
+   "display": false
+  },
+  {
+   "tex": "U_{OC}",
+   "display": false
+  },
+  {
+   "tex": "R_{eq}",
+   "display": false
+  },
+  {
+   "tex": "22.5",
+   "display": false
+  },
+  {
+   "tex": "10\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "R",
+   "display": false
+  },
+  {
+   "tex": "20\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "5",
+   "display": false
+  },
+  {
+   "tex": "V_2=22.5",
+   "display": false
+  },
+  {
+   "tex": "U_{OC}=22.5",
+   "display": false
+  },
+  {
+   "tex": "22.5",
+   "display": false
+  },
+  {
+   "tex": "4",
+   "display": false
+  },
+  {
+   "tex": "2",
+   "display": false
+  },
+  {
+   "tex": "10",
+   "display": false
+  },
+  {
+   "tex": "22.5",
+   "display": false
+  },
+  {
+   "tex": "20\\,\\Omega\\parallel20\\,\\Omega=10\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "22.5",
+   "display": false
+  },
+  {
+   "tex": "10\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "R",
+   "display": false
+  },
+  {
+   "tex": "I=\\dfrac{22.5}{10+R}",
+   "display": false
+  },
+  {
+   "tex": "22.5",
+   "display": false
+  },
+  {
+   "tex": "R",
+   "display": false
+  },
+  {
+   "tex": "R=2\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "I=2.5",
+   "display": false
+  },
+  {
+   "tex": "R=3\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "I=2",
+   "display": false
+  },
+  {
+   "tex": "U_{OC}",
+   "display": false
+  },
+  {
+   "tex": "R_{eq}",
+   "display": false
+  },
+  {
+   "tex": "U_{OC}",
+   "display": false
+  },
+  {
+   "tex": "R_{eq}",
+   "display": false
+  },
+  {
+   "tex": "R=8\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "U=IR",
+   "display": false
+  },
+  {
+   "tex": "12",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "18",
+   "display": false
+  },
+  {
+   "tex": "U_{OC}",
+   "display": false
+  },
+  {
+   "tex": "12",
+   "display": false
+  },
+  {
+   "tex": "18\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "6\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "12\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "U_{OC}=12",
+   "display": false
+  },
+  {
+   "tex": "I",
+   "display": false
+  },
+  {
+   "tex": "3I",
+   "display": false
+  },
+  {
+   "tex": "12\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "I",
+   "display": false
+  },
+  {
+   "tex": "R_{eq}=U_{OC}/I",
+   "display": false
+  },
+  {
+   "tex": "18",
+   "display": false
+  },
+  {
+   "tex": "U",
+   "display": false
+  },
+  {
+   "tex": "I",
+   "display": false
+  },
+  {
+   "tex": "U=RI",
+   "display": false
+  },
+  {
+   "tex": "I=1",
+   "display": false
+  },
+  {
+   "tex": "U_{OC}",
+   "display": false
+  },
+  {
+   "tex": "10",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "1",
+   "display": false
+  },
+  {
+   "tex": "10\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "5",
+   "display": false
+  },
+  {
+   "tex": "5",
+   "display": false
+  },
+  {
+   "tex": "10+5-5-U_{OC}=0",
+   "display": false
+  },
+  {
+   "tex": "U_{OC}=10",
+   "display": false
+  },
+  {
+   "tex": "U_{OC}",
+   "display": false
+  },
+  {
+   "tex": "2.5",
+   "display": false
+  },
+  {
+   "tex": "15\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "5\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "6\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "R_{eq}=10\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "15\\parallel5",
+   "display": false
+  },
+  {
+   "tex": "6",
+   "display": false
+  },
+  {
+   "tex": "9.75\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "10\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "0.25\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "1",
+   "display": false
+  },
+  {
+   "tex": "5",
+   "display": false
+  },
+  {
+   "tex": "10",
+   "display": false
+  },
+  {
+   "tex": "U_{OC}=10",
+   "display": false
+  },
+  {
+   "tex": "P_{\\max}=\\dfrac{U_{OC}^2}{4R_{eq}}=\\dfrac{10^2}{4\\times10}=2.5",
+   "display": false
+  },
+  {
+   "tex": "0.25",
+   "display": false
+  },
+  {
+   "tex": "2\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "1\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "V_A",
+   "display": false
+  },
+  {
+   "tex": "V_A=1",
+   "display": false
+  },
+  {
+   "tex": "U_{OC}=1",
+   "display": false
+  },
+  {
+   "tex": "4",
+   "display": false
+  },
+  {
+   "tex": "P_{\\max}=\\dfrac{1^2}{4\\times1}=0.25",
+   "display": false
+  },
+  {
+   "tex": "R_{eq}=25\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "I_1=I_2",
+   "display": false
+  },
+  {
+   "tex": "20\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "U_R/20",
+   "display": false
+  },
+  {
+   "tex": "U_R/20",
+   "display": false
+  },
+  {
+   "tex": "I_1=1",
+   "display": false
+  },
+  {
+   "tex": "U_{OC}=20",
+   "display": false
+  },
+  {
+   "tex": "20\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "U",
+   "display": false
+  },
+  {
+   "tex": "I",
+   "display": false
+  },
+  {
+   "tex": "I=I_1+I_2",
+   "display": false
+  },
+  {
+   "tex": "R_{eq}=25\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "P_{\\max}=U_{OC}^2/(4R_{eq})",
+   "display": false
+  },
+  {
+   "tex": "U_{OC}",
+   "display": false
+  },
+  {
+   "tex": "R_{eq}=25\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "20",
+   "display": false
+  },
+  {
+   "tex": "P_{\\max}",
+   "display": false
+  },
+  {
+   "tex": "R_{eq}=25\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "20\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "20",
+   "display": false
+  },
+  {
+   "tex": "U_{OC}",
+   "display": false
+  },
+  {
+   "tex": "R_{eq}",
+   "display": false
+  },
+  {
+   "tex": "I=\\dfrac{U_{OC}}{R_{eq}+R}",
+   "display": false
+  },
+  {
+   "tex": "R",
+   "display": false
+  },
+  {
+   "tex": "22.5",
+   "display": false
+  },
+  {
+   "tex": "I_{SC}",
+   "display": false
+  },
+  {
+   "tex": "R_{eq}",
+   "display": false
+  },
+  {
+   "tex": "I_{SC}",
+   "display": false
+  },
+  {
+   "tex": "R_{eq}",
+   "display": false
+  },
+  {
+   "tex": "R_{eq}=0",
+   "display": false
+  },
+  {
+   "tex": "I_{SC}\\to\\infty",
+   "display": false
+  },
+  {
+   "tex": "R_{eq}\\to\\infty",
+   "display": false
+  },
+  {
+   "tex": "R_L",
+   "display": false
+  },
+  {
+   "tex": "R_L",
+   "display": false
+  },
+  {
+   "tex": "R_L=R_{eq}",
+   "display": false
+  },
+  {
+   "tex": "U_{OC}",
+   "display": false
+  },
+  {
+   "tex": "R_{eq}",
+   "display": false
+  },
+  {
+   "tex": "R_{eq}",
+   "display": false
+  },
+  {
+   "tex": "R_{eq}",
+   "display": false
+  },
+  {
+   "tex": "U_{OC}",
+   "display": false
+  },
+  {
+   "tex": "I_{SC}",
+   "display": false
+  },
+  {
+   "tex": "I_S",
+   "display": false
+  },
+  {
+   "tex": "1/1",
+   "display": false
+  },
+  {
+   "tex": "1/2",
+   "display": false
+  },
+  {
+   "tex": "1/4",
+   "display": false
+  },
+  {
+   "tex": "1/5",
+   "display": false
+  },
+  {
+   "tex": "I=1",
+   "display": false
+  },
+  {
+   "tex": "I=1",
+   "display": false
+  },
+  {
+   "tex": "18\\times\\tfrac{12}{6+12}=12",
+   "display": false
+  },
+  {
+   "tex": "10\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "2.5",
+   "display": false
+  },
+  {
+   "tex": "9.75\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "2.564",
+   "display": false
+  },
+  {
+   "tex": "U_{OC}=22.5",
+   "display": false
+  },
+  {
+   "tex": "R_{eq}=2\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "U_{OC}=10",
+   "display": false
+  },
+  {
+   "tex": "0.25",
+   "display": false
+  },
+  {
+   "tex": "10",
+   "display": false
+  },
+  {
+   "tex": "12",
+   "display": false
+  },
+  {
+   "tex": "7.2",
+   "display": false
+  },
+  {
+   "tex": "10\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "9.75\\,\\Omega",
+   "display": false
+  }
+ ]
+}

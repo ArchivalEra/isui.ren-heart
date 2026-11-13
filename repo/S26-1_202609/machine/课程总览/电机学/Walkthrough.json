@@ -1,0 +1,342 @@
+{
+ "url": "课程总览/电机学/Walkthrough.html",
+ "title": "Walkthrough",
+ "math": [
+  {
+   "tex": "H",
+   "display": false
+  },
+  {
+   "tex": "B=\\mu H",
+   "display": false
+  },
+  {
+   "tex": "\\mu",
+   "display": false
+  },
+  {
+   "tex": "\\mu_0=4\\pi\\times10^{-7}",
+   "display": false
+  },
+  {
+   "tex": "\\Phi=F/R_m=NI/R_m",
+   "display": false
+  },
+  {
+   "tex": "R_m\\propto l/(\\mu S)",
+   "display": false
+  },
+  {
+   "tex": "\\sum Hl=\\sum NI",
+   "display": false
+  },
+  {
+   "tex": "L=\\dfrac{\\psi}{I}=\\dfrac{N\\Phi}{I}=\\dfrac{N^2}{R_m}=\\dfrac{N^2\\mu S}{l}",
+   "display": false
+  },
+  {
+   "tex": "e=BLv",
+   "display": false
+  },
+  {
+   "tex": "H",
+   "display": false
+  },
+  {
+   "tex": "B=\\mu H",
+   "display": false
+  },
+  {
+   "tex": "NI=\\sum Hl=H_{Fe}l_{Fe}+H_g l_g",
+   "display": false
+  },
+  {
+   "tex": "B=\\Phi/S",
+   "display": false
+  },
+  {
+   "tex": "\\mu_0",
+   "display": false
+  },
+  {
+   "tex": "H_g l_g",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "H_{Fe}",
+   "display": false
+  },
+  {
+   "tex": "e=-N\\dfrac{\\mathrm{d}\\Phi}{\\mathrm{d}t}",
+   "display": false
+  },
+  {
+   "tex": "\\dfrac{E_1}{E_2}=\\dfrac{N_1}{N_2}",
+   "display": false
+  },
+  {
+   "tex": "\\dfrac{U_1}{U_2}\\approx k",
+   "display": false
+  },
+  {
+   "tex": "S_N",
+   "display": false
+  },
+  {
+   "tex": "S_N=U_NI_N",
+   "display": false
+  },
+  {
+   "tex": "S_N=\\sqrt3\\,U_NI_N",
+   "display": false
+  },
+  {
+   "tex": "\\sqrt3",
+   "display": false
+  },
+  {
+   "tex": "U_\\phi=U_N/\\sqrt3",
+   "display": false
+  },
+  {
+   "tex": "U_\\phi=U_N",
+   "display": false
+  },
+  {
+   "tex": "\\dot I_0",
+   "display": false
+  },
+  {
+   "tex": "\\dot\\Phi",
+   "display": false
+  },
+  {
+   "tex": "\\dot U",
+   "display": false
+  },
+  {
+   "tex": "90^\\circ",
+   "display": false
+  },
+  {
+   "tex": "E=4.44fN\\Phi_m",
+   "display": false
+  },
+  {
+   "tex": "4.44",
+   "display": false
+  },
+  {
+   "tex": "\\sqrt2\\pi\\approx4.44",
+   "display": false
+  },
+  {
+   "tex": "x_m",
+   "display": false
+  },
+  {
+   "tex": "x_1",
+   "display": false
+  },
+  {
+   "tex": "\\Phi",
+   "display": false
+  },
+  {
+   "tex": "i_\\mu",
+   "display": false
+  },
+  {
+   "tex": "\\dot U_1",
+   "display": false
+  },
+  {
+   "tex": "\\dot I_0",
+   "display": false
+  },
+  {
+   "tex": "k",
+   "display": false
+  },
+  {
+   "tex": "k",
+   "display": false
+  },
+  {
+   "tex": "k^2",
+   "display": false
+  },
+  {
+   "tex": "k",
+   "display": false
+  },
+  {
+   "tex": "I_N=\\dfrac{S_N}{\\sqrt3 U_N}",
+   "display": false
+  },
+  {
+   "tex": "\\sqrt3",
+   "display": false
+  },
+  {
+   "tex": "k",
+   "display": false
+  },
+  {
+   "tex": "k",
+   "display": false
+  },
+  {
+   "tex": "\\sqrt3",
+   "display": false
+  },
+  {
+   "tex": "Z_m",
+   "display": false
+  },
+  {
+   "tex": "r_m",
+   "display": false
+  },
+  {
+   "tex": "x_m",
+   "display": false
+  },
+  {
+   "tex": "Z_k",
+   "display": false
+  },
+  {
+   "tex": "r_k",
+   "display": false
+  },
+  {
+   "tex": "x_k",
+   "display": false
+  },
+  {
+   "tex": "u_k",
+   "display": false
+  },
+  {
+   "tex": "I_{sc}/I_N=1/u_k^*",
+   "display": false
+  },
+  {
+   "tex": "u_k^*\\approx x_k^*",
+   "display": false
+  },
+  {
+   "tex": "r_k\\ll x_k",
+   "display": false
+  },
+  {
+   "tex": "u_k\\%",
+   "display": false
+  },
+  {
+   "tex": "\\Delta U\\%= \\dfrac{U_{20}-U_2}{U_{20}}\\times100\\%",
+   "display": false
+  },
+  {
+   "tex": "\\cos\\varphi_2=0.8",
+   "display": false
+  },
+  {
+   "tex": "\\Delta U",
+   "display": false
+  },
+  {
+   "tex": "P_0",
+   "display": false
+  },
+  {
+   "tex": "P_K",
+   "display": false
+  },
+  {
+   "tex": "\\eta=\\dfrac{P_2}{P_2+P_0+P_K}",
+   "display": false
+  },
+  {
+   "tex": "P_0",
+   "display": false
+  },
+  {
+   "tex": "P_{kN}",
+   "display": false
+  },
+  {
+   "tex": "1/4",
+   "display": false
+  },
+  {
+   "tex": "1/3",
+   "display": false
+  },
+  {
+   "tex": "P_k",
+   "display": false
+  },
+  {
+   "tex": "P_{kN}",
+   "display": false
+  },
+  {
+   "tex": "P_{kN}",
+   "display": false
+  },
+  {
+   "tex": "P_k",
+   "display": false
+  },
+  {
+   "tex": "30^\\circ",
+   "display": false
+  },
+  {
+   "tex": "300^\\circ \\div 30^\\circ = 10",
+   "display": false
+  },
+  {
+   "tex": "P_k",
+   "display": false
+  },
+  {
+   "tex": "P_{kN}",
+   "display": false
+  },
+  {
+   "tex": "H",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "\\Phi",
+   "display": false
+  },
+  {
+   "tex": "\\Psi",
+   "display": false
+  },
+  {
+   "tex": "R_m",
+   "display": false
+  },
+  {
+   "tex": "\\mu_0",
+   "display": false
+  },
+  {
+   "tex": "p_{Fe}",
+   "display": false
+  }
+ ]
+}

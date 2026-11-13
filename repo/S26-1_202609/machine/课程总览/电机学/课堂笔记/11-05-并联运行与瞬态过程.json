@@ -1,0 +1,370 @@
+{
+ "url": "课程总览/电机学/课堂笔记/11-05-并联运行与瞬态过程.html",
+ "title": "11-05 并联运行与瞬态过程",
+ "math": [
+  {
+   "tex": "\\beta_1 z_{k1}^*=\\beta_2 z_{k2}^*\n\\qquad\\text{（电流标幺值就是负载系数 }\\beta\\text{）}",
+   "display": true
+  },
+  {
+   "tex": "S=\\beta_1 S_{N1}+\\beta_2 S_{N2}\n\\qquad\\text{（总负荷 = 各台所带负荷之和）}",
+   "display": true
+  },
+  {
+   "tex": "\\dot A=\\dot A_1+\\dot A_2+\\dot A_0,\\quad\n\\dot B=\\dot B_1+\\dot B_2+\\dot A_0\\text{（下标同理）},\\quad\n\\dot C=\\dot C_1+\\dot C_2+\\dot C_0",
+   "display": true
+  },
+  {
+   "tex": "\\dot E_{ab}",
+   "display": false
+  },
+  {
+   "tex": "\\dot E_{AB}",
+   "display": false
+  },
+  {
+   "tex": "180°+60°=240°",
+   "display": false
+  },
+  {
+   "tex": "240°\\div30°=8",
+   "display": false
+  },
+  {
+   "tex": "\\Delta U\\approx 0.518\\,U",
+   "display": false
+  },
+  {
+   "tex": "z_{k1}^*=0.07",
+   "display": false
+  },
+  {
+   "tex": "z_{k2}^*=0.075",
+   "display": false
+  },
+  {
+   "tex": "0.07<0.075",
+   "display": false
+  },
+  {
+   "tex": "\\beta_1=1",
+   "display": false
+  },
+  {
+   "tex": "\\beta_1 z_{k1}^*=\\beta_2 z_{k2}^*",
+   "display": false
+  },
+  {
+   "tex": "\\beta_2=\\dfrac{z_{k1}^*}{z_{k2}^*}=\\dfrac{0.07}{0.075}=\\dfrac{14}{15}\\approx0.93",
+   "display": false
+  },
+  {
+   "tex": "S=\\beta_1 S_{N1}+\\beta_2 S_{N2}",
+   "display": false
+  },
+  {
+   "tex": "S",
+   "display": false
+  },
+  {
+   "tex": "\\beta_1 z_{k1}^*=\\beta_2 z_{k2}^*",
+   "display": false
+  },
+  {
+   "tex": "\\beta_1 S_{N1}+\\beta_2 S_{N2}=S",
+   "display": false
+  },
+  {
+   "tex": "\\beta_1",
+   "display": false
+  },
+  {
+   "tex": "\\beta_2",
+   "display": false
+  },
+  {
+   "tex": "\\beta",
+   "display": false
+  },
+  {
+   "tex": "\\le 1",
+   "display": false
+  },
+  {
+   "tex": "\\beta_i S_{Ni}",
+   "display": false
+  },
+  {
+   "tex": "\\beta>1",
+   "display": false
+  },
+  {
+   "tex": "z_K",
+   "display": false
+  },
+  {
+   "tex": "u_k",
+   "display": false
+  },
+  {
+   "tex": "I_k",
+   "display": false
+  },
+  {
+   "tex": "P_{kN}",
+   "display": false
+  },
+  {
+   "tex": "P_{kN}",
+   "display": false
+  },
+  {
+   "tex": "P_{kN}",
+   "display": false
+  },
+  {
+   "tex": "u_k",
+   "display": false
+  },
+  {
+   "tex": "r_K",
+   "display": false
+  },
+  {
+   "tex": "P_{kN}",
+   "display": false
+  },
+  {
+   "tex": "P_k",
+   "display": false
+  },
+  {
+   "tex": "P_{kN}",
+   "display": false
+  },
+  {
+   "tex": "N_1\\dot I_1",
+   "display": false
+  },
+  {
+   "tex": "N_2\\dot I_2",
+   "display": false
+  },
+  {
+   "tex": "2\\times800",
+   "display": false
+  },
+  {
+   "tex": "\\dot A_0=(\\dot A+\\dot B+\\dot C)/3",
+   "display": false
+  },
+  {
+   "tex": "\\dot A_0=\\dot B_0=\\dot C_0",
+   "display": false
+  },
+  {
+   "tex": "3\\dot I_0",
+   "display": false
+  },
+  {
+   "tex": "3\\dot U_0",
+   "display": false
+  },
+  {
+   "tex": "\\dot B",
+   "display": false
+  },
+  {
+   "tex": "\\dot C",
+   "display": false
+  },
+  {
+   "tex": "\\dot A",
+   "display": false
+  },
+  {
+   "tex": "\\dot A_1",
+   "display": false
+  },
+  {
+   "tex": "\\dot B_1",
+   "display": false
+  },
+  {
+   "tex": "\\dot C_1",
+   "display": false
+  },
+  {
+   "tex": "\\dot B",
+   "display": false
+  },
+  {
+   "tex": "\\dot C",
+   "display": false
+  },
+  {
+   "tex": "\\dot A_2",
+   "display": false
+  },
+  {
+   "tex": "a=\\mathrm e^{\\mathrm j120°}",
+   "display": false
+  },
+  {
+   "tex": "\\dot A_1\\dot A_2\\dot A_0",
+   "display": false
+  },
+  {
+   "tex": "u=\\sqrt2\\,U\\sin(\\omega t+\\alpha)",
+   "display": false
+  },
+  {
+   "tex": "\\alpha",
+   "display": false
+  },
+  {
+   "tex": "\\omega",
+   "display": false
+  },
+  {
+   "tex": "r_K",
+   "display": false
+  },
+  {
+   "tex": "x_K",
+   "display": false
+  },
+  {
+   "tex": "r_K i+L_K\\dfrac{\\mathrm di}{\\mathrm dt}=u(t)",
+   "display": false
+  },
+  {
+   "tex": "t=0",
+   "display": false
+  },
+  {
+   "tex": "\\alpha-\\varphi_K",
+   "display": false
+  },
+  {
+   "tex": "\\sin(\\alpha-\\varphi_K)=0",
+   "display": false
+  },
+  {
+   "tex": "\\alpha=\\varphi_K",
+   "display": false
+  },
+  {
+   "tex": "\\alpha=\\varphi_K\\pm\\dfrac{\\pi}{2}",
+   "display": false
+  },
+  {
+   "tex": "r_K",
+   "display": false
+  },
+  {
+   "tex": "x_K",
+   "display": false
+  },
+  {
+   "tex": "T=L_K/r_K",
+   "display": false
+  },
+  {
+   "tex": "F\\propto Bi",
+   "display": false
+  },
+  {
+   "tex": "20^2\\sim30^2",
+   "display": false
+  },
+  {
+   "tex": "u=\\sqrt2\\,U\\sin(\\omega t+\\alpha)",
+   "display": false
+  },
+  {
+   "tex": "\\alpha",
+   "display": false
+  },
+  {
+   "tex": "r_m",
+   "display": false
+  },
+  {
+   "tex": "r_1",
+   "display": false
+  },
+  {
+   "tex": "x_1",
+   "display": false
+  },
+  {
+   "tex": "x_m",
+   "display": false
+  },
+  {
+   "tex": "\\alpha=\\dfrac{\\pi}{2}",
+   "display": false
+  },
+  {
+   "tex": "\\alpha=0",
+   "display": false
+  },
+  {
+   "tex": "\\alpha",
+   "display": false
+  },
+  {
+   "tex": "\\alpha=\\varphi_K",
+   "display": false
+  },
+  {
+   "tex": "\\alpha=\\pi/2",
+   "display": false
+  },
+  {
+   "tex": "u_k",
+   "display": false
+  },
+  {
+   "tex": "I_K",
+   "display": false
+  },
+  {
+   "tex": "P_K",
+   "display": false
+  },
+  {
+   "tex": "P_{kN}",
+   "display": false
+  },
+  {
+   "tex": "\\omega t",
+   "display": false
+  },
+  {
+   "tex": "\\sqrt2\\,U",
+   "display": false
+  },
+  {
+   "tex": "180°+60°=240°",
+   "display": false
+  },
+  {
+   "tex": "z_k^*",
+   "display": false
+  },
+  {
+   "tex": "P_{kN}",
+   "display": false
+  },
+  {
+   "tex": "u_k",
+   "display": false
+  },
+  {
+   "tex": "r_K",
+   "display": false
+  }
+ ]
+}

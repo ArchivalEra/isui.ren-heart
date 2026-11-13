@@ -1,0 +1,290 @@
+{
+ "url": "课程总览/工程数学/课堂笔记/09-24-降阶法与克拉默法则.html",
+ "title": "09-24 降阶法与克拉默法则",
+ "math": [
+  {
+   "tex": "\\begin{cases}2x_1+x_2-5x_3+x_4=8,\\\\ x_1-3x_2-6x_4=9,\\\\ 2x_2-x_3+2x_4=-5,\\\\ x_1+4x_2-7x_3+6x_4=0.\\end{cases}",
+   "display": true
+  },
+  {
+   "tex": "a",
+   "display": false
+  },
+  {
+   "tex": "b",
+   "display": false
+  },
+  {
+   "tex": "a",
+   "display": false
+  },
+  {
+   "tex": "b",
+   "display": false
+  },
+  {
+   "tex": "a+3b",
+   "display": false
+  },
+  {
+   "tex": "a+(n-1)b",
+   "display": false
+  },
+  {
+   "tex": "a+(n-1)b",
+   "display": false
+  },
+  {
+   "tex": "a+(n-1)b",
+   "display": false
+  },
+  {
+   "tex": "b",
+   "display": false
+  },
+  {
+   "tex": "b",
+   "display": false
+  },
+  {
+   "tex": "b-b=0",
+   "display": false
+  },
+  {
+   "tex": "D=\\bigl(a+(n-1)b\\bigr)\\,(a-b)^{n-1}",
+   "display": false
+  },
+  {
+   "tex": "n=2,3,4",
+   "display": false
+  },
+  {
+   "tex": "D=\\begin{vmatrix}1&2&3\\\\4&5&6\\\\7&8&9\\end{vmatrix}",
+   "display": false
+  },
+  {
+   "tex": "D=4A_{21}+5A_{22}+6A_{23}",
+   "display": false
+  },
+  {
+   "tex": "4A_{11}+5A_{12}+6A_{13}",
+   "display": false
+  },
+  {
+   "tex": "A_{jk}",
+   "display": false
+  },
+  {
+   "tex": "j",
+   "display": false
+  },
+  {
+   "tex": "(4,5,6)",
+   "display": false
+  },
+  {
+   "tex": "4A_{11}+5A_{12}+6A_{13}",
+   "display": false
+  },
+  {
+   "tex": "(4,5,6)",
+   "display": false
+  },
+  {
+   "tex": "(4,5,6)",
+   "display": false
+  },
+  {
+   "tex": "0",
+   "display": false
+  },
+  {
+   "tex": "4A_{31}+5A_{32}+6A_{33}",
+   "display": false
+  },
+  {
+   "tex": "(4,5,6)",
+   "display": false
+  },
+  {
+   "tex": "0",
+   "display": false
+  },
+  {
+   "tex": "a_{11}+a_{21}+a_{31}+a_{41}",
+   "display": false
+  },
+  {
+   "tex": "1\\cdot A_{11}+1\\cdot A_{21}+1\\cdot A_{31}+1\\cdot A_{41}",
+   "display": false
+  },
+  {
+   "tex": "0",
+   "display": false
+  },
+  {
+   "tex": "0",
+   "display": false
+  },
+  {
+   "tex": "A_{ij}",
+   "display": false
+  },
+  {
+   "tex": "A_{11}+A_{12}+\\dots+A_{1n}",
+   "display": false
+  },
+  {
+   "tex": "1\\cdot A_{11}+1\\cdot A_{12}+\\dots+1\\cdot A_{1n}",
+   "display": false
+  },
+  {
+   "tex": "D=27",
+   "display": false
+  },
+  {
+   "tex": "D_1=81",
+   "display": false
+  },
+  {
+   "tex": "D_2=-108",
+   "display": false
+  },
+  {
+   "tex": "D_3=-27",
+   "display": false
+  },
+  {
+   "tex": "D_4=27",
+   "display": false
+  },
+  {
+   "tex": "x_j",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "x_j=\\dfrac{D_j}{D}",
+   "display": false
+  },
+  {
+   "tex": "(x_1,x_2,x_3,x_4)=(3,-4,-1,1)",
+   "display": false
+  },
+  {
+   "tex": "D\\neq0",
+   "display": false
+  },
+  {
+   "tex": "D_j",
+   "display": false
+  },
+  {
+   "tex": "D_j",
+   "display": false
+  },
+  {
+   "tex": "j",
+   "display": false
+  },
+  {
+   "tex": "D=0",
+   "display": false
+  },
+  {
+   "tex": "\\lambda",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "D_j",
+   "display": false
+  },
+  {
+   "tex": "j",
+   "display": false
+  },
+  {
+   "tex": "D_j",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "D=0",
+   "display": false
+  },
+  {
+   "tex": "b_1=b_2=\\dots=b_n=0",
+   "display": false
+  },
+  {
+   "tex": "x_j\\neq0",
+   "display": false
+  },
+  {
+   "tex": "D\\neq0",
+   "display": false
+  },
+  {
+   "tex": "D\\neq0",
+   "display": false
+  },
+  {
+   "tex": "D=0",
+   "display": false
+  },
+  {
+   "tex": "D=27",
+   "display": false
+  },
+  {
+   "tex": "A_{13}",
+   "display": false
+  },
+  {
+   "tex": "D=27",
+   "display": false
+  },
+  {
+   "tex": "(3,-4,-1,1)",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "n=2,3,4",
+   "display": false
+  },
+  {
+   "tex": "\\bigl(a+(n-1)b\\bigr)\\,(a-b)^{n-1}",
+   "display": false
+  },
+  {
+   "tex": "\\begin{vmatrix}1&2&3\\\\4&5&6\\\\7&8&9\\end{vmatrix}",
+   "display": false
+  },
+  {
+   "tex": "D=27",
+   "display": false
+  },
+  {
+   "tex": "(D_1,D_2,D_3,D_4)=(81,-108,-27,27)",
+   "display": false
+  },
+  {
+   "tex": "(3,-4,-1,1)",
+   "display": false
+  }
+ ]
+}

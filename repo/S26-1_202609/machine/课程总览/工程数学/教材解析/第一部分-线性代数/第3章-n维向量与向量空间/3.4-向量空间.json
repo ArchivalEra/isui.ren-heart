@@ -1,0 +1,538 @@
+{
+ "url": "课程总览/工程数学/教材解析/第一部分-线性代数/第3章-n维向量与向量空间/3.4-向量空间.html",
+ "title": "3.4 向量空间",
+ "math": [
+  {
+   "tex": "\\boldsymbol{\\alpha}+\\boldsymbol{\\beta}=(x_1+y_1,x_2+y_2,\\cdots,x_n+y_n),",
+   "display": true
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}=x_1\\boldsymbol{\\alpha}_1+x_2\\boldsymbol{\\alpha}_2+\\cdots+x_n\\boldsymbol{\\alpha}_n,",
+   "display": true
+  },
+  {
+   "tex": "A=(\\boldsymbol{\\alpha}_1,\\boldsymbol{\\alpha}_2,\\boldsymbol{\\alpha}_3),\\quad B=(\\boldsymbol{\\beta}_1,\\boldsymbol{\\beta}_2),",
+   "display": true
+  },
+  {
+   "tex": "\\boldsymbol{\\beta}_1=x_{11}\\boldsymbol{\\alpha}_1+x_{21}\\boldsymbol{\\alpha}_2+x_{31}\\boldsymbol{\\alpha}_3,\\quad \\boldsymbol{\\beta}_2=x_{12}\\boldsymbol{\\alpha}_1+x_{22}\\boldsymbol{\\alpha}_2+x_{32}\\boldsymbol{\\alpha}_3,",
+   "display": true
+  },
+  {
+   "tex": "(\\boldsymbol{\\beta}_1,\\boldsymbol{\\beta}_2)=(\\boldsymbol{\\alpha}_1,\\boldsymbol{\\alpha}_2,\\boldsymbol{\\alpha}_3)\\begin{pmatrix}x_{11}&x_{12}\\\\x_{21}&x_{22}\\\\x_{31}&x_{32}\\end{pmatrix},",
+   "display": true
+  },
+  {
+   "tex": "B=AX",
+   "display": true
+  },
+  {
+   "tex": "(A\\mid B)=\\left(\\begin{array}{ccc|cc}1&2&3&5&-9\\\\-1&1&1&0&-8\\\\0&3&2&7&-13\\end{array}\\right)\\to\\left(\\begin{array}{ccc|cc}1&2&3&5&-9\\\\0&3&4&5&-17\\\\0&3&2&7&-13\\end{array}\\right)\\to",
+   "display": true
+  },
+  {
+   "tex": "\\left(\\begin{array}{ccc|cc}1&2&3&5&-9\\\\0&3&2&7&-13\\\\0&0&2&-2&-4\\end{array}\\right)\\to\\left(\\begin{array}{ccc|cc}1&0&0&2&3\\\\0&1&0&3&-3\\\\0&0&1&-1&-2\\end{array}\\right)",
+   "display": true
+  },
+  {
+   "tex": "(\\boldsymbol{\\beta}_1,\\boldsymbol{\\beta}_2)=(\\boldsymbol{\\alpha}_1,\\boldsymbol{\\alpha}_2,\\boldsymbol{\\alpha}_3)\\begin{pmatrix}2&3\\\\3&-3\\\\-1&-2\\end{pmatrix},",
+   "display": true
+  },
+  {
+   "tex": "\\boldsymbol{\\beta}_1=2\\boldsymbol{\\alpha}_1+3\\boldsymbol{\\alpha}_2-\\boldsymbol{\\alpha}_3,\\quad \\boldsymbol{\\beta}_2=3\\boldsymbol{\\alpha}_1-3\\boldsymbol{\\alpha}_2-2\\boldsymbol{\\alpha}_3",
+   "display": true
+  },
+  {
+   "tex": "V",
+   "display": false
+  },
+  {
+   "tex": "n",
+   "display": false
+  },
+  {
+   "tex": "V",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha},\\boldsymbol{\\beta}\\in V",
+   "display": false
+  },
+  {
+   "tex": "k",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}+\\boldsymbol{\\beta},k\\boldsymbol{\\alpha}\\in V",
+   "display": false
+  },
+  {
+   "tex": "V",
+   "display": false
+  },
+  {
+   "tex": "n",
+   "display": false
+  },
+  {
+   "tex": "\\mathbf{R}^n",
+   "display": false
+  },
+  {
+   "tex": "n",
+   "display": false
+  },
+  {
+   "tex": "\\{\\boldsymbol{0}\\}",
+   "display": false
+  },
+  {
+   "tex": "V=\\{(x_1,x_2,\\cdots,x_n)\\mid x_1+x_2+\\cdots+x_n=1\\}",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}=(x_1,x_2,\\cdots,x_n)\\in V",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\beta}=(y_1,y_2,\\cdots,y_n)\\in V",
+   "display": false
+  },
+  {
+   "tex": "\\sum_{i=1}^{n}x_i=1",
+   "display": false
+  },
+  {
+   "tex": "\\sum_{i=1}^{n}y_i=1",
+   "display": false
+  },
+  {
+   "tex": "\\sum_{i=1}^{n}(x_i+y_i)=\\sum_{i=1}^{n}x_i+\\sum_{i=1}^{n}y_i=2\\neq1",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}+\\boldsymbol{\\beta}\\notin V",
+   "display": false
+  },
+  {
+   "tex": "V",
+   "display": false
+  },
+  {
+   "tex": "V",
+   "display": false
+  },
+  {
+   "tex": "V",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_1,\\boldsymbol{\\alpha}_2,\\cdots,\\boldsymbol{\\alpha}_r",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_1,\\boldsymbol{\\alpha}_2,\\cdots,\\boldsymbol{\\alpha}_r",
+   "display": false
+  },
+  {
+   "tex": "V",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_1,\\boldsymbol{\\alpha}_2,\\cdots,\\boldsymbol{\\alpha}_r",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_1,\\boldsymbol{\\alpha}_2,\\cdots,\\boldsymbol{\\alpha}_r",
+   "display": false
+  },
+  {
+   "tex": "V",
+   "display": false
+  },
+  {
+   "tex": "r",
+   "display": false
+  },
+  {
+   "tex": "V",
+   "display": false
+  },
+  {
+   "tex": "\\dim V",
+   "display": false
+  },
+  {
+   "tex": "V",
+   "display": false
+  },
+  {
+   "tex": "r",
+   "display": false
+  },
+  {
+   "tex": "V",
+   "display": false
+  },
+  {
+   "tex": "V",
+   "display": false
+  },
+  {
+   "tex": "0",
+   "display": false
+  },
+  {
+   "tex": "0",
+   "display": false
+  },
+  {
+   "tex": "V",
+   "display": false
+  },
+  {
+   "tex": "V",
+   "display": false
+  },
+  {
+   "tex": "V",
+   "display": false
+  },
+  {
+   "tex": "V",
+   "display": false
+  },
+  {
+   "tex": "n",
+   "display": false
+  },
+  {
+   "tex": "n",
+   "display": false
+  },
+  {
+   "tex": "\\dim V=r",
+   "display": false
+  },
+  {
+   "tex": "V",
+   "display": false
+  },
+  {
+   "tex": "r",
+   "display": false
+  },
+  {
+   "tex": "V",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_1,\\boldsymbol{\\alpha}_2,\\cdots,\\boldsymbol{\\alpha}_n",
+   "display": false
+  },
+  {
+   "tex": "n",
+   "display": false
+  },
+  {
+   "tex": "V",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}\\in V",
+   "display": false
+  },
+  {
+   "tex": "x_1,x_2,\\cdots,x_n",
+   "display": false
+  },
+  {
+   "tex": "x_1,x_2,\\cdots,x_n",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_1,\\boldsymbol{\\alpha}_2,\\cdots,\\boldsymbol{\\alpha}_n",
+   "display": false
+  },
+  {
+   "tex": "(x_1,x_2,\\cdots,x_n)^T",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}=(1,2,3)",
+   "display": false
+  },
+  {
+   "tex": "\\mathbf{R}^3",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\varepsilon}_1=(1,0,0),\\boldsymbol{\\varepsilon}_2=(0,1,0),\\boldsymbol{\\varepsilon}_3=(0,0,1)",
+   "display": false
+  },
+  {
+   "tex": "(1,2,3)^T",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_1=(1,-1,0),\\boldsymbol{\\alpha}_2=(2,1,3),\\boldsymbol{\\alpha}_3=(3,1,2)",
+   "display": false
+  },
+  {
+   "tex": "\\mathbf{R}^3",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\beta}_1=(5,0,7),\\boldsymbol{\\beta}_2=(-9,-8,-13)",
+   "display": false
+  },
+  {
+   "tex": "A\\cong E",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_1,\\boldsymbol{\\alpha}_2,\\boldsymbol{\\alpha}_3",
+   "display": false
+  },
+  {
+   "tex": "\\mathbf{R}^3",
+   "display": false
+  },
+  {
+   "tex": "\\mathbf{R}^n",
+   "display": false
+  },
+  {
+   "tex": "\\mathbf{R}^n",
+   "display": false
+  },
+  {
+   "tex": "V=\\{(x_1,\\dots,x_n)\\mid \\sum x_i=1\\}",
+   "display": false
+  },
+  {
+   "tex": "1+1=2\\neq1",
+   "display": false
+  },
+  {
+   "tex": "\\sum x_i=1",
+   "display": false
+  },
+  {
+   "tex": "k",
+   "display": false
+  },
+  {
+   "tex": "2\\boldsymbol{\\alpha}\\neq\\boldsymbol{\\alpha}",
+   "display": false
+  },
+  {
+   "tex": "k=0",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{0}\\in V",
+   "display": false
+  },
+  {
+   "tex": "V",
+   "display": false
+  },
+  {
+   "tex": "\\dim V \\le n",
+   "display": false
+  },
+  {
+   "tex": "n",
+   "display": false
+  },
+  {
+   "tex": "n",
+   "display": false
+  },
+  {
+   "tex": "\\dim V=r",
+   "display": false
+  },
+  {
+   "tex": "r",
+   "display": false
+  },
+  {
+   "tex": "r",
+   "display": false
+  },
+  {
+   "tex": "r",
+   "display": false
+  },
+  {
+   "tex": "r",
+   "display": false
+  },
+  {
+   "tex": "(1,2,3)",
+   "display": false
+  },
+  {
+   "tex": "\\varepsilon_1,\\varepsilon_2,\\varepsilon_3",
+   "display": false
+  },
+  {
+   "tex": "(1,2,3)^T",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_1,\\boldsymbol{\\alpha}_2,\\boldsymbol{\\alpha}_3",
+   "display": false
+  },
+  {
+   "tex": "3\\times3",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "\\det A",
+   "display": false
+  },
+  {
+   "tex": "\\det A=-6\\neq0",
+   "display": false
+  },
+  {
+   "tex": "B=AX",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "X",
+   "display": false
+  },
+  {
+   "tex": "(A\\mid B)",
+   "display": false
+  },
+  {
+   "tex": "X",
+   "display": false
+  },
+  {
+   "tex": "E",
+   "display": false
+  },
+  {
+   "tex": "X=\\begin{pmatrix}2&3\\\\3&-3\\\\-1&-2\\end{pmatrix}",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\beta}_1=2\\boldsymbol{\\alpha}_1+3\\boldsymbol{\\alpha}_2-\\boldsymbol{\\alpha}_3",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\beta}_2=3\\boldsymbol{\\alpha}_1-3\\boldsymbol{\\alpha}_2-2\\boldsymbol{\\alpha}_3",
+   "display": false
+  },
+  {
+   "tex": "E",
+   "display": false
+  },
+  {
+   "tex": "X",
+   "display": false
+  },
+  {
+   "tex": "B=AX",
+   "display": false
+  },
+  {
+   "tex": "A^{-1}",
+   "display": false
+  },
+  {
+   "tex": "X=A^{-1}B",
+   "display": false
+  },
+  {
+   "tex": "(A\\mid B)",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "E",
+   "display": false
+  },
+  {
+   "tex": "A^{-1}",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "A^{-1}B=X",
+   "display": false
+  },
+  {
+   "tex": "\\det(A)=-6",
+   "display": false
+  },
+  {
+   "tex": "X",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\beta}_1=2\\boldsymbol{\\alpha}_1+3\\boldsymbol{\\alpha}_2-\\boldsymbol{\\alpha}_3=(5,0,7)",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\beta}_2=3\\boldsymbol{\\alpha}_1-3\\boldsymbol{\\alpha}_2-2\\boldsymbol{\\alpha}_3=(-9,-8,-13)",
+   "display": false
+  },
+  {
+   "tex": "r_2+r_1",
+   "display": false
+  },
+  {
+   "tex": "(0,3,4,5,-17)",
+   "display": false
+  },
+  {
+   "tex": "\\det\\neq0",
+   "display": false
+  },
+  {
+   "tex": "B=AX",
+   "display": false
+  },
+  {
+   "tex": "(A\\mid B)",
+   "display": false
+  },
+  {
+   "tex": "E",
+   "display": false
+  },
+  {
+   "tex": "X",
+   "display": false
+  },
+  {
+   "tex": "\\det",
+   "display": false
+  }
+ ]
+}

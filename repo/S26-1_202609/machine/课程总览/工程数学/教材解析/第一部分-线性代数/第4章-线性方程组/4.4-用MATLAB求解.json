@@ -1,0 +1,118 @@
+{
+ "url": "课程总览/工程数学/教材解析/第一部分-线性代数/第4章-线性方程组/4.4-用MATLAB求解.html",
+ "title": "4.4 用 MATLAB 求解线性方程组",
+ "math": [
+  {
+   "tex": "x_1=\\tfrac{30}{7}-\\tfrac{23}{7}k_1-\\tfrac{23}{7}k_2-\\tfrac{10}{7}k_3,\\qquad\nx_2=-\\tfrac37+\\tfrac{10}{7}k_1+\\tfrac{3}{7}k_2-\\tfrac{6}{7}k_3,\\qquad\nx_3=k_1,\\ x_4=k_2,\\ x_5=k_3",
+   "display": true
+  },
+  {
+   "tex": "\\begin{cases} x_1+2x_2+2x_3=2,\\\\ 2x_1+5x_2+2x_3=4,\\\\ x_1+2x_2+4x_3=6. \\end{cases}",
+   "display": false
+  },
+  {
+   "tex": "2x_2",
+   "display": false
+  },
+  {
+   "tex": "4x_3",
+   "display": false
+  },
+  {
+   "tex": "\\begin{cases} x_1+3x_2-x_3+2x_4+4x_5=3,\\\\ 2x_1-x_2+8x_3+7x_4+2x_5=9,\\\\ 4x_1+5x_2+6x_3+11x_4+10x_5=15 \\end{cases}",
+   "display": false
+  },
+  {
+   "tex": "r_i-\\frac{a_{i1}}{a_{11}}r_1",
+   "display": false
+  },
+  {
+   "tex": "x_1+2x_2+4x_3=6",
+   "display": false
+  },
+  {
+   "tex": "x_1+2x_3+4x_3=6",
+   "display": false
+  },
+  {
+   "tex": "X=(-10,4,2)^{\\mathrm T}",
+   "display": false
+  },
+  {
+   "tex": "(-4,2,1)",
+   "display": false
+  },
+  {
+   "tex": "2x_2",
+   "display": false
+  },
+  {
+   "tex": "4x_3",
+   "display": false
+  },
+  {
+   "tex": "X=(-10,\\ 4,\\ 2)^{\\mathrm T}",
+   "display": false
+  },
+  {
+   "tex": "\\begin{pmatrix}1&0&0&-10\\\\0&1&0&4\\\\0&0&1&2\\end{pmatrix}",
+   "display": false
+  },
+  {
+   "tex": "0",
+   "display": false
+  },
+  {
+   "tex": "R(A)=R(A^*)=2<5",
+   "display": false
+  },
+  {
+   "tex": "x_3,x_4,x_5",
+   "display": false
+  },
+  {
+   "tex": "\\frac{30}{7}",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\eta}^*",
+   "display": false
+  },
+  {
+   "tex": "(\\tfrac{30}{7},-\\tfrac37,0,0,0)^{\\mathrm T}",
+   "display": false
+  },
+  {
+   "tex": "0",
+   "display": false
+  },
+  {
+   "tex": "R(A)",
+   "display": false
+  },
+  {
+   "tex": "R(A^*)",
+   "display": false
+  },
+  {
+   "tex": "k_1\\boldsymbol{\\xi}_1+\\cdots",
+   "display": false
+  },
+  {
+   "tex": "R(A)=R(A^*)",
+   "display": false
+  },
+  {
+   "tex": "\\frac{30}{7}",
+   "display": false
+  },
+  {
+   "tex": "X=(-10,4,2)^{\\mathrm T}",
+   "display": false
+  },
+  {
+   "tex": "2x_2,4x_3",
+   "display": false
+  }
+ ]
+}

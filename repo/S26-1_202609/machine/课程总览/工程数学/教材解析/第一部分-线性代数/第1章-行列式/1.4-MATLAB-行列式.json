@@ -1,0 +1,86 @@
+{
+ "url": "课程总览/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.4-MATLAB-行列式.html",
+ "title": "1.4 MATLAB 行列式",
+ "math": [
+  {
+   "tex": "\\begin{vmatrix}1&-2&4\\\\-5&2&0\\\\1&0&3\\end{vmatrix}",
+   "display": true
+  },
+  {
+   "tex": "\\begin{vmatrix}\n1&2&3&2\\\\\n1&2&0&-5\\\\\n1&0&1&2\\\\\n4&3&1&2\n\\end{vmatrix}",
+   "display": true
+  },
+  {
+   "tex": "\\begin{vmatrix}1&2&3\\\\4&5&6\\\\7&8&9\\end{vmatrix}",
+   "display": true
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "n\\times n",
+   "display": false
+  },
+  {
+   "tex": "n",
+   "display": false
+  },
+  {
+   "tex": "n",
+   "display": false
+  },
+  {
+   "tex": "-32",
+   "display": false
+  },
+  {
+   "tex": "-48",
+   "display": false
+  },
+  {
+   "tex": "0",
+   "display": false
+  },
+  {
+   "tex": "r_3=2r_2-r_1",
+   "display": false
+  },
+  {
+   "tex": "7.1\\times10^{-15}",
+   "display": false
+  },
+  {
+   "tex": "-48.000000000000007",
+   "display": false
+  },
+  {
+   "tex": "-48",
+   "display": false
+  },
+  {
+   "tex": "7.105\\times10^{-15}",
+   "display": false
+  },
+  {
+   "tex": "+6.6613\\times10^{-16}",
+   "display": false
+  },
+  {
+   "tex": "-9.5162\\times10^{-16}",
+   "display": false
+  },
+  {
+   "tex": "0",
+   "display": false
+  },
+  {
+   "tex": "r_3-(2r_2-r_1)=[0\\ 0\\ 0]",
+   "display": false
+  },
+  {
+   "tex": "\\operatorname{rank}A=2",
+   "display": false
+  }
+ ]
+}

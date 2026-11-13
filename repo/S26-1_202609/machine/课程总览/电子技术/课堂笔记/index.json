@@ -1,0 +1,14 @@
+{
+ "url": "课程总览/电子技术/课堂笔记/index.html",
+ "title": "课堂笔记",
+ "math": [
+  {
+   "tex": "T_P=1.1RC",
+   "display": false
+  },
+  {
+   "tex": "U_{ab}",
+   "display": false
+  }
+ ]
+}

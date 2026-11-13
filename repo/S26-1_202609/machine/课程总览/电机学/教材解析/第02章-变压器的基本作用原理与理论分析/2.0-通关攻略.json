@@ -1,0 +1,1386 @@
+{
+ "url": "课程总览/电机学/教材解析/第02章-变压器的基本作用原理与理论分析/2.0-通关攻略.html",
+ "title": "2.0 通关攻略",
+ "math": [
+  {
+   "tex": "I_{1N}=\\frac{S_N}{\\sqrt3 U_{1N}}=\\frac{500\\times10^3}{\\sqrt3\\times10000}\\approx28.87\\ \\mathrm{A},\\qquad\n  I_{2N}=\\frac{S_N}{\\sqrt3 U_{2N}}=\\frac{500\\times10^3}{\\sqrt3\\times400}\\approx721.69\\ \\mathrm{A}",
+   "display": true
+  },
+  {
+   "tex": "I_{1N\\Phi}=\\frac{I_{1N}}{\\sqrt3}\\approx16.67\\ \\mathrm{A},\\qquad I_{2N\\Phi}=I_{2N}\\approx721.69\\ \\mathrm{A}",
+   "display": true
+  },
+  {
+   "tex": "U_{1\\Phi}=U_{1N}=10000\\ \\mathrm{V}\\ (\\text{三角形：相电压}=\\text{线电压}),\\qquad\n  U_{2\\Phi}=\\frac{U_{2N}}{\\sqrt3}=\\frac{400}{\\sqrt3}\\approx230.94\\ \\mathrm{V}\\ (\\text{星形：相电压}=\\text{线}/\\sqrt3)",
+   "display": true
+  },
+  {
+   "tex": "k=\\frac{U_{1\\Phi}}{U_{2\\Phi}}=\\frac{10000}{400/\\sqrt3}=\\frac{10000\\sqrt3}{400}=25\\sqrt3\\approx43.30",
+   "display": true
+  },
+  {
+   "tex": "\\Phi_m=B_mS=1.4\\times200\\times10^{-4}=0.028\\ \\mathrm{Wb}",
+   "display": true
+  },
+  {
+   "tex": "E_1=\\frac{E_{1m}}{\\sqrt2}=\\frac{2\\pi fN_1\\Phi_m}{\\sqrt2}=\\underbrace{\\sqrt2\\pi}_{4.44}fN_1\\Phi_m=4.44\\times50\\times960\\times0.028\\approx5967\\ \\mathrm{V}",
+   "display": true
+  },
+  {
+   "tex": "\\frac{E_1}{N_1}=4.44f\\Phi_m\\approx6.22\\ \\mathrm{V/匝}\\quad(E_1/N_1=5967/960=6.216)",
+   "display": true
+  },
+  {
+   "tex": "I_2'=I_2\\frac{N_2}{N_1}=\\frac{I_2}{k}",
+   "display": true
+  },
+  {
+   "tex": "U_2'=U_2\\frac{I_2}{I_2'}=kU_2\\qquad(\\text{电动势 }E_2'=kE_2)",
+   "display": true
+  },
+  {
+   "tex": "r_2'=\\Big(\\frac{I_2}{I_2'}\\Big)^2r_2=k^2r_2=5.5^2\\times0.02=0.605\\ \\Omega",
+   "display": true
+  },
+  {
+   "tex": "x_2'=k^2x_2=30.25\\times0.03=0.9075\\ \\Omega",
+   "display": true
+  },
+  {
+   "tex": "Z_{1b}=\\frac{U_{1b\\Phi}}{I_{1b}}=\\frac{U_{1N}/\\sqrt3}{I_{1b}}=\\frac{34641}{24.06}\\approx1440\\ \\Omega",
+   "display": true
+  },
+  {
+   "tex": "Z_*=\\frac{Z}{Z_{1b}}=\\frac{115.6}{1440}\\approx0.080",
+   "display": true
+  },
+  {
+   "tex": "U_{1\\Phi}=\\frac{60\\times10^3}{\\sqrt3}=34.64\\ \\mathrm{kV},\\quad I_{1N}=\\frac{S_N}{\\sqrt3U_{1N}}=\\frac{2500\\times10^3}{\\sqrt3\\times60\\times10^3}=24.06\\ \\mathrm{A},\\quad I_{1\\Phi}=I_{1N}",
+   "display": true
+  },
+  {
+   "tex": "U_{2\\Phi}=6.3\\ \\mathrm{kV}\\ (\\text{d 接：相电压}=\\text{线电压}),\\quad I_{2N}=\\frac{2500\\times10^3}{\\sqrt3\\times6.3\\times10^3}=229.11\\ \\mathrm{A},\\quad I_{2\\Phi}=\\frac{I_{2N}}{\\sqrt3}=132.28\\ \\mathrm{A}",
+   "display": true
+  },
+  {
+   "tex": "U_{0\\Phi}=6300\\ \\mathrm{V},\\quad I_{0\\Phi}=\\frac{11.46}{\\sqrt3}=6.62\\ \\mathrm{A}",
+   "display": true
+  },
+  {
+   "tex": "r_m=\\frac{p_0}{3I_{0\\Phi}^2}=\\frac{7700}{3\\times6.62^2}=58.57\\ \\Omega,\\qquad\n  Z_m\\approx Z_0=\\frac{U_{0\\Phi}}{I_{0\\Phi}}=\\frac{6300}{6.62}=951.66\\ \\Omega,",
+   "display": true
+  },
+  {
+   "tex": "x_m=\\sqrt{Z_m^2-r_m^2}=\\sqrt{951.66^2-58.57^2}=949.86\\ \\Omega",
+   "display": true
+  },
+  {
+   "tex": "Z_m'=k^2Z_m=28787.72\\ \\Omega,\\quad r_m'=1771.74\\ \\Omega,\\quad x_m'=28733.27\\ \\Omega",
+   "display": true
+  },
+  {
+   "tex": "Z_k=\\frac{U_k}{\\sqrt3I_k}=\\frac{4800}{\\sqrt3\\times24.06}=115.18\\ \\Omega,\\quad\n  r_k=\\frac{p_k}{3I_k^2}=\\frac{26500}{3\\times24.06^2}=15.26\\ \\Omega,\\quad\n  x_k=\\sqrt{Z_k^2-r_k^2}=114.16\\ \\Omega",
+   "display": true
+  },
+  {
+   "tex": "Z_k^*=\\frac{115.60}{1440}=0.080,\\quad r_k^*=\\frac{18.20}{1440}=0.013,\\quad x_k^*=\\frac{114.16}{1440}=0.079",
+   "display": true
+  },
+  {
+   "tex": "Z_m^*=\\frac{951.66}{47.63}=19.98,\\quad r_m^*=\\frac{58.57}{47.63}=1.23,\\quad x_m^*=\\frac{949.86}{47.63}=19.94",
+   "display": true
+  },
+  {
+   "tex": "Y_m=\\frac{1}{Z_m'}=\\frac{1}{28787.72}=34.74\\times10^{-6}\\ \\mathrm{S},\\quad g_m=\\frac{r_m'}{r_m'^2+x_m'^2}=2.14\\times10^{-6}\\ \\mathrm{S},\\quad b_m=34.67\\times10^{-6}\\ \\mathrm{S}",
+   "display": true
+  },
+  {
+   "tex": "Y_m^*=Y_mZ_{1b}=0.05,\\quad g_m^*=0.00308,\\quad b_m^*=0.0499",
+   "display": true
+  },
+  {
+   "tex": "r_k^*=\\frac{22000}{1800\\times10^3}=0.0122,\\qquad x_k^*=\\sqrt{u_k^{*2}-r_k^{*2}}=\\sqrt{0.045^2-0.0122^2}=0.0433",
+   "display": true
+  },
+  {
+   "tex": "\\Delta U\\%\\approx\\big(r_k^*\\cos\\varphi_2+x_k^*\\sin\\varphi_2\\big)\\times100\\%=(0.0122\\times0.8+0.0433\\times0.6)\\times100\\%=3.57\\%",
+   "display": true
+  },
+  {
+   "tex": "U_2=U_{2N}(1-\\Delta U\\%)=400\\times(1-0.0357)\\approx385.7\\ \\mathrm{V}",
+   "display": true
+  },
+  {
+   "tex": "\\eta=\\frac{\\beta S_N\\cos\\varphi_2}{\\beta S_N\\cos\\varphi_2+p_0+\\beta^2p_{kN}}\n  =\\frac{1800\\times10^3\\times0.8}{1800\\times10^3\\times0.8+6800+22000}=\\frac{1440000}{1468800}\\approx98.04\\%",
+   "display": true
+  },
+  {
+   "tex": "\\Phi=F/R_m=NI/R_m",
+   "display": false
+  },
+  {
+   "tex": "B=\\mu H",
+   "display": false
+  },
+  {
+   "tex": "H",
+   "display": false
+  },
+  {
+   "tex": "e=-N\\dfrac{\\mathrm d\\Phi}{\\mathrm dt}",
+   "display": false
+  },
+  {
+   "tex": "L=\\Psi/I",
+   "display": false
+  },
+  {
+   "tex": "x=\\omega L",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "H",
+   "display": false
+  },
+  {
+   "tex": "\\Phi",
+   "display": false
+  },
+  {
+   "tex": "R_m",
+   "display": false
+  },
+  {
+   "tex": "S_N",
+   "display": false
+  },
+  {
+   "tex": "I_N",
+   "display": false
+  },
+  {
+   "tex": "k",
+   "display": false
+  },
+  {
+   "tex": "Z_m",
+   "display": false
+  },
+  {
+   "tex": "S_N,U_N,I_N,f_N",
+   "display": false
+  },
+  {
+   "tex": "\\sqrt3",
+   "display": false
+  },
+  {
+   "tex": "E=4.44fN\\Phi_m",
+   "display": false
+  },
+  {
+   "tex": "k",
+   "display": false
+  },
+  {
+   "tex": "\\Delta U",
+   "display": false
+  },
+  {
+   "tex": "\\eta",
+   "display": false
+  },
+  {
+   "tex": "\\Delta U",
+   "display": false
+  },
+  {
+   "tex": "\\eta",
+   "display": false
+  },
+  {
+   "tex": "S_N=500\\ \\mathrm{kVA}",
+   "display": false
+  },
+  {
+   "tex": "f_N=50\\ \\mathrm{Hz}",
+   "display": false
+  },
+  {
+   "tex": "U_{1N}/U_{2N}=10000\\ \\mathrm{V}/400\\ \\mathrm{V}",
+   "display": false
+  },
+  {
+   "tex": "k",
+   "display": false
+  },
+  {
+   "tex": "S_N=\\sqrt3\\,U_NI_N",
+   "display": false
+  },
+  {
+   "tex": "\\sqrt3",
+   "display": false
+  },
+  {
+   "tex": "k",
+   "display": false
+  },
+  {
+   "tex": "3U_\\Phi I_\\Phi=3\\times10000\\times16.67\\approx500\\ \\mathrm{kVA}",
+   "display": false
+  },
+  {
+   "tex": "3\\times230.94\\times721.69\\approx500\\ \\mathrm{kVA}",
+   "display": false
+  },
+  {
+   "tex": "S_N",
+   "display": false
+  },
+  {
+   "tex": "\\sqrt3",
+   "display": false
+  },
+  {
+   "tex": "10000/400=25",
+   "display": false
+  },
+  {
+   "tex": "\\sqrt3",
+   "display": false
+  },
+  {
+   "tex": "S_N",
+   "display": false
+  },
+  {
+   "tex": "U_N",
+   "display": false
+  },
+  {
+   "tex": "I_N",
+   "display": false
+  },
+  {
+   "tex": "f_N",
+   "display": false
+  },
+  {
+   "tex": "\\sqrt3",
+   "display": false
+  },
+  {
+   "tex": "I_N=\\dfrac{S_N}{\\sqrt3 U_N}",
+   "display": false
+  },
+  {
+   "tex": "I_N=\\dfrac{S_N}{U_N}",
+   "display": false
+  },
+  {
+   "tex": "\\sqrt3",
+   "display": false
+  },
+  {
+   "tex": "\\sqrt3",
+   "display": false
+  },
+  {
+   "tex": "k=",
+   "display": false
+  },
+  {
+   "tex": "k\\ge1",
+   "display": false
+  },
+  {
+   "tex": "\\sqrt3",
+   "display": false
+  },
+  {
+   "tex": "k",
+   "display": false
+  },
+  {
+   "tex": "k",
+   "display": false
+  },
+  {
+   "tex": "25\\sqrt3\\approx43.3",
+   "display": false
+  },
+  {
+   "tex": "\\sqrt3",
+   "display": false
+  },
+  {
+   "tex": "k",
+   "display": false
+  },
+  {
+   "tex": "\\sqrt3",
+   "display": false
+  },
+  {
+   "tex": "\\sqrt3",
+   "display": false
+  },
+  {
+   "tex": "k",
+   "display": false
+  },
+  {
+   "tex": "u_k=4.5\\%",
+   "display": false
+  },
+  {
+   "tex": "\\Delta U",
+   "display": false
+  },
+  {
+   "tex": "N_1=960",
+   "display": false
+  },
+  {
+   "tex": "S=200\\ \\mathrm{cm^2}",
+   "display": false
+  },
+  {
+   "tex": "B_m=1.4\\ \\mathrm{T}",
+   "display": false
+  },
+  {
+   "tex": "f=50\\ \\mathrm{Hz}",
+   "display": false
+  },
+  {
+   "tex": "E_1",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "\\Phi",
+   "display": false
+  },
+  {
+   "tex": "\\mathrm{m^2}",
+   "display": false
+  },
+  {
+   "tex": "4.44",
+   "display": false
+  },
+  {
+   "tex": "E_m=\\omega N\\Phi_m",
+   "display": false
+  },
+  {
+   "tex": "\\sqrt2",
+   "display": false
+  },
+  {
+   "tex": "N_1",
+   "display": false
+  },
+  {
+   "tex": "4.44",
+   "display": false
+  },
+  {
+   "tex": "\\sqrt2\\pi",
+   "display": false
+  },
+  {
+   "tex": "\\sqrt2",
+   "display": false
+  },
+  {
+   "tex": "4.44",
+   "display": false
+  },
+  {
+   "tex": "U_1",
+   "display": false
+  },
+  {
+   "tex": "\\Phi_m",
+   "display": false
+  },
+  {
+   "tex": "U_1\\approx E_1=4.44fN_1\\Phi_m",
+   "display": false
+  },
+  {
+   "tex": "e=-N\\dfrac{\\mathrm d\\Phi}{\\mathrm dt}",
+   "display": false
+  },
+  {
+   "tex": "\\Phi",
+   "display": false
+  },
+  {
+   "tex": "\\Phi_{1\\sigma}",
+   "display": false
+  },
+  {
+   "tex": "\\phi=\\Phi_m\\sin\\omega t",
+   "display": false
+  },
+  {
+   "tex": "e_1=-N_1\\dfrac{\\mathrm d\\phi}{\\mathrm dt}=E_{1m}\\sin(\\omega t-90^\\circ)",
+   "display": false
+  },
+  {
+   "tex": "E_1=\\dfrac{E_{1m}}{\\sqrt2}=4.44fN_1\\Phi_m",
+   "display": false
+  },
+  {
+   "tex": "k=\\dfrac{E_1}{E_2}=\\dfrac{N_1}{N_2}",
+   "display": false
+  },
+  {
+   "tex": "U_{20}=E_2",
+   "display": false
+  },
+  {
+   "tex": "\\dot U_1\\approx-\\dot E_1",
+   "display": false
+  },
+  {
+   "tex": "k=\\dfrac{U_1}{U_{20}}",
+   "display": false
+  },
+  {
+   "tex": "B_m<0.8\\ \\mathrm{T}",
+   "display": false
+  },
+  {
+   "tex": "i_0",
+   "display": false
+  },
+  {
+   "tex": "B_m>0.8\\ \\mathrm{T}",
+   "display": false
+  },
+  {
+   "tex": "i_0",
+   "display": false
+  },
+  {
+   "tex": "B_m=1.4\\sim1.6\\ \\mathrm{T}",
+   "display": false
+  },
+  {
+   "tex": "I_\\mu",
+   "display": false
+  },
+  {
+   "tex": "I_{Fe}",
+   "display": false
+  },
+  {
+   "tex": "I_0=I_{Fe}+I_\\mu",
+   "display": false
+  },
+  {
+   "tex": "\\dot I_\\mu=-jb_m(-\\dot E_1)",
+   "display": false
+  },
+  {
+   "tex": "\\dot I_{Fe}=g_m(-\\dot E_1)",
+   "display": false
+  },
+  {
+   "tex": "-\\dot E_1=\\dot I_0Z_m",
+   "display": false
+  },
+  {
+   "tex": "Z_m=r_m+jx_m",
+   "display": false
+  },
+  {
+   "tex": "x_m",
+   "display": false
+  },
+  {
+   "tex": "r_m",
+   "display": false
+  },
+  {
+   "tex": "p_{Fe}=g_mE_1^2",
+   "display": false
+  },
+  {
+   "tex": "Q_\\mu=b_mE_1^2",
+   "display": false
+  },
+  {
+   "tex": "4.44",
+   "display": false
+  },
+  {
+   "tex": "\\sqrt2\\pi",
+   "display": false
+  },
+  {
+   "tex": "4.44\\approx\\sqrt2\\pi=4.443",
+   "display": false
+  },
+  {
+   "tex": "r_m",
+   "display": false
+  },
+  {
+   "tex": "r_1",
+   "display": false
+  },
+  {
+   "tex": "r_m",
+   "display": false
+  },
+  {
+   "tex": "x_m",
+   "display": false
+  },
+  {
+   "tex": "x_m",
+   "display": false
+  },
+  {
+   "tex": "x_m",
+   "display": false
+  },
+  {
+   "tex": "r_1,r_2,x_1,x_2',p_{Fe},I_0\\%",
+   "display": false
+  },
+  {
+   "tex": "U_1\\approx4.44fN_1\\Phi_m",
+   "display": false
+  },
+  {
+   "tex": "k=5.5",
+   "display": false
+  },
+  {
+   "tex": "r_2=0.02\\ \\Omega",
+   "display": false
+  },
+  {
+   "tex": "x_2=0.03\\ \\Omega",
+   "display": false
+  },
+  {
+   "tex": "r_2'",
+   "display": false
+  },
+  {
+   "tex": "x_2'",
+   "display": false
+  },
+  {
+   "tex": "I_2'N_2'=I_2N_2",
+   "display": false
+  },
+  {
+   "tex": "N_2'=N_1",
+   "display": false
+  },
+  {
+   "tex": "U_2'I_2'=U_2I_2",
+   "display": false
+  },
+  {
+   "tex": "I_2'^2r_2'=I_2^2r_2",
+   "display": false
+  },
+  {
+   "tex": "k^2",
+   "display": false
+  },
+  {
+   "tex": "k",
+   "display": false
+  },
+  {
+   "tex": "k",
+   "display": false
+  },
+  {
+   "tex": "k^2",
+   "display": false
+  },
+  {
+   "tex": "k",
+   "display": false
+  },
+  {
+   "tex": "k",
+   "display": false
+  },
+  {
+   "tex": "\\dot I_1N_1+\\dot I_2N_2=\\dot I_0N_1",
+   "display": false
+  },
+  {
+   "tex": "\\dot I_m",
+   "display": false
+  },
+  {
+   "tex": "\\dot I_{1L}",
+   "display": false
+  },
+  {
+   "tex": "\\dot I_1=\\dot I_m+(-\\dot I_2/k)",
+   "display": false
+  },
+  {
+   "tex": "-\\dot E_1=\\dot I_mZ_m",
+   "display": false
+  },
+  {
+   "tex": "\\dot U_1=-\\dot E_1+\\dot I_1Z_1",
+   "display": false
+  },
+  {
+   "tex": "\\dot U_2=\\dot E_2-\\dot I_2Z_2",
+   "display": false
+  },
+  {
+   "tex": "k=N_1/N_2",
+   "display": false
+  },
+  {
+   "tex": "\\dot U_2=\\dot I_2Z_L",
+   "display": false
+  },
+  {
+   "tex": "I_2'=I_2/k",
+   "display": false
+  },
+  {
+   "tex": "E_2'=kE_2",
+   "display": false
+  },
+  {
+   "tex": "U_2'=kU_2",
+   "display": false
+  },
+  {
+   "tex": "r_2'=k^2r_2",
+   "display": false
+  },
+  {
+   "tex": "x_2'=k^2x_2",
+   "display": false
+  },
+  {
+   "tex": "Z_L'=k^2Z_L",
+   "display": false
+  },
+  {
+   "tex": "Z_1",
+   "display": false
+  },
+  {
+   "tex": "Z_m",
+   "display": false
+  },
+  {
+   "tex": "Z_2'",
+   "display": false
+  },
+  {
+   "tex": "Z_L'",
+   "display": false
+  },
+  {
+   "tex": "3\\%\\sim8\\%",
+   "display": false
+  },
+  {
+   "tex": "1\\%",
+   "display": false
+  },
+  {
+   "tex": "Z_k=Z_1+Z_2'",
+   "display": false
+  },
+  {
+   "tex": "r_k=r_1+r_2'",
+   "display": false
+  },
+  {
+   "tex": "x_k=x_1+x_2'",
+   "display": false
+  },
+  {
+   "tex": "Z_k=r_k+jx_k",
+   "display": false
+  },
+  {
+   "tex": "k",
+   "display": false
+  },
+  {
+   "tex": "k",
+   "display": false
+  },
+  {
+   "tex": "k^2",
+   "display": false
+  },
+  {
+   "tex": "Z_1",
+   "display": false
+  },
+  {
+   "tex": "Z_2'",
+   "display": false
+  },
+  {
+   "tex": "Z_1",
+   "display": false
+  },
+  {
+   "tex": "Z_2'",
+   "display": false
+  },
+  {
+   "tex": "Z_k=30\\ \\Omega",
+   "display": false
+  },
+  {
+   "tex": "r_k=8\\ \\Omega",
+   "display": false
+  },
+  {
+   "tex": "\\sqrt3",
+   "display": false
+  },
+  {
+   "tex": "S_N=2500\\ \\mathrm{kVA}",
+   "display": false
+  },
+  {
+   "tex": "U_{1N}=60\\ \\mathrm{kV}",
+   "display": false
+  },
+  {
+   "tex": "Z=115.6\\ \\Omega",
+   "display": false
+  },
+  {
+   "tex": "S_b=S_N=2500\\ \\mathrm{kVA}",
+   "display": false
+  },
+  {
+   "tex": "U_{1b}=U_{1N}=60\\ \\mathrm{kV}",
+   "display": false
+  },
+  {
+   "tex": "I_{1b}=\\dfrac{S_N}{\\sqrt3 U_{1N}}=24.06\\ \\mathrm{A}",
+   "display": false
+  },
+  {
+   "tex": "Z_{1b}=\\dfrac{3U_\\Phi^2}{S_N}=\\dfrac{U_{1N}^2}{S_N}=\\dfrac{60000^2}{2500\\times10^3}=1440\\ \\Omega",
+   "display": false
+  },
+  {
+   "tex": "0.080",
+   "display": false
+  },
+  {
+   "tex": "u_k^*",
+   "display": false
+  },
+  {
+   "tex": "S_b=S_N",
+   "display": false
+  },
+  {
+   "tex": "U_b",
+   "display": false
+  },
+  {
+   "tex": "I_b=S_N/U_b",
+   "display": false
+  },
+  {
+   "tex": "Z_b=U_b/I_b",
+   "display": false
+  },
+  {
+   "tex": "b",
+   "display": false
+  },
+  {
+   "tex": "\\sqrt3",
+   "display": false
+  },
+  {
+   "tex": "k",
+   "display": false
+  },
+  {
+   "tex": "k^2",
+   "display": false
+  },
+  {
+   "tex": "u_k^*=Z_k^*",
+   "display": false
+  },
+  {
+   "tex": "u_{kR}^*=r_k^*",
+   "display": false
+  },
+  {
+   "tex": "u_{kX}^*=x_k^*",
+   "display": false
+  },
+  {
+   "tex": "r_k^*=\\dfrac{p_{kN}}{S_N}",
+   "display": false
+  },
+  {
+   "tex": "U_b",
+   "display": false
+  },
+  {
+   "tex": "Z_b=U_{b\\Phi}/I_{b\\Phi}",
+   "display": false
+  },
+  {
+   "tex": "\\sqrt3",
+   "display": false
+  },
+  {
+   "tex": "k^2",
+   "display": false
+  },
+  {
+   "tex": "u_k^*=0.08",
+   "display": false
+  },
+  {
+   "tex": "u_k\\%=8\\%",
+   "display": false
+  },
+  {
+   "tex": "z_k^*=u_k^*",
+   "display": false
+  },
+  {
+   "tex": "S_N=2500\\ \\mathrm{kVA}",
+   "display": false
+  },
+  {
+   "tex": "U_{1N}/U_{2N}=60\\ \\mathrm{kV}/6.3\\ \\mathrm{kV}",
+   "display": false
+  },
+  {
+   "tex": "25\\ ^\\circ\\mathrm{C}",
+   "display": false
+  },
+  {
+   "tex": "\\sqrt3",
+   "display": false
+  },
+  {
+   "tex": "k^2",
+   "display": false
+  },
+  {
+   "tex": "k=34.64/6.3=5.5",
+   "display": false
+  },
+  {
+   "tex": "75\\ ^\\circ\\mathrm{C}",
+   "display": false
+  },
+  {
+   "tex": "r_{k75}=\\dfrac{234.5+75}{234.5+25}\\times15.26=18.20\\ \\Omega",
+   "display": false
+  },
+  {
+   "tex": "Z_{k75}=\\sqrt{18.20^2+114.16^2}=115.60\\ \\Omega",
+   "display": false
+  },
+  {
+   "tex": "Z_{1b}=1440.00\\ \\Omega",
+   "display": false
+  },
+  {
+   "tex": "Z_{2b}=47.63\\ \\Omega",
+   "display": false
+  },
+  {
+   "tex": "Z_m",
+   "display": false
+  },
+  {
+   "tex": "Z_k",
+   "display": false
+  },
+  {
+   "tex": "r_m,x_m",
+   "display": false
+  },
+  {
+   "tex": "r_k,x_k",
+   "display": false
+  },
+  {
+   "tex": "Z_0=U_0/I_0",
+   "display": false
+  },
+  {
+   "tex": "r_0=\\dfrac{p_0}{I_0^2}=r_1+r_m\\approx r_m",
+   "display": false
+  },
+  {
+   "tex": "x_0=\\sqrt{Z_0^2-r_0^2}\\approx x_m",
+   "display": false
+  },
+  {
+   "tex": "Z_k=\\dfrac{U_k}{I_k}",
+   "display": false
+  },
+  {
+   "tex": "r_k=\\dfrac{p_k}{I_k^2}",
+   "display": false
+  },
+  {
+   "tex": "x_k=\\sqrt{Z_k^2-r_k^2}",
+   "display": false
+  },
+  {
+   "tex": "I_0",
+   "display": false
+  },
+  {
+   "tex": "r_1",
+   "display": false
+  },
+  {
+   "tex": "r_2'",
+   "display": false
+  },
+  {
+   "tex": "r_{1D}",
+   "display": false
+  },
+  {
+   "tex": "r_{2D}",
+   "display": false
+  },
+  {
+   "tex": "r_1/r_{1D}=r_2'/r_{2D}",
+   "display": false
+  },
+  {
+   "tex": "x_1=x_2'=x_k/2",
+   "display": false
+  },
+  {
+   "tex": "75\\ ^\\circ\\mathrm{C}",
+   "display": false
+  },
+  {
+   "tex": "\\times\\dfrac{234.5+75}{234.5+\\theta}",
+   "display": false
+  },
+  {
+   "tex": "\\times\\dfrac{228+75}{228+\\theta}",
+   "display": false
+  },
+  {
+   "tex": "u_k=\\dfrac{I_NZ_k}{U_N}\\times100\\%",
+   "display": false
+  },
+  {
+   "tex": "u_k^*=Z_k^*",
+   "display": false
+  },
+  {
+   "tex": "u_{kR}^*=r_k^*",
+   "display": false
+  },
+  {
+   "tex": "u_{kX}^*=x_k^*",
+   "display": false
+  },
+  {
+   "tex": "k^2",
+   "display": false
+  },
+  {
+   "tex": "U_0,I_0,p_0",
+   "display": false
+  },
+  {
+   "tex": "\\sqrt3",
+   "display": false
+  },
+  {
+   "tex": "p_0,p_k",
+   "display": false
+  },
+  {
+   "tex": "\\Delta U",
+   "display": false
+  },
+  {
+   "tex": "\\eta",
+   "display": false
+  },
+  {
+   "tex": "u_k=4.5\\%",
+   "display": false
+  },
+  {
+   "tex": "I_0=4.5\\%I_N",
+   "display": false
+  },
+  {
+   "tex": "p_0=6800\\ \\mathrm{W}",
+   "display": false
+  },
+  {
+   "tex": "p_{kN}=22000\\ \\mathrm{W}",
+   "display": false
+  },
+  {
+   "tex": "\\cos\\varphi_2=0.8",
+   "display": false
+  },
+  {
+   "tex": "r_k^*,x_k^*",
+   "display": false
+  },
+  {
+   "tex": "u_k",
+   "display": false
+  },
+  {
+   "tex": "r_k^*=\\dfrac{p_{kN}}{S_N}",
+   "display": false
+  },
+  {
+   "tex": "\\Delta U",
+   "display": false
+  },
+  {
+   "tex": "\\varphi_2",
+   "display": false
+  },
+  {
+   "tex": "\\sin\\varphi_2=0.6",
+   "display": false
+  },
+  {
+   "tex": "\\frac12(x_k^*\\cos\\varphi_2-r_k^*\\sin\\varphi_2)^2\\approx0.0004",
+   "display": false
+  },
+  {
+   "tex": "3.61\\%",
+   "display": false
+  },
+  {
+   "tex": "\\beta=1",
+   "display": false
+  },
+  {
+   "tex": "\\Delta U",
+   "display": false
+  },
+  {
+   "tex": "\\eta",
+   "display": false
+  },
+  {
+   "tex": "\\beta^2",
+   "display": false
+  },
+  {
+   "tex": "\\Delta U\\%=\\dfrac{U_{20}-U_2}{U_{20}}\\times100\\%",
+   "display": false
+  },
+  {
+   "tex": "\\Delta U\\%\\approx\\beta\\big(u_{kR}^*\\cos\\varphi_2+u_{kX}^*\\sin\\varphi_2\\big)\\times100\\%",
+   "display": false
+  },
+  {
+   "tex": "=r_k^*\\cos\\varphi_2+x_k^*\\sin\\varphi_2",
+   "display": false
+  },
+  {
+   "tex": "\\beta",
+   "display": false
+  },
+  {
+   "tex": "\\frac12\\beta^2(u_{kX}^*\\cos\\varphi_2-u_{kR}^*\\sin\\varphi_2)^2",
+   "display": false
+  },
+  {
+   "tex": "\\beta",
+   "display": false
+  },
+  {
+   "tex": "\\beta=1",
+   "display": false
+  },
+  {
+   "tex": "\\beta",
+   "display": false
+  },
+  {
+   "tex": "\\Delta U",
+   "display": false
+  },
+  {
+   "tex": "\\Delta U",
+   "display": false
+  },
+  {
+   "tex": "\\beta=1",
+   "display": false
+  },
+  {
+   "tex": "\\Delta U",
+   "display": false
+  },
+  {
+   "tex": "\\Delta U",
+   "display": false
+  },
+  {
+   "tex": "\\beta",
+   "display": false
+  },
+  {
+   "tex": "\\cos\\varphi_2",
+   "display": false
+  },
+  {
+   "tex": "\\Delta U",
+   "display": false
+  },
+  {
+   "tex": "5\\%\\sim8\\%",
+   "display": false
+  },
+  {
+   "tex": "\\eta=\\dfrac{P_2}{P_1}=\\dfrac{\\beta S_N\\cos\\varphi_2}{\\beta S_N\\cos\\varphi_2+p_0+\\beta^2p_{kN}}",
+   "display": false
+  },
+  {
+   "tex": "\\beta=I_2/I_{2N}",
+   "display": false
+  },
+  {
+   "tex": "p_0",
+   "display": false
+  },
+  {
+   "tex": "p_{kN}",
+   "display": false
+  },
+  {
+   "tex": "p_0=\\beta^2p_{kN}",
+   "display": false
+  },
+  {
+   "tex": "\\beta_m=\\sqrt{p_0/p_{kN}}",
+   "display": false
+  },
+  {
+   "tex": "\\beta_m\\approx0.5\\sim0.7",
+   "display": false
+  },
+  {
+   "tex": "\\eta",
+   "display": false
+  },
+  {
+   "tex": "\\eta",
+   "display": false
+  },
+  {
+   "tex": "\\beta",
+   "display": false
+  },
+  {
+   "tex": "\\cos\\varphi_2",
+   "display": false
+  },
+  {
+   "tex": "\\sin\\varphi_2",
+   "display": false
+  },
+  {
+   "tex": "\\Delta U",
+   "display": false
+  },
+  {
+   "tex": "p_0",
+   "display": false
+  },
+  {
+   "tex": "p_{kN}",
+   "display": false
+  },
+  {
+   "tex": "p_0",
+   "display": false
+  },
+  {
+   "tex": "p_{kN}",
+   "display": false
+  },
+  {
+   "tex": "\\beta^2",
+   "display": false
+  },
+  {
+   "tex": "\\beta_m=\\sqrt{p_0/p_{kN}}",
+   "display": false
+  },
+  {
+   "tex": "\\Delta U",
+   "display": false
+  },
+  {
+   "tex": "\\eta",
+   "display": false
+  },
+  {
+   "tex": "\\Delta U",
+   "display": false
+  },
+  {
+   "tex": "\\eta",
+   "display": false
+  },
+  {
+   "tex": "k",
+   "display": false
+  },
+  {
+   "tex": "u_k,p_0,p_{kN}",
+   "display": false
+  },
+  {
+   "tex": "\\Delta U",
+   "display": false
+  },
+  {
+   "tex": "U_2",
+   "display": false
+  },
+  {
+   "tex": "\\Delta U",
+   "display": false
+  },
+  {
+   "tex": "\\beta",
+   "display": false
+  },
+  {
+   "tex": "\\eta_{\\max}",
+   "display": false
+  },
+  {
+   "tex": "S_N",
+   "display": false
+  },
+  {
+   "tex": "I_N",
+   "display": false
+  },
+  {
+   "tex": "Z_m",
+   "display": false
+  },
+  {
+   "tex": "k",
+   "display": false
+  },
+  {
+   "tex": "k",
+   "display": false
+  },
+  {
+   "tex": "E_1\\approx5967",
+   "display": false
+  },
+  {
+   "tex": "r_2'=0.605\\ \\Omega",
+   "display": false
+  },
+  {
+   "tex": "x_2'=0.9075\\ \\Omega",
+   "display": false
+  },
+  {
+   "tex": "Z_{1b}=1440\\ \\Omega",
+   "display": false
+  },
+  {
+   "tex": "Z_*=0.080",
+   "display": false
+  },
+  {
+   "tex": "r_m=58.57",
+   "display": false
+  },
+  {
+   "tex": "Z_m=951.66",
+   "display": false
+  },
+  {
+   "tex": "x_m=949.86",
+   "display": false
+  },
+  {
+   "tex": "Z_k=115.18",
+   "display": false
+  },
+  {
+   "tex": "r_k=15.26",
+   "display": false
+  },
+  {
+   "tex": "x_k=114.16",
+   "display": false
+  },
+  {
+   "tex": "r_{k75}=18.20",
+   "display": false
+  },
+  {
+   "tex": "Z_{k75}=115.60",
+   "display": false
+  },
+  {
+   "tex": "\\Delta U\\%\\approx3.58",
+   "display": false
+  },
+  {
+   "tex": "U_2\\approx385.7",
+   "display": false
+  },
+  {
+   "tex": "\\eta\\approx98.04\\%",
+   "display": false
+  }
+ ]
+}

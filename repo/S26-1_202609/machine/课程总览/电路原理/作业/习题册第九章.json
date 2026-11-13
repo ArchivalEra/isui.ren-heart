@@ -1,0 +1,686 @@
+{
+ "url": "课程总览/电路原理/作业/习题册第九章.html",
+ "title": "习题册第九章（26 题）",
+ "math": [
+  {
+   "tex": "i_L(t)=\\mathbf{-1+2e^{-1.25t}\\ A}\\quad(t\\ge0)",
+   "display": true
+  },
+  {
+   "tex": "u_C(t)=\\mathbf{-2+5e^{-500t}\\ V}\\quad(t\\ge0)",
+   "display": true
+  },
+  {
+   "tex": "u_C(t)=\\mathbf{120\\left(1-e^{-3333t}\\right)\\ V}\\quad(t\\ge0)",
+   "display": true
+  },
+  {
+   "tex": "i_L(t)=\\mathbf{15-10e^{-500t}\\ \\text{mA}}",
+   "display": true
+  },
+  {
+   "tex": "i_L(t)=\\mathbf{60-45e^{-10^4t}\\ \\text{mA}}\\qquad\n    u=-45e^{-10^4t}\\ \\text{V}\\qquad i=-0.45e^{-10^4t}\\ \\text{mA}",
+   "display": true
+  },
+  {
+   "tex": "i(t)=\\left(\\frac E4-1\\right)+\\left(\\frac E4-2\\right)e^{-10^8t}\\ \\text{A}\\quad(t\\ge0)",
+   "display": true
+  },
+  {
+   "tex": "f(t)=f(\\infty)+[f(0_+)-f(\\infty)]e^{-t/\\tau}",
+   "display": false
+  },
+  {
+   "tex": "u_C",
+   "display": false
+  },
+  {
+   "tex": "i_L",
+   "display": false
+  },
+  {
+   "tex": "\\tau",
+   "display": false
+  },
+  {
+   "tex": "R_{eq}C",
+   "display": false
+  },
+  {
+   "tex": "L/R_{eq}",
+   "display": false
+  },
+  {
+   "tex": "R_{eq}",
+   "display": false
+  },
+  {
+   "tex": "u_C(0_+)=u_C(0_-)",
+   "display": false
+  },
+  {
+   "tex": "i_L(0_+)=i_L(0_-)",
+   "display": false
+  },
+  {
+   "tex": "\\tau=R_{eq}C",
+   "display": false
+  },
+  {
+   "tex": "\\tau=L/R_{eq}",
+   "display": false
+  },
+  {
+   "tex": "R_{eq}",
+   "display": false
+  },
+  {
+   "tex": "R_{eq}=60k\\parallel(10k+20k)=20\\ \\mathrm{k\\Omega}",
+   "display": false
+  },
+  {
+   "tex": "\\tau=20\\times10^3\\times10\\times10^{-6}=\\mathbf{0.2\\ s}",
+   "display": false
+  },
+  {
+   "tex": "t=0",
+   "display": false
+  },
+  {
+   "tex": "R_{eq}=25\\parallel75=18.75\\ \\Omega",
+   "display": false
+  },
+  {
+   "tex": "\\tau=0.05/18.75=\\tfrac83\\ \\mathrm{ms}",
+   "display": false
+  },
+  {
+   "tex": "R=25\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "t=0",
+   "display": false
+  },
+  {
+   "tex": "R_{eq}=2\\parallel1=\\tfrac23\\ \\Omega",
+   "display": false
+  },
+  {
+   "tex": "\\tau=\\tfrac23\\times3=\\mathbf{2\\ s}",
+   "display": false
+  },
+  {
+   "tex": "\\tau=",
+   "display": false
+  },
+  {
+   "tex": "R_{eq}=R\\parallel R=\\tfrac R2",
+   "display": false
+  },
+  {
+   "tex": "\\tau=\\mathbf{RC/2}",
+   "display": false
+  },
+  {
+   "tex": "u_c(t)=1+40(1-e^{-2t})",
+   "display": false
+  },
+  {
+   "tex": "41-40e^{-2t}",
+   "display": false
+  },
+  {
+   "tex": "-40e^{-2t}",
+   "display": false
+  },
+  {
+   "tex": "t=0",
+   "display": false
+  },
+  {
+   "tex": "i_L(\\infty)=",
+   "display": false
+  },
+  {
+   "tex": "\\infty",
+   "display": false
+  },
+  {
+   "tex": "V_A=50\\times\\dfrac{5}{10+5}=\\dfrac{50}{3}",
+   "display": false
+  },
+  {
+   "tex": "i_L(\\infty)=\\dfrac{V_A}{10}=\\mathbf{\\dfrac53}",
+   "display": false
+  },
+  {
+   "tex": "i(t)=4e^{-3t}",
+   "display": false
+  },
+  {
+   "tex": "u(t)=",
+   "display": false
+  },
+  {
+   "tex": "u=L\\,\\dfrac{di}{dt}=0.5\\times4\\times(-3)e^{-3t}=\\mathbf{-6e^{-3t}}",
+   "display": false
+  },
+  {
+   "tex": "t=0",
+   "display": false
+  },
+  {
+   "tex": "u_L(0_+)=",
+   "display": false
+  },
+  {
+   "tex": "i_L(0_-)=6\\times\\dfrac{4}{4+2}=4",
+   "display": false
+  },
+  {
+   "tex": "i_L(0_+)=4",
+   "display": false
+  },
+  {
+   "tex": "u_L(0_+)=\\mathbf{8\\ V}",
+   "display": false
+  },
+  {
+   "tex": "u_L(0_+)=24",
+   "display": false
+  },
+  {
+   "tex": "t=0",
+   "display": false
+  },
+  {
+   "tex": "i(0_+)",
+   "display": false
+  },
+  {
+   "tex": "t<0",
+   "display": false
+  },
+  {
+   "tex": "i_L(0_+)=3",
+   "display": false
+  },
+  {
+   "tex": "0_+",
+   "display": false
+  },
+  {
+   "tex": "V_P",
+   "display": false
+  },
+  {
+   "tex": "3",
+   "display": false
+  },
+  {
+   "tex": "3",
+   "display": false
+  },
+  {
+   "tex": "\\dfrac{V_P}{10}+\\dfrac{V_P}{5}",
+   "display": false
+  },
+  {
+   "tex": "V_P=0",
+   "display": false
+  },
+  {
+   "tex": "i=V_P/5=\\mathbf{0}",
+   "display": false
+  },
+  {
+   "tex": "R_{eq}=400\\parallel100=80\\ \\Omega",
+   "display": false
+  },
+  {
+   "tex": "\\tau=80\\times125\\times10^{-6}=\\mathbf{0.01\\ s}",
+   "display": false
+  },
+  {
+   "tex": "\\tau",
+   "display": false
+  },
+  {
+   "tex": "t<0",
+   "display": false
+  },
+  {
+   "tex": "t=0",
+   "display": false
+  },
+  {
+   "tex": "i(0_+)",
+   "display": false
+  },
+  {
+   "tex": "t<0",
+   "display": false
+  },
+  {
+   "tex": "10\\parallel10=5\\ \\Omega",
+   "display": false
+  },
+  {
+   "tex": "i=3/10=0.3",
+   "display": false
+  },
+  {
+   "tex": "i_L=0.3\\times\\frac{10}{20}=0.15",
+   "display": false
+  },
+  {
+   "tex": "t=0_+",
+   "display": false
+  },
+  {
+   "tex": "i=i_L(0_+)=\\mathbf{0.15}",
+   "display": false
+  },
+  {
+   "tex": "i_L(t)=5-2e^{-0.5t}",
+   "display": false
+  },
+  {
+   "tex": "\\mathbf{5\\ A}",
+   "display": false
+  },
+  {
+   "tex": "\\mathbf{-2e^{-0.5t}\\ A}",
+   "display": false
+  },
+  {
+   "tex": "u_C(t)=15-8e^{-20t}",
+   "display": false
+  },
+  {
+   "tex": "u_C(0_+)=7",
+   "display": false
+  },
+  {
+   "tex": "\\mathbf{7e^{-20t}\\ V}",
+   "display": false
+  },
+  {
+   "tex": "\\mathbf{15(1-e^{-20t})\\ V}",
+   "display": false
+  },
+  {
+   "tex": "u_C(t)=u_C(0_+)e^{-t/\\tau}+u_C(\\infty)(1-e^{-t/\\tau})",
+   "display": false
+  },
+  {
+   "tex": "\\tau=",
+   "display": false
+  },
+  {
+   "tex": "R_{eq}=3+2=5\\ \\Omega",
+   "display": false
+  },
+  {
+   "tex": "\\tau=5\\times0.1=\\mathbf{0.5\\ s}",
+   "display": false
+  },
+  {
+   "tex": "\\tau=",
+   "display": false
+  },
+  {
+   "tex": "R_{eq}=1\\parallel1=0.5\\ \\Omega",
+   "display": false
+  },
+  {
+   "tex": "\\tau=1/0.5=\\mathbf{2\\ s}",
+   "display": false
+  },
+  {
+   "tex": "u_C(t)=10-5e^{-t}",
+   "display": false
+  },
+  {
+   "tex": "u_C(0_+)e^{-t}=5e^{-t}",
+   "display": false
+  },
+  {
+   "tex": "\\mathbf{10-10e^{-t}=10(1-e^{-t})}",
+   "display": false
+  },
+  {
+   "tex": "u_C(t)=1+40(1-e^{-2t})",
+   "display": false
+  },
+  {
+   "tex": "\\mathbf{-40e^{-2t}\\ V}",
+   "display": false
+  },
+  {
+   "tex": "R_1=R_2=R_3=10\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "L=4",
+   "display": false
+  },
+  {
+   "tex": "U_{S1}=10",
+   "display": false
+  },
+  {
+   "tex": "U_{S2}=20",
+   "display": false
+  },
+  {
+   "tex": "t=0",
+   "display": false
+  },
+  {
+   "tex": "i_L(t)",
+   "display": false
+  },
+  {
+   "tex": "t<0",
+   "display": false
+  },
+  {
+   "tex": "U_{S1}\\to R_1\\to L\\to R_3\\to U_{S2}",
+   "display": false
+  },
+  {
+   "tex": "i_L(0_-)=\\dfrac{U_{S1}-U_{S2}}{R_1+R_3}=\\dfrac{-10}{20}=-0.5",
+   "display": false
+  },
+  {
+   "tex": "i_1",
+   "display": false
+  },
+  {
+   "tex": "+0.5",
+   "display": false
+  },
+  {
+   "tex": "i_L(0_+)=1",
+   "display": false
+  },
+  {
+   "tex": "R_{eq}=R_1\\parallel R_2=5\\ \\Omega",
+   "display": false
+  },
+  {
+   "tex": "\\tau=4/5=0.8",
+   "display": false
+  },
+  {
+   "tex": "i_L(\\infty)=\\dfrac{U_{S1}}{R_1}=1",
+   "display": false
+  },
+  {
+   "tex": "-1",
+   "display": false
+  },
+  {
+   "tex": "i_L(0_+)=1",
+   "display": false
+  },
+  {
+   "tex": "i_L(\\infty)=-1",
+   "display": false
+  },
+  {
+   "tex": "\\tau=0.8",
+   "display": false
+  },
+  {
+   "tex": "i_L",
+   "display": false
+  },
+  {
+   "tex": "i_1",
+   "display": false
+  },
+  {
+   "tex": "C=3\\,\\mu",
+   "display": false
+  },
+  {
+   "tex": "R_1=R_2=1\\,",
+   "display": false
+  },
+  {
+   "tex": "R_3=R_4=2\\,",
+   "display": false
+  },
+  {
+   "tex": "U_{S1}=12",
+   "display": false
+  },
+  {
+   "tex": "U_{S2}=6",
+   "display": false
+  },
+  {
+   "tex": "t=0",
+   "display": false
+  },
+  {
+   "tex": "u_C(t)",
+   "display": false
+  },
+  {
+   "tex": "u_C(0_+)=3",
+   "display": false
+  },
+  {
+   "tex": "R_{eq}=R_2\\parallel(R_1+R_3\\parallel R_4)=\\tfrac23\\ \\mathrm{k\\Omega}",
+   "display": false
+  },
+  {
+   "tex": "\\tau=\\tfrac23\\times10^3\\times3\\times10^{-6}=2",
+   "display": false
+  },
+  {
+   "tex": "u_C(\\infty)=-2",
+   "display": false
+  },
+  {
+   "tex": "t=0",
+   "display": false
+  },
+  {
+   "tex": "t\\ge0",
+   "display": false
+  },
+  {
+   "tex": "u_c(t)",
+   "display": false
+  },
+  {
+   "tex": "t<0",
+   "display": false
+  },
+  {
+   "tex": "u_C(0_+)=0",
+   "display": false
+  },
+  {
+   "tex": "t\\ge0",
+   "display": false
+  },
+  {
+   "tex": "120+180=300\\ \\Omega",
+   "display": false
+  },
+  {
+   "tex": "u_C(\\infty)=120",
+   "display": false
+  },
+  {
+   "tex": "\\tau=300\\times1\\,\\mu\\text{F}=0.3",
+   "display": false
+  },
+  {
+   "tex": "t=0",
+   "display": false
+  },
+  {
+   "tex": "t\\ge0",
+   "display": false
+  },
+  {
+   "tex": "i_L",
+   "display": false
+  },
+  {
+   "tex": "t<0",
+   "display": false
+  },
+  {
+   "tex": "i_L(0_+)=5",
+   "display": false
+  },
+  {
+   "tex": "t\\ge0",
+   "display": false
+  },
+  {
+   "tex": "R_{eq}=0.5k\\parallel0.5k+1k",
+   "display": false
+  },
+  {
+   "tex": "R_{eq}=1\\ \\mathrm{k\\Omega}",
+   "display": false
+  },
+  {
+   "tex": "\\tau=1\\text{H}/1\\text{k}\\Omega=1",
+   "display": false
+  },
+  {
+   "tex": "\\tau=2",
+   "display": false
+  },
+  {
+   "tex": "i_L(\\infty)=15",
+   "display": false
+  },
+  {
+   "tex": "\\tau",
+   "display": false
+  },
+  {
+   "tex": "t=0^-",
+   "display": false
+  },
+  {
+   "tex": "t=0",
+   "display": false
+  },
+  {
+   "tex": "t\\ge0",
+   "display": false
+  },
+  {
+   "tex": "i",
+   "display": false
+  },
+  {
+   "tex": "u",
+   "display": false
+  },
+  {
+   "tex": "i_L",
+   "display": false
+  },
+  {
+   "tex": "i_L(0_+)=15",
+   "display": false
+  },
+  {
+   "tex": "i_L(\\infty)=60",
+   "display": false
+  },
+  {
+   "tex": "\\tau=0.1",
+   "display": false
+  },
+  {
+   "tex": "i_L",
+   "display": false
+  },
+  {
+   "tex": "u=V_A-V_B",
+   "display": false
+  },
+  {
+   "tex": "t=0",
+   "display": false
+  },
+  {
+   "tex": "t\\ge0",
+   "display": false
+  },
+  {
+   "tex": "i",
+   "display": false
+  },
+  {
+   "tex": "E",
+   "display": false
+  },
+  {
+   "tex": "i(0_+)=(E-6)/2",
+   "display": false
+  },
+  {
+   "tex": "i(\\infty)=E/4-1",
+   "display": false
+  },
+  {
+   "tex": "\\tau=4\\times10^{-8}",
+   "display": false
+  },
+  {
+   "tex": "I_S",
+   "display": false
+  },
+  {
+   "tex": "i",
+   "display": false
+  },
+  {
+   "tex": "u_C",
+   "display": false
+  },
+  {
+   "tex": "i_L",
+   "display": false
+  },
+  {
+   "tex": "i_L(0_+)",
+   "display": false
+  },
+  {
+   "tex": "u_C(0_+)",
+   "display": false
+  },
+  {
+   "tex": "R_{eq}",
+   "display": false
+  },
+  {
+   "tex": "f(t)=f(\\infty)+[f(0_+)-f(\\infty)]e^{-t/\\tau}",
+   "display": false
+  },
+  {
+   "tex": "\\tau=0.5",
+   "display": false
+  },
+  {
+   "tex": "\\tau=2",
+   "display": false
+  }
+ ]
+}

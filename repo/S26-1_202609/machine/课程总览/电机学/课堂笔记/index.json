@@ -1,0 +1,102 @@
+{
+ "url": "课程总览/电机学/课堂笔记/index.html",
+ "title": "课堂笔记",
+ "math": [
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "\\Phi",
+   "display": false
+  },
+  {
+   "tex": "H",
+   "display": false
+  },
+  {
+   "tex": "\\mu",
+   "display": false
+  },
+  {
+   "tex": "L",
+   "display": false
+  },
+  {
+   "tex": "k",
+   "display": false
+  },
+  {
+   "tex": "B=1.33",
+   "display": false
+  },
+  {
+   "tex": "H=560",
+   "display": false
+  },
+  {
+   "tex": "U_{20}",
+   "display": false
+  },
+  {
+   "tex": "4.44=\\sqrt2\\pi",
+   "display": false
+  },
+  {
+   "tex": "\\Phi_m=U_1/(4.44fN_1)",
+   "display": false
+  },
+  {
+   "tex": "r_m",
+   "display": false
+  },
+  {
+   "tex": "\\dot I_1N_1+\\dot I_2N_2=\\dot I_0N_1",
+   "display": false
+  },
+  {
+   "tex": "k",
+   "display": false
+  },
+  {
+   "tex": "k",
+   "display": false
+  },
+  {
+   "tex": "k^2",
+   "display": false
+  },
+  {
+   "tex": "u_k\\%",
+   "display": false
+  },
+  {
+   "tex": "p_0",
+   "display": false
+  },
+  {
+   "tex": "p_k",
+   "display": false
+  },
+  {
+   "tex": "u_k\\%",
+   "display": false
+  },
+  {
+   "tex": "z_k^*",
+   "display": false
+  },
+  {
+   "tex": "0.8",
+   "display": false
+  },
+  {
+   "tex": "k",
+   "display": false
+  },
+  {
+   "tex": "\\sqrt3",
+   "display": false
+  }
+ ]
+}

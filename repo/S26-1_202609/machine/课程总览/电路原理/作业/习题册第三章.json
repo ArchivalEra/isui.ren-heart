@@ -1,0 +1,930 @@
+{
+ "url": "课程总览/电路原理/作业/习题册第三章.html",
+ "title": "习题册第三章（28 题）",
+ "math": [
+  {
+   "tex": "P_{\\text{发}}=30\\times3=\\mathbf{90\\ W}",
+   "display": true
+  },
+  {
+   "tex": "G_{aa}=\\frac14+\\frac12+\\frac12=1.25,\\qquad G_{ab}=\\frac12,\\qquad\n    i_{\\text{注入}}=\\frac{12}{4}-2=1",
+   "display": true
+  },
+  {
+   "tex": "1.25U_a-0.5U_b=1",
+   "display": true
+  },
+  {
+   "tex": "\\Big(\\frac15+\\frac13\\Big)u_{n1}-\\frac13u_{n2}=-3",
+   "display": true
+  },
+  {
+   "tex": "0.5\\varphi_M+\\varphi_R=2(10-\\varphi_M)+0.5(10-\\varphi_R)",
+   "display": true
+  },
+  {
+   "tex": "I_1=2\\,(10-\\varphi_M)=2\\times\\frac{15}{8}=\\mathbf{\\frac{15}{4}}=3.75\\ \\text{A}",
+   "display": true
+  },
+  {
+   "tex": "1\\cdot I_1+3\\cdot I_3+7\\cdot I_2=0",
+   "display": true
+  },
+  {
+   "tex": "I_1=\\mathbf{8\\ A},\\quad I_2=\\mathbf{1\\ A},\\quad I_3=\\mathbf{-5\\ A},\\quad I_4=\\mathbf{13\\ A}",
+   "display": true
+  },
+  {
+   "tex": "\\frac{\\varphi_a}{6}+\\frac{\\varphi_a-9}{3}+6=0\n    \\;\\Rightarrow\\;\\varphi_a+2\\varphi_a-18=-36\\;\\Rightarrow\\;\\varphi_a=-6\\ \\text{V}",
+   "display": true
+  },
+  {
+   "tex": "U_{ab}=\\mathbf{-6\\ V}",
+   "display": true
+  },
+  {
+   "tex": "2+1=\\frac{10}{5}+i\\;\\Rightarrow\\;i=\\mathbf{1\\ A}",
+   "display": true
+  },
+  {
+   "tex": "P=12\\times1=\\mathbf{12\\ W}\\ (\\text{发出})",
+   "display": true
+  },
+  {
+   "tex": "\\frac{130-\\varphi_a}{1}+\\frac{117-\\varphi_a}{0.6}=\\frac{\\varphi_a}{24}\n    \\;\\Rightarrow\\;325-\\frac{8}{3}\\varphi_a=\\frac{\\varphi_a}{24}\n    \\;\\Rightarrow\\;65\\varphi_a=7800\\;\\Rightarrow\\;\\varphi_a=120\\ \\text{V}",
+   "display": true
+  },
+  {
+   "tex": "I_1=\\frac{130-120}{1}=\\mathbf{10\\ A},\\quad I_2=\\frac{117-120}{0.6}=\\mathbf{-5\\ A},\\quad\n    I_3=\\frac{120}{24}=\\mathbf{5\\ A}",
+   "display": true
+  },
+  {
+   "tex": "U_{S1}\\text{ 吸收}=130\\times(-10)=\\mathbf{-1300\\ W}\\ (\\text{发出 1300 W})\\qquad\n    U_{S2}\\text{ 吸收}=117\\times5=\\mathbf{585\\ W}",
+   "display": true
+  },
+  {
+   "tex": "2V_3-V_2=25",
+   "display": true
+  },
+  {
+   "tex": "12V_3=17V_2-15",
+   "display": true
+  },
+  {
+   "tex": "I=\\frac{V_2}{30}=\\mathbf{0.5\\ A}",
+   "display": true
+  },
+  {
+   "tex": "\\frac{10-\\varphi_M}{5}=\\frac{\\varphi_M-15}{5}+2\\;\\Rightarrow\\;2\\varphi_M=15\\;\\Rightarrow\\;\\varphi_M=7.5\\ \\text{V}",
+   "display": true
+  },
+  {
+   "tex": "U=\\varphi_M=\\mathbf{7.5\\ V}",
+   "display": true
+  },
+  {
+   "tex": "P_{\\text{接受}}=10\\times(-0.5)=\\mathbf{-5\\ W}\\quad(\\text{即发出 5 W})",
+   "display": true
+  },
+  {
+   "tex": "A:\\ 1=\\varphi_A+\\frac{\\varphi_A-\\varphi_B}{2}",
+   "display": true
+  },
+  {
+   "tex": "B:\\ \\frac{\\varphi_A-\\varphi_B}{2}=\\frac{\\varphi_B}{2}+\\frac{\\varphi_B-\\varphi_C}{2}",
+   "display": true
+  },
+  {
+   "tex": "C:\\ \\frac{\\varphi_B-\\varphi_C}{2}=\\frac{\\varphi_C-4}{2}+(\\varphi_C-\\varphi_D)",
+   "display": true
+  },
+  {
+   "tex": "D:\\ \\varphi_C-\\varphi_D=\\frac{\\varphi_D}{2}",
+   "display": true
+  },
+  {
+   "tex": "U_0=\\varphi_B=4\\times\\frac{68}{55}-4=\\mathbf{\\frac{52}{55}}\\approx 0.945\\ \\text{V}",
+   "display": true
+  },
+  {
+   "tex": "a:\\quad i_S=\\frac{V_a}{R_1}+\\frac{V_a-V_b}{R_3}+\\frac{V_a-V_b-U_S}{R_2}",
+   "display": true
+  },
+  {
+   "tex": "b:\\quad \\frac{V_a-V_b}{R_3}+\\frac{V_a-V_b-U_S}{R_2}=\\frac{V_b}{R_4}",
+   "display": true
+  },
+  {
+   "tex": "i=\\frac{V_a-V_b}{R_3}",
+   "display": true
+  },
+  {
+   "tex": "A:\\ 9=\\frac{\\varphi_A}{6}+i_{AB}",
+   "display": true
+  },
+  {
+   "tex": "B:\\ i_{AB}=\\frac{\\varphi_B}{3}+10+\\frac{\\varphi_B}{2}",
+   "display": true
+  },
+  {
+   "tex": "U_I=U_1=\\varphi_A=-\\frac{12}{7}\\approx\\mathbf{-1.71\\ V}",
+   "display": true
+  },
+  {
+   "tex": "i_3=-0.1V_A=-0.9i_1\\qquad(V_A=9i_1)",
+   "display": true
+  },
+  {
+   "tex": "27i_1-18i_2=42\\qquad -18i_1+21i_2-3i_3=20",
+   "display": true
+  },
+  {
+   "tex": "i_{8\\Omega}=i_3=-\\frac{23}{6}\\ \\text{A}\\quad\\text{即实际 } \\mathbf{\\frac{23}{6}\\approx 3.83\\ A\\text{，方向自右向左}}",
+   "display": true
+  },
+  {
+   "tex": "i_{m1}=1\\ \\text{A}",
+   "display": true
+  },
+  {
+   "tex": "\\text{网孔2}:\\ -3i_{m1}+6i_{m2}-2i_{m3}=0\\qquad(u_3=1\\cdot i_{m2})",
+   "display": true
+  },
+  {
+   "tex": "\\text{网孔3}:\\ -2i_{m2}+6i_{m3}-4i_{m4}=0",
+   "display": true
+  },
+  {
+   "tex": "\\text{网孔4}:\\ -4i_{m3}+4i_{m4}=-1\\qquad(\\text{1V 源在右竖支路})",
+   "display": true
+  },
+  {
+   "tex": "\\frac{100-V_M}{50}+\\frac{20-V_M}{50}+1=\\frac{V_M}{50}\\;\\Rightarrow\\;V_M=\\frac{170}{3}\\ \\text{V}",
+   "display": true
+  },
+  {
+   "tex": "P_{\\text{100V,发}}=\\frac{260}{3}\\approx 86.7\\ \\text{W}\\qquad\n    P_{\\text{20V,发}}=-\\frac{44}{3}\\approx-14.7\\ \\text{W}\\qquad\n    P_{\\text{1A,发}}=\\frac{176}{3}\\approx 58.7\\ \\text{W}",
+   "display": true
+  },
+  {
+   "tex": "I_l=2\\,(10-\\tfrac{65}{8})=\\mathbf{\\frac{15}{4}}=3.75\\ \\text{A}",
+   "display": true
+  },
+  {
+   "tex": "\\text{节点1（约束）}:\\quad V_1=U_{S2}",
+   "display": true
+  },
+  {
+   "tex": "\\frac{U_{S2}-V_2}{R_2}+I_S=\\frac{V_2}{R_3}",
+   "display": true
+  },
+  {
+   "tex": "\\frac{U_{S2}-V_3}{R_1}=I_S+\\frac{V_3+U_{S1}}{R_4}",
+   "display": true
+  },
+  {
+   "tex": "n-1",
+   "display": false
+  },
+  {
+   "tex": "b-n+1",
+   "display": false
+  },
+  {
+   "tex": "n-1",
+   "display": false
+  },
+  {
+   "tex": "b-n+1",
+   "display": false
+  },
+  {
+   "tex": "U_{S1}",
+   "display": false
+  },
+  {
+   "tex": "2",
+   "display": false
+  },
+  {
+   "tex": "(30-10)/20=1",
+   "display": false
+  },
+  {
+   "tex": "U_{S1}",
+   "display": false
+  },
+  {
+   "tex": "2+1=3",
+   "display": false
+  },
+  {
+   "tex": "20\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "20",
+   "display": false
+  },
+  {
+   "tex": "5\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "20",
+   "display": false
+  },
+  {
+   "tex": "2",
+   "display": false
+  },
+  {
+   "tex": "10",
+   "display": false
+  },
+  {
+   "tex": "20",
+   "display": false
+  },
+  {
+   "tex": "10",
+   "display": false
+  },
+  {
+   "tex": "10",
+   "display": false
+  },
+  {
+   "tex": "U\\times I",
+   "display": false
+  },
+  {
+   "tex": "U",
+   "display": false
+  },
+  {
+   "tex": "i=6/(20+6)=0.3",
+   "display": false
+  },
+  {
+   "tex": "\\varphi_M=0.3\\times6=6",
+   "display": false
+  },
+  {
+   "tex": "0.3",
+   "display": false
+  },
+  {
+   "tex": "\\varphi_M=1.8",
+   "display": false
+  },
+  {
+   "tex": "\\varphi_M=12",
+   "display": false
+  },
+  {
+   "tex": "U=\\varphi_M+6=\\mathbf{18\\ V}",
+   "display": false
+  },
+  {
+   "tex": "8U_a-2U_b=1",
+   "display": false
+  },
+  {
+   "tex": "1.25U_a-0.5U_b=1",
+   "display": false
+  },
+  {
+   "tex": "1.25U_a+0.5U_b=1",
+   "display": false
+  },
+  {
+   "tex": "1.25U_a-0.5U_b=-1",
+   "display": false
+  },
+  {
+   "tex": "-2",
+   "display": false
+  },
+  {
+   "tex": "U_{S1}",
+   "display": false
+  },
+  {
+   "tex": "U_{S2}",
+   "display": false
+  },
+  {
+   "tex": "=4-1=3",
+   "display": false
+  },
+  {
+   "tex": "=3",
+   "display": false
+  },
+  {
+   "tex": "b=6",
+   "display": false
+  },
+  {
+   "tex": "b-n+1 = 6-4+1=3",
+   "display": false
+  },
+  {
+   "tex": "(1/5+1/3)u_{n1}-(1/3)u_{n2}=-3",
+   "display": false
+  },
+  {
+   "tex": "8u_{n1}-3u_{n2}=-3",
+   "display": false
+  },
+  {
+   "tex": "8u_{n1}-3u_{n2}=3",
+   "display": false
+  },
+  {
+   "tex": "(1/5+1/3)u_{n1}+(1/3)u_{n2}=3",
+   "display": false
+  },
+  {
+   "tex": "G_{11}=1/5+1/3",
+   "display": false
+  },
+  {
+   "tex": "G_{12}=1/3",
+   "display": false
+  },
+  {
+   "tex": "=-3",
+   "display": false
+  },
+  {
+   "tex": "I_1=",
+   "display": false
+  },
+  {
+   "tex": "\\varphi_L=10",
+   "display": false
+  },
+  {
+   "tex": "M",
+   "display": false
+  },
+  {
+   "tex": "R",
+   "display": false
+  },
+  {
+   "tex": "\\varphi_M-\\varphi_R=5",
+   "display": false
+  },
+  {
+   "tex": "\\varphi_M-\\varphi_R=5",
+   "display": false
+  },
+  {
+   "tex": "\\varphi_M=\\dfrac{65}{8}",
+   "display": false
+  },
+  {
+   "tex": "b",
+   "display": false
+  },
+  {
+   "tex": "n",
+   "display": false
+  },
+  {
+   "tex": "\\mathbf{b-n+1}",
+   "display": false
+  },
+  {
+   "tex": "R_1=1\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "R_2=7\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "R_3=3\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "R_4=4\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "I_{S5}=7",
+   "display": false
+  },
+  {
+   "tex": "I_{S6}=6",
+   "display": false
+  },
+  {
+   "tex": "I_1=",
+   "display": false
+  },
+  {
+   "tex": "I_2=",
+   "display": false
+  },
+  {
+   "tex": "I_3=",
+   "display": false
+  },
+  {
+   "tex": "I_4=",
+   "display": false
+  },
+  {
+   "tex": "I_{S5}=7",
+   "display": false
+  },
+  {
+   "tex": "I_{S6}=6",
+   "display": false
+  },
+  {
+   "tex": "I_4=I_{S5}+I_{S6}=13",
+   "display": false
+  },
+  {
+   "tex": "I_2=I_1-7",
+   "display": false
+  },
+  {
+   "tex": "I_3=I_1-13",
+   "display": false
+  },
+  {
+   "tex": "I_5=7",
+   "display": false
+  },
+  {
+   "tex": "I_6=6",
+   "display": false
+  },
+  {
+   "tex": "U_{S6}",
+   "display": false
+  },
+  {
+   "tex": "U_{ab}=",
+   "display": false
+  },
+  {
+   "tex": "b",
+   "display": false
+  },
+  {
+   "tex": "\\varphi_M=9",
+   "display": false
+  },
+  {
+   "tex": "U_{ab}=+18",
+   "display": false
+  },
+  {
+   "tex": "U_{ab}",
+   "display": false
+  },
+  {
+   "tex": "i=",
+   "display": false
+  },
+  {
+   "tex": "P=",
+   "display": false
+  },
+  {
+   "tex": "u_{2A}=\\dfrac{20}{2}=10",
+   "display": false
+  },
+  {
+   "tex": "10",
+   "display": false
+  },
+  {
+   "tex": "10+2=12",
+   "display": false
+  },
+  {
+   "tex": "12",
+   "display": false
+  },
+  {
+   "tex": "1",
+   "display": false
+  },
+  {
+   "tex": "20+12=32",
+   "display": false
+  },
+  {
+   "tex": "20+2+10",
+   "display": false
+  },
+  {
+   "tex": "U_{S1}=130",
+   "display": false
+  },
+  {
+   "tex": "U_{S2}=117",
+   "display": false
+  },
+  {
+   "tex": "R_1=1\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "R_2=0.6\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "R_3=24\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "I_1=",
+   "display": false
+  },
+  {
+   "tex": "I_2=",
+   "display": false
+  },
+  {
+   "tex": "I_3=",
+   "display": false
+  },
+  {
+   "tex": "U_{S1}",
+   "display": false
+  },
+  {
+   "tex": "U_{S2}",
+   "display": false
+  },
+  {
+   "tex": "\\varphi_b=0",
+   "display": false
+  },
+  {
+   "tex": "\\varphi_a",
+   "display": false
+  },
+  {
+   "tex": "100\\times1+25\\times0.6+120\\times5=715",
+   "display": false
+  },
+  {
+   "tex": "=1300-585",
+   "display": false
+  },
+  {
+   "tex": "I_2",
+   "display": false
+  },
+  {
+   "tex": "U_{S2}",
+   "display": false
+  },
+  {
+   "tex": "V_1=",
+   "display": false
+  },
+  {
+   "tex": "V_2=",
+   "display": false
+  },
+  {
+   "tex": "V_3=",
+   "display": false
+  },
+  {
+   "tex": "I=",
+   "display": false
+  },
+  {
+   "tex": "V_1=5",
+   "display": false
+  },
+  {
+   "tex": "(30-V_3)/5",
+   "display": false
+  },
+  {
+   "tex": "1+(V_3-V_2)/5",
+   "display": false
+  },
+  {
+   "tex": "(V_3-V_2)/5=V_2/30+(V_2-5)/20",
+   "display": false
+  },
+  {
+   "tex": "V_3=20",
+   "display": false
+  },
+  {
+   "tex": "V_2=15",
+   "display": false
+  },
+  {
+   "tex": "V_1=5",
+   "display": false
+  },
+  {
+   "tex": "V_2=15",
+   "display": false
+  },
+  {
+   "tex": "V_3=20",
+   "display": false
+  },
+  {
+   "tex": "V_1",
+   "display": false
+  },
+  {
+   "tex": "U=",
+   "display": false
+  },
+  {
+   "tex": "P=",
+   "display": false
+  },
+  {
+   "tex": "=\\dfrac{10-7.5}{5}=0.5",
+   "display": false
+  },
+  {
+   "tex": "U",
+   "display": false
+  },
+  {
+   "tex": "U_0",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "\\varphi_B=U_0",
+   "display": false
+  },
+  {
+   "tex": "C",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "\\varphi_C=\\tfrac32\\varphi_D",
+   "display": false
+  },
+  {
+   "tex": "\\varphi_B=4\\varphi_D-4",
+   "display": false
+  },
+  {
+   "tex": "\\varphi_A=\\tfrac{21\\varphi_D-24}{2}",
+   "display": false
+  },
+  {
+   "tex": "55\\varphi_D=68",
+   "display": false
+  },
+  {
+   "tex": "\\varphi_D=\\tfrac{68}{55}",
+   "display": false
+  },
+  {
+   "tex": "\\tfrac{58}{11}",
+   "display": false
+  },
+  {
+   "tex": "i",
+   "display": false
+  },
+  {
+   "tex": "V_a",
+   "display": false
+  },
+  {
+   "tex": "V_b",
+   "display": false
+  },
+  {
+   "tex": "=\\dfrac{V_a-V_b-U_S}{R_2}",
+   "display": false
+  },
+  {
+   "tex": "(\\Delta V \\pm U_S)/R",
+   "display": false
+  },
+  {
+   "tex": "U_I",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "U_1=\\varphi_A",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "\\varphi_A-\\varphi_B=2I=2\\times\\dfrac{\\varphi_B}{2}=\\varphi_B\\Rightarrow\\varphi_A=2\\varphi_B",
+   "display": false
+  },
+  {
+   "tex": "i_{AB}",
+   "display": false
+  },
+  {
+   "tex": "9-\\dfrac{\\varphi_B}{3}=\\dfrac{5\\varphi_B}{6}+10\\Rightarrow\\varphi_B=-\\dfrac{6}{7}",
+   "display": false
+  },
+  {
+   "tex": "U_1",
+   "display": false
+  },
+  {
+   "tex": "U_I",
+   "display": false
+  },
+  {
+   "tex": "U_I",
+   "display": false
+  },
+  {
+   "tex": "-6/7",
+   "display": false
+  },
+  {
+   "tex": "I",
+   "display": false
+  },
+  {
+   "tex": "I=\\varphi_B/2",
+   "display": false
+  },
+  {
+   "tex": "V_A",
+   "display": false
+  },
+  {
+   "tex": "i_1,i_2,i_3",
+   "display": false
+  },
+  {
+   "tex": "0.1V_A",
+   "display": false
+  },
+  {
+   "tex": "i_3",
+   "display": false
+  },
+  {
+   "tex": "i_3",
+   "display": false
+  },
+  {
+   "tex": "-15.3i_1+21i_2=20",
+   "display": false
+  },
+  {
+   "tex": "i_1=\\dfrac{115}{27}",
+   "display": false
+  },
+  {
+   "tex": "i_3=-\\dfrac{23}{6}",
+   "display": false
+  },
+  {
+   "tex": "I_{8\\Omega}=0.1V_A=\\tfrac{23}{6}",
+   "display": false
+  },
+  {
+   "tex": "u_3",
+   "display": false
+  },
+  {
+   "tex": "i_{m1}\\ldots i_{m4}",
+   "display": false
+  },
+  {
+   "tex": "i_{m2}=\\tfrac12",
+   "display": false
+  },
+  {
+   "tex": "i_{m3}=0",
+   "display": false
+  },
+  {
+   "tex": "i_{m4}=-\\tfrac14",
+   "display": false
+  },
+  {
+   "tex": "u_3=0.5",
+   "display": false
+  },
+  {
+   "tex": "t_1",
+   "display": false
+  },
+  {
+   "tex": "t_2",
+   "display": false
+  },
+  {
+   "tex": "t_3",
+   "display": false
+  },
+  {
+   "tex": "t_4",
+   "display": false
+  },
+  {
+   "tex": "M",
+   "display": false
+  },
+  {
+   "tex": "t_1",
+   "display": false
+  },
+  {
+   "tex": "t_4",
+   "display": false
+  },
+  {
+   "tex": "+",
+   "display": false
+  },
+  {
+   "tex": "\\dfrac{100-170/3}{50}=\\dfrac{13}{15}",
+   "display": false
+  },
+  {
+   "tex": "\\dfrac{20-170/3}{50}=-\\dfrac{11}{15}",
+   "display": false
+  },
+  {
+   "tex": "V_M-(-2)=\\dfrac{176}{3}",
+   "display": false
+  },
+  {
+   "tex": "\\tfrac{392}{3}",
+   "display": false
+  },
+  {
+   "tex": "=",
+   "display": false
+  },
+  {
+   "tex": "\\tfrac{260+176-44}{3}",
+   "display": false
+  },
+  {
+   "tex": "I_l",
+   "display": false
+  },
+  {
+   "tex": "(V_3+U_{S1})/R_4",
+   "display": false
+  },
+  {
+   "tex": "n-1",
+   "display": false
+  },
+  {
+   "tex": "b-n+1",
+   "display": false
+  },
+  {
+   "tex": "U_{ab}=-6",
+   "display": false
+  },
+  {
+   "tex": "P=12",
+   "display": false
+  },
+  {
+   "tex": "U_0=52/55",
+   "display": false
+  }
+ ]
+}

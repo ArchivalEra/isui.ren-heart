@@ -1,0 +1,458 @@
+{
+ "url": "课程总览/电机学/课堂笔记/10-29-三相变压器与三次谐波.html",
+ "title": "10-29 三相变压器与三次谐波",
+ "math": [
+  {
+   "tex": "\\eta=\\frac{P_2}{P_1}=\\frac{P_2}{P_2+p_0+\\beta^2p_{kN}},\n\\qquad P_1=P_2+\\sum(\\text{损耗}),\\qquad P_2=\\beta S_N\\cos\\varphi_2 ",
+   "display": true
+  },
+  {
+   "tex": "P_k",
+   "display": false
+  },
+  {
+   "tex": "P_{kN}",
+   "display": false
+  },
+  {
+   "tex": "P_k",
+   "display": false
+  },
+  {
+   "tex": "P_{kN}",
+   "display": false
+  },
+  {
+   "tex": "P_{kN}",
+   "display": false
+  },
+  {
+   "tex": "E_a\\parallel E_B",
+   "display": false
+  },
+  {
+   "tex": "E_b\\parallel E_C",
+   "display": false
+  },
+  {
+   "tex": "E_c\\parallel E_A",
+   "display": false
+  },
+  {
+   "tex": "120°",
+   "display": false
+  },
+  {
+   "tex": "120°",
+   "display": false
+  },
+  {
+   "tex": "240°",
+   "display": false
+  },
+  {
+   "tex": "120°",
+   "display": false
+  },
+  {
+   "tex": "\\dot E_{AB}",
+   "display": false
+  },
+  {
+   "tex": "12:00",
+   "display": false
+  },
+  {
+   "tex": "\\dot E_{XA}",
+   "display": false
+  },
+  {
+   "tex": "\\dot E_{YB}",
+   "display": false
+  },
+  {
+   "tex": "\\dot E_{ZC}",
+   "display": false
+  },
+  {
+   "tex": "360°",
+   "display": false
+  },
+  {
+   "tex": "12",
+   "display": false
+  },
+  {
+   "tex": "=30°",
+   "display": false
+  },
+  {
+   "tex": "\\dot E_{AB}",
+   "display": false
+  },
+  {
+   "tex": "\\dot E_{ab}",
+   "display": false
+  },
+  {
+   "tex": "\\dot E_{ab}",
+   "display": false
+  },
+  {
+   "tex": "\\dot E_{AB}",
+   "display": false
+  },
+  {
+   "tex": "60°",
+   "display": false
+  },
+  {
+   "tex": "60°",
+   "display": false
+  },
+  {
+   "tex": "360°-60°=300°",
+   "display": false
+  },
+  {
+   "tex": "300°\\div30°=10",
+   "display": false
+  },
+  {
+   "tex": "60°",
+   "display": false
+  },
+  {
+   "tex": "60°",
+   "display": false
+  },
+  {
+   "tex": "60°\\div30°=2",
+   "display": false
+  },
+  {
+   "tex": "\\{0,2,4,6,8,10\\}",
+   "display": false
+  },
+  {
+   "tex": "r_k",
+   "display": false
+  },
+  {
+   "tex": "x_k",
+   "display": false
+  },
+  {
+   "tex": "r_k",
+   "display": false
+  },
+  {
+   "tex": "x_k",
+   "display": false
+  },
+  {
+   "tex": "r_k",
+   "display": false
+  },
+  {
+   "tex": "x_k",
+   "display": false
+  },
+  {
+   "tex": "p_0",
+   "display": false
+  },
+  {
+   "tex": "p_k",
+   "display": false
+  },
+  {
+   "tex": "P_1=P_2+",
+   "display": false
+  },
+  {
+   "tex": "P_2",
+   "display": false
+  },
+  {
+   "tex": "P_2=\\beta S_N\\cos\\varphi_2",
+   "display": false
+  },
+  {
+   "tex": "\\beta",
+   "display": false
+  },
+  {
+   "tex": "P_2",
+   "display": false
+  },
+  {
+   "tex": "p_0+\\beta^2p_{kN}",
+   "display": false
+  },
+  {
+   "tex": "p_0",
+   "display": false
+  },
+  {
+   "tex": "p_{kN}",
+   "display": false
+  },
+  {
+   "tex": "\\beta^2",
+   "display": false
+  },
+  {
+   "tex": "\\cos\\varphi_2",
+   "display": false
+  },
+  {
+   "tex": "\\beta_m^2p_{kN}=p_0",
+   "display": false
+  },
+  {
+   "tex": "p_0",
+   "display": false
+  },
+  {
+   "tex": "p_{kN}",
+   "display": false
+  },
+  {
+   "tex": "1/4",
+   "display": false
+  },
+  {
+   "tex": "1/3",
+   "display": false
+  },
+  {
+   "tex": "\\beta_m=\\sqrt{p_0/p_{kN}}",
+   "display": false
+  },
+  {
+   "tex": "\\sqrt{1/4}\\sim\\sqrt{1/3}",
+   "display": false
+  },
+  {
+   "tex": "\\beta",
+   "display": false
+  },
+  {
+   "tex": "\\beta",
+   "display": false
+  },
+  {
+   "tex": "\\beta=1",
+   "display": false
+  },
+  {
+   "tex": "P_k",
+   "display": false
+  },
+  {
+   "tex": "P_{kN}",
+   "display": false
+  },
+  {
+   "tex": "P_{kN}",
+   "display": false
+  },
+  {
+   "tex": "P_k",
+   "display": false
+  },
+  {
+   "tex": "P_{kN}",
+   "display": false
+  },
+  {
+   "tex": "\\beta=1",
+   "display": false
+  },
+  {
+   "tex": "\\beta",
+   "display": false
+  },
+  {
+   "tex": "\\beta^2",
+   "display": false
+  },
+  {
+   "tex": "180°",
+   "display": false
+  },
+  {
+   "tex": "180°\\div30°=6",
+   "display": false
+  },
+  {
+   "tex": "\\dot E_{AB}",
+   "display": false
+  },
+  {
+   "tex": "12:00",
+   "display": false
+  },
+  {
+   "tex": "=30°",
+   "display": false
+  },
+  {
+   "tex": "360°\\div12",
+   "display": false
+  },
+  {
+   "tex": "11",
+   "display": false
+  },
+  {
+   "tex": "330°",
+   "display": false
+  },
+  {
+   "tex": "360°",
+   "display": false
+  },
+  {
+   "tex": "120°",
+   "display": false
+  },
+  {
+   "tex": "P_k",
+   "display": false
+  },
+  {
+   "tex": "P_{kN}",
+   "display": false
+  },
+  {
+   "tex": "P_0",
+   "display": false
+  },
+  {
+   "tex": "P_{kN}",
+   "display": false
+  },
+  {
+   "tex": "P_0",
+   "display": false
+  },
+  {
+   "tex": "P_{kN}",
+   "display": false
+  },
+  {
+   "tex": "p_0",
+   "display": false
+  },
+  {
+   "tex": "p_{kN}",
+   "display": false
+  },
+  {
+   "tex": "1/4\\sim1/3",
+   "display": false
+  },
+  {
+   "tex": "\\sqrt{1/4}\\sim\\sqrt{1/3}",
+   "display": false
+  },
+  {
+   "tex": "\\beta",
+   "display": false
+  },
+  {
+   "tex": "r_k",
+   "display": false
+  },
+  {
+   "tex": "x_k",
+   "display": false
+  },
+  {
+   "tex": "P_k",
+   "display": false
+  },
+  {
+   "tex": "P_{kN}",
+   "display": false
+  },
+  {
+   "tex": "r_k",
+   "display": false
+  },
+  {
+   "tex": "x_k",
+   "display": false
+  },
+  {
+   "tex": "\\beta=1/0.8/0.6",
+   "display": false
+  },
+  {
+   "tex": "\\beta^2",
+   "display": false
+  },
+  {
+   "tex": "r_k",
+   "display": false
+  },
+  {
+   "tex": "x_k",
+   "display": false
+  },
+  {
+   "tex": "\\{0,2,4,6,8,10\\}",
+   "display": false
+  },
+  {
+   "tex": "=30°",
+   "display": false
+  },
+  {
+   "tex": "\\dot E_{ab}",
+   "display": false
+  },
+  {
+   "tex": "\\dot E_{AB}",
+   "display": false
+  },
+  {
+   "tex": "60°",
+   "display": false
+  },
+  {
+   "tex": "360°-60°=300°",
+   "display": false
+  },
+  {
+   "tex": "300°\\div30°=10",
+   "display": false
+  },
+  {
+   "tex": "360-60=300",
+   "display": false
+  },
+  {
+   "tex": "300/30=10",
+   "display": false
+  },
+  {
+   "tex": "60°",
+   "display": false
+  },
+  {
+   "tex": "r_k",
+   "display": false
+  },
+  {
+   "tex": "x_k",
+   "display": false
+  },
+  {
+   "tex": "\\beta=1/0.8/0.6",
+   "display": false
+  }
+ ]
+}

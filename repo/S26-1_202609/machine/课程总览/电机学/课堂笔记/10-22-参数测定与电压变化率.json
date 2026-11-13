@@ -1,0 +1,1090 @@
+{
+ "url": "课程总览/电机学/课堂笔记/10-22-参数测定与电压变化率.html",
+ "title": "10-22 参数测定与电压变化率",
+ "math": [
+  {
+   "tex": "I_{1N}=\\frac{S_N}{U_{1N}}=\\frac{1000}{60}=16.67\\ \\mathrm{A},\\qquad\n   I_{2N}=\\frac{S_N}{U_{2N}}=\\frac{1000}{6.3}=158.7\\ \\mathrm{A},\\qquad k=\\frac{60}{6.3}=9.52",
+   "display": true
+  },
+  {
+   "tex": "Z_k=\\frac{U_k}{I_k}=\\frac{3600}{16.67}=216\\ \\Omega",
+   "display": true
+  },
+  {
+   "tex": "r_k=\\frac{p_k}{I_k^2}=\\frac{17000}{16.67^2}=61.2\\ \\Omega",
+   "display": true
+  },
+  {
+   "tex": "x_k=\\sqrt{Z_k^2-r_k^2}=\\sqrt{216^2-61.2^2}=207\\ \\Omega,\\qquad\n   \\varphi_k=\\arctan\\frac{x_k}{r_k}=73.5^\\circ",
+   "display": true
+  },
+  {
+   "tex": "u_k\\%=\\frac{Z_kI_{1N}}{U_{1N}}\\times100\\%=\\frac{216\\times16.67}{60000}=6.0\\%\n   \\;\\Longleftrightarrow\\;\\frac{3.6}{60}=6\\%,\\qquad r_k^*=\\frac{p_k}{S_N}=\\frac{17}{1000}=1.7\\%",
+   "display": true
+  },
+  {
+   "tex": "Z_k'=\\frac{216}{90.7}=2.38\\ \\Omega,\\quad r_k'=0.675\\ \\Omega,\\quad x_k'=2.28\\ \\Omega",
+   "display": true
+  },
+  {
+   "tex": "\\Delta U\\%=\\beta\\left(u_{kr}\\cos\\varphi_2+u_{kx}\\sin\\varphi_2\\right)\\times100\\%,",
+   "display": true
+  },
+  {
+   "tex": "\\text{滞后：}\\ \\Delta U\\%=1.7\\times0.6+5.75\\times0.8=5.62\\%,\\qquad\n   \\text{超前：}\\ \\Delta U\\%=1.7\\times0.6-5.75\\times0.8=-3.58\\%",
+   "display": true
+  },
+  {
+   "tex": "k\\ \\text{使}\\ E_2'=E_1,\\qquad I_0\\ll I_2',\\qquad Z_m\\gg Z_1,\\ Z_m\\gg Z_2',",
+   "display": true
+  },
+  {
+   "tex": "p_0\\approx I_0^2(r_1+r_m)\\approx I_0^2r_m\\ \\Rightarrow\\ r_m=\\frac{p_0}{I_0^2},\\qquad\nZ_0=\\frac{U_0}{I_0}\\approx Z_m,\\qquad x_m=\\sqrt{Z_m^2-r_m^2}",
+   "display": true
+  },
+  {
+   "tex": "Z_k=\\frac{U_k}{I_k},\\qquad r_k=\\frac{p_k}{I_k^2},\\qquad x_k=\\sqrt{Z_k^2-r_k^2}",
+   "display": true
+  },
+  {
+   "tex": "u_k\\%=\\frac{U_{kN}}{U_{1N}}\\times100\\%=\\frac{Z_kI_N}{U_N}\\times100\\%",
+   "display": true
+  },
+  {
+   "tex": "\\text{标幺值}=\\frac{\\text{实际值}}{\\text{基准值}},\\qquad\n\\text{阻抗类}\\ Z_b=\\frac{U_N}{I_N},\\qquad \\text{功率类}\\ S_b=S_N",
+   "display": true
+  },
+  {
+   "tex": "u_k\\%=\\frac{U_{kN}}{U_{1N}}=\\frac{Z_kI_N}{U_{1N}}=\\frac{Z_k}{U_{1N}/I_N}=\\frac{Z_k}{Z_{1N}}=z_k^*",
+   "display": true
+  },
+  {
+   "tex": "\\Delta U\\%=\\frac{U_{20}-U_2}{U_{20}}\\times100\\%",
+   "display": true
+  },
+  {
+   "tex": "\\Delta U\\approx I_2r_k\\cos\\varphi_2+I_2x_k\\sin\\varphi_2\n\\ \\Longrightarrow\\\n\\Delta U\\%=\\beta\\left(u_{kr}\\cos\\varphi_2+u_{kx}\\sin\\varphi_2\\right)\\times100\\%",
+   "display": true
+  },
+  {
+   "tex": "U_2=U_{20}-\\Delta U=U_{20}\\left(1-\\frac{\\Delta U\\%}{100\\%}\\right)",
+   "display": true
+  },
+  {
+   "tex": "u_k\\%",
+   "display": false
+  },
+  {
+   "tex": "p_0",
+   "display": false
+  },
+  {
+   "tex": "p_k",
+   "display": false
+  },
+  {
+   "tex": "U_0",
+   "display": false
+  },
+  {
+   "tex": "I_0",
+   "display": false
+  },
+  {
+   "tex": "p_0",
+   "display": false
+  },
+  {
+   "tex": "Z_m",
+   "display": false
+  },
+  {
+   "tex": "r_m",
+   "display": false
+  },
+  {
+   "tex": "x_m",
+   "display": false
+  },
+  {
+   "tex": "U_k",
+   "display": false
+  },
+  {
+   "tex": "I_k",
+   "display": false
+  },
+  {
+   "tex": "p_k",
+   "display": false
+  },
+  {
+   "tex": "Z_k",
+   "display": false
+  },
+  {
+   "tex": "r_k",
+   "display": false
+  },
+  {
+   "tex": "x_k",
+   "display": false
+  },
+  {
+   "tex": "u_k\\%",
+   "display": false
+  },
+  {
+   "tex": "z_k^*",
+   "display": false
+  },
+  {
+   "tex": "\\Delta U\\%=\\beta(u_{kr}\\cos\\varphi_2+u_{kx}\\sin\\varphi_2)",
+   "display": false
+  },
+  {
+   "tex": "\\cos\\varphi_2=0.8",
+   "display": false
+  },
+  {
+   "tex": "Z_k",
+   "display": false
+  },
+  {
+   "tex": "r_k",
+   "display": false
+  },
+  {
+   "tex": "x_k",
+   "display": false
+  },
+  {
+   "tex": "S_N=1000",
+   "display": false
+  },
+  {
+   "tex": "U_{1N}=60",
+   "display": false
+  },
+  {
+   "tex": "U_{2N}=6.3",
+   "display": false
+  },
+  {
+   "tex": "U_k=3.6",
+   "display": false
+  },
+  {
+   "tex": "p_k=17",
+   "display": false
+  },
+  {
+   "tex": "U_NI_N",
+   "display": false
+  },
+  {
+   "tex": "\\sqrt3",
+   "display": false
+  },
+  {
+   "tex": "Z_k",
+   "display": false
+  },
+  {
+   "tex": "x_k",
+   "display": false
+  },
+  {
+   "tex": "Z_k",
+   "display": false
+  },
+  {
+   "tex": "u_k\\%=6.0\\%",
+   "display": false
+  },
+  {
+   "tex": "r_k^*=1.7\\%",
+   "display": false
+  },
+  {
+   "tex": "x_k^*=\\sqrt{6.0^2-1.7^2}=5.75\\%",
+   "display": false
+  },
+  {
+   "tex": "1/0.06\\approx16.7",
+   "display": false
+  },
+  {
+   "tex": "\\div k^2",
+   "display": false
+  },
+  {
+   "tex": "Z_{2N}=U_{2N}/I_{2N}=6300/158.7=39.7\\ \\Omega",
+   "display": false
+  },
+  {
+   "tex": "2.38/39.7=6.0\\%",
+   "display": false
+  },
+  {
+   "tex": "\\times k^2",
+   "display": false
+  },
+  {
+   "tex": "2.38\\times90.7\\approx 216",
+   "display": false
+  },
+  {
+   "tex": "I_{1N}=16.67",
+   "display": false
+  },
+  {
+   "tex": "I_k=I_{1N}",
+   "display": false
+  },
+  {
+   "tex": "u_k=6\\%",
+   "display": false
+  },
+  {
+   "tex": "r_k^*=p_k/S_N",
+   "display": false
+  },
+  {
+   "tex": "I_k=I_{1N}",
+   "display": false
+  },
+  {
+   "tex": "Z_k",
+   "display": false
+  },
+  {
+   "tex": "r_k",
+   "display": false
+  },
+  {
+   "tex": "x_k",
+   "display": false
+  },
+  {
+   "tex": "u_k",
+   "display": false
+  },
+  {
+   "tex": "3.6/60",
+   "display": false
+  },
+  {
+   "tex": "r_k^*",
+   "display": false
+  },
+  {
+   "tex": "p_k/S_N",
+   "display": false
+  },
+  {
+   "tex": "\\beta=1",
+   "display": false
+  },
+  {
+   "tex": "\\cos\\varphi_2=0.6",
+   "display": false
+  },
+  {
+   "tex": "\\beta=1",
+   "display": false
+  },
+  {
+   "tex": "\\cos\\varphi_2=0.6",
+   "display": false
+  },
+  {
+   "tex": "r_k",
+   "display": false
+  },
+  {
+   "tex": "x_k",
+   "display": false
+  },
+  {
+   "tex": "u_{kr}=r_k^*",
+   "display": false
+  },
+  {
+   "tex": "u_{kx}=x_k^*",
+   "display": false
+  },
+  {
+   "tex": "u_{kr}",
+   "display": false
+  },
+  {
+   "tex": "u_{kx}",
+   "display": false
+  },
+  {
+   "tex": "r_k^*",
+   "display": false
+  },
+  {
+   "tex": "x_k^*",
+   "display": false
+  },
+  {
+   "tex": "\\beta=I_2/I_{2N}",
+   "display": false
+  },
+  {
+   "tex": "\\cos\\varphi_2",
+   "display": false
+  },
+  {
+   "tex": "\\sin\\varphi_2",
+   "display": false
+  },
+  {
+   "tex": "\\sin\\varphi_2=\\sqrt{1-\\cos^2\\varphi_2}=\\sqrt{1-0.36}=0.8",
+   "display": false
+  },
+  {
+   "tex": "\\sin\\varphi_2=-0.8",
+   "display": false
+  },
+  {
+   "tex": "1-0.6^2=0.64",
+   "display": false
+  },
+  {
+   "tex": "u_{kr}=1.7\\%",
+   "display": false
+  },
+  {
+   "tex": "u_{kx}=5.75\\%",
+   "display": false
+  },
+  {
+   "tex": "\\beta=1",
+   "display": false
+  },
+  {
+   "tex": "\\beta",
+   "display": false
+  },
+  {
+   "tex": "r_k^*",
+   "display": false
+  },
+  {
+   "tex": "x_k^*",
+   "display": false
+  },
+  {
+   "tex": "\\cos\\varphi_2",
+   "display": false
+  },
+  {
+   "tex": "0.02",
+   "display": false
+  },
+  {
+   "tex": "5.60\\%",
+   "display": false
+  },
+  {
+   "tex": "5.62\\%",
+   "display": false
+  },
+  {
+   "tex": "u_{kr}",
+   "display": false
+  },
+  {
+   "tex": "u_{kx}",
+   "display": false
+  },
+  {
+   "tex": "\\cos\\varphi_2",
+   "display": false
+  },
+  {
+   "tex": "\\sin\\varphi_2",
+   "display": false
+  },
+  {
+   "tex": "U_{2N}",
+   "display": false
+  },
+  {
+   "tex": "r_1",
+   "display": false
+  },
+  {
+   "tex": "x_{1\\sigma}",
+   "display": false
+  },
+  {
+   "tex": "k^2",
+   "display": false
+  },
+  {
+   "tex": "KVL",
+   "display": false
+  },
+  {
+   "tex": "KCL",
+   "display": false
+  },
+  {
+   "tex": "Z_m",
+   "display": false
+  },
+  {
+   "tex": "Z_m",
+   "display": false
+  },
+  {
+   "tex": "X_L",
+   "display": false
+  },
+  {
+   "tex": "X_G",
+   "display": false
+  },
+  {
+   "tex": "E_2'",
+   "display": false
+  },
+  {
+   "tex": "E_1",
+   "display": false
+  },
+  {
+   "tex": "Z_m",
+   "display": false
+  },
+  {
+   "tex": "x_k\\gg r_k",
+   "display": false
+  },
+  {
+   "tex": "Z_k",
+   "display": false
+  },
+  {
+   "tex": "x_k",
+   "display": false
+  },
+  {
+   "tex": "I_0",
+   "display": false
+  },
+  {
+   "tex": "I_N",
+   "display": false
+  },
+  {
+   "tex": "p_0\\approx p_{Fe}",
+   "display": false
+  },
+  {
+   "tex": "p_k\\approx I_N^2r_k",
+   "display": false
+  },
+  {
+   "tex": "I_0^2r_1",
+   "display": false
+  },
+  {
+   "tex": "Z_m",
+   "display": false
+  },
+  {
+   "tex": "r_m",
+   "display": false
+  },
+  {
+   "tex": "x_m",
+   "display": false
+  },
+  {
+   "tex": "k",
+   "display": false
+  },
+  {
+   "tex": "Z_k",
+   "display": false
+  },
+  {
+   "tex": "r_k",
+   "display": false
+  },
+  {
+   "tex": "x_k",
+   "display": false
+  },
+  {
+   "tex": "r_m\\gg r_1",
+   "display": false
+  },
+  {
+   "tex": "Z_m\\gg Z_1",
+   "display": false
+  },
+  {
+   "tex": "r_m",
+   "display": false
+  },
+  {
+   "tex": "r_1",
+   "display": false
+  },
+  {
+   "tex": "r_k",
+   "display": false
+  },
+  {
+   "tex": "r_m",
+   "display": false
+  },
+  {
+   "tex": "k^2",
+   "display": false
+  },
+  {
+   "tex": "k=9.52",
+   "display": false
+  },
+  {
+   "tex": "k^2=90.7",
+   "display": false
+  },
+  {
+   "tex": "k^2",
+   "display": false
+  },
+  {
+   "tex": "I_0",
+   "display": false
+  },
+  {
+   "tex": "p_{Fe}",
+   "display": false
+  },
+  {
+   "tex": "Z_m",
+   "display": false
+  },
+  {
+   "tex": "x_m",
+   "display": false
+  },
+  {
+   "tex": "x_m",
+   "display": false
+  },
+  {
+   "tex": "u_k\\%",
+   "display": false
+  },
+  {
+   "tex": "I_k=I_N",
+   "display": false
+  },
+  {
+   "tex": "p_{Fe}",
+   "display": false
+  },
+  {
+   "tex": "B_m",
+   "display": false
+  },
+  {
+   "tex": "KVL",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "H",
+   "display": false
+  },
+  {
+   "tex": "I_0",
+   "display": false
+  },
+  {
+   "tex": "p_0",
+   "display": false
+  },
+  {
+   "tex": "Z_m",
+   "display": false
+  },
+  {
+   "tex": "1.1",
+   "display": false
+  },
+  {
+   "tex": "r_1",
+   "display": false
+  },
+  {
+   "tex": "r_k",
+   "display": false
+  },
+  {
+   "tex": "\\cos\\varphi_0",
+   "display": false
+  },
+  {
+   "tex": "\\dot U_1",
+   "display": false
+  },
+  {
+   "tex": "\\dot I_0",
+   "display": false
+  },
+  {
+   "tex": "1/3\\sim2/3",
+   "display": false
+  },
+  {
+   "tex": "u_k\\%",
+   "display": false
+  },
+  {
+   "tex": "I_k=I_N",
+   "display": false
+  },
+  {
+   "tex": "U_{kN}",
+   "display": false
+  },
+  {
+   "tex": "100\\%-u_k\\%",
+   "display": false
+  },
+  {
+   "tex": "u_{kr}",
+   "display": false
+  },
+  {
+   "tex": "u_{kx}",
+   "display": false
+  },
+  {
+   "tex": "x_k\\gg r_k",
+   "display": false
+  },
+  {
+   "tex": "u_k\\%\\approx u_{kx}",
+   "display": false
+  },
+  {
+   "tex": "u_k",
+   "display": false
+  },
+  {
+   "tex": "Z_k",
+   "display": false
+  },
+  {
+   "tex": "I_{k}\\approx U_N/Z_k",
+   "display": false
+  },
+  {
+   "tex": "u_k",
+   "display": false
+  },
+  {
+   "tex": "u_k=4\\%",
+   "display": false
+  },
+  {
+   "tex": "1/25",
+   "display": false
+  },
+  {
+   "tex": "25^2=625",
+   "display": false
+  },
+  {
+   "tex": "u_k\\%",
+   "display": false
+  },
+  {
+   "tex": "z_k^*",
+   "display": false
+  },
+  {
+   "tex": "u_k\\%",
+   "display": false
+  },
+  {
+   "tex": "u_{kr}=r_k^*",
+   "display": false
+  },
+  {
+   "tex": "u_{kx}=x_k^*",
+   "display": false
+  },
+  {
+   "tex": "0.5\\sim1.0",
+   "display": false
+  },
+  {
+   "tex": "k",
+   "display": false
+  },
+  {
+   "tex": "\\Delta U\\%",
+   "display": false
+  },
+  {
+   "tex": "100\\%",
+   "display": false
+  },
+  {
+   "tex": "100\\%",
+   "display": false
+  },
+  {
+   "tex": "\\dot U_{20}",
+   "display": false
+  },
+  {
+   "tex": "\\dot U_2",
+   "display": false
+  },
+  {
+   "tex": "\\dot U_2",
+   "display": false
+  },
+  {
+   "tex": "\\dot U_{20}",
+   "display": false
+  },
+  {
+   "tex": "U_{20}",
+   "display": false
+  },
+  {
+   "tex": "U_2",
+   "display": false
+  },
+  {
+   "tex": "U_{1N}",
+   "display": false
+  },
+  {
+   "tex": "\\dot U_{20}",
+   "display": false
+  },
+  {
+   "tex": "1",
+   "display": false
+  },
+  {
+   "tex": "\\dot U_2",
+   "display": false
+  },
+  {
+   "tex": "\\dot U_2",
+   "display": false
+  },
+  {
+   "tex": "\\dot U_{20}",
+   "display": false
+  },
+  {
+   "tex": "I r_k\\cos\\varphi_2",
+   "display": false
+  },
+  {
+   "tex": "I x_k\\sin\\varphi_2",
+   "display": false
+  },
+  {
+   "tex": "\\varphi_2",
+   "display": false
+  },
+  {
+   "tex": "\\varphi_2",
+   "display": false
+  },
+  {
+   "tex": "\\beta",
+   "display": false
+  },
+  {
+   "tex": "u_{kr}",
+   "display": false
+  },
+  {
+   "tex": "u_{kx}",
+   "display": false
+  },
+  {
+   "tex": "\\cos\\varphi_2",
+   "display": false
+  },
+  {
+   "tex": "\\sin\\varphi_2",
+   "display": false
+  },
+  {
+   "tex": "0.8",
+   "display": false
+  },
+  {
+   "tex": "\\beta=1",
+   "display": false
+  },
+  {
+   "tex": "\\cos\\varphi_2=0.8",
+   "display": false
+  },
+  {
+   "tex": "U_1",
+   "display": false
+  },
+  {
+   "tex": "U_2",
+   "display": false
+  },
+  {
+   "tex": "I_2",
+   "display": false
+  },
+  {
+   "tex": "\\varphi_2=90^\\circ",
+   "display": false
+  },
+  {
+   "tex": "\\cos\\varphi_2=0",
+   "display": false
+  },
+  {
+   "tex": "\\sin\\varphi_2=1",
+   "display": false
+  },
+  {
+   "tex": "\\Delta U\\%=u_{kx}>0",
+   "display": false
+  },
+  {
+   "tex": "\\varphi_2=0^\\circ",
+   "display": false
+  },
+  {
+   "tex": "\\Delta U\\%=u_{kr}>0",
+   "display": false
+  },
+  {
+   "tex": "\\varphi_2<0",
+   "display": false
+  },
+  {
+   "tex": "\\sin\\varphi_2<0",
+   "display": false
+  },
+  {
+   "tex": "\\Delta U\\%<0",
+   "display": false
+  },
+  {
+   "tex": "N_1",
+   "display": false
+  },
+  {
+   "tex": "N_1",
+   "display": false
+  },
+  {
+   "tex": "N_2",
+   "display": false
+  },
+  {
+   "tex": "N_1",
+   "display": false
+  },
+  {
+   "tex": "105\\%",
+   "display": false
+  },
+  {
+   "tex": "100\\%",
+   "display": false
+  },
+  {
+   "tex": "95\\%",
+   "display": false
+  },
+  {
+   "tex": "p_{Fe}",
+   "display": false
+  },
+  {
+   "tex": "p_{Cu}",
+   "display": false
+  },
+  {
+   "tex": "\\eta",
+   "display": false
+  },
+  {
+   "tex": "u_k\\%=z_k^*",
+   "display": false
+  },
+  {
+   "tex": "*",
+   "display": false
+  },
+  {
+   "tex": "u_k\\%",
+   "display": false
+  },
+  {
+   "tex": "\\varphi_2",
+   "display": false
+  },
+  {
+   "tex": "\\beta",
+   "display": false
+  },
+  {
+   "tex": "\\cos\\varphi_2",
+   "display": false
+  },
+  {
+   "tex": "\\sin\\varphi_2",
+   "display": false
+  },
+  {
+   "tex": "S_N/U_{1N}",
+   "display": false
+  },
+  {
+   "tex": "I_{1N}=16.67",
+   "display": false
+  },
+  {
+   "tex": "u_k\\%=6\\%",
+   "display": false
+  },
+  {
+   "tex": "r_k^*=p_k/S_N=1.7\\%",
+   "display": false
+  },
+  {
+   "tex": "Z_k\\approx540\\ \\Omega",
+   "display": false
+  },
+  {
+   "tex": "r_k\\approx382\\ \\Omega",
+   "display": false
+  },
+  {
+   "tex": "x_k\\approx381\\ \\Omega",
+   "display": false
+  },
+  {
+   "tex": "45^\\circ",
+   "display": false
+  },
+  {
+   "tex": "u_{kr}",
+   "display": false
+  },
+  {
+   "tex": "u_{kx}",
+   "display": false
+  },
+  {
+   "tex": "I_k=I_{1N}=16.67",
+   "display": false
+  },
+  {
+   "tex": "Z_k=216.0\\ \\Omega",
+   "display": false
+  },
+  {
+   "tex": "r_k=61.20\\ \\Omega",
+   "display": false
+  },
+  {
+   "tex": "x_k=207.1\\ \\Omega",
+   "display": false
+  },
+  {
+   "tex": "\\varphi_k=73.54^\\circ",
+   "display": false
+  },
+  {
+   "tex": "u_k\\%=6.000\\%",
+   "display": false
+  },
+  {
+   "tex": "r_k^*=1.70\\%",
+   "display": false
+  },
+  {
+   "tex": "x_k^*=5.754\\%",
+   "display": false
+  },
+  {
+   "tex": "I_k=6.67",
+   "display": false
+  },
+  {
+   "tex": "44.9^\\circ",
+   "display": false
+  },
+  {
+   "tex": "u_{kr}=1.7\\%",
+   "display": false
+  },
+  {
+   "tex": "u_{kx}=5.75\\%",
+   "display": false
+  },
+  {
+   "tex": "\\beta=1",
+   "display": false
+  },
+  {
+   "tex": "\\cos\\varphi_2=0.6",
+   "display": false
+  },
+  {
+   "tex": "5.6233\\%",
+   "display": false
+  },
+  {
+   "tex": "-3.5833\\%",
+   "display": false
+  },
+  {
+   "tex": "5.6001\\%",
+   "display": false
+  },
+  {
+   "tex": "-3.6950\\%",
+   "display": false
+  },
+  {
+   "tex": "1/0.04=25",
+   "display": false
+  },
+  {
+   "tex": "25^2=625",
+   "display": false
+  },
+  {
+   "tex": "1/0.060=16.67",
+   "display": false
+  }
+ ]
+}

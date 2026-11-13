@@ -1,0 +1,1038 @@
+{
+ "url": "课程总览/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.3-初等变换与矩阵.html",
+ "title": "2.3 初等变换与初等矩阵",
+ "math": [
+  {
+   "tex": "A\\xrightarrow{r_1\\leftrightarrow r_3}\n\\begin{pmatrix}1&4&-7&3\\\\-1&-3&4&-17\\\\3&2&9&6\\\\-1&-4&7&-3\\end{pmatrix}\n\\xrightarrow[\\substack{-3r_1+r_3\\\\r_1+r_4}]{r_1+r_2}\n\\begin{pmatrix}1&4&-7&3\\\\0&1&-3&-14\\\\0&-10&30&-3\\\\0&0&0&0\\end{pmatrix}",
+   "display": true
+  },
+  {
+   "tex": "\\xrightarrow{10r_2+r_3}\n\\begin{pmatrix}1&4&-7&3\\\\0&1&-3&-14\\\\0&0&0&-143\\\\0&0&0&0\\end{pmatrix}=B,",
+   "display": true
+  },
+  {
+   "tex": "B\\xrightarrow{-\\frac{1}{143}r_3}\n\\begin{pmatrix}1&4&-7&3\\\\0&1&-3&-14\\\\0&0&0&1\\\\0&0&0&0\\end{pmatrix}\n\\xrightarrow{-4r_2+r_1}\n\\begin{pmatrix}1&0&5&59\\\\0&1&-3&-14\\\\0&0&0&1\\\\0&0&0&0\\end{pmatrix}",
+   "display": true
+  },
+  {
+   "tex": "\\xrightarrow[\\substack{14r_3+r_2}]{-59r_3+r_1}\n\\begin{pmatrix}1&0&5&0\\\\0&1&-3&0\\\\0&0&0&1\\\\0&0&0&0\\end{pmatrix}=C,",
+   "display": true
+  },
+  {
+   "tex": "C\\xrightarrow[\\substack{3c_2+c_3}]{-5c_1+c_3}\n\\begin{pmatrix}1&0&0&0\\\\0&1&0&0\\\\0&0&0&1\\\\0&0&0&0\\end{pmatrix}\n\\xrightarrow{c_3\\leftrightarrow c_4}\n\\begin{pmatrix}1&0&0&0\\\\0&1&0&0\\\\0&0&1&0\\\\0&0&0&0\\end{pmatrix}\n=\\begin{pmatrix}E_3&O\\\\O&O\\end{pmatrix}=D",
+   "display": true
+  },
+  {
+   "tex": "\\begin{pmatrix}\n1&&&&&&\\\\\n&\\ddots&&&&&\\\\\n&&0&\\cdots&&1&\\\\\n&&\\vdots&\\ddots&&\\vdots&\\\\\n&&1&\\cdots&&0&\\\\\n&&&&&\\ddots&\\\\\n&&&&&&1\n\\end{pmatrix}\n\\begin{matrix}\\\\\\\\\\text{第 }i\\text{ 行}\\\\\\\\\\text{第 }j\\text{ 行}\\\\\\\\\\end{matrix}",
+   "display": true
+  },
+  {
+   "tex": "\\begin{pmatrix}\n1&&&&\\\\\n&\\ddots&&&\\\\\n&&k&&\\\\\n&&&\\ddots&\\\\\n&&&&1\n\\end{pmatrix}\n\\begin{matrix}\\\\\\\\\\text{第 }i\\text{ 行}\\\\\\\\\\end{matrix}",
+   "display": true
+  },
+  {
+   "tex": "\\begin{pmatrix}\n1&&&&&\\\\\n&\\ddots&&&&\\\\\n&&1&\\cdots&k&\\\\\n&&&\\ddots&\\vdots&\\\\\n&&&&1&\\\\\n&&&&&\\ddots\\\\\n&&&&&&1\n\\end{pmatrix}\n\\begin{matrix}\\\\\\\\\\text{第 }i\\text{ 行}\\\\\\text{第 }j\\text{ 行}\\\\\\\\\\end{matrix}",
+   "display": true
+  },
+  {
+   "tex": "A=P_1\\cdots P_sBQ_1\\cdots Q_t",
+   "display": true
+  },
+  {
+   "tex": "P_m\\cdots P_2P_1A=E,",
+   "display": true
+  },
+  {
+   "tex": "P_m\\cdots P_2P_1E=A^{-1}",
+   "display": true
+  },
+  {
+   "tex": "(A\\mid E)\\xrightarrow{\\text{初等行变换}}(E\\mid A^{-1})",
+   "display": true
+  },
+  {
+   "tex": "(A\\mid E)=\\begin{pmatrix}0&1&2&1&0&0\\\\1&1&4&0&1&0\\\\2&-1&0&0&0&1\\end{pmatrix}\n\\xrightarrow{r_1\\leftrightarrow r_2}\n\\begin{pmatrix}1&1&4&0&1&0\\\\0&1&2&1&0&0\\\\2&-1&0&0&0&1\\end{pmatrix}",
+   "display": true
+  },
+  {
+   "tex": "\\xrightarrow{-2r_1+r_3}\n\\begin{pmatrix}1&1&4&0&1&0\\\\0&1&2&1&0&0\\\\0&-3&-8&0&-2&1\\end{pmatrix}\n\\xrightarrow{3r_2+r_3}\n\\begin{pmatrix}1&1&4&0&1&0\\\\0&1&2&1&0&0\\\\0&0&-2&3&-2&1\\end{pmatrix}",
+   "display": true
+  },
+  {
+   "tex": "\\xrightarrow[\\substack{-\\frac12r_3\\\\\\text{并消去上方元素}}]{}\n\\begin{pmatrix}1&0&0&2&-1&1\\\\0&1&0&4&-2&1\\\\0&0&1&-\\frac32&1&-\\frac12\\end{pmatrix},",
+   "display": true
+  },
+  {
+   "tex": "A^{-1}=\\begin{pmatrix}2&-1&1\\\\4&-2&1\\\\-\\frac32&1&-\\frac12\\end{pmatrix}",
+   "display": true
+  },
+  {
+   "tex": "A=\\begin{pmatrix}0&1&2\\\\1&1&4\\\\2&-1&0\\end{pmatrix},\\qquad\nA^{-1}=\\begin{pmatrix}2&-1&1\\\\4&-2&1\\\\-\\frac32&1&-\\frac12\\end{pmatrix}",
+   "display": true
+  },
+  {
+   "tex": "(1)\\ \\begin{pmatrix}3&2&-4\\\\3&2&-4\\\\1&2&-1\\end{pmatrix};\\qquad\n(2)\\ \\begin{pmatrix}1&-1&2&1&0\\\\2&-2&4&2&0\\\\3&0&6&-1&1\\\\3&0&6&3&1\\end{pmatrix}",
+   "display": true
+  },
+  {
+   "tex": "(1)\\ \\begin{pmatrix}-11&2&2\\\\-4&0&1\\\\6&-1&-1\\end{pmatrix};\\qquad\n(2)\\ \\begin{pmatrix}1&1&1&1\\\\1&1&1&0\\\\1&1&0&0\\\\1&0&0&0\\end{pmatrix}",
+   "display": true
+  },
+  {
+   "tex": "\\begin{pmatrix}1&0&0\\\\0&1&0\\\\0&0&0\\end{pmatrix}",
+   "display": true
+  },
+  {
+   "tex": "\\begin{pmatrix}1&0&0&0&0\\\\0&1&0&0&0\\\\0&0&1&0&0\\\\0&0&0&0&0\\end{pmatrix}",
+   "display": true
+  },
+  {
+   "tex": "\\begin{pmatrix}0&0&0&1&1&-1&0&0\\\\0&0&1&0&0&1&-1&0\\\\0&1&0&0&0&0&1&-1\\\\1&0&0&0&0&0&0&1\\end{pmatrix},",
+   "display": true
+  },
+  {
+   "tex": "A^{-1}=\\begin{pmatrix}0&0&0&1\\\\0&0&1&-1\\\\0&1&-1&0\\\\1&-1&0&0\\end{pmatrix}",
+   "display": true
+  },
+  {
+   "tex": "i",
+   "display": false
+  },
+  {
+   "tex": "j",
+   "display": false
+  },
+  {
+   "tex": "r_i\\leftrightarrow r_j\\ (c_i\\leftrightarrow c_j)",
+   "display": false
+  },
+  {
+   "tex": "k",
+   "display": false
+  },
+  {
+   "tex": "i",
+   "display": false
+  },
+  {
+   "tex": "kr_i\\ (kc_i)",
+   "display": false
+  },
+  {
+   "tex": "i",
+   "display": false
+  },
+  {
+   "tex": "k",
+   "display": false
+  },
+  {
+   "tex": "j",
+   "display": false
+  },
+  {
+   "tex": "kr_i+r_j\\ (kc_i+c_j)",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "A\\cong B",
+   "display": false
+  },
+  {
+   "tex": "A\\cong A",
+   "display": false
+  },
+  {
+   "tex": "A\\cong B",
+   "display": false
+  },
+  {
+   "tex": "B\\cong A",
+   "display": false
+  },
+  {
+   "tex": "A\\cong B,\\ B\\cong C",
+   "display": false
+  },
+  {
+   "tex": "A\\cong C",
+   "display": false
+  },
+  {
+   "tex": "A=\\begin{pmatrix}3&2&9&6\\\\-1&-3&4&-17\\\\1&4&-7&3\\\\-1&-4&7&-3\\end{pmatrix}",
+   "display": false
+  },
+  {
+   "tex": "A\\cong B",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "B\\cong C",
+   "display": false
+  },
+  {
+   "tex": "A\\cong C",
+   "display": false
+  },
+  {
+   "tex": "C",
+   "display": false
+  },
+  {
+   "tex": "1",
+   "display": false
+  },
+  {
+   "tex": "0",
+   "display": false
+  },
+  {
+   "tex": "C",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "E_3",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "k",
+   "display": false
+  },
+  {
+   "tex": "kr_i",
+   "display": false
+  },
+  {
+   "tex": "\\frac1kr_i",
+   "display": false
+  },
+  {
+   "tex": "k\\neq0",
+   "display": false
+  },
+  {
+   "tex": "kr_i+r_j",
+   "display": false
+  },
+  {
+   "tex": "-kr_i+r_j",
+   "display": false
+  },
+  {
+   "tex": "E_r",
+   "display": false
+  },
+  {
+   "tex": "0",
+   "display": false
+  },
+  {
+   "tex": "r=R(A)",
+   "display": false
+  },
+  {
+   "tex": "1",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "r_1+r_2",
+   "display": false
+  },
+  {
+   "tex": "(-1,-3,4,-17)+(1,4,-7,3)=(0,1,-3,-14)",
+   "display": false
+  },
+  {
+   "tex": "-3r_1+r_3",
+   "display": false
+  },
+  {
+   "tex": "(3,2,9,6)-3(1,4,-7,3)=(0,-10,30,-3)",
+   "display": false
+  },
+  {
+   "tex": "r_1+r_4",
+   "display": false
+  },
+  {
+   "tex": "(-1,-4,7,-3)+(1,4,-7,3)=(0,0,0,0)",
+   "display": false
+  },
+  {
+   "tex": "10r_2+r_3",
+   "display": false
+  },
+  {
+   "tex": "(0,-10,30,-3)+10(0,1,-3,-14)=(0,0,0,-143)",
+   "display": false
+  },
+  {
+   "tex": "-\\frac1{143}r_3",
+   "display": false
+  },
+  {
+   "tex": "-143",
+   "display": false
+  },
+  {
+   "tex": "1",
+   "display": false
+  },
+  {
+   "tex": "-4r_2+r_1",
+   "display": false
+  },
+  {
+   "tex": "(1,4,-7,3)-4(0,1,-3,-14)=(1,0,5,59)",
+   "display": false
+  },
+  {
+   "tex": "-59r_3+r_1",
+   "display": false
+  },
+  {
+   "tex": "(1,0,5,59)-59(0,0,0,1)=(1,0,5,0)",
+   "display": false
+  },
+  {
+   "tex": "14r_3+r_2",
+   "display": false
+  },
+  {
+   "tex": "(0,1,-3,-14)+14(0,0,0,1)=(0,1,-3,0)",
+   "display": false
+  },
+  {
+   "tex": "-5c_1+c_3",
+   "display": false
+  },
+  {
+   "tex": "3c_2+c_3",
+   "display": false
+  },
+  {
+   "tex": "c_3=(5,-3,0,0)^{\\mathrm T}",
+   "display": false
+  },
+  {
+   "tex": "(5,-3,0,0)-5(1,0,0,0)+3(0,1,0,0)=(0,0,0,0)^{\\mathrm T}",
+   "display": false
+  },
+  {
+   "tex": "c_3\\leftrightarrow c_4",
+   "display": false
+  },
+  {
+   "tex": "\\begin{pmatrix}E_3&O\\\\O&O\\end{pmatrix}",
+   "display": false
+  },
+  {
+   "tex": "r_1\\leftrightarrow r_3",
+   "display": false
+  },
+  {
+   "tex": "r_1+r_2",
+   "display": false
+  },
+  {
+   "tex": "-3r_1+r_3",
+   "display": false
+  },
+  {
+   "tex": "r_1+r_4",
+   "display": false
+  },
+  {
+   "tex": "-3r_1+r_3",
+   "display": false
+  },
+  {
+   "tex": "-3r_1+r_4",
+   "display": false
+  },
+  {
+   "tex": "r_3",
+   "display": false
+  },
+  {
+   "tex": "\\begin{pmatrix}E_r&O\\\\O&O\\end{pmatrix}",
+   "display": false
+  },
+  {
+   "tex": "r",
+   "display": false
+  },
+  {
+   "tex": "-\\frac1{143}",
+   "display": false
+  },
+  {
+   "tex": "\\frac1{143}",
+   "display": false
+  },
+  {
+   "tex": "E",
+   "display": false
+  },
+  {
+   "tex": "E",
+   "display": false
+  },
+  {
+   "tex": "i",
+   "display": false
+  },
+  {
+   "tex": "j",
+   "display": false
+  },
+  {
+   "tex": "E",
+   "display": false
+  },
+  {
+   "tex": "i",
+   "display": false
+  },
+  {
+   "tex": "j",
+   "display": false
+  },
+  {
+   "tex": "k",
+   "display": false
+  },
+  {
+   "tex": "E",
+   "display": false
+  },
+  {
+   "tex": "i",
+   "display": false
+  },
+  {
+   "tex": "i",
+   "display": false
+  },
+  {
+   "tex": "E",
+   "display": false
+  },
+  {
+   "tex": "j",
+   "display": false
+  },
+  {
+   "tex": "k",
+   "display": false
+  },
+  {
+   "tex": "i",
+   "display": false
+  },
+  {
+   "tex": "i",
+   "display": false
+  },
+  {
+   "tex": "k",
+   "display": false
+  },
+  {
+   "tex": "j",
+   "display": false
+  },
+  {
+   "tex": "m\\times n",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "m",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "n",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "A=\\begin{pmatrix}2&1&3\\\\0&1&2\\end{pmatrix}",
+   "display": false
+  },
+  {
+   "tex": "A\\xrightarrow{2r_1+r_2}\\begin{pmatrix}2&3&7\\\\0&1&2\\end{pmatrix}",
+   "display": false
+  },
+  {
+   "tex": "\\begin{pmatrix}1&2\\\\0&1\\end{pmatrix}\\begin{pmatrix}2&1&3\\\\0&1&2\\end{pmatrix}=\\begin{pmatrix}2&3&7\\\\0&1&2\\end{pmatrix}",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "\\begin{pmatrix}1&2\\\\0&1\\end{pmatrix}",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "A=\\begin{pmatrix}2&1&3\\\\0&1&2\\end{pmatrix}",
+   "display": false
+  },
+  {
+   "tex": "A\\xrightarrow{5c_3}\\begin{pmatrix}2&1&15\\\\0&1&10\\end{pmatrix}",
+   "display": false
+  },
+  {
+   "tex": "A\\begin{pmatrix}1&0&0\\\\0&1&0\\\\0&0&5\\end{pmatrix}=\\begin{pmatrix}2&1&3\\\\0&1&2\\end{pmatrix}\\begin{pmatrix}1&0&0\\\\0&1&0\\\\0&0&5\\end{pmatrix}=\\begin{pmatrix}2&1&15\\\\0&1&10\\end{pmatrix}",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "\\begin{pmatrix}1&0&0\\\\0&1&0\\\\0&0&5\\end{pmatrix}",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "P_1,\\cdots,P_s,Q_1,\\cdots,Q_t",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "n",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "A\\cong E",
+   "display": false
+  },
+  {
+   "tex": "E",
+   "display": false
+  },
+  {
+   "tex": "n",
+   "display": false
+  },
+  {
+   "tex": "n",
+   "display": false
+  },
+  {
+   "tex": "P_1,P_2,\\cdots,P_s",
+   "display": false
+  },
+  {
+   "tex": "A=P_1P_2\\cdots P_s",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "E",
+   "display": false
+  },
+  {
+   "tex": "E(i,j)",
+   "display": false
+  },
+  {
+   "tex": "E",
+   "display": false
+  },
+  {
+   "tex": "i,j",
+   "display": false
+  },
+  {
+   "tex": "E(i(k))",
+   "display": false
+  },
+  {
+   "tex": "E",
+   "display": false
+  },
+  {
+   "tex": "i",
+   "display": false
+  },
+  {
+   "tex": "k\\ (k\\neq0)",
+   "display": false
+  },
+  {
+   "tex": "E(i,j(k))",
+   "display": false
+  },
+  {
+   "tex": "E",
+   "display": false
+  },
+  {
+   "tex": "j",
+   "display": false
+  },
+  {
+   "tex": "k",
+   "display": false
+  },
+  {
+   "tex": "i",
+   "display": false
+  },
+  {
+   "tex": "i",
+   "display": false
+  },
+  {
+   "tex": "k",
+   "display": false
+  },
+  {
+   "tex": "j",
+   "display": false
+  },
+  {
+   "tex": "\\begin{pmatrix}1&2\\\\0&1\\end{pmatrix}\\begin{pmatrix}2&1&3\\\\0&1&2\\end{pmatrix}",
+   "display": false
+  },
+  {
+   "tex": "2\\times",
+   "display": false
+  },
+  {
+   "tex": "2\\times",
+   "display": false
+  },
+  {
+   "tex": "=(2,3,7)",
+   "display": false
+  },
+  {
+   "tex": "2r_1+r_2",
+   "display": false
+  },
+  {
+   "tex": "E",
+   "display": false
+  },
+  {
+   "tex": "m",
+   "display": false
+  },
+  {
+   "tex": "n",
+   "display": false
+  },
+  {
+   "tex": "P_1\\cdots P_s",
+   "display": false
+  },
+  {
+   "tex": "Q_1\\cdots Q_t",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "P_1,P_2,\\cdots,P_m",
+   "display": false
+  },
+  {
+   "tex": "A^{-1}",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "E",
+   "display": false
+  },
+  {
+   "tex": "E",
+   "display": false
+  },
+  {
+   "tex": "A^{-1}",
+   "display": false
+  },
+  {
+   "tex": "n\\times2n",
+   "display": false
+  },
+  {
+   "tex": "(A\\mid E)",
+   "display": false
+  },
+  {
+   "tex": "(A)",
+   "display": false
+  },
+  {
+   "tex": "E",
+   "display": false
+  },
+  {
+   "tex": "A^{-1}",
+   "display": false
+  },
+  {
+   "tex": "A=\\begin{pmatrix}0&1&2\\\\1&1&4\\\\2&-1&0\\end{pmatrix}",
+   "display": false
+  },
+  {
+   "tex": "A^{-1}",
+   "display": false
+  },
+  {
+   "tex": "(A\\mid E)",
+   "display": false
+  },
+  {
+   "tex": "P_m\\cdots P_1A=E",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "E",
+   "display": false
+  },
+  {
+   "tex": "E",
+   "display": false
+  },
+  {
+   "tex": "P_m\\cdots P_1E=P_m\\cdots P_1",
+   "display": false
+  },
+  {
+   "tex": "P_m\\cdots P_1A=E",
+   "display": false
+  },
+  {
+   "tex": "A^{-1}",
+   "display": false
+  },
+  {
+   "tex": "P_m\\cdots P_1=A^{-1}",
+   "display": false
+  },
+  {
+   "tex": "(A\\mid E)\\to(E\\mid A^{-1})",
+   "display": false
+  },
+  {
+   "tex": "AA^{-1}=E",
+   "display": false
+  },
+  {
+   "tex": "(0,1,2)",
+   "display": false
+  },
+  {
+   "tex": "A^{-1}",
+   "display": false
+  },
+  {
+   "tex": "0+4-3=1",
+   "display": false
+  },
+  {
+   "tex": "0-2+2=0",
+   "display": false
+  },
+  {
+   "tex": "0+1-1=0",
+   "display": false
+  },
+  {
+   "tex": "(1,1,4)",
+   "display": false
+  },
+  {
+   "tex": "2+4-6=0",
+   "display": false
+  },
+  {
+   "tex": "-1-2+4=1",
+   "display": false
+  },
+  {
+   "tex": "1+1-2=0",
+   "display": false
+  },
+  {
+   "tex": "(2,-1,0)",
+   "display": false
+  },
+  {
+   "tex": "4-4+0=0",
+   "display": false
+  },
+  {
+   "tex": "-2+2+0=0",
+   "display": false
+  },
+  {
+   "tex": "2-1+0=1",
+   "display": false
+  },
+  {
+   "tex": "AA^{-1}=E",
+   "display": false
+  },
+  {
+   "tex": "r_1\\leftrightarrow r_2",
+   "display": false
+  },
+  {
+   "tex": "-2r_1+r_3",
+   "display": false
+  },
+  {
+   "tex": "3r_2+r_3",
+   "display": false
+  },
+  {
+   "tex": "(1,1,4\\mid0,1,0;0,1,2\\mid1,0,0;0,0,-2\\mid3,-2,1)",
+   "display": false
+  },
+  {
+   "tex": "(E\\mid A^{-1})",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "(A\\mid E)",
+   "display": false
+  },
+  {
+   "tex": "(A\\mid E)",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "|A|=0",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "-\\frac12",
+   "display": false
+  },
+  {
+   "tex": "\\frac12",
+   "display": false
+  },
+  {
+   "tex": "r_2-r_1",
+   "display": false
+  },
+  {
+   "tex": "2",
+   "display": false
+  },
+  {
+   "tex": "=2\\times",
+   "display": false
+  },
+  {
+   "tex": "r_2-2r_1",
+   "display": false
+  },
+  {
+   "tex": "r_3-3r_1=(0,3,0,-4,1)",
+   "display": false
+  },
+  {
+   "tex": "r_4-3r_1=(0,3,0,0,1)",
+   "display": false
+  },
+  {
+   "tex": "r_4-r_3=(0,0,0,4,0)",
+   "display": false
+  },
+  {
+   "tex": "3",
+   "display": false
+  },
+  {
+   "tex": "4\\times5",
+   "display": false
+  },
+  {
+   "tex": "|A|=1",
+   "display": false
+  },
+  {
+   "tex": "A^*=\\begin{pmatrix}1&0&2\\\\2&-1&3\\\\4&1&8\\end{pmatrix}",
+   "display": false
+  },
+  {
+   "tex": "A^{-1}=A^*=\\begin{pmatrix}1&0&2\\\\2&-1&3\\\\4&1&8\\end{pmatrix}",
+   "display": false
+  },
+  {
+   "tex": "AA^{-1}=E",
+   "display": false
+  },
+  {
+   "tex": "(-11,2,2)",
+   "display": false
+  },
+  {
+   "tex": "(1,2,4)",
+   "display": false
+  },
+  {
+   "tex": "-11+4+8=1",
+   "display": false
+  },
+  {
+   "tex": "(0,-1,1)",
+   "display": false
+  },
+  {
+   "tex": "0-2+2=0",
+   "display": false
+  },
+  {
+   "tex": "(2,3,8)",
+   "display": false
+  },
+  {
+   "tex": "-22+6+16=0",
+   "display": false
+  },
+  {
+   "tex": "(A\\mid E)",
+   "display": false
+  },
+  {
+   "tex": "E",
+   "display": false
+  },
+  {
+   "tex": "r_1-r_2,\\ r_2-r_3,\\ r_3-r_4",
+   "display": false
+  },
+  {
+   "tex": "AA^{-1}=E",
+   "display": false
+  }
+ ]
+}

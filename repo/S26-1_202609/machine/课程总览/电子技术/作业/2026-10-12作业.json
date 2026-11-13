@@ -1,0 +1,266 @@
+{
+ "url": "课程总览/电子技术/作业/2026-10-12作业.html",
+ "title": "2026-10-12作业",
+ "math": [
+  {
+   "tex": "A\\cdot1=A",
+   "display": false
+  },
+  {
+   "tex": "A\\cdot0=0",
+   "display": false
+  },
+  {
+   "tex": "A\\cdot 1=A",
+   "display": false
+  },
+  {
+   "tex": "C\\cdot 0=0",
+   "display": false
+  },
+  {
+   "tex": "t",
+   "display": false
+  },
+  {
+   "tex": "Y_b=\\overline{A\\cdot 1}",
+   "display": false
+  },
+  {
+   "tex": "Y_b=\\overline{A}",
+   "display": false
+  },
+  {
+   "tex": "Y_c=\\overline{C\\cdot 0}",
+   "display": false
+  },
+  {
+   "tex": "Y_c=1",
+   "display": false
+  },
+  {
+   "tex": "Y_d=\\overline{ABC}",
+   "display": false
+  },
+  {
+   "tex": "Y_d=\\overline{ABC}",
+   "display": false
+  },
+  {
+   "tex": "Y_e=\\overline{B+D}",
+   "display": false
+  },
+  {
+   "tex": "Y_e=\\overline{B+D}",
+   "display": false
+  },
+  {
+   "tex": "Y_f=\\overline{A\\oplus D}",
+   "display": false
+  },
+  {
+   "tex": "Y_f=A\\odot D",
+   "display": false
+  },
+  {
+   "tex": "(A\\cdot B)",
+   "display": false
+  },
+  {
+   "tex": "(C\\cdot D)",
+   "display": false
+  },
+  {
+   "tex": "Y_g=\\overline{AB+CD}",
+   "display": false
+  },
+  {
+   "tex": "Y_g=\\overline{AB+CD}",
+   "display": false
+  },
+  {
+   "tex": "A\\cdot 1=A",
+   "display": false
+  },
+  {
+   "tex": "C\\cdot 0=0",
+   "display": false
+  },
+  {
+   "tex": "A\\cdot 1=A",
+   "display": false
+  },
+  {
+   "tex": "\\overline{A}",
+   "display": false
+  },
+  {
+   "tex": "Y_b=\\overline{A\\cdot 1}=\\overline{A}",
+   "display": false
+  },
+  {
+   "tex": "Y_b",
+   "display": false
+  },
+  {
+   "tex": "Y_b",
+   "display": false
+  },
+  {
+   "tex": "Y_b",
+   "display": false
+  },
+  {
+   "tex": "A\\cdot 1=A",
+   "display": false
+  },
+  {
+   "tex": "\\overline{A}",
+   "display": false
+  },
+  {
+   "tex": "Y_c=\\overline{C\\cdot 0}=\\overline{0}=1",
+   "display": false
+  },
+  {
+   "tex": "\\overline{A}",
+   "display": false
+  },
+  {
+   "tex": "Y_d=\\overline{ABC}",
+   "display": false
+  },
+  {
+   "tex": "ABC=1",
+   "display": false
+  },
+  {
+   "tex": "Y_d=0",
+   "display": false
+  },
+  {
+   "tex": "Y_d=1",
+   "display": false
+  },
+  {
+   "tex": "Y_d=\\overline{ABC}",
+   "display": false
+  },
+  {
+   "tex": "ABC=1",
+   "display": false
+  },
+  {
+   "tex": "Y_d",
+   "display": false
+  },
+  {
+   "tex": "Y_e=\\overline{B+D}",
+   "display": false
+  },
+  {
+   "tex": "Y_e=\\overline{B+D}",
+   "display": false
+  },
+  {
+   "tex": "Y_f=\\overline{A\\oplus D}=A\\odot D",
+   "display": false
+  },
+  {
+   "tex": "Y_f=1",
+   "display": false
+  },
+  {
+   "tex": "Y_f=\\overline{A\\oplus D}=A\\odot D",
+   "display": false
+  },
+  {
+   "tex": "Y_f",
+   "display": false
+  },
+  {
+   "tex": "\\overline{A}",
+   "display": false
+  },
+  {
+   "tex": "Y_f",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "A\\cdot B",
+   "display": false
+  },
+  {
+   "tex": "C\\cdot D",
+   "display": false
+  },
+  {
+   "tex": "AB+CD",
+   "display": false
+  },
+  {
+   "tex": "\\overline{AB+CD}",
+   "display": false
+  },
+  {
+   "tex": "Y_g=\\overline{AB+CD}",
+   "display": false
+  },
+  {
+   "tex": "AB=1",
+   "display": false
+  },
+  {
+   "tex": "CD=1",
+   "display": false
+  },
+  {
+   "tex": "AB=1",
+   "display": false
+  },
+  {
+   "tex": "CD=1",
+   "display": false
+  },
+  {
+   "tex": "Y_g",
+   "display": false
+  },
+  {
+   "tex": "A\\cdot B",
+   "display": false
+  },
+  {
+   "tex": "C\\cdot D",
+   "display": false
+  },
+  {
+   "tex": "\\overline{A}",
+   "display": false
+  },
+  {
+   "tex": "1",
+   "display": false
+  },
+  {
+   "tex": "\\overline{ABC}",
+   "display": false
+  },
+  {
+   "tex": "\\overline{B+D}",
+   "display": false
+  },
+  {
+   "tex": "\\overline{A\\oplus D}",
+   "display": false
+  },
+  {
+   "tex": "\\overline{AB+CD}",
+   "display": false
+  }
+ ]
+}

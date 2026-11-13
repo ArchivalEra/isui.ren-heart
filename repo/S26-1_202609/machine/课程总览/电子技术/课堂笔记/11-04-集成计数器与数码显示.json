@@ -1,0 +1,1542 @@
+{
+ "url": "课程总览/电子技术/课堂笔记/11-04-集成计数器与数码显示.html",
+ "title": "11-04 集成计数器与数码显示",
+ "math": [
+  {
+   "tex": "R_{0(1)}=R_{0(2)}=1\\ \\Rightarrow\\ \\text{与非门输出}\\ 0\\ \\Rightarrow\\ \\overline{R_D}=0\\ \\Rightarrow\\ Q_3Q_2Q_1Q_0=0000",
+   "display": true
+  },
+  {
+   "tex": "Q_0^{n+1}=D_I,\\quad Q_1^{n+1}=Q_0^n,\\quad Q_2^{n+1}=Q_1^n,\\quad Q_3^{n+1}=Q_2^n",
+   "display": true
+  },
+  {
+   "tex": "R_{0(1)}",
+   "display": false
+  },
+  {
+   "tex": "R_{0(2)}",
+   "display": false
+  },
+  {
+   "tex": "S_{9(1)}",
+   "display": false
+  },
+  {
+   "tex": "S_{9(2)}",
+   "display": false
+  },
+  {
+   "tex": "R_{0(1)}R_{0(2)}=11",
+   "display": false
+  },
+  {
+   "tex": "S_{9(1)}S_{9(2)}=11",
+   "display": false
+  },
+  {
+   "tex": "CP_0",
+   "display": false
+  },
+  {
+   "tex": "Q_0",
+   "display": false
+  },
+  {
+   "tex": "FF_0",
+   "display": false
+  },
+  {
+   "tex": "CP_0",
+   "display": false
+  },
+  {
+   "tex": "J=K=1",
+   "display": false
+  },
+  {
+   "tex": "Q_0",
+   "display": false
+  },
+  {
+   "tex": "Q_3Q_2Q_1",
+   "display": false
+  },
+  {
+   "tex": "CP_1",
+   "display": false
+  },
+  {
+   "tex": "Q_3Q_2Q_1",
+   "display": false
+  },
+  {
+   "tex": "FF_1",
+   "display": false
+  },
+  {
+   "tex": "FF_3",
+   "display": false
+  },
+  {
+   "tex": "CP_1",
+   "display": false
+  },
+  {
+   "tex": "FF_2",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "Q_0",
+   "display": false
+  },
+  {
+   "tex": "R_0",
+   "display": false
+  },
+  {
+   "tex": "S_9",
+   "display": false
+  },
+  {
+   "tex": "CP_0",
+   "display": false
+  },
+  {
+   "tex": "FF_0",
+   "display": false
+  },
+  {
+   "tex": "Q_0",
+   "display": false
+  },
+  {
+   "tex": "CP_1",
+   "display": false
+  },
+  {
+   "tex": "Q_0",
+   "display": false
+  },
+  {
+   "tex": "CP_0",
+   "display": false
+  },
+  {
+   "tex": "CP_1",
+   "display": false
+  },
+  {
+   "tex": "Q_3Q_2Q_1",
+   "display": false
+  },
+  {
+   "tex": "CP_1",
+   "display": false
+  },
+  {
+   "tex": "2\\times5=10",
+   "display": false
+  },
+  {
+   "tex": "CP_0",
+   "display": false
+  },
+  {
+   "tex": "Q_0\\to CP_1",
+   "display": false
+  },
+  {
+   "tex": "CP",
+   "display": false
+  },
+  {
+   "tex": "CP_0",
+   "display": false
+  },
+  {
+   "tex": "Q_0",
+   "display": false
+  },
+  {
+   "tex": "CP_1",
+   "display": false
+  },
+  {
+   "tex": "N",
+   "display": false
+  },
+  {
+   "tex": "0,1,\\dots,N-1",
+   "display": false
+  },
+  {
+   "tex": "N",
+   "display": false
+  },
+  {
+   "tex": "Q_3",
+   "display": false
+  },
+  {
+   "tex": "R_{0(1)}=R_{0(2)}=1",
+   "display": false
+  },
+  {
+   "tex": "R_0",
+   "display": false
+  },
+  {
+   "tex": "Q_2=1",
+   "display": false
+  },
+  {
+   "tex": "Q_1=1",
+   "display": false
+  },
+  {
+   "tex": "Q_2",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "R_{0(1)}",
+   "display": false
+  },
+  {
+   "tex": "R_{0(2)}",
+   "display": false
+  },
+  {
+   "tex": "R_0",
+   "display": false
+  },
+  {
+   "tex": "Q_2",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "R_{0(2)}",
+   "display": false
+  },
+  {
+   "tex": "Q_0",
+   "display": false
+  },
+  {
+   "tex": "R_{0(1)}",
+   "display": false
+  },
+  {
+   "tex": "S_{9(1)}",
+   "display": false
+  },
+  {
+   "tex": "S_{9(2)}",
+   "display": false
+  },
+  {
+   "tex": "R_{0(1)}R_{0(2)}=11",
+   "display": false
+  },
+  {
+   "tex": "R_0",
+   "display": false
+  },
+  {
+   "tex": "CP",
+   "display": false
+  },
+  {
+   "tex": "N",
+   "display": false
+  },
+  {
+   "tex": "R_0",
+   "display": false
+  },
+  {
+   "tex": "N",
+   "display": false
+  },
+  {
+   "tex": "N-1",
+   "display": false
+  },
+  {
+   "tex": "\\overline{LD}",
+   "display": false
+  },
+  {
+   "tex": "CT_T",
+   "display": false
+  },
+  {
+   "tex": "CT_P",
+   "display": false
+  },
+  {
+   "tex": "\\overline{LD}=1",
+   "display": false
+  },
+  {
+   "tex": "CT_TCT_P=11",
+   "display": false
+  },
+  {
+   "tex": "CP",
+   "display": false
+  },
+  {
+   "tex": "\\overline{LD}",
+   "display": false
+  },
+  {
+   "tex": "Q_3=1",
+   "display": false
+  },
+  {
+   "tex": "Q_0=1",
+   "display": false
+  },
+  {
+   "tex": "Q_3",
+   "display": false
+  },
+  {
+   "tex": "Q_0",
+   "display": false
+  },
+  {
+   "tex": "\\overline{CR}",
+   "display": false
+  },
+  {
+   "tex": "\\overline{CR}=0",
+   "display": false
+  },
+  {
+   "tex": "CP",
+   "display": false
+  },
+  {
+   "tex": "\\overline{CR}",
+   "display": false
+  },
+  {
+   "tex": "\\overline{CR}",
+   "display": false
+  },
+  {
+   "tex": "CT_T",
+   "display": false
+  },
+  {
+   "tex": "CT_P",
+   "display": false
+  },
+  {
+   "tex": "D_3D_2D_1D_0",
+   "display": false
+  },
+  {
+   "tex": "\\overline{LD}=0",
+   "display": false
+  },
+  {
+   "tex": "CP",
+   "display": false
+  },
+  {
+   "tex": "D_3D_2D_1D_0",
+   "display": false
+  },
+  {
+   "tex": "Q_3Q_2Q_1Q_0",
+   "display": false
+  },
+  {
+   "tex": "CP",
+   "display": false
+  },
+  {
+   "tex": "\\overline{LD}=0",
+   "display": false
+  },
+  {
+   "tex": "Q_3=1",
+   "display": false
+  },
+  {
+   "tex": "Q_3",
+   "display": false
+  },
+  {
+   "tex": "\\overline{LD}",
+   "display": false
+  },
+  {
+   "tex": "Q_3=1",
+   "display": false
+  },
+  {
+   "tex": "\\overline{LD}=0",
+   "display": false
+  },
+  {
+   "tex": "Q_3=0",
+   "display": false
+  },
+  {
+   "tex": "\\overline{LD}=1",
+   "display": false
+  },
+  {
+   "tex": "\\overline{LD}=0",
+   "display": false
+  },
+  {
+   "tex": "CP",
+   "display": false
+  },
+  {
+   "tex": "N",
+   "display": false
+  },
+  {
+   "tex": "N-1",
+   "display": false
+  },
+  {
+   "tex": "N",
+   "display": false
+  },
+  {
+   "tex": "N-1",
+   "display": false
+  },
+  {
+   "tex": "CP_0",
+   "display": false
+  },
+  {
+   "tex": "Q_0",
+   "display": false
+  },
+  {
+   "tex": "CP_1",
+   "display": false
+  },
+  {
+   "tex": "R_0",
+   "display": false
+  },
+  {
+   "tex": "S_9",
+   "display": false
+  },
+  {
+   "tex": "CP_0",
+   "display": false
+  },
+  {
+   "tex": "Q_3",
+   "display": false
+  },
+  {
+   "tex": "Q_1=1",
+   "display": false
+  },
+  {
+   "tex": "Q_2=1",
+   "display": false
+  },
+  {
+   "tex": "Q_2",
+   "display": false
+  },
+  {
+   "tex": "R_{0(1)}",
+   "display": false
+  },
+  {
+   "tex": "R_{0(1)}",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "R_{0(2)}",
+   "display": false
+  },
+  {
+   "tex": "R_{0(2)}",
+   "display": false
+  },
+  {
+   "tex": "R_{0(1)}R_{0(2)}=11",
+   "display": false
+  },
+  {
+   "tex": "R_0",
+   "display": false
+  },
+  {
+   "tex": "Q_3",
+   "display": false
+  },
+  {
+   "tex": "CP_0",
+   "display": false
+  },
+  {
+   "tex": "Q_2=1",
+   "display": false
+  },
+  {
+   "tex": "Q_1=1",
+   "display": false
+  },
+  {
+   "tex": "Q_2",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "R_{0(1)}",
+   "display": false
+  },
+  {
+   "tex": "R_{0(2)}",
+   "display": false
+  },
+  {
+   "tex": "\\overline{CR}=1",
+   "display": false
+  },
+  {
+   "tex": "CT_T=CT_P=1",
+   "display": false
+  },
+  {
+   "tex": "D_3D_2D_1D_0",
+   "display": false
+  },
+  {
+   "tex": "Q_3",
+   "display": false
+  },
+  {
+   "tex": "\\overline{LD}",
+   "display": false
+  },
+  {
+   "tex": "Q_3=1",
+   "display": false
+  },
+  {
+   "tex": "\\overline{LD}=0",
+   "display": false
+  },
+  {
+   "tex": "CP",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "FF_0",
+   "display": false
+  },
+  {
+   "tex": "FF_1",
+   "display": false
+  },
+  {
+   "tex": "FF_2",
+   "display": false
+  },
+  {
+   "tex": "FF_3",
+   "display": false
+  },
+  {
+   "tex": "Q_0",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "Q_2",
+   "display": false
+  },
+  {
+   "tex": "Q_3",
+   "display": false
+  },
+  {
+   "tex": "FF_0",
+   "display": false
+  },
+  {
+   "tex": "CP_0",
+   "display": false
+  },
+  {
+   "tex": "FF_1",
+   "display": false
+  },
+  {
+   "tex": "CP_1",
+   "display": false
+  },
+  {
+   "tex": "FF_3",
+   "display": false
+  },
+  {
+   "tex": "CP_1",
+   "display": false
+  },
+  {
+   "tex": "FF_2",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "CP",
+   "display": false
+  },
+  {
+   "tex": "CP_0",
+   "display": false
+  },
+  {
+   "tex": "FF_0",
+   "display": false
+  },
+  {
+   "tex": "CP_1",
+   "display": false
+  },
+  {
+   "tex": "J",
+   "display": false
+  },
+  {
+   "tex": "K",
+   "display": false
+  },
+  {
+   "tex": "T",
+   "display": false
+  },
+  {
+   "tex": "T",
+   "display": false
+  },
+  {
+   "tex": "J=K=1",
+   "display": false
+  },
+  {
+   "tex": "R_{0(1)}",
+   "display": false
+  },
+  {
+   "tex": "R_{0(2)}",
+   "display": false
+  },
+  {
+   "tex": "\\overline{R_D}",
+   "display": false
+  },
+  {
+   "tex": "\\overline{R_D}=0",
+   "display": false
+  },
+  {
+   "tex": "S_{9(1)}",
+   "display": false
+  },
+  {
+   "tex": "S_{9(2)}",
+   "display": false
+  },
+  {
+   "tex": "S_{9(1)}",
+   "display": false
+  },
+  {
+   "tex": "S_{9(2)}",
+   "display": false
+  },
+  {
+   "tex": "Q_3=1",
+   "display": false
+  },
+  {
+   "tex": "Q_0=1",
+   "display": false
+  },
+  {
+   "tex": "FF_3",
+   "display": false
+  },
+  {
+   "tex": "FF_0",
+   "display": false
+  },
+  {
+   "tex": "\\overline{S_D}",
+   "display": false
+  },
+  {
+   "tex": "Q_2=0",
+   "display": false
+  },
+  {
+   "tex": "Q_1=0",
+   "display": false
+  },
+  {
+   "tex": "\\overline{R_D}",
+   "display": false
+  },
+  {
+   "tex": "S_9",
+   "display": false
+  },
+  {
+   "tex": "S_{9(1)}S_{9(2)}=11",
+   "display": false
+  },
+  {
+   "tex": "\\overline{R_D}",
+   "display": false
+  },
+  {
+   "tex": "\\overline{R_D}=0",
+   "display": false
+  },
+  {
+   "tex": "Q_2",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "Q_3",
+   "display": false
+  },
+  {
+   "tex": "Q_0",
+   "display": false
+  },
+  {
+   "tex": "R_0",
+   "display": false
+  },
+  {
+   "tex": "S_9",
+   "display": false
+  },
+  {
+   "tex": "CP_0",
+   "display": false
+  },
+  {
+   "tex": "FF_0",
+   "display": false
+  },
+  {
+   "tex": "J=K=1",
+   "display": false
+  },
+  {
+   "tex": "Q_0",
+   "display": false
+  },
+  {
+   "tex": "CP_1",
+   "display": false
+  },
+  {
+   "tex": "Q_3Q_2Q_1",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "Q_2",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "Q_2",
+   "display": false
+  },
+  {
+   "tex": "Q_3",
+   "display": false
+  },
+  {
+   "tex": "Q_3Q_2Q_1",
+   "display": false
+  },
+  {
+   "tex": "J=K=1",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "FF_2",
+   "display": false
+  },
+  {
+   "tex": "Q_1Q_2=0",
+   "display": false
+  },
+  {
+   "tex": "Q_1Q_2=0",
+   "display": false
+  },
+  {
+   "tex": "FF_2",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "Q_2",
+   "display": false
+  },
+  {
+   "tex": "Q_1Q_2=11",
+   "display": false
+  },
+  {
+   "tex": "FF_2",
+   "display": false
+  },
+  {
+   "tex": "Q_3",
+   "display": false
+  },
+  {
+   "tex": "FF_1",
+   "display": false
+  },
+  {
+   "tex": "J",
+   "display": false
+  },
+  {
+   "tex": "K",
+   "display": false
+  },
+  {
+   "tex": "Q_3",
+   "display": false
+  },
+  {
+   "tex": "CP_1",
+   "display": false
+  },
+  {
+   "tex": "FF_2",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "FF_3",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "Q_2",
+   "display": false
+  },
+  {
+   "tex": "CP_0",
+   "display": false
+  },
+  {
+   "tex": "Q_0",
+   "display": false
+  },
+  {
+   "tex": "CP_1",
+   "display": false
+  },
+  {
+   "tex": "FF_0",
+   "display": false
+  },
+  {
+   "tex": "CP_0",
+   "display": false
+  },
+  {
+   "tex": "CP_1",
+   "display": false
+  },
+  {
+   "tex": "CP_1",
+   "display": false
+  },
+  {
+   "tex": "2\\times5=10",
+   "display": false
+  },
+  {
+   "tex": "CP_0",
+   "display": false
+  },
+  {
+   "tex": "R_{0(1)}R_{0(2)}",
+   "display": false
+  },
+  {
+   "tex": "S_{9(1)}S_{9(2)}",
+   "display": false
+  },
+  {
+   "tex": "CP_0",
+   "display": false
+  },
+  {
+   "tex": "CP_1",
+   "display": false
+  },
+  {
+   "tex": "R_0",
+   "display": false
+  },
+  {
+   "tex": "S_9",
+   "display": false
+  },
+  {
+   "tex": "CP_0",
+   "display": false
+  },
+  {
+   "tex": "Q_0",
+   "display": false
+  },
+  {
+   "tex": "CP_1",
+   "display": false
+  },
+  {
+   "tex": "Q_3Q_2Q_1",
+   "display": false
+  },
+  {
+   "tex": "CP_0",
+   "display": false
+  },
+  {
+   "tex": "Q_0\\to CP_1",
+   "display": false
+  },
+  {
+   "tex": "Q_3Q_2Q_1Q_0",
+   "display": false
+  },
+  {
+   "tex": "R_0",
+   "display": false
+  },
+  {
+   "tex": "S_9",
+   "display": false
+  },
+  {
+   "tex": "\\overline{CR}",
+   "display": false
+  },
+  {
+   "tex": "\\overline{LD}",
+   "display": false
+  },
+  {
+   "tex": "CP",
+   "display": false
+  },
+  {
+   "tex": "D_0,D_1,D_2,D_3",
+   "display": false
+  },
+  {
+   "tex": "CT_T",
+   "display": false
+  },
+  {
+   "tex": "CT_P",
+   "display": false
+  },
+  {
+   "tex": "CP",
+   "display": false
+  },
+  {
+   "tex": "Q_0,Q_1,Q_2,Q_3",
+   "display": false
+  },
+  {
+   "tex": "CO",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "D_3D_2D_1D_0",
+   "display": false
+  },
+  {
+   "tex": "CO",
+   "display": false
+  },
+  {
+   "tex": "\\overline{CR}",
+   "display": false
+  },
+  {
+   "tex": "\\overline{LD}",
+   "display": false
+  },
+  {
+   "tex": "\\overline{CR}",
+   "display": false
+  },
+  {
+   "tex": "\\overline{LD}",
+   "display": false
+  },
+  {
+   "tex": "CT_TCT_P",
+   "display": false
+  },
+  {
+   "tex": "CP",
+   "display": false
+  },
+  {
+   "tex": "Q_3Q_2Q_1Q_0=0000",
+   "display": false
+  },
+  {
+   "tex": "Q_3Q_2Q_1Q_0\\leftarrow D_3D_2D_1D_0",
+   "display": false
+  },
+  {
+   "tex": "\\overline{CR}=0",
+   "display": false
+  },
+  {
+   "tex": "\\overline{R_D}",
+   "display": false
+  },
+  {
+   "tex": "\\overline{CR}=1",
+   "display": false
+  },
+  {
+   "tex": "\\overline{LD}=0",
+   "display": false
+  },
+  {
+   "tex": "CP",
+   "display": false
+  },
+  {
+   "tex": "D_3D_2D_1D_0",
+   "display": false
+  },
+  {
+   "tex": "\\overline{CR}=1",
+   "display": false
+  },
+  {
+   "tex": "\\overline{LD}=1",
+   "display": false
+  },
+  {
+   "tex": "CT_T=CT_P=1",
+   "display": false
+  },
+  {
+   "tex": "CP",
+   "display": false
+  },
+  {
+   "tex": "\\overline{CR}=1",
+   "display": false
+  },
+  {
+   "tex": "\\overline{LD}=1",
+   "display": false
+  },
+  {
+   "tex": "CT_T",
+   "display": false
+  },
+  {
+   "tex": "CT_P",
+   "display": false
+  },
+  {
+   "tex": "N",
+   "display": false
+  },
+  {
+   "tex": "N-1",
+   "display": false
+  },
+  {
+   "tex": "\\overline{LD}=0",
+   "display": false
+  },
+  {
+   "tex": "CP",
+   "display": false
+  },
+  {
+   "tex": "Q_3",
+   "display": false
+  },
+  {
+   "tex": "CP_0",
+   "display": false
+  },
+  {
+   "tex": "N",
+   "display": false
+  },
+  {
+   "tex": "N",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "Q",
+   "display": false
+  },
+  {
+   "tex": "CP",
+   "display": false
+  },
+  {
+   "tex": "Q^{n+1}=D",
+   "display": false
+  },
+  {
+   "tex": "CP",
+   "display": false
+  },
+  {
+   "tex": "CP",
+   "display": false
+  },
+  {
+   "tex": "Q_0,Q_1,Q_2,Q_3",
+   "display": false
+  },
+  {
+   "tex": "D_I",
+   "display": false
+  },
+  {
+   "tex": "FF_0",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "Q_0",
+   "display": false
+  },
+  {
+   "tex": "FF_1",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "FF_2",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "Q_2",
+   "display": false
+  },
+  {
+   "tex": "FF_3",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "Q^{n+1}=D",
+   "display": false
+  },
+  {
+   "tex": "Q_0",
+   "display": false
+  },
+  {
+   "tex": "Q_0",
+   "display": false
+  },
+  {
+   "tex": "Q_0",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "Q_0",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "Q_2",
+   "display": false
+  },
+  {
+   "tex": "Q_3",
+   "display": false
+  },
+  {
+   "tex": "S",
+   "display": false
+  },
+  {
+   "tex": "S=0",
+   "display": false
+  },
+  {
+   "tex": "M_1",
+   "display": false
+  },
+  {
+   "tex": "M_0",
+   "display": false
+  },
+  {
+   "tex": "CP",
+   "display": false
+  },
+  {
+   "tex": "CP",
+   "display": false
+  },
+  {
+   "tex": "M_1M_0",
+   "display": false
+  },
+  {
+   "tex": "M_1M_0",
+   "display": false
+  },
+  {
+   "tex": "Q_0",
+   "display": false
+  },
+  {
+   "tex": "M_1M_0=11",
+   "display": false
+  },
+  {
+   "tex": "FF_3",
+   "display": false
+  },
+  {
+   "tex": "CO",
+   "display": false
+  },
+  {
+   "tex": "Q_3",
+   "display": false
+  },
+  {
+   "tex": "M_1M_0=10",
+   "display": false
+  },
+  {
+   "tex": "S",
+   "display": false
+  },
+  {
+   "tex": "S=0",
+   "display": false
+  },
+  {
+   "tex": "S_9",
+   "display": false
+  },
+  {
+   "tex": "\\overline{LD}",
+   "display": false
+  },
+  {
+   "tex": "R_{0(1)}",
+   "display": false
+  },
+  {
+   "tex": "R_{0(2)}",
+   "display": false
+  },
+  {
+   "tex": "S_{9(1)}",
+   "display": false
+  },
+  {
+   "tex": "S_{9(2)}",
+   "display": false
+  },
+  {
+   "tex": "\\overline{CR}",
+   "display": false
+  },
+  {
+   "tex": "\\overline{LD}",
+   "display": false
+  },
+  {
+   "tex": "CP_1",
+   "display": false
+  },
+  {
+   "tex": "CP_0",
+   "display": false
+  },
+  {
+   "tex": "M_1M_0=10",
+   "display": false
+  },
+  {
+   "tex": "Q_3",
+   "display": false
+  },
+  {
+   "tex": "Q_2",
+   "display": false
+  },
+  {
+   "tex": "Q_3Q_2Q_1",
+   "display": false
+  },
+  {
+   "tex": "Q_2",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "R_{0(2)}",
+   "display": false
+  },
+  {
+   "tex": "Q_0",
+   "display": false
+  },
+  {
+   "tex": "R_{0(1)}",
+   "display": false
+  },
+  {
+   "tex": "\\overline{CR}",
+   "display": false
+  },
+  {
+   "tex": "Q_3",
+   "display": false
+  },
+  {
+   "tex": "Q_0",
+   "display": false
+  },
+  {
+   "tex": "\\overline{LD}",
+   "display": false
+  },
+  {
+   "tex": "Q_3",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "Q_2",
+   "display": false
+  },
+  {
+   "tex": "R_{0(1)}",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "R_{0(2)}",
+   "display": false
+  },
+  {
+   "tex": "Q_2",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "Q_3",
+   "display": false
+  },
+  {
+   "tex": "Q_3",
+   "display": false
+  },
+  {
+   "tex": "\\overline{LD}",
+   "display": false
+  },
+  {
+   "tex": "Q_3",
+   "display": false
+  },
+  {
+   "tex": "Q_0",
+   "display": false
+  },
+  {
+   "tex": "Q_2",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "Q_2",
+   "display": false
+  },
+  {
+   "tex": "Q_3",
+   "display": false
+  },
+  {
+   "tex": "\\overline{CR}",
+   "display": false
+  },
+  {
+   "tex": "\\overline{LD}",
+   "display": false
+  },
+  {
+   "tex": "CT_T",
+   "display": false
+  },
+  {
+   "tex": "CT_P",
+   "display": false
+  },
+  {
+   "tex": "CO",
+   "display": false
+  },
+  {
+   "tex": "CO",
+   "display": false
+  },
+  {
+   "tex": "Q_0\\to Q_1\\to Q_2\\to Q_3",
+   "display": false
+  },
+  {
+   "tex": "Q^{n+1}=D",
+   "display": false
+  }
+ ]
+}

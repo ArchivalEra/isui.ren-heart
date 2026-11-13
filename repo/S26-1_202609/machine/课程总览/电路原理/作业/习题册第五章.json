@@ -1,0 +1,1694 @@
+{
+ "url": "课程总览/电路原理/作业/习题册第五章.html",
+ "title": "习题册第五章（62 题）",
+ "math": [
+  {
+   "tex": "Z=\\mathbf{2-j\\ \\Omega}\\quad(\\text{容性})",
+   "display": true
+  },
+  {
+   "tex": "Z=\\mathbf{5.5-j4.75\\ \\Omega}",
+   "display": true
+  },
+  {
+   "tex": "I=\\sqrt{\\frac{50^2+10^2+20^2}{2}}=\\sqrt{1500}=\\mathbf{38.7\\ A}",
+   "display": true
+  },
+  {
+   "tex": "P_1=\\frac{100}{\\sqrt2}\\frac{50}{\\sqrt2}\\cos45°=1767.8,\\quad\n    P_3=\\frac{30}{\\sqrt2}\\frac{10}{\\sqrt2}\\cos60°=75",
+   "display": true
+  },
+  {
+   "tex": "P=\\mathbf{1842.8\\ W}",
+   "display": true
+  },
+  {
+   "tex": "\\frac{1200}{144+X_L^2}=3\\Rightarrow X_L=16\\ \\Omega;\\qquad\n    \\frac{100X_L}{144+X_L^2}=\\frac{100}{X_C}\\Rightarrow X_C=25\\ \\Omega",
+   "display": true
+  },
+  {
+   "tex": "\\mathbf{X_L=16\\ \\Omega,\\quad X_C=25\\ \\Omega}",
+   "display": true
+  },
+  {
+   "tex": "u_L=\\mathbf{10\\sqrt2\\sin(2t+45°)}\\ \\text{V}\\qquad\n    u_C=\\mathbf{5\\sqrt2\\sin(2t-135°)}\\ \\text{V}",
+   "display": true
+  },
+  {
+   "tex": "U=\\sqrt{100^2+\\frac{22.4^2+4.11^2}{2}}\\approx\\mathbf{101\\ V}",
+   "display": true
+  },
+  {
+   "tex": "P=\\frac{U^2}{R}=\\mathbf{684\\ W}",
+   "display": true
+  },
+  {
+   "tex": "\\dot U_{oc}=200\\angle0°\\times\\frac{100+j200}{300+j200}\\approx(107.7+j61.5)=124\\angle29.7°\\ \\text{V}",
+   "display": true
+  },
+  {
+   "tex": "P=I_{LR}^2R=\\mathbf{96.8\\ W}\\qquad Q=X_LI_{LR}^2-X_CI_C^2=\\mathbf{72.6\\ var}\\qquad\n    S=\\sqrt{P^2+Q^2}=\\mathbf{121\\ VA}",
+   "display": true
+  },
+  {
+   "tex": "\\dot U_C=-75\\angle0°+75\\angle-60°=75\\angle-120°\\ \\text{V}\n    \\;\\Rightarrow\\;u_C=\\mathbf{75\\sqrt2\\sin(t-120°)\\ V}",
+   "display": true
+  },
+  {
+   "tex": "\\dot U_{oc}=\\mathbf{56.6\\angle135°\\ V}\\qquad Z_{th}=\\mathbf{-20+j10\\ \\Omega}",
+   "display": true
+  },
+  {
+   "tex": "P=I^2R\\approx\\mathbf{469.5\\ W}\\qquad Q=I^2X\\approx\\mathbf{1432.6\\ var}\\qquad\n    S=UI\\approx\\mathbf{1507.6\\ VA}",
+   "display": true
+  },
+  {
+   "tex": "Z=Z_{th}^*=\\mathbf{100+j200\\ \\Omega}\\qquad P_{max}=\\frac{200^2}{4\\times100}=\\mathbf{100\\ W}",
+   "display": true
+  },
+  {
+   "tex": "Z_L=Z_{th}^*=\\mathbf{2-j2\\ \\Omega}\\qquad P_{max}=\\frac{|4+j4|^2}{4\\times2}=\\mathbf{4\\ W}",
+   "display": true
+  },
+  {
+   "tex": "P=I^2\\times8=\\mathbf{40\\ W}\\qquad Q=I^2\\times4=\\mathbf{20\\ var}\\qquad S=UI=\\mathbf{44.7\\ VA}",
+   "display": true
+  },
+  {
+   "tex": "\\dot I=\\dot I_1+\\dot I_2=10\\angle0°\\ \\text{A}\\qquad(\\text{与 } \\dot U_p \\text{ 同相})",
+   "display": true
+  },
+  {
+   "tex": "X_C=\\frac{150}{10}=\\mathbf{15\\ \\Omega}\\qquad\n    |Z_2|=\\frac{150}{10\\sqrt2}\\Rightarrow R_2=X_L=\\mathbf{7.5\\ \\Omega}",
+   "display": true
+  },
+  {
+   "tex": "A\\sin(\\omega t+\\varphi)",
+   "display": false
+  },
+  {
+   "tex": "\\sqrt2",
+   "display": false
+  },
+  {
+   "tex": "i",
+   "display": false
+  },
+  {
+   "tex": "\\varphi",
+   "display": false
+  },
+  {
+   "tex": "\\varphi_i>\\varphi_u",
+   "display": false
+  },
+  {
+   "tex": "Z=R+jX",
+   "display": false
+  },
+  {
+   "tex": "+j\\omega L",
+   "display": false
+  },
+  {
+   "tex": "-j1/\\omega C",
+   "display": false
+  },
+  {
+   "tex": "Y=1/Z",
+   "display": false
+  },
+  {
+   "tex": "P=UI\\cos\\varphi",
+   "display": false
+  },
+  {
+   "tex": "Q=UI\\sin\\varphi",
+   "display": false
+  },
+  {
+   "tex": "S=UI=\\sqrt{P^2+Q^2}",
+   "display": false
+  },
+  {
+   "tex": "\\bar S=\\dot U\\dot I^*",
+   "display": false
+  },
+  {
+   "tex": "Z_L=Z_{th}^*",
+   "display": false
+  },
+  {
+   "tex": "P_{max}=U_{oc}^2/4\\,\\mathrm{Re}\\,Z_{th}",
+   "display": false
+  },
+  {
+   "tex": "-30°",
+   "display": false
+  },
+  {
+   "tex": "\\dot I=2\\angle-30°",
+   "display": false
+  },
+  {
+   "tex": "\\dot I_m",
+   "display": false
+  },
+  {
+   "tex": "2\\sqrt2\\angle-30°",
+   "display": false
+  },
+  {
+   "tex": "\\dot I",
+   "display": false
+  },
+  {
+   "tex": "\\dot I_m",
+   "display": false
+  },
+  {
+   "tex": "-j5\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "|Z|=5\\sqrt2",
+   "display": false
+  },
+  {
+   "tex": "\\cos\\varphi=R/|Z|=0.707",
+   "display": false
+  },
+  {
+   "tex": "R",
+   "display": false
+  },
+  {
+   "tex": "X",
+   "display": false
+  },
+  {
+   "tex": "\\cos\\varphi=0.707",
+   "display": false
+  },
+  {
+   "tex": "90°",
+   "display": false
+  },
+  {
+   "tex": "I=\\sqrt{I_1^2+I_2^2}",
+   "display": false
+  },
+  {
+   "tex": "I_2=\\sqrt{10^2-6^2}=8",
+   "display": false
+  },
+  {
+   "tex": "6+8=14",
+   "display": false
+  },
+  {
+   "tex": "\\omega",
+   "display": false
+  },
+  {
+   "tex": "\\omega",
+   "display": false
+  },
+  {
+   "tex": "X_C=1/\\omega C",
+   "display": false
+  },
+  {
+   "tex": "X_L=\\omega L",
+   "display": false
+  },
+  {
+   "tex": "\\dot U=10\\angle0°",
+   "display": false
+  },
+  {
+   "tex": "\\dot I=5\\angle60°",
+   "display": false
+  },
+  {
+   "tex": "P=UI\\cos\\varphi=10\\times5\\times\\cos60°=25",
+   "display": false
+  },
+  {
+   "tex": "P>0",
+   "display": false
+  },
+  {
+   "tex": "\\varphi=\\varphi_u-\\varphi_i=-60°",
+   "display": false
+  },
+  {
+   "tex": "u=5\\sin(100\\pi t+45°)",
+   "display": false
+  },
+  {
+   "tex": "f=",
+   "display": false
+  },
+  {
+   "tex": "f=\\omega/2\\pi=100\\pi/2\\pi=50",
+   "display": false
+  },
+  {
+   "tex": "\\omega",
+   "display": false
+  },
+  {
+   "tex": "2\\pi",
+   "display": false
+  },
+  {
+   "tex": "\\dot U=10\\angle0°",
+   "display": false
+  },
+  {
+   "tex": "\\dot I=5\\angle30°",
+   "display": false
+  },
+  {
+   "tex": "Q=UI\\sin\\varphi=50\\times\\sin(0-30°)=-25",
+   "display": false
+  },
+  {
+   "tex": "\\varphi<0",
+   "display": false
+  },
+  {
+   "tex": "Q",
+   "display": false
+  },
+  {
+   "tex": "R=",
+   "display": false
+  },
+  {
+   "tex": "R_0=4\\ \\Omega",
+   "display": false
+  },
+  {
+   "tex": "R_0",
+   "display": false
+  },
+  {
+   "tex": "\\dot U=Ri(t)",
+   "display": false
+  },
+  {
+   "tex": "\\dot U=R\\dot I",
+   "display": false
+  },
+  {
+   "tex": "u=Ri",
+   "display": false
+  },
+  {
+   "tex": "\\dot I=1\\angle0°",
+   "display": false
+  },
+  {
+   "tex": "36.9°",
+   "display": false
+  },
+  {
+   "tex": "P=80",
+   "display": false
+  },
+  {
+   "tex": "\\dot U=",
+   "display": false
+  },
+  {
+   "tex": "U=P/(I\\cos36.9°)=80/0.8=100",
+   "display": false
+  },
+  {
+   "tex": "\\varphi_u=-36.9°",
+   "display": false
+  },
+  {
+   "tex": "\\dot U=100\\angle-36.9°",
+   "display": false
+  },
+  {
+   "tex": "\\varphi_u<\\varphi_i",
+   "display": false
+  },
+  {
+   "tex": "U_R=\\sqrt{30^2-18^2}=24",
+   "display": false
+  },
+  {
+   "tex": "I",
+   "display": false
+  },
+  {
+   "tex": "U",
+   "display": false
+  },
+  {
+   "tex": "I=U/|Z|=U/\\sqrt{R^2+(X_L-X_C)^2}",
+   "display": false
+  },
+  {
+   "tex": "X_L",
+   "display": false
+  },
+  {
+   "tex": "X_C",
+   "display": false
+  },
+  {
+   "tex": "\\dot U=100\\angle-15°",
+   "display": false
+  },
+  {
+   "tex": "P=500",
+   "display": false
+  },
+  {
+   "tex": "\\cos\\varphi=0.5",
+   "display": false
+  },
+  {
+   "tex": "\\dot I=",
+   "display": false
+  },
+  {
+   "tex": "I=P/(U\\cos\\varphi)=10",
+   "display": false
+  },
+  {
+   "tex": "\\varphi=\\pm60°",
+   "display": false
+  },
+  {
+   "tex": "\\varphi_i=-15°\\mp60°=\\angle-75°",
+   "display": false
+  },
+  {
+   "tex": "\\angle45°",
+   "display": false
+  },
+  {
+   "tex": "45°",
+   "display": false
+  },
+  {
+   "tex": "\\dot I=10\\angle45°",
+   "display": false
+  },
+  {
+   "tex": "-75°",
+   "display": false
+  },
+  {
+   "tex": "\\cos\\varphi=1",
+   "display": false
+  },
+  {
+   "tex": "X_L=X_C",
+   "display": false
+  },
+  {
+   "tex": "X_L",
+   "display": false
+  },
+  {
+   "tex": "u=U_m\\sin(\\omega t+180°)",
+   "display": false
+  },
+  {
+   "tex": "i=I_m\\sin\\omega t",
+   "display": false
+  },
+  {
+   "tex": "180°",
+   "display": false
+  },
+  {
+   "tex": "u=-U_m\\sin\\omega t",
+   "display": false
+  },
+  {
+   "tex": "u/i",
+   "display": false
+  },
+  {
+   "tex": "90°",
+   "display": false
+  },
+  {
+   "tex": "180°",
+   "display": false
+  },
+  {
+   "tex": "0°",
+   "display": false
+  },
+  {
+   "tex": "180°",
+   "display": false
+  },
+  {
+   "tex": "Z_1=R",
+   "display": false
+  },
+  {
+   "tex": "Z_2",
+   "display": false
+  },
+  {
+   "tex": "3+4=7",
+   "display": false
+  },
+  {
+   "tex": "Z_2",
+   "display": false
+  },
+  {
+   "tex": "Z_2",
+   "display": false
+  },
+  {
+   "tex": "\\sqrt{3^2+4^2}=5",
+   "display": false
+  },
+  {
+   "tex": "Z=5+j10\\ \\Omega",
+   "display": false
+  },
+  {
+   "tex": "Y=\\dfrac{5-j10}{125}=0.04-j0.08",
+   "display": false
+  },
+  {
+   "tex": "\\mathbf{0.04}",
+   "display": false
+  },
+  {
+   "tex": "G=\\dfrac{R}{R^2+X^2}",
+   "display": false
+  },
+  {
+   "tex": "1/R",
+   "display": false
+  },
+  {
+   "tex": "u=8\\sin(500t+50°)",
+   "display": false
+  },
+  {
+   "tex": "i=2\\sin(500t+140°)",
+   "display": false
+  },
+  {
+   "tex": "i",
+   "display": false
+  },
+  {
+   "tex": "u",
+   "display": false
+  },
+  {
+   "tex": "90°",
+   "display": false
+  },
+  {
+   "tex": "X_C=8/2=4\\ \\Omega",
+   "display": false
+  },
+  {
+   "tex": "C=1/(500\\times4)=0.0005",
+   "display": false
+  },
+  {
+   "tex": "u",
+   "display": false
+  },
+  {
+   "tex": "i",
+   "display": false
+  },
+  {
+   "tex": "90°",
+   "display": false
+  },
+  {
+   "tex": "I=\\sqrt{I_2^2-I_1^2}=\\sqrt{15^2-9^2}=12",
+   "display": false
+  },
+  {
+   "tex": "I_2",
+   "display": false
+  },
+  {
+   "tex": "I_1",
+   "display": false
+  },
+  {
+   "tex": "I",
+   "display": false
+  },
+  {
+   "tex": "X_L=3\\ \\Omega",
+   "display": false
+  },
+  {
+   "tex": "X_C=1\\ \\Omega",
+   "display": false
+  },
+  {
+   "tex": "U=10",
+   "display": false
+  },
+  {
+   "tex": "U_L=",
+   "display": false
+  },
+  {
+   "tex": "I=U/|j3-j1|=10/2=5",
+   "display": false
+  },
+  {
+   "tex": "U_L=5\\times3=15",
+   "display": false
+  },
+  {
+   "tex": "3-1=2\\ \\Omega",
+   "display": false
+  },
+  {
+   "tex": "90°",
+   "display": false
+  },
+  {
+   "tex": "QU",
+   "display": false
+  },
+  {
+   "tex": "U=\\sqrt{3^2+4^2}=5",
+   "display": false
+  },
+  {
+   "tex": "\\dot U=10\\angle0°",
+   "display": false
+  },
+  {
+   "tex": "Y=1/4+j/4",
+   "display": false
+  },
+  {
+   "tex": "P=U^2G=100\\times0.25=25",
+   "display": false
+  },
+  {
+   "tex": "P=2",
+   "display": false
+  },
+  {
+   "tex": "Z_1=2\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "Z_2=2+j\\ \\Omega",
+   "display": false
+  },
+  {
+   "tex": "Z_1",
+   "display": false
+  },
+  {
+   "tex": "R=2+2=4\\ \\Omega",
+   "display": false
+  },
+  {
+   "tex": "I^2=P_{\\text{源}}/4=0.5",
+   "display": false
+  },
+  {
+   "tex": "P_{Z1}=0.5\\times2=\\mathbf{1\\ W}",
+   "display": false
+  },
+  {
+   "tex": "u=\\frac{10}{\\sqrt2}\\sin t",
+   "display": false
+  },
+  {
+   "tex": "i=\\sin(t+45°)",
+   "display": false
+  },
+  {
+   "tex": "R=",
+   "display": false
+  },
+  {
+   "tex": "U=5",
+   "display": false
+  },
+  {
+   "tex": "I=1/\\sqrt2",
+   "display": false
+  },
+  {
+   "tex": "\\varphi=-45°",
+   "display": false
+  },
+  {
+   "tex": "R=(U/I)\\cos\\varphi=5\\sqrt2\\times0.707=5\\ \\Omega",
+   "display": false
+  },
+  {
+   "tex": "Z=5-j5\\ \\Omega",
+   "display": false
+  },
+  {
+   "tex": "u_R=5\\sqrt2\\sin(\\omega t+10°)",
+   "display": false
+  },
+  {
+   "tex": "u_L=5\\sqrt2\\sin(\\omega t+100°)",
+   "display": false
+  },
+  {
+   "tex": "u",
+   "display": false
+  },
+  {
+   "tex": "90°",
+   "display": false
+  },
+  {
+   "tex": "U=5\\sqrt2",
+   "display": false
+  },
+  {
+   "tex": "\\varphi=55°",
+   "display": false
+  },
+  {
+   "tex": "10",
+   "display": false
+  },
+  {
+   "tex": "u=10\\sin(\\omega t+55°)",
+   "display": false
+  },
+  {
+   "tex": "\\sqrt2",
+   "display": false
+  },
+  {
+   "tex": "Z=1+j1\\ \\Omega",
+   "display": false
+  },
+  {
+   "tex": "\\lambda=",
+   "display": false
+  },
+  {
+   "tex": "\\cos45°=0.707",
+   "display": false
+  },
+  {
+   "tex": "R=X",
+   "display": false
+  },
+  {
+   "tex": "I=2",
+   "display": false
+  },
+  {
+   "tex": "P=",
+   "display": false
+  },
+  {
+   "tex": "Z=(j5\\times10)/(5+j10)=2+j4",
+   "display": false
+  },
+  {
+   "tex": "P=I^2\\,\\mathrm{Re}\\,Z=4\\times2=\\mathbf{8\\ W}",
+   "display": false
+  },
+  {
+   "tex": "P=I^2R_{eq}",
+   "display": false
+  },
+  {
+   "tex": "\\mathbf{\\sqrt2}",
+   "display": false
+  },
+  {
+   "tex": "1+j1",
+   "display": false
+  },
+  {
+   "tex": "-j1",
+   "display": false
+  },
+  {
+   "tex": "(1+j1)(-j1)/(1+j1-j1)=1-j",
+   "display": false
+  },
+  {
+   "tex": "3+j4=5\\angle53.13°",
+   "display": false
+  },
+  {
+   "tex": "\\dfrac{5(3+j4)}{8+j4}=2.5+j1.25",
+   "display": false
+  },
+  {
+   "tex": "3-j6",
+   "display": false
+  },
+  {
+   "tex": "(15+j20)(8-j4)/80=2.5+j1.25",
+   "display": false
+  },
+  {
+   "tex": "u=10\\sin(400\\pi t+60°)",
+   "display": false
+  },
+  {
+   "tex": "U=",
+   "display": false
+  },
+  {
+   "tex": "\\omega=",
+   "display": false
+  },
+  {
+   "tex": "\\omega=",
+   "display": false
+  },
+  {
+   "tex": "f=",
+   "display": false
+  },
+  {
+   "tex": "U=10/\\sqrt2=\\mathbf{7.07}",
+   "display": false
+  },
+  {
+   "tex": "\\omega=\\mathbf{400\\pi}\\approx1256.64",
+   "display": false
+  },
+  {
+   "tex": "f=\\omega/2\\pi=\\mathbf{200}",
+   "display": false
+  },
+  {
+   "tex": "\\dot U=(-6-j8)",
+   "display": false
+  },
+  {
+   "tex": "\\dot I=-30",
+   "display": false
+  },
+  {
+   "tex": "\\dot U=10\\angle-126.87°",
+   "display": false
+  },
+  {
+   "tex": "u=\\mathbf{10\\sqrt2\\sin(100\\pi t-126.87°)}",
+   "display": false
+  },
+  {
+   "tex": "\\dot I=30\\angle180°",
+   "display": false
+  },
+  {
+   "tex": "i=\\mathbf{30\\sqrt2\\sin(100\\pi t+180°)}",
+   "display": false
+  },
+  {
+   "tex": "\\omega=2\\pi f=100\\pi",
+   "display": false
+  },
+  {
+   "tex": "u_{ab}=100+100\\sin\\omega t+30\\sin3\\omega t",
+   "display": false
+  },
+  {
+   "tex": "i=50\\sin(\\omega t-45°)+10\\sin(3\\omega t-60°)+20\\sin5\\omega t",
+   "display": false
+  },
+  {
+   "tex": "i",
+   "display": false
+  },
+  {
+   "tex": "u=10\\sqrt2\\sin(250t+15°)",
+   "display": false
+  },
+  {
+   "tex": "C=8\\,\\mu",
+   "display": false
+  },
+  {
+   "tex": "P",
+   "display": false
+  },
+  {
+   "tex": "L=",
+   "display": false
+  },
+  {
+   "tex": "R=",
+   "display": false
+  },
+  {
+   "tex": "P",
+   "display": false
+  },
+  {
+   "tex": "\\omega^2=1/(LC)",
+   "display": false
+  },
+  {
+   "tex": "L=1/(250^2\\times8\\times10^{-6})=\\mathbf{2\\ H}",
+   "display": false
+  },
+  {
+   "tex": "R=U^2/P=100/100=\\mathbf{1\\ \\Omega}",
+   "display": false
+  },
+  {
+   "tex": "X_L=X_C",
+   "display": false
+  },
+  {
+   "tex": "u=5\\sqrt2\\sin\\omega t",
+   "display": false
+  },
+  {
+   "tex": "\\dot U=\\mathbf{5\\angle0°}",
+   "display": false
+  },
+  {
+   "tex": "\\dot U_S=100\\angle0°",
+   "display": false
+  },
+  {
+   "tex": "P=300",
+   "display": false
+  },
+  {
+   "tex": "\\cos\\varphi=1",
+   "display": false
+  },
+  {
+   "tex": "X_L",
+   "display": false
+  },
+  {
+   "tex": "X_C",
+   "display": false
+  },
+  {
+   "tex": "jX_L",
+   "display": false
+  },
+  {
+   "tex": "-jX_C",
+   "display": false
+  },
+  {
+   "tex": "\\cos\\varphi=1",
+   "display": false
+  },
+  {
+   "tex": "I=P/(U\\cos\\varphi)=3",
+   "display": false
+  },
+  {
+   "tex": "X_L",
+   "display": false
+  },
+  {
+   "tex": "X_C",
+   "display": false
+  },
+  {
+   "tex": "u=100\\sin1000t",
+   "display": false
+  },
+  {
+   "tex": "i=10\\sin(1000t+30°)",
+   "display": false
+  },
+  {
+   "tex": "\\cos(-30°)=\\mathbf{0.866}",
+   "display": false
+  },
+  {
+   "tex": "P=\\dfrac{100}{\\sqrt2}\\dfrac{10}{\\sqrt2}\\times0.866=\\mathbf{433.013\\ W}",
+   "display": false
+  },
+  {
+   "tex": "u=5\\sqrt2\\cos(\\omega t-210°)",
+   "display": false
+  },
+  {
+   "tex": "\\dot I=-30",
+   "display": false
+  },
+  {
+   "tex": "\\cos",
+   "display": false
+  },
+  {
+   "tex": "\\sin",
+   "display": false
+  },
+  {
+   "tex": "5\\sqrt2\\sin(\\omega t-120°)",
+   "display": false
+  },
+  {
+   "tex": "\\dot U=\\mathbf{5\\angle-120°}",
+   "display": false
+  },
+  {
+   "tex": "\\dot I=30\\angle180°",
+   "display": false
+  },
+  {
+   "tex": "i=\\mathbf{30\\sqrt2\\sin(100\\pi t+180°)}",
+   "display": false
+  },
+  {
+   "tex": "\\cos",
+   "display": false
+  },
+  {
+   "tex": "\\sin",
+   "display": false
+  },
+  {
+   "tex": "-90°",
+   "display": false
+  },
+  {
+   "tex": "-210°-90°=-300°\\equiv+60°",
+   "display": false
+  },
+  {
+   "tex": "\\sin(\\omega t-120°)",
+   "display": false
+  },
+  {
+   "tex": "\\angle-120°",
+   "display": false
+  },
+  {
+   "tex": "\\dot U=20\\angle0°",
+   "display": false
+  },
+  {
+   "tex": "P=16",
+   "display": false
+  },
+  {
+   "tex": "\\cos\\varphi=0.8",
+   "display": false
+  },
+  {
+   "tex": "-jX_C",
+   "display": false
+  },
+  {
+   "tex": "I=",
+   "display": false
+  },
+  {
+   "tex": "X_C=",
+   "display": false
+  },
+  {
+   "tex": "I=P/(U\\cos\\varphi)=1",
+   "display": false
+  },
+  {
+   "tex": "|Z|=20\\ \\Omega",
+   "display": false
+  },
+  {
+   "tex": "R=16\\ \\Omega",
+   "display": false
+  },
+  {
+   "tex": "X_C=\\sqrt{400-256}=\\mathbf{12\\ \\Omega}",
+   "display": false
+  },
+  {
+   "tex": "I",
+   "display": false
+  },
+  {
+   "tex": "R",
+   "display": false
+  },
+  {
+   "tex": "X_C",
+   "display": false
+  },
+  {
+   "tex": "P",
+   "display": false
+  },
+  {
+   "tex": "\\cos\\varphi",
+   "display": false
+  },
+  {
+   "tex": "|Z|",
+   "display": false
+  },
+  {
+   "tex": "u=15\\cos(400t+30°)",
+   "display": false
+  },
+  {
+   "tex": "i=3\\sin(400t+30°)",
+   "display": false
+  },
+  {
+   "tex": "u",
+   "display": false
+  },
+  {
+   "tex": "\\sin",
+   "display": false
+  },
+  {
+   "tex": "\\sin(400t+120°)",
+   "display": false
+  },
+  {
+   "tex": "i",
+   "display": false
+  },
+  {
+   "tex": "90°",
+   "display": false
+  },
+  {
+   "tex": "Z=\\dot U/\\dot I=5\\angle90°=\\mathbf{j5\\ \\Omega}",
+   "display": false
+  },
+  {
+   "tex": "L=5/400=\\mathbf{12.5\\ mH}",
+   "display": false
+  },
+  {
+   "tex": "I_l=\\dfrac{45000}{\\sqrt3\\times380\\times0.866}=79.0",
+   "display": false
+  },
+  {
+   "tex": "I_P=I_l",
+   "display": false
+  },
+  {
+   "tex": "|Z|=\\dfrac{380/\\sqrt3}{79.0}=\\mathbf{2.8\\ \\Omega}",
+   "display": false
+  },
+  {
+   "tex": "\\varphi=\\arccos0.866=\\mathbf{30°}",
+   "display": false
+  },
+  {
+   "tex": "\\sqrt3 U_l I_l\\cos\\varphi",
+   "display": false
+  },
+  {
+   "tex": "3U_P I_P",
+   "display": false
+  },
+  {
+   "tex": "u_s=10\\sin2t",
+   "display": false
+  },
+  {
+   "tex": "u_L(t)=",
+   "display": false
+  },
+  {
+   "tex": "u_C(t)=",
+   "display": false
+  },
+  {
+   "tex": "X_L=4\\ \\Omega",
+   "display": false
+  },
+  {
+   "tex": "X_C=2\\ \\Omega",
+   "display": false
+  },
+  {
+   "tex": "Z=2+j2=2\\sqrt2\\angle45°",
+   "display": false
+  },
+  {
+   "tex": "\\dot I_m=10/(2\\sqrt2\\angle45°)=2.5\\sqrt2\\angle-45°",
+   "display": false
+  },
+  {
+   "tex": "\\sin",
+   "display": false
+  },
+  {
+   "tex": "U=10",
+   "display": false
+  },
+  {
+   "tex": "I=2",
+   "display": false
+  },
+  {
+   "tex": "P=10",
+   "display": false
+  },
+  {
+   "tex": "jX_L",
+   "display": false
+  },
+  {
+   "tex": "R=",
+   "display": false
+  },
+  {
+   "tex": "X_L=",
+   "display": false
+  },
+  {
+   "tex": "\\cos\\varphi=P/(UI)=0.5",
+   "display": false
+  },
+  {
+   "tex": "R=|Z|\\cos\\varphi=5\\times0.5=\\mathbf{2.5\\ \\Omega}",
+   "display": false
+  },
+  {
+   "tex": "X_L=\\sqrt{25-6.25}=\\mathbf{4.33\\ \\Omega}",
+   "display": false
+  },
+  {
+   "tex": "U",
+   "display": false
+  },
+  {
+   "tex": "I",
+   "display": false
+  },
+  {
+   "tex": "P",
+   "display": false
+  },
+  {
+   "tex": "u=-5\\sqrt2\\sin(100t+120°)",
+   "display": false
+  },
+  {
+   "tex": "180°",
+   "display": false
+  },
+  {
+   "tex": "u=5\\sqrt2\\sin(100t-60°)",
+   "display": false
+  },
+  {
+   "tex": "\\mathbf{5}",
+   "display": false
+  },
+  {
+   "tex": "\\mathbf{-60°}",
+   "display": false
+  },
+  {
+   "tex": "-5\\sqrt2\\sin",
+   "display": false
+  },
+  {
+   "tex": "\\dot I=\\mathbf{j\\omega C}\\,\\dot U",
+   "display": false
+  },
+  {
+   "tex": "\\dot U=\\mathbf{j\\omega L}\\,\\dot I",
+   "display": false
+  },
+  {
+   "tex": "j\\omega",
+   "display": false
+  },
+  {
+   "tex": "u=100+22.4\\sin(\\omega t-45°)+4.11\\sin(3\\omega t-67°)",
+   "display": false
+  },
+  {
+   "tex": "U^2/R",
+   "display": false
+  },
+  {
+   "tex": "u_s=200\\sqrt2\\sin10^3t",
+   "display": false
+  },
+  {
+   "tex": "\\omega=10^3",
+   "display": false
+  },
+  {
+   "tex": "j\\omega L=j200\\ \\Omega",
+   "display": false
+  },
+  {
+   "tex": "U_{oc}=u_s",
+   "display": false
+  },
+  {
+   "tex": "Z_{th}=200\\parallel(100+j200)\\approx107.7+j61.5\\ \\Omega",
+   "display": false
+  },
+  {
+   "tex": "Z_{th}",
+   "display": false
+  },
+  {
+   "tex": "R=100\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "L=0.4",
+   "display": false
+  },
+  {
+   "tex": "C=5\\,\\mu",
+   "display": false
+  },
+  {
+   "tex": "u_s=220\\sqrt2\\sin500t",
+   "display": false
+  },
+  {
+   "tex": "P",
+   "display": false
+  },
+  {
+   "tex": "Q",
+   "display": false
+  },
+  {
+   "tex": "S",
+   "display": false
+  },
+  {
+   "tex": "X_L=200\\ \\Omega",
+   "display": false
+  },
+  {
+   "tex": "X_C=400\\ \\Omega",
+   "display": false
+  },
+  {
+   "tex": "I_C=220/400=0.55",
+   "display": false
+  },
+  {
+   "tex": "I_{LR}=220/\\sqrt{100^2+200^2}=0.984",
+   "display": false
+  },
+  {
+   "tex": "u_s=50\\sqrt2\\sin t",
+   "display": false
+  },
+  {
+   "tex": "i_s=10\\sqrt2\\sin(t+30°)",
+   "display": false
+  },
+  {
+   "tex": "L=5",
+   "display": false
+  },
+  {
+   "tex": "C=1/3",
+   "display": false
+  },
+  {
+   "tex": "u_C",
+   "display": false
+  },
+  {
+   "tex": "X_L=5\\ \\Omega",
+   "display": false
+  },
+  {
+   "tex": "X_C=3\\ \\Omega",
+   "display": false
+  },
+  {
+   "tex": "\\omega=1",
+   "display": false
+  },
+  {
+   "tex": "u_s",
+   "display": false
+  },
+  {
+   "tex": "i_s",
+   "display": false
+  },
+  {
+   "tex": "\\dot U_C'=50\\angle0°\\times\\frac{-j3}{j5-j3}=-75\\angle0°",
+   "display": false
+  },
+  {
+   "tex": "i_s",
+   "display": false
+  },
+  {
+   "tex": "u_s",
+   "display": false
+  },
+  {
+   "tex": "\\dot U_C''=\\dfrac{j5}{j5-j3}\\times10\\angle30°\\times(-j3)=75\\angle-60°",
+   "display": false
+  },
+  {
+   "tex": "\\omega=1",
+   "display": false
+  },
+  {
+   "tex": "2+0.1\\dot U_1=\\dot U_1/20",
+   "display": false
+  },
+  {
+   "tex": "\\dot U_1=-40",
+   "display": false
+  },
+  {
+   "tex": "\\dot U_{oc}=V_a=\\dot U_1+0.1\\dot U_1\\times(-j10)=-40+j40=56.6\\angle135°",
+   "display": false
+  },
+  {
+   "tex": "\\dot I",
+   "display": false
+  },
+  {
+   "tex": "\\dot I+0.1\\dot U_1=\\dot U_1/20",
+   "display": false
+  },
+  {
+   "tex": "\\dot U_1=-20\\dot I",
+   "display": false
+  },
+  {
+   "tex": "V_a=\\dot U_1-j10\\dot U_1/20=(-20+j10)\\dot I",
+   "display": false
+  },
+  {
+   "tex": "\\mathrm{Re}\\,Z_{th}<0",
+   "display": false
+  },
+  {
+   "tex": "u_s=220\\sqrt2\\sin\\omega t",
+   "display": false
+  },
+  {
+   "tex": "R=10\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "L=300",
+   "display": false
+  },
+  {
+   "tex": "C=50\\,\\mu",
+   "display": false
+  },
+  {
+   "tex": "P",
+   "display": false
+  },
+  {
+   "tex": "Q",
+   "display": false
+  },
+  {
+   "tex": "S",
+   "display": false
+  },
+  {
+   "tex": "\\omega",
+   "display": false
+  },
+  {
+   "tex": "\\omega=314",
+   "display": false
+  },
+  {
+   "tex": "X_L=94.2\\ \\Omega",
+   "display": false
+  },
+  {
+   "tex": "X_C=63.7\\ \\Omega",
+   "display": false
+  },
+  {
+   "tex": "Z=10+j30.5=32.1\\angle71.9°",
+   "display": false
+  },
+  {
+   "tex": "I=220/32.1=6.85",
+   "display": false
+  },
+  {
+   "tex": "\\omega=100\\pi",
+   "display": false
+  },
+  {
+   "tex": "P\\approx467",
+   "display": false
+  },
+  {
+   "tex": "\\omega",
+   "display": false
+  },
+  {
+   "tex": "\\dot U_{oc}=200\\angle0°",
+   "display": false
+  },
+  {
+   "tex": "Z_{th}=100-j200\\ \\Omega",
+   "display": false
+  },
+  {
+   "tex": "P_{max}=U_{oc}^2/4R_{th}",
+   "display": false
+  },
+  {
+   "tex": "Z_L",
+   "display": false
+  },
+  {
+   "tex": "V_n=4(1+j)=4\\sqrt2\\angle45°",
+   "display": false
+  },
+  {
+   "tex": "Z_{th}=(2+2)\\parallel j4=2+j2\\ \\Omega",
+   "display": false
+  },
+  {
+   "tex": "M",
+   "display": false
+  },
+  {
+   "tex": "4=V_M/2+(V_M-V_n)/2",
+   "display": false
+  },
+  {
+   "tex": "n",
+   "display": false
+  },
+  {
+   "tex": "(V_M-V_n)/2=V_n/j4",
+   "display": false
+  },
+  {
+   "tex": "Z_{th}=3.6+j0.8\\ \\Omega",
+   "display": false
+  },
+  {
+   "tex": "P_{max}=2.22",
+   "display": false
+  },
+  {
+   "tex": "2+j2\\ \\Omega",
+   "display": false
+  },
+  {
+   "tex": "\\dot U=20\\angle0°",
+   "display": false
+  },
+  {
+   "tex": "P",
+   "display": false
+  },
+  {
+   "tex": "Q",
+   "display": false
+  },
+  {
+   "tex": "S",
+   "display": false
+  },
+  {
+   "tex": "Y=\\frac{1}{6+j8}+\\frac{1}{16-j12}=(0.06-j0.08)+(0.04+j0.03)=0.1-j0.05",
+   "display": false
+  },
+  {
+   "tex": "Z=8+j4\\ \\Omega",
+   "display": false
+  },
+  {
+   "tex": "I=20/8.944=2.236",
+   "display": false
+  },
+  {
+   "tex": "\\bar S=\\dot U\\dot I^*=P+jQ",
+   "display": false
+  },
+  {
+   "tex": "I_1=10",
+   "display": false
+  },
+  {
+   "tex": "I_2=10\\sqrt2",
+   "display": false
+  },
+  {
+   "tex": "U=200",
+   "display": false
+  },
+  {
+   "tex": "R=5\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "R_2=X_L",
+   "display": false
+  },
+  {
+   "tex": "I",
+   "display": false
+  },
+  {
+   "tex": "X_C",
+   "display": false
+  },
+  {
+   "tex": "X_L",
+   "display": false
+  },
+  {
+   "tex": "R_2",
+   "display": false
+  },
+  {
+   "tex": "\\dot U_p=U_p\\angle0°",
+   "display": false
+  },
+  {
+   "tex": "\\dot I_1=j10",
+   "display": false
+  },
+  {
+   "tex": "\\dot I_2=10\\sqrt2\\angle-45°=10-j10",
+   "display": false
+  },
+  {
+   "tex": "R_2=X_L",
+   "display": false
+  },
+  {
+   "tex": "45°",
+   "display": false
+  },
+  {
+   "tex": "IR=50",
+   "display": false
+  },
+  {
+   "tex": "U_p=200-50=150",
+   "display": false
+  },
+  {
+   "tex": "\\dot U_p",
+   "display": false
+  },
+  {
+   "tex": "\\dot I_1",
+   "display": false
+  },
+  {
+   "tex": "\\dot I_2",
+   "display": false
+  },
+  {
+   "tex": "\\dot I",
+   "display": false
+  },
+  {
+   "tex": "R_2=X_L",
+   "display": false
+  },
+  {
+   "tex": "P",
+   "display": false
+  },
+  {
+   "tex": "Q",
+   "display": false
+  },
+  {
+   "tex": "S",
+   "display": false
+  },
+  {
+   "tex": "\\cos\\varphi",
+   "display": false
+  },
+  {
+   "tex": "Z_L=Z_{th}^*",
+   "display": false
+  },
+  {
+   "tex": "P_{max}=U_{oc}^2/4R_{th}",
+   "display": false
+  },
+  {
+   "tex": "Z_{th}",
+   "display": false
+  },
+  {
+   "tex": "38.7",
+   "display": false
+  },
+  {
+   "tex": "\\angle30°",
+   "display": false
+  },
+  {
+   "tex": "-25",
+   "display": false
+  },
+  {
+   "tex": "4\\ \\Omega",
+   "display": false
+  }
+ ]
+}

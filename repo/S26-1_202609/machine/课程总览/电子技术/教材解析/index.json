@@ -1,0 +1,98 @@
+{
+ "url": "课程总览/电子技术/教材解析/index.html",
+ "title": "教材解析",
+ "math": [
+  {
+   "tex": "V_B",
+   "display": false
+  },
+  {
+   "tex": "V_C",
+   "display": false
+  },
+  {
+   "tex": "V_E",
+   "display": false
+  },
+  {
+   "tex": "P_{CM}",
+   "display": false
+  },
+  {
+   "tex": "I_{CM}",
+   "display": false
+  },
+  {
+   "tex": "U_{(BR)CEO}",
+   "display": false
+  },
+  {
+   "tex": "R_B",
+   "display": false
+  },
+  {
+   "tex": "R_C",
+   "display": false
+  },
+  {
+   "tex": "R_E",
+   "display": false
+  },
+  {
+   "tex": "U_{ab}",
+   "display": false
+  },
+  {
+   "tex": "\\sum m(\\cdots)",
+   "display": false
+  },
+  {
+   "tex": "\\overline{R}_D",
+   "display": false
+  },
+  {
+   "tex": "\\overline{S}_D",
+   "display": false
+  },
+  {
+   "tex": "CP",
+   "display": false
+  },
+  {
+   "tex": "\\oplus",
+   "display": false
+  },
+  {
+   "tex": "\\odot",
+   "display": false
+  },
+  {
+   "tex": "Q",
+   "display": false
+  },
+  {
+   "tex": "\\overline{Q}",
+   "display": false
+  },
+  {
+   "tex": "J",
+   "display": false
+  },
+  {
+   "tex": "K",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "Q_2",
+   "display": false
+  }
+ ]
+}

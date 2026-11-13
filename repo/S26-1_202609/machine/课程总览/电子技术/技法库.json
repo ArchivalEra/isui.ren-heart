@@ -1,0 +1,414 @@
+{
+ "url": "课程总览/电子技术/技法库.html",
+ "title": "技法库",
+ "math": [
+  {
+   "tex": "Y=\\sum_{i=0}^{7} m_i\\cdot D_i,",
+   "display": true
+  },
+  {
+   "tex": "\\sum m(\\cdots)",
+   "display": false
+  },
+  {
+   "tex": "\\sum m(\\cdots)",
+   "display": false
+  },
+  {
+   "tex": "\\overline{R}_D",
+   "display": false
+  },
+  {
+   "tex": "\\overline{S}_D",
+   "display": false
+  },
+  {
+   "tex": "Y(A,B,C,D)=\\sum m(\\cdots)",
+   "display": false
+  },
+  {
+   "tex": "AB",
+   "display": false
+  },
+  {
+   "tex": "00,01,11,10",
+   "display": false
+  },
+  {
+   "tex": "CD",
+   "display": false
+  },
+  {
+   "tex": "00,01,11,10",
+   "display": false
+  },
+  {
+   "tex": "\\sum m",
+   "display": false
+  },
+  {
+   "tex": "n",
+   "display": false
+  },
+  {
+   "tex": "AB=n",
+   "display": false
+  },
+  {
+   "tex": "CD=n",
+   "display": false
+  },
+  {
+   "tex": "Y=P_1+P_2+P_3",
+   "display": false
+  },
+  {
+   "tex": "Y=\\overline{\\overline{P_1}\\cdot\\overline{P_2}\\cdot\\overline{P_3}}",
+   "display": false
+  },
+  {
+   "tex": "\\overline{D}",
+   "display": false
+  },
+  {
+   "tex": "Y(A,B,C,D)",
+   "display": false
+  },
+  {
+   "tex": "n",
+   "display": false
+  },
+  {
+   "tex": "A,B,C,D",
+   "display": false
+  },
+  {
+   "tex": "\\sum m",
+   "display": false
+  },
+  {
+   "tex": "=1",
+   "display": false
+  },
+  {
+   "tex": "=1",
+   "display": false
+  },
+  {
+   "tex": "A=1",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "B=1",
+   "display": false
+  },
+  {
+   "tex": "A=1",
+   "display": false
+  },
+  {
+   "tex": "B=0",
+   "display": false
+  },
+  {
+   "tex": "A=0",
+   "display": false
+  },
+  {
+   "tex": "Y=AB+\\overline{A}\\,\\overline{B}",
+   "display": false
+  },
+  {
+   "tex": "Y=A\\odot B",
+   "display": false
+  },
+  {
+   "tex": "=1",
+   "display": false
+  },
+  {
+   "tex": "AB+\\overline{A}\\,\\overline{B}",
+   "display": false
+  },
+  {
+   "tex": "1,0,0,1",
+   "display": false
+  },
+  {
+   "tex": "A,B",
+   "display": false
+  },
+  {
+   "tex": "Y_1,Y_2,Y_3",
+   "display": false
+  },
+  {
+   "tex": "A>B",
+   "display": false
+  },
+  {
+   "tex": "A<B",
+   "display": false
+  },
+  {
+   "tex": "A=B",
+   "display": false
+  },
+  {
+   "tex": "=1",
+   "display": false
+  },
+  {
+   "tex": "A=B",
+   "display": false
+  },
+  {
+   "tex": "A\\oplus B",
+   "display": false
+  },
+  {
+   "tex": "Y_3=\\overline{A}\\,\\overline{B}+AB",
+   "display": false
+  },
+  {
+   "tex": "Y(A,B,C)=\\sum m(\\cdots)",
+   "display": false
+  },
+  {
+   "tex": "A_2A_1A_0",
+   "display": false
+  },
+  {
+   "tex": "D_0\\sim D_7",
+   "display": false
+  },
+  {
+   "tex": "\\overline{S}",
+   "display": false
+  },
+  {
+   "tex": "Y",
+   "display": false
+  },
+  {
+   "tex": "\\overline{S}=0",
+   "display": false
+  },
+  {
+   "tex": "m_i",
+   "display": false
+  },
+  {
+   "tex": "A_2A_1A_0",
+   "display": false
+  },
+  {
+   "tex": "i",
+   "display": false
+  },
+  {
+   "tex": "i",
+   "display": false
+  },
+  {
+   "tex": "D_i",
+   "display": false
+  },
+  {
+   "tex": "Y",
+   "display": false
+  },
+  {
+   "tex": "A_2",
+   "display": false
+  },
+  {
+   "tex": "A_1",
+   "display": false
+  },
+  {
+   "tex": "A_0",
+   "display": false
+  },
+  {
+   "tex": "Y(A,B,C)",
+   "display": false
+  },
+  {
+   "tex": "A_2=A,\\ A_1=B,\\ A_0=C",
+   "display": false
+  },
+  {
+   "tex": "Y=\\sum m_i\\cdot D_i",
+   "display": false
+  },
+  {
+   "tex": "m_i",
+   "display": false
+  },
+  {
+   "tex": "m_i(A,B,C)",
+   "display": false
+  },
+  {
+   "tex": "D_i",
+   "display": false
+  },
+  {
+   "tex": "V_{CC}",
+   "display": false
+  },
+  {
+   "tex": "D_i",
+   "display": false
+  },
+  {
+   "tex": "\\overline{S}=0",
+   "display": false
+  },
+  {
+   "tex": "D_i",
+   "display": false
+  },
+  {
+   "tex": "A_2",
+   "display": false
+  },
+  {
+   "tex": "Y(A,B,C)",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "A_2",
+   "display": false
+  },
+  {
+   "tex": "C",
+   "display": false
+  },
+  {
+   "tex": "A_0",
+   "display": false
+  },
+  {
+   "tex": "\\overline{S}",
+   "display": false
+  },
+  {
+   "tex": "Y",
+   "display": false
+  },
+  {
+   "tex": "i",
+   "display": false
+  },
+  {
+   "tex": "Y=D_i",
+   "display": false
+  },
+  {
+   "tex": "Y=1",
+   "display": false
+  },
+  {
+   "tex": "\\sum m",
+   "display": false
+  },
+  {
+   "tex": "Y=1",
+   "display": false
+  },
+  {
+   "tex": "\\{1,2,4,7\\}",
+   "display": false
+  },
+  {
+   "tex": "\\overline{R}_D",
+   "display": false
+  },
+  {
+   "tex": "\\overline{S}_D",
+   "display": false
+  },
+  {
+   "tex": "Q",
+   "display": false
+  },
+  {
+   "tex": "\\overline{S}_D=0,\\ \\overline{R}_D=1",
+   "display": false
+  },
+  {
+   "tex": "Q=1",
+   "display": false
+  },
+  {
+   "tex": "\\overline{S}_D=1,\\ \\overline{R}_D=0",
+   "display": false
+  },
+  {
+   "tex": "Q=0",
+   "display": false
+  },
+  {
+   "tex": "\\overline{R}_D,\\overline{S}_D,Q",
+   "display": false
+  },
+  {
+   "tex": "\\overline{S}_D",
+   "display": false
+  },
+  {
+   "tex": "Q",
+   "display": false
+  },
+  {
+   "tex": "=1",
+   "display": false
+  },
+  {
+   "tex": "S=1,R=0",
+   "display": false
+  },
+  {
+   "tex": "S=0,R=1",
+   "display": false
+  },
+  {
+   "tex": "S=R=0",
+   "display": false
+  },
+  {
+   "tex": "S=R=1",
+   "display": false
+  },
+  {
+   "tex": "=0",
+   "display": false
+  },
+  {
+   "tex": "=0",
+   "display": false
+  },
+  {
+   "tex": "=0",
+   "display": false
+  },
+  {
+   "tex": "R=1",
+   "display": false
+  },
+  {
+   "tex": "S=1",
+   "display": false
+  }
+ ]
+}

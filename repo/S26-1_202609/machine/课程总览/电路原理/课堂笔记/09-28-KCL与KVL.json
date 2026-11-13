@@ -1,0 +1,18 @@
+{
+ "url": "课程总览/电路原理/课堂笔记/09-28-KCL与KVL.html",
+ "title": "09-28 KCL 与 KVL 及电阻元件",
+ "math": [
+  {
+   "tex": "I_1=-7",
+   "display": false
+  },
+  {
+   "tex": "I_2=5",
+   "display": false
+  },
+  {
+   "tex": "U",
+   "display": false
+  }
+ ]
+}

@@ -1,0 +1,730 @@
+{
+ "url": "课程总览/电路原理/作业/习题册第二章.html",
+ "title": "习题册第二章（34 题）",
+ "math": [
+  {
+   "tex": "R = 1 \\parallel 2 \\parallel 3 \\parallel 6 = \\frac{1}{1+\\frac12+\\frac13+\\frac16}=\\mathbf{0.5\\ \\Omega}",
+   "display": true
+  },
+  {
+   "tex": "I=\\frac{\\varphi_{n1}}{2}+\\frac{\\varphi_{n1}-5\\varphi_{n1}/2}{2}=-\\frac{\\varphi_{n1}}{4}\n    \\;\\Rightarrow\\;\\varphi_{n1}=-4I,\\quad V_a=\\varphi_{n1}+3I=-I",
+   "display": true
+  },
+  {
+   "tex": "R_{ab}=\\mathbf{-1\\ \\Omega}",
+   "display": true
+  },
+  {
+   "tex": "I+2u_1=\\frac{\\varphi_n}{3}\\;\\Rightarrow\\;I+4I=\\frac{\\varphi_n}{3}\\;\\Rightarrow\\;\\varphi_n=15I,\n    \\quad V_a=\\varphi_n+2I=17I",
+   "display": true
+  },
+  {
+   "tex": "R_{ab}=\\mathbf{17\\ \\Omega}",
+   "display": true
+  },
+  {
+   "tex": "\\frac{u}{3}+\\frac{u-6}{6}=0\\;\\Rightarrow\\;2u+u-6=0\\;\\Rightarrow\\;u=\\mathbf{2\\ V}",
+   "display": true
+  },
+  {
+   "tex": "I=\\frac{\\varphi_A}{2}+\\frac{\\varphi_A-5\\varphi_A/2}{2}=-\\frac{\\varphi_A}{4}\n    \\;\\Rightarrow\\;\\varphi_A=-4I,\\quad V_a=\\varphi_A+3I=-I",
+   "display": true
+  },
+  {
+   "tex": "R_{ab}=\\mathbf{-1\\ \\Omega}",
+   "display": true
+  },
+  {
+   "tex": "I+2u_1=\\frac{\\varphi_n}{3}\\;\\Rightarrow\\;\\varphi_n=15I,\\quad V_a=\\varphi_n+2I=17I\n    \\;\\Rightarrow\\;R_{ab}=\\mathbf{17\\ \\Omega}",
+   "display": true
+  },
+  {
+   "tex": "R_{ab}=2\\parallel\\Big(\\frac{12}{7}+\\frac{24}{7}\\Big)=2\\parallel\\frac{36}{7}\n    =\\frac{2\\times 36/7}{2+36/7}=\\mathbf{\\frac{36}{25}}=1.44\\ \\Omega",
+   "display": true
+  },
+  {
+   "tex": "5=\\frac{\\varphi_T}{3}+\\frac{\\varphi_T}{8}+\\frac{\\varphi_T-30}{6}\n    \\;\\Rightarrow\\;120=8\\varphi_T+3\\varphi_T+4\\varphi_T-120\n    \\;\\Rightarrow\\;\\varphi_T=16\\ \\text{V}",
+   "display": true
+  },
+  {
+   "tex": "I=\\frac{\\varphi_T}{8}=\\frac{16}{8}=\\mathbf{2\\ A}",
+   "display": true
+  },
+  {
+   "tex": "A:\\quad \\frac{6-V_A}{3}+2=\\frac{V_A}{6}+\\frac{V_A-V_B}{2}\n    \\;\\Rightarrow\\;6V_A-3V_B=24",
+   "display": true
+  },
+  {
+   "tex": "B:\\quad \\frac{V_A-V_B}{2}=\\frac{V_B-4}{4}+V_B\n    \\;\\Rightarrow\\;2V_A=7V_B-4",
+   "display": true
+  },
+  {
+   "tex": "I=\\frac{V_B}{1}=\\mathbf{2\\ A}",
+   "display": true
+  },
+  {
+   "tex": "I=\\frac{4.5}{4+5}=\\mathbf{0.5\\ A}",
+   "display": true
+  },
+  {
+   "tex": "R=12\\parallel 6=\\mathbf{4\\ \\Omega}",
+   "display": true
+  },
+  {
+   "tex": "N_2:\\ \\frac{\\varphi_{N1}-\\varphi_{N2}}{3}=\\frac{\\varphi_{N2}}{5}+\\frac{\\varphi_{N2}}{2.5}=\\frac{3\\varphi_{N2}}{5}",
+   "display": true
+  },
+  {
+   "tex": "N_1:\\ 5=\\frac{\\varphi_{N1}-20}{2}+\\frac{\\varphi_{N1}-\\varphi_{N2}}{3}",
+   "display": true
+  },
+  {
+   "tex": "I_L=\\frac{\\varphi_{N2}}{2.5}=\\mathbf{3\\ A}",
+   "display": true
+  },
+  {
+   "tex": "I=\\frac{20\\ \\text{mA}}{2}=\\mathbf{10\\ mA}",
+   "display": true
+  },
+  {
+   "tex": "\\frac{V_1+5-V_R}{20}+\\frac{V_1-5-V_R}{20}=\\frac{V_R}{5}\n    \\;\\Rightarrow\\;V_R=\\frac{10}{3}\\ \\text{V}",
+   "display": true
+  },
+  {
+   "tex": "I=\\frac{V_R}{5}=\\mathbf{\\frac{2}{3}\\ A}\\quad(\\text{方向向左，与图中箭头一致})",
+   "display": true
+  },
+  {
+   "tex": "M:\\ \\frac{V_T-V_M}{3}=\\frac{V_M}{4}+2\\qquad\n    T:\\ 3+\\frac{V_M-V_T}{3}=\\frac{V_T}{4}+I,\\quad I=\\frac{V_T}{4}",
+   "display": true
+  },
+  {
+   "tex": "I=\\frac{V_T}{4}=\\mathbf{\\frac{1}{11}\\ A}\\approx 0.091\\ \\text{A}",
+   "display": true
+  },
+  {
+   "tex": "I=\\frac{V_A-5u}{2}+\\frac{V_A}{3}\n    =\\frac{u-10I-5u}{2}+\\frac{u-10I}{3}\n    =-2u-5I+\\frac{u}{3}-\\frac{10I}{3}",
+   "display": true
+  },
+  {
+   "tex": "\\frac{28}{3}I=-\\frac{5}{3}u\\;\\Rightarrow\\;R_{eq}=\\frac{u}{I}=\\mathbf{-\\frac{28}{5}=-5.6\\ \\Omega}",
+   "display": true
+  },
+  {
+   "tex": "U_S=I_S R",
+   "display": false
+  },
+  {
+   "tex": "R_{eq}=u/I",
+   "display": false
+  },
+  {
+   "tex": "u(t)=10\\sin 7\\omega t",
+   "display": false
+  },
+  {
+   "tex": "R+j\\omega L",
+   "display": false
+  },
+  {
+   "tex": "R+1/(j\\omega L)",
+   "display": false
+  },
+  {
+   "tex": "R+j7\\omega L",
+   "display": false
+  },
+  {
+   "tex": "R+1/(j7\\omega L)",
+   "display": false
+  },
+  {
+   "tex": "\\omega",
+   "display": false
+  },
+  {
+   "tex": "7\\omega t",
+   "display": false
+  },
+  {
+   "tex": "=j(7\\omega)L",
+   "display": false
+  },
+  {
+   "tex": "Z=R+j7\\omega L",
+   "display": false
+  },
+  {
+   "tex": "1/(j\\omega L)",
+   "display": false
+  },
+  {
+   "tex": "j\\omega L",
+   "display": false
+  },
+  {
+   "tex": "U_S",
+   "display": false
+  },
+  {
+   "tex": "3\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "I=",
+   "display": false
+  },
+  {
+   "tex": "U_S",
+   "display": false
+  },
+  {
+   "tex": "2\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "R_{ab}=U/I=",
+   "display": false
+  },
+  {
+   "tex": "1/3\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "1/5\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "6/5\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "1\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "U",
+   "display": false
+  },
+  {
+   "tex": "2U",
+   "display": false
+  },
+  {
+   "tex": "U",
+   "display": false
+  },
+  {
+   "tex": "I",
+   "display": false
+  },
+  {
+   "tex": "U/1 + 2U",
+   "display": false
+  },
+  {
+   "tex": "I = 3U",
+   "display": false
+  },
+  {
+   "tex": "R_{ab}=U/I=\\mathbf{1/3\\ \\Omega}",
+   "display": false
+  },
+  {
+   "tex": "I",
+   "display": false
+  },
+  {
+   "tex": "U",
+   "display": false
+  },
+  {
+   "tex": "R",
+   "display": false
+  },
+  {
+   "tex": "5\\text{ A}\\parallel 2\\,\\Omega \\Rightarrow 10",
+   "display": false
+  },
+  {
+   "tex": "U_{oc}=10+5=15",
+   "display": false
+  },
+  {
+   "tex": "2\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "u=15-2i",
+   "display": false
+  },
+  {
+   "tex": "R_{ab}",
+   "display": false
+  },
+  {
+   "tex": "(3+6)\\parallel(6+12) = 9\\parallel 18 = 6\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "3\\parallel 6 + 6\\parallel 12 = 2+4 = 6\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "I_{S1}",
+   "display": false
+  },
+  {
+   "tex": "I_{S2}",
+   "display": false
+  },
+  {
+   "tex": "I_{S1}-I_{S2}",
+   "display": false
+  },
+  {
+   "tex": "U_{S1}",
+   "display": false
+  },
+  {
+   "tex": "I_{S2}",
+   "display": false
+  },
+  {
+   "tex": "I_{S2}",
+   "display": false
+  },
+  {
+   "tex": "U_{S1}\\parallel I_{S1}",
+   "display": false
+  },
+  {
+   "tex": "I_{S1}(\\uparrow)",
+   "display": false
+  },
+  {
+   "tex": "I_{S2}(\\downarrow)",
+   "display": false
+  },
+  {
+   "tex": "I_{S1}-I_{S2}",
+   "display": false
+  },
+  {
+   "tex": "U_{S1}",
+   "display": false
+  },
+  {
+   "tex": "I_{S1}-I_{S2}",
+   "display": false
+  },
+  {
+   "tex": "R",
+   "display": false
+  },
+  {
+   "tex": "R_Y=",
+   "display": false
+  },
+  {
+   "tex": "\\Delta\\to",
+   "display": false
+  },
+  {
+   "tex": "R_Y = \\dfrac{R\\cdot R}{R+R+R}=\\mathbf{R/3}",
+   "display": false
+  },
+  {
+   "tex": "R_{ab}",
+   "display": false
+  },
+  {
+   "tex": "I",
+   "display": false
+  },
+  {
+   "tex": "i_1",
+   "display": false
+  },
+  {
+   "tex": "i_1=\\varphi_{n1}/2",
+   "display": false
+  },
+  {
+   "tex": "\\varphi_{n2}=5i_1",
+   "display": false
+  },
+  {
+   "tex": "u_1=2I",
+   "display": false
+  },
+  {
+   "tex": "2u_1",
+   "display": false
+  },
+  {
+   "tex": "I_S=U_S/R",
+   "display": false
+  },
+  {
+   "tex": "R",
+   "display": false
+  },
+  {
+   "tex": "R=",
+   "display": false
+  },
+  {
+   "tex": "1\\parallel2\\parallel3\\parallel6=\\mathbf{0.5\\ \\Omega}",
+   "display": false
+  },
+  {
+   "tex": "u=",
+   "display": false
+  },
+  {
+   "tex": "6",
+   "display": false
+  },
+  {
+   "tex": "\\varphi_B=6",
+   "display": false
+  },
+  {
+   "tex": "R_{ab}=",
+   "display": false
+  },
+  {
+   "tex": "I",
+   "display": false
+  },
+  {
+   "tex": "i_1=\\varphi_A/2",
+   "display": false
+  },
+  {
+   "tex": "\\varphi_B=5i_1=5\\varphi_A/2",
+   "display": false
+  },
+  {
+   "tex": "R_{ab}=",
+   "display": false
+  },
+  {
+   "tex": "u_1=2I",
+   "display": false
+  },
+  {
+   "tex": "2u_1",
+   "display": false
+  },
+  {
+   "tex": "U_S = I_S R",
+   "display": false
+  },
+  {
+   "tex": "R_{ab}=",
+   "display": false
+  },
+  {
+   "tex": "N",
+   "display": false
+  },
+  {
+   "tex": "M",
+   "display": false
+  },
+  {
+   "tex": "3\\parallel 4 = 12/7\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "M",
+   "display": false
+  },
+  {
+   "tex": "8\\parallel 6 = 24/7\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "N",
+   "display": false
+  },
+  {
+   "tex": "R",
+   "display": false
+  },
+  {
+   "tex": "I",
+   "display": false
+  },
+  {
+   "tex": "I",
+   "display": false
+  },
+  {
+   "tex": "I",
+   "display": false
+  },
+  {
+   "tex": "I",
+   "display": false
+  },
+  {
+   "tex": "I",
+   "display": false
+  },
+  {
+   "tex": "[6\\text{V 串 }3\\,\\Omega]\\parallel[2\\text{A}\\uparrow]\\parallel[6\\,\\Omega]",
+   "display": false
+  },
+  {
+   "tex": "[4\\text{V 串 }4\\,\\Omega]\\parallel[1\\,\\Omega]",
+   "display": false
+  },
+  {
+   "tex": "V_A=5",
+   "display": false
+  },
+  {
+   "tex": "V_B=2",
+   "display": false
+  },
+  {
+   "tex": "I",
+   "display": false
+  },
+  {
+   "tex": "I",
+   "display": false
+  },
+  {
+   "tex": "Y",
+   "display": false
+  },
+  {
+   "tex": "\\varphi_Y=\\varphi_T-10",
+   "display": false
+  },
+  {
+   "tex": "T",
+   "display": false
+  },
+  {
+   "tex": "\\varphi_{P}=\\varphi_T+4",
+   "display": false
+  },
+  {
+   "tex": "P",
+   "display": false
+  },
+  {
+   "tex": "\\varphi_T=0.5",
+   "display": false
+  },
+  {
+   "tex": "4.5",
+   "display": false
+  },
+  {
+   "tex": "\\varphi_T=0.5",
+   "display": false
+  },
+  {
+   "tex": "\\tfrac{517}{6}",
+   "display": false
+  },
+  {
+   "tex": "R",
+   "display": false
+  },
+  {
+   "tex": "3\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "6\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "2\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "10\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "12\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "6\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "I_L",
+   "display": false
+  },
+  {
+   "tex": "\\varphi_M=20",
+   "display": false
+  },
+  {
+   "tex": "T",
+   "display": false
+  },
+  {
+   "tex": "T",
+   "display": false
+  },
+  {
+   "tex": "T",
+   "display": false
+  },
+  {
+   "tex": "\\dfrac{20-\\varphi_T}{10}=5\\Rightarrow\\varphi_T=-30",
+   "display": false
+  },
+  {
+   "tex": "\\varphi_{N1}=\\tfrac{14}{5}\\varphi_{N2}",
+   "display": false
+  },
+  {
+   "tex": "\\varphi_{N2}=7.5",
+   "display": false
+  },
+  {
+   "tex": "I",
+   "display": false
+  },
+  {
+   "tex": "I",
+   "display": false
+  },
+  {
+   "tex": "R",
+   "display": false
+  },
+  {
+   "tex": "\\varphi=V_1+5",
+   "display": false
+  },
+  {
+   "tex": "\\varphi=V_1-5",
+   "display": false
+  },
+  {
+   "tex": "V_1",
+   "display": false
+  },
+  {
+   "tex": "R",
+   "display": false
+  },
+  {
+   "tex": "I",
+   "display": false
+  },
+  {
+   "tex": "V_T",
+   "display": false
+  },
+  {
+   "tex": "V_M",
+   "display": false
+  },
+  {
+   "tex": "V_M",
+   "display": false
+  },
+  {
+   "tex": "V_T=\\dfrac{4}{11}",
+   "display": false
+  },
+  {
+   "tex": "I=1/11",
+   "display": false
+  },
+  {
+   "tex": "I=17/11",
+   "display": false
+  },
+  {
+   "tex": "R_{eq}",
+   "display": false
+  },
+  {
+   "tex": "u",
+   "display": false
+  },
+  {
+   "tex": "I",
+   "display": false
+  },
+  {
+   "tex": "5u",
+   "display": false
+  },
+  {
+   "tex": "I",
+   "display": false
+  },
+  {
+   "tex": "V_A=u-10I",
+   "display": false
+  },
+  {
+   "tex": "=\\dfrac{V_A-5u}{2}",
+   "display": false
+  },
+  {
+   "tex": "R_{eq}=+2.8\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "-5.6\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "R",
+   "display": false
+  },
+  {
+   "tex": "R",
+   "display": false
+  },
+  {
+   "tex": "U_S=I_SR",
+   "display": false
+  },
+  {
+   "tex": "R",
+   "display": false
+  },
+  {
+   "tex": "i_1",
+   "display": false
+  },
+  {
+   "tex": "u_1",
+   "display": false
+  },
+  {
+   "tex": "R_{ab}=-1\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "R=4\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "I",
+   "display": false
+  },
+  {
+   "tex": "-5.6\\,\\Omega",
+   "display": false
+  }
+ ]
+}

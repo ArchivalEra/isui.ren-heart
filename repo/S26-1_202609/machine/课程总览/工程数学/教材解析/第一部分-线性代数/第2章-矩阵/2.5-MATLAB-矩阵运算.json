@@ -1,0 +1,294 @@
+{
+ "url": "课程总览/工程数学/教材解析/第一部分-线性代数/第2章-矩阵/2.5-MATLAB-矩阵运算.html",
+ "title": "2.5 MATLAB 矩阵运算",
+ "math": [
+  {
+   "tex": "A*B=B*A=E",
+   "display": true
+  },
+  {
+   "tex": "B=\\operatorname{inv}(A)",
+   "display": true
+  },
+  {
+   "tex": "A=\\begin{pmatrix}1&2&3\\\\4&5&6\\\\7&8&9\\end{pmatrix}",
+   "display": false
+  },
+  {
+   "tex": "B=\\begin{pmatrix}1&3&5\\\\7&9&11\\\\13&15&17\\end{pmatrix}",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "A=\\begin{pmatrix}1&2&3\\\\4&5&6\\\\7&8&9\\end{pmatrix}",
+   "display": false
+  },
+  {
+   "tex": "B=\\begin{pmatrix}1&3&5\\\\7&9&11\\\\13&15&17\\end{pmatrix}",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "A*60",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "AX=B",
+   "display": false
+  },
+  {
+   "tex": "A=\\begin{pmatrix}1&2&3\\\\4&5&6\\\\7&8&10\\end{pmatrix}",
+   "display": false
+  },
+  {
+   "tex": "B=\\begin{pmatrix}54&66&75\\\\117&147&171\\\\193&243&283\\end{pmatrix}",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "XB=A",
+   "display": false
+  },
+  {
+   "tex": "A=\\begin{pmatrix}54&66&75\\\\117&147&171\\\\193&243&283\\end{pmatrix}",
+   "display": false
+  },
+  {
+   "tex": "B=\\begin{pmatrix}1&3&5\\\\7&9&11\\\\13&15&16\\end{pmatrix}",
+   "display": false
+  },
+  {
+   "tex": "n",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "E",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "(8,5,2)^{\\mathrm T}",
+   "display": false
+  },
+  {
+   "tex": "60",
+   "display": false
+  },
+  {
+   "tex": "A+B=\\begin{pmatrix}2&5&8\\\\11&14&17\\\\20&23&26\\end{pmatrix}",
+   "display": false
+  },
+  {
+   "tex": "B-A=\\begin{pmatrix}0&1&2\\\\3&4&5\\\\6&7&8\\end{pmatrix}",
+   "display": false
+  },
+  {
+   "tex": "AB=\\begin{pmatrix}1\\cdot1+2\\cdot7+3\\cdot13&\\cdots\\\\\\cdots&\\cdots\\end{pmatrix}=\\begin{pmatrix}54&66&78\\\\117&147&177\\\\180&228&276\\end{pmatrix}",
+   "display": false
+  },
+  {
+   "tex": "1+14+39=54",
+   "display": false
+  },
+  {
+   "tex": "60A=\\begin{pmatrix}60&120&180\\\\240&300&360\\\\420&480&540\\end{pmatrix}",
+   "display": false
+  },
+  {
+   "tex": "AX=B",
+   "display": false
+  },
+  {
+   "tex": "X=A^{-1}B",
+   "display": false
+  },
+  {
+   "tex": "XB=A",
+   "display": false
+  },
+  {
+   "tex": "X=AB^{-1}",
+   "display": false
+  },
+  {
+   "tex": "\\begin{pmatrix}1&3&5\\\\7&9&11\\\\13&15&16\\end{pmatrix}",
+   "display": false
+  },
+  {
+   "tex": "1\\times1+2\\times7+3\\times13=54",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "\\begin{pmatrix}1&2&3\\\\4&5&6\\\\7&8&10\\end{pmatrix}",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "\\begin{pmatrix}1&2&3\\\\4&5&6\\\\7&8&10\\end{pmatrix}\\begin{pmatrix}1&3&5\\\\7&9&11\\\\13&15&16\\end{pmatrix}",
+   "display": false
+  },
+  {
+   "tex": "5+22+48=75",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "\\begin{pmatrix}1&2\\\\3&4\\end{pmatrix}^{-1}=\\frac{1}{4-6}\\begin{pmatrix}4&-2\\\\-3&1\\end{pmatrix}=\\begin{pmatrix}-2&1\\\\1.5&-0.5\\end{pmatrix}",
+   "display": false
+  },
+  {
+   "tex": "A=\\begin{pmatrix}1&2&3\\\\4&5&6\\\\7&8&9\\end{pmatrix}",
+   "display": false
+  },
+  {
+   "tex": "0",
+   "display": false
+  },
+  {
+   "tex": "10^{16}",
+   "display": false
+  },
+  {
+   "tex": "(A\\mid E)",
+   "display": false
+  },
+  {
+   "tex": "E",
+   "display": false
+  },
+  {
+   "tex": "A^{-1}",
+   "display": false
+  },
+  {
+   "tex": "\\begin{pmatrix}1&2&3\\\\4&5&6\\end{pmatrix}",
+   "display": false
+  },
+  {
+   "tex": "2",
+   "display": false
+  },
+  {
+   "tex": "\\begin{pmatrix}1&2&3\\\\4&5&6\\\\7&8&9\\end{pmatrix}",
+   "display": false
+  },
+  {
+   "tex": "2",
+   "display": false
+  },
+  {
+   "tex": "10^{-18}",
+   "display": false
+  },
+  {
+   "tex": "\\operatorname{adj}(A)=(-1,2,-1)",
+   "display": false
+  },
+  {
+   "tex": "1:(-2):1",
+   "display": false
+  }
+ ]
+}

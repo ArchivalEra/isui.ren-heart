@@ -1,0 +1,466 @@
+{
+ "url": "课程总览/电路原理/作业/习题册第六章.html",
+ "title": "习题册第六章（33 题）",
+ "math": [
+  {
+   "tex": "n:\\ \\dot I_1=\\dot I_2+\\dot I_6\\qquad\n    6\\dot I_6=2\\dot I_2+2\\dot I_1\\ (\\text{两线圈电压相等})",
+   "display": true
+  },
+  {
+   "tex": "L_{ab}=\\frac{u}{j\\omega\\dot I_1}=\\frac{12}{2}=\\mathbf{6\\ H}\\quad(\\text{选 C；图 6.14 同图同答})",
+   "display": true
+  },
+  {
+   "tex": "\\dot I_2=\\mathbf{0.5\\angle0°\\ A}\\quad(\\text{选 C})",
+   "display": true
+  },
+  {
+   "tex": "\\frac{\\dot U_1}{\\dot U_2}=\\mathbf{-5}\\qquad\n    \\frac{\\dot I_1}{\\dot I_2}=\\mathbf{\\frac15}\\ (\\text{两电流都注入同名端，安匝平衡 } N_1\\dot I_1=N_2\\dot I_2)",
+   "display": true
+  },
+  {
+   "tex": "Z_{in}=\\mathbf{50+j450\\ \\Omega}",
+   "display": true
+  },
+  {
+   "tex": "L=L_1+L_2+2M",
+   "display": true
+  },
+  {
+   "tex": "L=2+4+2\\times2=\\mathbf{10\\ H}",
+   "display": true
+  },
+  {
+   "tex": "L=5+4-2\\times2=\\mathbf{5\\ H}",
+   "display": true
+  },
+  {
+   "tex": "I_1=\\frac{20}{400}=0.15\\ \\text{A}\\Rightarrow I_2=nI_1=1.5\\ \\text{A}\\Rightarrow\n    P=1.5^2\\times2=\\mathbf{4.5\\ W}",
+   "display": true
+  },
+  {
+   "tex": "P=4^2\\times4=\\mathbf{64\\ W}",
+   "display": true
+  },
+  {
+   "tex": "+2M",
+   "display": false
+  },
+  {
+   "tex": "-2M",
+   "display": false
+  },
+  {
+   "tex": "k=M/\\sqrt{L_1L_2}\\le1",
+   "display": false
+  },
+  {
+   "tex": "u_1/u_2=\\pm n",
+   "display": false
+  },
+  {
+   "tex": "i_1/i_2=\\mp 1/n",
+   "display": false
+  },
+  {
+   "tex": "Z_{in}=Z_L/n^2",
+   "display": false
+  },
+  {
+   "tex": "(\\omega M)^2/Z_{22}",
+   "display": false
+  },
+  {
+   "tex": "M=",
+   "display": false
+  },
+  {
+   "tex": "4M=50-10=40",
+   "display": false
+  },
+  {
+   "tex": "M=\\mathbf{10\\ mH}",
+   "display": false
+  },
+  {
+   "tex": "L_{\\text{顺}}-L_{\\text{反}}=4M",
+   "display": false
+  },
+  {
+   "tex": "n=",
+   "display": false
+  },
+  {
+   "tex": "R_L",
+   "display": false
+  },
+  {
+   "tex": "R_L/n^2",
+   "display": false
+  },
+  {
+   "tex": "R_1",
+   "display": false
+  },
+  {
+   "tex": "R_1=R_L/n^2",
+   "display": false
+  },
+  {
+   "tex": "n=\\sqrt{R_L/R_1}",
+   "display": false
+  },
+  {
+   "tex": "L=L_1+L_2-2M",
+   "display": false
+  },
+  {
+   "tex": "R=5\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "n=N_1/N_2=2",
+   "display": false
+  },
+  {
+   "tex": "R_{in}=n^2R=4\\times5=\\mathbf{20\\ \\Omega}",
+   "display": false
+  },
+  {
+   "tex": "i_2=0\\Rightarrow i_1=0",
+   "display": false
+  },
+  {
+   "tex": "u_2=0\\Rightarrow u_1=0",
+   "display": false
+  },
+  {
+   "tex": "L_{ab}=",
+   "display": false
+  },
+  {
+   "tex": "\\dot I_1",
+   "display": false
+  },
+  {
+   "tex": "\\dot I_2",
+   "display": false
+  },
+  {
+   "tex": "\\dot I_6",
+   "display": false
+  },
+  {
+   "tex": "\\dot I_6=\\dot I_2",
+   "display": false
+  },
+  {
+   "tex": "\\dot I_1=2\\dot I_2",
+   "display": false
+  },
+  {
+   "tex": "u=j2\\dot I_1+j2\\dot I_2+j2\\dot I_2+j2\\dot I_1=j12\\dot I_2",
+   "display": false
+  },
+  {
+   "tex": "L_1=L_2=0.2",
+   "display": false
+  },
+  {
+   "tex": "k=0.8",
+   "display": false
+  },
+  {
+   "tex": "M=",
+   "display": false
+  },
+  {
+   "tex": "M=k\\sqrt{L_1L_2}=0.8\\times0.2=\\mathbf{0.16\\ H}",
+   "display": false
+  },
+  {
+   "tex": "\\dot I=",
+   "display": false
+  },
+  {
+   "tex": "2^2\\times1=4\\ \\Omega",
+   "display": false
+  },
+  {
+   "tex": "2+4=6\\ \\Omega",
+   "display": false
+  },
+  {
+   "tex": "\\dot I=6/6=\\mathbf{1\\angle0°\\ A}",
+   "display": false
+  },
+  {
+   "tex": "R_{ab}=",
+   "display": false
+  },
+  {
+   "tex": "R_{ab}",
+   "display": false
+  },
+  {
+   "tex": "R'=20\\times(1/2)^2=5\\ \\Omega",
+   "display": false
+  },
+  {
+   "tex": "R_{ab}=1+5=\\mathbf{6\\ \\Omega}",
+   "display": false
+  },
+  {
+   "tex": "Z_{in}=(N_1/N_2)^2 Z_L",
+   "display": false
+  },
+  {
+   "tex": "U_S=2\\angle0°",
+   "display": false
+  },
+  {
+   "tex": "\\dot I_2=",
+   "display": false
+  },
+  {
+   "tex": "\\dot I_1=2/2=1\\angle0°",
+   "display": false
+  },
+  {
+   "tex": "I_2=I_1\\times N_1/N_2=1\\times\\tfrac12=0.5",
+   "display": false
+  },
+  {
+   "tex": "\\dot U_1/\\dot U_2=",
+   "display": false
+  },
+  {
+   "tex": "\\dot I_1/\\dot I_2=",
+   "display": false
+  },
+  {
+   "tex": "V_{1\\text{上}}=5V_{2\\text{上}}",
+   "display": false
+  },
+  {
+   "tex": "\\dot U_1",
+   "display": false
+  },
+  {
+   "tex": "\\dot U_1=-V_{1\\text{上}}",
+   "display": false
+  },
+  {
+   "tex": "\\dot U_2",
+   "display": false
+  },
+  {
+   "tex": "\\dot U_2=+V_{2\\text{上}}",
+   "display": false
+  },
+  {
+   "tex": "L_1=0.8",
+   "display": false
+  },
+  {
+   "tex": "L_2=0.7",
+   "display": false
+  },
+  {
+   "tex": "M=0.5",
+   "display": false
+  },
+  {
+   "tex": "L=1.5-1.0=\\mathbf{0.5\\ H}",
+   "display": false
+  },
+  {
+   "tex": "L=1.5+1.0=\\mathbf{2.5\\ H}",
+   "display": false
+  },
+  {
+   "tex": "\\omega=10^4",
+   "display": false
+  },
+  {
+   "tex": "=",
+   "display": false
+  },
+  {
+   "tex": "+j",
+   "display": false
+  },
+  {
+   "tex": "j\\omega L_1=j700",
+   "display": false
+  },
+  {
+   "tex": "j\\omega L_2=j250",
+   "display": false
+  },
+  {
+   "tex": "j\\omega M=j250",
+   "display": false
+  },
+  {
+   "tex": "-j/\\omega C=-j100",
+   "display": false
+  },
+  {
+   "tex": "-j450",
+   "display": false
+  },
+  {
+   "tex": "+j450",
+   "display": false
+  },
+  {
+   "tex": "L=",
+   "display": false
+  },
+  {
+   "tex": "L_{ab}=",
+   "display": false
+  },
+  {
+   "tex": "6-4=2",
+   "display": false
+  },
+  {
+   "tex": "M",
+   "display": false
+  },
+  {
+   "tex": "M_{max}=\\sqrt{4\\times9}=6",
+   "display": false
+  },
+  {
+   "tex": "k=1",
+   "display": false
+  },
+  {
+   "tex": "k=1",
+   "display": false
+  },
+  {
+   "tex": "L_{ab}=",
+   "display": false
+  },
+  {
+   "tex": "U_S=60",
+   "display": false
+  },
+  {
+   "tex": "n=",
+   "display": false
+  },
+  {
+   "tex": "P=",
+   "display": false
+  },
+  {
+   "tex": "2n^2",
+   "display": false
+  },
+  {
+   "tex": "U_{oc}=60\\times\\frac{300}{900}=20",
+   "display": false
+  },
+  {
+   "tex": "R_0=600\\parallel300=200\\ \\Omega",
+   "display": false
+  },
+  {
+   "tex": "2n^2=200",
+   "display": false
+  },
+  {
+   "tex": "n=\\mathbf{10}",
+   "display": false
+  },
+  {
+   "tex": "\\dot I_{S1}=2\\angle30°",
+   "display": false
+  },
+  {
+   "tex": "P=",
+   "display": false
+  },
+  {
+   "tex": "\\dot I_1=2\\angle30°",
+   "display": false
+  },
+  {
+   "tex": "n=2",
+   "display": false
+  },
+  {
+   "tex": "\\dot I_2=n\\dot I_1=4\\angle30°",
+   "display": false
+  },
+  {
+   "tex": "\\dot I_2=4",
+   "display": false
+  },
+  {
+   "tex": "Z_{in}=Z_L/n^2",
+   "display": false
+  },
+  {
+   "tex": "Z_r=\\dfrac{(\\omega M)^2}{Z_{22}}",
+   "display": false
+  },
+  {
+   "tex": "Z_{22}",
+   "display": false
+  },
+  {
+   "tex": "Z_r",
+   "display": false
+  },
+  {
+   "tex": "u_1i_1+u_2i_2\\equiv0",
+   "display": false
+  },
+  {
+   "tex": "L_1+L_2",
+   "display": false
+  },
+  {
+   "tex": "\\pm2M",
+   "display": false
+  },
+  {
+   "tex": "\\pm2M",
+   "display": false
+  },
+  {
+   "tex": "Z_r=(\\omega M)^2/Z_{22}",
+   "display": false
+  },
+  {
+   "tex": "+2M",
+   "display": false
+  },
+  {
+   "tex": "-2M",
+   "display": false
+  },
+  {
+   "tex": "Z_{in}=(N_1/N_2)^2 Z_L",
+   "display": false
+  },
+  {
+   "tex": "\\pm2M",
+   "display": false
+  },
+  {
+   "tex": "\\dot I_2=0.5\\angle0°",
+   "display": false
+  },
+  {
+   "tex": "4.5",
+   "display": false
+  }
+ ]
+}

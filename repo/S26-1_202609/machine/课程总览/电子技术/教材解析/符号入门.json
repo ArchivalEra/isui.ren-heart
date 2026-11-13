@@ -1,0 +1,574 @@
+{
+ "url": "课程总览/电子技术/教材解析/符号入门.html",
+ "title": "符号入门",
+ "math": [
+  {
+   "tex": "V_C",
+   "display": false
+  },
+  {
+   "tex": "U_{CE}",
+   "display": false
+  },
+  {
+   "tex": "I_{CM}",
+   "display": false
+  },
+  {
+   "tex": "U_{(BR)CEO}",
+   "display": false
+  },
+  {
+   "tex": "U",
+   "display": false
+  },
+  {
+   "tex": "I",
+   "display": false
+  },
+  {
+   "tex": "R",
+   "display": false
+  },
+  {
+   "tex": "P",
+   "display": false
+  },
+  {
+   "tex": "I_C",
+   "display": false
+  },
+  {
+   "tex": "V_B",
+   "display": false
+  },
+  {
+   "tex": "i_c",
+   "display": false
+  },
+  {
+   "tex": "u_i",
+   "display": false
+  },
+  {
+   "tex": "U_{CE}",
+   "display": false
+  },
+  {
+   "tex": "U_{CE}",
+   "display": false
+  },
+  {
+   "tex": "P_{CM}",
+   "display": false
+  },
+  {
+   "tex": "I_{CM}",
+   "display": false
+  },
+  {
+   "tex": "U_{(BR)CEO}",
+   "display": false
+  },
+  {
+   "tex": "I_B",
+   "display": false
+  },
+  {
+   "tex": "I_B",
+   "display": false
+  },
+  {
+   "tex": "i_b",
+   "display": false
+  },
+  {
+   "tex": "I_C",
+   "display": false
+  },
+  {
+   "tex": "I_B",
+   "display": false
+  },
+  {
+   "tex": "I_C=\\beta I_B",
+   "display": false
+  },
+  {
+   "tex": "\\beta",
+   "display": false
+  },
+  {
+   "tex": "I_E",
+   "display": false
+  },
+  {
+   "tex": "I_E=I_B+I_C",
+   "display": false
+  },
+  {
+   "tex": "U_{CE}",
+   "display": false
+  },
+  {
+   "tex": "U_{BE}",
+   "display": false
+  },
+  {
+   "tex": "0.7",
+   "display": false
+  },
+  {
+   "tex": "0.2\\sim0.3",
+   "display": false
+  },
+  {
+   "tex": "u_i",
+   "display": false
+  },
+  {
+   "tex": "u_i",
+   "display": false
+  },
+  {
+   "tex": "U_i",
+   "display": false
+  },
+  {
+   "tex": "u_O",
+   "display": false
+  },
+  {
+   "tex": "u_i",
+   "display": false
+  },
+  {
+   "tex": "U_{CC}",
+   "display": false
+  },
+  {
+   "tex": "CC",
+   "display": false
+  },
+  {
+   "tex": "BB",
+   "display": false
+  },
+  {
+   "tex": "EE",
+   "display": false
+  },
+  {
+   "tex": "P_{CM}",
+   "display": false
+  },
+  {
+   "tex": "I_{CM}",
+   "display": false
+  },
+  {
+   "tex": "\\beta",
+   "display": false
+  },
+  {
+   "tex": "U_{(BR)CEO}",
+   "display": false
+  },
+  {
+   "tex": "U_z",
+   "display": false
+  },
+  {
+   "tex": "I_Z",
+   "display": false
+  },
+  {
+   "tex": "I_{Z(min)}<I_Z<I_{Z(max)}",
+   "display": false
+  },
+  {
+   "tex": "I_{ZM}",
+   "display": false
+  },
+  {
+   "tex": "U_{GS}",
+   "display": false
+  },
+  {
+   "tex": "U_{BE}",
+   "display": false
+  },
+  {
+   "tex": "U_{GS(th)}",
+   "display": false
+  },
+  {
+   "tex": "U_{GS}",
+   "display": false
+  },
+  {
+   "tex": "U_D",
+   "display": false
+  },
+  {
+   "tex": "I_D",
+   "display": false
+  },
+  {
+   "tex": "I_D=(U_D-U_{th})/R",
+   "display": false
+  },
+  {
+   "tex": "0.5",
+   "display": false
+  },
+  {
+   "tex": "\\beta",
+   "display": false
+  },
+  {
+   "tex": "\\beta=I_C/I_B",
+   "display": false
+  },
+  {
+   "tex": "h_{fe}",
+   "display": false
+  },
+  {
+   "tex": "\\beta",
+   "display": false
+  },
+  {
+   "tex": "\\alpha",
+   "display": false
+  },
+  {
+   "tex": "\\alpha=I_C/I_E",
+   "display": false
+  },
+  {
+   "tex": "\\beta",
+   "display": false
+  },
+  {
+   "tex": "\\beta=\\alpha/(1-\\alpha)",
+   "display": false
+  },
+  {
+   "tex": "V_{CE}",
+   "display": false
+  },
+  {
+   "tex": "0.7",
+   "display": false
+  },
+  {
+   "tex": "V_B",
+   "display": false
+  },
+  {
+   "tex": "V_E>V_B>V_C",
+   "display": false
+  },
+  {
+   "tex": "V_C>V_B>V_E",
+   "display": false
+  },
+  {
+   "tex": "U_{BE}",
+   "display": false
+  },
+  {
+   "tex": "V_C",
+   "display": false
+  },
+  {
+   "tex": "V_C>V_B>V_E",
+   "display": false
+  },
+  {
+   "tex": "U_{BE}\\approx0.7",
+   "display": false
+  },
+  {
+   "tex": "V_E",
+   "display": false
+  },
+  {
+   "tex": "V_E=0",
+   "display": false
+  },
+  {
+   "tex": "R_C",
+   "display": false
+  },
+  {
+   "tex": "u_O=U_{CC}-i_C R_C",
+   "display": false
+  },
+  {
+   "tex": "R_B",
+   "display": false
+  },
+  {
+   "tex": "I_B=(U_{CC}-U_{BE})/R_B",
+   "display": false
+  },
+  {
+   "tex": "R_E",
+   "display": false
+  },
+  {
+   "tex": "U_1",
+   "display": false
+  },
+  {
+   "tex": "u_1",
+   "display": false
+  },
+  {
+   "tex": "U_{CC}",
+   "display": false
+  },
+  {
+   "tex": "U_2",
+   "display": false
+  },
+  {
+   "tex": "U_1",
+   "display": false
+  },
+  {
+   "tex": "A_u=U_2/U_1",
+   "display": false
+  },
+  {
+   "tex": "u_1",
+   "display": false
+  },
+  {
+   "tex": "u_1=u_i-u_O",
+   "display": false
+  },
+  {
+   "tex": "I_R",
+   "display": false
+  },
+  {
+   "tex": "I_Z=I_R-I_L",
+   "display": false
+  },
+  {
+   "tex": "U_{ab}",
+   "display": false
+  },
+  {
+   "tex": "U_{ab}=\\varphi_a-\\varphi_b",
+   "display": false
+  },
+  {
+   "tex": "U_{ab}",
+   "display": false
+  },
+  {
+   "tex": "\\sum m(\\cdots)",
+   "display": false
+  },
+  {
+   "tex": "m_i",
+   "display": false
+  },
+  {
+   "tex": "i",
+   "display": false
+  },
+  {
+   "tex": "\\sum m(2,4,8)",
+   "display": false
+  },
+  {
+   "tex": "\\overline{R}_D",
+   "display": false
+  },
+  {
+   "tex": "\\overline{R}_D=0",
+   "display": false
+  },
+  {
+   "tex": "Q",
+   "display": false
+  },
+  {
+   "tex": "\\overline{S}_D",
+   "display": false
+  },
+  {
+   "tex": "\\overline{S}_D=0",
+   "display": false
+  },
+  {
+   "tex": "Q",
+   "display": false
+  },
+  {
+   "tex": "\\overline{R}_D",
+   "display": false
+  },
+  {
+   "tex": "CP",
+   "display": false
+  },
+  {
+   "tex": "Q",
+   "display": false
+  },
+  {
+   "tex": "Q_n",
+   "display": false
+  },
+  {
+   "tex": "Q_{n+1}",
+   "display": false
+  },
+  {
+   "tex": "\\overline{Q}",
+   "display": false
+  },
+  {
+   "tex": "Q",
+   "display": false
+  },
+  {
+   "tex": "\\overline{Q}",
+   "display": false
+  },
+  {
+   "tex": "Q",
+   "display": false
+  },
+  {
+   "tex": "Q=0",
+   "display": false
+  },
+  {
+   "tex": "\\overline{Q}=1",
+   "display": false
+  },
+  {
+   "tex": "J",
+   "display": false
+  },
+  {
+   "tex": "K",
+   "display": false
+  },
+  {
+   "tex": "J",
+   "display": false
+  },
+  {
+   "tex": "K",
+   "display": false
+  },
+  {
+   "tex": "J=1,K=0",
+   "display": false
+  },
+  {
+   "tex": "J=K=1",
+   "display": false
+  },
+  {
+   "tex": "K",
+   "display": false
+  },
+  {
+   "tex": "J",
+   "display": false
+  },
+  {
+   "tex": "J=0,K=1",
+   "display": false
+  },
+  {
+   "tex": "J=K=0",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "Q",
+   "display": false
+  },
+  {
+   "tex": "Q_{n+1}=D",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "Q_n",
+   "display": false
+  },
+  {
+   "tex": "Q_2",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "\\oplus",
+   "display": false
+  },
+  {
+   "tex": "A\\oplus B",
+   "display": false
+  },
+  {
+   "tex": "0,1,1,0",
+   "display": false
+  },
+  {
+   "tex": "\\odot",
+   "display": false
+  },
+  {
+   "tex": "A\\odot B=\\overline{A\\oplus B}",
+   "display": false
+  },
+  {
+   "tex": "1,0,0,1",
+   "display": false
+  },
+  {
+   "tex": "I",
+   "display": false
+  },
+  {
+   "tex": "U",
+   "display": false
+  },
+  {
+   "tex": "R",
+   "display": false
+  },
+  {
+   "tex": "P",
+   "display": false
+  }
+ ]
+}

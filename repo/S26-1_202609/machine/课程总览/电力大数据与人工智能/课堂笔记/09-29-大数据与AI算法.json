@@ -1,0 +1,58 @@
+{
+ "url": "课程总览/电力大数据与人工智能/课堂笔记/09-29-大数据与AI算法.html",
+ "title": "09-29 大数据与AI算法",
+ "math": [
+  {
+   "tex": "10^3",
+   "display": false
+  },
+  {
+   "tex": "X",
+   "display": false
+  },
+  {
+   "tex": "Y",
+   "display": false
+  },
+  {
+   "tex": "X",
+   "display": false
+  },
+  {
+   "tex": "P",
+   "display": false
+  },
+  {
+   "tex": "Y",
+   "display": false
+  },
+  {
+   "tex": "+1",
+   "display": false
+  },
+  {
+   "tex": "-1",
+   "display": false
+  },
+  {
+   "tex": "X",
+   "display": false
+  },
+  {
+   "tex": "Y",
+   "display": false
+  },
+  {
+   "tex": "y_i",
+   "display": false
+  },
+  {
+   "tex": "x+y\\ge 10",
+   "display": false
+  },
+  {
+   "tex": "C",
+   "display": false
+  }
+ ]
+}

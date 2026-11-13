@@ -1,0 +1,734 @@
+{
+ "url": "课程总览/电子技术/作业/2026-10-09作业.html",
+ "title": "2026-10-09作业",
+ "math": [
+  {
+   "tex": "A\\overline{B} + \\big(BD + \\overline{A}D\\big) + DC",
+   "display": true
+  },
+  {
+   "tex": "BD + \\overline{A}D = D(B + \\overline{A}) = D(\\overline{A} + B)",
+   "display": true
+  },
+  {
+   "tex": "A\\overline{B} + D(\\overline{A} + B) + DC",
+   "display": true
+  },
+  {
+   "tex": "A\\overline{B} + D(\\overline{A} + B) = A\\overline{B} + D",
+   "display": true
+  },
+  {
+   "tex": "A\\overline{B} + D + DC = A\\overline{B} + D. \\qquad\\blacksquare",
+   "display": true
+  },
+  {
+   "tex": "\\overline{D}(\\overline{B}+\\overline{C})(DA+B) = \\overline{D}(\\overline{B}+\\overline{C})DA + \\overline{D}(\\overline{B}+\\overline{C})B",
+   "display": true
+  },
+  {
+   "tex": "\\overline{D}(\\overline{B}+\\overline{C})DA = (\\overline{D}D)(\\overline{B}+\\overline{C})A = 0",
+   "display": true
+  },
+  {
+   "tex": "\\overline{D}(\\overline{B}+\\overline{C})B",
+   "display": true
+  },
+  {
+   "tex": "(\\overline{B}+\\overline{C})B = B\\overline{B} + B\\overline{C} = 0 + B\\overline{C} = B\\overline{C}",
+   "display": true
+  },
+  {
+   "tex": "BC + D + \\overline{D}B\\overline{C}",
+   "display": true
+  },
+  {
+   "tex": "BC + \\overline{D}B\\overline{C} = B\\big(C + \\overline{D}\\,\\overline{C}\\big)",
+   "display": true
+  },
+  {
+   "tex": "C + \\overline{D}\\,\\overline{C} = C + \\overline{D}",
+   "display": true
+  },
+  {
+   "tex": "B\\overline{D} + D = D + B",
+   "display": true
+  },
+  {
+   "tex": "BC + B + D = B + D. \\qquad\\blacksquare",
+   "display": true
+  },
+  {
+   "tex": "AB + A\\overline{B} + \\overline{A}B + \\overline{A}\\,\\overline{B} = A(B+\\overline{B}) + \\overline{A}(B+\\overline{B})",
+   "display": true
+  },
+  {
+   "tex": "= A\\cdot 1 + \\overline{A}\\cdot 1 = A + \\overline{A}",
+   "display": true
+  },
+  {
+   "tex": "A + \\overline{A} = 1. \\qquad\\blacksquare",
+   "display": true
+  },
+  {
+   "tex": "\\overline{A}",
+   "display": false
+  },
+  {
+   "tex": "\\overline{B+C}",
+   "display": false
+  },
+  {
+   "tex": "\\overline{A+B}=\\overline{A}\\,\\overline{B}",
+   "display": false
+  },
+  {
+   "tex": "\\overline{AB}=\\overline{A}+\\overline{B}",
+   "display": false
+  },
+  {
+   "tex": "A+AB=A",
+   "display": false
+  },
+  {
+   "tex": "A+\\overline{A}B=A+B",
+   "display": false
+  },
+  {
+   "tex": "X+\\overline{X}=1",
+   "display": false
+  },
+  {
+   "tex": "A+AB=A",
+   "display": false
+  },
+  {
+   "tex": "A+\\overline{A}B=A+B",
+   "display": false
+  },
+  {
+   "tex": "A+\\overline{A}=1",
+   "display": false
+  },
+  {
+   "tex": "\\overline{B+C}",
+   "display": false
+  },
+  {
+   "tex": "X+\\overline{X}Y=X+Y",
+   "display": false
+  },
+  {
+   "tex": "X",
+   "display": false
+  },
+  {
+   "tex": "\\overline{X}\\cdot Y",
+   "display": false
+  },
+  {
+   "tex": "\\overline{X}",
+   "display": false
+  },
+  {
+   "tex": "Y",
+   "display": false
+  },
+  {
+   "tex": "D+B\\overline{D}",
+   "display": false
+  },
+  {
+   "tex": "X=D",
+   "display": false
+  },
+  {
+   "tex": "\\overline{X}=\\overline{D}",
+   "display": false
+  },
+  {
+   "tex": "B\\overline{D}=\\overline{D}\\cdot B",
+   "display": false
+  },
+  {
+   "tex": "D+B\\overline{D}=D+B",
+   "display": false
+  },
+  {
+   "tex": "A\\overline{B} + BD + \\overline{A}D + DC = A\\overline{B} + D",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "BD",
+   "display": false
+  },
+  {
+   "tex": "\\overline{A}D",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "D(B + \\overline{A})",
+   "display": false
+  },
+  {
+   "tex": "\\overline{A}+B",
+   "display": false
+  },
+  {
+   "tex": "A\\overline{B}",
+   "display": false
+  },
+  {
+   "tex": "\\overline{A\\overline{B}}=\\overline{A}+B",
+   "display": false
+  },
+  {
+   "tex": "X+\\overline{X}Y",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "BD + \\overline{A}D",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "B+\\overline{A}",
+   "display": false
+  },
+  {
+   "tex": "\\overline{A}+B",
+   "display": false
+  },
+  {
+   "tex": "A\\overline{B}",
+   "display": false
+  },
+  {
+   "tex": "D(\\overline{A}+B)",
+   "display": false
+  },
+  {
+   "tex": "DC",
+   "display": false
+  },
+  {
+   "tex": "X=A\\overline{B}",
+   "display": false
+  },
+  {
+   "tex": "\\overline{X}=\\overline{A\\overline{B}}=\\overline{A}+B",
+   "display": false
+  },
+  {
+   "tex": "D(\\overline{A}+B)=D\\cdot\\overline{X}=\\overline{X}\\cdot D",
+   "display": false
+  },
+  {
+   "tex": "X + \\overline{X}Y = X + Y",
+   "display": false
+  },
+  {
+   "tex": "Y=D",
+   "display": false
+  },
+  {
+   "tex": "DC",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "D + DC = D",
+   "display": false
+  },
+  {
+   "tex": "= A\\overline{B} + D =",
+   "display": false
+  },
+  {
+   "tex": "A,B,C,D",
+   "display": false
+  },
+  {
+   "tex": "BD",
+   "display": false
+  },
+  {
+   "tex": "\\overline{A}D",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "\\overline{A}+B",
+   "display": false
+  },
+  {
+   "tex": "A\\overline{B}",
+   "display": false
+  },
+  {
+   "tex": "\\overline{A\\overline{B}}=\\overline{A}+B",
+   "display": false
+  },
+  {
+   "tex": "DC",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "BC + D + \\overline{D}(\\overline{B}+\\overline{C})(DA+B) = B + D",
+   "display": false
+  },
+  {
+   "tex": "\\overline{D}(\\overline{B}+\\overline{C})(DA+B)",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "C",
+   "display": false
+  },
+  {
+   "tex": "\\overline{B}+\\overline{C}",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "C",
+   "display": false
+  },
+  {
+   "tex": "\\overline{B+C}",
+   "display": false
+  },
+  {
+   "tex": "B+C",
+   "display": false
+  },
+  {
+   "tex": "\\overline{D}",
+   "display": false
+  },
+  {
+   "tex": "(DA+B)",
+   "display": false
+  },
+  {
+   "tex": "\\overline{D}",
+   "display": false
+  },
+  {
+   "tex": "DA",
+   "display": false
+  },
+  {
+   "tex": "\\overline{D}D=0",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "(\\overline{B}+\\overline{C})",
+   "display": false
+  },
+  {
+   "tex": "B\\overline{B}=0",
+   "display": false
+  },
+  {
+   "tex": "(DA+B)",
+   "display": false
+  },
+  {
+   "tex": "\\overline{D}D=0",
+   "display": false
+  },
+  {
+   "tex": "(\\overline{B}+\\overline{C})B",
+   "display": false
+  },
+  {
+   "tex": "B\\overline{B}=0",
+   "display": false
+  },
+  {
+   "tex": "= \\overline{D}B\\overline{C}",
+   "display": false
+  },
+  {
+   "tex": "BC",
+   "display": false
+  },
+  {
+   "tex": "\\overline{D}B\\overline{C}",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "X=C",
+   "display": false
+  },
+  {
+   "tex": "\\overline{X}=\\overline{C}",
+   "display": false
+  },
+  {
+   "tex": "X+\\overline{X}Y=X+Y",
+   "display": false
+  },
+  {
+   "tex": "Y=\\overline{D}",
+   "display": false
+  },
+  {
+   "tex": "BC + \\overline{D}B\\overline{C} = B(C + \\overline{D}) = BC + B\\overline{D}",
+   "display": false
+  },
+  {
+   "tex": "= BC + B\\overline{D} + D",
+   "display": false
+  },
+  {
+   "tex": "B\\overline{D}",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "X=D",
+   "display": false
+  },
+  {
+   "tex": "\\overline{X}=\\overline{D}",
+   "display": false
+  },
+  {
+   "tex": "B\\overline{D}=\\overline{D}\\cdot B",
+   "display": false
+  },
+  {
+   "tex": "= BC + B + D",
+   "display": false
+  },
+  {
+   "tex": "B + BC = B",
+   "display": false
+  },
+  {
+   "tex": "= B + D =",
+   "display": false
+  },
+  {
+   "tex": "A,B,C,D",
+   "display": false
+  },
+  {
+   "tex": "\\overline{D}DA=0",
+   "display": false
+  },
+  {
+   "tex": "B\\overline{B}=0",
+   "display": false
+  },
+  {
+   "tex": "C",
+   "display": false
+  },
+  {
+   "tex": "\\overline{C}",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "\\overline{D}",
+   "display": false
+  },
+  {
+   "tex": "C",
+   "display": false
+  },
+  {
+   "tex": "\\overline{C}",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "\\overline{D}",
+   "display": false
+  },
+  {
+   "tex": "\\overline{B}+\\overline{C}",
+   "display": false
+  },
+  {
+   "tex": "\\overline{B+C}",
+   "display": false
+  },
+  {
+   "tex": "AB + A\\overline{B} + \\overline{A}B + \\overline{A}\\,\\overline{B} = 1",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "\\overline{A}",
+   "display": false
+  },
+  {
+   "tex": "A(B+\\overline{B}) + \\overline{A}(B+\\overline{B})",
+   "display": false
+  },
+  {
+   "tex": "B+\\overline{B}=1",
+   "display": false
+  },
+  {
+   "tex": "A\\cdot1 + \\overline{A}\\cdot1 = A + \\overline{A} = 1",
+   "display": false
+  },
+  {
+   "tex": "B+\\overline{B}=1",
+   "display": false
+  },
+  {
+   "tex": "= 1 =",
+   "display": false
+  },
+  {
+   "tex": "A\\overline{B} + B\\overline{C} + C\\overline{A} = \\overline{A}B + \\overline{B}C + \\overline{C}A",
+   "display": false
+  },
+  {
+   "tex": "X+\\overline{X}=1",
+   "display": false
+  },
+  {
+   "tex": "A\\overline{B}",
+   "display": false
+  },
+  {
+   "tex": "C",
+   "display": false
+  },
+  {
+   "tex": "A\\overline{B}=A\\overline{B}(C+\\overline{C})=A\\overline{B}C+A\\overline{B}\\,\\overline{C}",
+   "display": false
+  },
+  {
+   "tex": "B\\overline{C}",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "B\\overline{C}=B\\overline{C}(A+\\overline{A})=AB\\overline{C}+\\overline{A}B\\overline{C}",
+   "display": false
+  },
+  {
+   "tex": "C\\overline{A}",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "C\\overline{A}=C\\overline{A}(B+\\overline{B})=\\overline{A}BC+\\overline{A}\\,\\overline{B}C",
+   "display": false
+  },
+  {
+   "tex": "= A\\overline{B}C+A\\overline{B}\\,\\overline{C}+AB\\overline{C}+\\overline{A}B\\overline{C}+\\overline{A}BC+\\overline{A}\\,\\overline{B}C",
+   "display": false
+  },
+  {
+   "tex": "\\overline{A}B",
+   "display": false
+  },
+  {
+   "tex": "C",
+   "display": false
+  },
+  {
+   "tex": "\\overline{A}B=\\overline{A}BC+\\overline{A}B\\overline{C}",
+   "display": false
+  },
+  {
+   "tex": "\\overline{B}C",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "\\overline{B}C=A\\overline{B}C+\\overline{A}\\,\\overline{B}C",
+   "display": false
+  },
+  {
+   "tex": "\\overline{C}A",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "\\overline{C}A=AB\\overline{C}+A\\overline{B}\\,\\overline{C}",
+   "display": false
+  },
+  {
+   "tex": "= \\overline{A}BC+\\overline{A}B\\overline{C}+A\\overline{B}C+\\overline{A}\\,\\overline{B}C+AB\\overline{C}+A\\overline{B}\\,\\overline{C}",
+   "display": false
+  },
+  {
+   "tex": "\\blacksquare",
+   "display": false
+  },
+  {
+   "tex": "A,B,C",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "X+\\overline{X}Y=X+Y",
+   "display": false
+  },
+  {
+   "tex": "X",
+   "display": false
+  },
+  {
+   "tex": "\\overline{X}\\cdot Y",
+   "display": false
+  },
+  {
+   "tex": "\\overline{X}",
+   "display": false
+  },
+  {
+   "tex": "Y",
+   "display": false
+  },
+  {
+   "tex": "\\overline{D}D=0",
+   "display": false
+  },
+  {
+   "tex": "B\\overline{B}=0",
+   "display": false
+  },
+  {
+   "tex": "\\overline{B}+\\overline{C}",
+   "display": false
+  },
+  {
+   "tex": "\\overline{B+C}",
+   "display": false
+  },
+  {
+   "tex": "\\overline{D}(\\overline{B}+\\overline{C})(DA+B)",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "C",
+   "display": false
+  },
+  {
+   "tex": "\\overline{B}+\\overline{C}",
+   "display": false
+  },
+  {
+   "tex": "\\overline{B+C}",
+   "display": false
+  },
+  {
+   "tex": "\\overline{B+C}",
+   "display": false
+  },
+  {
+   "tex": "A{=}1,B{=}0,C{=}0,D{=}0",
+   "display": false
+  },
+  {
+   "tex": "BD",
+   "display": false
+  },
+  {
+   "tex": "\\overline{B+C}",
+   "display": false
+  },
+  {
+   "tex": "\\overline{D}\\,\\overline{B}\\,\\overline{C}\\cdot B",
+   "display": false
+  },
+  {
+   "tex": "B\\overline{C}",
+   "display": false
+  }
+ ]
+}
