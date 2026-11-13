@@ -1,0 +1,1 @@
+{"url":"课程总览/电路原理/作业/习题册第四章.html","title":"习题册第四章（21 题）","section":"填 1（图 4.7）","body":"### 填 1（图 4.7）\n\n> 戴维南等效电阻 $R_{eq}=$______Ω。\n\n<img src=\"https://isui.ren/repo/S26-1_202609/课程总览/电路原理/作业/figures/fig-4.7.webp\" alt=\"图 4.7：4V 串 2Ω、2A、3Ω 接 a\" loading=\"lazy\">\n\n:::collapse accordion\n- 解答\n  置零后 $3+2=\\mathbf{5\\ \\Omega}$（同选 8 结构）。\n- 复盘\n  电流源开路、电压源短路，剩下纯电阻串并联。\n:::"}

@@ -1,0 +1,1 @@
+{"url":"课程总览/电路原理/作业/习题册第五章.html","title":"习题册第五章（62 题）","section":"选 19","body":"### 选 19\n\n> $Z=5+j10\\ \\Omega$，等效复导纳的实部（　）S。\n\n:::collapse accordion\n- 解答\n  $Y=\\dfrac{5-j10}{125}=0.04-j0.08$ S，实部 $\\mathbf{0.04}$，**选 B**。\n- 复盘\n  $G=\\dfrac{R}{R^2+X^2}$，不是 $1/R$。\n:::"}

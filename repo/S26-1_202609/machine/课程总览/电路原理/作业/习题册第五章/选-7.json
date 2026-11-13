@@ -1,0 +1,1 @@
+{"url":"课程总览/电路原理/作业/习题册第五章.html","title":"习题册第五章（62 题）","section":"选 7","body":"### 选 7\n\n> $\\dot U=10\\angle0°$ V、$\\dot I=5\\angle30°$ A，吸收的无功功率（　）。\n\n:::collapse accordion\n- 解答\n  $Q=UI\\sin\\varphi=50\\times\\sin(0-30°)=-25$ var，**选 C**。\n- 复盘\n  电流超前电压（$\\varphi<0$）= 容性 = 发出感性无功，$Q$ 为负。\n:::"}

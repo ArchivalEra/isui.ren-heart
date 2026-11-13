@@ -1,0 +1,1 @@
+{"url":"课程总览/电路原理/作业/习题册第五章.html","title":"习题册第五章（62 题）","section":"选 6","body":"### 选 6\n\n> $u=5\\sin(100\\pi t+45°)$ V 的频率 $f=$（　）。\n\n:::collapse accordion\n- 解答\n  $f=\\omega/2\\pi=100\\pi/2\\pi=50$ Hz，**选 C**。\n- 复盘\n  $\\omega$ 除以 $2\\pi$，别把 100 当成频率。\n:::"}

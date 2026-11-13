@@ -1,0 +1,1 @@
+{"url":"课程总览/电路原理/作业/习题册第七章.html","title":"习题册第七章（31 题）","section":"计 4","body":"### 计 4\n\n> $\\dot I_A=5\\angle25°$ A、$\\dot U_{AB}=380\\angle90°$ V。求功率因数与平均功率。\n\n:::collapse accordion\n- 解答\n  同填 2：$\\varphi=35°$、$\\lambda=\\cos35°\\approx\\mathbf{0.82}$；\n  $$P=\\sqrt3\\times380\\times5\\times\\cos35°\\approx\\mathbf{2696\\ W}$$\n- 复盘\n  与填 2 同口径——先修 30°，再套三相功率公式。\n:::"}

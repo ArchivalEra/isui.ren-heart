@@ -1,0 +1,1 @@
+{"url":"课程总览/工程数学/技法库.html","title":"技法库","section":"第四步：除以 $\\det A$","body":"### 第四步：除以 $\\det A$\n\n$$A^{-1}=\\frac{1}{\\det A}A^*=\\frac12\\begin{pmatrix}-4&2&0\\\\-13&6&-1\\\\-32&14&-2\\end{pmatrix}=\\begin{pmatrix}-2&1&0\\\\-\\frac{13}2&3&-\\frac12\\\\-16&7&-1\\end{pmatrix}.$$"}

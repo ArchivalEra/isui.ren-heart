@@ -1,0 +1,1 @@
+{"url":"index.html","title":"S26-1 课程知识库","section":"规则与维护","body":"## 规则与维护\n\n- 整理原则：[维护条例](./维护条例.md) · 操作规程：[维护细则](./维护细则.md)\n- AI 助手常驻指令：[AGENTS.md](./AGENTS.md)（skill 路由表 + 硬约束）\n- 各课程首页登记本课全部材料（文件名 + SHA-256）；教材照片原件不入库，存本地 `/mnt/hdd/study/`\n- 缺什么、待补什么：看 [GitHub issues](https://github.com/ArchivalEra/S26-1_202609/issues)（open = 没补，closed = 补了）"}

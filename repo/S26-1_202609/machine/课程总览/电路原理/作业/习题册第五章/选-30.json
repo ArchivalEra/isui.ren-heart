@@ -1,0 +1,1 @@
+{"url":"课程总览/电路原理/作业/习题册第五章.html","title":"习题册第五章（62 题）","section":"选 30","body":"### 选 30\n\n> $u_R=5\\sqrt2\\sin(\\omega t+10°)$、$u_L=5\\sqrt2\\sin(\\omega t+100°)$，总电压 $u$（　）。\n\n:::collapse accordion\n- 解答\n  两有效值 5 V、相角差 $90°$：$U=5\\sqrt2$、$\\varphi=55°$ → 幅值 $10$：\n  $u=10\\sin(\\omega t+55°)$ V，**选 B**。\n- 复盘\n  正交合成：模放大 $\\sqrt2$、相角取中间值。\n:::"}

@@ -1,0 +1,1 @@
+{"url":"课程总览/电路原理/作业/习题册第七章.html","title":"习题册第七章（31 题）","section":"计 2、5（同题）","body":"### 计 2、5（同题）\n\n> 线电压 380V，△ 负载 $Z=20+j20\\ \\Omega$。求线电流与相电流。\n\n:::collapse accordion\n- 解答\n  $|Z|=20\\sqrt2=28.28\\ \\Omega$、$U_P=U_l=380$ V：\n  $$I_P=\\frac{380}{28.28}\\approx\\mathbf{13.4\\ A}\\qquad I_l=\\sqrt3\\times13.4\\approx\\mathbf{23.3\\ A}$$\n- 复盘\n  原书同题排两遍——第二遍直接写答案。\n:::"}

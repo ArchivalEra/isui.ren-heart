@@ -1,0 +1,1 @@
+{"url":"课程总览/电路原理/作业/习题册第七章.html","title":"习题册第七章（31 题）","section":"选 12","body":"### 选 12\n\n> Y 连接，线电压 10V、总功率 $10\\sqrt3$ W、$\\cos\\varphi=0.8$，相电流（　）。\n\n:::collapse accordion\n- 解答\n  $P=\\sqrt3 U_l I_l\\cos\\varphi$ → $I_l=\\dfrac{10\\sqrt3}{\\sqrt3\\times10\\times0.8}=1.25$ A；\n  Y 中 $I_P=I_l=\\mathbf{1.25\\ A}$，**选 A**。\n- 复盘\n  三相功率公式反用求电流，数值凑得极整——出题人给的顺手题。\n:::"}

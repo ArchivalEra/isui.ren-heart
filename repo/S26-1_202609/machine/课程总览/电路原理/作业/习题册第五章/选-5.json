@@ -1,0 +1,1 @@
+{"url":"课程总览/电路原理/作业/习题册第五章.html","title":"习题册第五章（62 题）","section":"选 5","body":"### 选 5\n\n> $\\dot U=10\\angle0°$ V、$\\dot I=5\\angle60°$ A（关联），吸收的有功功率（　）。\n\n:::collapse accordion\n- 解答\n  $P=UI\\cos\\varphi=10\\times5\\times\\cos60°=25$ W，**选 C**。\n- 复盘\n  关联方向下 $P>0$ = 吸收；$\\varphi=\\varphi_u-\\varphi_i=-60°$，余弦偶函数符号不影响。\n:::"}
