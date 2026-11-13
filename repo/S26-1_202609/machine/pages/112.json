@@ -1,0 +1,1248 @@
+{
+ "url": "课程总览/电子技术/作业/2026-10-28作业.html",
+ "title": "2026-10-28作业",
+ "math": [
+  {
+   "tex": "Q_{n+1}=J\\overline{Q_n}+\\overline{K}Q_n",
+   "display": true
+  },
+  {
+   "tex": "Q_{n+1}=1\\cdot\\overline{Q_n}+0\\cdot Q_n=\\overline{Q_n}",
+   "display": true
+  },
+  {
+   "tex": "f_{Q_1}=\\frac{f_{CP}}{2}=\\frac{400}{2}=200\\ \\text{Hz},\\qquad f_{Q_2}=\\frac{f_{Q_1}}{2}=\\frac{200}{2}=100\\ \\text{Hz}",
+   "display": true
+  },
+  {
+   "tex": "Q_{1,n+1}=D,\\qquad Q_{2,n+1}=J\\overline{Q_{2,n}}+\\overline{K}Q_{2,n}",
+   "display": true
+  },
+  {
+   "tex": "Q_{2,n+1}=Q_1\\overline{Q_{2,n}}+Q_1 Q_{2,n}=Q_1\\left(\\overline{Q_{2,n}}+Q_{2,n}\\right)=Q_1",
+   "display": true
+  },
+  {
+   "tex": "Q_{n+1}=J\\overline{Q_n}+\\overline{K}Q_n",
+   "display": false
+  },
+  {
+   "tex": "J=K=1",
+   "display": false
+  },
+  {
+   "tex": "C1",
+   "display": false
+  },
+  {
+   "tex": "J",
+   "display": false
+  },
+  {
+   "tex": "K",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "Q_2",
+   "display": false
+  },
+  {
+   "tex": "CP",
+   "display": false
+  },
+  {
+   "tex": "Q_{n+1}=D",
+   "display": false
+  },
+  {
+   "tex": "Q_{n+1}=J\\overline{Q_n}+\\overline{K}Q_n",
+   "display": false
+  },
+  {
+   "tex": "C1",
+   "display": false
+  },
+  {
+   "tex": "\\overline{K}",
+   "display": false
+  },
+  {
+   "tex": "J",
+   "display": false
+  },
+  {
+   "tex": "K",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "Q_2",
+   "display": false
+  },
+  {
+   "tex": "CP",
+   "display": false
+  },
+  {
+   "tex": "C1",
+   "display": false
+  },
+  {
+   "tex": "C1",
+   "display": false
+  },
+  {
+   "tex": "\\overline{S_D}=1",
+   "display": false
+  },
+  {
+   "tex": "\\overline{R_D}",
+   "display": false
+  },
+  {
+   "tex": "t=0",
+   "display": false
+  },
+  {
+   "tex": "t=0",
+   "display": false
+  },
+  {
+   "tex": "J",
+   "display": false
+  },
+  {
+   "tex": "K",
+   "display": false
+  },
+  {
+   "tex": "C1",
+   "display": false
+  },
+  {
+   "tex": "C1",
+   "display": false
+  },
+  {
+   "tex": "1",
+   "display": false
+  },
+  {
+   "tex": "1",
+   "display": false
+  },
+  {
+   "tex": "CP",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "\\overline{Q_1}",
+   "display": false
+  },
+  {
+   "tex": "C1",
+   "display": false
+  },
+  {
+   "tex": "1",
+   "display": false
+  },
+  {
+   "tex": "1",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "Q_2",
+   "display": false
+  },
+  {
+   "tex": "\\overline{Q_2}",
+   "display": false
+  },
+  {
+   "tex": "J",
+   "display": false
+  },
+  {
+   "tex": "K",
+   "display": false
+  },
+  {
+   "tex": "1",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "\\overline{Q_1}",
+   "display": false
+  },
+  {
+   "tex": "CP",
+   "display": false
+  },
+  {
+   "tex": "CP",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "Q_2",
+   "display": false
+  },
+  {
+   "tex": "CP",
+   "display": false
+  },
+  {
+   "tex": "Q_1=Q_2=0",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "Q_2",
+   "display": false
+  },
+  {
+   "tex": "J=K=1",
+   "display": false
+  },
+  {
+   "tex": "J=K=1",
+   "display": false
+  },
+  {
+   "tex": "Q_{n+1}=J\\overline{Q_n}+\\overline{K}Q_n",
+   "display": false
+  },
+  {
+   "tex": "\\overline{Q_n}",
+   "display": false
+  },
+  {
+   "tex": "CP",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "Q_1=Q_2=0",
+   "display": false
+  },
+  {
+   "tex": "J=1",
+   "display": false
+  },
+  {
+   "tex": "K=1",
+   "display": false
+  },
+  {
+   "tex": "\\overline{K}=0",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "CP",
+   "display": false
+  },
+  {
+   "tex": "Q_{1,n+1}=\\overline{Q_{1,n}}",
+   "display": false
+  },
+  {
+   "tex": "Q_2",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "Q_{2,n+1}=\\overline{Q_{2,n}}",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "Q_{1}=0",
+   "display": false
+  },
+  {
+   "tex": "CP",
+   "display": false
+  },
+  {
+   "tex": "Q_{1,n}",
+   "display": false
+  },
+  {
+   "tex": "Q_{1,n+1}=\\overline{Q_{1,n}}",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "Q_2",
+   "display": false
+  },
+  {
+   "tex": "Q_2=0",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "Q_{2,n}",
+   "display": false
+  },
+  {
+   "tex": "Q_{2,n+1}=\\overline{Q_{2,n}}",
+   "display": false
+  },
+  {
+   "tex": "Q_2",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "Q_2",
+   "display": false
+  },
+  {
+   "tex": "J=K=1",
+   "display": false
+  },
+  {
+   "tex": "1/2",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "Q_2",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "f_{Q_2}=f_{CP}/4=100",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "CP",
+   "display": false
+  },
+  {
+   "tex": "CP",
+   "display": false
+  },
+  {
+   "tex": "Q_2",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "Q_2",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "f_{Q_1}=f_{CP}/2",
+   "display": false
+  },
+  {
+   "tex": "f_{Q_2}=f_{Q_1}/2",
+   "display": false
+  },
+  {
+   "tex": "C1",
+   "display": false
+  },
+  {
+   "tex": "C1",
+   "display": false
+  },
+  {
+   "tex": "1D \\leftarrow D",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "CP",
+   "display": false
+  },
+  {
+   "tex": "\\overline{S_D}=1",
+   "display": false
+  },
+  {
+   "tex": "\\overline{R_D}",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "\\overline{Q_1}",
+   "display": false
+  },
+  {
+   "tex": "C1",
+   "display": false
+  },
+  {
+   "tex": "J \\leftarrow Q_1",
+   "display": false
+  },
+  {
+   "tex": "K \\leftarrow \\overline{Q_1}",
+   "display": false
+  },
+  {
+   "tex": "CP",
+   "display": false
+  },
+  {
+   "tex": "\\overline{S_D}=1",
+   "display": false
+  },
+  {
+   "tex": "\\overline{R_D}",
+   "display": false
+  },
+  {
+   "tex": "Q_2",
+   "display": false
+  },
+  {
+   "tex": "\\overline{Q_2}",
+   "display": false
+  },
+  {
+   "tex": "CP",
+   "display": false
+  },
+  {
+   "tex": "C1",
+   "display": false
+  },
+  {
+   "tex": "\\overline{R_D}",
+   "display": false
+  },
+  {
+   "tex": "t=0",
+   "display": false
+  },
+  {
+   "tex": "\\overline{S_D}=1",
+   "display": false
+  },
+  {
+   "tex": "t=0",
+   "display": false
+  },
+  {
+   "tex": "Q_1=Q_2=0",
+   "display": false
+  },
+  {
+   "tex": "\\overline{R_D}",
+   "display": false
+  },
+  {
+   "tex": "CP",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_1<\\downarrow_1<\\uparrow_2<\\downarrow_2<\\uparrow_3<\\downarrow_3<\\uparrow_4<\\downarrow_4<\\uparrow_5<\\downarrow_5",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow",
+   "display": false
+  },
+  {
+   "tex": "\\downarrow",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "D\\!\\downarrow",
+   "display": false
+  },
+  {
+   "tex": "\\downarrow_1",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_2",
+   "display": false
+  },
+  {
+   "tex": "D\\!\\uparrow",
+   "display": false
+  },
+  {
+   "tex": "\\downarrow_4",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_5",
+   "display": false
+  },
+  {
+   "tex": "\\overline{R_D}",
+   "display": false
+  },
+  {
+   "tex": "t=0",
+   "display": false
+  },
+  {
+   "tex": "\\overline{S_D}=1",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "D\\!\\downarrow",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_1",
+   "display": false
+  },
+  {
+   "tex": "D\\!\\uparrow",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_4",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_1",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_2",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_3",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_4",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_5",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "Q_2",
+   "display": false
+  },
+  {
+   "tex": "CP",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "Q_1=Q_2=0",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_1",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_1",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_2",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_2",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_3",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_3",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_4",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_4",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_5",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_5",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "Q_2",
+   "display": false
+  },
+  {
+   "tex": "Q_{n+1}=D",
+   "display": false
+  },
+  {
+   "tex": "CP",
+   "display": false
+  },
+  {
+   "tex": "J=Q_1",
+   "display": false
+  },
+  {
+   "tex": "K=\\overline{Q_1}",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "\\overline{S_D}=1",
+   "display": false
+  },
+  {
+   "tex": "\\overline{R_D}",
+   "display": false
+  },
+  {
+   "tex": "t=0",
+   "display": false
+  },
+  {
+   "tex": "J=Q_1",
+   "display": false
+  },
+  {
+   "tex": "K=\\overline{Q_1}",
+   "display": false
+  },
+  {
+   "tex": "\\overline{K}=Q_1",
+   "display": false
+  },
+  {
+   "tex": "\\overline{Q_{2,n}}+Q_{2,n}=1",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "CP",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "Q_2",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "CP",
+   "display": false
+  },
+  {
+   "tex": "Q_1=Q_2=0",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_1",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_2",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_3",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_4",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_5",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "Q_{1,n+1}=D",
+   "display": false
+  },
+  {
+   "tex": "Q_2",
+   "display": false
+  },
+  {
+   "tex": "Q_{2,n+1}=Q_1",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_1",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_1",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_2",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_2",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_5",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_5",
+   "display": false
+  },
+  {
+   "tex": "Q_2",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_2",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_2",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_3",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_3",
+   "display": false
+  },
+  {
+   "tex": "Q_2",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "CP",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_1",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_2",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_5",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "D\\!\\downarrow",
+   "display": false
+  },
+  {
+   "tex": "\\downarrow_1",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_2",
+   "display": false
+  },
+  {
+   "tex": "D\\!\\uparrow",
+   "display": false
+  },
+  {
+   "tex": "\\downarrow_4",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_5",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "Q_2",
+   "display": false
+  },
+  {
+   "tex": "Q_{2,n+1}=Q_1",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "J=Q_1",
+   "display": false
+  },
+  {
+   "tex": "K=\\overline{Q_1}",
+   "display": false
+  },
+  {
+   "tex": "\\overline{K}=Q_1",
+   "display": false
+  },
+  {
+   "tex": "Q_{2,n+1}=Q_1",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "CP",
+   "display": false
+  },
+  {
+   "tex": "Q_2",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "Q_2",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "Q_2",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_2",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_3",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_1",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_2",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "Q_2",
+   "display": false
+  },
+  {
+   "tex": "D\\!\\downarrow",
+   "display": false
+  },
+  {
+   "tex": "D\\!\\uparrow",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "\\overline{R_D}",
+   "display": false
+  },
+  {
+   "tex": "t=0",
+   "display": false
+  },
+  {
+   "tex": "0\\to1",
+   "display": false
+  },
+  {
+   "tex": "Q_1=Q_2=0",
+   "display": false
+  },
+  {
+   "tex": "\\overline{S_D}=1",
+   "display": false
+  },
+  {
+   "tex": "Q_1/Q_2",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "Q_2",
+   "display": false
+  },
+  {
+   "tex": "J \\leftarrow Q_1",
+   "display": false
+  },
+  {
+   "tex": "K \\leftarrow \\overline{Q_1}",
+   "display": false
+  },
+  {
+   "tex": "C1 \\leftarrow CP",
+   "display": false
+  },
+  {
+   "tex": "Q_{2,n+1}=Q_1",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "K",
+   "display": false
+  },
+  {
+   "tex": "\\overline{Q_1}",
+   "display": false
+  },
+  {
+   "tex": "1",
+   "display": false
+  },
+  {
+   "tex": "C1",
+   "display": false
+  },
+  {
+   "tex": "CP",
+   "display": false
+  },
+  {
+   "tex": "\\overline{Q_1}",
+   "display": false
+  },
+  {
+   "tex": "Q_2",
+   "display": false
+  },
+  {
+   "tex": "CP",
+   "display": false
+  },
+  {
+   "tex": "D\\!\\downarrow",
+   "display": false
+  },
+  {
+   "tex": "\\downarrow_1",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_2",
+   "display": false
+  },
+  {
+   "tex": "D\\!\\uparrow",
+   "display": false
+  },
+  {
+   "tex": "\\downarrow_4",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_5",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_1\\sim\\uparrow_5",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "D\\!\\downarrow",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_1",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_2",
+   "display": false
+  },
+  {
+   "tex": "D\\!\\uparrow",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_4",
+   "display": false
+  },
+  {
+   "tex": "Q_1/Q_2",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "C1",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "\\overline{Q_1}",
+   "display": false
+  },
+  {
+   "tex": "\\overline{Q_1}",
+   "display": false
+  },
+  {
+   "tex": "Q_2",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "J=Q_1",
+   "display": false
+  },
+  {
+   "tex": "K=\\overline{Q_1}",
+   "display": false
+  },
+  {
+   "tex": "Q_2^*=Q_1",
+   "display": false
+  }
+ ],
+ "figures": [
+  {
+   "src": "figures/fig-8-06.svg",
+   "alt": "两级 JK 触发器级联：第一级 C1 接 CP、第二级 C1 接 Q₁，两级 J=K=1，C1 端带下降沿小圆圈"
+  },
+  {
+   "src": "figures/fig-8-08-ans.svg",
+   "alt": "习题 8.8 答案波形：Q₁ 在四个 CP 下降沿 25/40/60/80% 翻转，Q₂ 只在 Q₁ 的下降沿 40/80% 翻转，频率 400→200→100 Hz"
+  },
+  {
+   "src": "figures/fig-8-07.svg",
+   "alt": "图 8.07 左：两级 C1 端无小圆圈（上升沿），第一级 D 接外部 D，第二级 J 接 Q₁、K 接 Q̄₁"
+  },
+  {
+   "src": "figures/fig-8-09-ans.svg",
+   "alt": "习题 8.9 答案波形：Q₁ 在 ↑₁ 置 1、↑₂ 置 0、↑₅ 置 1；Q₂ 的高脉冲落在 ↑₂–↑₃，整体滞后一拍"
+  }
+ ]
+}

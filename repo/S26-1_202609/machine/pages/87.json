@@ -1,0 +1,1387 @@
+{
+ "url": "课程总览/电路原理/课堂笔记/10-19-第二章讲评与支路法.html",
+ "title": "10-19-第二章讲评与支路法",
+ "math": [
+  {
+   "tex": "I_9=5\\times\\frac{1}{1+9}=0.5\\ \\text{A}",
+   "display": true
+  },
+  {
+   "tex": "I=\\frac{5}{1+9}=0.5\\ \\text{A}",
+   "display": true
+  },
+  {
+   "tex": "R_{ab}=\\frac{U}{I}=\\frac13\\ \\Omega",
+   "display": true
+  },
+  {
+   "tex": "-5I_1+2(I_1-I)+2I_1=0",
+   "display": true
+  },
+  {
+   "tex": "U=3I+2I_1",
+   "display": true
+  },
+  {
+   "tex": "U=U_1+3(I+2U_1)",
+   "display": true
+  },
+  {
+   "tex": "R=\\frac{1}{1+\\frac12+\\frac13+\\frac16}=0.5\\ \\Omega",
+   "display": true
+  },
+  {
+   "tex": "R=3\\parallel6=\\frac{3\\times6}{3+6}=2\\ \\Omega",
+   "display": true
+  },
+  {
+   "tex": "U=1\\times2=2\\ \\text{V}",
+   "display": true
+  },
+  {
+   "tex": "R_1=3\\parallel4=\\frac{12}{7}\\ \\Omega",
+   "display": true
+  },
+  {
+   "tex": "R_2=6\\parallel8=\\frac{24}{7}\\ \\Omega",
+   "display": true
+  },
+  {
+   "tex": "R_1+R_2=\\frac{36}{7}\\ \\Omega",
+   "display": true
+  },
+  {
+   "tex": "R_{AB}=2\\parallel\\frac{36}{7}=\\frac{36}{25}=1.44\\ \\Omega",
+   "display": true
+  },
+  {
+   "tex": "I_8=10\\times\\frac{2}{2+8}=2\\ \\text{A}",
+   "display": true
+  },
+  {
+   "tex": "I=6\\times\\frac12=3\\ \\text{A}",
+   "display": true
+  },
+  {
+   "tex": "I=\\frac{20}{2}=10\\ \\text{mA}",
+   "display": true
+  },
+  {
+   "tex": "I=1\\times\\frac{15}{15+15}=0.5\\ \\text{A}",
+   "display": true
+  },
+  {
+   "tex": "I=\\frac{1}{11}\\ \\text{A}",
+   "display": true
+  },
+  {
+   "tex": "I_2=I+I_1",
+   "display": true
+  },
+  {
+   "tex": "-5U+3I_2-2I_1=0",
+   "display": true
+  },
+  {
+   "tex": "10I+3I_2=U",
+   "display": true
+  },
+  {
+   "tex": "I_1+I_2=I_3",
+   "display": true
+  },
+  {
+   "tex": "7I_1-11I_2+6-70=0",
+   "display": true
+  },
+  {
+   "tex": "11I_2+7I_3-6=0",
+   "display": true
+  },
+  {
+   "tex": "I_1=6\\ \\text{A},\\quad I_2=-2\\ \\text{A},\\quad I_3=4\\ \\text{A}",
+   "display": true
+  },
+  {
+   "tex": "I_1+2=I_3",
+   "display": true
+  },
+  {
+   "tex": "7I_1-11I_2+5U-70=0",
+   "display": true
+  },
+  {
+   "tex": "11I_2+7I_3-5U=0",
+   "display": true
+  },
+  {
+   "tex": "U=7I_3",
+   "display": true
+  },
+  {
+   "tex": "I_1+I_2=I_3+I_4",
+   "display": true
+  },
+  {
+   "tex": "I_3+I_4+\\beta I_1=I_5",
+   "display": true
+  },
+  {
+   "tex": "U_S=I_SR",
+   "display": false
+  },
+  {
+   "tex": "U",
+   "display": false
+  },
+  {
+   "tex": "I",
+   "display": false
+  },
+  {
+   "tex": "U",
+   "display": false
+  },
+  {
+   "tex": "I",
+   "display": false
+  },
+  {
+   "tex": "U/I",
+   "display": false
+  },
+  {
+   "tex": "n-1",
+   "display": false
+  },
+  {
+   "tex": "b-n+1",
+   "display": false
+  },
+  {
+   "tex": "j\\omega L",
+   "display": false
+  },
+  {
+   "tex": "7\\omega",
+   "display": false
+  },
+  {
+   "tex": "3\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "5",
+   "display": false
+  },
+  {
+   "tex": "2\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "3\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "5",
+   "display": false
+  },
+  {
+   "tex": "2\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "I",
+   "display": false
+  },
+  {
+   "tex": "10",
+   "display": false
+  },
+  {
+   "tex": "6\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "5",
+   "display": false
+  },
+  {
+   "tex": "2\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "5",
+   "display": false
+  },
+  {
+   "tex": "1\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "9\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "5",
+   "display": false
+  },
+  {
+   "tex": "1\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "5",
+   "display": false
+  },
+  {
+   "tex": "1\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "9\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "R_{ab}",
+   "display": false
+  },
+  {
+   "tex": "2U",
+   "display": false
+  },
+  {
+   "tex": "U",
+   "display": false
+  },
+  {
+   "tex": "I",
+   "display": false
+  },
+  {
+   "tex": "2U",
+   "display": false
+  },
+  {
+   "tex": "I=U+2U=3U",
+   "display": false
+  },
+  {
+   "tex": "1\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "U",
+   "display": false
+  },
+  {
+   "tex": "0.5\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "\\tfrac{R}{3}",
+   "display": false
+  },
+  {
+   "tex": "i_{S2}",
+   "display": false
+  },
+  {
+   "tex": "-1\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "17\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "I",
+   "display": false
+  },
+  {
+   "tex": "I_1",
+   "display": false
+  },
+  {
+   "tex": "I_1",
+   "display": false
+  },
+  {
+   "tex": "U/I=-1\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "2U_1",
+   "display": false
+  },
+  {
+   "tex": "I",
+   "display": false
+  },
+  {
+   "tex": "3\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "I+2U_1",
+   "display": false
+  },
+  {
+   "tex": "2\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "U_1=2I",
+   "display": false
+  },
+  {
+   "tex": "U_1=2I",
+   "display": false
+  },
+  {
+   "tex": "3\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "5I",
+   "display": false
+  },
+  {
+   "tex": "U=2I+15I=17I",
+   "display": false
+  },
+  {
+   "tex": "U/I=17\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "0.5\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "U_S=I_SR",
+   "display": false
+  },
+  {
+   "tex": "0.5\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "1\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "2\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "3\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "6\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "3\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "2",
+   "display": false
+  },
+  {
+   "tex": "10\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "2\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "2",
+   "display": false
+  },
+  {
+   "tex": "6\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "12",
+   "display": false
+  },
+  {
+   "tex": "6\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "6",
+   "display": false
+  },
+  {
+   "tex": "6",
+   "display": false
+  },
+  {
+   "tex": "6\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "1",
+   "display": false
+  },
+  {
+   "tex": "6\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "2",
+   "display": false
+  },
+  {
+   "tex": "1",
+   "display": false
+  },
+  {
+   "tex": "3\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "6\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "3\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "1.44",
+   "display": false
+  },
+  {
+   "tex": "3\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "4\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "6\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "8\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "2\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "1.44\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "I=2",
+   "display": false
+  },
+  {
+   "tex": "5",
+   "display": false
+  },
+  {
+   "tex": "30",
+   "display": false
+  },
+  {
+   "tex": "6\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "8\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "30",
+   "display": false
+  },
+  {
+   "tex": "6\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "5",
+   "display": false
+  },
+  {
+   "tex": "6\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "5",
+   "display": false
+  },
+  {
+   "tex": "10",
+   "display": false
+  },
+  {
+   "tex": "3\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "6\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "2\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "10",
+   "display": false
+  },
+  {
+   "tex": "2\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "8\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "3\\,\\Omega\\parallel6\\,\\Omega=2\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "10",
+   "display": false
+  },
+  {
+   "tex": "2",
+   "display": false
+  },
+  {
+   "tex": "0.5",
+   "display": false
+  },
+  {
+   "tex": "3\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "6\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "3\\parallel6=2\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "10\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "12\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "6\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "12\\parallel6=4\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "4\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "3",
+   "display": false
+  },
+  {
+   "tex": "3",
+   "display": false
+  },
+  {
+   "tex": "5",
+   "display": false
+  },
+  {
+   "tex": "2\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "10",
+   "display": false
+  },
+  {
+   "tex": "2\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "20",
+   "display": false
+  },
+  {
+   "tex": "30",
+   "display": false
+  },
+  {
+   "tex": "2\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "6",
+   "display": false
+  },
+  {
+   "tex": "5\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "5\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "2.5\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "2.5\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "3\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "20\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "90\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "20",
+   "display": false
+  },
+  {
+   "tex": "20\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "0.5",
+   "display": false
+  },
+  {
+   "tex": "4",
+   "display": false
+  },
+  {
+   "tex": "20\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "10\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "1",
+   "display": false
+  },
+  {
+   "tex": "30\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "30",
+   "display": false
+  },
+  {
+   "tex": "30\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "1",
+   "display": false
+  },
+  {
+   "tex": "30\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "30\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "10\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "5\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "30\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "15\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "10+5=15\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "1/11",
+   "display": false
+  },
+  {
+   "tex": "3",
+   "display": false
+  },
+  {
+   "tex": "3\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "9",
+   "display": false
+  },
+  {
+   "tex": "3\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "2",
+   "display": false
+  },
+  {
+   "tex": "4\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "8",
+   "display": false
+  },
+  {
+   "tex": "4\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "9-8=1",
+   "display": false
+  },
+  {
+   "tex": "3+4+4=11\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "I",
+   "display": false
+  },
+  {
+   "tex": "I_1",
+   "display": false
+  },
+  {
+   "tex": "I_2",
+   "display": false
+  },
+  {
+   "tex": "I",
+   "display": false
+  },
+  {
+   "tex": "I_1",
+   "display": false
+  },
+  {
+   "tex": "I_2",
+   "display": false
+  },
+  {
+   "tex": "U",
+   "display": false
+  },
+  {
+   "tex": "I_1=I_2-I",
+   "display": false
+  },
+  {
+   "tex": "U",
+   "display": false
+  },
+  {
+   "tex": "I_2",
+   "display": false
+  },
+  {
+   "tex": "U",
+   "display": false
+  },
+  {
+   "tex": "I",
+   "display": false
+  },
+  {
+   "tex": "-5.6",
+   "display": false
+  },
+  {
+   "tex": "-5.65",
+   "display": false
+  },
+  {
+   "tex": "-5.6",
+   "display": false
+  },
+  {
+   "tex": "n",
+   "display": false
+  },
+  {
+   "tex": "n-1",
+   "display": false
+  },
+  {
+   "tex": "b",
+   "display": false
+  },
+  {
+   "tex": "b-n+1",
+   "display": false
+  },
+  {
+   "tex": "2",
+   "display": false
+  },
+  {
+   "tex": "1",
+   "display": false
+  },
+  {
+   "tex": "2+1=3",
+   "display": false
+  },
+  {
+   "tex": "5U",
+   "display": false
+  },
+  {
+   "tex": "I_1,I_2,I_3,U",
+   "display": false
+  },
+  {
+   "tex": "I_5",
+   "display": false
+  },
+  {
+   "tex": "R_5",
+   "display": false
+  },
+  {
+   "tex": "U_2",
+   "display": false
+  },
+  {
+   "tex": "-R_2I_2",
+   "display": false
+  },
+  {
+   "tex": "U_S",
+   "display": false
+  },
+  {
+   "tex": "R",
+   "display": false
+  },
+  {
+   "tex": "I_S",
+   "display": false
+  },
+  {
+   "tex": "R",
+   "display": false
+  },
+  {
+   "tex": "U_S=I_SR",
+   "display": false
+  },
+  {
+   "tex": "3\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "U",
+   "display": false
+  },
+  {
+   "tex": "I",
+   "display": false
+  },
+  {
+   "tex": "U",
+   "display": false
+  },
+  {
+   "tex": "I",
+   "display": false
+  },
+  {
+   "tex": "U=kI",
+   "display": false
+  },
+  {
+   "tex": "R_{eq}=k",
+   "display": false
+  },
+  {
+   "tex": "k",
+   "display": false
+  },
+  {
+   "tex": "3\\parallel4",
+   "display": false
+  },
+  {
+   "tex": "6\\parallel8",
+   "display": false
+  },
+  {
+   "tex": "3\\parallel6",
+   "display": false
+  },
+  {
+   "tex": "R_p=1/\\sum(1/R_i)",
+   "display": false
+  },
+  {
+   "tex": "j\\omega L",
+   "display": false
+  },
+  {
+   "tex": "j",
+   "display": false
+  },
+  {
+   "tex": "j\\omega L",
+   "display": false
+  },
+  {
+   "tex": "2\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "3\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "5\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "5\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "2",
+   "display": false
+  },
+  {
+   "tex": "3",
+   "display": false
+  },
+  {
+   "tex": "5",
+   "display": false
+  },
+  {
+   "tex": "\\tfrac13\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "\\tfrac1{11}",
+   "display": false
+  },
+  {
+   "tex": "2",
+   "display": false
+  },
+  {
+   "tex": "2\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "1\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "9\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "0.5",
+   "display": false
+  },
+  {
+   "tex": "4.5",
+   "display": false
+  },
+  {
+   "tex": "U_S",
+   "display": false
+  },
+  {
+   "tex": "20",
+   "display": false
+  },
+  {
+   "tex": "10",
+   "display": false
+  },
+  {
+   "tex": "20",
+   "display": false
+  },
+  {
+   "tex": "10",
+   "display": false
+  },
+  {
+   "tex": "4\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "3",
+   "display": false
+  },
+  {
+   "tex": "0.5",
+   "display": false
+  },
+  {
+   "tex": "1:9",
+   "display": false
+  },
+  {
+   "tex": "0.5",
+   "display": false
+  },
+  {
+   "tex": "4.5",
+   "display": false
+  },
+  {
+   "tex": "5",
+   "display": false
+  },
+  {
+   "tex": "1\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "9\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "5",
+   "display": false
+  },
+  {
+   "tex": "10\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "0.5",
+   "display": false
+  },
+  {
+   "tex": "\\tfrac{R}{3}",
+   "display": false
+  },
+  {
+   "tex": "-1\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "U_1=2I",
+   "display": false
+  },
+  {
+   "tex": "17\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "12",
+   "display": false
+  },
+  {
+   "tex": "6\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "6",
+   "display": false
+  },
+  {
+   "tex": "1",
+   "display": false
+  },
+  {
+   "tex": "2",
+   "display": false
+  },
+  {
+   "tex": "2",
+   "display": false
+  },
+  {
+   "tex": "1",
+   "display": false
+  },
+  {
+   "tex": "3",
+   "display": false
+  },
+  {
+   "tex": "6",
+   "display": false
+  },
+  {
+   "tex": "2\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "2",
+   "display": false
+  },
+  {
+   "tex": "1",
+   "display": false
+  },
+  {
+   "tex": "2",
+   "display": false
+  },
+  {
+   "tex": "1.44",
+   "display": false
+  },
+  {
+   "tex": "3\\parallel4",
+   "display": false
+  },
+  {
+   "tex": "6\\parallel8",
+   "display": false
+  },
+  {
+   "tex": "2\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "36/25=1.44\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "5",
+   "display": false
+  },
+  {
+   "tex": "30",
+   "display": false
+  },
+  {
+   "tex": "6\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "8\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "2",
+   "display": false
+  },
+  {
+   "tex": "4\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "10",
+   "display": false
+  },
+  {
+   "tex": "2\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "20",
+   "display": false
+  },
+  {
+   "tex": "6",
+   "display": false
+  },
+  {
+   "tex": "5\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "2.5\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "0.5",
+   "display": false
+  },
+  {
+   "tex": "5.5.6",
+   "display": false
+  },
+  {
+   "tex": "-5.6",
+   "display": false
+  },
+  {
+   "tex": "-5.65",
+   "display": false
+  },
+  {
+   "tex": "-5.6",
+   "display": false
+  },
+  {
+   "tex": "I_1+I_2=I_3",
+   "display": false
+  },
+  {
+   "tex": "2+1=3",
+   "display": false
+  },
+  {
+   "tex": "I_1=6",
+   "display": false
+  },
+  {
+   "tex": "I_2=-2",
+   "display": false
+  },
+  {
+   "tex": "I_3=4",
+   "display": false
+  },
+  {
+   "tex": "I_1",
+   "display": false
+  },
+  {
+   "tex": "I_2",
+   "display": false
+  },
+  {
+   "tex": "I_3",
+   "display": false
+  },
+  {
+   "tex": "I_1+2=I_3",
+   "display": false
+  },
+  {
+   "tex": "11I_2",
+   "display": false
+  },
+  {
+   "tex": "I_2",
+   "display": false
+  },
+  {
+   "tex": "I_3",
+   "display": false
+  },
+  {
+   "tex": "I_4",
+   "display": false
+  },
+  {
+   "tex": "I_5",
+   "display": false
+  },
+  {
+   "tex": "L",
+   "display": false
+  },
+  {
+   "tex": "I_1",
+   "display": false
+  },
+  {
+   "tex": "I_5",
+   "display": false
+  },
+  {
+   "tex": "I_5",
+   "display": false
+  },
+  {
+   "tex": "1/3",
+   "display": false
+  },
+  {
+   "tex": "1.44",
+   "display": false
+  },
+  {
+   "tex": "17",
+   "display": false
+  },
+  {
+   "tex": "2",
+   "display": false
+  },
+  {
+   "tex": "2",
+   "display": false
+  },
+  {
+   "tex": "10",
+   "display": false
+  },
+  {
+   "tex": "0.5",
+   "display": false
+  },
+  {
+   "tex": "0.5",
+   "display": false
+  },
+  {
+   "tex": "4",
+   "display": false
+  },
+  {
+   "tex": "1/11",
+   "display": false
+  },
+  {
+   "tex": "(6,-2,4)",
+   "display": false
+  },
+  {
+   "tex": "U_S=I_SR",
+   "display": false
+  },
+  {
+   "tex": "R_p=1/\\sum(1/R_i)",
+   "display": false
+  }
+ ],
+ "figures": []
+}

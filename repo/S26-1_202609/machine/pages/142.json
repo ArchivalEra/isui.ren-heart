@@ -1,0 +1,1219 @@
+{
+ "url": "课程总览/电机学/教材解析/符号入门.html",
+ "title": "符号入门",
+ "math": [
+  {
+   "tex": "S",
+   "display": false
+  },
+  {
+   "tex": "\\Phi",
+   "display": false
+  },
+  {
+   "tex": "\\mu",
+   "display": false
+  },
+  {
+   "tex": "B_r",
+   "display": false
+  },
+  {
+   "tex": "p_{Fe}",
+   "display": false
+  },
+  {
+   "tex": "S",
+   "display": false
+  },
+  {
+   "tex": "\\Phi",
+   "display": false
+  },
+  {
+   "tex": "\\mu",
+   "display": false
+  },
+  {
+   "tex": "B_r",
+   "display": false
+  },
+  {
+   "tex": "p_{Fe}",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "\\Phi",
+   "display": false
+  },
+  {
+   "tex": "H",
+   "display": false
+  },
+  {
+   "tex": "\\mu",
+   "display": false
+  },
+  {
+   "tex": "F",
+   "display": false
+  },
+  {
+   "tex": "U_M",
+   "display": false
+  },
+  {
+   "tex": "L",
+   "display": false
+  },
+  {
+   "tex": "M",
+   "display": false
+  },
+  {
+   "tex": "e",
+   "display": false
+  },
+  {
+   "tex": "T",
+   "display": false
+  },
+  {
+   "tex": "B=\\mu H",
+   "display": false
+  },
+  {
+   "tex": "H",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "\\Psi=N\\Phi",
+   "display": false
+  },
+  {
+   "tex": "NI",
+   "display": false
+  },
+  {
+   "tex": "\\int H\\,\\mathrm dl",
+   "display": false
+  },
+  {
+   "tex": "l/(\\mu S)",
+   "display": false
+  },
+  {
+   "tex": "1/R_m",
+   "display": false
+  },
+  {
+   "tex": "\\Phi=\\int_S B\\cos\\theta\\,\\mathrm dS",
+   "display": false
+  },
+  {
+   "tex": "\\oint_l H\\,\\mathrm dl=NI",
+   "display": false
+  },
+  {
+   "tex": "\\sum U_M=\\sum F",
+   "display": false
+  },
+  {
+   "tex": "\\mathrm d\\Psi/\\mathrm dt",
+   "display": false
+  },
+  {
+   "tex": "p_h\\propto fB_m^n",
+   "display": false
+  },
+  {
+   "tex": "\\frac12 B H",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "a",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "B=\\mu H",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "B_r",
+   "display": false
+  },
+  {
+   "tex": "H=0",
+   "display": false
+  },
+  {
+   "tex": "a",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "H_a",
+   "display": false
+  },
+  {
+   "tex": "B_a",
+   "display": false
+  },
+  {
+   "tex": "b",
+   "display": false
+  },
+  {
+   "tex": "c",
+   "display": false
+  },
+  {
+   "tex": "C",
+   "display": false
+  },
+  {
+   "tex": "d",
+   "display": false
+  },
+  {
+   "tex": "d",
+   "display": false
+  },
+  {
+   "tex": "q",
+   "display": false
+  },
+  {
+   "tex": "g",
+   "display": false
+  },
+  {
+   "tex": "B_g",
+   "display": false
+  },
+  {
+   "tex": "H_g",
+   "display": false
+  },
+  {
+   "tex": "F_g",
+   "display": false
+  },
+  {
+   "tex": "m",
+   "display": false
+  },
+  {
+   "tex": "m=3",
+   "display": false
+  },
+  {
+   "tex": "m_1",
+   "display": false
+  },
+  {
+   "tex": "r",
+   "display": false
+  },
+  {
+   "tex": "R",
+   "display": false
+  },
+  {
+   "tex": "\\mu_r",
+   "display": false
+  },
+  {
+   "tex": "x_r",
+   "display": false
+  },
+  {
+   "tex": "Y",
+   "display": false
+  },
+  {
+   "tex": "\\triangle",
+   "display": false
+  },
+  {
+   "tex": "\\sqrt3",
+   "display": false
+  },
+  {
+   "tex": "z",
+   "display": false
+  },
+  {
+   "tex": "Z",
+   "display": false
+  },
+  {
+   "tex": "q=\\frac{Z}{2pm_1}",
+   "display": false
+  },
+  {
+   "tex": "b_m",
+   "display": false
+  },
+  {
+   "tex": "C",
+   "display": false
+  },
+  {
+   "tex": "c",
+   "display": false
+  },
+  {
+   "tex": "C_e",
+   "display": false
+  },
+  {
+   "tex": "E\\propto C_e n\\Phi",
+   "display": false
+  },
+  {
+   "tex": "C_T",
+   "display": false
+  },
+  {
+   "tex": "T\\propto C_T\\Phi I",
+   "display": false
+  },
+  {
+   "tex": "C_t",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "E",
+   "display": false
+  },
+  {
+   "tex": "e",
+   "display": false
+  },
+  {
+   "tex": "E_{ph}",
+   "display": false
+  },
+  {
+   "tex": "E_c",
+   "display": false
+  },
+  {
+   "tex": "E_q",
+   "display": false
+  },
+  {
+   "tex": "q",
+   "display": false
+  },
+  {
+   "tex": "e",
+   "display": false
+  },
+  {
+   "tex": "e=-\\mathrm{d}\\Psi/\\mathrm{d}t",
+   "display": false
+  },
+  {
+   "tex": "F",
+   "display": false
+  },
+  {
+   "tex": "NI",
+   "display": false
+  },
+  {
+   "tex": "F_e",
+   "display": false
+  },
+  {
+   "tex": "F_e=Bli",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "l",
+   "display": false
+  },
+  {
+   "tex": "i",
+   "display": false
+  },
+  {
+   "tex": "F_{d1}",
+   "display": false
+  },
+  {
+   "tex": "F_{q1}",
+   "display": false
+  },
+  {
+   "tex": "F_{m1}",
+   "display": false
+  },
+  {
+   "tex": "G",
+   "display": false
+  },
+  {
+   "tex": "g_m",
+   "display": false
+  },
+  {
+   "tex": "H",
+   "display": false
+  },
+  {
+   "tex": "H=\\frac{I}{2\\pi r}",
+   "display": false
+  },
+  {
+   "tex": "H=\\frac{NI}{l}",
+   "display": false
+  },
+  {
+   "tex": "B=\\mu H",
+   "display": false
+  },
+  {
+   "tex": "\\mu",
+   "display": false
+  },
+  {
+   "tex": "H_c",
+   "display": false
+  },
+  {
+   "tex": "B=0",
+   "display": false
+  },
+  {
+   "tex": "H_c",
+   "display": false
+  },
+  {
+   "tex": "H_c",
+   "display": false
+  },
+  {
+   "tex": "I_\\mu",
+   "display": false
+  },
+  {
+   "tex": "I_{Fe}",
+   "display": false
+  },
+  {
+   "tex": "I_{Fe}",
+   "display": false
+  },
+  {
+   "tex": "I_N",
+   "display": false
+  },
+  {
+   "tex": "I_N=S_N/U_N",
+   "display": false
+  },
+  {
+   "tex": "I_N=\\frac{S_N}{\\sqrt3\\,U_N}",
+   "display": false
+  },
+  {
+   "tex": "I_{1N}",
+   "display": false
+  },
+  {
+   "tex": "I_{2N}",
+   "display": false
+  },
+  {
+   "tex": "i",
+   "display": false
+  },
+  {
+   "tex": "I",
+   "display": false
+  },
+  {
+   "tex": "J",
+   "display": false
+  },
+  {
+   "tex": "T_j",
+   "display": false
+  },
+  {
+   "tex": "j",
+   "display": false
+  },
+  {
+   "tex": "K",
+   "display": false
+  },
+  {
+   "tex": "K_d",
+   "display": false
+  },
+  {
+   "tex": "K_p",
+   "display": false
+  },
+  {
+   "tex": "K_N",
+   "display": false
+  },
+  {
+   "tex": "K_N=K_dK_p",
+   "display": false
+  },
+  {
+   "tex": "K_m",
+   "display": false
+  },
+  {
+   "tex": "k_v",
+   "display": false
+  },
+  {
+   "tex": "k",
+   "display": false
+  },
+  {
+   "tex": "k_k",
+   "display": false
+  },
+  {
+   "tex": "k_A",
+   "display": false
+  },
+  {
+   "tex": "L",
+   "display": false
+  },
+  {
+   "tex": "L=\\Psi/I=\\Lambda N^2=N^2/R_m",
+   "display": false
+  },
+  {
+   "tex": "l",
+   "display": false
+  },
+  {
+   "tex": "e=Blv",
+   "display": false
+  },
+  {
+   "tex": "R_m=\\frac{l}{\\mu S}",
+   "display": false
+  },
+  {
+   "tex": "M",
+   "display": false
+  },
+  {
+   "tex": "M_{21}=\\Psi_{21}/I_1",
+   "display": false
+  },
+  {
+   "tex": "M_{12}=M_{21}",
+   "display": false
+  },
+  {
+   "tex": "m_1",
+   "display": false
+  },
+  {
+   "tex": "m_1=3",
+   "display": false
+  },
+  {
+   "tex": "N",
+   "display": false
+  },
+  {
+   "tex": "F=NI",
+   "display": false
+  },
+  {
+   "tex": "N",
+   "display": false
+  },
+  {
+   "tex": "N_c",
+   "display": false
+  },
+  {
+   "tex": "n",
+   "display": false
+  },
+  {
+   "tex": "n_1",
+   "display": false
+  },
+  {
+   "tex": "n_1",
+   "display": false
+  },
+  {
+   "tex": "n_1=\\frac{60f}{p}",
+   "display": false
+  },
+  {
+   "tex": "P_1",
+   "display": false
+  },
+  {
+   "tex": "P_2",
+   "display": false
+  },
+  {
+   "tex": "P_i",
+   "display": false
+  },
+  {
+   "tex": "P_M",
+   "display": false
+  },
+  {
+   "tex": "P_M",
+   "display": false
+  },
+  {
+   "tex": "p",
+   "display": false
+  },
+  {
+   "tex": "p_{Cu}",
+   "display": false
+  },
+  {
+   "tex": "p_{Fe}",
+   "display": false
+  },
+  {
+   "tex": "n_1=\\frac{60f}{p}",
+   "display": false
+  },
+  {
+   "tex": "p_{Cu}",
+   "display": false
+  },
+  {
+   "tex": "I^2R",
+   "display": false
+  },
+  {
+   "tex": "p_{Fe}",
+   "display": false
+  },
+  {
+   "tex": "p_{Fe}=p_h+p_e",
+   "display": false
+  },
+  {
+   "tex": "p_h=k_h f V B_m^n",
+   "display": false
+  },
+  {
+   "tex": "n",
+   "display": false
+  },
+  {
+   "tex": "p_e=k_e V f^2\\tau^2 B_m^2",
+   "display": false
+  },
+  {
+   "tex": "p_{ad}",
+   "display": false
+  },
+  {
+   "tex": "p_{mec}",
+   "display": false
+  },
+  {
+   "tex": "q",
+   "display": false
+  },
+  {
+   "tex": "q=\\frac{Z}{2pm_1}",
+   "display": false
+  },
+  {
+   "tex": "R",
+   "display": false
+  },
+  {
+   "tex": "R=\\frac{\\rho l}{S}",
+   "display": false
+  },
+  {
+   "tex": "R_m",
+   "display": false
+  },
+  {
+   "tex": "R_m=\\frac{U_M}{\\Phi}=\\frac{l}{\\mu S}",
+   "display": false
+  },
+  {
+   "tex": "r_\\Delta",
+   "display": false
+  },
+  {
+   "tex": "s",
+   "display": false
+  },
+  {
+   "tex": "s=\\frac{n_1-n}{n_1}",
+   "display": false
+  },
+  {
+   "tex": "s_k",
+   "display": false
+  },
+  {
+   "tex": "T",
+   "display": false
+  },
+  {
+   "tex": "T=Blir",
+   "display": false
+  },
+  {
+   "tex": "T_1",
+   "display": false
+  },
+  {
+   "tex": "T_2",
+   "display": false
+  },
+  {
+   "tex": "T_j",
+   "display": false
+  },
+  {
+   "tex": "T_j=T-T_L",
+   "display": false
+  },
+  {
+   "tex": "T_{pu}",
+   "display": false
+  },
+  {
+   "tex": "T_{a3}",
+   "display": false
+  },
+  {
+   "tex": "T'_{d3}",
+   "display": false
+  },
+  {
+   "tex": "T''_{d3}",
+   "display": false
+  },
+  {
+   "tex": "T_{d0}",
+   "display": false
+  },
+  {
+   "tex": "T_c",
+   "display": false
+  },
+  {
+   "tex": "t",
+   "display": false
+  },
+  {
+   "tex": "S_N",
+   "display": false
+  },
+  {
+   "tex": "S_N=U_NI_N",
+   "display": false
+  },
+  {
+   "tex": "S_N=\\sqrt3\\,U_NI_N",
+   "display": false
+  },
+  {
+   "tex": "U_N",
+   "display": false
+  },
+  {
+   "tex": "I_N",
+   "display": false
+  },
+  {
+   "tex": "U_N",
+   "display": false
+  },
+  {
+   "tex": "U_{1N}",
+   "display": false
+  },
+  {
+   "tex": "U_{2N}",
+   "display": false
+  },
+  {
+   "tex": "U_{ph}",
+   "display": false
+  },
+  {
+   "tex": "U_M",
+   "display": false
+  },
+  {
+   "tex": "U_M=\\int H\\,\\mathrm{d}l",
+   "display": false
+  },
+  {
+   "tex": "u",
+   "display": false
+  },
+  {
+   "tex": "i",
+   "display": false
+  },
+  {
+   "tex": "\\Delta U",
+   "display": false
+  },
+  {
+   "tex": "W",
+   "display": false
+  },
+  {
+   "tex": "W_m",
+   "display": false
+  },
+  {
+   "tex": "w_m=\\frac{1}{2}BH",
+   "display": false
+  },
+  {
+   "tex": "w_m=\\frac{B^2}{2\\mu}",
+   "display": false
+  },
+  {
+   "tex": "\\mu",
+   "display": false
+  },
+  {
+   "tex": "X",
+   "display": false
+  },
+  {
+   "tex": "X=\\omega L",
+   "display": false
+  },
+  {
+   "tex": "\\frac{1}{\\omega C}",
+   "display": false
+  },
+  {
+   "tex": "X_s",
+   "display": false
+  },
+  {
+   "tex": "x_p",
+   "display": false
+  },
+  {
+   "tex": "Y_m",
+   "display": false
+  },
+  {
+   "tex": "y",
+   "display": false
+  },
+  {
+   "tex": "y=y_1-y_2",
+   "display": false
+  },
+  {
+   "tex": "y_1",
+   "display": false
+  },
+  {
+   "tex": "y_2",
+   "display": false
+  },
+  {
+   "tex": "Z_L",
+   "display": false
+  },
+  {
+   "tex": "\\alpha",
+   "display": false
+  },
+  {
+   "tex": "\\alpha=\\frac{360^\\circ p}{Z}",
+   "display": false
+  },
+  {
+   "tex": "\\beta",
+   "display": false
+  },
+  {
+   "tex": "\\delta",
+   "display": false
+  },
+  {
+   "tex": "\\theta",
+   "display": false
+  },
+  {
+   "tex": "\\Psi",
+   "display": false
+  },
+  {
+   "tex": "\\Psi=N\\Phi",
+   "display": false
+  },
+  {
+   "tex": "\\Psi",
+   "display": false
+  },
+  {
+   "tex": "e=-\\mathrm{d}\\Psi/\\mathrm{d}t",
+   "display": false
+  },
+  {
+   "tex": "\\psi",
+   "display": false
+  },
+  {
+   "tex": "\\Lambda",
+   "display": false
+  },
+  {
+   "tex": "\\Lambda=\\frac{1}{R_m}=\\frac{\\mu S}{l}",
+   "display": false
+  },
+  {
+   "tex": "L=\\Lambda N^2",
+   "display": false
+  },
+  {
+   "tex": "\\mu",
+   "display": false
+  },
+  {
+   "tex": "\\mu_0",
+   "display": false
+  },
+  {
+   "tex": "\\mu_r",
+   "display": false
+  },
+  {
+   "tex": "B=\\mu H",
+   "display": false
+  },
+  {
+   "tex": "\\mu_0=4\\pi\\times10^{-7}",
+   "display": false
+  },
+  {
+   "tex": "\\mu_r=\\frac{\\mu}{\\mu_0}",
+   "display": false
+  },
+  {
+   "tex": "10^2\\sim10^5",
+   "display": false
+  },
+  {
+   "tex": "\\sigma",
+   "display": false
+  },
+  {
+   "tex": "\\rho",
+   "display": false
+  },
+  {
+   "tex": "\\eta",
+   "display": false
+  },
+  {
+   "tex": "\\eta=P_2/P_1",
+   "display": false
+  },
+  {
+   "tex": "\\Phi",
+   "display": false
+  },
+  {
+   "tex": "\\Phi=BS",
+   "display": false
+  },
+  {
+   "tex": "\\Phi",
+   "display": false
+  },
+  {
+   "tex": "\\Phi_m",
+   "display": false
+  },
+  {
+   "tex": "\\varphi",
+   "display": false
+  },
+  {
+   "tex": "\\Phi_m",
+   "display": false
+  },
+  {
+   "tex": "\\Omega",
+   "display": false
+  },
+  {
+   "tex": "\\omega",
+   "display": false
+  },
+  {
+   "tex": "\\omega=p\\Omega",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "H",
+   "display": false
+  },
+  {
+   "tex": "1",
+   "display": false
+  },
+  {
+   "tex": "2",
+   "display": false
+  },
+  {
+   "tex": "+",
+   "display": false
+  },
+  {
+   "tex": "-",
+   "display": false
+  },
+  {
+   "tex": "*",
+   "display": false
+  },
+  {
+   "tex": "a",
+   "display": false
+  },
+  {
+   "tex": "d",
+   "display": false
+  },
+  {
+   "tex": "q",
+   "display": false
+  },
+  {
+   "tex": "f",
+   "display": false
+  },
+  {
+   "tex": "m",
+   "display": false
+  },
+  {
+   "tex": "k",
+   "display": false
+  },
+  {
+   "tex": "N",
+   "display": false
+  },
+  {
+   "tex": "st",
+   "display": false
+  },
+  {
+   "tex": "av",
+   "display": false
+  },
+  {
+   "tex": "v",
+   "display": false
+  },
+  {
+   "tex": "v",
+   "display": false
+  },
+  {
+   "tex": "\\sigma",
+   "display": false
+  },
+  {
+   "tex": "\\max",
+   "display": false
+  },
+  {
+   "tex": "\\min",
+   "display": false
+  },
+  {
+   "tex": "\\prime",
+   "display": false
+  },
+  {
+   "tex": "\\prime\\prime",
+   "display": false
+  },
+  {
+   "tex": "\\cdot",
+   "display": false
+  },
+  {
+   "tex": "\\int",
+   "display": false
+  },
+  {
+   "tex": "\\int_S B\\cos\\theta\\,\\mathrm dS",
+   "display": false
+  },
+  {
+   "tex": "\\oint",
+   "display": false
+  },
+  {
+   "tex": "\\oint_l H\\,\\mathrm dl=\\sum I=NI",
+   "display": false
+  },
+  {
+   "tex": "\\Sigma",
+   "display": false
+  },
+  {
+   "tex": "\\sum U_M=\\sum F",
+   "display": false
+  },
+  {
+   "tex": "\\Sigma",
+   "display": false
+  },
+  {
+   "tex": "\\mathrm d",
+   "display": false
+  },
+  {
+   "tex": "\\mathrm d\\Psi/\\mathrm dt",
+   "display": false
+  },
+  {
+   "tex": "\\mathrm dB",
+   "display": false
+  },
+  {
+   "tex": "\\mathrm dl",
+   "display": false
+  },
+  {
+   "tex": "\\mathrm dS",
+   "display": false
+  },
+  {
+   "tex": "d",
+   "display": false
+  },
+  {
+   "tex": "\\partial",
+   "display": false
+  },
+  {
+   "tex": "\\partial B/\\partial t",
+   "display": false
+  },
+  {
+   "tex": "\\infty",
+   "display": false
+  },
+  {
+   "tex": "\\propto",
+   "display": false
+  },
+  {
+   "tex": "p_h\\propto fB_m^n",
+   "display": false
+  },
+  {
+   "tex": "\\to",
+   "display": false
+  },
+  {
+   "tex": "t\\to\\infty",
+   "display": false
+  },
+  {
+   "tex": "u_i\\to 0",
+   "display": false
+  },
+  {
+   "tex": "\\times",
+   "display": false
+  },
+  {
+   "tex": "4\\pi\\times10^{-7}",
+   "display": false
+  },
+  {
+   "tex": "\\mathbf F=I\\mathbf l\\times\\mathbf B",
+   "display": false
+  },
+  {
+   "tex": "\\cdot",
+   "display": false
+  },
+  {
+   "tex": "\\mathbf B\\cdot\\mathrm d\\mathbf S",
+   "display": false
+  },
+  {
+   "tex": "\\frac{1}{2}B\\cdot H",
+   "display": false
+  }
+ ],
+ "figures": []
+}

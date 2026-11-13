@@ -1,0 +1,244 @@
+{
+ "url": "课程总览/电子技术/作业/2026-10-19作业.html",
+ "title": "2026-10-19作业",
+ "math": [
+  {
+   "tex": "A\\odot B",
+   "display": false
+  },
+  {
+   "tex": "\\sum m(1,2,4,7)",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "Y_1",
+   "display": false
+  },
+  {
+   "tex": "A>B",
+   "display": false
+  },
+  {
+   "tex": "Y_2",
+   "display": false
+  },
+  {
+   "tex": "A<B",
+   "display": false
+  },
+  {
+   "tex": "Y_3",
+   "display": false
+  },
+  {
+   "tex": "A=B",
+   "display": false
+  },
+  {
+   "tex": "Y_3",
+   "display": false
+  },
+  {
+   "tex": "Y_1",
+   "display": false
+  },
+  {
+   "tex": "A>B",
+   "display": false
+  },
+  {
+   "tex": "A=1,B=0",
+   "display": false
+  },
+  {
+   "tex": "Y_1=A\\overline{B}",
+   "display": false
+  },
+  {
+   "tex": "Y_2",
+   "display": false
+  },
+  {
+   "tex": "A<B",
+   "display": false
+  },
+  {
+   "tex": "A=0,B=1",
+   "display": false
+  },
+  {
+   "tex": "Y_2=\\overline{A}B",
+   "display": false
+  },
+  {
+   "tex": "Y_3",
+   "display": false
+  },
+  {
+   "tex": "A=B",
+   "display": false
+  },
+  {
+   "tex": "A=B=0",
+   "display": false
+  },
+  {
+   "tex": "A=B=1",
+   "display": false
+  },
+  {
+   "tex": "Y_3=\\overline{A}\\,\\overline{B}+AB",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "\\overline{B}",
+   "display": false
+  },
+  {
+   "tex": "Y_1",
+   "display": false
+  },
+  {
+   "tex": "\\overline{A}",
+   "display": false
+  },
+  {
+   "tex": "Y_2",
+   "display": false
+  },
+  {
+   "tex": "Y_3",
+   "display": false
+  },
+  {
+   "tex": "\\overline{A}\\,\\overline{B}",
+   "display": false
+  },
+  {
+   "tex": "Y(A,B,C)=\\sum m(1,2,4,7)",
+   "display": false
+  },
+  {
+   "tex": "A_2A_1A_0",
+   "display": false
+  },
+  {
+   "tex": "A_2=A",
+   "display": false
+  },
+  {
+   "tex": "A_1=B",
+   "display": false
+  },
+  {
+   "tex": "A_0=C",
+   "display": false
+  },
+  {
+   "tex": "Y=\\sum_{i=0}^{7}m_i\\cdot D_i",
+   "display": false
+  },
+  {
+   "tex": "m_i",
+   "display": false
+  },
+  {
+   "tex": "\\sum m(1,2,4,7)",
+   "display": false
+  },
+  {
+   "tex": "D_0",
+   "display": false
+  },
+  {
+   "tex": "D_1",
+   "display": false
+  },
+  {
+   "tex": "D_2",
+   "display": false
+  },
+  {
+   "tex": "D_3",
+   "display": false
+  },
+  {
+   "tex": "D_4",
+   "display": false
+  },
+  {
+   "tex": "D_5",
+   "display": false
+  },
+  {
+   "tex": "D_6",
+   "display": false
+  },
+  {
+   "tex": "D_7",
+   "display": false
+  },
+  {
+   "tex": "D_1=D_2=D_4=D_7=1",
+   "display": false
+  },
+  {
+   "tex": "V_{CC}",
+   "display": false
+  },
+  {
+   "tex": "D_0=D_3=D_5=D_6=0",
+   "display": false
+  },
+  {
+   "tex": "\\overline{S}",
+   "display": false
+  },
+  {
+   "tex": "\\overline{S}=0",
+   "display": false
+  },
+  {
+   "tex": "Y=\\sum m(1,2,4,7)=m_1D_1+m_2D_2+m_4D_4+m_7D_7",
+   "display": false
+  },
+  {
+   "tex": "i",
+   "display": false
+  },
+  {
+   "tex": "Y=D_i",
+   "display": false
+  },
+  {
+   "tex": "Y=1",
+   "display": false
+  },
+  {
+   "tex": "\\{1,2,4,7\\}",
+   "display": false
+  }
+ ],
+ "figures": [
+  {
+   "src": "figures/fig-7-16.svg",
+   "alt": "习题 7.16 一位比较器逻辑电路图：A、B 两个非门公用，四个与门产生 Y₁、Y₂ 与 Y₃ 的两项，或门合成 Y₃"
+  }
+ ]
+}

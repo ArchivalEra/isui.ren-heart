@@ -1,0 +1,951 @@
+{
+ "url": "课程总览/电机学/教材解析/第01章-概述/1.2-电机的磁路和磁路定律.html",
+ "title": "1.2 电机的磁路和磁路定律",
+ "math": [
+  {
+   "tex": "\\Phi = BS\\cos\\theta \\tag{1-1}",
+   "display": true
+  },
+  {
+   "tex": "\\Phi = \\int_S d\\Phi = \\int_S B\\cos\\theta\\, dS \\tag{1-2}",
+   "display": true
+  },
+  {
+   "tex": "\\Phi = \\int_S \\mathbf{B}\\cdot d\\mathbf{S} \\tag{1-3}",
+   "display": true
+  },
+  {
+   "tex": "\\oint_S B\\cos\\theta\\, dS = 0 \\tag{1-4}",
+   "display": true
+  },
+  {
+   "tex": "\\Phi = BS \\tag{1-5}",
+   "display": true
+  },
+  {
+   "tex": "B = \\mu H \\tag{1-6}",
+   "display": true
+  },
+  {
+   "tex": "\\mu_r = \\mu/\\mu_0 \\tag{1-7}",
+   "display": true
+  },
+  {
+   "tex": "p_h = V\\oint H\\mathrm{d}B \\tag{1-8}",
+   "display": true
+  },
+  {
+   "tex": "p_h = k_h f V B_m^{n} \\tag{1-9}",
+   "display": true
+  },
+  {
+   "tex": "p_e = k_e V f^2 \\tau^2 B_m^2 \\tag{1-10}",
+   "display": true
+  },
+  {
+   "tex": "p_{Fe} = p_h + p_e = (k_h f B_m^{n} + k_e f^2 \\tau^2 B_m^2)V \\tag{1-11}",
+   "display": true
+  },
+  {
+   "tex": "p_{Fe} = k_{Fe} f^{1.3} B_m^2 V \\tag{1-12}",
+   "display": true
+  },
+  {
+   "tex": "\\oint_l H\\mathrm{d}l = \\sum I_k = NI \\tag{1-13}",
+   "display": true
+  },
+  {
+   "tex": "U_M = \\int_l H\\mathrm{d}l \\tag{1-14}",
+   "display": true
+  },
+  {
+   "tex": "\\sum U_M = \\sum I_k = \\sum F \\tag{1-15}",
+   "display": true
+  },
+  {
+   "tex": "\\left.\\begin{array}{l}\\Phi_{c1} = B_{c1} S_{c1}\\\\ U_{Mc1} = H_{c1} l_{c1}\\end{array}\\right\\} \\tag{1-16}",
+   "display": true
+  },
+  {
+   "tex": "R_{Mc1} = \\frac{U_{Mc1}}{\\Phi_{c1}} \\tag{1-17}",
+   "display": true
+  },
+  {
+   "tex": "R_m = \\frac{l}{\\mu S} \\tag{1-18}",
+   "display": true
+  },
+  {
+   "tex": "\\Lambda = \\frac{1}{R_m} = \\frac{\\Phi}{U_M} \\tag{1-19}",
+   "display": true
+  },
+  {
+   "tex": "\\Lambda = \\mu \\frac{S}{l} \\tag{1-20}",
+   "display": true
+  },
+  {
+   "tex": "\\Phi_1-\\Phi_2-\\Phi_3=0 \\tag{1-21}",
+   "display": true
+  },
+  {
+   "tex": "w_m=\\frac{1}{2}BH \\tag{1-22}",
+   "display": true
+  },
+  {
+   "tex": "W_m=\\int_V w_m\\,dV \\tag{1-23}",
+   "display": true
+  },
+  {
+   "tex": "w_m=\\frac{B^2}{2\\mu}=\\frac{B^2}{2\\mu_{\\mathrm{r}}\\mu_0} \\tag{1-24}",
+   "display": true
+  },
+  {
+   "tex": "S_i = 20\\times10^{-3}\\times40\\times10^{-3}\\times0.94 = 0.752\\times10^{-3}\\ (\\mathrm{m^2})",
+   "display": true
+  },
+  {
+   "tex": "l_i = 2(100+80)-6 = 354\\ (\\mathrm{mm}) = 0.354\\ (\\mathrm{m})",
+   "display": true
+  },
+  {
+   "tex": "B_i = \\frac{\\Phi}{S_i} = \\frac{1\\times10^{-3}}{0.752\\times10^{-3}} = 1.33\\ (\\mathrm{T})",
+   "display": true
+  },
+  {
+   "tex": "F_i = H_i l_i = 560\\times0.354 = 198\\ (\\mathrm{A})",
+   "display": true
+  },
+  {
+   "tex": "B_g = \\frac{\\Phi}{S_g} = \\frac{1\\times10^{-3}}{20\\times10^{-3}\\times40\\times10^{-3}} = 1.25\\ (\\mathrm{T})",
+   "display": true
+  },
+  {
+   "tex": "H_g = \\frac{B_g}{\\mu_0} = \\frac{1.25}{1.257\\times10^{-6}} = 0.994\\times10^{6}\\ (\\mathrm{A/m})",
+   "display": true
+  },
+  {
+   "tex": "F_g = H_g l_g = 0.994\\times10^{6}\\times6\\times10^{-3} = 5964\\ (\\mathrm{A})",
+   "display": true
+  },
+  {
+   "tex": "F = F_i + F_g = 198 + 5964 = 6162\\ (\\mathrm{A})",
+   "display": true
+  },
+  {
+   "tex": "I = \\frac{F}{N} = \\frac{6162}{1000} = 6.162\\ (\\mathrm{A})",
+   "display": true
+  },
+  {
+   "tex": "S'_g = (20+6)\\times10^{-3}\\times(40+6)\\times10^{-3} = 1.196\\times10^{-3}\\ (\\mathrm{m^2})",
+   "display": true
+  },
+  {
+   "tex": "\\Phi \\;\\xrightarrow{\\;\\div S\\;}\\; B \\;\\xrightarrow{\\;\\text{查 }B\\text{-}H\\text{ 曲线}\\;}\\; H \\;\\xrightarrow{\\;\\times l\\;}\\; F",
+   "display": true
+  },
+  {
+   "tex": "\\Phi",
+   "display": false
+  },
+  {
+   "tex": "\\Phi_\\sigma",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "\\Phi",
+   "display": false
+  },
+  {
+   "tex": "S",
+   "display": false
+  },
+  {
+   "tex": "\\Phi",
+   "display": false
+  },
+  {
+   "tex": "\\theta",
+   "display": false
+  },
+  {
+   "tex": "S",
+   "display": false
+  },
+  {
+   "tex": "n",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "dS",
+   "display": false
+  },
+  {
+   "tex": "dS",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "\\cos\\theta = 1",
+   "display": false
+  },
+  {
+   "tex": "d\\Phi = BdS",
+   "display": false
+  },
+  {
+   "tex": "B = d\\Phi/dS",
+   "display": false
+  },
+  {
+   "tex": "S",
+   "display": false
+  },
+  {
+   "tex": "H",
+   "display": false
+  },
+  {
+   "tex": "\\mu",
+   "display": false
+  },
+  {
+   "tex": "\\mu_0",
+   "display": false
+  },
+  {
+   "tex": "\\mu_0=4\\pi\\times10^{-7}\\ \\mathrm{H/m}",
+   "display": false
+  },
+  {
+   "tex": "\\mu_r",
+   "display": false
+  },
+  {
+   "tex": "\\mu",
+   "display": false
+  },
+  {
+   "tex": "\\mu_0",
+   "display": false
+  },
+  {
+   "tex": "10^{16}",
+   "display": false
+  },
+  {
+   "tex": "10^2 \\sim 10^5",
+   "display": false
+  },
+  {
+   "tex": "\\mu",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "H",
+   "display": false
+  },
+  {
+   "tex": "\\mu_0",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "H",
+   "display": false
+  },
+  {
+   "tex": "\\mu",
+   "display": false
+  },
+  {
+   "tex": "H",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "H",
+   "display": false
+  },
+  {
+   "tex": "H",
+   "display": false
+  },
+  {
+   "tex": "H",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "\\mu_\\Delta = f(H)",
+   "display": false
+  },
+  {
+   "tex": "H",
+   "display": false
+  },
+  {
+   "tex": "H",
+   "display": false
+  },
+  {
+   "tex": "H",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "B_r",
+   "display": false
+  },
+  {
+   "tex": "H=0",
+   "display": false
+  },
+  {
+   "tex": "H_c",
+   "display": false
+  },
+  {
+   "tex": "B_r",
+   "display": false
+  },
+  {
+   "tex": "H_c",
+   "display": false
+  },
+  {
+   "tex": "H_c",
+   "display": false
+  },
+  {
+   "tex": "H_c",
+   "display": false
+  },
+  {
+   "tex": "H_c",
+   "display": false
+  },
+  {
+   "tex": "H_c",
+   "display": false
+  },
+  {
+   "tex": "B_r",
+   "display": false
+  },
+  {
+   "tex": "B_r",
+   "display": false
+  },
+  {
+   "tex": "H_c",
+   "display": false
+  },
+  {
+   "tex": "B_r",
+   "display": false
+  },
+  {
+   "tex": "H_c",
+   "display": false
+  },
+  {
+   "tex": "(BH)_{\\max}",
+   "display": false
+  },
+  {
+   "tex": "B_r",
+   "display": false
+  },
+  {
+   "tex": "H_c",
+   "display": false
+  },
+  {
+   "tex": "(BH)_{\\max}",
+   "display": false
+  },
+  {
+   "tex": "p_h",
+   "display": false
+  },
+  {
+   "tex": "V",
+   "display": false
+  },
+  {
+   "tex": "p_h",
+   "display": false
+  },
+  {
+   "tex": "k_h",
+   "display": false
+  },
+  {
+   "tex": "f",
+   "display": false
+  },
+  {
+   "tex": "B_m",
+   "display": false
+  },
+  {
+   "tex": "n",
+   "display": false
+  },
+  {
+   "tex": "n=2.0",
+   "display": false
+  },
+  {
+   "tex": "p_e",
+   "display": false
+  },
+  {
+   "tex": "k_e",
+   "display": false
+  },
+  {
+   "tex": "\\tau",
+   "display": false
+  },
+  {
+   "tex": "p_{Fe}",
+   "display": false
+  },
+  {
+   "tex": "B_m",
+   "display": false
+  },
+  {
+   "tex": "k_{Fe}",
+   "display": false
+  },
+  {
+   "tex": "k_{Fe}",
+   "display": false
+  },
+  {
+   "tex": "B_m",
+   "display": false
+  },
+  {
+   "tex": "f",
+   "display": false
+  },
+  {
+   "tex": "V",
+   "display": false
+  },
+  {
+   "tex": "p",
+   "display": false
+  },
+  {
+   "tex": "p_{Fe}",
+   "display": false
+  },
+  {
+   "tex": "H",
+   "display": false
+  },
+  {
+   "tex": "N",
+   "display": false
+  },
+  {
+   "tex": "I",
+   "display": false
+  },
+  {
+   "tex": "l",
+   "display": false
+  },
+  {
+   "tex": "U_M",
+   "display": false
+  },
+  {
+   "tex": "F",
+   "display": false
+  },
+  {
+   "tex": "\\sum I",
+   "display": false
+  },
+  {
+   "tex": "S_{c1}",
+   "display": false
+  },
+  {
+   "tex": "l_{c1}",
+   "display": false
+  },
+  {
+   "tex": "\\mu",
+   "display": false
+  },
+  {
+   "tex": "B_{c1} = \\mu H_{c1}",
+   "display": false
+  },
+  {
+   "tex": "\\Lambda",
+   "display": false
+  },
+  {
+   "tex": "\\mathrm{H^{-1}}",
+   "display": false
+  },
+  {
+   "tex": "\\mu",
+   "display": false
+  },
+  {
+   "tex": "R_m",
+   "display": false
+  },
+  {
+   "tex": "\\Lambda",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "\\sum\\Phi=0",
+   "display": false
+  },
+  {
+   "tex": "w_m",
+   "display": false
+  },
+  {
+   "tex": "3.98\\times10^5\\,\\mathrm{J/m^3}",
+   "display": false
+  },
+  {
+   "tex": "1\\times10^{-3}",
+   "display": false
+  },
+  {
+   "tex": "g",
+   "display": false
+  },
+  {
+   "tex": "F'_g = 3990",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "H",
+   "display": false
+  },
+  {
+   "tex": "F=Hl",
+   "display": false
+  },
+  {
+   "tex": "I=F/N",
+   "display": false
+  },
+  {
+   "tex": "\\mu",
+   "display": false
+  },
+  {
+   "tex": "F=\\Phi R_m",
+   "display": false
+  },
+  {
+   "tex": "R_m=l/(\\mu S)",
+   "display": false
+  },
+  {
+   "tex": "\\mu",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "\\Phi_1",
+   "display": false
+  },
+  {
+   "tex": "\\Phi_2",
+   "display": false
+  },
+  {
+   "tex": "F_1",
+   "display": false
+  },
+  {
+   "tex": "F_2",
+   "display": false
+  },
+  {
+   "tex": "(\\Phi,F)",
+   "display": false
+  },
+  {
+   "tex": "\\mu",
+   "display": false
+  },
+  {
+   "tex": "10^3\\sim10^5\\mu_0",
+   "display": false
+  },
+  {
+   "tex": "\\mu_0",
+   "display": false
+  },
+  {
+   "tex": "R_m=l/(\\mu S)",
+   "display": false
+  },
+  {
+   "tex": "\\mu",
+   "display": false
+  },
+  {
+   "tex": "F_g",
+   "display": false
+  },
+  {
+   "tex": "g",
+   "display": false
+  },
+  {
+   "tex": "(20+6)\\times(40+6)",
+   "display": false
+  },
+  {
+   "tex": "\\mu_0",
+   "display": false
+  },
+  {
+   "tex": "4\\pi\\times10^{-7}",
+   "display": false
+  },
+  {
+   "tex": "S_i",
+   "display": false
+  },
+  {
+   "tex": "0.752\\times10^{-3}",
+   "display": false
+  },
+  {
+   "tex": "0.752\\times10^{-3}",
+   "display": false
+  },
+  {
+   "tex": "l_i",
+   "display": false
+  },
+  {
+   "tex": "B_i",
+   "display": false
+  },
+  {
+   "tex": "1.3298",
+   "display": false
+  },
+  {
+   "tex": "1.33",
+   "display": false
+  },
+  {
+   "tex": "F_i",
+   "display": false
+  },
+  {
+   "tex": "198.2",
+   "display": false
+  },
+  {
+   "tex": "B_g",
+   "display": false
+  },
+  {
+   "tex": "1.2500",
+   "display": false
+  },
+  {
+   "tex": "H_g",
+   "display": false
+  },
+  {
+   "tex": "9.947\\times10^{5}",
+   "display": false
+  },
+  {
+   "tex": "0.994\\times10^{6}",
+   "display": false
+  },
+  {
+   "tex": "\\mu_0\\approx1.257\\times10^{-6}",
+   "display": false
+  },
+  {
+   "tex": "4\\pi\\times10^{-7}",
+   "display": false
+  },
+  {
+   "tex": "F_g",
+   "display": false
+  },
+  {
+   "tex": "5968.3",
+   "display": false
+  },
+  {
+   "tex": "H_g=0.994\\times10^6",
+   "display": false
+  },
+  {
+   "tex": "l_g",
+   "display": false
+  },
+  {
+   "tex": "F",
+   "display": false
+  },
+  {
+   "tex": "6166.6",
+   "display": false
+  },
+  {
+   "tex": "I",
+   "display": false
+  },
+  {
+   "tex": "6.1666",
+   "display": false
+  },
+  {
+   "tex": "3.21\\%",
+   "display": false
+  },
+  {
+   "tex": "S'_g",
+   "display": false
+  },
+  {
+   "tex": "1.196\\times10^{-3}",
+   "display": false
+  },
+  {
+   "tex": "1.196\\times10^{-3}",
+   "display": false
+  },
+  {
+   "tex": "F'_g",
+   "display": false
+  },
+  {
+   "tex": "3992",
+   "display": false
+  },
+  {
+   "tex": "I'",
+   "display": false
+  },
+  {
+   "tex": "F'_g/N=3.99",
+   "display": false
+  },
+  {
+   "tex": "(3992+198.2)/1000=4.19",
+   "display": false
+  },
+  {
+   "tex": "B_i",
+   "display": false
+  },
+  {
+   "tex": "H_i",
+   "display": false
+  },
+  {
+   "tex": "F_i",
+   "display": false
+  },
+  {
+   "tex": "B_g",
+   "display": false
+  },
+  {
+   "tex": "H_g",
+   "display": false
+  },
+  {
+   "tex": "F_g",
+   "display": false
+  },
+  {
+   "tex": "\\mu_0",
+   "display": false
+  },
+  {
+   "tex": "B_i=1.33",
+   "display": false
+  },
+  {
+   "tex": "H_i=560",
+   "display": false
+  },
+  {
+   "tex": "\\mu",
+   "display": false
+  },
+  {
+   "tex": "10^2\\sim10^5",
+   "display": false
+  },
+  {
+   "tex": "10^{16}",
+   "display": false
+  },
+  {
+   "tex": "\\Phi_\\sigma",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "H",
+   "display": false
+  },
+  {
+   "tex": "H",
+   "display": false
+  },
+  {
+   "tex": "B=\\mu H",
+   "display": false
+  },
+  {
+   "tex": "\\mu",
+   "display": false
+  },
+  {
+   "tex": "\\mu",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "B_r",
+   "display": false
+  },
+  {
+   "tex": "H_c",
+   "display": false
+  },
+  {
+   "tex": "p_h\\propto fB_m^{n}",
+   "display": false
+  },
+  {
+   "tex": "n\\approx1.5\\sim2",
+   "display": false
+  },
+  {
+   "tex": "p_e\\propto f^2\\tau^2B_m^2",
+   "display": false
+  },
+  {
+   "tex": "U_M=\\int H\\,\\mathrm dl",
+   "display": false
+  },
+  {
+   "tex": "F=NI",
+   "display": false
+  },
+  {
+   "tex": "\\sum E=\\sum U",
+   "display": false
+  },
+  {
+   "tex": "p_{Fe}",
+   "display": false
+  }
+ ],
+ "figures": []
+}

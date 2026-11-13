@@ -1,0 +1,51 @@
+{
+ "url": "课程总览/电力大数据与人工智能/课堂笔记/09-20-开课第一讲.html",
+ "title": "09-20 开课第一讲",
+ "math": [
+  {
+   "tex": "\\lambda=\\sigma+j\\omega",
+   "display": false
+  },
+  {
+   "tex": "\\sigma",
+   "display": false
+  },
+  {
+   "tex": "j\\omega",
+   "display": false
+  },
+  {
+   "tex": "\\omega=0",
+   "display": false
+  },
+  {
+   "tex": "\\omega\\neq0",
+   "display": false
+  },
+  {
+   "tex": "\\sigma<0",
+   "display": false
+  },
+  {
+   "tex": "\\sigma>0",
+   "display": false
+  },
+  {
+   "tex": "\\sigma=0",
+   "display": false
+  },
+  {
+   "tex": "\\sigma<0",
+   "display": false
+  },
+  {
+   "tex": "\\lambda=\\sigma+j\\omega",
+   "display": false
+  },
+  {
+   "tex": "y=ax^2+bx+c",
+   "display": false
+  }
+ ],
+ "figures": []
+}

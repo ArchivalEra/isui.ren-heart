@@ -1,0 +1,263 @@
+{
+ "url": "课程总览/电路原理/Walkthrough.html",
+ "title": "Walkthrough",
+ "math": [
+  {
+   "tex": "P=UI",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "N",
+   "display": false
+  },
+  {
+   "tex": "M=B-(N-1)",
+   "display": false
+  },
+  {
+   "tex": "i=C\\dfrac{du}{dt}",
+   "display": false
+  },
+  {
+   "tex": "du/dt=0",
+   "display": false
+  },
+  {
+   "tex": "u=L\\dfrac{di}{dt}",
+   "display": false
+  },
+  {
+   "tex": "0",
+   "display": false
+  },
+  {
+   "tex": "I_S = U_S/R",
+   "display": false
+  },
+  {
+   "tex": "U",
+   "display": false
+  },
+  {
+   "tex": "U",
+   "display": false
+  },
+  {
+   "tex": "I",
+   "display": false
+  },
+  {
+   "tex": "R=U/I",
+   "display": false
+  },
+  {
+   "tex": "n-1",
+   "display": false
+  },
+  {
+   "tex": "b-n+1",
+   "display": false
+  },
+  {
+   "tex": "R_{kk}I_{Mk}+\\sum R_{kj}I_{Mj}=\\sum U_{S\\uparrow}",
+   "display": false
+  },
+  {
+   "tex": "U_{oc}",
+   "display": false
+  },
+  {
+   "tex": "R_{eq}",
+   "display": false
+  },
+  {
+   "tex": "U_{oc}",
+   "display": false
+  },
+  {
+   "tex": "R_{eq}",
+   "display": false
+  },
+  {
+   "tex": "I_{sc}",
+   "display": false
+  },
+  {
+   "tex": "R_{eq}",
+   "display": false
+  },
+  {
+   "tex": "U_{oc}=I_{sc}R_{eq}",
+   "display": false
+  },
+  {
+   "tex": "R_L=R_{eq}",
+   "display": false
+  },
+  {
+   "tex": "P_{\\max}=\\dfrac{U_{oc}^2}{4R_{eq}}",
+   "display": false
+  },
+  {
+   "tex": "R_{eq}",
+   "display": false
+  },
+  {
+   "tex": "U",
+   "display": false
+  },
+  {
+   "tex": "I",
+   "display": false
+  },
+  {
+   "tex": "N-1",
+   "display": false
+  },
+  {
+   "tex": "N-1",
+   "display": false
+  },
+  {
+   "tex": "R_{11}",
+   "display": false
+  },
+  {
+   "tex": "R_{22}",
+   "display": false
+  },
+  {
+   "tex": "R_{12}",
+   "display": false
+  },
+  {
+   "tex": "G_{11}",
+   "display": false
+  },
+  {
+   "tex": "G_{12}",
+   "display": false
+  },
+  {
+   "tex": "I_C=63/17",
+   "display": false
+  },
+  {
+   "tex": "I_C=1",
+   "display": false
+  },
+  {
+   "tex": "I_A=7",
+   "display": false
+  },
+  {
+   "tex": "I_1=I_A+I_C=8",
+   "display": false
+  },
+  {
+   "tex": "b-n+1",
+   "display": false
+  },
+  {
+   "tex": "n-1",
+   "display": false
+  },
+  {
+   "tex": "90^\\circ",
+   "display": false
+  },
+  {
+   "tex": "180^\\circ",
+   "display": false
+  },
+  {
+   "tex": "\\pm180^\\circ",
+   "display": false
+  },
+  {
+   "tex": "180^\\circ",
+   "display": false
+  },
+  {
+   "tex": "360^\\circ",
+   "display": false
+  },
+  {
+   "tex": "-180^\\circ",
+   "display": false
+  },
+  {
+   "tex": "360^\\circ",
+   "display": false
+  },
+  {
+   "tex": "I=I_m/\\sqrt{2}",
+   "display": false
+  },
+  {
+   "tex": "\\sqrt2",
+   "display": false
+  },
+  {
+   "tex": "220\\ \\mathrm V",
+   "display": false
+  },
+  {
+   "tex": "220\\sqrt2=311",
+   "display": false
+  },
+  {
+   "tex": "\\arctan(4/3)=53.1^\\circ",
+   "display": false
+  },
+  {
+   "tex": "53.1/-53.1/126.9/-126.9",
+   "display": false
+  },
+  {
+   "tex": "\\sum \\dot I=0",
+   "display": false
+  },
+  {
+   "tex": "\\sum \\dot U=0",
+   "display": false
+  },
+  {
+   "tex": "\\dot U",
+   "display": false
+  },
+  {
+   "tex": "\\dot U",
+   "display": false
+  },
+  {
+   "tex": "\\dot I",
+   "display": false
+  },
+  {
+   "tex": "\\varphi",
+   "display": false
+  },
+  {
+   "tex": "Z",
+   "display": false
+  },
+  {
+   "tex": "\\tau",
+   "display": false
+  },
+  {
+   "tex": "u_C",
+   "display": false
+  },
+  {
+   "tex": "i_L",
+   "display": false
+  }
+ ],
+ "figures": []
+}

@@ -1,0 +1,503 @@
+{
+ "url": "课程总览/电机学/教材解析/第01章-概述/1.3-电机的电磁基本理论.html",
+ "title": "1.3 电机的电磁基本理论",
+ "math": [
+  {
+   "tex": "\\Psi=N\\Phi \\tag{1-25}",
+   "display": true
+  },
+  {
+   "tex": "\\Psi=LI \\tag{1-26}",
+   "display": true
+  },
+  {
+   "tex": "L=\\frac{\\Psi}{I} \\tag{1-27}",
+   "display": true
+  },
+  {
+   "tex": "L=\\frac{\\Psi}{I}=\\frac{N\\Phi}{I}=\\frac{N\\Lambda F}{I}=\\Lambda N^2=\\frac{N^2}{R_m} \\tag{1-28}",
+   "display": true
+  },
+  {
+   "tex": "M_{21}=\\frac{\\Psi_{21}}{I_1} \\tag{1-29}",
+   "display": true
+  },
+  {
+   "tex": "M_{12}=\\frac{\\Psi_{12}}{I_2} \\tag{1-30}",
+   "display": true
+  },
+  {
+   "tex": "\\left.\\begin{aligned}M_{21}&=\\frac{\\Psi_{21}}{I_1}=\\frac{N_2\\Phi_{21}}{I_1}=\\frac{N_2\\Lambda_{21}N_1I_1}{I_1}=\\Lambda_{21}N_1N_2\\\\ M_{12}&=\\frac{\\Psi_{12}}{I_2}=\\frac{N_1\\Phi_{12}}{I_2}=\\frac{N_1\\Lambda_{12}N_2I_2}{I_2}=\\Lambda_{12}N_1N_2\\end{aligned}\\right\\}\\tag{1-31}",
+   "display": true
+  },
+  {
+   "tex": "L_{\\sigma 1}=\\frac{\\Psi_{\\sigma 1}}{I_1} \\tag{1-32}",
+   "display": true
+  },
+  {
+   "tex": "L_{\\sigma 2}=\\frac{\\Psi_{\\sigma 2}}{I_2} \\tag{1-33}",
+   "display": true
+  },
+  {
+   "tex": "\\frac{U}{I}=\\omega L=X_L \\tag{1-34}",
+   "display": true
+  },
+  {
+   "tex": "\\Psi_{11}=\\sum N_{X1}\\Phi_X \\tag{1-35}",
+   "display": true
+  },
+  {
+   "tex": "\\Psi=\\sum N_X\\Phi_X",
+   "display": true
+  },
+  {
+   "tex": "e=-\\frac{d\\Psi}{dt} \\tag{1-36}",
+   "display": true
+  },
+  {
+   "tex": "e=-N\\frac{d\\Phi}{dt} \\tag{1-37}",
+   "display": true
+  },
+  {
+   "tex": "e=Blv \\tag{1-38}",
+   "display": true
+  },
+  {
+   "tex": "Fv=ei=Blvi \\tag{1-39}",
+   "display": true
+  },
+  {
+   "tex": "F_e=F=Bli \\tag{1-40}",
+   "display": true
+  },
+  {
+   "tex": "T=Blir \\tag{1-41}",
+   "display": true
+  },
+  {
+   "tex": "L=\\frac{\\Psi}{I}=\\frac{N\\Phi}{I}=\\frac{\\Lambda F N}{I}=\\Lambda N^2=\\frac{N^2}{R_m}",
+   "display": true
+  },
+  {
+   "tex": "\\text{电压 }U\\uparrow \\Rightarrow \\text{磁通 }\\Phi\\uparrow \\Rightarrow \\text{磁路更饱和} \\Rightarrow \\mu\\downarrow \\Rightarrow \\Lambda\\downarrow \\Rightarrow L\\downarrow \\Rightarrow X_L=\\omega L\\downarrow",
+   "display": true
+  },
+  {
+   "tex": "\\Psi",
+   "display": false
+  },
+  {
+   "tex": "N",
+   "display": false
+  },
+  {
+   "tex": "\\Phi",
+   "display": false
+  },
+  {
+   "tex": "L",
+   "display": false
+  },
+  {
+   "tex": "I_1",
+   "display": false
+  },
+  {
+   "tex": "\\Psi_{21}",
+   "display": false
+  },
+  {
+   "tex": "I_1",
+   "display": false
+  },
+  {
+   "tex": "M_{21}",
+   "display": false
+  },
+  {
+   "tex": "\\Psi_{21}",
+   "display": false
+  },
+  {
+   "tex": "\\Psi_{12}",
+   "display": false
+  },
+  {
+   "tex": "\\Lambda_{12}=\\Lambda_{21}",
+   "display": false
+  },
+  {
+   "tex": "M_{12}",
+   "display": false
+  },
+  {
+   "tex": "M_{21}",
+   "display": false
+  },
+  {
+   "tex": "I_1",
+   "display": false
+  },
+  {
+   "tex": "\\Phi_{21}",
+   "display": false
+  },
+  {
+   "tex": "N_1",
+   "display": false
+  },
+  {
+   "tex": "N_2",
+   "display": false
+  },
+  {
+   "tex": "\\Phi_{\\sigma 1}",
+   "display": false
+  },
+  {
+   "tex": "N_1",
+   "display": false
+  },
+  {
+   "tex": "\\Phi_{\\sigma 1}",
+   "display": false
+  },
+  {
+   "tex": "\\Psi_{\\sigma 1}",
+   "display": false
+  },
+  {
+   "tex": "X_L",
+   "display": false
+  },
+  {
+   "tex": "\\mu_m",
+   "display": false
+  },
+  {
+   "tex": "\\Phi",
+   "display": false
+  },
+  {
+   "tex": "N",
+   "display": false
+  },
+  {
+   "tex": "\\Phi_{\\sigma 1}",
+   "display": false
+  },
+  {
+   "tex": "\\Phi_{12}",
+   "display": false
+  },
+  {
+   "tex": "N_1",
+   "display": false
+  },
+  {
+   "tex": "\\Phi_{\\sigma 2}",
+   "display": false
+  },
+  {
+   "tex": "\\Phi_{21}",
+   "display": false
+  },
+  {
+   "tex": "N_2",
+   "display": false
+  },
+  {
+   "tex": "N_{X1}",
+   "display": false
+  },
+  {
+   "tex": "\\Phi_X",
+   "display": false
+  },
+  {
+   "tex": "N_{X1}",
+   "display": false
+  },
+  {
+   "tex": "\\Psi",
+   "display": false
+  },
+  {
+   "tex": "N",
+   "display": false
+  },
+  {
+   "tex": "\\Phi",
+   "display": false
+  },
+  {
+   "tex": "e",
+   "display": false
+  },
+  {
+   "tex": "e_v",
+   "display": false
+  },
+  {
+   "tex": "l",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "v",
+   "display": false
+  },
+  {
+   "tex": "e",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "l",
+   "display": false
+  },
+  {
+   "tex": "v",
+   "display": false
+  },
+  {
+   "tex": "F",
+   "display": false
+  },
+  {
+   "tex": "v",
+   "display": false
+  },
+  {
+   "tex": "e=Blv",
+   "display": false
+  },
+  {
+   "tex": "i",
+   "display": false
+  },
+  {
+   "tex": "p=ei",
+   "display": false
+  },
+  {
+   "tex": "v",
+   "display": false
+  },
+  {
+   "tex": "F",
+   "display": false
+  },
+  {
+   "tex": "F_e",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "l",
+   "display": false
+  },
+  {
+   "tex": "i",
+   "display": false
+  },
+  {
+   "tex": "F",
+   "display": false
+  },
+  {
+   "tex": "F_e=Bli",
+   "display": false
+  },
+  {
+   "tex": "T",
+   "display": false
+  },
+  {
+   "tex": "r",
+   "display": false
+  },
+  {
+   "tex": "e",
+   "display": false
+  },
+  {
+   "tex": "u",
+   "display": false
+  },
+  {
+   "tex": "i",
+   "display": false
+  },
+  {
+   "tex": "e",
+   "display": false
+  },
+  {
+   "tex": "F_e",
+   "display": false
+  },
+  {
+   "tex": "u",
+   "display": false
+  },
+  {
+   "tex": "e",
+   "display": false
+  },
+  {
+   "tex": "i",
+   "display": false
+  },
+  {
+   "tex": "e",
+   "display": false
+  },
+  {
+   "tex": "F_e",
+   "display": false
+  },
+  {
+   "tex": "e",
+   "display": false
+  },
+  {
+   "tex": "\\Psi=N\\Phi",
+   "display": false
+  },
+  {
+   "tex": "\\Phi=\\Lambda F",
+   "display": false
+  },
+  {
+   "tex": "F=NI",
+   "display": false
+  },
+  {
+   "tex": "L=\\Lambda N^2",
+   "display": false
+  },
+  {
+   "tex": "X_L=\\omega L=2\\pi fL",
+   "display": false
+  },
+  {
+   "tex": "e=-\\mathrm d\\Psi/\\mathrm dt",
+   "display": false
+  },
+  {
+   "tex": "e=-N\\,\\mathrm d\\Phi/\\mathrm dt",
+   "display": false
+  },
+  {
+   "tex": "N",
+   "display": false
+  },
+  {
+   "tex": "\\Psi=\\sum N_X\\Phi_X",
+   "display": false
+  },
+  {
+   "tex": "e=-L\\,\\mathrm di/\\mathrm dt",
+   "display": false
+  },
+  {
+   "tex": "\\Psi=Li",
+   "display": false
+  },
+  {
+   "tex": "\\Psi_{11}=\\sum N_{X1}\\Phi_X",
+   "display": false
+  },
+  {
+   "tex": "e=-\\mathrm d\\Psi/\\mathrm dt",
+   "display": false
+  },
+  {
+   "tex": "e=Blv",
+   "display": false
+  },
+  {
+   "tex": "F_e=Bli",
+   "display": false
+  },
+  {
+   "tex": "T=Blir",
+   "display": false
+  },
+  {
+   "tex": "r",
+   "display": false
+  },
+  {
+   "tex": "Fv",
+   "display": false
+  },
+  {
+   "tex": "ei",
+   "display": false
+  },
+  {
+   "tex": "e=Blv",
+   "display": false
+  },
+  {
+   "tex": "F_e=Bli",
+   "display": false
+  },
+  {
+   "tex": "e",
+   "display": false
+  },
+  {
+   "tex": "u",
+   "display": false
+  },
+  {
+   "tex": "e>u",
+   "display": false
+  },
+  {
+   "tex": "e",
+   "display": false
+  },
+  {
+   "tex": "u>e",
+   "display": false
+  },
+  {
+   "tex": "e",
+   "display": false
+  },
+  {
+   "tex": "L",
+   "display": false
+  },
+  {
+   "tex": "M_{21}",
+   "display": false
+  },
+  {
+   "tex": "M_{12}=M_{21}",
+   "display": false
+  },
+  {
+   "tex": "r",
+   "display": false
+  },
+  {
+   "tex": "F_e",
+   "display": false
+  }
+ ],
+ "figures": []
+}

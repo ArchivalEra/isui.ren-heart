@@ -1,0 +1,24 @@
+{
+ "url": "课程总览/通用电气/交叉内容/06-三次谐波为什么不守规矩.html",
+ "title": "06 三次谐波为什么不守规矩",
+ "math": [
+  {
+   "tex": "3 \\times 120^\\circ = 360^\\circ",
+   "display": true
+  },
+  {
+   "tex": "360^\\circ",
+   "display": false
+  },
+  {
+   "tex": "720^\\circ = 2 \\times 360^\\circ",
+   "display": false
+  }
+ ],
+ "figures": [
+  {
+   "src": "figures/fig-ge-06.svg",
+   "alt": "基波三相箭头互差120度呈辐射状；三次谐波三相相角乘3变成360度完全重合"
+  }
+ ]
+}

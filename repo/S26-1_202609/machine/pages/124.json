@@ -1,0 +1,679 @@
+{
+ "url": "课程总览/电子技术/课堂笔记/10-14-门电路与TTL集成电路.html",
+ "title": "10-14 门电路与 TTL 集成电路",
+ "math": [
+  {
+   "tex": "Y=\\overline{AB+CD}",
+   "display": true
+  },
+  {
+   "tex": "Y = Y_1\\cdot Y_2\\cdot Y_3",
+   "display": true
+  },
+  {
+   "tex": "Y = \\overline{ABC}\\cdot\\overline{DEF}\\cdot\\overline{GHI}",
+   "display": true
+  },
+  {
+   "tex": "AB",
+   "display": false
+  },
+  {
+   "tex": "CD",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "C",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "AB",
+   "display": false
+  },
+  {
+   "tex": "CD",
+   "display": false
+  },
+  {
+   "tex": "Y",
+   "display": false
+  },
+  {
+   "tex": "Y=0",
+   "display": false
+  },
+  {
+   "tex": "AB",
+   "display": false
+  },
+  {
+   "tex": "CD",
+   "display": false
+  },
+  {
+   "tex": "Y=\\overline{0+0}=1",
+   "display": false
+  },
+  {
+   "tex": "Y=0",
+   "display": false
+  },
+  {
+   "tex": "Y=1",
+   "display": false
+  },
+  {
+   "tex": "n",
+   "display": false
+  },
+  {
+   "tex": "2^n",
+   "display": false
+  },
+  {
+   "tex": "2^4=16",
+   "display": false
+  },
+  {
+   "tex": "Y_1",
+   "display": false
+  },
+  {
+   "tex": "Y_2",
+   "display": false
+  },
+  {
+   "tex": "Y_1",
+   "display": false
+  },
+  {
+   "tex": "Y_2",
+   "display": false
+  },
+  {
+   "tex": "Y_1",
+   "display": false
+  },
+  {
+   "tex": "Y_2",
+   "display": false
+  },
+  {
+   "tex": "Y_1",
+   "display": false
+  },
+  {
+   "tex": "Y_2",
+   "display": false
+  },
+  {
+   "tex": "T_5",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "Y=A\\cdot B",
+   "display": false
+  },
+  {
+   "tex": "R",
+   "display": false
+  },
+  {
+   "tex": "Y",
+   "display": false
+  },
+  {
+   "tex": "Y",
+   "display": false
+  },
+  {
+   "tex": "R",
+   "display": false
+  },
+  {
+   "tex": "Y",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "Y=A+B",
+   "display": false
+  },
+  {
+   "tex": "Y",
+   "display": false
+  },
+  {
+   "tex": "R",
+   "display": false
+  },
+  {
+   "tex": "U",
+   "display": false
+  },
+  {
+   "tex": "Y",
+   "display": false
+  },
+  {
+   "tex": "R_K",
+   "display": false
+  },
+  {
+   "tex": "-U_{BB}",
+   "display": false
+  },
+  {
+   "tex": "R_C",
+   "display": false
+  },
+  {
+   "tex": "U_{CC}",
+   "display": false
+  },
+  {
+   "tex": "R_C",
+   "display": false
+  },
+  {
+   "tex": "U_{CC}",
+   "display": false
+  },
+  {
+   "tex": "-U_{BB}",
+   "display": false
+  },
+  {
+   "tex": "Y=\\overline{ABC}",
+   "display": false
+  },
+  {
+   "tex": "Y=\\overline{A+B+C}",
+   "display": false
+  },
+  {
+   "tex": "Y=\\overline{AB+CD}",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "C",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "Y_1",
+   "display": false
+  },
+  {
+   "tex": "Y_2",
+   "display": false
+  },
+  {
+   "tex": "T_1",
+   "display": false
+  },
+  {
+   "tex": "R_1",
+   "display": false
+  },
+  {
+   "tex": "R_1",
+   "display": false
+  },
+  {
+   "tex": "T_1",
+   "display": false
+  },
+  {
+   "tex": "T_1",
+   "display": false
+  },
+  {
+   "tex": "R_2",
+   "display": false
+  },
+  {
+   "tex": "T_2",
+   "display": false
+  },
+  {
+   "tex": "R_3",
+   "display": false
+  },
+  {
+   "tex": "T_1",
+   "display": false
+  },
+  {
+   "tex": "T_2",
+   "display": false
+  },
+  {
+   "tex": "T_3",
+   "display": false
+  },
+  {
+   "tex": "T_4",
+   "display": false
+  },
+  {
+   "tex": "T_5",
+   "display": false
+  },
+  {
+   "tex": "T_1",
+   "display": false
+  },
+  {
+   "tex": "C",
+   "display": false
+  },
+  {
+   "tex": "T_1",
+   "display": false
+  },
+  {
+   "tex": "T_1",
+   "display": false
+  },
+  {
+   "tex": "V_{B1}=0.3+0.7=1",
+   "display": false
+  },
+  {
+   "tex": "T_2",
+   "display": false
+  },
+  {
+   "tex": "T_5",
+   "display": false
+  },
+  {
+   "tex": "T_2",
+   "display": false
+  },
+  {
+   "tex": "T_5",
+   "display": false
+  },
+  {
+   "tex": "T_3",
+   "display": false
+  },
+  {
+   "tex": "T_4",
+   "display": false
+  },
+  {
+   "tex": "T_3",
+   "display": false
+  },
+  {
+   "tex": "R_2",
+   "display": false
+  },
+  {
+   "tex": "5-0.7-0.7=3.6",
+   "display": false
+  },
+  {
+   "tex": "3.6+0.7=4.3",
+   "display": false
+  },
+  {
+   "tex": "T_1",
+   "display": false
+  },
+  {
+   "tex": "T_2",
+   "display": false
+  },
+  {
+   "tex": "T_5",
+   "display": false
+  },
+  {
+   "tex": "T_3",
+   "display": false
+  },
+  {
+   "tex": "T_4",
+   "display": false
+  },
+  {
+   "tex": "T_3",
+   "display": false
+  },
+  {
+   "tex": "T_4",
+   "display": false
+  },
+  {
+   "tex": "T_5",
+   "display": false
+  },
+  {
+   "tex": "T_5",
+   "display": false
+  },
+  {
+   "tex": "U_{CE5}",
+   "display": false
+  },
+  {
+   "tex": "T_3",
+   "display": false
+  },
+  {
+   "tex": "T_4",
+   "display": false
+  },
+  {
+   "tex": "R_4",
+   "display": false
+  },
+  {
+   "tex": "T_5",
+   "display": false
+  },
+  {
+   "tex": "T_5",
+   "display": false
+  },
+  {
+   "tex": "T_3",
+   "display": false
+  },
+  {
+   "tex": "T_4",
+   "display": false
+  },
+  {
+   "tex": "T_5",
+   "display": false
+  },
+  {
+   "tex": "T_5",
+   "display": false
+  },
+  {
+   "tex": "T_5",
+   "display": false
+  },
+  {
+   "tex": "T_5",
+   "display": false
+  },
+  {
+   "tex": "T_5",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "C",
+   "display": false
+  },
+  {
+   "tex": "T_3",
+   "display": false
+  },
+  {
+   "tex": "T_5",
+   "display": false
+  },
+  {
+   "tex": "T_5",
+   "display": false
+  },
+  {
+   "tex": "R_L",
+   "display": false
+  },
+  {
+   "tex": "T_5",
+   "display": false
+  },
+  {
+   "tex": "T_5",
+   "display": false
+  },
+  {
+   "tex": "Y",
+   "display": false
+  },
+  {
+   "tex": "Y_1=\\overline{ABC}",
+   "display": false
+  },
+  {
+   "tex": "ABC",
+   "display": false
+  },
+  {
+   "tex": "\\overline{ABC+DEF+GHI}",
+   "display": false
+  },
+  {
+   "tex": "DEF",
+   "display": false
+  },
+  {
+   "tex": "GHI",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "T_3",
+   "display": false
+  },
+  {
+   "tex": "T_3",
+   "display": false
+  },
+  {
+   "tex": "T_4",
+   "display": false
+  },
+  {
+   "tex": "R",
+   "display": false
+  },
+  {
+   "tex": "Y",
+   "display": false
+  },
+  {
+   "tex": "Y_1",
+   "display": false
+  },
+  {
+   "tex": "Y_2",
+   "display": false
+  },
+  {
+   "tex": "Y_3",
+   "display": false
+  },
+  {
+   "tex": "Y_1",
+   "display": false
+  },
+  {
+   "tex": "ABC",
+   "display": false
+  },
+  {
+   "tex": "ABC",
+   "display": false
+  },
+  {
+   "tex": "DEF",
+   "display": false
+  },
+  {
+   "tex": "GHI",
+   "display": false
+  },
+  {
+   "tex": "Y_1",
+   "display": false
+  },
+  {
+   "tex": "Y_2",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "-U_{BB}",
+   "display": false
+  },
+  {
+   "tex": "A=\\mathrm{bitget}(n,4)",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "n=0..15",
+   "display": false
+  },
+  {
+   "tex": "Y=\\mathrm{not}(A\\cdot B+C\\cdot D)",
+   "display": false
+  },
+  {
+   "tex": "Y",
+   "display": false
+  },
+  {
+   "tex": "AB",
+   "display": false
+  },
+  {
+   "tex": "CD",
+   "display": false
+  },
+  {
+   "tex": "Y=0",
+   "display": false
+  },
+  {
+   "tex": "T_1",
+   "display": false
+  },
+  {
+   "tex": "T_2",
+   "display": false
+  },
+  {
+   "tex": "T_1",
+   "display": false
+  },
+  {
+   "tex": "T_2",
+   "display": false
+  },
+  {
+   "tex": "T_2",
+   "display": false
+  },
+  {
+   "tex": "T_5",
+   "display": false
+  },
+  {
+   "tex": "T_3",
+   "display": false
+  },
+  {
+   "tex": "T_4",
+   "display": false
+  },
+  {
+   "tex": "5-0.7-0.7=3.6",
+   "display": false
+  },
+  {
+   "tex": "Y=\\overline{ABC}\\cdot\\overline{DEF}\\cdot\\overline{GHI}",
+   "display": false
+  },
+  {
+   "tex": "Y_1Y_2Y_3",
+   "display": false
+  },
+  {
+   "tex": "\\overline{ABC+DEF+GHI}",
+   "display": false
+  },
+  {
+   "tex": "T_5",
+   "display": false
+  },
+  {
+   "tex": "Y=0",
+   "display": false
+  },
+  {
+   "tex": "3\\cdot2^6-3\\cdot2^3+1",
+   "display": false
+  }
+ ],
+ "figures": []
+}

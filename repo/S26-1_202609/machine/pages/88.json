@@ -1,0 +1,371 @@
+{
+ "url": "课程总览/电路原理/课堂笔记/10-21-网孔电流法.html",
+ "title": "10-21 网孔电流法",
+ "math": [
+  {
+   "tex": "(R_1+R_2)I_A-R_2I_B=U_{S1}-U_{S2}",
+   "display": true
+  },
+  {
+   "tex": "-R_2I_A+(R_2+R_3)I_B-R_3I_C=U_{S2}",
+   "display": true
+  },
+  {
+   "tex": "-R_3I_B+(R_3+R_4)I_C=-U_{S4}",
+   "display": true
+  },
+  {
+   "tex": "50I_1+30\\times2=40",
+   "display": true
+  },
+  {
+   "tex": "9I_A-4I_B-8I_C=20",
+   "display": true
+  },
+  {
+   "tex": "R_1I_1+R_2I_2+U_{S2}-U_{S1}=0",
+   "display": true
+  },
+  {
+   "tex": "(R_1+R_2)I_{M1}-R_2I_{M2}=U_{S1}-U_{S2}",
+   "display": true
+  },
+  {
+   "tex": "-R_2I_{M1}+(R_2+R_3)I_{M2}=U_{S2}",
+   "display": true
+  },
+  {
+   "tex": "\\begin{cases}\nR_{11}I_{M1}+R_{12}I_{M2}+\\cdots+R_{1N}I_{MN}=\\sum U_{S\\uparrow}\\\\\nR_{21}I_{M1}+R_{22}I_{M2}+\\cdots+R_{2N}I_{MN}=\\sum U_{S\\uparrow}\\\\\n\\qquad\\vdots\n\\end{cases}",
+   "display": true
+  },
+  {
+   "tex": "R_{kk}I_{Mk}+\\sum R_{kj}I_{Mj}=\\sum U_{S\\uparrow}",
+   "display": false
+  },
+  {
+   "tex": "I_A",
+   "display": false
+  },
+  {
+   "tex": "I_B",
+   "display": false
+  },
+  {
+   "tex": "I_C",
+   "display": false
+  },
+  {
+   "tex": "1,2,3",
+   "display": false
+  },
+  {
+   "tex": "R_1+R_2",
+   "display": false
+  },
+  {
+   "tex": "R_2",
+   "display": false
+  },
+  {
+   "tex": "U_{S2}",
+   "display": false
+  },
+  {
+   "tex": "U_{S1}",
+   "display": false
+  },
+  {
+   "tex": "R_2+R_3",
+   "display": false
+  },
+  {
+   "tex": "-R_2",
+   "display": false
+  },
+  {
+   "tex": "-R_3",
+   "display": false
+  },
+  {
+   "tex": "U_{S2}",
+   "display": false
+  },
+  {
+   "tex": "-R_3",
+   "display": false
+  },
+  {
+   "tex": "R_3+R_4",
+   "display": false
+  },
+  {
+   "tex": "U_{S4}",
+   "display": false
+  },
+  {
+   "tex": "I_A,I_B,I_C",
+   "display": false
+  },
+  {
+   "tex": "I_{M2}=2",
+   "display": false
+  },
+  {
+   "tex": "I_1=-0.4",
+   "display": false
+  },
+  {
+   "tex": "30\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "2+(-0.4)=1.6",
+   "display": false
+  },
+  {
+   "tex": "U",
+   "display": false
+  },
+  {
+   "tex": "U",
+   "display": false
+  },
+  {
+   "tex": "U",
+   "display": false
+  },
+  {
+   "tex": "I_1+I_2=-2",
+   "display": false
+  },
+  {
+   "tex": "4I_A-3I_B=2",
+   "display": false
+  },
+  {
+   "tex": "-3I_A+6I_B-I_C=-3U_2",
+   "display": false
+  },
+  {
+   "tex": "-I_B+3I_C=3U_2",
+   "display": false
+  },
+  {
+   "tex": "U_2",
+   "display": false
+  },
+  {
+   "tex": "3\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "U_2=3(I_B-I_A)",
+   "display": false
+  },
+  {
+   "tex": "3U_2",
+   "display": false
+  },
+  {
+   "tex": "U_2",
+   "display": false
+  },
+  {
+   "tex": "I_A",
+   "display": false
+  },
+  {
+   "tex": "9\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "4\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "8\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "I_B",
+   "display": false
+  },
+  {
+   "tex": "I_C",
+   "display": false
+  },
+  {
+   "tex": "I_A",
+   "display": false
+  },
+  {
+   "tex": "b-(n-1)",
+   "display": false
+  },
+  {
+   "tex": "R_1",
+   "display": false
+  },
+  {
+   "tex": "R_2",
+   "display": false
+  },
+  {
+   "tex": "U_{S1}",
+   "display": false
+  },
+  {
+   "tex": "U_{S2}",
+   "display": false
+  },
+  {
+   "tex": "R_2",
+   "display": false
+  },
+  {
+   "tex": "R_3",
+   "display": false
+  },
+  {
+   "tex": "U_{S2}",
+   "display": false
+  },
+  {
+   "tex": "R_2",
+   "display": false
+  },
+  {
+   "tex": "I_{M1}",
+   "display": false
+  },
+  {
+   "tex": "I_{M2}",
+   "display": false
+  },
+  {
+   "tex": "I_1=I_{M1}",
+   "display": false
+  },
+  {
+   "tex": "I_2=I_{M1}-I_{M2}",
+   "display": false
+  },
+  {
+   "tex": "R_2",
+   "display": false
+  },
+  {
+   "tex": "I_3=I_{M2}",
+   "display": false
+  },
+  {
+   "tex": "I_2",
+   "display": false
+  },
+  {
+   "tex": "N",
+   "display": false
+  },
+  {
+   "tex": "N",
+   "display": false
+  },
+  {
+   "tex": "R_{kk}",
+   "display": false
+  },
+  {
+   "tex": "k",
+   "display": false
+  },
+  {
+   "tex": "R_{kj}",
+   "display": false
+  },
+  {
+   "tex": "U",
+   "display": false
+  },
+  {
+   "tex": "b-(n-1)",
+   "display": false
+  },
+  {
+   "tex": "N",
+   "display": false
+  },
+  {
+   "tex": "I_2",
+   "display": false
+  },
+  {
+   "tex": "I_{M1}",
+   "display": false
+  },
+  {
+   "tex": "I_{M2}",
+   "display": false
+  },
+  {
+   "tex": "I",
+   "display": false
+  },
+  {
+   "tex": "2\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "3\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "50\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "1/2",
+   "display": false
+  },
+  {
+   "tex": "1/3",
+   "display": false
+  },
+  {
+   "tex": "5/3",
+   "display": false
+  },
+  {
+   "tex": "I_1=-0.4",
+   "display": false
+  },
+  {
+   "tex": "R_1\\sim R_4",
+   "display": false
+  },
+  {
+   "tex": "I_1",
+   "display": false
+  },
+  {
+   "tex": "-0.4",
+   "display": false
+  },
+  {
+   "tex": "-0.4",
+   "display": false
+  },
+  {
+   "tex": "50\\times0.4+60\\neq40",
+   "display": false
+  },
+  {
+   "tex": "I_1+I_2=-2",
+   "display": false
+  },
+  {
+   "tex": "9I_A-4I_B-8I_C=20",
+   "display": false
+  }
+ ],
+ "figures": []
+}

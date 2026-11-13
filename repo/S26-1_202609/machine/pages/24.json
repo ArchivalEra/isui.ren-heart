@@ -1,0 +1,539 @@
+{
+ "url": "课程总览/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.1-二阶与三阶行列式.html",
+ "title": "1.1 二阶与三阶行列式",
+ "math": [
+  {
+   "tex": "\\begin{cases}\na_{11}x_1+a_{12}x_2=b_1, & (1.1)\\\\\na_{21}x_1+a_{22}x_2=b_2. & (1.2)\n\\end{cases}",
+   "display": true
+  },
+  {
+   "tex": "(a_{11}a_{22}-a_{12}a_{21})x_1=a_{22}b_1-a_{12}b_2. \\tag{1.3}",
+   "display": true
+  },
+  {
+   "tex": "(a_{11}a_{22}-a_{12}a_{21})x_2=a_{11}b_2-a_{21}b_1. \\tag{1.4}",
+   "display": true
+  },
+  {
+   "tex": "\\begin{cases}\nx_1=\\dfrac{b_1a_{22}-a_{12}b_2}{a_{11}a_{22}-a_{12}a_{21}},\\\\[2mm]\nx_2=\\dfrac{a_{11}b_2-a_{21}b_1}{a_{11}a_{22}-a_{12}a_{21}}.\n\\end{cases} \\tag{1.5}",
+   "display": true
+  },
+  {
+   "tex": "D=\\begin{vmatrix}a_{11}&a_{12}\\\\a_{21}&a_{22}\\end{vmatrix}=a_{11}a_{22}-a_{12}a_{21}, \\tag{1.6}",
+   "display": true
+  },
+  {
+   "tex": "D_1=\\begin{vmatrix}b_1&a_{12}\\\\b_2&a_{22}\\end{vmatrix}=b_1a_{22}-a_{12}b_2,\\qquad\nD_2=\\begin{vmatrix}a_{11}&b_1\\\\a_{21}&b_2\\end{vmatrix}=a_{11}b_2-a_{21}b_1,",
+   "display": true
+  },
+  {
+   "tex": "x_1=\\frac{D_1}{D},\\qquad x_2=\\frac{D_2}{D}",
+   "display": true
+  },
+  {
+   "tex": "\\begin{cases}\n3x_1-2x_2=12,\\\\\n2x_1+x_2=1.\n\\end{cases}",
+   "display": true
+  },
+  {
+   "tex": "D=\\begin{vmatrix}3&-2\\\\2&1\\end{vmatrix}=3-(-4)=7\\neq0,",
+   "display": true
+  },
+  {
+   "tex": "D_1=\\begin{vmatrix}12&-2\\\\1&1\\end{vmatrix}=12-(-2)=14,\\qquad\nD_2=\\begin{vmatrix}3&12\\\\2&1\\end{vmatrix}=3-24=-21,",
+   "display": true
+  },
+  {
+   "tex": "x_1=\\frac{D_1}{D}=\\frac{14}{7}=2,\\qquad x_2=\\frac{D_2}{D}=\\frac{-21}{7}=-3",
+   "display": true
+  },
+  {
+   "tex": "(1)\\ \\begin{vmatrix}2&-8\\\\5&6\\end{vmatrix};\\quad\n(2)\\ \\begin{vmatrix}\\sin\\alpha&\\cos\\alpha\\\\-\\cos\\alpha&\\sin\\alpha\\end{vmatrix};\\quad\n(3)\\ \\begin{vmatrix}-1&0\\\\0&2\\end{vmatrix};\\quad\n(4)\\ \\begin{vmatrix}2&-1\\\\0&3\\end{vmatrix}",
+   "display": true
+  },
+  {
+   "tex": "(1)\\ \\begin{vmatrix}2&-8\\\\5&6\\end{vmatrix}=2\\times6-5\\times(-8)=52",
+   "display": true
+  },
+  {
+   "tex": "(2)\\ \\begin{vmatrix}\\sin\\alpha&\\cos\\alpha\\\\-\\cos\\alpha&\\sin\\alpha\\end{vmatrix}=\\sin^2\\alpha+\\cos^2\\alpha=1",
+   "display": true
+  },
+  {
+   "tex": "(3)\\ \\begin{vmatrix}-1&0\\\\0&2\\end{vmatrix}=-1\\times2-0\\times0=-2",
+   "display": true
+  },
+  {
+   "tex": "(4)\\ \\begin{vmatrix}2&-1\\\\0&3\\end{vmatrix}=2\\times3-(-1)\\times0=6",
+   "display": true
+  },
+  {
+   "tex": "\\begin{cases}\na_{11}x_1+a_{12}x_2+a_{13}x_3=b_1,\\\\\na_{21}x_1+a_{22}x_2+a_{23}x_3=b_2, & (1.7)\\\\\na_{31}x_1+a_{32}x_2+a_{33}x_3=b_3.\n\\end{cases}",
+   "display": true
+  },
+  {
+   "tex": "D=\\begin{vmatrix}\na_{11}&a_{12}&a_{13}\\\\\na_{21}&a_{22}&a_{23}\\\\\na_{31}&a_{32}&a_{33}\n\\end{vmatrix}\n=a_{11}a_{22}a_{33}+a_{12}a_{23}a_{31}+a_{13}a_{21}a_{32}\n-a_{11}a_{23}a_{32}-a_{12}a_{21}a_{33}-a_{13}a_{22}a_{31}",
+   "display": true
+  },
+  {
+   "tex": "x_1=\\frac{D_1}{D},\\qquad x_2=\\frac{D_2}{D},\\qquad x_3=\\frac{D_3}{D},",
+   "display": true
+  },
+  {
+   "tex": "D=\\begin{vmatrix}\n1&2&-4\\\\\n-2&2&1\\\\\n-3&4&-2\n\\end{vmatrix}",
+   "display": true
+  },
+  {
+   "tex": "D=1\\times2\\times(-2)+2\\times1\\times(-3)+(-4)\\times(-2)\\times4\n-(-4)\\times2\\times(-3)-2\\times(-2)\\times(-2)-1\\times1\\times4",
+   "display": true
+  },
+  {
+   "tex": "=-4-6+32-24-8-4=-14",
+   "display": true
+  },
+  {
+   "tex": "\\begin{cases}\nx_1-x_2+2x_3=13,\\\\\nx_1+x_2+x_3=10,\\\\\n2x_1+3x_2-x_3=1.\n\\end{cases}",
+   "display": true
+  },
+  {
+   "tex": "D_1=\\begin{vmatrix}13&-1&2\\\\10&1&1\\\\1&3&-1\\end{vmatrix}=-13-1+60-39-10-2=-5,",
+   "display": true
+  },
+  {
+   "tex": "D_2=\\begin{vmatrix}1&13&2\\\\1&10&1\\\\2&1&-1\\end{vmatrix}=-10+26+2-1+13-40=-10,",
+   "display": true
+  },
+  {
+   "tex": "D_3=\\begin{vmatrix}1&-1&13\\\\1&1&10\\\\2&3&1\\end{vmatrix}=1-20+39-30+1-26=-35",
+   "display": true
+  },
+  {
+   "tex": "x_1=\\frac{D_1}{D}=1,\\qquad x_2=\\frac{D_2}{D}=2,\\qquad x_3=\\frac{D_3}{D}=7",
+   "display": true
+  },
+  {
+   "tex": "\\begin{vmatrix}1&1&1\\\\2&3&x\\\\4&9&x^2\\end{vmatrix}=0",
+   "display": true
+  },
+  {
+   "tex": "D=3x^2+4x+18-9x-2x^2-12=x^2-5x+6",
+   "display": true
+  },
+  {
+   "tex": "D=1\\cdot2\\cdot(-2)+2\\cdot1\\cdot(-3)+(-4)\\cdot(-2)\\cdot4\n-(-4)\\cdot2\\cdot(-3)-2\\cdot(-2)\\cdot(-2)-1\\cdot1\\cdot4",
+   "display": true
+  },
+  {
+   "tex": "D=3x^2+4x+18-9x-2x^2-12=x^2-5x+6",
+   "display": true
+  },
+  {
+   "tex": "(1)\\ \\begin{vmatrix}a^2&ab\\\\ab&b^2\\end{vmatrix};\\quad\n(2)\\ \\begin{vmatrix}\\cos\\alpha&-\\sin\\alpha\\\\\\sin\\alpha&\\cos\\alpha\\end{vmatrix};\\quad\n(3)\\ \\begin{vmatrix}x-1&x^3\\\\1&x^2+x+1\\end{vmatrix}",
+   "display": true
+  },
+  {
+   "tex": "(4)\\ \\begin{vmatrix}2&1&3\\\\3&-2&-1\\\\1&4&3\\end{vmatrix};\\quad\n(5)\\ \\begin{vmatrix}0&a&0\\\\b&0&c\\\\0&d&0\\end{vmatrix};\\quad\n(6)\\ \\begin{vmatrix}2&-1&1\\\\3&2&1\\\\1&-2&1\\end{vmatrix}",
+   "display": true
+  },
+  {
+   "tex": "n",
+   "display": false
+  },
+  {
+   "tex": "n",
+   "display": false
+  },
+  {
+   "tex": "n",
+   "display": false
+  },
+  {
+   "tex": "n",
+   "display": false
+  },
+  {
+   "tex": "n",
+   "display": false
+  },
+  {
+   "tex": "\\times a_{22}",
+   "display": false
+  },
+  {
+   "tex": "\\times(-a_{12})",
+   "display": false
+  },
+  {
+   "tex": "\\times a_{11}",
+   "display": false
+  },
+  {
+   "tex": "\\times(-a_{21})",
+   "display": false
+  },
+  {
+   "tex": "a_{11}a_{22}-a_{12}a_{21}\\neq0",
+   "display": false
+  },
+  {
+   "tex": "a_{11},a_{12},a_{21},a_{22}",
+   "display": false
+  },
+  {
+   "tex": "b_1,b_2",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "a_{ij}\\ (i,j=1,2)",
+   "display": false
+  },
+  {
+   "tex": "i",
+   "display": false
+  },
+  {
+   "tex": "j",
+   "display": false
+  },
+  {
+   "tex": "i",
+   "display": false
+  },
+  {
+   "tex": "j",
+   "display": false
+  },
+  {
+   "tex": "x_1=\\dfrac{D_1}{D},\\ x_2=\\dfrac{D_2}{D}",
+   "display": false
+  },
+  {
+   "tex": "D\\neq0",
+   "display": false
+  },
+  {
+   "tex": "\\times a_{22}",
+   "display": false
+  },
+  {
+   "tex": "\\times(-a_{12})",
+   "display": false
+  },
+  {
+   "tex": "x_2",
+   "display": false
+  },
+  {
+   "tex": "\\times a_{11}",
+   "display": false
+  },
+  {
+   "tex": "\\times(-a_{21})",
+   "display": false
+  },
+  {
+   "tex": "x_1",
+   "display": false
+  },
+  {
+   "tex": "a_{11}a_{22}-a_{12}a_{21}",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "x_1,x_2",
+   "display": false
+  },
+  {
+   "tex": "\\text{解}=\\dfrac{D_j}{D}",
+   "display": false
+  },
+  {
+   "tex": "D\\neq0",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "D=0",
+   "display": false
+  },
+  {
+   "tex": "0=",
+   "display": false
+  },
+  {
+   "tex": "D_j/D",
+   "display": false
+  },
+  {
+   "tex": "D_j",
+   "display": false
+  },
+  {
+   "tex": "D_j",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "j",
+   "display": false
+  },
+  {
+   "tex": "(b_1,b_2)^{\\mathrm T}",
+   "display": false
+  },
+  {
+   "tex": "x_1",
+   "display": false
+  },
+  {
+   "tex": "x_2",
+   "display": false
+  },
+  {
+   "tex": "D=7\\neq0",
+   "display": false
+  },
+  {
+   "tex": "D_1=14",
+   "display": false
+  },
+  {
+   "tex": "D_2=-21",
+   "display": false
+  },
+  {
+   "tex": "(x_1,x_2)=(2,-3)",
+   "display": false
+  },
+  {
+   "tex": "3\\times2-2\\times(-3)=12",
+   "display": false
+  },
+  {
+   "tex": "2\\times2+(-3)=1",
+   "display": false
+  },
+  {
+   "tex": "2\\times6-5\\times(-8)=12+40=52",
+   "display": false
+  },
+  {
+   "tex": "5\\times(-8)",
+   "display": false
+  },
+  {
+   "tex": "\\sin\\alpha\\cdot\\sin\\alpha-\\cos\\alpha\\cdot(-\\cos\\alpha)=\\sin^2\\alpha+\\cos^2\\alpha=1",
+   "display": false
+  },
+  {
+   "tex": "-(-\\cos^2\\alpha)",
+   "display": false
+  },
+  {
+   "tex": "(-1)\\times2-0\\times0=-2",
+   "display": false
+  },
+  {
+   "tex": "2\\times3-(-1)\\times0=6",
+   "display": false
+  },
+  {
+   "tex": "0",
+   "display": false
+  },
+  {
+   "tex": "D_1,D_2",
+   "display": false
+  },
+  {
+   "tex": "D=0",
+   "display": false
+  },
+  {
+   "tex": "x_1,x_2,x_3",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "D\\neq0",
+   "display": false
+  },
+  {
+   "tex": "D_j\\ (j=1,2,3)",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "j",
+   "display": false
+  },
+  {
+   "tex": "b_1,b_2,b_3",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "D=\\begin{vmatrix}1&-1&2\\\\1&1&1\\\\2&3&-1\\end{vmatrix}=-1-2+6-4-3-1=-5\\neq0,",
+   "display": false
+  },
+  {
+   "tex": "x^2-5x+6=0",
+   "display": false
+  },
+  {
+   "tex": "x=2",
+   "display": false
+  },
+  {
+   "tex": "x=3",
+   "display": false
+  },
+  {
+   "tex": "3!=6",
+   "display": false
+  },
+  {
+   "tex": "n\\ge4",
+   "display": false
+  },
+  {
+   "tex": "D_j",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "j",
+   "display": false
+  },
+  {
+   "tex": "(b_1,b_2,b_3)^{\\mathrm T}",
+   "display": false
+  },
+  {
+   "tex": "D\\neq0",
+   "display": false
+  },
+  {
+   "tex": "x_j=D_j/D",
+   "display": false
+  },
+  {
+   "tex": "-4-6+32=22",
+   "display": false
+  },
+  {
+   "tex": "-24-8-4=-36",
+   "display": false
+  },
+  {
+   "tex": "-14",
+   "display": false
+  },
+  {
+   "tex": "D=-5\\neq0",
+   "display": false
+  },
+  {
+   "tex": "D_1=-5",
+   "display": false
+  },
+  {
+   "tex": "D_2=-10",
+   "display": false
+  },
+  {
+   "tex": "D_3=-35",
+   "display": false
+  },
+  {
+   "tex": "(x_1,x_2,x_3)=(1,2,7)",
+   "display": false
+  },
+  {
+   "tex": "2\\times1+3\\times2-7=1",
+   "display": false
+  },
+  {
+   "tex": "x",
+   "display": false
+  },
+  {
+   "tex": "x^2-5x+6=0",
+   "display": false
+  },
+  {
+   "tex": "x=2",
+   "display": false
+  },
+  {
+   "tex": "x=3",
+   "display": false
+  },
+  {
+   "tex": "x",
+   "display": false
+  },
+  {
+   "tex": "0,1,-1,28,0,2",
+   "display": false
+  },
+  {
+   "tex": "\\begin{vmatrix}a^2&ab\\\\ab&b^2\\end{vmatrix}=a^2b^2-(ab)(ab)=0",
+   "display": false
+  },
+  {
+   "tex": "\\begin{vmatrix}\\cos\\alpha&-\\sin\\alpha\\\\\\sin\\alpha&\\cos\\alpha\\end{vmatrix}=\\cos^2\\alpha+\\sin^2\\alpha=1",
+   "display": false
+  },
+  {
+   "tex": "\\begin{vmatrix}x-1&x^3\\\\1&x^2+x+1\\end{vmatrix}=(x-1)(x^2+x+1)-x^3=(x^3-1)-x^3=-1",
+   "display": false
+  },
+  {
+   "tex": "\\begin{vmatrix}2&1&3\\\\3&-2&-1\\\\1&4&3\\end{vmatrix}=28",
+   "display": false
+  },
+  {
+   "tex": "26",
+   "display": false
+  },
+  {
+   "tex": "\\begin{vmatrix}0&a&0\\\\b&0&c\\\\0&d&0\\end{vmatrix}=0",
+   "display": false
+  },
+  {
+   "tex": "\\begin{vmatrix}2&-1&1\\\\3&2&1\\\\1&-2&1\\end{vmatrix}=2",
+   "display": false
+  },
+  {
+   "tex": "28",
+   "display": false
+  }
+ ],
+ "figures": []
+}

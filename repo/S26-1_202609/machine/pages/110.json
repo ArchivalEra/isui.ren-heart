@@ -1,0 +1,156 @@
+{
+ "url": "课程总览/电子技术/作业/2026-10-21作业.html",
+ "title": "2026-10-21作业",
+ "math": [
+  {
+   "tex": "\\overline{R}_D",
+   "display": false
+  },
+  {
+   "tex": "\\overline{S}_D",
+   "display": false
+  },
+  {
+   "tex": "CP",
+   "display": false
+  },
+  {
+   "tex": "\\overline{R}_D",
+   "display": false
+  },
+  {
+   "tex": "\\overline{S}_D",
+   "display": false
+  },
+  {
+   "tex": "Q",
+   "display": false
+  },
+  {
+   "tex": "\\overline{R}_D",
+   "display": false
+  },
+  {
+   "tex": "\\overline{S}_D",
+   "display": false
+  },
+  {
+   "tex": "\\overline{R}_D",
+   "display": false
+  },
+  {
+   "tex": "\\overline{S}_D",
+   "display": false
+  },
+  {
+   "tex": "Q=0",
+   "display": false
+  },
+  {
+   "tex": "t=0",
+   "display": false
+  },
+  {
+   "tex": "\\overline{S}_D=0",
+   "display": false
+  },
+  {
+   "tex": "\\overline{S}_D",
+   "display": false
+  },
+  {
+   "tex": "Q",
+   "display": false
+  },
+  {
+   "tex": "Q",
+   "display": false
+  },
+  {
+   "tex": "Q=1",
+   "display": false
+  },
+  {
+   "tex": "\\overline{S}_D=0",
+   "display": false
+  },
+  {
+   "tex": "Q",
+   "display": false
+  },
+  {
+   "tex": "Q",
+   "display": false
+  },
+  {
+   "tex": "t=0^+",
+   "display": false
+  },
+  {
+   "tex": "\\overline{R}_D",
+   "display": false
+  },
+  {
+   "tex": "\\overline{S}_D",
+   "display": false
+  },
+  {
+   "tex": "CP",
+   "display": false
+  },
+  {
+   "tex": "Q",
+   "display": false
+  },
+  {
+   "tex": "S=0,R=1",
+   "display": false
+  },
+  {
+   "tex": "S=1,R=0",
+   "display": false
+  },
+  {
+   "tex": "S=1,R=0",
+   "display": false
+  },
+  {
+   "tex": "Q=0",
+   "display": false
+  },
+  {
+   "tex": "S=0,R=1",
+   "display": false
+  },
+  {
+   "tex": "S=1,R=0",
+   "display": false
+  },
+  {
+   "tex": "Q=1",
+   "display": false
+  },
+  {
+   "tex": "R=1",
+   "display": false
+  }
+ ],
+ "figures": [
+  {
+   "src": "figures/fig-8-01.svg",
+   "alt": "图 8.01 习题 8.1 图：R̄D 与 S̄D 的输入波形；R̄D 全程恒高，S̄D 在 0–5%、20–40%、50–70%、85–100% 四处为低电平"
+  },
+  {
+   "src": "figures/fig-8-01-out.svg",
+   "alt": "习题 8.1 答案：两种初态（Q=0 与 Q=1）的 Q 波形重合为一条全宽恒高平线，标注 two initial states coincide: Q≡1"
+  },
+  {
+   "src": "figures/fig-8-02-3row.svg",
+   "alt": "图 8.02 习题 8.2 图：CP、S、R 三行输入波形；CP 四脉冲 10–25/30–40/50–60/70–80%，S 两宽脉冲 30–50/70–90%，R 两窄脉冲 5–15/60–70% 加 95% 起高电平"
+  },
+  {
+   "src": "figures/fig-8-02-out.svg",
+   "alt": "习题 8.2 答案：两行 Q 波形，上行初态 0 仅 30% 处 0→1，下行初态 1 在 10% 处 1→0、30% 处 0→1，自 30% 起重合；八条竖虚线标 10/25/30/40/50/60/70/80%"
+  }
+ ]
+}

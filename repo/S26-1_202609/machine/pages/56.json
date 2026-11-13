@@ -1,0 +1,35 @@
+{
+ "url": "课程总览/电力大数据与人工智能/课堂笔记/10-20-聚类与神经网络.html",
+ "title": "10-20 聚类与神经网络",
+ "math": [
+  {
+   "tex": "X",
+   "display": false
+  },
+  {
+   "tex": "N",
+   "display": false
+  },
+  {
+   "tex": "\\sqrt{(x_1-x_2)^2+(y_1-y_2)^2}",
+   "display": false
+  },
+  {
+   "tex": "|x_1-x_2|+|y_1-y_2|",
+   "display": false
+  },
+  {
+   "tex": "t=0",
+   "display": false
+  },
+  {
+   "tex": "x_1,\\dots,x_n",
+   "display": false
+  },
+  {
+   "tex": "\\omega_1,\\omega_2",
+   "display": false
+  }
+ ],
+ "figures": []
+}

@@ -1,0 +1,696 @@
+{
+ "url": "课程总览/电子技术/作业/2026-10-26作业.html",
+ "title": "2026-10-26作业",
+ "math": [
+  {
+   "tex": "Q_{n+1}=J\\overline{Q_n}+\\overline{K}Q_n",
+   "display": true
+  },
+  {
+   "tex": "Q_{n+1}=D",
+   "display": true
+  },
+  {
+   "tex": "Q_{n+1}=D\\quad(\\text{只在 CP 上升沿取值})",
+   "display": true
+  },
+  {
+   "tex": "J",
+   "display": false
+  },
+  {
+   "tex": "K",
+   "display": false
+  },
+  {
+   "tex": "Q",
+   "display": false
+  },
+  {
+   "tex": "\\overline{Q}",
+   "display": false
+  },
+  {
+   "tex": "CP",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "Q_{n+1}=D",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "CP",
+   "display": false
+  },
+  {
+   "tex": "J",
+   "display": false
+  },
+  {
+   "tex": "K",
+   "display": false
+  },
+  {
+   "tex": "1",
+   "display": false
+  },
+  {
+   "tex": "J",
+   "display": false
+  },
+  {
+   "tex": "0",
+   "display": false
+  },
+  {
+   "tex": "J",
+   "display": false
+  },
+  {
+   "tex": "K",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "\\overline{Q}",
+   "display": false
+  },
+  {
+   "tex": "J",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "K",
+   "display": false
+  },
+  {
+   "tex": "1",
+   "display": false
+  },
+  {
+   "tex": "1",
+   "display": false
+  },
+  {
+   "tex": "\\overline{Q}",
+   "display": false
+  },
+  {
+   "tex": "1",
+   "display": false
+  },
+  {
+   "tex": "1",
+   "display": false
+  },
+  {
+   "tex": "\\overline{Q}",
+   "display": false
+  },
+  {
+   "tex": "Q",
+   "display": false
+  },
+  {
+   "tex": "1",
+   "display": false
+  },
+  {
+   "tex": "\\overline{Q}",
+   "display": false
+  },
+  {
+   "tex": "0",
+   "display": false
+  },
+  {
+   "tex": "1",
+   "display": false
+  },
+  {
+   "tex": "CP",
+   "display": false
+  },
+  {
+   "tex": "J",
+   "display": false
+  },
+  {
+   "tex": "K",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "Q_n",
+   "display": false
+  },
+  {
+   "tex": "Q",
+   "display": false
+  },
+  {
+   "tex": "Q_0=0",
+   "display": false
+  },
+  {
+   "tex": "Q_n",
+   "display": false
+  },
+  {
+   "tex": "\\overline{K}",
+   "display": false
+  },
+  {
+   "tex": "K",
+   "display": false
+  },
+  {
+   "tex": "Q_n",
+   "display": false
+  },
+  {
+   "tex": "\\overline{Q_n}",
+   "display": false
+  },
+  {
+   "tex": "J=1,K=1",
+   "display": false
+  },
+  {
+   "tex": "Q_{n+1}=\\overline{Q_n}+0\\cdot Q_n=\\overline{Q_n}",
+   "display": false
+  },
+  {
+   "tex": "J=\\overline{Q_n},K=1",
+   "display": false
+  },
+  {
+   "tex": "Q_{n+1}=\\overline{Q_n}\\,\\overline{Q_n}+0\\cdot Q_n=\\overline{Q_n}",
+   "display": false
+  },
+  {
+   "tex": "J=1,K=\\overline{Q_n}",
+   "display": false
+  },
+  {
+   "tex": "Q_{n+1}=\\overline{Q_n}+Q_n Q_n=1",
+   "display": false
+  },
+  {
+   "tex": "J=Q_n,K=1",
+   "display": false
+  },
+  {
+   "tex": "Q_{n+1}=Q_n\\overline{Q_n}+0\\cdot Q_n=0",
+   "display": false
+  },
+  {
+   "tex": "D=\\overline{Q_n}",
+   "display": false
+  },
+  {
+   "tex": "Q_{n+1}=\\overline{Q_n}",
+   "display": false
+  },
+  {
+   "tex": "J=0,K=1",
+   "display": false
+  },
+  {
+   "tex": "Q_{n+1}=0+0\\cdot Q_n=0",
+   "display": false
+  },
+  {
+   "tex": "Q_n\\overline{Q_n}=0",
+   "display": false
+  },
+  {
+   "tex": "\\overline{Q_n}+Q_n=1",
+   "display": false
+  },
+  {
+   "tex": "Q_0=0",
+   "display": false
+  },
+  {
+   "tex": "Q_{n+1}=\\overline{Q_n}",
+   "display": false
+  },
+  {
+   "tex": "Q",
+   "display": false
+  },
+  {
+   "tex": "Q_n=0",
+   "display": false
+  },
+  {
+   "tex": "Q_n=1",
+   "display": false
+  },
+  {
+   "tex": "Q_n",
+   "display": false
+  },
+  {
+   "tex": "\\overline{Q_n}",
+   "display": false
+  },
+  {
+   "tex": "Q_n\\overline{Q_n}=0",
+   "display": false
+  },
+  {
+   "tex": "\\overline{Q_n}+Q_n=1",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_1<\\downarrow_1<\\uparrow_2<\\downarrow_2<\\uparrow_3<\\downarrow_3<\\uparrow_4<\\downarrow_4",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow",
+   "display": false
+  },
+  {
+   "tex": "\\downarrow",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "\\downarrow_2",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "\\downarrow_3",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_4",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_1",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_1",
+   "display": false
+  },
+  {
+   "tex": "\\downarrow_1",
+   "display": false
+  },
+  {
+   "tex": "\\downarrow_1",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_2",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_2",
+   "display": false
+  },
+  {
+   "tex": "\\downarrow_2",
+   "display": false
+  },
+  {
+   "tex": "\\downarrow_2",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_3",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_3",
+   "display": false
+  },
+  {
+   "tex": "\\downarrow_3",
+   "display": false
+  },
+  {
+   "tex": "\\downarrow_3",
+   "display": false
+  },
+  {
+   "tex": "D\\!\\uparrow",
+   "display": false
+  },
+  {
+   "tex": "D\\!\\uparrow",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_4",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_4",
+   "display": false
+  },
+  {
+   "tex": "\\downarrow_4",
+   "display": false
+  },
+  {
+   "tex": "\\downarrow_4",
+   "display": false
+  },
+  {
+   "tex": "CP",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "\\downarrow_2",
+   "display": false
+  },
+  {
+   "tex": "\\downarrow_3",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_4",
+   "display": false
+  },
+  {
+   "tex": "D\\!\\uparrow",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "Q_{n+1}=D",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_1\\sim\\uparrow_4",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "Q",
+   "display": false
+  },
+  {
+   "tex": "Q_0=0",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_1",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_2",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_3",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_4",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "Q_n",
+   "display": false
+  },
+  {
+   "tex": "Q_{n+1}=D",
+   "display": false
+  },
+  {
+   "tex": "Q",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_1",
+   "display": false
+  },
+  {
+   "tex": "D=1",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_2",
+   "display": false
+  },
+  {
+   "tex": "D=1",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_3",
+   "display": false
+  },
+  {
+   "tex": "D=0",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_4",
+   "display": false
+  },
+  {
+   "tex": "D=1",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_1",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_1",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_3",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_3",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_4",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_4",
+   "display": false
+  },
+  {
+   "tex": "Q",
+   "display": false
+  },
+  {
+   "tex": "Q",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_1",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_3",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_4",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "\\downarrow_2",
+   "display": false
+  },
+  {
+   "tex": "D\\!\\uparrow",
+   "display": false
+  },
+  {
+   "tex": "Q",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_3",
+   "display": false
+  },
+  {
+   "tex": "Q",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_3",
+   "display": false
+  },
+  {
+   "tex": "\\downarrow_2",
+   "display": false
+  },
+  {
+   "tex": "D\\!\\uparrow",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "Q",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_2",
+   "display": false
+  },
+  {
+   "tex": "D=1",
+   "display": false
+  },
+  {
+   "tex": "Q",
+   "display": false
+  },
+  {
+   "tex": "Q",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_4",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "D\\!\\uparrow",
+   "display": false
+  },
+  {
+   "tex": "\\downarrow_3",
+   "display": false
+  },
+  {
+   "tex": "\\uparrow_4",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "J",
+   "display": false
+  },
+  {
+   "tex": "K",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "Q^*=\\overline{Q_n}",
+   "display": false
+  },
+  {
+   "tex": "Q^*=1",
+   "display": false
+  },
+  {
+   "tex": "Q^*=0",
+   "display": false
+  }
+ ],
+ "figures": [
+  {
+   "src": "figures/fig-8-04.svg",
+   "alt": "图 8.04 六个触发器子图接线：(a)(b)(c)(d)(f) 为 JK 触发器、C1 端带下降沿小圆圈，(e) 为 D 触发器无圈；悬空端标 1，(f) 的 J 标 0"
+  },
+  {
+   "src": "figures/fig-8-02.svg",
+   "alt": "图 8.02 的 CP 波形：四个脉冲 10–25%、30–40%、50–60%、70–80%，上升沿 10/30/50/70%，下降沿 25/40/60/80%"
+  },
+  {
+   "src": "figures/fig-8-06-answers.svg",
+   "alt": "习题 8.6 答案：(a)~(f) 六行 Q 波形，(a)(b) 在四个下降沿翻转，(c) 0–25% 低、25% 起恒 1，(d)(f) 恒 0，(e) 在四个上升沿翻转；八条竖虚线标 10/25/30/40/50/60/70/80%"
+  },
+  {
+   "src": "figures/fig-8-05.svg",
+   "alt": "图 8.05 习题 8.7 图：CP 四个脉冲与 D 端波形，D 前段高、中段一个宽低凹口、末尾回高；D 下降沿与 CP 第 2 个下降沿对齐，D 上升沿落在第 3 个下降沿与第 4 个上升沿之间"
+  },
+  {
+   "src": "figures/fig-8-07-ans.svg",
+   "alt": "习题 8.7 答案：CP、D、Q 三行波形；Q 在第一个 CP 上升沿置 1、第三个上升沿置 0、第四个上升沿置 1；D 的两次跳变都不在 CP 上升沿上"
+  }
+ ]
+}

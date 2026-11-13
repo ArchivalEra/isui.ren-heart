@@ -1,0 +1,1035 @@
+{
+ "url": "课程总览/工程数学/课堂笔记/10-29-向量相关性与秩.html",
+ "title": "10-29 向量相关性与秩",
+ "math": [
+  {
+   "tex": "\\boldsymbol{\\beta}=k_1\\boldsymbol{\\alpha}_1+k_2\\boldsymbol{\\alpha}_2+k_3\\boldsymbol{\\alpha}_3+k_4\\boldsymbol{\\alpha}_4",
+   "display": true
+  },
+  {
+   "tex": "A\\boldsymbol{x}=\\boldsymbol{\\beta},\\qquad \\boldsymbol{x}=(k_1,k_2,k_3,k_4)^{\\mathrm T}",
+   "display": true
+  },
+  {
+   "tex": "\\boldsymbol{x}=A^{-1}\\boldsymbol{\\beta}",
+   "display": true
+  },
+  {
+   "tex": "\\left[\\begin{array}{c|c}A & E\\end{array}\\right]",
+   "display": true
+  },
+  {
+   "tex": "k_1\\boldsymbol{\\alpha}_1+k_2\\boldsymbol{\\alpha}_2+\\cdots+k_n\\boldsymbol{\\alpha}_n=\\boldsymbol{0}",
+   "display": true
+  },
+  {
+   "tex": "A\\boldsymbol{x}=\\boldsymbol{0}",
+   "display": true
+  },
+  {
+   "tex": "A^{-1}A\\boldsymbol{x}=A^{-1}\\boldsymbol{0}",
+   "display": true
+  },
+  {
+   "tex": "\\boldsymbol{x}=\\boldsymbol{0}",
+   "display": true
+  },
+  {
+   "tex": "\\text{向量组线性无关} \\iff \\text{该向量的秩等于它所含向量的个数}",
+   "display": true
+  },
+  {
+   "tex": "\\text{等价的向量组必有相同的秩}",
+   "display": true
+  },
+  {
+   "tex": "x_1\\boldsymbol{\\alpha}_1+x_2\\boldsymbol{\\alpha}_2+\\cdots+x_n\\boldsymbol{\\alpha}_n=\\boldsymbol{\\beta}",
+   "display": true
+  },
+  {
+   "tex": "x_1\\boldsymbol{\\alpha}_1+x_2\\boldsymbol{\\alpha}_2+\\cdots+x_n\\boldsymbol{\\alpha}_n=\\boldsymbol{0}",
+   "display": true
+  },
+  {
+   "tex": "k_1\\boldsymbol{\\alpha}_1+k_2\\boldsymbol{\\alpha}_2+k_3\\boldsymbol{\\alpha}_3-\\boldsymbol{\\beta}=\\boldsymbol{0}",
+   "display": true
+  },
+  {
+   "tex": "\\boldsymbol{\\beta}",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_1,\\dots,\\boldsymbol{\\alpha}_n",
+   "display": false
+  },
+  {
+   "tex": "A\\boldsymbol{x}=\\boldsymbol{\\beta}",
+   "display": false
+  },
+  {
+   "tex": "A^{-1}",
+   "display": false
+  },
+  {
+   "tex": "D\\neq0",
+   "display": false
+  },
+  {
+   "tex": "A^{-1}",
+   "display": false
+  },
+  {
+   "tex": "AX=\\boldsymbol{0}",
+   "display": false
+  },
+  {
+   "tex": "n",
+   "display": false
+  },
+  {
+   "tex": "n",
+   "display": false
+  },
+  {
+   "tex": "R(T)",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\beta}",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_1,\\dots,\\boldsymbol{\\alpha}_4",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_1",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_4",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\beta}",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\beta}",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_1,\\dots,\\boldsymbol{\\alpha}_4",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\beta}",
+   "display": false
+  },
+  {
+   "tex": "k_1,k_2,k_3,k_4",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\beta}",
+   "display": false
+  },
+  {
+   "tex": "k_1,\\dots,k_4",
+   "display": false
+  },
+  {
+   "tex": "\\sum_{i=1}^{4}k_i\\boldsymbol{\\alpha}_i=\\boldsymbol{\\beta}",
+   "display": false
+  },
+  {
+   "tex": "k_i",
+   "display": false
+  },
+  {
+   "tex": "x_1\\boldsymbol{\\alpha}_1+\\cdots+x_n\\boldsymbol{\\alpha}_n=\\boldsymbol{\\beta}",
+   "display": false
+  },
+  {
+   "tex": "x_1,\\dots,x_n",
+   "display": false
+  },
+  {
+   "tex": "k_1,\\dots,k_n",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_i",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\beta}",
+   "display": false
+  },
+  {
+   "tex": "D_1,D_2,D_3,D_4",
+   "display": false
+  },
+  {
+   "tex": "k_j=D_j/D",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_1,\\dots,\\boldsymbol{\\alpha}_4",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "4\\times4",
+   "display": false
+  },
+  {
+   "tex": "A^{-1}",
+   "display": false
+  },
+  {
+   "tex": "A^{-1}",
+   "display": false
+  },
+  {
+   "tex": "A^{-1}",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "4\\times8",
+   "display": false
+  },
+  {
+   "tex": "A^{-1}",
+   "display": false
+  },
+  {
+   "tex": "A^{-1}\\boldsymbol{\\beta}",
+   "display": false
+  },
+  {
+   "tex": "A^{-1}",
+   "display": false
+  },
+  {
+   "tex": "A\\boldsymbol{x}=\\boldsymbol{b}",
+   "display": false
+  },
+  {
+   "tex": "A^{-1}",
+   "display": false
+  },
+  {
+   "tex": "A^{-1}",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_1,\\dots,\\boldsymbol{\\alpha}_n",
+   "display": false
+  },
+  {
+   "tex": "k_1,\\dots,k_n",
+   "display": false
+  },
+  {
+   "tex": "k_1=k_2=\\cdots=k_n=0",
+   "display": false
+  },
+  {
+   "tex": "k_1\\boldsymbol{\\alpha}_1+\\cdots+k_n\\boldsymbol{\\alpha}_n=\\boldsymbol{0}",
+   "display": false
+  },
+  {
+   "tex": "k_i",
+   "display": false
+  },
+  {
+   "tex": "k_1,\\dots,k_n",
+   "display": false
+  },
+  {
+   "tex": "D\\neq0",
+   "display": false
+  },
+  {
+   "tex": "D\\neq0",
+   "display": false
+  },
+  {
+   "tex": "D_j",
+   "display": false
+  },
+  {
+   "tex": "D_j=0",
+   "display": false
+  },
+  {
+   "tex": "x_j=D_j/D=0",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{x}=(x_1,\\dots,x_n)^{\\mathrm T}",
+   "display": false
+  },
+  {
+   "tex": "D\\neq0",
+   "display": false
+  },
+  {
+   "tex": "D=\\det A\\neq0",
+   "display": false
+  },
+  {
+   "tex": "A^{-1}",
+   "display": false
+  },
+  {
+   "tex": "A^{-1}",
+   "display": false
+  },
+  {
+   "tex": "A^{-1}",
+   "display": false
+  },
+  {
+   "tex": "E\\boldsymbol{x}=\\boldsymbol{x}",
+   "display": false
+  },
+  {
+   "tex": "A^{-1}A=E",
+   "display": false
+  },
+  {
+   "tex": "A^{-1}\\boldsymbol{0}=\\boldsymbol{0}",
+   "display": false
+  },
+  {
+   "tex": "D\\neq0",
+   "display": false
+  },
+  {
+   "tex": "A^{-1}",
+   "display": false
+  },
+  {
+   "tex": "A^{-1}\\boldsymbol{0}=\\boldsymbol{0}",
+   "display": false
+  },
+  {
+   "tex": "A^{-1}",
+   "display": false
+  },
+  {
+   "tex": "n",
+   "display": false
+  },
+  {
+   "tex": "n",
+   "display": false
+  },
+  {
+   "tex": "D\\neq0",
+   "display": false
+  },
+  {
+   "tex": "n",
+   "display": false
+  },
+  {
+   "tex": "n",
+   "display": false
+  },
+  {
+   "tex": "n",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "D=\\det A\\neq0",
+   "display": false
+  },
+  {
+   "tex": "A^{-1}",
+   "display": false
+  },
+  {
+   "tex": "A\\boldsymbol{x}=\\boldsymbol{0}",
+   "display": false
+  },
+  {
+   "tex": "D=0",
+   "display": false
+  },
+  {
+   "tex": "A^{-1}",
+   "display": false
+  },
+  {
+   "tex": "A^{-1}",
+   "display": false
+  },
+  {
+   "tex": "D\\neq0",
+   "display": false
+  },
+  {
+   "tex": "D=0",
+   "display": false
+  },
+  {
+   "tex": "D=0",
+   "display": false
+  },
+  {
+   "tex": "n",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_1,\\boldsymbol{\\alpha}_2,\\boldsymbol{\\alpha}_3",
+   "display": false
+  },
+  {
+   "tex": "3\\times3",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "k",
+   "display": false
+  },
+  {
+   "tex": "k\\neq0",
+   "display": false
+  },
+  {
+   "tex": "k",
+   "display": false
+  },
+  {
+   "tex": "k",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_1,\\boldsymbol{\\alpha}_2,\\dots,\\boldsymbol{\\alpha}_m",
+   "display": false
+  },
+  {
+   "tex": "T",
+   "display": false
+  },
+  {
+   "tex": "m",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_1,\\boldsymbol{\\alpha}_2,\\dots,\\boldsymbol{\\alpha}_m",
+   "display": false
+  },
+  {
+   "tex": "T",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_1,\\boldsymbol{\\alpha}_2,\\dots,\\boldsymbol{\\alpha}_m",
+   "display": false
+  },
+  {
+   "tex": "m",
+   "display": false
+  },
+  {
+   "tex": "T",
+   "display": false
+  },
+  {
+   "tex": "T",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_1,\\dots,\\boldsymbol{\\alpha}_m",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_1,\\dots,\\boldsymbol{\\alpha}_m",
+   "display": false
+  },
+  {
+   "tex": "m",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_1",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_1=1\\cdot\\boldsymbol{\\alpha}_1+0\\cdot\\boldsymbol{\\alpha}_2+\\cdots+0\\cdot\\boldsymbol{\\alpha}_m",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_2,\\boldsymbol{\\alpha}_3",
+   "display": false
+  },
+  {
+   "tex": "m",
+   "display": false
+  },
+  {
+   "tex": "T",
+   "display": false
+  },
+  {
+   "tex": "m",
+   "display": false
+  },
+  {
+   "tex": "m",
+   "display": false
+  },
+  {
+   "tex": "T",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_2,\\boldsymbol{\\alpha}_4,\\boldsymbol{\\alpha}_5",
+   "display": false
+  },
+  {
+   "tex": "T",
+   "display": false
+  },
+  {
+   "tex": "R(T)",
+   "display": false
+  },
+  {
+   "tex": "T",
+   "display": false
+  },
+  {
+   "tex": "T",
+   "display": false
+  },
+  {
+   "tex": "R(T)",
+   "display": false
+  },
+  {
+   "tex": "n",
+   "display": false
+  },
+  {
+   "tex": "n",
+   "display": false
+  },
+  {
+   "tex": "n",
+   "display": false
+  },
+  {
+   "tex": "n",
+   "display": false
+  },
+  {
+   "tex": "n",
+   "display": false
+  },
+  {
+   "tex": "n",
+   "display": false
+  },
+  {
+   "tex": "n",
+   "display": false
+  },
+  {
+   "tex": "A_{m\\times n}",
+   "display": false
+  },
+  {
+   "tex": "T",
+   "display": false
+  },
+  {
+   "tex": "R(A)=R(T)",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "4\\times3",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "R(A)=2",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_1,\\boldsymbol{\\alpha}_2",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "r",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "r",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "R(A)=2",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "4\\times2",
+   "display": false
+  },
+  {
+   "tex": "\\min\\{4,2\\}=2",
+   "display": false
+  },
+  {
+   "tex": "\\min\\{\\text{行数},\\text{列数}\\}",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "D",
+   "display": false
+  },
+  {
+   "tex": "D=0",
+   "display": false
+  },
+  {
+   "tex": "D=0",
+   "display": false
+  },
+  {
+   "tex": "k_1,k_2,k_3,k_4",
+   "display": false
+  },
+  {
+   "tex": "D=0",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "k_1,k_2,k_3,k_4",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_j",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\beta}_j",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_j",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\beta}_j",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\beta}_j",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_j",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "\\iff",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "\\iff",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "m",
+   "display": false
+  },
+  {
+   "tex": "n",
+   "display": false
+  },
+  {
+   "tex": "x_j",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_j=(a_{1j},a_{2j},\\dots,a_{mj})^{\\mathrm T}",
+   "display": false
+  },
+  {
+   "tex": "j",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\beta}=(b_1,b_2,\\dots,b_m)^{\\mathrm T}",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\beta}",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_1,\\dots,\\boldsymbol{\\alpha}_n",
+   "display": false
+  },
+  {
+   "tex": "k_1,\\dots,k_n",
+   "display": false
+  },
+  {
+   "tex": "x_1=\\cdots=x_n=0",
+   "display": false
+  },
+  {
+   "tex": "k_1,\\dots,k_n",
+   "display": false
+  },
+  {
+   "tex": "m",
+   "display": false
+  },
+  {
+   "tex": "n",
+   "display": false
+  },
+  {
+   "tex": "m>n",
+   "display": false
+  },
+  {
+   "tex": "D\\neq0",
+   "display": false
+  },
+  {
+   "tex": "A^{-1}",
+   "display": false
+  },
+  {
+   "tex": "A^{-1}",
+   "display": false
+  },
+  {
+   "tex": "A^{-1}",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "r",
+   "display": false
+  },
+  {
+   "tex": "r",
+   "display": false
+  },
+  {
+   "tex": "r",
+   "display": false
+  },
+  {
+   "tex": "r",
+   "display": false
+  },
+  {
+   "tex": "r",
+   "display": false
+  },
+  {
+   "tex": "A=\\begin{pmatrix}4&2\\\\0&0\\\\4&-1\\\\3&-1\\end{pmatrix}",
+   "display": false
+  },
+  {
+   "tex": "0",
+   "display": false
+  },
+  {
+   "tex": "-12\\neq0",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\beta}",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_1,\\boldsymbol{\\alpha}_2,\\boldsymbol{\\alpha}_3",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\beta},\\boldsymbol{\\alpha}_1,\\boldsymbol{\\alpha}_2,\\boldsymbol{\\alpha}_3",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\beta}=k_1\\boldsymbol{\\alpha}_1+k_2\\boldsymbol{\\alpha}_2+k_3\\boldsymbol{\\alpha}_3",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\beta}",
+   "display": false
+  },
+  {
+   "tex": "-1",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_1,\\boldsymbol{\\alpha}_2,\\boldsymbol{\\alpha}_4,\\boldsymbol{\\alpha}_5",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_1",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_2,\\boldsymbol{\\alpha}_4,\\boldsymbol{\\alpha}_5",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_1=(1,0,0)",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_2=\\boldsymbol{\\alpha}_4=(0,1,0)",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_5=(0,0,1)",
+   "display": false
+  },
+  {
+   "tex": "0=1",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_1",
+   "display": false
+  },
+  {
+   "tex": "m>n",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\beta}",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_1,\\dots,\\boldsymbol{\\alpha}_4",
+   "display": false
+  },
+  {
+   "tex": "x_1,\\dots,x_n",
+   "display": false
+  },
+  {
+   "tex": "X",
+   "display": false
+  },
+  {
+   "tex": "A^{-1}",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "D\\neq0",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_1,\\dots,\\boldsymbol{\\alpha}_4",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\beta}",
+   "display": false
+  },
+  {
+   "tex": "D\\neq0",
+   "display": false
+  },
+  {
+   "tex": "D=0",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_1=(1,1,0,0)",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_2=(1,0,1,1)",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_3",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "D=0",
+   "display": false
+  },
+  {
+   "tex": "A^{-1}",
+   "display": false
+  },
+  {
+   "tex": "D\\neq0",
+   "display": false
+  },
+  {
+   "tex": "D=0",
+   "display": false
+  },
+  {
+   "tex": "A^{-1}",
+   "display": false
+  },
+  {
+   "tex": "D\\neq0",
+   "display": false
+  },
+  {
+   "tex": "D=0",
+   "display": false
+  },
+  {
+   "tex": "r",
+   "display": false
+  },
+  {
+   "tex": "r",
+   "display": false
+  }
+ ],
+ "figures": []
+}

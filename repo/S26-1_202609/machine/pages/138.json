@@ -1,0 +1,311 @@
+{
+ "url": "课程总览/电机学/作业/10-15-变压器变比.html",
+ "title": "10-15 变压器变比",
+ "math": [
+  {
+   "tex": "I_{1N}=\\frac{S_N}{\\sqrt3\\,U_{1N}}=\\frac{500\\times10^{3}}{\\sqrt3\\times10000}\\approx 28.87\\ \\mathrm{A}",
+   "display": true
+  },
+  {
+   "tex": "I_{1N\\Phi}=\\frac{I_{1N}}{\\sqrt3}=\\frac{28.87}{1.732}\\approx 16.67\\ \\mathrm{A}",
+   "display": true
+  },
+  {
+   "tex": "I_{2N}=\\frac{S_N}{\\sqrt3\\,U_{2N}}=\\frac{500\\times10^{3}}{\\sqrt3\\times400}\\approx 721.69\\ \\mathrm{A}",
+   "display": true
+  },
+  {
+   "tex": "I_{2N\\Phi}=I_{2N}\\approx 721.69\\ \\mathrm{A}",
+   "display": true
+  },
+  {
+   "tex": "U_{1\\Phi}=U_{1N}=10000\\ \\mathrm{V}",
+   "display": true
+  },
+  {
+   "tex": "U_{2\\Phi}=\\frac{U_{2N}}{\\sqrt3}=\\frac{400}{\\sqrt3}\\approx 230.94\\ \\mathrm{V}",
+   "display": true
+  },
+  {
+   "tex": "k=\\frac{U_{1\\Phi}}{U_{2\\Phi}}=\\frac{10000}{400/\\sqrt3}=\\frac{10000\\sqrt3}{400}=25\\sqrt3\\approx 43.30",
+   "display": true
+  },
+  {
+   "tex": "I_N=\\dfrac{S_N}{\\sqrt3\\,U_N}",
+   "display": false
+  },
+  {
+   "tex": "\\sqrt3",
+   "display": false
+  },
+  {
+   "tex": "\\sqrt3",
+   "display": false
+  },
+  {
+   "tex": "k",
+   "display": false
+  },
+  {
+   "tex": "k\\ge1",
+   "display": false
+  },
+  {
+   "tex": "k",
+   "display": false
+  },
+  {
+   "tex": "U_\\Phi=U_N/\\sqrt3",
+   "display": false
+  },
+  {
+   "tex": "I_\\Phi=I_N",
+   "display": false
+  },
+  {
+   "tex": "U_\\Phi=U_N",
+   "display": false
+  },
+  {
+   "tex": "I_\\Phi=I_N/\\sqrt3",
+   "display": false
+  },
+  {
+   "tex": "U_N",
+   "display": false
+  },
+  {
+   "tex": "I_N",
+   "display": false
+  },
+  {
+   "tex": "k",
+   "display": false
+  },
+  {
+   "tex": "S_N=500\\ \\mathrm{kVA}",
+   "display": false
+  },
+  {
+   "tex": "f_N=50\\ \\mathrm{Hz}",
+   "display": false
+  },
+  {
+   "tex": "U_{1N}/U_{2N}=10000\\ \\mathrm{V}/400\\ \\mathrm{V}",
+   "display": false
+  },
+  {
+   "tex": "I_{1N}",
+   "display": false
+  },
+  {
+   "tex": "I_{1N\\Phi}",
+   "display": false
+  },
+  {
+   "tex": "I_{2N}",
+   "display": false
+  },
+  {
+   "tex": "I_{2N\\Phi}",
+   "display": false
+  },
+  {
+   "tex": "k",
+   "display": false
+  },
+  {
+   "tex": "I_N=\\dfrac{S_N}{\\sqrt3\\,U_N}",
+   "display": false
+  },
+  {
+   "tex": "I_N=\\dfrac{S_N}{\\sqrt3\\,U_N}",
+   "display": false
+  },
+  {
+   "tex": "\\sqrt3",
+   "display": false
+  },
+  {
+   "tex": "S_N=\\sqrt3\\,U_{1N}I_{1N}",
+   "display": false
+  },
+  {
+   "tex": "\\sqrt3",
+   "display": false
+  },
+  {
+   "tex": "I_{1N}\\approx 28.87\\ \\mathrm{A}",
+   "display": false
+  },
+  {
+   "tex": "I_{1N\\Phi}\\approx 16.67\\ \\mathrm{A}",
+   "display": false
+  },
+  {
+   "tex": "I_{2N}\\approx 721.69\\ \\mathrm{A}",
+   "display": false
+  },
+  {
+   "tex": "I_{2N\\Phi}\\approx 721.69\\ \\mathrm{A}",
+   "display": false
+  },
+  {
+   "tex": "3U_{1\\Phi}I_{1\\Phi}=3\\times10000\\times16.67\\approx 500\\ \\mathrm{kVA}",
+   "display": false
+  },
+  {
+   "tex": "3U_{2\\Phi}I_{2\\Phi}=3\\times230.94\\times721.69\\approx 500\\ \\mathrm{kVA}",
+   "display": false
+  },
+  {
+   "tex": "500\\ \\mathrm{kVA}",
+   "display": false
+  },
+  {
+   "tex": "\\sqrt3\\,U_NI_N",
+   "display": false
+  },
+  {
+   "tex": "500\\ \\mathrm{kVA}",
+   "display": false
+  },
+  {
+   "tex": "\\sqrt3",
+   "display": false
+  },
+  {
+   "tex": "\\sqrt3",
+   "display": false
+  },
+  {
+   "tex": "k",
+   "display": false
+  },
+  {
+   "tex": "10000\\ \\mathrm{V}",
+   "display": false
+  },
+  {
+   "tex": "400\\ \\mathrm{V}",
+   "display": false
+  },
+  {
+   "tex": "\\sqrt3",
+   "display": false
+  },
+  {
+   "tex": "k=\\dfrac{U_{1\\Phi}}{U_{2\\Phi}}",
+   "display": false
+  },
+  {
+   "tex": "\\sqrt3",
+   "display": false
+  },
+  {
+   "tex": "k=25\\sqrt3\\approx 43.30",
+   "display": false
+  },
+  {
+   "tex": "10000/400=25",
+   "display": false
+  },
+  {
+   "tex": "\\sqrt3",
+   "display": false
+  },
+  {
+   "tex": "\\sqrt3",
+   "display": false
+  },
+  {
+   "tex": "k=25\\times\\sqrt3\\approx 43.30",
+   "display": false
+  },
+  {
+   "tex": "25\\sqrt3=43.3013",
+   "display": false
+  },
+  {
+   "tex": "\\sqrt3",
+   "display": false
+  },
+  {
+   "tex": "\\sqrt3",
+   "display": false
+  },
+  {
+   "tex": "k=25\\sqrt3",
+   "display": false
+  },
+  {
+   "tex": "k",
+   "display": false
+  },
+  {
+   "tex": "\\sqrt3",
+   "display": false
+  },
+  {
+   "tex": "I_N=\\dfrac{S_N}{\\sqrt3\\,U_N}",
+   "display": false
+  },
+  {
+   "tex": "S_N",
+   "display": false
+  },
+  {
+   "tex": "\\sqrt3",
+   "display": false
+  },
+  {
+   "tex": "\\sqrt3",
+   "display": false
+  },
+  {
+   "tex": "\\sqrt3",
+   "display": false
+  },
+  {
+   "tex": "3U_\\Phi I_\\Phi",
+   "display": false
+  },
+  {
+   "tex": "\\sqrt3\\,U_NI_N",
+   "display": false
+  },
+  {
+   "tex": "S_N",
+   "display": false
+  },
+  {
+   "tex": "k",
+   "display": false
+  },
+  {
+   "tex": "I_{1N}\\approx28.87",
+   "display": false
+  },
+  {
+   "tex": "I_{1N\\Phi}\\approx16.67",
+   "display": false
+  },
+  {
+   "tex": "I_{2N}\\approx721.69",
+   "display": false
+  },
+  {
+   "tex": "I_{2N\\Phi}\\approx721.69",
+   "display": false
+  },
+  {
+   "tex": "k\\approx43.30",
+   "display": false
+  },
+  {
+   "tex": "k",
+   "display": false
+  }
+ ],
+ "figures": []
+}

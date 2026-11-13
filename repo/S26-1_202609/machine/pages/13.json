@@ -1,0 +1,759 @@
+{
+ "url": "课程总览/工程数学/教材解析/第一部分-线性代数/第4章-线性方程组/4.3-解的结构.html",
+ "title": "4.3 线性方程组解的结构",
+ "math": [
+  {
+   "tex": "\\begin{cases}\nx_1-x_2+x_3-x_4=0,\\\\\nx_1-x_2-x_3+x_4=0,\\\\\nx_1-x_2-2x_3+2x_4=0\n\\end{cases}",
+   "display": true
+  },
+  {
+   "tex": "A=\\begin{pmatrix}\n1 & -1 & 1 & -1\\\\\n1 & -1 & -1 & 1\\\\\n1 & -1 & -2 & 2\n\\end{pmatrix},",
+   "display": true
+  },
+  {
+   "tex": "A=\\begin{pmatrix}\n1 & -1 & 1 & -1\\\\\n1 & -1 & -1 & 1\\\\\n1 & -1 & -2 & 2\n\\end{pmatrix}\n\\to\n\\begin{pmatrix}\n1 & -1 & 1 & -1\\\\\n0 & 0 & -2 & 2\\\\\n0 & 0 & -3 & 3\n\\end{pmatrix}\n\\to\n\\begin{pmatrix}\n1 & -1 & 1 & -1\\\\\n0 & 0 & -1 & 1\\\\\n0 & 0 & -3 & 3\n\\end{pmatrix}",
+   "display": true
+  },
+  {
+   "tex": "\\to\n\\begin{pmatrix}\n1 & -1 & 1 & -1\\\\\n0 & 0 & -1 & 1\\\\\n0 & 0 & 0 & 0\n\\end{pmatrix}\n\\to\n\\begin{pmatrix}\n1 & -1 & 0 & 0\\\\\n0 & 0 & 1 & -1\\\\\n0 & 0 & 0 & 0\n\\end{pmatrix}",
+   "display": true
+  },
+  {
+   "tex": "\\boldsymbol{\\xi}_1=\\begin{pmatrix}1\\\\1\\\\0\\\\0\\end{pmatrix},\\qquad\n\\boldsymbol{\\xi}_2=\\begin{pmatrix}0\\\\0\\\\1\\\\1\\end{pmatrix}",
+   "display": true
+  },
+  {
+   "tex": "\\boldsymbol{x}=c_1\\boldsymbol{\\xi}_1+c_2\\boldsymbol{\\xi}_2,",
+   "display": true
+  },
+  {
+   "tex": "\\begin{cases}\na_{11}x_1+a_{12}x_2+\\cdots+a_{1n}x_n=b_1,\\\\\na_{21}x_1+a_{22}x_2+\\cdots+a_{2n}x_n=b_2,\\\\\n\\quad\\vdots\\\\\na_{m1}x_1+a_{m2}x_2+\\cdots+a_{mn}x_n=b_m.\n\\end{cases}\n\\tag{4.8}",
+   "display": true
+  },
+  {
+   "tex": "A\\boldsymbol{x}=\\boldsymbol{b}.\n\\tag{4.9}",
+   "display": true
+  },
+  {
+   "tex": "A=\\begin{pmatrix}\na_{11} & a_{12} & \\cdots & a_{1n}\\\\\na_{21} & a_{22} & \\cdots & a_{2n}\\\\\n\\vdots & \\vdots &        & \\vdots\\\\\na_{m1} & a_{m2} & \\cdots & a_{mn}\n\\end{pmatrix},\\qquad\n\\boldsymbol{x}=\\begin{pmatrix}x_1\\\\x_2\\\\\\vdots\\\\x_n\\end{pmatrix},\\qquad\n\\boldsymbol{b}=\\begin{pmatrix}b_1\\\\b_2\\\\\\vdots\\\\b_m\\end{pmatrix}",
+   "display": true
+  },
+  {
+   "tex": "A\\boldsymbol{x}=\\boldsymbol{0}.\n\\tag{4.10}",
+   "display": true
+  },
+  {
+   "tex": "x=\\boldsymbol{\\eta}^*+k_1\\boldsymbol{\\xi}_1+k_2\\boldsymbol{\\xi}_2+\\cdots+k_{n-r}\\boldsymbol{\\xi}_{n-r},",
+   "display": true
+  },
+  {
+   "tex": "\\overline{\\boldsymbol{A}}=\\begin{pmatrix} 1 & 3 & -1 & 2 & 4 & 3\\\\ 2 & -1 & 8 & 7 & 2 & 9\\\\ 4 & 5 & 6 & 11 & 10 & 15 \\end{pmatrix}\\longrightarrow\\begin{pmatrix} 1 & 3 & -1 & 2 & 4 & 3\\\\ 0 & -7 & 10 & 3 & -6 & 3\\\\ 0 & -7 & 10 & 3 & -6 & 3 \\end{pmatrix}\\longrightarrow",
+   "display": true
+  },
+  {
+   "tex": "\\begin{pmatrix} 1 & 3 & -1 & 2 & 4 & 3\\\\ 0 & -7 & 10 & 3 & -6 & 3\\\\ 0 & 0 & 0 & 0 & 0 & 0 \\end{pmatrix}\\longrightarrow\\begin{pmatrix} 1 & 3 & -1 & 2 & 4 & 3\\\\ 0 & 1 & -\\dfrac{10}{7} & -\\dfrac{3}{7} & \\dfrac{6}{7} & -\\dfrac{3}{7}\\\\ 0 & 0 & 0 & 0 & 0 & 0 \\end{pmatrix}\\longrightarrow",
+   "display": true
+  },
+  {
+   "tex": "\\begin{pmatrix} 1 & 0 & \\dfrac{23}{7} & \\dfrac{23}{7} & \\dfrac{10}{7} & \\dfrac{30}{7}\\\\[1ex] 0 & 1 & -\\dfrac{10}{7} & -\\dfrac{3}{7} & \\dfrac{6}{7} & -\\dfrac{3}{7}\\\\[1ex] 0 & 0 & 0 & 0 & 0 & 0 \\end{pmatrix},",
+   "display": true
+  },
+  {
+   "tex": "\\begin{cases} x_1=-\\dfrac{23}{7}x_3-\\dfrac{23}{7}x_4-\\dfrac{10}{7}x_5,\\\\[1ex] x_2=\\dfrac{10}{7}x_3+\\dfrac{3}{7}x_4-\\dfrac{6}{7}x_5, \\end{cases}",
+   "display": true
+  },
+  {
+   "tex": "\\boldsymbol{\\xi}_1=\\begin{pmatrix}-\\dfrac{23}{7}\\\\[1ex]\\dfrac{10}{7}\\\\[1ex]1\\\\0\\\\0\\end{pmatrix},\\quad \\boldsymbol{\\xi}_2=\\begin{pmatrix}-\\dfrac{23}{7}\\\\[1ex]\\dfrac{3}{7}\\\\[1ex]0\\\\1\\\\0\\end{pmatrix},\\quad \\boldsymbol{\\xi}_3=\\begin{pmatrix}-\\dfrac{10}{7}\\\\[1ex]-\\dfrac{6}{7}\\\\[1ex]0\\\\0\\\\1\\end{pmatrix}",
+   "display": true
+  },
+  {
+   "tex": "\\underbrace{\\boldsymbol{x}}_{\\text{全部解}}=\\underbrace{\\boldsymbol{\\eta}^*}_{\\text{随便找一个解}}+\\underbrace{k_1\\boldsymbol{\\xi}_1+\\cdots+k_{n-r}\\boldsymbol{\\xi}_{n-r}}_{\\text{导出组的通解}}",
+   "display": true
+  },
+  {
+   "tex": "\\begin{pmatrix}1 & -1 & 1 & -1\\\\ 0 & 0 & -2 & 2\\\\ 0 & 0 & -3 & 3\\end{pmatrix}\n\\xrightarrow{\\ r_3-\\tfrac32 r_2\\ }\n\\begin{pmatrix}1 & -1 & 1 & -1\\\\ 0 & 0 & -2 & 2\\\\ 0 & 0 & 0 & 0\\end{pmatrix}\n\\xrightarrow[\\ r_1+r_2\\ ]{\\ r_2\\div(-2)\\ }\n\\begin{pmatrix}1 & -1 & 0 & 0\\\\ 0 & 0 & 1 & -1\\\\ 0 & 0 & 0 & 0\\end{pmatrix}",
+   "display": true
+  },
+  {
+   "tex": "\\begin{pmatrix}1 & 0 & \\frac{23}{7} & \\frac{23}{7} & \\frac{10}{7} & \\frac{30}{7}\\\\ 0 & 1 & -\\frac{10}{7} & -\\frac{3}{7} & \\frac{6}{7} & -\\frac{3}{7}\\\\ 0 & 0 & 0 & 0 & 0 & 0\\end{pmatrix}",
+   "display": true
+  },
+  {
+   "tex": "\\boldsymbol{\\xi}_1=\\left(-\\tfrac{23}{7},\\tfrac{10}{7},1,0,0\\right)^{\\mathrm T},\\quad\n\\boldsymbol{\\xi}_2=\\left(-\\tfrac{23}{7},\\tfrac{3}{7},0,1,0\\right)^{\\mathrm T},\\quad\n\\boldsymbol{\\xi}_3=\\left(-\\tfrac{10}{7},-\\tfrac{6}{7},0,0,1\\right)^{\\mathrm T}",
+   "display": true
+  },
+  {
+   "tex": "n-r",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\xi}_1",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\xi}_2",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\xi}_1+\\boldsymbol{\\xi}_2",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\xi}",
+   "display": false
+  },
+  {
+   "tex": "k",
+   "display": false
+  },
+  {
+   "tex": "k\\boldsymbol{\\xi}",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\xi}_1",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\xi}_2",
+   "display": false
+  },
+  {
+   "tex": "\\cdots",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\xi}_r",
+   "display": false
+  },
+  {
+   "tex": "r",
+   "display": false
+  },
+  {
+   "tex": "k_1",
+   "display": false
+  },
+  {
+   "tex": "k_2",
+   "display": false
+  },
+  {
+   "tex": "\\cdots",
+   "display": false
+  },
+  {
+   "tex": "k_r",
+   "display": false
+  },
+  {
+   "tex": "k_1\\boldsymbol{\\xi}_1+k_2\\boldsymbol{\\xi}_2+\\cdots+k_r\\boldsymbol{\\xi}_r",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_1",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_2",
+   "display": false
+  },
+  {
+   "tex": "\\cdots",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_s",
+   "display": false
+  },
+  {
+   "tex": "s",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_1",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_2",
+   "display": false
+  },
+  {
+   "tex": "\\cdots",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_s",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_1",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_2",
+   "display": false
+  },
+  {
+   "tex": "\\cdots",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_s",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_1",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_2",
+   "display": false
+  },
+  {
+   "tex": "\\cdots",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_s",
+   "display": false
+  },
+  {
+   "tex": "n-r",
+   "display": false
+  },
+  {
+   "tex": "r",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "r=2<4",
+   "display": false
+  },
+  {
+   "tex": "\\begin{cases}x_1-x_2=0,\\\\ x_3-x_4=0.\\end{cases}",
+   "display": false
+  },
+  {
+   "tex": "x_1",
+   "display": false
+  },
+  {
+   "tex": "x_2",
+   "display": false
+  },
+  {
+   "tex": "\\begin{pmatrix}x_1\\\\x_2\\end{pmatrix}=\\begin{pmatrix}1\\\\0\\end{pmatrix}",
+   "display": false
+  },
+  {
+   "tex": "\\begin{pmatrix}0\\\\1\\end{pmatrix}",
+   "display": false
+  },
+  {
+   "tex": "\\begin{pmatrix}x_3\\\\x_4\\end{pmatrix}=\\begin{pmatrix}1\\\\0\\end{pmatrix}",
+   "display": false
+  },
+  {
+   "tex": "\\begin{pmatrix}0\\\\1\\end{pmatrix}",
+   "display": false
+  },
+  {
+   "tex": "c_1",
+   "display": false
+  },
+  {
+   "tex": "c_2",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{b}=\\boldsymbol{0}",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\eta}",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\xi}",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\eta}+\\boldsymbol{\\xi}",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\eta}_1",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\eta}_2",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\eta}_1-\\boldsymbol{\\eta}_2",
+   "display": false
+  },
+  {
+   "tex": "x=\\boldsymbol{\\eta}^*+\\boldsymbol{\\xi}",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\eta}^*",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\xi}",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\eta}^*",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\xi}_1,\\boldsymbol{\\xi}_2,\\cdots,\\boldsymbol{\\xi}_{n-r}",
+   "display": false
+  },
+  {
+   "tex": "k_1,k_2,\\cdots,k_{n-r}",
+   "display": false
+  },
+  {
+   "tex": "\\begin{cases} x_1+3x_2-x_3+2x_4+4x_5=3,\\\\ 2x_1-x_2+8x_3+7x_4+2x_5=9,\\\\ 4x_1+5x_2+6x_3+11x_4+10x_5=15 \\end{cases}",
+   "display": false
+  },
+  {
+   "tex": "\\begin{cases} x_1=\\dfrac{30}{7}-\\dfrac{23}{7}x_3-\\dfrac{23}{7}x_4-\\dfrac{10}{7}x_5,\\\\[1ex] x_2=-\\dfrac{3}{7}+\\dfrac{10}{7}x_3+\\dfrac{3}{7}x_4-\\dfrac{6}{7}x_5, \\end{cases}",
+   "display": false
+  },
+  {
+   "tex": "x_3",
+   "display": false
+  },
+  {
+   "tex": "x_4",
+   "display": false
+  },
+  {
+   "tex": "x_5",
+   "display": false
+  },
+  {
+   "tex": "\\begin{pmatrix}x_3\\\\x_4\\\\x_5\\end{pmatrix}=\\begin{pmatrix}0\\\\0\\\\0\\end{pmatrix}",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\eta}^*=\\left(\\dfrac{30}{7},-\\dfrac{3}{7},0,0,0\\right)^{\\mathrm{T}}",
+   "display": false
+  },
+  {
+   "tex": "x_3,x_4,x_5",
+   "display": false
+  },
+  {
+   "tex": "\\begin{pmatrix}x_3\\\\x_4\\\\x_5\\end{pmatrix}=\\begin{pmatrix}1\\\\0\\\\0\\end{pmatrix},\\begin{pmatrix}0\\\\1\\\\0\\end{pmatrix},\\begin{pmatrix}0\\\\0\\\\1\\end{pmatrix}",
+   "display": false
+  },
+  {
+   "tex": "x=\\boldsymbol{\\eta}^*+k_1\\boldsymbol{\\xi}_1+k_2\\boldsymbol{\\xi}_2+k_3\\boldsymbol{\\xi}_3",
+   "display": false
+  },
+  {
+   "tex": "k_1,k_2,k_3",
+   "display": false
+  },
+  {
+   "tex": "R(A)=R(A^*)=r<n",
+   "display": false
+  },
+  {
+   "tex": "A\\boldsymbol{x}=\\boldsymbol{0}",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{x}=c_1\\boldsymbol{\\xi}_1+\\cdots+c_{n-r}\\boldsymbol{\\xi}_{n-r}",
+   "display": false
+  },
+  {
+   "tex": "n-r",
+   "display": false
+  },
+  {
+   "tex": "A\\boldsymbol{x}=\\boldsymbol{b}",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{x}=\\boldsymbol{\\eta}^*+c_1\\boldsymbol{\\xi}_1+\\cdots+c_{n-r}\\boldsymbol{\\xi}_{n-r}",
+   "display": false
+  },
+  {
+   "tex": "n-r",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\xi}",
+   "display": false
+  },
+  {
+   "tex": "n-r",
+   "display": false
+  },
+  {
+   "tex": "r",
+   "display": false
+  },
+  {
+   "tex": "n-r",
+   "display": false
+  },
+  {
+   "tex": "n-r",
+   "display": false
+  },
+  {
+   "tex": "1",
+   "display": false
+  },
+  {
+   "tex": "0",
+   "display": false
+  },
+  {
+   "tex": "0",
+   "display": false
+  },
+  {
+   "tex": "n",
+   "display": false
+  },
+  {
+   "tex": "n-r",
+   "display": false
+  },
+  {
+   "tex": "n-r",
+   "display": false
+  },
+  {
+   "tex": "x_2,x_4",
+   "display": false
+  },
+  {
+   "tex": "x_1,x_2",
+   "display": false
+  },
+  {
+   "tex": "x_2=1,x_4=0",
+   "display": false
+  },
+  {
+   "tex": "x_1-x_2=0",
+   "display": false
+  },
+  {
+   "tex": "x_1=1",
+   "display": false
+  },
+  {
+   "tex": "x_3-x_4=0",
+   "display": false
+  },
+  {
+   "tex": "x_3=0",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\xi}_1=(1,1,0,0)^{\\mathrm T}",
+   "display": false
+  },
+  {
+   "tex": "x_2=0,x_4=1",
+   "display": false
+  },
+  {
+   "tex": "x_1=0",
+   "display": false
+  },
+  {
+   "tex": "x_3=1",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\xi}_2=(0,0,1,1)^{\\mathrm T}",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{x}=c_1\\boldsymbol{\\xi}_1+c_2\\boldsymbol{\\xi}_2",
+   "display": false
+  },
+  {
+   "tex": "\\mathrm{rref}(A)=\\begin{pmatrix}1&-1&0&0\\\\0&0&1&-1\\\\0&0&0&0\\end{pmatrix}",
+   "display": false
+  },
+  {
+   "tex": "R(A)=2",
+   "display": false
+  },
+  {
+   "tex": "\\mathrm{null}(A)",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\xi}_1,\\boldsymbol{\\xi}_2",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\xi}_1,\\boldsymbol{\\xi}_2",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{0}",
+   "display": false
+  },
+  {
+   "tex": "R(A)=R(A^*)=2<5",
+   "display": false
+  },
+  {
+   "tex": "5-2=3",
+   "display": false
+  },
+  {
+   "tex": "x_3,x_4,x_5",
+   "display": false
+  },
+  {
+   "tex": "0",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\eta}^*=\\left(\\tfrac{30}{7},-\\tfrac37,0,0,0\\right)^{\\mathrm T}",
+   "display": false
+  },
+  {
+   "tex": "x=\\boldsymbol{\\eta}^*+k_1\\boldsymbol{\\xi}_1+k_2\\boldsymbol{\\xi}_2+k_3\\boldsymbol{\\xi}_3",
+   "display": false
+  },
+  {
+   "tex": "\\mathrm{rref}(\\overline A)",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\eta}^*",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{0}",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\xi}_1,\\boldsymbol{\\xi}_2,\\boldsymbol{\\xi}_3",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{0}",
+   "display": false
+  },
+  {
+   "tex": "8.9\\times10^{-16}",
+   "display": false
+  },
+  {
+   "tex": "A\\boldsymbol{x}=\\boldsymbol{b}",
+   "display": false
+  },
+  {
+   "tex": "A\\boldsymbol{x}=\\boldsymbol{0}",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\eta}_1^*-\\boldsymbol{\\eta}_2^*",
+   "display": false
+  },
+  {
+   "tex": "A(\\cdot)=\\boldsymbol{0}",
+   "display": false
+  },
+  {
+   "tex": "x_2,x_4",
+   "display": false
+  },
+  {
+   "tex": "x_1,x_2",
+   "display": false
+  },
+  {
+   "tex": "c_1,c_2",
+   "display": false
+  },
+  {
+   "tex": "c_1,c_2",
+   "display": false
+  },
+  {
+   "tex": "k_1,k_2,k_3",
+   "display": false
+  },
+  {
+   "tex": "R(A)\\ne R(A^*)",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{0}",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{b}\\ne\\boldsymbol{0}",
+   "display": false
+  },
+  {
+   "tex": "n-r",
+   "display": false
+  },
+  {
+   "tex": "m",
+   "display": false
+  },
+  {
+   "tex": "m",
+   "display": false
+  },
+  {
+   "tex": "m<n",
+   "display": false
+  },
+  {
+   "tex": "R(A)\\le m<n",
+   "display": false
+  },
+  {
+   "tex": "r",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\xi}",
+   "display": false
+  },
+  {
+   "tex": "A\\boldsymbol{\\xi}=\\boldsymbol{0}",
+   "display": false
+  },
+  {
+   "tex": "0",
+   "display": false
+  },
+  {
+   "tex": "A\\boldsymbol{x}=\\boldsymbol{0}",
+   "display": false
+  },
+  {
+   "tex": "R(A)=r<n",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{x}=c_1\\boldsymbol{\\xi}_1+\\cdots+c_{n-r}\\boldsymbol{\\xi}_{n-r}",
+   "display": false
+  },
+  {
+   "tex": "n-r",
+   "display": false
+  },
+  {
+   "tex": "A\\boldsymbol{x}=\\boldsymbol{b}",
+   "display": false
+  },
+  {
+   "tex": "R(A)=R(A^*)=r<n",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{x}=\\boldsymbol{\\eta}^*+k_1\\boldsymbol{\\xi}_1+\\cdots+k_{n-r}\\boldsymbol{\\xi}_{n-r}",
+   "display": false
+  },
+  {
+   "tex": "n-r",
+   "display": false
+  },
+  {
+   "tex": "r=n",
+   "display": false
+  },
+  {
+   "tex": "0",
+   "display": false
+  },
+  {
+   "tex": "R(A)=R(A^*)",
+   "display": false
+  },
+  {
+   "tex": "\\mathrm{rref}",
+   "display": false
+  },
+  {
+   "tex": "R(A)=2",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\xi}_1,\\boldsymbol{\\xi}_2",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{0}",
+   "display": false
+  },
+  {
+   "tex": "\\mathrm{rref}",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\eta}^*",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\xi}",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{0}",
+   "display": false
+  },
+  {
+   "tex": "\\mathrm{rref}",
+   "display": false
+  },
+  {
+   "tex": "(-1,2,0)",
+   "display": false
+  },
+  {
+   "tex": "(9,6,-2)",
+   "display": false
+  },
+  {
+   "tex": "R=3",
+   "display": false
+  },
+  {
+   "tex": "R=2<4",
+   "display": false
+  },
+  {
+   "tex": "\\det\\approx0",
+   "display": false
+  },
+  {
+   "tex": "R=2<3",
+   "display": false
+  }
+ ],
+ "figures": []
+}

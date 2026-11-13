@@ -1,0 +1,47 @@
+{
+ "url": "课程总览/工程数学/教材解析/index.html",
+ "title": "教材解析",
+ "math": [
+  {
+   "tex": "(-1)^{i+j}",
+   "display": false
+  },
+  {
+   "tex": "a_{ij}",
+   "display": false
+  },
+  {
+   "tex": "E",
+   "display": false
+  },
+  {
+   "tex": "A^{\\mathrm T}",
+   "display": false
+  },
+  {
+   "tex": "A^{-1}",
+   "display": false
+  },
+  {
+   "tex": "A^*",
+   "display": false
+  },
+  {
+   "tex": "R(A)",
+   "display": false
+  },
+  {
+   "tex": "\\Sigma",
+   "display": false
+  },
+  {
+   "tex": "\\iff",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}",
+   "display": false
+  }
+ ],
+ "figures": []
+}

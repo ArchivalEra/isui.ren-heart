@@ -1,0 +1,187 @@
+{
+ "url": "课程总览/电机学/原始资料/index.html",
+ "title": "原始资料",
+ "math": [
+  {
+   "tex": "\\Lambda",
+   "display": false
+  },
+  {
+   "tex": "\\Delta",
+   "display": false
+  },
+  {
+   "tex": "B_r",
+   "display": false
+  },
+  {
+   "tex": "C_e",
+   "display": false
+  },
+  {
+   "tex": "F_e",
+   "display": false
+  },
+  {
+   "tex": "I_\\mu",
+   "display": false
+  },
+  {
+   "tex": "K_d",
+   "display": false
+  },
+  {
+   "tex": "s_k",
+   "display": false
+  },
+  {
+   "tex": "\\mathrm{B_r}",
+   "display": false
+  },
+  {
+   "tex": "\\mathrm{H_c}",
+   "display": false
+  },
+  {
+   "tex": "p_{Fe}",
+   "display": false
+  },
+  {
+   "tex": "W_m",
+   "display": false
+  },
+  {
+   "tex": "S_N",
+   "display": false
+  },
+  {
+   "tex": "U_N",
+   "display": false
+  },
+  {
+   "tex": "I_N",
+   "display": false
+  },
+  {
+   "tex": "f_N",
+   "display": false
+  },
+  {
+   "tex": "I_{1N}=S_N/U_{1N}",
+   "display": false
+  },
+  {
+   "tex": "I_{2N}=S_N/U_{2N}",
+   "display": false
+  },
+  {
+   "tex": "\\sqrt3",
+   "display": false
+  },
+  {
+   "tex": "E=4.44fN\\phi_m",
+   "display": false
+  },
+  {
+   "tex": "k=E_1/E_2=N_1/N_2",
+   "display": false
+  },
+  {
+   "tex": "B_m=1.4\\sim1.6",
+   "display": false
+  },
+  {
+   "tex": "\\dot U_1\\approx-\\dot E_1",
+   "display": false
+  },
+  {
+   "tex": "k=U_1/U_{20}",
+   "display": false
+  },
+  {
+   "tex": "g_m",
+   "display": false
+  },
+  {
+   "tex": "b_m",
+   "display": false
+  },
+  {
+   "tex": "Y_m",
+   "display": false
+  },
+  {
+   "tex": "Z_m",
+   "display": false
+  },
+  {
+   "tex": "x_{1\\sigma}",
+   "display": false
+  },
+  {
+   "tex": "\\dot I_1N_1+\\dot I_2N_2=\\dot I_0N_1",
+   "display": false
+  },
+  {
+   "tex": "r_k=r_1+r_2'",
+   "display": false
+  },
+  {
+   "tex": "x_k",
+   "display": false
+  },
+  {
+   "tex": "Z_k",
+   "display": false
+  },
+  {
+   "tex": "Z_k=r_k+jx_k",
+   "display": false
+  },
+  {
+   "tex": "r_m",
+   "display": false
+  },
+  {
+   "tex": "Z_m",
+   "display": false
+  },
+  {
+   "tex": "x_m",
+   "display": false
+  },
+  {
+   "tex": "k=5.5",
+   "display": false
+  },
+  {
+   "tex": "Z_k=115.18\\ \\Omega",
+   "display": false
+  },
+  {
+   "tex": "\\Delta U\\%",
+   "display": false
+  },
+  {
+   "tex": "\\beta",
+   "display": false
+  },
+  {
+   "tex": "S_N=500",
+   "display": false
+  },
+  {
+   "tex": "f_N=50",
+   "display": false
+  },
+  {
+   "tex": "U_{1N}/U_{2N}=10000",
+   "display": false
+  },
+  {
+   "tex": "k",
+   "display": false
+  }
+ ],
+ "figures": []
+}

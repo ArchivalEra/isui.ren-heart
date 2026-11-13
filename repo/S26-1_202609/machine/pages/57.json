@@ -1,0 +1,151 @@
+{
+ "url": "课程总览/电力大数据与人工智能/课堂笔记/10-27-密度初筛与调频.html",
+ "title": "10-27 密度初筛与调频",
+ "math": [
+  {
+   "tex": "\\delta = -\\frac{\\Delta f / f_N}{\\Delta P / P_N}",
+   "display": true
+  },
+  {
+   "tex": "360^\\circ",
+   "display": false
+  },
+  {
+   "tex": "2\\pi",
+   "display": false
+  },
+  {
+   "tex": "\\omega = 2\\pi \\times 50 = 100\\pi \\approx 314",
+   "display": false
+  },
+  {
+   "tex": "\\dot{S} = P + jQ",
+   "display": false
+  },
+  {
+   "tex": "S = |\\dot{S}| = \\sqrt{P^2 + Q^2}",
+   "display": false
+  },
+  {
+   "tex": "f",
+   "display": false
+  },
+  {
+   "tex": "P",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "(f_0, P_0)",
+   "display": false
+  },
+  {
+   "tex": "f_1",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "(f_1, P_1)",
+   "display": false
+  },
+  {
+   "tex": "\\Delta f",
+   "display": false
+  },
+  {
+   "tex": "\\Delta P",
+   "display": false
+  },
+  {
+   "tex": "f_N",
+   "display": false
+  },
+  {
+   "tex": "P_N",
+   "display": false
+  },
+  {
+   "tex": "\\Delta f / f_N",
+   "display": false
+  },
+  {
+   "tex": "\\Delta P / P_N",
+   "display": false
+  },
+  {
+   "tex": "\\delta_1,\\dots,\\delta_N",
+   "display": false
+  },
+  {
+   "tex": "N",
+   "display": false
+  },
+  {
+   "tex": "\\dot{S}=P+jQ",
+   "display": false
+  },
+  {
+   "tex": "f_0 > f_1",
+   "display": false
+  },
+  {
+   "tex": "P_0 < P_1",
+   "display": false
+  },
+  {
+   "tex": "2\\pi \\times 50",
+   "display": false
+  },
+  {
+   "tex": "100\\pi",
+   "display": false
+  },
+  {
+   "tex": "50 \\times 360^\\circ",
+   "display": false
+  },
+  {
+   "tex": "100\\pi",
+   "display": false
+  },
+  {
+   "tex": "\\Delta f = -0.1",
+   "display": false
+  },
+  {
+   "tex": "\\Delta P = 0.05",
+   "display": false
+  },
+  {
+   "tex": "f_N = 50",
+   "display": false
+  },
+  {
+   "tex": "P_N = 1",
+   "display": false
+  },
+  {
+   "tex": "\\delta = 0.04",
+   "display": false
+  },
+  {
+   "tex": "\\Delta P / \\Delta f = -0.5",
+   "display": false
+  },
+  {
+   "tex": "\\Delta P",
+   "display": false
+  },
+  {
+   "tex": "\\Delta",
+   "display": false
+  }
+ ],
+ "figures": []
+}

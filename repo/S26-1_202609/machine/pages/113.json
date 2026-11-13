@@ -1,0 +1,816 @@
+{
+ "url": "课程总览/电子技术/作业/2026-11-02作业.html",
+ "title": "2026-11-02作业",
+ "math": [
+  {
+   "tex": "N = 10 \\times 6 = 60",
+   "display": true
+  },
+  {
+   "tex": "N = 12",
+   "display": true
+  },
+  {
+   "tex": "N = 12",
+   "display": true
+  },
+  {
+   "tex": "R_{0(1)}",
+   "display": false
+  },
+  {
+   "tex": "R_{0(2)}",
+   "display": false
+  },
+  {
+   "tex": "S_{9(1)}",
+   "display": false
+  },
+  {
+   "tex": "S_{9(2)}",
+   "display": false
+  },
+  {
+   "tex": "CP_0",
+   "display": false
+  },
+  {
+   "tex": "CP_1",
+   "display": false
+  },
+  {
+   "tex": "Q_3\\sim Q_0",
+   "display": false
+  },
+  {
+   "tex": "Q_0\\to CP_1",
+   "display": false
+  },
+  {
+   "tex": "Q_3Q_2Q_1Q_0=0000\\sim1001",
+   "display": false
+  },
+  {
+   "tex": "Q_3",
+   "display": false
+  },
+  {
+   "tex": "Q_3Q_2Q_1Q_0",
+   "display": false
+  },
+  {
+   "tex": "\\overline{R_D}",
+   "display": false
+  },
+  {
+   "tex": "\\overline{LD}",
+   "display": false
+  },
+  {
+   "tex": "EP=ET=1",
+   "display": false
+  },
+  {
+   "tex": "\\overline{R_D}",
+   "display": false
+  },
+  {
+   "tex": "\\overline{LD}",
+   "display": false
+  },
+  {
+   "tex": "EP",
+   "display": false
+  },
+  {
+   "tex": "ET",
+   "display": false
+  },
+  {
+   "tex": "D_3\\sim D_0",
+   "display": false
+  },
+  {
+   "tex": "Q_3\\sim Q_0",
+   "display": false
+  },
+  {
+   "tex": "\\overline{Q_3Q_2}",
+   "display": false
+  },
+  {
+   "tex": "Q_3=Q_2=1",
+   "display": false
+  },
+  {
+   "tex": "CP_0",
+   "display": false
+  },
+  {
+   "tex": "CP_1",
+   "display": false
+  },
+  {
+   "tex": "Q_3",
+   "display": false
+  },
+  {
+   "tex": "R_{0(1)}R_{0(2)}",
+   "display": false
+  },
+  {
+   "tex": "S_{9(1)}S_{9(2)}",
+   "display": false
+  },
+  {
+   "tex": "\\overline{R_D}",
+   "display": false
+  },
+  {
+   "tex": "\\overline{LD}",
+   "display": false
+  },
+  {
+   "tex": "CP_0",
+   "display": false
+  },
+  {
+   "tex": "CP_1",
+   "display": false
+  },
+  {
+   "tex": "CP_0",
+   "display": false
+  },
+  {
+   "tex": "CP",
+   "display": false
+  },
+  {
+   "tex": "Q_3",
+   "display": false
+  },
+  {
+   "tex": "CP_1",
+   "display": false
+  },
+  {
+   "tex": "Q_0",
+   "display": false
+  },
+  {
+   "tex": "Q_0",
+   "display": false
+  },
+  {
+   "tex": "R_{0(1)}",
+   "display": false
+  },
+  {
+   "tex": "R_{0(2)}",
+   "display": false
+  },
+  {
+   "tex": "Q_2",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "S_{9(1)}",
+   "display": false
+  },
+  {
+   "tex": "S_{9(2)}",
+   "display": false
+  },
+  {
+   "tex": "Q_3Q_2Q_1Q_0",
+   "display": false
+  },
+  {
+   "tex": "Q_3Q_2Q_1Q_0",
+   "display": false
+  },
+  {
+   "tex": "R_{0(1)}",
+   "display": false
+  },
+  {
+   "tex": "R_{0(2)}",
+   "display": false
+  },
+  {
+   "tex": "S_{9(1)}",
+   "display": false
+  },
+  {
+   "tex": "S_{9(2)}",
+   "display": false
+  },
+  {
+   "tex": "Q_3Q_2Q_1Q_0=0000",
+   "display": false
+  },
+  {
+   "tex": "Q_3Q_2Q_1Q_0=0000",
+   "display": false
+  },
+  {
+   "tex": "Q_3Q_2Q_1Q_0=1001",
+   "display": false
+  },
+  {
+   "tex": "CP_0",
+   "display": false
+  },
+  {
+   "tex": "Q_0",
+   "display": false
+  },
+  {
+   "tex": "Q_0",
+   "display": false
+  },
+  {
+   "tex": "CP_1",
+   "display": false
+  },
+  {
+   "tex": "CP_0",
+   "display": false
+  },
+  {
+   "tex": "Q_0\\to CP_1",
+   "display": false
+  },
+  {
+   "tex": "Q_3",
+   "display": false
+  },
+  {
+   "tex": "R_{0(1)}=R_{0(2)}=1",
+   "display": false
+  },
+  {
+   "tex": "S_9",
+   "display": false
+  },
+  {
+   "tex": "S_{9(1)}=S_{9(2)}=1",
+   "display": false
+  },
+  {
+   "tex": "R_{0(1)}",
+   "display": false
+  },
+  {
+   "tex": "R_{0(2)}",
+   "display": false
+  },
+  {
+   "tex": "S_{9(1)}",
+   "display": false
+  },
+  {
+   "tex": "S_{9(2)}",
+   "display": false
+  },
+  {
+   "tex": "Q_2",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "Q_2=Q_1=1",
+   "display": false
+  },
+  {
+   "tex": "CP",
+   "display": false
+  },
+  {
+   "tex": "CP_0",
+   "display": false
+  },
+  {
+   "tex": "Q_0",
+   "display": false
+  },
+  {
+   "tex": "CP_1",
+   "display": false
+  },
+  {
+   "tex": "Q_3Q_2Q_1Q_0",
+   "display": false
+  },
+  {
+   "tex": "Q_3Q_2Q_1Q_0",
+   "display": false
+  },
+  {
+   "tex": "Q_3",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "Q_2",
+   "display": false
+  },
+  {
+   "tex": "Q_0",
+   "display": false
+  },
+  {
+   "tex": "Q_3",
+   "display": false
+  },
+  {
+   "tex": "Q_3",
+   "display": false
+  },
+  {
+   "tex": "CP_0",
+   "display": false
+  },
+  {
+   "tex": "Q_0\\to CP_1",
+   "display": false
+  },
+  {
+   "tex": "R_{0(1)}=Q_2",
+   "display": false
+  },
+  {
+   "tex": "R_{0(2)}=Q_1",
+   "display": false
+  },
+  {
+   "tex": "Q_2\\cdot Q_1",
+   "display": false
+  },
+  {
+   "tex": "Q_2=Q_1=1",
+   "display": false
+  },
+  {
+   "tex": "R_{0(1)}=R_{0(2)}=1",
+   "display": false
+  },
+  {
+   "tex": "S_{9(1)}S_{9(2)}=0",
+   "display": false
+  },
+  {
+   "tex": "Q_3",
+   "display": false
+  },
+  {
+   "tex": "R_{0(1)}=R_{0(2)}=1",
+   "display": false
+  },
+  {
+   "tex": "Q_2=Q_1=1",
+   "display": false
+  },
+  {
+   "tex": "S_{9(1)}",
+   "display": false
+  },
+  {
+   "tex": "S_{9(2)}",
+   "display": false
+  },
+  {
+   "tex": "R_{0(1)}",
+   "display": false
+  },
+  {
+   "tex": "R_{0(2)}",
+   "display": false
+  },
+  {
+   "tex": "Q_2",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "Q_2=1",
+   "display": false
+  },
+  {
+   "tex": "Q_3",
+   "display": false
+  },
+  {
+   "tex": "10\\times 6=60",
+   "display": false
+  },
+  {
+   "tex": "R_0",
+   "display": false
+  },
+  {
+   "tex": "EP",
+   "display": false
+  },
+  {
+   "tex": "ET",
+   "display": false
+  },
+  {
+   "tex": "CP",
+   "display": false
+  },
+  {
+   "tex": "\\overline{R_D}",
+   "display": false
+  },
+  {
+   "tex": "\\overline{LD}",
+   "display": false
+  },
+  {
+   "tex": "D_3D_2D_1D_0",
+   "display": false
+  },
+  {
+   "tex": "D_0",
+   "display": false
+  },
+  {
+   "tex": "D_1\\sim D_3",
+   "display": false
+  },
+  {
+   "tex": "D_0\\sim D_3",
+   "display": false
+  },
+  {
+   "tex": "\\overline{LD}=1",
+   "display": false
+  },
+  {
+   "tex": "Q_3",
+   "display": false
+  },
+  {
+   "tex": "Q_2",
+   "display": false
+  },
+  {
+   "tex": "\\overline{LD}",
+   "display": false
+  },
+  {
+   "tex": "Q_3",
+   "display": false
+  },
+  {
+   "tex": "Q_2",
+   "display": false
+  },
+  {
+   "tex": "\\overline{R_D}",
+   "display": false
+  },
+  {
+   "tex": "\\overline{R_D}",
+   "display": false
+  },
+  {
+   "tex": "\\overline{LD}",
+   "display": false
+  },
+  {
+   "tex": "EP",
+   "display": false
+  },
+  {
+   "tex": "ET",
+   "display": false
+  },
+  {
+   "tex": "CP",
+   "display": false
+  },
+  {
+   "tex": "D_3D_2D_1D_0",
+   "display": false
+  },
+  {
+   "tex": "Q_3Q_2Q_1Q_0=0000",
+   "display": false
+  },
+  {
+   "tex": "d_3d_2d_1d_0",
+   "display": false
+  },
+  {
+   "tex": "Q_3Q_2Q_1Q_0=d_3d_2d_1d_0",
+   "display": false
+  },
+  {
+   "tex": "CO=ET\\cdot Q_3Q_2Q_1Q_0",
+   "display": false
+  },
+  {
+   "tex": "\\overline{LD}",
+   "display": false
+  },
+  {
+   "tex": "\\overline{R_D}",
+   "display": false
+  },
+  {
+   "tex": "\\overline{Q_3Q_2}",
+   "display": false
+  },
+  {
+   "tex": "D=0000",
+   "display": false
+  },
+  {
+   "tex": "D=0001",
+   "display": false
+  },
+  {
+   "tex": "\\overline{R_D}=1",
+   "display": false
+  },
+  {
+   "tex": "EP=ET=1",
+   "display": false
+  },
+  {
+   "tex": "\\overline{LD}=\\overline{Q_3Q_2}",
+   "display": false
+  },
+  {
+   "tex": "Q_3=Q_2=1",
+   "display": false
+  },
+  {
+   "tex": "\\overline{LD}=0",
+   "display": false
+  },
+  {
+   "tex": "D_3D_2D_1D_0=0001",
+   "display": false
+  },
+  {
+   "tex": "\\overline{R_D}=1",
+   "display": false
+  },
+  {
+   "tex": "\\overline{LD}=1",
+   "display": false
+  },
+  {
+   "tex": "EP=ET=1",
+   "display": false
+  },
+  {
+   "tex": "\\overline{LD}=0",
+   "display": false
+  },
+  {
+   "tex": "Q_3Q_2Q_1Q_0",
+   "display": false
+  },
+  {
+   "tex": "\\overline{LD}=\\overline{Q_3Q_2}",
+   "display": false
+  },
+  {
+   "tex": "Q_3Q_2Q_1Q_0",
+   "display": false
+  },
+  {
+   "tex": "\\overline{LD}",
+   "display": false
+  },
+  {
+   "tex": "Q_3=Q_2=1",
+   "display": false
+  },
+  {
+   "tex": "\\overline{LD}=0",
+   "display": false
+  },
+  {
+   "tex": "\\overline{LD}=0",
+   "display": false
+  },
+  {
+   "tex": "\\overline{LD}=0",
+   "display": false
+  },
+  {
+   "tex": "\\overline{LD}=1",
+   "display": false
+  },
+  {
+   "tex": "D_3D_2D_1D_0",
+   "display": false
+  },
+  {
+   "tex": "EP=ET=1",
+   "display": false
+  },
+  {
+   "tex": "\\overline{R_D}=\\overline{Q_3Q_2}",
+   "display": false
+  },
+  {
+   "tex": "Q_3=Q_2=1",
+   "display": false
+  },
+  {
+   "tex": "\\overline{R_D}=0",
+   "display": false
+  },
+  {
+   "tex": "\\overline{R_D}=0",
+   "display": false
+  },
+  {
+   "tex": "Q_3Q_2Q_1Q_0",
+   "display": false
+  },
+  {
+   "tex": "\\overline{R_D}=1",
+   "display": false
+  },
+  {
+   "tex": "\\overline{LD}=1",
+   "display": false
+  },
+  {
+   "tex": "EP=ET=1",
+   "display": false
+  },
+  {
+   "tex": "\\overline{R_D}=\\overline{Q_3Q_2}",
+   "display": false
+  },
+  {
+   "tex": "Q_3Q_2Q_1Q_0",
+   "display": false
+  },
+  {
+   "tex": "\\overline{R_D}",
+   "display": false
+  },
+  {
+   "tex": "Q_3=Q_2=1",
+   "display": false
+  },
+  {
+   "tex": "\\overline{R_D}=0",
+   "display": false
+  },
+  {
+   "tex": "\\overline{LD}",
+   "display": false
+  },
+  {
+   "tex": "\\overline{R_D}",
+   "display": false
+  },
+  {
+   "tex": "\\overline{LD}",
+   "display": false
+  },
+  {
+   "tex": "\\overline{R_D}",
+   "display": false
+  },
+  {
+   "tex": "\\overline{Q_3Q_2}=0",
+   "display": false
+  },
+  {
+   "tex": "Q_3=Q_2=1",
+   "display": false
+  },
+  {
+   "tex": "Q_3=1,Q_2=0",
+   "display": false
+  },
+  {
+   "tex": "Q_3=0,Q_2=1",
+   "display": false
+  },
+  {
+   "tex": "EP=ET=1",
+   "display": false
+  },
+  {
+   "tex": "R_{0(1)}\\leftarrow Q_2",
+   "display": false
+  },
+  {
+   "tex": "R_{0(2)}\\leftarrow Q_1",
+   "display": false
+  },
+  {
+   "tex": "R_{0(1)}",
+   "display": false
+  },
+  {
+   "tex": "R_{0(2)}",
+   "display": false
+  },
+  {
+   "tex": "Q_3",
+   "display": false
+  },
+  {
+   "tex": "Q_2",
+   "display": false
+  },
+  {
+   "tex": "Q_3\\to",
+   "display": false
+  },
+  {
+   "tex": "CP_0",
+   "display": false
+  },
+  {
+   "tex": "Q_3",
+   "display": false
+  },
+  {
+   "tex": "Q_2",
+   "display": false
+  },
+  {
+   "tex": "Q_3",
+   "display": false
+  },
+  {
+   "tex": "Q_1",
+   "display": false
+  },
+  {
+   "tex": "D_3D_2D_1D_0=0001",
+   "display": false
+  },
+  {
+   "tex": "D_0",
+   "display": false
+  },
+  {
+   "tex": "D_1\\sim D_3",
+   "display": false
+  },
+  {
+   "tex": "D=0000",
+   "display": false
+  },
+  {
+   "tex": "D_3",
+   "display": false
+  },
+  {
+   "tex": "\\overline{LD}",
+   "display": false
+  },
+  {
+   "tex": "\\overline{LD}=1",
+   "display": false
+  },
+  {
+   "tex": "D_3",
+   "display": false
+  },
+  {
+   "tex": "\\overline{LD}",
+   "display": false
+  }
+ ],
+ "figures": [
+  {
+   "src": "figures/fig-8-12.svg",
+   "alt": "图 8.12 两片 74LS290 接线：个位片 CP₀ 接外部 CP、CP₁ 接本片 Q₀、R₀/S₉ 全接地；十位片 CP₀ 接个位 Q₃、R₀(1) 接本片 Q₂、R₀(2) 接本片 Q₁"
+  },
+  {
+   "src": "figures/fig-8-13.svg",
+   "alt": "图 8.13 两个 74LS161 子电路：(a) 与非门检测 Q₃Q₂ 接同步置数端 LD̄、预置 0001；(b) 同一与非门接异步清零端 RD̄"
+  }
+ ]
+}

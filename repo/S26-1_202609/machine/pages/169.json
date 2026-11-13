@@ -1,0 +1,216 @@
+{
+ "url": "课程总览/通用电气/交叉内容/04-阻抗三角形.html",
+ "title": "04 阻抗三角形",
+ "math": [
+  {
+   "tex": "Z = R + j\\omega L + \\frac{1}{j\\omega C} = R + j\\left(\\omega L - \\frac{1}{\\omega C}\\right) = R + jX",
+   "display": true
+  },
+  {
+   "tex": "X = X_L - X_C",
+   "display": true
+  },
+  {
+   "tex": "|Z| = \\sqrt{R^2 + X^2}",
+   "display": true
+  },
+  {
+   "tex": "\\varphi = \\arctan\\frac{X}{R}",
+   "display": true
+  },
+  {
+   "tex": "I = \\frac{U}{|Z|}",
+   "display": true
+  },
+  {
+   "tex": "X = X_L - X_C = 0",
+   "display": true
+  },
+  {
+   "tex": "|Z| = \\sqrt{3^2 + 4^2} = 5\\,\\Omega",
+   "display": true
+  },
+  {
+   "tex": "\\varphi = \\arctan\\frac{4}{3} \\approx 53.1^\\circ",
+   "display": true
+  },
+  {
+   "tex": "R",
+   "display": false
+  },
+  {
+   "tex": "X",
+   "display": false
+  },
+  {
+   "tex": "|Z|",
+   "display": false
+  },
+  {
+   "tex": "\\Omega",
+   "display": false
+  },
+  {
+   "tex": "Z",
+   "display": false
+  },
+  {
+   "tex": "R",
+   "display": false
+  },
+  {
+   "tex": "L",
+   "display": false
+  },
+  {
+   "tex": "C",
+   "display": false
+  },
+  {
+   "tex": "R",
+   "display": false
+  },
+  {
+   "tex": "j\\omega L",
+   "display": false
+  },
+  {
+   "tex": "\\dfrac{1}{j\\omega C}",
+   "display": false
+  },
+  {
+   "tex": "X",
+   "display": false
+  },
+  {
+   "tex": "X_L = \\omega L",
+   "display": false
+  },
+  {
+   "tex": "X_C = \\dfrac{1}{\\omega C}",
+   "display": false
+  },
+  {
+   "tex": "Z = R + jX",
+   "display": false
+  },
+  {
+   "tex": "R",
+   "display": false
+  },
+  {
+   "tex": "X",
+   "display": false
+  },
+  {
+   "tex": "|Z|",
+   "display": false
+  },
+  {
+   "tex": "\\varphi",
+   "display": false
+  },
+  {
+   "tex": "\\Omega",
+   "display": false
+  },
+  {
+   "tex": "\\mathrm{V}",
+   "display": false
+  },
+  {
+   "tex": "\\mathrm{A}",
+   "display": false
+  },
+  {
+   "tex": "Z",
+   "display": false
+  },
+  {
+   "tex": "\\varphi",
+   "display": false
+  },
+  {
+   "tex": "\\varphi > 0",
+   "display": false
+  },
+  {
+   "tex": "X_L > X_C",
+   "display": false
+  },
+  {
+   "tex": "X > 0",
+   "display": false
+  },
+  {
+   "tex": "\\varphi",
+   "display": false
+  },
+  {
+   "tex": "\\varphi < 0",
+   "display": false
+  },
+  {
+   "tex": "X_L < X_C",
+   "display": false
+  },
+  {
+   "tex": "X < 0",
+   "display": false
+  },
+  {
+   "tex": "|\\varphi|",
+   "display": false
+  },
+  {
+   "tex": "|Z| = R",
+   "display": false
+  },
+  {
+   "tex": "\\varphi = 0^\\circ",
+   "display": false
+  },
+  {
+   "tex": "U",
+   "display": false
+  },
+  {
+   "tex": "I = \\dfrac{U}{R}",
+   "display": false
+  },
+  {
+   "tex": "R = 3\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "X = 4\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "4\\,\\Omega",
+   "display": false
+  },
+  {
+   "tex": "\\varphi = 53.1^\\circ > 0",
+   "display": false
+  },
+  {
+   "tex": "53.1^\\circ",
+   "display": false
+  },
+  {
+   "tex": "10\\,\\mathrm{V}",
+   "display": false
+  },
+  {
+   "tex": "I = \\dfrac{10}{5} = 2\\,\\mathrm{A}",
+   "display": false
+  }
+ ],
+ "figures": [
+  {
+   "src": "figures/fig-ge-04.svg",
+   "alt": "阻抗三角形示意图：实部电阻R与虚部电抗X合成总阻抗Z"
+  }
+ ]
+}

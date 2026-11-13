@@ -1,0 +1,83 @@
+{
+ "url": "课程总览/工程数学/教材解析/第一部分-线性代数/第3章-n维向量与向量空间/3.5-MATLAB-向量运算.html",
+ "title": "3.5 MATLAB 向量运算",
+ "math": [
+  {
+   "tex": "1\\times n",
+   "display": false
+  },
+  {
+   "tex": "b=1:2:8",
+   "display": false
+  },
+  {
+   "tex": "-6",
+   "display": false
+  },
+  {
+   "tex": "-3",
+   "display": false
+  },
+  {
+   "tex": "a",
+   "display": false
+  },
+  {
+   "tex": "b",
+   "display": false
+  },
+  {
+   "tex": "n",
+   "display": false
+  },
+  {
+   "tex": "10^a",
+   "display": false
+  },
+  {
+   "tex": "10^b",
+   "display": false
+  },
+  {
+   "tex": "n",
+   "display": false
+  },
+  {
+   "tex": "\\pi",
+   "display": false
+  },
+  {
+   "tex": "\\pi",
+   "display": false
+  },
+  {
+   "tex": "10^a",
+   "display": false
+  },
+  {
+   "tex": "10^b",
+   "display": false
+  },
+  {
+   "tex": "1/8=0.125",
+   "display": false
+  },
+  {
+   "tex": "n",
+   "display": false
+  },
+  {
+   "tex": "10^{a}, 10^{a+\\Delta}, \\dots, 10^{b}",
+   "display": false
+  },
+  {
+   "tex": "AX=B",
+   "display": false
+  },
+  {
+   "tex": "AX=B",
+   "display": false
+  }
+ ],
+ "figures": []
+}

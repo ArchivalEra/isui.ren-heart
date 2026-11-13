@@ -1,0 +1,335 @@
+{
+ "url": "课程总览/电机学/课堂笔记/09-24-电机概述与磁路.html",
+ "title": "09-24 电机概述与磁路",
+ "math": [
+  {
+   "tex": "\\oint \\mathbf{H}\\cdot \\mathrm{d}\\mathbf{l}=\\sum I",
+   "display": true
+  },
+  {
+   "tex": "\\Phi=\\frac{F}{R_m}=\\frac{NI}{R_m}",
+   "display": true
+  },
+  {
+   "tex": "R_m \\propto \\frac{l}{\\mu S}\\quad(\\text{与长度成正比、与截面积成反比、与磁导率成反比})",
+   "display": true
+  },
+  {
+   "tex": "L=\\frac{\\psi}{I}=\\frac{N\\Phi}{I}=\\frac{N\\cdot(NI/R_m)}{I}=\\frac{N^{2}}{R_m}=\\frac{N^{2}\\mu S}{l}",
+   "display": true
+  },
+  {
+   "tex": "X=\\omega L=2\\pi fL",
+   "display": false
+  },
+  {
+   "tex": "L=\\dfrac{N^{2}}{R_m}=\\dfrac{N^{2}\\mu S}{l}",
+   "display": false
+  },
+  {
+   "tex": "f",
+   "display": false
+  },
+  {
+   "tex": "N",
+   "display": false
+  },
+  {
+   "tex": "l",
+   "display": false
+  },
+  {
+   "tex": "S",
+   "display": false
+  },
+  {
+   "tex": "\\mu",
+   "display": false
+  },
+  {
+   "tex": "N^{2}",
+   "display": false
+  },
+  {
+   "tex": "S",
+   "display": false
+  },
+  {
+   "tex": "l",
+   "display": false
+  },
+  {
+   "tex": "\\mu",
+   "display": false
+  },
+  {
+   "tex": "\\mu",
+   "display": false
+  },
+  {
+   "tex": "\\varphi=1\\times10^{-3}\\ \\mathrm{Wb}",
+   "display": false
+  },
+  {
+   "tex": "N=1000",
+   "display": false
+  },
+  {
+   "tex": "I",
+   "display": false
+  },
+  {
+   "tex": "B=1.33\\ \\mathrm{T}",
+   "display": false
+  },
+  {
+   "tex": "H=560\\ \\mathrm{A/m}",
+   "display": false
+  },
+  {
+   "tex": "20\\ \\mathrm{mm}\\times40\\ \\mathrm{mm}",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "1.25\\ \\mathrm{T}",
+   "display": false
+  },
+  {
+   "tex": "1.33\\ \\mathrm{T}",
+   "display": false
+  },
+  {
+   "tex": "I^{2}R",
+   "display": false
+  },
+  {
+   "tex": "n_1",
+   "display": false
+  },
+  {
+   "tex": "n",
+   "display": false
+  },
+  {
+   "tex": "n",
+   "display": false
+  },
+  {
+   "tex": "n_1",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "\\Phi",
+   "display": false
+  },
+  {
+   "tex": "\\cos\\varphi",
+   "display": false
+  },
+  {
+   "tex": "H",
+   "display": false
+  },
+  {
+   "tex": "H",
+   "display": false
+  },
+  {
+   "tex": "R",
+   "display": false
+  },
+  {
+   "tex": "2\\pi R",
+   "display": false
+  },
+  {
+   "tex": "\\mu",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "H",
+   "display": false
+  },
+  {
+   "tex": "\\mu_0=4\\pi\\times10^{-7}\\ \\mathrm{H/m}",
+   "display": false
+  },
+  {
+   "tex": "10^{3}",
+   "display": false
+  },
+  {
+   "tex": "10^{5}",
+   "display": false
+  },
+  {
+   "tex": "N",
+   "display": false
+  },
+  {
+   "tex": "NI",
+   "display": false
+  },
+  {
+   "tex": "N",
+   "display": false
+  },
+  {
+   "tex": "I",
+   "display": false
+  },
+  {
+   "tex": "NI",
+   "display": false
+  },
+  {
+   "tex": "10^{16}",
+   "display": false
+  },
+  {
+   "tex": "\\Phi",
+   "display": false
+  },
+  {
+   "tex": "I",
+   "display": false
+  },
+  {
+   "tex": "F=NI",
+   "display": false
+  },
+  {
+   "tex": "R_m",
+   "display": false
+  },
+  {
+   "tex": "\\mu_0=4\\pi\\times10^{-7}",
+   "display": false
+  },
+  {
+   "tex": "l_g",
+   "display": false
+  },
+  {
+   "tex": "\\sum\\Phi=0",
+   "display": false
+  },
+  {
+   "tex": "\\sum Hl=\\sum NI",
+   "display": false
+  },
+  {
+   "tex": "e=BLv",
+   "display": false
+  },
+  {
+   "tex": "e=-N\\dfrac{\\mathrm{d}\\Phi}{\\mathrm{d}t}",
+   "display": false
+  },
+  {
+   "tex": "\\psi=N\\Phi",
+   "display": false
+  },
+  {
+   "tex": "N",
+   "display": false
+  },
+  {
+   "tex": "N",
+   "display": false
+  },
+  {
+   "tex": "L",
+   "display": false
+  },
+  {
+   "tex": "L=\\dfrac{\\psi}{I}",
+   "display": false
+  },
+  {
+   "tex": "\\mu S/l",
+   "display": false
+  },
+  {
+   "tex": "\\mu",
+   "display": false
+  },
+  {
+   "tex": "B_r",
+   "display": false
+  },
+  {
+   "tex": "H_c",
+   "display": false
+  },
+  {
+   "tex": "B_r",
+   "display": false
+  },
+  {
+   "tex": "H_c",
+   "display": false
+  },
+  {
+   "tex": "1\\times10^{6}",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "B=\\mu_0 H",
+   "display": false
+  },
+  {
+   "tex": "10^{-12}",
+   "display": false
+  },
+  {
+   "tex": "10^{-9}\\ \\mathrm{m^3}",
+   "display": false
+  },
+  {
+   "tex": "10^{17}",
+   "display": false
+  },
+  {
+   "tex": "10^{20}",
+   "display": false
+  },
+  {
+   "tex": "B=1.33\\ \\mathrm{T}",
+   "display": false
+  },
+  {
+   "tex": "H=560\\ \\mathrm{A/m}",
+   "display": false
+  },
+  {
+   "tex": "\\psi=N\\Phi",
+   "display": false
+  },
+  {
+   "tex": "\\mu",
+   "display": false
+  },
+  {
+   "tex": "F=NI",
+   "display": false
+  }
+ ],
+ "figures": []
+}

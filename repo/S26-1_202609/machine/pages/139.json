@@ -1,0 +1,571 @@
+{
+ "url": "课程总览/电机学/作业/2.2.3变压器运行性能.html",
+ "title": "2.2.3变压器运行性能",
+ "math": [
+  {
+   "tex": "\\eta(\\beta)=\\frac{\\beta S_N\\cos\\varphi_2}{\\beta S_N\\cos\\varphi_2+p_0+\\beta^2 p_{kN}}",
+   "display": true
+  },
+  {
+   "tex": "\\eta=\\frac{1}{1+\\dfrac{p_0}{\\beta S_N\\cos\\varphi_2}+\\dfrac{\\beta p_{kN}}{S_N\\cos\\varphi_2}}",
+   "display": true
+  },
+  {
+   "tex": "f(\\beta)=\\frac{p_0}{\\beta}+\\beta p_{kN}",
+   "display": true
+  },
+  {
+   "tex": "f(\\beta)\\ge 2\\sqrt{\\frac{p_0}{\\beta}\\cdot\\beta p_{kN}}=2\\sqrt{p_0p_{kN}}",
+   "display": true
+  },
+  {
+   "tex": "\\boxed{\\ \\beta^2 p_{kN}=p_0\\ }",
+   "display": true
+  },
+  {
+   "tex": "\\frac{U_1}{U_2}=\\frac{N_1}{N_2}\\quad\\Longrightarrow\\quad U_2=U_1\\cdot\\frac{N_2}{N_1}",
+   "display": true
+  },
+  {
+   "tex": "\\dot U_{20}=\\dot U_2+\\dot I_2(r_k+jx_k)",
+   "display": true
+  },
+  {
+   "tex": "\\Delta U\\%\\approx\\beta(u_{kr}\\cos\\varphi_2+u_{kx}\\sin\\varphi_2)",
+   "display": true
+  },
+  {
+   "tex": "\\Delta U\\%\\approx\\beta\\big(u_{kr}\\cos\\varphi_2+u_{kx}\\sin\\varphi_2\\big)",
+   "display": true
+  },
+  {
+   "tex": "\\eta=\\dfrac{\\beta S_N\\cos\\varphi_2}{\\beta S_N\\cos\\varphi_2+p_0+\\beta^2p_{kN}}",
+   "display": false
+  },
+  {
+   "tex": "\\beta^2p_{kN}=p_0",
+   "display": false
+  },
+  {
+   "tex": "\\Delta U",
+   "display": false
+  },
+  {
+   "tex": "\\eta",
+   "display": false
+  },
+  {
+   "tex": "\\Delta U\\%=\\beta\\big(u_{kR}^*\\cos\\varphi_2+u_{kX}^*\\sin\\varphi_2\\big)\\times100\\%",
+   "display": false
+  },
+  {
+   "tex": "U_2<U_{20}",
+   "display": false
+  },
+  {
+   "tex": "\\beta",
+   "display": false
+  },
+  {
+   "tex": "\\beta=1",
+   "display": false
+  },
+  {
+   "tex": "\\Delta U",
+   "display": false
+  },
+  {
+   "tex": "\\Delta U",
+   "display": false
+  },
+  {
+   "tex": "\\beta",
+   "display": false
+  },
+  {
+   "tex": "\\cos\\varphi_2",
+   "display": false
+  },
+  {
+   "tex": "\\beta",
+   "display": false
+  },
+  {
+   "tex": "U_2=U_1\\cdot N_2/N_1",
+   "display": false
+  },
+  {
+   "tex": "N_1",
+   "display": false
+  },
+  {
+   "tex": "U_2",
+   "display": false
+  },
+  {
+   "tex": "N_1",
+   "display": false
+  },
+  {
+   "tex": "U_1/U_2=N_1/N_2",
+   "display": false
+  },
+  {
+   "tex": "U_2=U_1\\cdot N_2/N_1",
+   "display": false
+  },
+  {
+   "tex": "U_1",
+   "display": false
+  },
+  {
+   "tex": "N_2",
+   "display": false
+  },
+  {
+   "tex": "N_1",
+   "display": false
+  },
+  {
+   "tex": "N_1",
+   "display": false
+  },
+  {
+   "tex": "U_2",
+   "display": false
+  },
+  {
+   "tex": "N_1",
+   "display": false
+  },
+  {
+   "tex": "N_1",
+   "display": false
+  },
+  {
+   "tex": "\\beta^2 P_{kN}=P_0",
+   "display": false
+  },
+  {
+   "tex": "\\beta^{2}P_0=P_{kN}",
+   "display": false
+  },
+  {
+   "tex": "\\beta P_0=P_{kN}",
+   "display": false
+  },
+  {
+   "tex": "\\beta P_{kN}=P_0",
+   "display": false
+  },
+  {
+   "tex": "\\eta=\\dfrac{P_2}{P_2+p_0+\\beta^2p_{kN}}",
+   "display": false
+  },
+  {
+   "tex": "p_0",
+   "display": false
+  },
+  {
+   "tex": "p_{kN}",
+   "display": false
+  },
+  {
+   "tex": "\\beta",
+   "display": false
+  },
+  {
+   "tex": "\\beta",
+   "display": false
+  },
+  {
+   "tex": "\\beta",
+   "display": false
+  },
+  {
+   "tex": "\\beta>0",
+   "display": false
+  },
+  {
+   "tex": "\\beta S_N\\cos\\varphi_2+\\dfrac{p_0}{\\beta}+p_{kN}",
+   "display": false
+  },
+  {
+   "tex": "\\dfrac{p_0}{\\beta}+p_{kN}\\beta",
+   "display": false
+  },
+  {
+   "tex": "\\beta",
+   "display": false
+  },
+  {
+   "tex": "\\beta S_N\\cos\\varphi_2",
+   "display": false
+  },
+  {
+   "tex": "\\eta",
+   "display": false
+  },
+  {
+   "tex": "\\dfrac{p_0}{\\beta}",
+   "display": false
+  },
+  {
+   "tex": "\\beta p_{kN}",
+   "display": false
+  },
+  {
+   "tex": "\\dfrac{p_0}{\\beta}=\\beta p_{kN}",
+   "display": false
+  },
+  {
+   "tex": "\\beta^2P_{kN}=P_0",
+   "display": false
+  },
+  {
+   "tex": "\\beta^2p_{kN}",
+   "display": false
+  },
+  {
+   "tex": "p_0",
+   "display": false
+  },
+  {
+   "tex": "\\beta",
+   "display": false
+  },
+  {
+   "tex": "\\beta",
+   "display": false
+  },
+  {
+   "tex": "p_0",
+   "display": false
+  },
+  {
+   "tex": "p_{kN}",
+   "display": false
+  },
+  {
+   "tex": "\\beta^2p_0=p_{kN}",
+   "display": false
+  },
+  {
+   "tex": "p_0",
+   "display": false
+  },
+  {
+   "tex": "\\beta^2",
+   "display": false
+  },
+  {
+   "tex": "p_{kN}",
+   "display": false
+  },
+  {
+   "tex": "\\beta",
+   "display": false
+  },
+  {
+   "tex": "I^2r",
+   "display": false
+  },
+  {
+   "tex": "\\beta^2",
+   "display": false
+  },
+  {
+   "tex": "\\beta",
+   "display": false
+  },
+  {
+   "tex": "N_1",
+   "display": false
+  },
+  {
+   "tex": "N_2",
+   "display": false
+  },
+  {
+   "tex": "N_2",
+   "display": false
+  },
+  {
+   "tex": "N_1",
+   "display": false
+  },
+  {
+   "tex": "U_1/U_2=N_1/N_2",
+   "display": false
+  },
+  {
+   "tex": "U_2=U_1\\cdot N_2/N_1",
+   "display": false
+  },
+  {
+   "tex": "U_2",
+   "display": false
+  },
+  {
+   "tex": "U_1",
+   "display": false
+  },
+  {
+   "tex": "N_2",
+   "display": false
+  },
+  {
+   "tex": "N_1",
+   "display": false
+  },
+  {
+   "tex": "U_2",
+   "display": false
+  },
+  {
+   "tex": "U_2",
+   "display": false
+  },
+  {
+   "tex": "N_1",
+   "display": false
+  },
+  {
+   "tex": "N_1",
+   "display": false
+  },
+  {
+   "tex": "U_2",
+   "display": false
+  },
+  {
+   "tex": "N_1",
+   "display": false
+  },
+  {
+   "tex": "U_2",
+   "display": false
+  },
+  {
+   "tex": "N_2",
+   "display": false
+  },
+  {
+   "tex": "U_2",
+   "display": false
+  },
+  {
+   "tex": "U_{20}",
+   "display": false
+  },
+  {
+   "tex": "Z_k=r_k+jx_k",
+   "display": false
+  },
+  {
+   "tex": "U_2",
+   "display": false
+  },
+  {
+   "tex": "U_{20}",
+   "display": false
+  },
+  {
+   "tex": "\\dot I_2",
+   "display": false
+  },
+  {
+   "tex": "\\dot U_2",
+   "display": false
+  },
+  {
+   "tex": "\\dot I_2",
+   "display": false
+  },
+  {
+   "tex": "\\dot U_2",
+   "display": false
+  },
+  {
+   "tex": "\\varphi_2",
+   "display": false
+  },
+  {
+   "tex": "\\dot I_2 r_k",
+   "display": false
+  },
+  {
+   "tex": "\\dot U_2",
+   "display": false
+  },
+  {
+   "tex": "\\dot I_2",
+   "display": false
+  },
+  {
+   "tex": "\\dot I_2 jx_k",
+   "display": false
+  },
+  {
+   "tex": "\\dot I_2",
+   "display": false
+  },
+  {
+   "tex": "\\dot U_2",
+   "display": false
+  },
+  {
+   "tex": "\\dot U_2",
+   "display": false
+  },
+  {
+   "tex": "\\dot U_2",
+   "display": false
+  },
+  {
+   "tex": "|\\dot U_{20}|>|\\dot U_2|",
+   "display": false
+  },
+  {
+   "tex": "U_2<U_{20}",
+   "display": false
+  },
+  {
+   "tex": "\\varphi_2>0",
+   "display": false
+  },
+  {
+   "tex": "\\cos\\varphi_2>0",
+   "display": false
+  },
+  {
+   "tex": "\\sin\\varphi_2>0",
+   "display": false
+  },
+  {
+   "tex": "\\Delta U>0",
+   "display": false
+  },
+  {
+   "tex": "U_2<U_{20}",
+   "display": false
+  },
+  {
+   "tex": "\\varphi_2<0",
+   "display": false
+  },
+  {
+   "tex": "\\sin\\varphi_2<0",
+   "display": false
+  },
+  {
+   "tex": "\\Delta U<0",
+   "display": false
+  },
+  {
+   "tex": "U_2>U_{20}",
+   "display": false
+  },
+  {
+   "tex": "\\Delta U\\%",
+   "display": false
+  },
+  {
+   "tex": "\\sin\\varphi_2",
+   "display": false
+  },
+  {
+   "tex": "\\Delta U\\approx\\beta u_{kr}\\cos\\varphi_2>0",
+   "display": false
+  },
+  {
+   "tex": "\\beta=1",
+   "display": false
+  },
+  {
+   "tex": "U_{20}",
+   "display": false
+  },
+  {
+   "tex": "\\beta=1",
+   "display": false
+  },
+  {
+   "tex": "\\cos\\varphi_2=0.8",
+   "display": false
+  },
+  {
+   "tex": "U_2",
+   "display": false
+  },
+  {
+   "tex": "U_{20}",
+   "display": false
+  },
+  {
+   "tex": "\\beta=1",
+   "display": false
+  },
+  {
+   "tex": "u_k\\%",
+   "display": false
+  },
+  {
+   "tex": "\\Delta U(\\beta,\\varphi_2)",
+   "display": false
+  },
+  {
+   "tex": "\\Delta U\\%\\approx\\beta(u_{kr}\\cos\\varphi_2+u_{kx}\\sin\\varphi_2)",
+   "display": false
+  },
+  {
+   "tex": "u_{kr}=r_k^*",
+   "display": false
+  },
+  {
+   "tex": "u_{kx}=x_k^*",
+   "display": false
+  },
+  {
+   "tex": "\\beta",
+   "display": false
+  },
+  {
+   "tex": "\\varphi_2",
+   "display": false
+  },
+  {
+   "tex": "\\Delta U",
+   "display": false
+  },
+  {
+   "tex": "\\varphi_2",
+   "display": false
+  },
+  {
+   "tex": "\\sin\\varphi_2",
+   "display": false
+  },
+  {
+   "tex": "\\Delta U",
+   "display": false
+  },
+  {
+   "tex": "\\Delta U\\%",
+   "display": false
+  },
+  {
+   "tex": "\\eta",
+   "display": false
+  },
+  {
+   "tex": "\\Delta U",
+   "display": false
+  },
+  {
+   "tex": "\\beta",
+   "display": false
+  }
+ ],
+ "figures": []
+}

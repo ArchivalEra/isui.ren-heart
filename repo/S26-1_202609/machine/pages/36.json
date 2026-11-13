@@ -1,0 +1,851 @@
+{
+ "url": "课程总览/工程数学/课堂笔记/11-05-行秩列秩与极大无关组.html",
+ "title": "11-05 行秩列秩与极大无关组",
+ "math": [
+  {
+   "tex": "\\boldsymbol{\\alpha}_{M+1}=k_1\\boldsymbol{\\alpha}_1+\\cdots+k_M\\boldsymbol{\\alpha}_M",
+   "display": true
+  },
+  {
+   "tex": "k_1\\boldsymbol{\\alpha}_1+\\cdots+k_M\\boldsymbol{\\alpha}_M-\\boldsymbol{\\alpha}_{M+1}=\\boldsymbol{0}",
+   "display": true
+  },
+  {
+   "tex": "c_1=k_1,\\ \\dots,\\ c_M=k_M,\\ c_{M+1}=-1,",
+   "display": true
+  },
+  {
+   "tex": "M",
+   "display": false
+  },
+  {
+   "tex": "M",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_1,\\dots,\\boldsymbol{\\alpha}_4",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_1,\\dots,\\boldsymbol{\\alpha}_4",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "R(A)=R(B)",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "R(B)=3",
+   "display": false
+  },
+  {
+   "tex": "R(A)=3",
+   "display": false
+  },
+  {
+   "tex": "T",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_1,\\dots,\\boldsymbol{\\alpha}_4",
+   "display": false
+  },
+  {
+   "tex": "R(T)=3",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\beta}_1,\\boldsymbol{\\beta}_2,\\boldsymbol{\\beta}_3",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_1,\\boldsymbol{\\alpha}_2,\\boldsymbol{\\alpha}_3",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "R(T)=3",
+   "display": false
+  },
+  {
+   "tex": "T",
+   "display": false
+  },
+  {
+   "tex": "M",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_1,\\dots,\\boldsymbol{\\alpha}_M",
+   "display": false
+  },
+  {
+   "tex": "T",
+   "display": false
+  },
+  {
+   "tex": "M",
+   "display": false
+  },
+  {
+   "tex": "T",
+   "display": false
+  },
+  {
+   "tex": "T",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_{M+1}",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_1,\\dots,\\boldsymbol{\\alpha}_M,\\boldsymbol{\\alpha}_{M+1}",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_{M+1}",
+   "display": false
+  },
+  {
+   "tex": "M+1",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_1,\\dots,\\boldsymbol{\\alpha}_M,\\boldsymbol{\\alpha}_{M+1}",
+   "display": false
+  },
+  {
+   "tex": "M+1",
+   "display": false
+  },
+  {
+   "tex": "T",
+   "display": false
+  },
+  {
+   "tex": "T",
+   "display": false
+  },
+  {
+   "tex": "M+1",
+   "display": false
+  },
+  {
+   "tex": "R(T)",
+   "display": false
+  },
+  {
+   "tex": "R(T)=M",
+   "display": false
+  },
+  {
+   "tex": "T",
+   "display": false
+  },
+  {
+   "tex": "M+1",
+   "display": false
+  },
+  {
+   "tex": "M+1",
+   "display": false
+  },
+  {
+   "tex": "R(T)=M",
+   "display": false
+  },
+  {
+   "tex": "R(T)=M",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_1,\\dots,\\boldsymbol{\\alpha}_M,\\boldsymbol{\\alpha}_{M+1}",
+   "display": false
+  },
+  {
+   "tex": "T",
+   "display": false
+  },
+  {
+   "tex": "M+1",
+   "display": false
+  },
+  {
+   "tex": "R(T)=M",
+   "display": false
+  },
+  {
+   "tex": "M",
+   "display": false
+  },
+  {
+   "tex": "T",
+   "display": false
+  },
+  {
+   "tex": "M+1",
+   "display": false
+  },
+  {
+   "tex": "M",
+   "display": false
+  },
+  {
+   "tex": "M",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_{M+1}",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_1,\\dots,\\boldsymbol{\\alpha}_M",
+   "display": false
+  },
+  {
+   "tex": "T",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_1,\\dots,\\boldsymbol{\\alpha}_M",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_{M+1}\\in T",
+   "display": false
+  },
+  {
+   "tex": "k_1,\\dots,k_M",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_{M+1}",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_1",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_M",
+   "display": false
+  },
+  {
+   "tex": "M",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_1=1\\cdot\\boldsymbol{\\alpha}_1+0\\cdot\\boldsymbol{\\alpha}_2+\\cdots",
+   "display": false
+  },
+  {
+   "tex": "M+1",
+   "display": false
+  },
+  {
+   "tex": "\\sum_{i=1}^{M+1}c_i\\boldsymbol{\\alpha}_i=\\boldsymbol{0}",
+   "display": false
+  },
+  {
+   "tex": "c_{M+1}=-1\\neq0",
+   "display": false
+  },
+  {
+   "tex": "-1\\neq0",
+   "display": false
+  },
+  {
+   "tex": "k_i",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_1,\\dots,\\boldsymbol{\\alpha}_M,\\boldsymbol{\\alpha}_{M+1}",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_{M+1}=\\sum_{i=1}^{M}k_i\\boldsymbol{\\alpha}_i",
+   "display": false
+  },
+  {
+   "tex": "(k_1,\\dots,k_M,-1)",
+   "display": false
+  },
+  {
+   "tex": "-1\\neq0",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_{M+1}",
+   "display": false
+  },
+  {
+   "tex": "-1",
+   "display": false
+  },
+  {
+   "tex": "-1",
+   "display": false
+  },
+  {
+   "tex": "-1",
+   "display": false
+  },
+  {
+   "tex": "M",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "M",
+   "display": false
+  },
+  {
+   "tex": "M",
+   "display": false
+  },
+  {
+   "tex": "-1",
+   "display": false
+  },
+  {
+   "tex": "R(T)=3",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_1,\\boldsymbol{\\alpha}_2,\\boldsymbol{\\alpha}_3",
+   "display": false
+  },
+  {
+   "tex": "M=3",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\beta}_3=3\\boldsymbol{\\beta}_1-2\\boldsymbol{\\beta}_2",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_3=3\\boldsymbol{\\alpha}_1-2\\boldsymbol{\\alpha}_2",
+   "display": false
+  },
+  {
+   "tex": "M",
+   "display": false
+  },
+  {
+   "tex": "V",
+   "display": false
+  },
+  {
+   "tex": "n",
+   "display": false
+  },
+  {
+   "tex": "V",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha},\\boldsymbol{\\beta}\\in V",
+   "display": false
+  },
+  {
+   "tex": "k",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}+\\boldsymbol{\\beta}\\in V",
+   "display": false
+  },
+  {
+   "tex": "k\\boldsymbol{\\alpha}\\in V",
+   "display": false
+  },
+  {
+   "tex": "n",
+   "display": false
+  },
+  {
+   "tex": "V",
+   "display": false
+  },
+  {
+   "tex": "V",
+   "display": false
+  },
+  {
+   "tex": "V",
+   "display": false
+  },
+  {
+   "tex": "V",
+   "display": false
+  },
+  {
+   "tex": "\\dim V",
+   "display": false
+  },
+  {
+   "tex": "n",
+   "display": false
+  },
+  {
+   "tex": "\\dim V\\le n",
+   "display": false
+  },
+  {
+   "tex": "n",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_1,\\dots,\\boldsymbol{\\alpha}_r",
+   "display": false
+  },
+  {
+   "tex": "V",
+   "display": false
+  },
+  {
+   "tex": "V",
+   "display": false
+  },
+  {
+   "tex": "r=\\dim V",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_1,\\dots,\\boldsymbol{\\alpha}_r",
+   "display": false
+  },
+  {
+   "tex": "r",
+   "display": false
+  },
+  {
+   "tex": "V",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}\\in V",
+   "display": false
+  },
+  {
+   "tex": "x_1,\\dots,x_r",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}=x_1\\boldsymbol{\\alpha}_1+\\cdots+x_r\\boldsymbol{\\alpha}_r",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}",
+   "display": false
+  },
+  {
+   "tex": "\\mathbb R^3",
+   "display": false
+  },
+  {
+   "tex": "(1,2,3)",
+   "display": false
+  },
+  {
+   "tex": "1,2,3",
+   "display": false
+  },
+  {
+   "tex": "1,2,3",
+   "display": false
+  },
+  {
+   "tex": "\\mathbb R^3",
+   "display": false
+  },
+  {
+   "tex": "x_2,x_3",
+   "display": false
+  },
+  {
+   "tex": "x_1",
+   "display": false
+  },
+  {
+   "tex": "A^{-1}",
+   "display": false
+  },
+  {
+   "tex": "-2",
+   "display": false
+  },
+  {
+   "tex": "-2",
+   "display": false
+  },
+  {
+   "tex": "4",
+   "display": false
+  },
+  {
+   "tex": "x_2",
+   "display": false
+  },
+  {
+   "tex": "x_3",
+   "display": false
+  },
+  {
+   "tex": "x_2,x_1",
+   "display": false
+  },
+  {
+   "tex": "A\\boldsymbol{x}=\\boldsymbol{b}",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{b}",
+   "display": false
+  },
+  {
+   "tex": "\\tilde A=[A\\,|\\,\\boldsymbol{b}]",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "n",
+   "display": false
+  },
+  {
+   "tex": "x_1,x_2,x_3",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "-2",
+   "display": false
+  },
+  {
+   "tex": "(1,2,3)",
+   "display": false
+  },
+  {
+   "tex": "-2",
+   "display": false
+  },
+  {
+   "tex": "4",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "-2",
+   "display": false
+  },
+  {
+   "tex": "4",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "R(T)",
+   "display": false
+  },
+  {
+   "tex": "T",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_1",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_4",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\beta}_1,\\boldsymbol{\\beta}_2,\\boldsymbol{\\beta}_3",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_{M+1}",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_1",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_3",
+   "display": false
+  },
+  {
+   "tex": "V",
+   "display": false
+  },
+  {
+   "tex": "\\dim V",
+   "display": false
+  },
+  {
+   "tex": "V",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\beta}_3=3\\boldsymbol{\\beta}_1-2\\boldsymbol{\\beta}_2",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "(1,2,3)",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_1",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_4",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_1",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_4",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_1,\\boldsymbol{\\alpha}_2,\\boldsymbol{\\alpha}_3",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_{M+1}",
+   "display": false
+  },
+  {
+   "tex": "-1",
+   "display": false
+  },
+  {
+   "tex": "M",
+   "display": false
+  },
+  {
+   "tex": "k_1,\\dots,k_M",
+   "display": false
+  },
+  {
+   "tex": "c_{M+1}=-1\\neq0",
+   "display": false
+  },
+  {
+   "tex": "k_i",
+   "display": false
+  },
+  {
+   "tex": "T",
+   "display": false
+  },
+  {
+   "tex": "M+1",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_{M+1}",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\alpha}_1,\\dots,\\boldsymbol{\\alpha}_M",
+   "display": false
+  },
+  {
+   "tex": "T",
+   "display": false
+  },
+  {
+   "tex": "M",
+   "display": false
+  },
+  {
+   "tex": "M",
+   "display": false
+  },
+  {
+   "tex": "\\boldsymbol{\\beta}_3=3\\boldsymbol{\\beta}_1-2\\boldsymbol{\\beta}_2",
+   "display": false
+  },
+  {
+   "tex": "-2",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "1,2,3",
+   "display": false
+  }
+ ],
+ "figures": []
+}

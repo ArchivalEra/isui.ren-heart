@@ -1,0 +1,483 @@
+{
+ "url": "课程总览/电机学/作业/09-22-第1章客观题.html",
+ "title": "09-22 第1章客观题",
+ "math": [
+  {
+   "tex": "\\mu_r=\\mu/\\mu_0",
+   "display": false
+  },
+  {
+   "tex": "\\mu_r=1",
+   "display": false
+  },
+  {
+   "tex": "B_r",
+   "display": false
+  },
+  {
+   "tex": "H_c",
+   "display": false
+  },
+  {
+   "tex": "B=\\mu H",
+   "display": false
+  },
+  {
+   "tex": "H",
+   "display": false
+  },
+  {
+   "tex": "\\Phi",
+   "display": false
+  },
+  {
+   "tex": "\\Psi",
+   "display": false
+  },
+  {
+   "tex": "R_m",
+   "display": false
+  },
+  {
+   "tex": "\\mu_r=\\mu/\\mu_0",
+   "display": false
+  },
+  {
+   "tex": "\\mu_r",
+   "display": false
+  },
+  {
+   "tex": "\\mu_r",
+   "display": false
+  },
+  {
+   "tex": "\\mu_r",
+   "display": false
+  },
+  {
+   "tex": "I_1",
+   "display": false
+  },
+  {
+   "tex": "I_2",
+   "display": false
+  },
+  {
+   "tex": "B\\propto 1/r",
+   "display": false
+  },
+  {
+   "tex": "F=BIL",
+   "display": false
+  },
+  {
+   "tex": "I_1",
+   "display": false
+  },
+  {
+   "tex": "I_1",
+   "display": false
+  },
+  {
+   "tex": "BIL",
+   "display": false
+  },
+  {
+   "tex": "R_A>R_B",
+   "display": false
+  },
+  {
+   "tex": "\\Phi_A<\\Phi_B",
+   "display": false
+  },
+  {
+   "tex": "\\Phi_A>\\Phi_B",
+   "display": false
+  },
+  {
+   "tex": "\\Phi_A=\\Phi_B",
+   "display": false
+  },
+  {
+   "tex": "\\Phi_A<\\Phi_B",
+   "display": false
+  },
+  {
+   "tex": "\\Phi_A=\\Phi_{\\text{中心}}-\\Phi_{\\text{环带}}<\\Phi_B",
+   "display": false
+  },
+  {
+   "tex": "B=\\mu H",
+   "display": false
+  },
+  {
+   "tex": "\\Phi=\\int B\\,\\mathrm{d}A",
+   "display": false
+  },
+  {
+   "tex": "R_m=l/(\\mu A)",
+   "display": false
+  },
+  {
+   "tex": "H=NI/l",
+   "display": false
+  },
+  {
+   "tex": "H",
+   "display": false
+  },
+  {
+   "tex": "H=NI/l",
+   "display": false
+  },
+  {
+   "tex": "B=\\mu H",
+   "display": false
+  },
+  {
+   "tex": "\\mu",
+   "display": false
+  },
+  {
+   "tex": "\\Phi=\\int B\\,\\mathrm{d}A",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "\\mu",
+   "display": false
+  },
+  {
+   "tex": "R_m=l/(\\mu A)",
+   "display": false
+  },
+  {
+   "tex": "\\mu",
+   "display": false
+  },
+  {
+   "tex": "H",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "I",
+   "display": false
+  },
+  {
+   "tex": "B_0",
+   "display": false
+  },
+  {
+   "tex": "B_0",
+   "display": false
+  },
+  {
+   "tex": "B=\\sqrt{B_0^2+B_0^2}=\\sqrt2\\,B_0",
+   "display": false
+  },
+  {
+   "tex": "\\sqrt2:1\\approx1.414:1",
+   "display": false
+  },
+  {
+   "tex": "1:1.414",
+   "display": false
+  },
+  {
+   "tex": "\\sqrt2\\approx1.414",
+   "display": false
+  },
+  {
+   "tex": "2:1",
+   "display": false
+  },
+  {
+   "tex": "B=\\mu H",
+   "display": false
+  },
+  {
+   "tex": "B=\\mu H",
+   "display": false
+  },
+  {
+   "tex": "\\mu_r",
+   "display": false
+  },
+  {
+   "tex": "H",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "I",
+   "display": false
+  },
+  {
+   "tex": "F=IL\\times B",
+   "display": false
+  },
+  {
+   "tex": "F=I\\,L\\times B",
+   "display": false
+  },
+  {
+   "tex": "\\hat{L}=-\\hat{z}",
+   "display": false
+  },
+  {
+   "tex": "\\hat{B}=+\\hat{x}",
+   "display": false
+  },
+  {
+   "tex": "\\hat{L}\\times\\hat{B}=(-\\hat{z})\\times\\hat{x}=-\\hat{y}",
+   "display": false
+  },
+  {
+   "tex": "-\\hat{y}",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "H",
+   "display": false
+  },
+  {
+   "tex": "1\\,\\mathrm{Wb}/1\\,\\mathrm{A}=1\\,\\mathrm{H}",
+   "display": false
+  },
+  {
+   "tex": "L=\\Psi/i",
+   "display": false
+  },
+  {
+   "tex": "1\\,\\mathrm{H}=1\\,\\mathrm{Wb/A}",
+   "display": false
+  },
+  {
+   "tex": "C",
+   "display": false
+  },
+  {
+   "tex": "C=q/u",
+   "display": false
+  },
+  {
+   "tex": "\\tfrac12Li^2",
+   "display": false
+  },
+  {
+   "tex": "\\tfrac12Cu^2",
+   "display": false
+  },
+  {
+   "tex": "H",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "B=\\mu H",
+   "display": false
+  },
+  {
+   "tex": "H=NI/l",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "H",
+   "display": false
+  },
+  {
+   "tex": "H",
+   "display": false
+  },
+  {
+   "tex": "H=NI/l",
+   "display": false
+  },
+  {
+   "tex": "H=I/(2\\pi r)",
+   "display": false
+  },
+  {
+   "tex": "B=\\mu H",
+   "display": false
+  },
+  {
+   "tex": "H",
+   "display": false
+  },
+  {
+   "tex": "H",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "H",
+   "display": false
+  },
+  {
+   "tex": "\\mu",
+   "display": false
+  },
+  {
+   "tex": "\\mu=B/H",
+   "display": false
+  },
+  {
+   "tex": "\\mu",
+   "display": false
+  },
+  {
+   "tex": "H",
+   "display": false
+  },
+  {
+   "tex": "H",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "H",
+   "display": false
+  },
+  {
+   "tex": "\\mu",
+   "display": false
+  },
+  {
+   "tex": "\\mu",
+   "display": false
+  },
+  {
+   "tex": "H",
+   "display": false
+  },
+  {
+   "tex": "B=\\mu H",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "H",
+   "display": false
+  },
+  {
+   "tex": "\\mu",
+   "display": false
+  },
+  {
+   "tex": "B_r",
+   "display": false
+  },
+  {
+   "tex": "H_C",
+   "display": false
+  },
+  {
+   "tex": "H=0",
+   "display": false
+  },
+  {
+   "tex": "B=0",
+   "display": false
+  },
+  {
+   "tex": "H=0",
+   "display": false
+  },
+  {
+   "tex": "B_r",
+   "display": false
+  },
+  {
+   "tex": "B=0",
+   "display": false
+  },
+  {
+   "tex": "H_C",
+   "display": false
+  },
+  {
+   "tex": "B_r",
+   "display": false
+  },
+  {
+   "tex": "H_C",
+   "display": false
+  },
+  {
+   "tex": "I^2R",
+   "display": false
+  },
+  {
+   "tex": "H",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "H",
+   "display": false
+  },
+  {
+   "tex": "B=\\mu H",
+   "display": false
+  },
+  {
+   "tex": "B_r",
+   "display": false
+  },
+  {
+   "tex": "H_C",
+   "display": false
+  }
+ ],
+ "figures": []
+}

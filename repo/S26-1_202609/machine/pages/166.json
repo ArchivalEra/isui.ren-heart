@@ -1,0 +1,316 @@
+{
+ "url": "课程总览/通用电气/交叉内容/01-正弦量的三张脸.html",
+ "title": "01 正弦量的三张脸",
+ "math": [
+  {
+   "tex": "u(t) = U_m \\sin(\\omega t + \\psi)",
+   "display": true
+  },
+  {
+   "tex": "U = \\frac{U_m}{\\sqrt{2}}",
+   "display": true
+  },
+  {
+   "tex": "\\Delta\\psi = \\psi_1 - \\psi_2",
+   "display": true
+  },
+  {
+   "tex": "\\dot U = 220\\angle 0^\\circ\\ \\mathrm{V}",
+   "display": true
+  },
+  {
+   "tex": "\\dot U_m = 311\\angle 0^\\circ\\ \\mathrm{V}",
+   "display": true
+  },
+  {
+   "tex": "\\dot U = 220\\cos 0^\\circ + j220\\sin 0^\\circ = (220 + j0)\\ \\mathrm{V}",
+   "display": true
+  },
+  {
+   "tex": "u(t) = 311\\sin(314t + 0^\\circ)\\ \\mathrm{V}",
+   "display": true
+  },
+  {
+   "tex": "u(t)=U_m\\sin(\\omega t+\\psi)",
+   "display": false
+  },
+  {
+   "tex": "t",
+   "display": false
+  },
+  {
+   "tex": "t",
+   "display": false
+  },
+  {
+   "tex": "u",
+   "display": false
+  },
+  {
+   "tex": "U_m",
+   "display": false
+  },
+  {
+   "tex": "\\omega",
+   "display": false
+  },
+  {
+   "tex": "u(t)",
+   "display": false
+  },
+  {
+   "tex": "t=0",
+   "display": false
+  },
+  {
+   "tex": "\\dot U",
+   "display": false
+  },
+  {
+   "tex": "\\omega",
+   "display": false
+  },
+  {
+   "tex": "t=0",
+   "display": false
+  },
+  {
+   "tex": "U_m",
+   "display": false
+  },
+  {
+   "tex": "\\omega",
+   "display": false
+  },
+  {
+   "tex": "f",
+   "display": false
+  },
+  {
+   "tex": "T",
+   "display": false
+  },
+  {
+   "tex": "\\omega = 2\\pi/T = 2\\pi f",
+   "display": false
+  },
+  {
+   "tex": "50\\ \\mathrm{Hz}",
+   "display": false
+  },
+  {
+   "tex": "\\omega = 2\\pi \\times 50 \\approx 314\\ \\mathrm{rad/s}",
+   "display": false
+  },
+  {
+   "tex": "\\psi",
+   "display": false
+  },
+  {
+   "tex": "t=0",
+   "display": false
+  },
+  {
+   "tex": "U_m",
+   "display": false
+  },
+  {
+   "tex": "U",
+   "display": false
+  },
+  {
+   "tex": "U=220\\ \\mathrm{V}",
+   "display": false
+  },
+  {
+   "tex": "U_m = 220\\sqrt{2} \\approx 311\\ \\mathrm{V}",
+   "display": false
+  },
+  {
+   "tex": "\\psi_1",
+   "display": false
+  },
+  {
+   "tex": "\\psi_2",
+   "display": false
+  },
+  {
+   "tex": "\\Delta\\psi > 0",
+   "display": false
+  },
+  {
+   "tex": "\\Delta\\psi = 0",
+   "display": false
+  },
+  {
+   "tex": "\\Delta\\psi = \\pm 180^\\circ",
+   "display": false
+  },
+  {
+   "tex": "\\Delta\\psi = \\pm 90^\\circ",
+   "display": false
+  },
+  {
+   "tex": "a + jb",
+   "display": false
+  },
+  {
+   "tex": "r\\angle\\theta",
+   "display": false
+  },
+  {
+   "tex": "\\to",
+   "display": false
+  },
+  {
+   "tex": "r = \\sqrt{a^2 + b^2}",
+   "display": false
+  },
+  {
+   "tex": "\\theta_0 = \\arctan(|b|/|a|)",
+   "display": false
+  },
+  {
+   "tex": "a>0, b>0",
+   "display": false
+  },
+  {
+   "tex": "\\theta = \\theta_0",
+   "display": false
+  },
+  {
+   "tex": "a<0, b>0",
+   "display": false
+  },
+  {
+   "tex": "\\theta = 180^\\circ - \\theta_0",
+   "display": false
+  },
+  {
+   "tex": "a<0, b<0",
+   "display": false
+  },
+  {
+   "tex": "\\theta = \\theta_0 - 180^\\circ",
+   "display": false
+  },
+  {
+   "tex": "-180^\\circ + \\theta_0",
+   "display": false
+  },
+  {
+   "tex": "a>0, b<0",
+   "display": false
+  },
+  {
+   "tex": "\\theta = -\\theta_0",
+   "display": false
+  },
+  {
+   "tex": "\\to",
+   "display": false
+  },
+  {
+   "tex": "a = r\\cos\\theta",
+   "display": false
+  },
+  {
+   "tex": "b = r\\sin\\theta",
+   "display": false
+  },
+  {
+   "tex": "a + jb = r\\cos\\theta + j r\\sin\\theta",
+   "display": false
+  },
+  {
+   "tex": "311\\sin(314t + 0^\\circ)",
+   "display": false
+  },
+  {
+   "tex": "u(t) = 311\\sin(314t + 0^\\circ)\\ \\mathrm{V}",
+   "display": false
+  },
+  {
+   "tex": "\\to",
+   "display": false
+  },
+  {
+   "tex": "U_m = 311\\ \\mathrm{V}",
+   "display": false
+  },
+  {
+   "tex": "\\omega = 314\\ \\mathrm{rad/s}",
+   "display": false
+  },
+  {
+   "tex": "50\\ \\mathrm{Hz}",
+   "display": false
+  },
+  {
+   "tex": "\\psi = 0^\\circ",
+   "display": false
+  },
+  {
+   "tex": "U = U_m/\\sqrt{2} = 311/\\sqrt{2} \\approx 220\\ \\mathrm{V}",
+   "display": false
+  },
+  {
+   "tex": "\\psi = 0^\\circ",
+   "display": false
+  },
+  {
+   "tex": "U_m = 311\\ \\mathrm{V}",
+   "display": false
+  },
+  {
+   "tex": "0^\\circ",
+   "display": false
+  },
+  {
+   "tex": "\\sqrt{2}",
+   "display": false
+  },
+  {
+   "tex": "\\to",
+   "display": false
+  },
+  {
+   "tex": "\\dot U = 220\\angle 0^\\circ\\ \\mathrm{V}",
+   "display": false
+  },
+  {
+   "tex": "\\to",
+   "display": false
+  },
+  {
+   "tex": "\\dot U = 220\\angle 0^\\circ\\ \\mathrm{V}",
+   "display": false
+  },
+  {
+   "tex": "\\omega = 314\\ \\mathrm{rad/s}",
+   "display": false
+  },
+  {
+   "tex": "\\sqrt{2}",
+   "display": false
+  },
+  {
+   "tex": "U_m = 220\\sqrt{2} \\approx 311\\ \\mathrm{V}",
+   "display": false
+  },
+  {
+   "tex": "\\omega = 314\\ \\mathrm{rad/s}",
+   "display": false
+  },
+  {
+   "tex": "0^\\circ",
+   "display": false
+  }
+ ],
+ "figures": [
+  {
+   "src": "figures/fig-ge-01.svg",
+   "alt": "正弦量的三张脸：波形、旋转相量、复平面静态相量"
+  }
+ ]
+}

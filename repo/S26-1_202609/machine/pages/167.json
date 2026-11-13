@@ -1,0 +1,164 @@
+{
+ "url": "课程总览/通用电气/交叉内容/02-相量加减为什么变简单.html",
+ "title": "相量加减为什么变简单",
+ "math": [
+  {
+   "tex": "\\dot U = U \\angle \\varphi",
+   "display": true
+  },
+  {
+   "tex": "\\dot U_1 = a_1 + j b_1,\\qquad \\dot U_2 = a_2 + j b_2",
+   "display": true
+  },
+  {
+   "tex": "\\dot U = \\dot U_1 \\pm \\dot U_2 = (a_1 \\pm a_2) + j (b_1 \\pm b_2)",
+   "display": true
+  },
+  {
+   "tex": "U = \\sqrt{a^2 + b^2},\\qquad \\varphi = \\arctan\\left(\\frac{b}{a}\\right)\\quad (\\text{按象限定角})",
+   "display": true
+  },
+  {
+   "tex": "u(t) = \\sqrt{2} U \\sin(\\omega t + \\varphi)",
+   "display": true
+  },
+  {
+   "tex": "\\dot U_1 = 3 + j4\\ \\mathrm{V},\\qquad \\dot U_2 = 3 - j4\\ \\mathrm{V}",
+   "display": true
+  },
+  {
+   "tex": "\\dot U_{\\text{sum}} = (3 + 3) + j(4 - 4) = 6 + j0\\ \\mathrm{V}",
+   "display": true
+  },
+  {
+   "tex": "u_{\\text{sum}}(t) = 6\\sqrt{2} \\sin(\\omega t + 0^\\circ)\\ \\mathrm{V} = 6\\sqrt{2} \\sin(\\omega t)\\ \\mathrm{V}",
+   "display": true
+  },
+  {
+   "tex": "\\dot U_{\\text{diff}} = (3 - 3) + j[4 - (-4)] = 0 + j8\\ \\mathrm{V}",
+   "display": true
+  },
+  {
+   "tex": "u_{\\text{diff}}(t) = 8\\sqrt{2} \\sin(\\omega t + 90^\\circ)\\ \\mathrm{V}",
+   "display": true
+  },
+  {
+   "tex": "\\omega",
+   "display": false
+  },
+  {
+   "tex": "u(t) = \\sqrt{2} U \\sin(\\omega t + \\varphi)",
+   "display": false
+  },
+  {
+   "tex": "U",
+   "display": false
+  },
+  {
+   "tex": "U_m = \\sqrt{2} U",
+   "display": false
+  },
+  {
+   "tex": "\\varphi",
+   "display": false
+  },
+  {
+   "tex": "t",
+   "display": false
+  },
+  {
+   "tex": "a = U \\cos \\varphi",
+   "display": false
+  },
+  {
+   "tex": "b = U \\sin \\varphi",
+   "display": false
+  },
+  {
+   "tex": "\\dot U = U \\angle \\varphi",
+   "display": false
+  },
+  {
+   "tex": "\\sqrt{2} \\times U",
+   "display": false
+  },
+  {
+   "tex": "\\sqrt{2}",
+   "display": false
+  },
+  {
+   "tex": "\\omega",
+   "display": false
+  },
+  {
+   "tex": "\\varphi",
+   "display": false
+  },
+  {
+   "tex": "U",
+   "display": false
+  },
+  {
+   "tex": "\\varphi",
+   "display": false
+  },
+  {
+   "tex": "\\dot U_1 + \\dot U_2",
+   "display": false
+  },
+  {
+   "tex": "\\dot U_1 - \\dot U_2 = \\dot U_1 + (-\\dot U_2)",
+   "display": false
+  },
+  {
+   "tex": "\\dot U_2",
+   "display": false
+  },
+  {
+   "tex": "180^\\circ",
+   "display": false
+  },
+  {
+   "tex": "\\dot U_1",
+   "display": false
+  },
+  {
+   "tex": "\\dot U_{\\text{sum}} = \\dot U_1 + \\dot U_2",
+   "display": false
+  },
+  {
+   "tex": "6\\ \\mathrm{V}",
+   "display": false
+  },
+  {
+   "tex": "0^\\circ",
+   "display": false
+  },
+  {
+   "tex": "\\dot U_{\\text{sum}} = 6\\angle 0^\\circ\\ \\mathrm{V}",
+   "display": false
+  },
+  {
+   "tex": "\\dot U_{\\text{diff}} = \\dot U_1 - \\dot U_2",
+   "display": false
+  },
+  {
+   "tex": "8\\ \\mathrm{V}",
+   "display": false
+  },
+  {
+   "tex": "90^\\circ",
+   "display": false
+  },
+  {
+   "tex": "\\dot U_{\\text{diff}} = 8\\angle 90^\\circ\\ \\mathrm{V}",
+   "display": false
+  }
+ ],
+ "figures": [
+  {
+   "src": "figures/fig-ge-02.svg",
+   "alt": "同频相量加减法的平行四边形定则与反向相量合成"
+  }
+ ]
+}

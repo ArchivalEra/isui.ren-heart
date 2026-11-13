@@ -1,0 +1,507 @@
+{
+ "url": "站点/符号包/通用.html",
+ "title": "通用符号包",
+ "math": [
+  {
+   "tex": "U",
+   "display": false
+  },
+  {
+   "tex": "I",
+   "display": false
+  },
+  {
+   "tex": "\\omega",
+   "display": false
+  },
+  {
+   "tex": "Z",
+   "display": false
+  },
+  {
+   "tex": "U",
+   "display": false
+  },
+  {
+   "tex": "U_{ab}=\\varphi_a-\\varphi_b",
+   "display": false
+  },
+  {
+   "tex": "u",
+   "display": false
+  },
+  {
+   "tex": "U_{ab}=\\varphi_a-\\varphi_b",
+   "display": false
+  },
+  {
+   "tex": "U",
+   "display": false
+  },
+  {
+   "tex": "u",
+   "display": false
+  },
+  {
+   "tex": "I",
+   "display": false
+  },
+  {
+   "tex": "i(t)",
+   "display": false
+  },
+  {
+   "tex": "i(t)",
+   "display": false
+  },
+  {
+   "tex": "I",
+   "display": false
+  },
+  {
+   "tex": "i",
+   "display": false
+  },
+  {
+   "tex": "P",
+   "display": false
+  },
+  {
+   "tex": "P=UI\\cos\\varphi",
+   "display": false
+  },
+  {
+   "tex": "P=I^2R",
+   "display": false
+  },
+  {
+   "tex": "P=UI\\cos\\varphi",
+   "display": false
+  },
+  {
+   "tex": "S",
+   "display": false
+  },
+  {
+   "tex": "Q",
+   "display": false
+  },
+  {
+   "tex": "Q",
+   "display": false
+  },
+  {
+   "tex": "Q=UI\\sin\\varphi",
+   "display": false
+  },
+  {
+   "tex": "Q=UI\\sin\\varphi",
+   "display": false
+  },
+  {
+   "tex": "P",
+   "display": false
+  },
+  {
+   "tex": "S",
+   "display": false
+  },
+  {
+   "tex": "S",
+   "display": false
+  },
+  {
+   "tex": "S=UI=\\sqrt{P^2+Q^2}",
+   "display": false
+  },
+  {
+   "tex": "S=UI=\\sqrt{P^2+Q^2}",
+   "display": false
+  },
+  {
+   "tex": "\\Phi=BS",
+   "display": false
+  },
+  {
+   "tex": "S",
+   "display": false
+  },
+  {
+   "tex": "f",
+   "display": false
+  },
+  {
+   "tex": "f=\\omega/2\\pi",
+   "display": false
+  },
+  {
+   "tex": "f=50",
+   "display": false
+  },
+  {
+   "tex": "f=\\omega/2\\pi",
+   "display": false
+  },
+  {
+   "tex": "f=50",
+   "display": false
+  },
+  {
+   "tex": "\\omega",
+   "display": false
+  },
+  {
+   "tex": "\\omega=2\\pi f=2\\pi/T",
+   "display": false
+  },
+  {
+   "tex": "\\omega=100\\pi\\approx314",
+   "display": false
+  },
+  {
+   "tex": "\\omega=2\\pi f=2\\pi/T",
+   "display": false
+  },
+  {
+   "tex": "\\omega=100\\pi\\approx314",
+   "display": false
+  },
+  {
+   "tex": "Z",
+   "display": false
+  },
+  {
+   "tex": "Z",
+   "display": false
+  },
+  {
+   "tex": "Z=R+jX=|Z|\\angle\\varphi",
+   "display": false
+  },
+  {
+   "tex": "X>0",
+   "display": false
+  },
+  {
+   "tex": "X<0",
+   "display": false
+  },
+  {
+   "tex": "Y=1/Z=G+jB",
+   "display": false
+  },
+  {
+   "tex": "\\varphi",
+   "display": false
+  },
+  {
+   "tex": "\\varphi",
+   "display": false
+  },
+  {
+   "tex": "\\varphi=\\varphi_u-\\varphi_i",
+   "display": false
+  },
+  {
+   "tex": "\\varphi>0",
+   "display": false
+  },
+  {
+   "tex": "\\varphi<0",
+   "display": false
+  },
+  {
+   "tex": "e",
+   "display": false
+  },
+  {
+   "tex": "i",
+   "display": false
+  },
+  {
+   "tex": "u",
+   "display": false
+  },
+  {
+   "tex": "\\varphi",
+   "display": false
+  },
+  {
+   "tex": "\\tau",
+   "display": false
+  },
+  {
+   "tex": "\\tau",
+   "display": false
+  },
+  {
+   "tex": "\\tau=R_{eq}C",
+   "display": false
+  },
+  {
+   "tex": "\\tau=L/R_{eq}",
+   "display": false
+  },
+  {
+   "tex": "3\\sim5\\tau",
+   "display": false
+  },
+  {
+   "tex": "\\sigma",
+   "display": false
+  },
+  {
+   "tex": "\\rho",
+   "display": false
+  },
+  {
+   "tex": "\\lambda=\\sigma+j\\omega",
+   "display": false
+  },
+  {
+   "tex": "\\sigma",
+   "display": false
+  },
+  {
+   "tex": "\\sigma>0",
+   "display": false
+  },
+  {
+   "tex": "\\sigma<0",
+   "display": false
+  },
+  {
+   "tex": "\\sigma=0",
+   "display": false
+  },
+  {
+   "tex": "\\lambda",
+   "display": false
+  },
+  {
+   "tex": "\\Lambda=1/R_m",
+   "display": false
+  },
+  {
+   "tex": "\\lambda=\\sigma+j\\omega",
+   "display": false
+  },
+  {
+   "tex": "R",
+   "display": false
+  },
+  {
+   "tex": "u=Ri",
+   "display": false
+  },
+  {
+   "tex": "Z=R+jX",
+   "display": false
+  },
+  {
+   "tex": "L",
+   "display": false
+  },
+  {
+   "tex": "u=L\\frac{\\mathrm di}{\\mathrm dt}",
+   "display": false
+  },
+  {
+   "tex": "C",
+   "display": false
+  },
+  {
+   "tex": "i=C\\frac{\\mathrm du}{\\mathrm dt}",
+   "display": false
+  },
+  {
+   "tex": "M",
+   "display": false
+  },
+  {
+   "tex": "M",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "N",
+   "display": false
+  },
+  {
+   "tex": "M=B-(N-1)",
+   "display": false
+  },
+  {
+   "tex": "u_2=M\\frac{\\mathrm di_1}{\\mathrm dt}",
+   "display": false
+  },
+  {
+   "tex": "k=M/\\sqrt{L_1L_2}",
+   "display": false
+  },
+  {
+   "tex": "u",
+   "display": false
+  },
+  {
+   "tex": "u",
+   "display": false
+  },
+  {
+   "tex": "i",
+   "display": false
+  },
+  {
+   "tex": "i",
+   "display": false
+  },
+  {
+   "tex": "I",
+   "display": false
+  },
+  {
+   "tex": "t",
+   "display": false
+  },
+  {
+   "tex": "t=0",
+   "display": false
+  },
+  {
+   "tex": "0_-",
+   "display": false
+  },
+  {
+   "tex": "0_+",
+   "display": false
+  },
+  {
+   "tex": "R_L",
+   "display": false
+  },
+  {
+   "tex": "R_L",
+   "display": false
+  },
+  {
+   "tex": "R_L",
+   "display": false
+  },
+  {
+   "tex": "1\\ \\mathrm V=1\\ \\mathrm J/\\mathrm C",
+   "display": false
+  },
+  {
+   "tex": "U",
+   "display": false
+  },
+  {
+   "tex": "E",
+   "display": false
+  },
+  {
+   "tex": "\\mathrm V",
+   "display": false
+  },
+  {
+   "tex": "1\\ \\mathrm A=1\\ \\mathrm C/\\mathrm s",
+   "display": false
+  },
+  {
+   "tex": "1\\ \\mathrm W=1\\ \\mathrm J/\\mathrm s=1\\ \\mathrm V\\!\\cdot\\!\\mathrm A",
+   "display": false
+  },
+  {
+   "tex": "\\mathrm{kVA}",
+   "display": false
+  },
+  {
+   "tex": "1\\ \\Omega=1\\ \\mathrm V/\\mathrm A",
+   "display": false
+  },
+  {
+   "tex": "R",
+   "display": false
+  },
+  {
+   "tex": "Z",
+   "display": false
+  },
+  {
+   "tex": "X",
+   "display": false
+  },
+  {
+   "tex": "\\Omega",
+   "display": false
+  },
+  {
+   "tex": "1\\ \\mathrm H=1\\ \\mathrm{Wb}/\\mathrm A",
+   "display": false
+  },
+  {
+   "tex": "1\\ \\mathrm F=1\\ \\mathrm C/\\mathrm V",
+   "display": false
+  },
+  {
+   "tex": "1\\ \\mathrm T=1\\ \\mathrm{Wb}/\\mathrm{m^2}",
+   "display": false
+  },
+  {
+   "tex": "1\\ \\mathrm{Wb}=1\\ \\mathrm V\\!\\cdot\\!\\mathrm s",
+   "display": false
+  },
+  {
+   "tex": "1\\ \\mathrm{Hz}=1\\ \\mathrm s^{-1}",
+   "display": false
+  },
+  {
+   "tex": "\\omega",
+   "display": false
+  },
+  {
+   "tex": "\\Omega",
+   "display": false
+  },
+  {
+   "tex": "n",
+   "display": false
+  },
+  {
+   "tex": "1\\ \\mathrm{r/min}=\\frac{\\pi}{30}\\ \\mathrm{rad/s}",
+   "display": false
+  },
+  {
+   "tex": "i=C\\,du/dt",
+   "display": false
+  },
+  {
+   "tex": "\\varphi_C",
+   "display": false
+  },
+  {
+   "tex": "U_C",
+   "display": false
+  },
+  {
+   "tex": "H_C",
+   "display": false
+  },
+  {
+   "tex": "Y=AB+BC+AC",
+   "display": false
+  },
+  {
+   "tex": "\\tfrac12Cu^2",
+   "display": false
+  },
+  {
+   "tex": "H_C",
+   "display": false
+  }
+ ],
+ "figures": []
+}

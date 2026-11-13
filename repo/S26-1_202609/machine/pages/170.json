@@ -1,0 +1,200 @@
+{
+ "url": "课程总览/通用电气/交叉内容/05-三相对称分量.html",
+ "title": "05 三相对称分量",
+ "math": [
+  {
+   "tex": "a = e^{j120^\\circ}",
+   "display": true
+  },
+  {
+   "tex": "1 + a + a^2 = 0",
+   "display": true
+  },
+  {
+   "tex": "\\dot B_1 = a^2\\dot A_1,\\quad \\dot C_1 = a\\dot A_1",
+   "display": true
+  },
+  {
+   "tex": "\\dot B_2 = a\\dot A_2,\\quad \\dot C_2 = a^2\\dot A_2",
+   "display": true
+  },
+  {
+   "tex": "\\dot A_0 = \\dot B_0 = \\dot C_0",
+   "display": true
+  },
+  {
+   "tex": "\\dot A = \\dot A_1 + \\dot A_2 + \\dot A_0",
+   "display": true
+  },
+  {
+   "tex": "\\dot B = a^2\\dot A_1 + a\\dot A_2 + \\dot A_0",
+   "display": true
+  },
+  {
+   "tex": "\\dot C = a\\dot A_1 + a^2\\dot A_2 + \\dot A_0",
+   "display": true
+  },
+  {
+   "tex": "\\dot A+\\dot B+\\dot C=(1+1+1)\\dot A_0+(1+a+a^2)\\dot A_1+(1+a^2+a)\\dot A_2=3\\dot A_0",
+   "display": true
+  },
+  {
+   "tex": "\\dot A_1 = \\frac{1}{3}(\\dot A + a\\dot B + a^2\\dot C)",
+   "display": true
+  },
+  {
+   "tex": "\\dot A_2 = \\frac{1}{3}(\\dot A + a^2\\dot B + a\\dot C)",
+   "display": true
+  },
+  {
+   "tex": "\\dot A_0 = \\frac{1}{3}(\\dot A + \\dot B + \\dot C)",
+   "display": true
+  },
+  {
+   "tex": "\\dot A_1 = \\frac{1}{3}(3 + a\\cdot 0 + a^2\\cdot 0) = 1\\,\\text{A}",
+   "display": true
+  },
+  {
+   "tex": "\\dot A_2 = \\frac{1}{3}(3 + a^2\\cdot 0 + a\\cdot 0) = 1\\,\\text{A}",
+   "display": true
+  },
+  {
+   "tex": "\\dot A_0 = \\frac{1}{3}(3 + 0 + 0) = 1\\,\\text{A}",
+   "display": true
+  },
+  {
+   "tex": "a",
+   "display": false
+  },
+  {
+   "tex": "a",
+   "display": false
+  },
+  {
+   "tex": "e^{j120^\\circ}",
+   "display": false
+  },
+  {
+   "tex": "a",
+   "display": false
+  },
+  {
+   "tex": "a",
+   "display": false
+  },
+  {
+   "tex": "a",
+   "display": false
+  },
+  {
+   "tex": "a^2 = e^{j240^\\circ}",
+   "display": false
+  },
+  {
+   "tex": "a^3 = e^{j360^\\circ} = 1",
+   "display": false
+  },
+  {
+   "tex": "\\dot A",
+   "display": false
+  },
+  {
+   "tex": "\\dot B",
+   "display": false
+  },
+  {
+   "tex": "\\dot C",
+   "display": false
+  },
+  {
+   "tex": "\\dot A_1",
+   "display": false
+  },
+  {
+   "tex": "\\dot A_2",
+   "display": false
+  },
+  {
+   "tex": "\\dot A",
+   "display": false
+  },
+  {
+   "tex": "\\dot B",
+   "display": false
+  },
+  {
+   "tex": "\\dot C",
+   "display": false
+  },
+  {
+   "tex": "1+a+a^2=0",
+   "display": false
+  },
+  {
+   "tex": "\\dot A_0=\\frac13(\\dot A+\\dot B+\\dot C)",
+   "display": false
+  },
+  {
+   "tex": "a",
+   "display": false
+  },
+  {
+   "tex": "a^2",
+   "display": false
+  },
+  {
+   "tex": "a",
+   "display": false
+  },
+  {
+   "tex": "a^2",
+   "display": false
+  },
+  {
+   "tex": "a^2",
+   "display": false
+  },
+  {
+   "tex": "a",
+   "display": false
+  },
+  {
+   "tex": "\\dot B_0 = \\dot C_0 = \\dot A_0",
+   "display": false
+  },
+  {
+   "tex": "\\dot A = 3\\,\\text{A}",
+   "display": false
+  },
+  {
+   "tex": "\\dot B = 0",
+   "display": false
+  },
+  {
+   "tex": "\\dot C = 0",
+   "display": false
+  },
+  {
+   "tex": "\\dot A = \\dot A_1 + \\dot A_2 + \\dot A_0 = 1 + 1 + 1 = 3\\,\\text{A}",
+   "display": false
+  },
+  {
+   "tex": "\\dot B = a^2\\dot A_1 + a\\dot A_2 + \\dot A_0 = a^2(1) + a(1) + 1 = 1 + a + a^2 = 0",
+   "display": false
+  },
+  {
+   "tex": "\\dot C = a\\dot A_1 + a^2\\dot A_2 + \\dot A_0 = a(1) + a^2(1) + 1 = 1 + a + a^2 = 0",
+   "display": false
+  },
+  {
+   "tex": "1\\,\\text{A}",
+   "display": false
+  }
+ ],
+ "figures": [
+  {
+   "src": "figures/fig-ge-05.svg",
+   "alt": "三相对称分量示意图：不对称三相分解为正序、负序与零序三组对称分量"
+  }
+ ]
+}

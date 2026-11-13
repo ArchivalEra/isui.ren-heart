@@ -1,0 +1,244 @@
+{
+ "url": "课程总览/电子技术/作业/2026-10-14作业.html",
+ "title": "2026-10-14作业",
+ "math": [
+  {
+   "tex": "Y=A\\overline{D}+\\overline{B}C\\overline{D}+B\\overline{C}\\,\\overline{D}",
+   "display": true
+  },
+  {
+   "tex": "Y=AB+\\overline{A}\\,\\overline{B}",
+   "display": true
+  },
+  {
+   "tex": "A\\odot B",
+   "display": false
+  },
+  {
+   "tex": "Y(A,B,C,D)=\\sum m(2,4,8,10,12,14)",
+   "display": false
+  },
+  {
+   "tex": "AB",
+   "display": false
+  },
+  {
+   "tex": "CD",
+   "display": false
+  },
+  {
+   "tex": "AB\\backslash CD",
+   "display": false
+  },
+  {
+   "tex": "m_8,m_{10},m_{12},m_{14}",
+   "display": false
+  },
+  {
+   "tex": "A=1,D=0",
+   "display": false
+  },
+  {
+   "tex": "A\\overline{D}",
+   "display": false
+  },
+  {
+   "tex": "m_2,m_{10}",
+   "display": false
+  },
+  {
+   "tex": "B=0,C=1,D=0",
+   "display": false
+  },
+  {
+   "tex": "\\overline{B}C\\overline{D}",
+   "display": false
+  },
+  {
+   "tex": "m_4,m_{12}",
+   "display": false
+  },
+  {
+   "tex": "B=1,C=0,D=0",
+   "display": false
+  },
+  {
+   "tex": "B\\overline{C}\\,\\overline{D}",
+   "display": false
+  },
+  {
+   "tex": "A\\overline{D}",
+   "display": false
+  },
+  {
+   "tex": "CD=00",
+   "display": false
+  },
+  {
+   "tex": "CD=10",
+   "display": false
+  },
+  {
+   "tex": "D=0",
+   "display": false
+  },
+  {
+   "tex": "A,B",
+   "display": false
+  },
+  {
+   "tex": "A=1",
+   "display": false
+  },
+  {
+   "tex": "C",
+   "display": false
+  },
+  {
+   "tex": "m_8=1000",
+   "display": false
+  },
+  {
+   "tex": "m_{10}=1010",
+   "display": false
+  },
+  {
+   "tex": "m_{12}=1100",
+   "display": false
+  },
+  {
+   "tex": "m_{14}=1110",
+   "display": false
+  },
+  {
+   "tex": "A=1",
+   "display": false
+  },
+  {
+   "tex": "C",
+   "display": false
+  },
+  {
+   "tex": "D=0",
+   "display": false
+  },
+  {
+   "tex": "Y=\\overline{\\;\\overline{A\\overline{D}}\\cdot\\overline{\\overline{B}C\\overline{D}}\\cdot\\overline{B\\overline{C}\\,\\overline{D}}\\;}",
+   "display": false
+  },
+  {
+   "tex": "\\overline{B},\\overline{C},\\overline{D}",
+   "display": false
+  },
+  {
+   "tex": "\\overline{A}",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "\\overline{B},\\overline{C},\\overline{D}",
+   "display": false
+  },
+  {
+   "tex": "\\overline{A}",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "\\overline{D}",
+   "display": false
+  },
+  {
+   "tex": "\\overline{D}",
+   "display": false
+  },
+  {
+   "tex": "m_0,m_6",
+   "display": false
+  },
+  {
+   "tex": "\\overline{D}",
+   "display": false
+  },
+  {
+   "tex": "Y=1",
+   "display": false
+  },
+  {
+   "tex": "Y=0",
+   "display": false
+  },
+  {
+   "tex": "A=1",
+   "display": false
+  },
+  {
+   "tex": "A=0",
+   "display": false
+  },
+  {
+   "tex": "Y",
+   "display": false
+  },
+  {
+   "tex": "B=1",
+   "display": false
+  },
+  {
+   "tex": "A=1",
+   "display": false
+  },
+  {
+   "tex": "B=0",
+   "display": false
+  },
+  {
+   "tex": "A=0",
+   "display": false
+  },
+  {
+   "tex": "Y=A\\odot B",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "Y",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "A",
+   "display": false
+  },
+  {
+   "tex": "AB+\\overline{A}\\,\\overline{B}",
+   "display": false
+  }
+ ],
+ "figures": [
+  {
+   "src": "figures/fig-7-14.svg",
+   "alt": "习题 7.14 用与非门实现的逻辑电路图：三个非门产生 B̄、C̄、D̄，三级与非门各出一条乘积项之否，末级三输入与非门还原成和"
+  },
+  {
+   "src": "figures/fig-7-05.svg",
+   "alt": "图 7.05 习题 7.15 图：两处控制照明灯；上端子与下端子接 ~220 V，灯 ⊗ 标为 Y，A、B 为两只单刀双投开关，两条水平联络线在 A、B 之间交叉换位；图中画的是 A 向上扳、B 向下扳的状态"
+  }
+ ]
+}

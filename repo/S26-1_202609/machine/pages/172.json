@@ -1,0 +1,272 @@
+{
+ "url": "课程总览/通用电气/交叉内容/07-大写算工作点小写算放大.html",
+ "title": "07 大写算工作点，小写算放大",
+ "math": [
+  {
+   "tex": "I_{BQ} = \\frac{U_{CC} - U_{BE}}{R_b}",
+   "display": true
+  },
+  {
+   "tex": "I_{CQ} = \\beta I_{BQ}",
+   "display": true
+  },
+  {
+   "tex": "U_{CEQ} = U_{CC} - I_{CQ}R_c",
+   "display": true
+  },
+  {
+   "tex": "A_u = -\\frac{\\beta (R_c \\parallel R_L)}{r_{be}}",
+   "display": true
+  },
+  {
+   "tex": "r_i \\approx R_b \\parallel r_{be}",
+   "display": true
+  },
+  {
+   "tex": "r_o \\approx R_c",
+   "display": true
+  },
+  {
+   "tex": "I_B",
+   "display": false
+  },
+  {
+   "tex": "I_C",
+   "display": false
+  },
+  {
+   "tex": "U_{CE}",
+   "display": false
+  },
+  {
+   "tex": "i_b",
+   "display": false
+  },
+  {
+   "tex": "i_c",
+   "display": false
+  },
+  {
+   "tex": "u_{ce}",
+   "display": false
+  },
+  {
+   "tex": "R_b",
+   "display": false
+  },
+  {
+   "tex": "R_c",
+   "display": false
+  },
+  {
+   "tex": "R_L",
+   "display": false
+  },
+  {
+   "tex": "C_1",
+   "display": false
+  },
+  {
+   "tex": "C_2",
+   "display": false
+  },
+  {
+   "tex": "U_{CC}\\to R_b\\to",
+   "display": false
+  },
+  {
+   "tex": "\\to",
+   "display": false
+  },
+  {
+   "tex": "\\to",
+   "display": false
+  },
+  {
+   "tex": "R_b",
+   "display": false
+  },
+  {
+   "tex": "U_{CC}-U_{BE}",
+   "display": false
+  },
+  {
+   "tex": "Q",
+   "display": false
+  },
+  {
+   "tex": "I_{BQ}",
+   "display": false
+  },
+  {
+   "tex": "I_{CQ}",
+   "display": false
+  },
+  {
+   "tex": "U_{CEQ}",
+   "display": false
+  },
+  {
+   "tex": "U_{CC}",
+   "display": false
+  },
+  {
+   "tex": "U_{BE}",
+   "display": false
+  },
+  {
+   "tex": "0.7\\text{ V}",
+   "display": false
+  },
+  {
+   "tex": "0.6\\text{ V}",
+   "display": false
+  },
+  {
+   "tex": "\\beta",
+   "display": false
+  },
+  {
+   "tex": "Q",
+   "display": false
+  },
+  {
+   "tex": "r_{be}",
+   "display": false
+  },
+  {
+   "tex": "r_{be}",
+   "display": false
+  },
+  {
+   "tex": "Q",
+   "display": false
+  },
+  {
+   "tex": "Q",
+   "display": false
+  },
+  {
+   "tex": "\\beta i_b",
+   "display": false
+  },
+  {
+   "tex": "i_b",
+   "display": false
+  },
+  {
+   "tex": "\\beta",
+   "display": false
+  },
+  {
+   "tex": "R_1\\parallel R_2",
+   "display": false
+  },
+  {
+   "tex": "R_1",
+   "display": false
+  },
+  {
+   "tex": "R_2",
+   "display": false
+  },
+  {
+   "tex": "\\dfrac{R_1R_2}{R_1+R_2}",
+   "display": false
+  },
+  {
+   "tex": "u_i = i_b\\,r_{be}",
+   "display": false
+  },
+  {
+   "tex": "r_{be}",
+   "display": false
+  },
+  {
+   "tex": "R_b",
+   "display": false
+  },
+  {
+   "tex": "R_b",
+   "display": false
+  },
+  {
+   "tex": "u_o = -i_c(R_c\\parallel R_L) = -\\beta i_b (R_c\\parallel R_L)",
+   "display": false
+  },
+  {
+   "tex": "i_b",
+   "display": false
+  },
+  {
+   "tex": "A_u",
+   "display": false
+  },
+  {
+   "tex": "A_u",
+   "display": false
+  },
+  {
+   "tex": "R_c \\parallel R_L",
+   "display": false
+  },
+  {
+   "tex": "r_{be}",
+   "display": false
+  },
+  {
+   "tex": "180^\\circ",
+   "display": false
+  },
+  {
+   "tex": "r_i",
+   "display": false
+  },
+  {
+   "tex": "R_b",
+   "display": false
+  },
+  {
+   "tex": "r_{be}",
+   "display": false
+  },
+  {
+   "tex": "r_o",
+   "display": false
+  },
+  {
+   "tex": "R_c",
+   "display": false
+  },
+  {
+   "tex": "Q",
+   "display": false
+  },
+  {
+   "tex": "Q",
+   "display": false
+  },
+  {
+   "tex": "Q",
+   "display": false
+  },
+  {
+   "tex": "j\\omega",
+   "display": false
+  },
+  {
+   "tex": "r_{be}",
+   "display": false
+  },
+  {
+   "tex": "\\beta i_b",
+   "display": false
+  }
+ ],
+ "figures": [
+  {
+   "src": "figures/fig-ge-08.svg",
+   "alt": "共射放大电路交直流分离：直流通路确定Q点，交流微变等效电路计算放大"
+  }
+ ]
+}

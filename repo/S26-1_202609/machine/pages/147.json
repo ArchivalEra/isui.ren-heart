@@ -1,0 +1,587 @@
+{
+ "url": "课程总览/电机学/教材解析/第01章-概述/第01章-小结与思考题习题.html",
+ "title": "第01章 小结与思考题习题",
+ "math": [
+  {
+   "tex": "e=-\\frac{\\mathrm{d}\\Psi}{\\mathrm{d}t}=-\\frac{\\mathrm{d}\\Psi}{\\mathrm{d}i}\\frac{\\mathrm{d}i}{\\mathrm{d}t}=-L\\frac{\\mathrm{d}i}{\\mathrm{d}t}",
+   "display": true
+  },
+  {
+   "tex": "\\Phi=\\Phi_1+(\\Phi_2-\\Phi_1)\\frac{F-F_1}{F_2-F_1}",
+   "display": true
+  },
+  {
+   "tex": "H = H_a+(H_b-H_a)\\frac{B-B_a}{B_b-B_a}",
+   "display": true
+  },
+  {
+   "tex": "\\text{磁场 }\\xrightarrow{\\text{简化为}}\\text{ 磁路 }\\xrightarrow{\\text{等效电路化}}\\text{ 磁路定律 }\\xrightarrow{\\text{三种电磁关系}}\\text{ 电感、电动势、电磁力 }\\xrightarrow{\\text{材料与损耗}}\\text{ 可设计、可估算的电机}",
+   "display": true
+  },
+  {
+   "tex": "E",
+   "display": false
+  },
+  {
+   "tex": "IN",
+   "display": false
+  },
+  {
+   "tex": "F",
+   "display": false
+  },
+  {
+   "tex": "I",
+   "display": false
+  },
+  {
+   "tex": "\\Phi",
+   "display": false
+  },
+  {
+   "tex": "R=\\rho\\dfrac{l}{S}",
+   "display": false
+  },
+  {
+   "tex": "\\Omega",
+   "display": false
+  },
+  {
+   "tex": "R_m=\\dfrac{l}{\\mu S}",
+   "display": false
+  },
+  {
+   "tex": "\\mathrm{H^{-1}}",
+   "display": false
+  },
+  {
+   "tex": "G=\\dfrac{1}{R}",
+   "display": false
+  },
+  {
+   "tex": "\\Lambda=\\dfrac{1}{R_m}",
+   "display": false
+  },
+  {
+   "tex": "U=IR",
+   "display": false
+  },
+  {
+   "tex": "F=\\Phi R_m",
+   "display": false
+  },
+  {
+   "tex": "\\Sigma I=0",
+   "display": false
+  },
+  {
+   "tex": "\\Sigma\\Phi=0",
+   "display": false
+  },
+  {
+   "tex": "\\Sigma E=\\Sigma U",
+   "display": false
+  },
+  {
+   "tex": "\\Sigma F=\\Sigma U_m",
+   "display": false
+  },
+  {
+   "tex": "\\oint E\\,\\mathrm{d}l=U",
+   "display": false
+  },
+  {
+   "tex": "\\oint H\\,\\mathrm{d}l=IN",
+   "display": false
+  },
+  {
+   "tex": "j=\\dfrac{I}{S}",
+   "display": false
+  },
+  {
+   "tex": "B=\\dfrac{\\Phi}{S}",
+   "display": false
+  },
+  {
+   "tex": "\\sigma=\\dfrac{j}{E}",
+   "display": false
+  },
+  {
+   "tex": "\\mu=\\dfrac{B}{H}",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "B\\text{-}H",
+   "display": false
+  },
+  {
+   "tex": "\\Phi\\to B\\to H\\to F",
+   "display": false
+  },
+  {
+   "tex": "\\Phi",
+   "display": false
+  },
+  {
+   "tex": "F",
+   "display": false
+  },
+  {
+   "tex": "\\mu",
+   "display": false
+  },
+  {
+   "tex": "10^3\\sim10^5",
+   "display": false
+  },
+  {
+   "tex": "\\mu_r=1",
+   "display": false
+  },
+  {
+   "tex": "e=-\\dfrac{\\mathrm{d}\\Psi}{\\mathrm{d}t}",
+   "display": false
+  },
+  {
+   "tex": "e=-N\\dfrac{\\mathrm{d}\\Phi}{\\mathrm{d}t}",
+   "display": false
+  },
+  {
+   "tex": "e=-L\\dfrac{\\mathrm{d}i}{\\mathrm{d}t}",
+   "display": false
+  },
+  {
+   "tex": "e=-\\dfrac{\\mathrm{d}\\Phi}{\\mathrm{d}t}",
+   "display": false
+  },
+  {
+   "tex": "e=Blv",
+   "display": false
+  },
+  {
+   "tex": "e=+\\dfrac{\\mathrm{d}\\Phi}{\\mathrm{d}t}",
+   "display": false
+  },
+  {
+   "tex": "H",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "H",
+   "display": false
+  },
+  {
+   "tex": "H",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "B\\text{-}H",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "H",
+   "display": false
+  },
+  {
+   "tex": "H",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "a=10\\mathrm{cm}",
+   "display": false
+  },
+  {
+   "tex": "b=20\\mathrm{cm}",
+   "display": false
+  },
+  {
+   "tex": "n=1000\\mathrm{r/min}",
+   "display": false
+  },
+  {
+   "tex": "B=0.8\\mathrm{T}",
+   "display": false
+  },
+  {
+   "tex": "B_m=0.8\\mathrm{T}",
+   "display": false
+  },
+  {
+   "tex": "n=1000\\mathrm{r/min}",
+   "display": false
+  },
+  {
+   "tex": "B=0.8\\mathrm{T}",
+   "display": false
+  },
+  {
+   "tex": "E",
+   "display": false
+  },
+  {
+   "tex": "F=IN",
+   "display": false
+  },
+  {
+   "tex": "I",
+   "display": false
+  },
+  {
+   "tex": "\\Phi",
+   "display": false
+  },
+  {
+   "tex": "R=\\rho l/S",
+   "display": false
+  },
+  {
+   "tex": "R_m=l/(\\mu S)",
+   "display": false
+  },
+  {
+   "tex": "G",
+   "display": false
+  },
+  {
+   "tex": "\\Lambda=1/R_m",
+   "display": false
+  },
+  {
+   "tex": "U",
+   "display": false
+  },
+  {
+   "tex": "U_M",
+   "display": false
+  },
+  {
+   "tex": "U=IR",
+   "display": false
+  },
+  {
+   "tex": "F=\\Phi R_m",
+   "display": false
+  },
+  {
+   "tex": "\\Sigma I=0",
+   "display": false
+  },
+  {
+   "tex": "\\Sigma\\Phi=0",
+   "display": false
+  },
+  {
+   "tex": "\\Sigma E=\\Sigma U",
+   "display": false
+  },
+  {
+   "tex": "\\Sigma F=\\Sigma U_m",
+   "display": false
+  },
+  {
+   "tex": "\\mu",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "F",
+   "display": false
+  },
+  {
+   "tex": "I",
+   "display": false
+  },
+  {
+   "tex": "\\Phi_1<\\Phi_2",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "\\Phi_k",
+   "display": false
+  },
+  {
+   "tex": "\\Phi_k\\to B_k\\to",
+   "display": false
+  },
+  {
+   "tex": "H_k\\to F_k=H_k\\cdot l",
+   "display": false
+  },
+  {
+   "tex": "(\\Phi_1,F_1)",
+   "display": false
+  },
+  {
+   "tex": "(\\Phi_2,F_2)",
+   "display": false
+  },
+  {
+   "tex": "F",
+   "display": false
+  },
+  {
+   "tex": "\\Phi",
+   "display": false
+  },
+  {
+   "tex": "B_a<B<B_b",
+   "display": false
+  },
+  {
+   "tex": "H_c",
+   "display": false
+  },
+  {
+   "tex": "\\Sigma U_M=\\Sigma F=NI",
+   "display": false
+  },
+  {
+   "tex": "Hl",
+   "display": false
+  },
+  {
+   "tex": "\\mathrm d\\Psi/\\mathrm dt",
+   "display": false
+  },
+  {
+   "tex": "N\\mathrm d\\Phi/\\mathrm dt",
+   "display": false
+  },
+  {
+   "tex": "L\\mathrm di/\\mathrm dt",
+   "display": false
+  },
+  {
+   "tex": "L",
+   "display": false
+  },
+  {
+   "tex": "e=Blv",
+   "display": false
+  },
+  {
+   "tex": "-\\mathrm d\\Phi/\\mathrm dt",
+   "display": false
+  },
+  {
+   "tex": "\\Phi=Blx",
+   "display": false
+  },
+  {
+   "tex": "x",
+   "display": false
+  },
+  {
+   "tex": "X_L=\\omega L",
+   "display": false
+  },
+  {
+   "tex": "\\mu",
+   "display": false
+  },
+  {
+   "tex": "\\mu",
+   "display": false
+  },
+  {
+   "tex": "e>u",
+   "display": false
+  },
+  {
+   "tex": "u>e",
+   "display": false
+  },
+  {
+   "tex": "\\Phi\\to B=\\Phi/S",
+   "display": false
+  },
+  {
+   "tex": "S",
+   "display": false
+  },
+  {
+   "tex": "H",
+   "display": false
+  },
+  {
+   "tex": "l=2\\pi r",
+   "display": false
+  },
+  {
+   "tex": "F=Hl",
+   "display": false
+  },
+  {
+   "tex": "N=F/I",
+   "display": false
+  },
+  {
+   "tex": "H",
+   "display": false
+  },
+  {
+   "tex": "F",
+   "display": false
+  },
+  {
+   "tex": "\\Phi",
+   "display": false
+  },
+  {
+   "tex": "\\mu_0",
+   "display": false
+  },
+  {
+   "tex": "R_m",
+   "display": false
+  },
+  {
+   "tex": "\\Phi",
+   "display": false
+  },
+  {
+   "tex": "I",
+   "display": false
+  },
+  {
+   "tex": "e=-N\\mathrm d\\Phi/\\mathrm dt",
+   "display": false
+  },
+  {
+   "tex": "\\Phi=BS\\cos\\theta",
+   "display": false
+  },
+  {
+   "tex": "\\theta=\\omega t",
+   "display": false
+  },
+  {
+   "tex": "\\omega=2\\pi n/60",
+   "display": false
+  },
+  {
+   "tex": "E_m=NB S\\omega",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "E_m/\\sqrt2",
+   "display": false
+  },
+  {
+   "tex": "S=a\\times b",
+   "display": false
+  },
+  {
+   "tex": "\\Phi=\\Phi_m\\sin\\omega t",
+   "display": false
+  },
+  {
+   "tex": "\\Phi_m=B_mS",
+   "display": false
+  },
+  {
+   "tex": "e=-N\\mathrm d\\Phi/\\mathrm dt",
+   "display": false
+  },
+  {
+   "tex": "\\cos 60°",
+   "display": false
+  },
+  {
+   "tex": "\\cos60°=\\tfrac12",
+   "display": false
+  },
+  {
+   "tex": "\\theta",
+   "display": false
+  },
+  {
+   "tex": "F_e=Bli",
+   "display": false
+  },
+  {
+   "tex": "B",
+   "display": false
+  },
+  {
+   "tex": "l",
+   "display": false
+  },
+  {
+   "tex": "i",
+   "display": false
+  },
+  {
+   "tex": "T=Blir",
+   "display": false
+  },
+  {
+   "tex": "r",
+   "display": false
+  },
+  {
+   "tex": "T(\\theta)",
+   "display": false
+  },
+  {
+   "tex": "L=N^2/R_m",
+   "display": false
+  },
+  {
+   "tex": "R_m=l/(\\mu S)",
+   "display": false
+  },
+  {
+   "tex": "\\mu=\\mu_r\\mu_0",
+   "display": false
+  },
+  {
+   "tex": "l=2\\pi r",
+   "display": false
+  },
+  {
+   "tex": "S=20\\mathrm{mm}\\times20\\mathrm{mm}",
+   "display": false
+  },
+  {
+   "tex": "\\mu_r=100",
+   "display": false
+  }
+ ],
+ "figures": []
+}

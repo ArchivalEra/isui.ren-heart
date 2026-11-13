@@ -1,0 +1,135 @@
+{
+ "url": "课程总览/电路原理/课堂笔记/10-12-习题册与等效变换.html",
+ "title": "10-12 习题册与等效变换",
+ "math": [
+  {
+   "tex": "5I_1",
+   "display": false
+  },
+  {
+   "tex": "I_1",
+   "display": false
+  },
+  {
+   "tex": "5I_1-10I_1-1=0",
+   "display": false
+  },
+  {
+   "tex": "I_1=-0.2",
+   "display": false
+  },
+  {
+   "tex": "I_1",
+   "display": false
+  },
+  {
+   "tex": "-2",
+   "display": false
+  },
+  {
+   "tex": "I_2",
+   "display": false
+  },
+  {
+   "tex": "10I_2-(-2)-50=0",
+   "display": false
+  },
+  {
+   "tex": "I_2=4.8",
+   "display": false
+  },
+  {
+   "tex": "I_1+I_2=4.6",
+   "display": false
+  },
+  {
+   "tex": "P=-UI=-(-2)\\times4.6",
+   "display": false
+  },
+  {
+   "tex": "3I",
+   "display": false
+  },
+  {
+   "tex": "I",
+   "display": false
+  },
+  {
+   "tex": "3I",
+   "display": false
+  },
+  {
+   "tex": "I",
+   "display": false
+  },
+  {
+   "tex": "2I",
+   "display": false
+  },
+  {
+   "tex": "2I",
+   "display": false
+  },
+  {
+   "tex": "-2I",
+   "display": false
+  },
+  {
+   "tex": "I",
+   "display": false
+  },
+  {
+   "tex": "10I+10-5I=0",
+   "display": false
+  },
+  {
+   "tex": "I=-2",
+   "display": false
+  },
+  {
+   "tex": "6",
+   "display": false
+  },
+  {
+   "tex": "U",
+   "display": false
+  },
+  {
+   "tex": "2\\times(-6)+5\\times(-10)-U=0",
+   "display": false
+  },
+  {
+   "tex": "U=-22",
+   "display": false
+  },
+  {
+   "tex": "P=UI",
+   "display": false
+  },
+  {
+   "tex": "I",
+   "display": false
+  },
+  {
+   "tex": "U",
+   "display": false
+  },
+  {
+   "tex": "I_1",
+   "display": false
+  },
+  {
+   "tex": "U",
+   "display": false
+  },
+  {
+   "tex": "\\dfrac{1}{R}=\\dfrac{1}{R_1}+\\dfrac{1}{R_2}+\\cdots",
+   "display": false
+  },
+  {
+   "tex": "U",
+   "display": false
+  }
+ ],
+ "figures": []
+}
