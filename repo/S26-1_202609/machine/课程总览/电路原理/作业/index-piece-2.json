@@ -1,0 +1,1 @@
+{"url":"课程总览/电路原理/作业/index.html","title":"作业","section":"","body":"=<源文件mtime>`（坏缓存自愈），页面内**只写** `figures/xxx.ext`；\n  引用的图磁盘上不存在时构建期会显式警告（多半是白名单漏了 → 从未入库）。\n- 公式一律写 LaTeX（`\\dot U`、`\\dot I`），**不要用 unicode 组合字符**（`U̇`、`İ`）——\n  KaTeX 不认，会渲染成红色错误块（构建期 katex-error 计数会报出来）。\n"}

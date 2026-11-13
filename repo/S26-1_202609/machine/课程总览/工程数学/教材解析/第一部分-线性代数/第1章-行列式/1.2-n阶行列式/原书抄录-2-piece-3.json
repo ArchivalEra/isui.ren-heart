@@ -1,0 +1,1 @@
+{"url":"课程总览/工程数学/教材解析/第一部分-线性代数/第1章-行列式/1.2-n阶行列式.html","title":"1.2 n阶行列式","section":"原书抄录","body":"c1i c_i+c_1}\n\\begin{vmatrix}\n1-\\sum\\limits_{i=2}^{n}\\frac1i&1&1&\\cdots&1\\\\\n0&2&0&\\cdots&0\\\\\n0&0&3&\\cdots&0\\\\\n\\vdots&\\vdots&\\vdots&&\\vdots\\\\\n0&0&0&\\cdots&n\n\\end{vmatrix}\n=\\left(1-\\sum_{i=2}^{n}\\frac1i\\right)\\cdot n!.$$"}
