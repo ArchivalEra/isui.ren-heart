@@ -1,17 +1,39 @@
 {
-	"generatedAt": "2026-11-13T20:40:10.484Z",
+	"generatedAt": "2026-11-14T08:00:19.878Z",
 	"acceleratedDirs": ["Octave", "S26-1_202609"],
 	"entries": [
+		{
+			"name": "reviewly-nsh",
+			"pages": "absent",
+			"accelerated": false,
+			"pushedAt": "2026-11-14T04:46:36Z",
+			"status": null,
+			"description": "A nsh fork of reviewly.I'm gonna use it on my phone and web and Debian and maybe everywhere",
+			"language": null,
+			"url": "https://github.com/ArchivalEra/reviewly-nsh",
+			"icon": ""
+		},
 		{
 			"name": "Static-Contract",
 			"pages": "absent",
 			"accelerated": false,
-			"pushedAt": "2026-11-13T16:28:47Z",
+			"pushedAt": "2026-11-14T03:19:50Z",
 			"status": null,
 			"description": "apt-style contract for static distribution",
 			"language": "Python",
 			"url": "https://github.com/ArchivalEra/Static-Contract",
 			"icon": ""
+		},
+		{
+			"name": "isui.ren-heart",
+			"pages": "ready",
+			"accelerated": false,
+			"pushedAt": "2026-11-13T20:41:03Z",
+			"status": "built",
+			"description": "isui.ren 的站点心脏：EdgeOne Pages 静态源、边缘中间件与跨仓部署链",
+			"language": "Python",
+			"url": "https://github.com/ArchivalEra/isui.ren-heart",
+			"icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMTIgMjAuNUMxMiAyMC41IDQgMTUuNCA0IDEwLjIgNCA3LjYgNiA1LjUgOC42IDUuNWMxLjUgMCAyLjguNyAzLjQgMS44LjYtMS4xIDEuOS0xLjggMy40LTEuOEMxOCA1LjUgMjAgNy42IDIwIDEwLjJjMCA1LjItOCAxMC4zLTggMTAuM1oiLz48L3N2Zz4="
 		},
 		{
 			"name": "Einfacht",
@@ -102,17 +124,6 @@
 			"icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMTIgMTguMmguMDEiLz48cGF0aCBkPSJNOC42IDE0LjZhNC45IDQuOSAwIDAgMSA2LjggMCIvPjxwYXRoIGQ9Ik01LjYgMTEuNGE5LjIgOS4yIDAgMCAxIDEyLjggMCIvPjxwYXRoIGQ9Ik0yLjkgOC40YTEzLjQgMTMuNCAwIDAgMSAxOC4yIDAiLz48L3N2Zz4="
 		},
 		{
-			"name": "isui.ren-heart",
-			"pages": "ready",
-			"accelerated": false,
-			"pushedAt": "2026-11-13T14:54:23Z",
-			"status": "built",
-			"description": "isui.ren 的站点心脏：EdgeOne Pages 静态源、边缘中间件与跨仓部署链",
-			"language": "Python",
-			"url": "https://github.com/ArchivalEra/isui.ren-heart",
-			"icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMTIgMjAuNUMxMiAyMC41IDQgMTUuNCA0IDEwLjIgNCA3LjYgNiA1LjUgOC42IDUuNWMxLjUgMCAyLjguNyAzLjQgMS44LjYtMS4xIDEuOS0xLjggMy40LTEuOEMxOCA1LjUgMjAgNy42IDIwIDEwLjJjMCA1LjItOCAxMC4zLTggMTAuM1oiLz48L3N2Zz4="
-		},
-		{
 			"name": "newifi3-immortalwrt-personal",
 			"pages": "ready",
 			"accelerated": false,
@@ -155,17 +166,6 @@
 			"language": "Shell",
 			"url": "https://github.com/ArchivalEra/clearmail",
 			"icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cmVjdCB4PSIzLjUiIHk9IjUuNSIgd2lkdGg9IjE3IiBoZWlnaHQ9IjEzIiByeD0iMi4yIi8+PHBhdGggZD0iTTQuMiA3LjJMMTIgMTNsNy44LTUuOCIvPjwvc3ZnPg=="
-		},
-		{
-			"name": "Clouddrive-as-Origin",
-			"pages": "ready",
-			"accelerated": false,
-			"pushedAt": "2026-11-13T14:53:34Z",
-			"status": "built",
-			"description": "",
-			"language": "Rust",
-			"url": "https://github.com/ArchivalEra/Clouddrive-as-Origin",
-			"icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNNy42IDE4LjVhNCA0IDAgMCAxLS42LTcuOTRBNS42IDUuNiAwIDAgMSAxNy44IDkuOWEzLjg1IDMuODUgMCAwIDEtLjkgOC42WiIvPjwvc3ZnPg=="
 		},
 		{
 			"name": "isui.ren-Bahnhof",
