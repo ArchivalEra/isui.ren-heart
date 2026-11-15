@@ -1,12 +1,56 @@
 {
-	"generatedAt": "2026-11-14T23:21:59.104Z",
+	"generatedAt": "2026-11-15T04:55:13.830Z",
 	"acceleratedDirs": ["Octave", "S26-1_202609"],
 	"entries": [
+		{
+			"name": "isui.ren-Bahnhof",
+			"pages": "ready",
+			"accelerated": false,
+			"pushedAt": "2026-11-15T04:51:59Z",
+			"status": "built",
+			"description": "isui.ren 站点中央调度与导航短链分发中枢 🚉",
+			"language": "TypeScript",
+			"url": "https://github.com/ArchivalEra/isui.ren-Bahnhof",
+			"icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cmVjdCB4PSI1IiB5PSIzLjUiIHdpZHRoPSIxNCIgaGVpZ2h0PSIxMi41IiByeD0iMy4yIi8+PHBhdGggZD0iTTUgOS41aDE0Ii8+PHBhdGggZD0iTTkuMiAxMi44aC4wMU0xNC44IDEyLjhoLjAxIi8+PHBhdGggZD0iTTguNSAxNmwtMiA0LjVNMTUuNSAxNmwyIDQuNU05LjUgMjAuNWg1Ii8+PC9zdmc+"
+		},
+		{
+			"name": "My-Shirone-Plugins",
+			"pages": "ready",
+			"accelerated": false,
+			"pushedAt": "2026-11-15T04:51:32Z",
+			"status": "built",
+			"description": "Plugins, extensions, and enhancements for the Shirone blog theme ecosystem.",
+			"language": "Python",
+			"url": "https://github.com/ArchivalEra/My-Shirone-Plugins",
+			"icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNOS41IDN2NS41TTE0LjUgM3Y1LjUiLz48cGF0aCBkPSJNNi41IDguNWgxMXYzLjJhNS41IDUuNSAwIDAgMS0xMSAwWiIvPjxwYXRoIGQ9Ik0xMiAxNS43djQuOCIvPjwvc3ZnPg=="
+		},
+		{
+			"name": "Mijo",
+			"pages": "absent",
+			"accelerated": false,
+			"pushedAt": "2026-11-15T04:49:48Z",
+			"status": null,
+			"description": "a git catalogue for every human and machine",
+			"language": "JavaScript",
+			"url": "https://github.com/ArchivalEra/Mijo",
+			"icon": ""
+		},
+		{
+			"name": "Einfacht",
+			"pages": "absent",
+			"accelerated": false,
+			"pushedAt": "2026-11-15T04:12:29Z",
+			"status": null,
+			"description": "让 agent 的每句「现在如此」都能被复跑证明 —— 反幻觉事实系统：事实台账 / 翻案台账 / 悬案台账 + 必须能红的闸门",
+			"language": "Python",
+			"url": "https://github.com/ArchivalEra/Einfacht",
+			"icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cmVjdCB4PSI2LjUiIHk9IjQuNSIgd2lkdGg9IjExIiBoZWlnaHQ9IjE1LjUiIHJ4PSIyLjIiLz48cGF0aCBkPSJNOS41IDMuNWg1djIuMmgtNXoiLz48cGF0aCBkPSJNOS4zIDEyLjhsMS45IDEuOSAzLjYtNCIvPjwvc3ZnPg=="
+		},
 		{
 			"name": "Static-Contract",
 			"pages": "absent",
 			"accelerated": false,
-			"pushedAt": "2026-11-14T22:27:47Z",
+			"pushedAt": "2026-11-15T02:42:13Z",
 			"status": null,
 			"description": "apt-style contract for static distribution",
 			"language": "Python",
@@ -14,10 +58,65 @@
 			"icon": ""
 		},
 		{
+			"name": "LLVM-wasm",
+			"pages": "absent",
+			"accelerated": false,
+			"pushedAt": "2026-11-15T02:17:25Z",
+			"status": null,
+			"description": "",
+			"language": "Python",
+			"url": "https://github.com/ArchivalEra/LLVM-wasm",
+			"icon": ""
+		},
+		{
+			"name": "Octave-Full-Wasm",
+			"pages": "absent",
+			"accelerated": false,
+			"pushedAt": "2026-11-15T02:14:49Z",
+			"status": null,
+			"description": "浏览器里跑满功能 GNU Octave 11.3.0：wasm64 + 多线程 + OpenBLAS 四车道自动选档",
+			"language": "JavaScript",
+			"url": "https://github.com/ArchivalEra/Octave-Full-Wasm",
+			"icon": ""
+		},
+		{
+			"name": "Octave-UI",
+			"pages": "ready",
+			"accelerated": false,
+			"pushedAt": "2026-11-15T02:10:54Z",
+			"status": null,
+			"description": "",
+			"language": "JavaScript",
+			"url": "https://github.com/ArchivalEra/Octave-UI",
+			"icon": ""
+		},
+		{
+			"name": "S26-1_202609",
+			"pages": "absent",
+			"accelerated": true,
+			"pushedAt": "2026-11-15T01:44:46Z",
+			"status": null,
+			"description": "一种很便宜的，OKF0.2格式的知识库，人类或机器都能看懂",
+			"language": "JavaScript",
+			"url": "https://github.com/ArchivalEra/S26-1_202609",
+			"icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMTIgN2MtMS40LTEuMi0zLjQtMS45LTUuNi0xLjktLjcgMC0xLjQuMDYtMiAuMTlWMTguM2MuNi0uMTIgMS4zLS4xOSAyLS4xOSAyLjIgMCA0LjIuNyA1LjYgMS45IDEuNC0xLjIgMy40LTEuOSA1LjYtMS45LjcgMCAxLjQuMDcgMiAuMTlWNS4yOWMtLjYtLjEzLTEuMy0uMTktMi0uMTktMi4yIDAtNC4yLjctNS42IDEuOVoiLz48cGF0aCBkPSJNMTIgN3YxMyIvPjwvc3ZnPg=="
+		},
+		{
+			"name": "uTLS-Gone",
+			"pages": "absent",
+			"accelerated": false,
+			"pushedAt": "2026-11-15T01:40:01Z",
+			"status": null,
+			"description": "uTLS 的 Rust 复刻与指纹验收：逐字节对拍、REALITY 对线与事实台账",
+			"language": "Rust",
+			"url": "https://github.com/ArchivalEra/uTLS-Gone",
+			"icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNNSAxMmE3IDcgMCAwIDEgMTQgMCIvPjxwYXRoIGQ9Ik04LjUgMTIuNWEzLjUgMy41IDAgMCAxIDcgMHYyLjUiLz48cGF0aCBkPSJNMTIgMTV2NCIvPjwvc3ZnPg=="
+		},
+		{
 			"name": "isui.ren-heart",
 			"pages": "ready",
 			"accelerated": false,
-			"pushedAt": "2026-11-14T18:52:41Z",
+			"pushedAt": "2026-11-14T23:22:45Z",
 			"status": "built",
 			"description": "isui.ren 的站点心脏：EdgeOne Pages 静态源、边缘中间件与跨仓部署链",
 			"language": "Python",
@@ -67,61 +166,6 @@
 			"language": "JavaScript",
 			"url": "https://github.com/ArchivalEra/W-o_U",
 			"icon": ""
-		},
-		{
-			"name": "uTLS-Gone",
-			"pages": "absent",
-			"accelerated": false,
-			"pushedAt": "2026-11-14T14:40:32Z",
-			"status": null,
-			"description": "uTLS 的 Rust 复刻与指纹验收：逐字节对拍、REALITY 对线与事实台账",
-			"language": "Rust",
-			"url": "https://github.com/ArchivalEra/uTLS-Gone",
-			"icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNNSAxMmE3IDcgMCAwIDEgMTQgMCIvPjxwYXRoIGQ9Ik04LjUgMTIuNWEzLjUgMy41IDAgMCAxIDcgMHYyLjUiLz48cGF0aCBkPSJNMTIgMTV2NCIvPjwvc3ZnPg=="
-		},
-		{
-			"name": "Einfacht",
-			"pages": "absent",
-			"accelerated": false,
-			"pushedAt": "2026-11-13T15:46:54Z",
-			"status": null,
-			"description": "让 agent 的每句「现在如此」都能被复跑证明 —— 反幻觉事实系统：事实台账 / 翻案台账 / 悬案台账 + 必须能红的闸门",
-			"language": "Python",
-			"url": "https://github.com/ArchivalEra/Einfacht",
-			"icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cmVjdCB4PSI2LjUiIHk9IjQuNSIgd2lkdGg9IjExIiBoZWlnaHQ9IjE1LjUiIHJ4PSIyLjIiLz48cGF0aCBkPSJNOS41IDMuNWg1djIuMmgtNXoiLz48cGF0aCBkPSJNOS4zIDEyLjhsMS45IDEuOSAzLjYtNCIvPjwvc3ZnPg=="
-		},
-		{
-			"name": "LLVM-wasm",
-			"pages": "absent",
-			"accelerated": false,
-			"pushedAt": "2026-11-13T15:43:50Z",
-			"status": null,
-			"description": "",
-			"language": "Python",
-			"url": "https://github.com/ArchivalEra/LLVM-wasm",
-			"icon": ""
-		},
-		{
-			"name": "Mijo",
-			"pages": "absent",
-			"accelerated": false,
-			"pushedAt": "2026-11-13T15:30:45Z",
-			"status": null,
-			"description": "a git catalogue for every human and machine",
-			"language": "JavaScript",
-			"url": "https://github.com/ArchivalEra/Mijo",
-			"icon": ""
-		},
-		{
-			"name": "S26-1_202609",
-			"pages": "absent",
-			"accelerated": true,
-			"pushedAt": "2026-11-13T15:22:21Z",
-			"status": null,
-			"description": "一种很便宜的，OKF0.2格式的知识库，人类或机器都能看懂",
-			"language": "JavaScript",
-			"url": "https://github.com/ArchivalEra/S26-1_202609",
-			"icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMTIgN2MtMS40LTEuMi0zLjQtMS45LTUuNi0xLjktLjcgMC0xLjQuMDYtMiAuMTlWMTguM2MuNi0uMTIgMS4zLS4xOSAyLS4xOSAyLjIgMCA0LjIuNyA1LjYgMS45IDEuNC0xLjIgMy40LTEuOSA1LjYtMS45LjcgMCAxLjQuMDcgMiAuMTlWNS4yOWMtLjYtLjEzLTEuMy0uMTktMi0uMTktMi4yIDAtNC4yLjctNS42IDEuOVoiLz48cGF0aCBkPSJNMTIgN3YxMyIvPjwvc3ZnPg=="
 		},
 		{
 			"name": "Anti-Laborer-Skills",
@@ -190,39 +234,6 @@
 			"icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cmVjdCB4PSIzLjUiIHk9IjUuNSIgd2lkdGg9IjE3IiBoZWlnaHQ9IjEzIiByeD0iMi4yIi8+PHBhdGggZD0iTTQuMiA3LjJMMTIgMTNsNy44LTUuOCIvPjwvc3ZnPg=="
 		},
 		{
-			"name": "isui.ren-Bahnhof",
-			"pages": "ready",
-			"accelerated": false,
-			"pushedAt": "2026-11-13T14:53:16Z",
-			"status": "built",
-			"description": "isui.ren 站点中央调度与导航短链分发中枢 🚉",
-			"language": "TypeScript",
-			"url": "https://github.com/ArchivalEra/isui.ren-Bahnhof",
-			"icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cmVjdCB4PSI1IiB5PSIzLjUiIHdpZHRoPSIxNCIgaGVpZ2h0PSIxMi41IiByeD0iMy4yIi8+PHBhdGggZD0iTTUgOS41aDE0Ii8+PHBhdGggZD0iTTkuMiAxMi44aC4wMU0xNC44IDEyLjhoLjAxIi8+PHBhdGggZD0iTTguNSAxNmwtMiA0LjVNMTUuNSAxNmwyIDQuNU05LjUgMjAuNWg1Ii8+PC9zdmc+"
-		},
-		{
-			"name": "My-Shirone-Plugins",
-			"pages": "ready",
-			"accelerated": false,
-			"pushedAt": "2026-11-13T14:53:12Z",
-			"status": "built",
-			"description": "Plugins, extensions, and enhancements for the Shirone blog theme ecosystem.",
-			"language": "Python",
-			"url": "https://github.com/ArchivalEra/My-Shirone-Plugins",
-			"icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNOS41IDN2NS41TTE0LjUgM3Y1LjUiLz48cGF0aCBkPSJNNi41IDguNWgxMXYzLjJhNS41IDUuNSAwIDAgMS0xMSAwWiIvPjxwYXRoIGQ9Ik0xMiAxNS43djQuOCIvPjwvc3ZnPg=="
-		},
-		{
-			"name": "Octave-UI",
-			"pages": "ready",
-			"accelerated": false,
-			"pushedAt": "2026-11-13T14:53:08Z",
-			"status": null,
-			"description": "",
-			"language": "JavaScript",
-			"url": "https://github.com/ArchivalEra/Octave-UI",
-			"icon": ""
-		},
-		{
 			"name": "cachyos-kernel-debian-clang",
 			"pages": "absent",
 			"accelerated": false,
@@ -232,17 +243,6 @@
 			"language": "Shell",
 			"url": "https://github.com/ArchivalEra/cachyos-kernel-debian-clang",
 			"icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSIzLjEiLz48cGF0aCBkPSJNMTIgMy4ydjIuNk0xMiAxOC4ydjIuNk0zLjIgMTJoMi42TTE4LjIgMTJoMi42TTYuMSA2LjFsMS45IDEuOU0xNiAxNmwxLjkgMS45TTE3LjkgNi4xTDE2IDhNOCAxNmwtMS45IDEuOSIvPjwvc3ZnPg=="
-		},
-		{
-			"name": "Octave-Full-Wasm",
-			"pages": "absent",
-			"accelerated": false,
-			"pushedAt": "2026-11-13T14:52:18Z",
-			"status": null,
-			"description": "浏览器里跑满功能 GNU Octave 11.3.0：wasm64 + 多线程 + OpenBLAS 四车道自动选档",
-			"language": "JavaScript",
-			"url": "https://github.com/ArchivalEra/Octave-Full-Wasm",
-			"icon": ""
 		},
 		{
 			"name": "Octave-Forge-Shelf",
