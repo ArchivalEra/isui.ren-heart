@@ -1,23 +1,12 @@
 {
-	"generatedAt": "2026-11-15T12:00:34.833Z",
+	"generatedAt": "2026-11-15T12:37:10.214Z",
 	"acceleratedDirs": ["Octave", "S26-1_202609"],
 	"entries": [
-		{
-			"name": "Static-Contract",
-			"pages": "absent",
-			"accelerated": false,
-			"pushedAt": "2026-11-15T10:58:17Z",
-			"status": null,
-			"description": "apt-style contract for static distribution",
-			"language": "Python",
-			"url": "https://github.com/ArchivalEra/Static-Contract",
-			"icon": ""
-		},
 		{
 			"name": "isui.ren-heart",
 			"pages": "ready",
 			"accelerated": false,
-			"pushedAt": "2026-11-15T08:27:06Z",
+			"pushedAt": "2026-11-15T12:36:46Z",
 			"status": "built",
 			"description": "isui.ren 的站点心脏：EdgeOne Pages 静态源、边缘中间件与跨仓部署链",
 			"language": "Python",
@@ -28,11 +17,22 @@
 			"name": "Mijo",
 			"pages": "absent",
 			"accelerated": false,
-			"pushedAt": "2026-11-15T06:20:57Z",
+			"pushedAt": "2026-11-15T12:35:46Z",
 			"status": null,
 			"description": "a git catalogue for every human and machine",
 			"language": "JavaScript",
 			"url": "https://github.com/ArchivalEra/Mijo",
+			"icon": ""
+		},
+		{
+			"name": "Static-Contract",
+			"pages": "absent",
+			"accelerated": false,
+			"pushedAt": "2026-11-15T10:58:17Z",
+			"status": null,
+			"description": "apt-style contract for static distribution",
+			"language": "Python",
+			"url": "https://github.com/ArchivalEra/Static-Contract",
 			"icon": ""
 		},
 		{
