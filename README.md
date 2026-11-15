@@ -19,7 +19,8 @@ isui.ren 的入口页（`/heart`）：tayori 粉丝站的门面——三球队�
   根路径跳转由 `edgeone.json` 的 301 承担（原来靠 `index.html` 的 JS），
   这样删掉 `index.html` 就能破除 EdgeOne 的**全局** 404→index 兜底。
 补斜杠那道 301 由
-  `site-root/edgeone.json` 声明（平台机制，跟 `/blog → /Blog` 同一处）——
+  `site-root/edgeone.json` 声明（平台机制，与 `/mangomesa → /MangoMesa`
+  等表项同一处）——
   EO 静态层不自动补斜杠（实测 `/static` 返回 200 而非 301），而页面全是
   相对链接且无 `<base>`，缺斜杠时浏览器把 `contract/x.md` 解析成
   `/contract/x.md`，落到 611B 兜底页且**返回 200**，表现为「链接点不开」。

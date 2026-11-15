@@ -36,9 +36,9 @@ performance-sensitive places get no compromises.
   `index.html`), so `index.html` can go and EdgeOne's **global** 404-to-index
   fallback goes with it.
 The trailing-slash 301 is declared in
-  `site-root/edgeone.json` — the platform mechanism, the same place that
-  serves `/blog → /Blog`. EdgeOne's static layer does not add the slash
-  itself (measured: 200, not 301), and the
+  `site-root/edgeone.json` — the platform mechanism, the same table
+  that carries `/mangomesa → /MangoMesa`. EdgeOne's static layer does
+  not add the slash itself (measured: 200, not 301), and the
   page uses relative links with no `<base>`, so without the slash the
   browser resolves `contract/x.md` to `/contract/x.md`, hits the 611B
   fallback page and — crucially — **gets a 200**, which reads as "link
