@@ -81,22 +81,8 @@ python3 serve.py 8080          # http://127.0.0.1:8080/#/heart
 
 推 `main` → Actions 构建 wasm + dist → 推 `deploy` 分支 → EdgeOne Makers 拉取部署。
 
-`deploy` 分支是**多个 slot 仓共用的平面**，heart 只拥有根目录（`heart/` 与站点根
-文件），其余目录由各自的仓维护。「各仓自己的产物自己写，heart 只写自己那份」——
-这条纪律是这样落地的：`--force` 重建整条分支已退役（旧实现靠 `PRESERVE_SLOTS`
-手写名单抢救别的 slot，漏一个就永久丢失，2026-08-22 冲掉过 `Bahnhof/`、
-2026-10-08 冲掉过 `repo/`）；现在改为增量推送 + `git pull --rebase`；切分支前先 `git clean -ffdx`——构建会留下
-未跟踪产物（wasm-bindgen 的 tarball 之类），不清掉 `git checkout deploy` 会被
-「untracked files would be overwritten」拒掉。
-`/Mijo` 由本 workflow 主动从 `ArchivalEra/Mijo` 拉取 `site/` 派生——不是权限问题
-（dispatch token 对本仓有写权限），而是**单点写入**：让 heart 一个人写 deploy，
-避免多个仓同时改同一条分支。拉下来的 `site/` 先落在独立的 `/tmp/mijo-slot`，
-到最后的拷贝阶段才并进去——放进 `/tmp/deploy-out` 会被那一步的 `rm -rf` 删掉。
-另有独立加速域名 `static.isui.ren` 由 EdgeOne 规则引擎按路径分流（站点文件回 `raw` 的
-`deploy-eo` 分支，release 路径回 `github.com` 并跟随 302 取字节）。
-
-规则引擎的坑很深，改这个 zone 之前**必读** `docs/edgeone-rules-verified-config.md`
-（核心：多条规则是**合并**不是独占，高优先级必须显式声明每一个要改的动作）。
+`deploy` 是多个 slot 仓共用的平面，heart 只写自己那份（`heart/` 与站点根文件）。
+为什么这样设计、踩过哪些坑，见 [`HISTORY.md`](HISTORY.md)。
 
 冒烟验证（**注意 `manifest.json` 在 release 路径下，不是站点根**——打
 `/manifest.json` 得 404 是正确的，别当故障）：

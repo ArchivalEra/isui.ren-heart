@@ -96,24 +96,10 @@ The app lives under `isui.ren/heart/` (vite `base: "/heart/"`). The site
 root carries the 404 page and the `edgeone.json` redirect table — there is
 no fallback `index.html` any more, so unknown paths return a **real 404**
 instead of being swallowed as 200, and the `/` hop is a 301 from
-`edgeone.json`. The `deploy` branch is a **plane shared by several slot repositories**:
-heart owns only the root (`heart/` and the site-root files), and every other
-directory belongs to its own repo's pipeline. Rebuilding the branch with
-`--force` is retired — the old implementation relied on a hand-written
-`PRESERVE_SLOTS` list to rescue sibling slots, and a missing entry meant
-permanent loss (it wiped `Bahnhof/` on 2026-08-22 and `repo/` on 2026-10-08).
-It is now an incremental push with `git pull --rebase` before pushing, and the
-branch switch is preceded by `git clean -ffdx` — the build leaves untracked
-artifacts (the wasm-bindgen tarball among them), and `git checkout deploy`
-refuses to overwrite them otherwise.
-
-`/Mijo` is pulled by this workflow from
-[ArchivalEra/Mijo](https://github.com/ArchivalEra/Mijo). This is not about
-permissions — the dispatch token can write here — but about **single-writer
-ownership**: only heart writes the deploy branch, so several repos never race
-on the same branch. The fetched `site/` is staged in its own `/tmp/mijo-slot`
-and merged in only at the copy stage — anything placed under `/tmp/deploy-out`
-is wiped when that directory is rebuilt.
+`edgeone.json`. The `deploy` branch is a plane shared by several slot
+repositories; heart writes only its own part (`heart/` and the site-root files).
+Why it is built that way and which incidents shaped it is in
+[`HISTORY.md`](HISTORY.md).
 
 ## Build / test / preview
 
