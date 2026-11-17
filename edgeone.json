@@ -1,10 +1,169 @@
 {
   "redirects": [
-    { "source": "/", "destination": "/heart/", "statusCode": 301 },
-    { "source": "/mangomesa", "destination": "/MangoMesa", "statusCode": 301 },
-    { "source": "/mangomesa/", "destination": "/MangoMesa/", "statusCode": 301 },
-    { "source": "/Mijo", "destination": "/Mijo/", "statusCode": 301 },
-    { "source": "/mijo", "destination": "/Mijo/", "statusCode": 301 },
-    { "source": "/mijo/", "destination": "/Mijo/", "statusCode": 301 }
+    {
+      "source": "/",
+      "destination": "/heart/",
+      "statusCode": 301
+    },
+    {
+      "source": "/mangomesa",
+      "destination": "/MangoMesa",
+      "statusCode": 301
+    },
+    {
+      "source": "/mangomesa/",
+      "destination": "/MangoMesa/",
+      "statusCode": 301
+    },
+    {
+      "source": "/MIJO",
+      "destination": "/Mijo/",
+      "statusCode": 301
+    },
+    {
+      "source": "/MIJO/",
+      "destination": "/Mijo/",
+      "statusCode": 301
+    },
+    {
+      "source": "/MIJo",
+      "destination": "/Mijo/",
+      "statusCode": 301
+    },
+    {
+      "source": "/MIJo/",
+      "destination": "/Mijo/",
+      "statusCode": 301
+    },
+    {
+      "source": "/MIjO",
+      "destination": "/Mijo/",
+      "statusCode": 301
+    },
+    {
+      "source": "/MIjO/",
+      "destination": "/Mijo/",
+      "statusCode": 301
+    },
+    {
+      "source": "/MIjo",
+      "destination": "/Mijo/",
+      "statusCode": 301
+    },
+    {
+      "source": "/MIjo/",
+      "destination": "/Mijo/",
+      "statusCode": 301
+    },
+    {
+      "source": "/MiJO",
+      "destination": "/Mijo/",
+      "statusCode": 301
+    },
+    {
+      "source": "/MiJO/",
+      "destination": "/Mijo/",
+      "statusCode": 301
+    },
+    {
+      "source": "/MiJo",
+      "destination": "/Mijo/",
+      "statusCode": 301
+    },
+    {
+      "source": "/MiJo/",
+      "destination": "/Mijo/",
+      "statusCode": 301
+    },
+    {
+      "source": "/MijO",
+      "destination": "/Mijo/",
+      "statusCode": 301
+    },
+    {
+      "source": "/MijO/",
+      "destination": "/Mijo/",
+      "statusCode": 301
+    },
+    {
+      "source": "/mIJO",
+      "destination": "/Mijo/",
+      "statusCode": 301
+    },
+    {
+      "source": "/mIJO/",
+      "destination": "/Mijo/",
+      "statusCode": 301
+    },
+    {
+      "source": "/mIJo",
+      "destination": "/Mijo/",
+      "statusCode": 301
+    },
+    {
+      "source": "/mIJo/",
+      "destination": "/Mijo/",
+      "statusCode": 301
+    },
+    {
+      "source": "/mIjO",
+      "destination": "/Mijo/",
+      "statusCode": 301
+    },
+    {
+      "source": "/mIjO/",
+      "destination": "/Mijo/",
+      "statusCode": 301
+    },
+    {
+      "source": "/mIjo",
+      "destination": "/Mijo/",
+      "statusCode": 301
+    },
+    {
+      "source": "/mIjo/",
+      "destination": "/Mijo/",
+      "statusCode": 301
+    },
+    {
+      "source": "/miJO",
+      "destination": "/Mijo/",
+      "statusCode": 301
+    },
+    {
+      "source": "/miJO/",
+      "destination": "/Mijo/",
+      "statusCode": 301
+    },
+    {
+      "source": "/miJo",
+      "destination": "/Mijo/",
+      "statusCode": 301
+    },
+    {
+      "source": "/miJo/",
+      "destination": "/Mijo/",
+      "statusCode": 301
+    },
+    {
+      "source": "/mijO",
+      "destination": "/Mijo/",
+      "statusCode": 301
+    },
+    {
+      "source": "/mijO/",
+      "destination": "/Mijo/",
+      "statusCode": 301
+    },
+    {
+      "source": "/mijo",
+      "destination": "/Mijo/",
+      "statusCode": 301
+    },
+    {
+      "source": "/mijo/",
+      "destination": "/Mijo/",
+      "statusCode": 301
+    }
   ]
 }
