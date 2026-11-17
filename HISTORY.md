@@ -72,3 +72,13 @@ The rule engine's pitfalls are deep. Read
 `docs/edgeone-rules-verified-config.md` before touching this zone — the core
 gotcha is that multiple rules **merge** rather than take exclusive effect, so a
 higher-priority rule must declare explicitly every action it intends to change.
+
+### Why edgeone.json enumerates 32 /Mijo spellings
+
+EdgeOne's static redirect matches case-sensitively and the middleware matcher
+accepts only literal paths plus `:path*`, so there is no wildcard that covers
+"any capitalisation of mijo". The middleware does the case-insensitive
+comparison for the two spellings it can receive (`/mijo`, `/Mijo`); everything
+else (`/MIJO`, `/MiJo/`, …) is caught by explicit redirect entries. They are
+generated from the 16 case permutations rather than typed by hand — if the word
+ever changes, regenerate them, do not extend the list.

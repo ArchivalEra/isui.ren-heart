@@ -102,8 +102,8 @@ Why it is built that way and which incidents shaped it is in
 [`HISTORY.md`](HISTORY.md).
 
 Every `/Mijo` spelling (any capitalisation, with or without the trailing
-slash) normalises to `/Mijo/`. The trailing slash is not cosmetic: without it
-the page renders empty.
+slash - 16 variants each way) normalises to `/Mijo/`. The trailing slash is not
+cosmetic: without it the page renders empty.
 
 ## Build / test / preview
 
