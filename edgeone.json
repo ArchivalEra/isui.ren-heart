@@ -3,7 +3,8 @@
     { "source": "/", "destination": "/heart/", "statusCode": 301 },
     { "source": "/mangomesa", "destination": "/MangoMesa", "statusCode": 301 },
     { "source": "/mangomesa/", "destination": "/MangoMesa/", "statusCode": 301 },
-    { "source": "/mijo", "destination": "/Mijo", "statusCode": 301 },
+    { "source": "/Mijo", "destination": "/Mijo/", "statusCode": 301 },
+    { "source": "/mijo", "destination": "/Mijo/", "statusCode": 301 },
     { "source": "/mijo/", "destination": "/Mijo/", "statusCode": 301 }
   ]
 }
