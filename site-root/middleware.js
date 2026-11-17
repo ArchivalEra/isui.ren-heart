@@ -383,6 +383,20 @@ export async function middleware(context) {
 		return Response.redirect(redirectUrl.toString(), 301);
 	}
 
+	// /Mijo 的写法归一：大小写不敏感 + 必须带尾斜杠，全部 301 到 /Mijo/。
+	//
+	// 为什么必须补尾斜杠：index.html 用相对路径引用 `app.js` 与
+	// `catalogue.json`。在 `/Mijo`（无斜杠）下浏览器把相对路径解析成父目录的
+	// `/app.js` —— 两个资源都 404，页面因此一条数据都渲染不出来（index.html
+	// 的 <tbody> 初始为空，全靠 JS 填充）。实测 /Mijo 返回 200 而非 301，
+	// 正是这个「200 但空白」的来源。
+	const canonicalMijo = "/Mijo/";
+	if (url.pathname !== canonicalMijo && url.pathname.toLowerCase().replace(/\/+$/, "") === "/mijo") {
+		const redirectUrl = new URL(request.url);
+		redirectUrl.pathname = canonicalMijo;
+		return Response.redirect(redirectUrl.toString(), 301);
+	}
+
 	// Reverse-proxy /repo/<repoName>/* to https://archivalera.github.io/<repoName>/*
 	if (url.pathname === "/repo" || url.pathname === "/repo/") {
 		return Response.redirect("https://isui.ren/MangoMesa/projects/", 302);
@@ -872,6 +886,10 @@ export const config = {
 		"/api/mp-ticket",
 		"/repo",
 		"/repo/:path*",
+		// 覆盖 /Mijo、/mijo、/MIJO、/MiJo … 与带不带尾斜杠的全部写法；
+		// 归一化本身在处理函数里做（大小写不敏感 + 补斜杠）。
+		"/[Mm][Ii][Jj][Oo]",
+		"/[Mm][Ii][Jj][Oo]/",
 		"/Bahnhof",
 		// 没有 /static：站点是纯静态树直出；release 字节走 static.isui.ren
 		// （EdgeOne 规则引擎 ModifyOrigin + UpstreamFollowRedirect，见 edgeone 侧配置）。
