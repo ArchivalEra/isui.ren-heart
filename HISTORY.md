@@ -49,6 +49,19 @@ The middleware therefore normalises every spelling that case-insensitively
 equals `mijo`, with or without a trailing slash, to `/Mijo/`. Sub-paths pass
 through, and the canonical path is not redirected, so there is no loop.
 
+Two things made this harder than it looks, both worth remembering:
+
+- **The matcher is not a regex.** It accepts literal paths and `:path*`
+  wildcards. A character class like `[/Mm][Ii][Jj][Oo]` does not merely fail to
+  match — it takes the entire config out, so the middleware silently stops
+  running for every route. The symptom is that your redirects never appear and
+  the static layer answers instead; a quick way to tell them apart is that
+  `Response.redirect` emits an absolute URL while `edgeone.json` emits a
+  relative one.
+- **`edgeone.json` runs before the middleware**, so a stale static rule can
+  pre-empt a correct handler. Its `/mijo` rule used to point at `/Mijo` — the
+  exact URL that renders empty — which walked readers straight into the bug.
+
 ## static.isui.ren is a separate origin
 
 An independent accelerated domain, served by the EdgeOne rule engine which

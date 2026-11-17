@@ -84,6 +84,9 @@ python3 serve.py 8080          # http://127.0.0.1:8080/#/heart
 `deploy` 是多个 slot 仓共用的平面，heart 只写自己那份（`heart/` 与站点根文件）。
 为什么这样设计、踩过哪些坑，见 [`HISTORY.md`](HISTORY.md)。
 
+`/Mijo` 的各种写法（大小写、带不带尾斜杠）都会归一化到 `/Mijo/`——
+尾斜杠不是美观问题，缺了它页面会空白。
+
 冒烟验证（**注意 `manifest.json` 在 release 路径下，不是站点根**——打
 `/manifest.json` 得 404 是正确的，别当故障）：
 

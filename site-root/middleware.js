@@ -886,10 +886,15 @@ export const config = {
 		"/api/mp-ticket",
 		"/repo",
 		"/repo/:path*",
-		// 覆盖 /Mijo、/mijo、/MIJO、/MiJo … 与带不带尾斜杠的全部写法；
-		// 归一化本身在处理函数里做（大小写不敏感 + 补斜杠）。
-		"/[Mm][Ii][Jj][Oo]",
-		"/[Mm][Ii][Jj][Oo]/",
+		// matcher 只接受字面路径与 `:path*` 这类简单通配（不支持正则字符类，
+		// 写了会让整份 config 失效）。大小写无关的判断放在处理函数里：
+		// 下面两条覆盖小写与规范写法，其余大小写变体由 edgeone.json 的精确
+		// redirect 兜底（EdgeOne 的静态 redirect 大小写敏感，无法穷举，
+		// 因此实际生效的主要是这一处 middleware）。
+		"/mijo",
+		"/mijo/:path*",
+		"/Mijo",
+		"/Mijo/:path*",
 		"/Bahnhof",
 		// 没有 /static：站点是纯静态树直出；release 字节走 static.isui.ren
 		// （EdgeOne 规则引擎 ModifyOrigin + UpstreamFollowRedirect，见 edgeone 侧配置）。
