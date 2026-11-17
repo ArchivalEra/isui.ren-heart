@@ -102,8 +102,9 @@ Why it is built that way and which incidents shaped it is in
 [`HISTORY.md`](HISTORY.md).
 
 Every `/Mijo` spelling (any capitalisation, with or without the trailing
-slash - 16 variants each way) normalises to `/Mijo/`. The trailing slash is not
-cosmetic: without it the page renders empty.
+slash) answers 301 to `/Mijo/`. The trailing slash is not cosmetic: without it
+`index.html` resolves its relative `app.js` and `catalogue.json` against the
+parent directory, both 404, and the page renders zero rows.
 
 ## Build / test / preview
 

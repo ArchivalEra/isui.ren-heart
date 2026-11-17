@@ -62,6 +62,11 @@ Two things made this harder than it looks, both worth remembering:
   pre-empt a correct handler. Its `/mijo` rule used to point at `/Mijo` — the
   exact URL that renders empty — which walked readers straight into the bug.
 
+The platform limits behind both bullets (which rule actions the free plan
+refuses, and what the `Condition` grammar accepts) are recorded as hard facts in
+[`STATE.md`](STATE.md) under 已知边界 — read that before designing another
+redirect, because they were measured with tccli and are not negotiable.
+
 ## static.isui.ren is a separate origin
 
 An independent accelerated domain, served by the EdgeOne rule engine which
@@ -72,13 +77,3 @@ The rule engine's pitfalls are deep. Read
 `docs/edgeone-rules-verified-config.md` before touching this zone — the core
 gotcha is that multiple rules **merge** rather than take exclusive effect, so a
 higher-priority rule must declare explicitly every action it intends to change.
-
-### Why edgeone.json enumerates 32 /Mijo spellings
-
-EdgeOne's static redirect matches case-sensitively and the middleware matcher
-accepts only literal paths plus `:path*`, so there is no wildcard that covers
-"any capitalisation of mijo". The middleware does the case-insensitive
-comparison for the two spellings it can receive (`/mijo`, `/Mijo`); everything
-else (`/MIJO`, `/MiJo/`, …) is caught by explicit redirect entries. They are
-generated from the 16 case permutations rather than typed by hand — if the word
-ever changes, regenerate them, do not extend the list.

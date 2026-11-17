@@ -24,6 +24,25 @@ sh gates-selftest.sh                             # 闸门自证
 - **deploy 分支不装 Einfacht**：它是每次重建的产物分支，装任何钩子都会在下次构建时消失。
 - 中间件里的对冲逻辑**2026-10-31 复测有效**（20/20 正常、最慢 4.75s）；此前判为「死代码」的结论已翻案，见 `questions/01`。
 
+### EdgeOne 平台的三个硬限制（2026-11-17 tccli 实测）
+
+给 `/Mijo` 做大小写归一化时逐条试探过，都是**平台不支持**，不是配置写错：
+
+- **`AccessUrlRedirect`（访问级重定向）免费版不可用**。建这类规则直接报
+  `FailedOperation`；同一 Zone 下 `ModifyResponseHeader` 能建，证明 API 本身通、
+  是动作不开放。
+- **`Condition` 不支持函数**。写 `low(${http.request.uri.path})` 报
+  `无效的Condition匹配类型，匹配类型：'low'` —— 只有 `in ['字面值', …]` 这一种形态，
+  没有大小写转换、没有正则。所以 `mijo` 的 16 种大小写排列只能逐条列出。
+- **`edgeone.json` 的静态 redirect 先于 L7 规则、也先于 middleware**。它答出的
+  `Location` 是相对路径，middleware 的 `Response.redirect` 是绝对 URL ——
+  这是区分「谁在回答」的最快判据。后果：写进 `edgeone.json` 的字面路径，
+  middleware 永远收不到，那里的大小写分支对它们而言是死代码。
+
+- **middleware 的 matcher 不是正则**。`[/Mm][Ii][Jj][Oo]` 这种字符类不会「匹配失败」，
+  而是让**整份 config 失效**，middleware 对所有路由静默停机 —— 症状是所有
+  redirect 都不见了、由静态层接管。只能用字面路径与 `:path*`。
+
 <!-- AUTO:FACTS -->
 > 本区块由 `zreflect/facts.py --render-doc` 从 `FACTS.json` 渲染，**不要手改**（pre-commit 会重算并 `git add`）。
 > 正文里的「测出来的数字」只在这里生产：要引用就写 `[[键名]]`，不要手抄数字。
