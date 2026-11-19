@@ -8,6 +8,22 @@ mistake shaped them.
 Read this before changing `deploy.yml`, `site-root/middleware.js`, or the
 EdgeOne rule engine.
 
+## Known limits (measured, not negotiable)
+
+- **The deploy branch carries no Einfacht**: it is rebuilt as an orphan on every
+  build, so any hooks installed there vanish on the next build.
+- **The middleware hedge logic is retested and effective** (2026-10-31: 20/20
+  requests fine, slowest 4.75s); the earlier "dead code" verdict was retracted,
+  see `questions/01`.
+- EdgeOne platform limits measured with tccli on 2026-11-17 (free plan):
+  `AccessUrlRedirect` is unavailable; `Condition` has no functions (only
+  `in ['literal', ...]` — no case folding, no regex, hence the 16 enumerated
+  `/Mijo` spellings); `edgeone.json`'s static redirect runs before L7 rules and
+  the middleware (its `Location` is relative, `Response.redirect` emits an
+  absolute URL — the fastest way to tell who answered); the middleware matcher
+  is not a regex, and a character class invalidates the whole config rather than
+  just failing to match.
+
 ## The deploy branch has a single writer
 
 `deploy` is a shared flat branch: several repositories each ship their own

@@ -1,83 +1,51 @@
-# isui.ren-heart（边缘部署仓）· 活状态
+# STATE · isui.ren-heart（边缘部署仓）此刻是什么样
 
-> **main = 源码，deploy = 构建产物。** Einfacht 只跟 main 跑；deploy 每次被孤儿重建。
-> 机器块由 `zreflect/facts.py --render-doc` 渲染，不要手改。
-
-## 现在是什么
-
-- **中间件**：[[middleware_lines]] 行，含 [[middleware_routes]] 条按 pathname 的路由分支。
-- **站点根**：[[site_root_files]] 个根级静态文件（EdgeOne 直出）。
-- **边缘函数**：[[edge_functions]] 个（独立于 middleware）。
-- **Rust wasm 引擎**：[[rust_sources]] 个源文件。
-
-## 怎么跑
-
-```bash
-python3 zreflect/facts.py                        # 重测并写台账
-python3 zreflect/facts.py --render-doc STATE.md  # 渲染机器块
-python3 zreflect/registry.py --run commit        # 全部闸门
-sh gates-selftest.sh                             # 闸门自证
-```
-
-## 已知边界
-
-- **deploy 分支不装 Einfacht**：它是每次重建的产物分支，装任何钩子都会在下次构建时消失。
-- 中间件里的对冲逻辑**2026-10-31 复测有效**（20/20 正常、最慢 4.75s）；此前判为「死代码」的结论已翻案，见 `questions/01`。
-
-### EdgeOne 平台的三个硬限制（2026-11-17 tccli 实测）
-
-给 `/Mijo` 做大小写归一化时逐条试探过，都是**平台不支持**，不是配置写错：
-
-- **`AccessUrlRedirect`（访问级重定向）免费版不可用**。建这类规则直接报
-  `FailedOperation`；同一 Zone 下 `ModifyResponseHeader` 能建，证明 API 本身通、
-  是动作不开放。
-- **`Condition` 不支持函数**。写 `low(${http.request.uri.path})` 报
-  `无效的Condition匹配类型，匹配类型：'low'` —— 只有 `in ['字面值', …]` 这一种形态，
-  没有大小写转换、没有正则。所以 `mijo` 的 16 种大小写排列只能逐条列出。
-- **`edgeone.json` 的静态 redirect 先于 L7 规则、也先于 middleware**。它答出的
-  `Location` 是相对路径，middleware 的 `Response.redirect` 是绝对 URL ——
-  这是区分「谁在回答」的最快判据。后果：写进 `edgeone.json` 的字面路径，
-  middleware 永远收不到，那里的大小写分支对它们而言是死代码。
-
-- **middleware 的 matcher 不是正则**。`[/Mm][Ii][Jj][Oo]` 这种字符类不会「匹配失败」，
-  而是让**整份 config 失效**，middleware 对所有路由静默停机 —— 症状是所有
-  redirect 都不见了、由静态层接管。只能用字面路径与 `:path*`。
+> main = 源码，deploy = 构建产物；Einfacht 只跟 main 跑。
+> 下面每一行都来自台账。不要把数字抄进散文。不变的规则：[`PRINCIPLES.md`](PRINCIPLES.md)。
+> 部署链的形状为什么这么量、踩过哪些坑：[`HISTORY.md`](HISTORY.md)。
+> 平台硬限制（EdgeOne 规则引擎/重定向）与踩坑记录：[`HISTORY.md`](HISTORY.md)。
 
 <!-- AUTO:FACTS -->
-> 本区块由 `zreflect/facts.py --render-doc` 从 `FACTS.json` 渲染，**不要手改**（pre-commit 会重算并 `git add`）。
-> 正文里的「测出来的数字」只在这里生产：要引用就写 `[[键名]]`，不要手抄数字。
+> This block is rendered by `zreflect/facts.py --render-doc` from `FACTS.json`; **do not edit by hand** (pre-commit recomputes and `git add`s it).
+> 'Measured numbers' in the prose are produced only here: to cite one, write `[[key]]`; never copy the number by hand.
 
-| 键 | 值 | 测于 | 复跑命令 |
+| key | value | measured at | replay cmd |
 |---|---|---|---|
-| `edge_functions` | **2** | 2026-11-17T12:33:21+0800 | `find site-root/edge-functions -name '*.js' 2>/dev/null | wc -l` |
-| `middleware_lines` | **902** | 2026-11-17T12:33:21+0800 | `wc -l < site-root/middleware.js` |
-| `middleware_routes` | **5** | 2026-11-17T12:33:21+0800 | `grep -cE 'url\.pathname[[:space:]]*===?[[:space:]]*"' site-root/middleware.js` |
-| `rust_sources` | **15** | 2026-11-17T12:33:21+0800 | `find web-rust -name '*.rs' -not -path '*/target/*' | wc -l` |
-| `site_root_files` | **5** | 2026-11-17T12:33:21+0800 | `find site-root -maxdepth 1 -type f ! -name '.*' | wc -l` |
+| `core_seal` | `a8af8cbac91847ab...` | 2026-11-19T08:14:57+0800 | `python3 zreflect/registry.py --verify-seal` |
+| `edge_functions` | **2** | 2026-11-19T08:14:57+0800 | `find site-root/edge-functions -name '*.js' 2>/dev/null | wc -l` |
+| `middleware_lines` | **902** | 2026-11-19T08:14:57+0800 | `wc -l < site-root/middleware.js` |
+| `middleware_routes` | **5** | 2026-11-19T08:14:57+0800 | `grep -cE 'url\.pathname[[:space:]]*===?[[:space:]]*"' site-root/middleware.js` |
+| `rust_sources` | **15** | 2026-11-19T08:14:57+0800 | `find web-rust -name '*.rs' -not -path '*/target/*' | wc -l` |
+| `site_root_files` | **5** | 2026-11-19T08:14:57+0800 | `find site-root -maxdepth 1 -type f ! -name '.*' | wc -l` |
 
-5 条事实。
+6 facts.
 <!-- /AUTO:FACTS -->
 
 <!-- AUTO:GATES -->
-> 本区块由 `zreflect/facts.py --render-doc` 从发现式名录（zreflect/registry.py 的声明行）渲染，**不要手改**。
-> 执行面（hooks / CI）读 `registry --run <相位>` —— 相位是声明字段（`runs_at`），不是文件名。
+> This block is rendered by `zreflect/facts.py --render-doc` from the discovered roster; **do not hand-edit**.
+> The execution plane (hooks / CI) reads `registry --run <phase>` -- the phase is a declared field (`runs_at`), not a file name.
 
-| 闸门 | 相位 | 它挡住什么 | 消费的旋钮 |
-|---|---|---|---|
-| `check_ab.py`（A/B 闸门） | commit | A/B 同旗标不变式（非 allow 轴差异 = 混淆变量，A/B 作废） | `REFLECT_AB` |
-| `check_envfile.py`（env 文件闸门） | commit | 守钩子的 REFLECT_* 载体（旋钮 typo / 指向缺失 / 空值） | `REFLECT_ENV_FILE` |
-| `check_facts.py`（事实闸门） | commit | 块一致性 / 裸数字 / 坏引用 | `REFLECT_FACTS`, `REFLECT_DOC`, `REFLECT_NAKED_MIN` |
-| `check_facts_replay.py`（复跑闸门） | commit | 台账 cmd 逐字复跑（裸值契约：stdout 必须等于值） | `REFLECT_FACTS`, `REFLECT_REPLAY`, `REFLECT_REPLAY_TIMEOUT` |
-| `check_instruments.py`（仪器生命周期闸门） | commit | 恒常检测（first_seen）+ 被证伪量法登记 | `REFLECT_INSTRUMENTS`, `REFLECT_INSTRUMENT_DAYS`, `REFLECT_FACTS` |
-| `check_invariants.py`（不变量闸门） | commit | 声明式不变量：仓库文件必须/不得含某片段（grep 级） | `REFLECT_INVARIANTS` |
-| `check_locks.py`（锁定源闸门） | commit | 锁定源清单（URL + 文件 + sha256 的内容指纹） | `REFLECT_LOCKS` |
-| `check_pins.py`（pin 闸门） | commit | 派生树 pin 一致性（stamp commit / dirty / 版本串对读） | `REFLECT_PINS` |
-| `check_questions.py`（悬案闸门） | commit | 未结案的问题必须挂一个能跑的结算件 | `REFLECT_QUESTIONS` |
-| `check_readme_sync.py`（三语 README 闸门） | commit | 语言版本是同一条断言的三份拷贝：结构互链 + 每次推送同批 | `REFLECT_READMES` |
-| `check_retractions.py`（翻案重现检测） | commit | 被推翻的断言不许悄悄回来当现状 | `REFLECT_RETRACTIONS`, `REFLECT_DOCS`, `REFLECT_HISTORY_SECS` |
-| `check_stale.py`（陈旧断言检测） | commit | sha 出处 / 退役名 / 测龄 | `REFLECT_DOCS`, `REFLECT_FACTS`, `REFLECT_HISTORY_SECS`, `REFLECT_RETIRED`, `REFLECT_STALE_DAYS` |
-| `check_world.py`（world 闸门） | commit | 声明式验证对象：多线仓库共享验证环境的世界对账 | `REFLECT_WORLD`, `REFLECT_WORLD_LINE` |
-| `doctor.py`（开工预检 doctor） | start-of-work | 进程 / 端口活性（查会死的东西 ⇒ runs_at=start-of-work，不进 pre-commit） | `REFLECT_DOCTOR`, `REFLECT_DOCTOR_TIMEOUT` |
+| Gate | Phase | What it guards | Knobs consumed | Why it may be off |
+|---|---|---|---|---|
+| `check_ab.py`（A/B gate） | commit | A/B same-flags invariant (a difference outside the allow axis = confounding variable, A/B void) | `REFLECT_AB` | repos that run no A/B experiments do not need it: spec unset => explicitly not enabled |
+| `check_facts.py`（Facts gate） | commit | block agreement / bare numbers / bad citations | `REFLECT_DOC`, `REFLECT_DOCS`, `REFLECT_FACTS`, `REFLECT_NAKED_MIN`, `REFLECT_QUESTIONS` | -- |
+| `check_facts_replay.py`（Replay gate） | commit | ledger cmds re-run verbatim (bare-value contract: stdout must equal the value) | `REFLECT_FACTS`, `REFLECT_REPLAY`, `REFLECT_REPLAY_TIMEOUT` | closes only when REFLECT_REPLAY=off is explicitly set |
+| `check_i18n.py`（language coverage gate） | commit | zero-language core output via M(code) and optional language pack sync/coverage | `REFLECT_I18N_ROOT` | -- |
+| `check_instruments.py`（Instrument lifecycle gate） | commit | constancy detection (first_seen) + falsified-method registry | `REFLECT_INSTRUMENTS`, `REFLECT_INSTRUMENT_DAYS`, `REFLECT_FACTS` | both knobs unset => the specialized mechanism is not enabled (pluggable; this repo turns it on when needed) |
+| `check_invariants.py`（Invariants gate） | commit | declarative invariants: repo files must / must not contain a snippet (grep level) | `REFLECT_INVARIANTS` | repos that write no declarative invariants do not need it: spec unset => explicitly not enabled (pluggable) |
+| `check_lint.py`（Static machine check） | commit | ruff's C901/F/E9/B, criteria in ruff.toml -- the 'all clear' must be re-established by every commit, not handwritten into the ledger from a single manual run (R-004) | -- | ruff not installed on this machine (external tool, not a repo dependency) => explicitly not enabled; CI pip-installs it, and there the gate really runs |
+| `check_locks.py`（Locked-sources gate） | commit | locked-sources list (content fingerprints of URL + file + sha256) | `REFLECT_LOCKS` | repos that do not pin upstream bytes do not need it: spec unset => explicitly not enabled |
+| `check_pins.py`（pin gate） | commit | derived-tree pin consistency (stamp commit / dirty / version string cross-read) | `REFLECT_PINS` | repos without a derived tree do not need it: spec unset => explicitly not enabled |
+| `check_questions.py`（Question ledger gate） | commit | an unresolved question must carry a runnable settler | `REFLECT_QUESTIONS` | -- |
+| `check_readme_sync.py`（Trilingual README gate） | commit | language versions are three copies of one assertion: structural cross-links + same-batch on every push | `REFLECT_READMES` | a repo that sets REFLECT_READMES to an empty list states it has no README group; unset is different and uses the registry default |
+| `check_retractions.py`（Retraction-resurfacing check） | commit | a retracted assertion may not quietly return as the current state | `REFLECT_RETRACTIONS`, `REFLECT_DOCS`, `REFLECT_HISTORY_SECS` | -- |
+| `check_secrets.py`（Secrets gate） | commit | plain-text credential detection with explicit paths and justified exact exemptions | `REFLECT_SECRETS` | a repo that declares no credential-scanning spec keeps this gate off; a spec named explicitly but absent is a configuration error, never a disable |
+| `check_snapshots.py`（module-level snapshot gate） | commit | a mutable global imported across modules is a value copy (stale snapshot): switch to importing the module and reading the attribute | `REFLECT_SNAPSHOT_ROOT` | -- |
+| `check_stale.py`（Stale-assertion gate） | commit | sha provenance / retired names / age check | `REFLECT_DOCS`, `REFLECT_FACTS`, `REFLECT_HISTORY_SECS`, `REFLECT_RETIRED`, `REFLECT_STALE_DAYS` | -- |
+| `check_world.py`（world gate） | commit | declarative validation target: world reconciliation of a multi-line repo's shared validation environment | `REFLECT_WORLD`, `REFLECT_WORLD_LINE` | a single-line repo does not need it: spec not configured => state it is off |
+| `check_explain.py`（Comment discipline） | start-of-work | strict: no docstrings; mismatch: explanation chars within AST complexity budget | `REFLECT_COMMENTS` | only disabled when REFLECT_COMMENTS=off is explicitly set |
+| `check_history.py`（History document） | start-of-work | the one carrier where prose is allowed: it must exist and must stay off every scan surface | `REFLECT_HISTORY`, `REFLECT_DOCS`, `REFLECT_READMES`, `REFLECT_QUESTIONS`, `REFLECT_FACTS` | a repo that keeps no history document states so by pointing REFLECT_HISTORY at nothing; the exemption then has no subject |
+| `doctor.py`（start-of-work doctor） | start-of-work | process / port liveness (probes things that can die => runs_at=start-of-work, not in pre-commit) | `REFLECT_DOCTOR`, `REFLECT_DOCTOR_TIMEOUT` | this repo has no doctor.json spec: no process/port liveness is checked => state it is off |
 
-14 道闸门（发现式名录派生 —— 手写清单会漂，加闸门 = 落一个声明行，这里自动长出来）。
+19 gates; 13 may be disabled.
 <!-- /AUTO:GATES -->

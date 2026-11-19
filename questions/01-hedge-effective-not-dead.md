@@ -19,10 +19,9 @@ fetch，对冲在中间件内不可行」。
    把原本的 25s 卡顿压到 <5s。兜底 17.5s 从未触发。
 2. **当时那次测量的环境不同**（部署未生效 / 网络状况差异），代码本身没变。
 
-**Settling:** 不存在 —— **第一交付物是一个可复跑的并发探针**（`scripts/probe-edge.sh`）：
-跑 N 路并发同 URL，记录每次耗时与状态码，输出 >10s 的次数。判据：
-- 若 >10s 次数为 0 ⇒ 对冲有效，保留代码，并在 `mail/115` 的勘误里更正；
-- 若稳定复现卡顿 ⇒ 回到「死代码」判断，删除对冲段。
+**Settling:** bash -c 'c=0; for i in $(seq 1 20); do t=$(curl -s -o /dev/null --max-time 45 -w "%{time_total}" "https://isui.ren/repo/Octave/?t=$i"); echo "$t"; awk -v t="$t" 'BEGIN{exit (t>10)?0:1}' || c=$((c+1)); done; echo "slow=$c"; test "$c" -eq 0' -- rc=0 => 对冲有效（20 发无一超过 10s），代码保留；rc!=0 => 复现卡顿，回到「死代码」判断并删除对冲段。
+
+**Status:** resolved
 
 **一条已知的边界**（这条不受上述结论影响）：既然实测到对冲有效，那么
 `mail/115` 里写给 Octave 集群的「**禁止在 EdgeOne middleware/worker 内做对冲**」是**错的**，

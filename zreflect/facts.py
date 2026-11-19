@@ -1,394 +1,879 @@
 #!/usr/bin/env python3
-"""事实台账的 CLI：量一遍、写台账、渲染机器块，以及**两道守卫**。
+"""Facts ledger, write guards, machine-block renderer, living-state extractor, and CLI."""
+from __future__ import annotations
 
-用法
-    python3 zreflect/facts.py                      # 量一遍并写 FACTS.json（掉条/改口会拒绝）
-    python3 zreflect/facts.py --allow-drop         # 允许本次掉条（掉掉的键会打出来）
-    python3 zreflect/facts.py --accept-changes     # 允许本次改口（旧值→新值会打出来）
-    python3 zreflect/facts.py --accept-changes=k1,k2  # 只接受列出的键，其余改口仍拒绝（issue #3 ①）
-    python3 zreflect/facts.py --render-doc [文件]  # 把机器块写进文档（默认 STATE.md）
-    python3 zreflect/facts.py --check [文件]       # 文档里的块是否与台账一致
-    python3 zreflect/facts.py --get 键名           # 只打印该键的值（消费方出口，issue #4 ④）
-    python3 zreflect/facts.py show [键]            # 打印某条事实
-    python3 zreflect/facts.py --selftest           # 自证：两道守卫必须都能红
-
-⚠️ **量不到的项不写**（宁缺勿假）。比如「最近一次全绿回归」只在有日志的机器上量得出来；
-没日志就把那条事实**留空**，而不是写 0 —— 0 是一个数字，会被人当结果引用。
-"""
+import json
 import os
+import re
 import subprocess
 import sys
 import time
+from datetime import datetime, timezone
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import gate  # noqa: E402
+import knobs  # noqa: E402
+import registry  # noqa: E402
+from gate import fatal, fatal_exit, main_selftest_or, module_meta, repo  # noqa: E402
+from i18n import M, Message  # noqa: E402
 
-from gate import module_meta, GATE_REPO, main_selftest_or, repo  # noqa: E402
-from ledger import age_days, fact, facts_of, load, value_of  # noqa: E402
-from render import BLOCK_BEGIN, BLOCK_END, render_block  # noqa: E402
-import guard                                             # noqa: E402
-import registry                                          # noqa: E402
+BLOCK_BEGIN = "<!-- AUTO:FACTS -->"
+BLOCK_END = "<!-- /AUTO:FACTS -->"
+PREAMBLE = [
+    ("> This block is rendered by `zreflect/facts.py --render-doc` from"
+     " `FACTS.json`; **do not edit by hand**"
+     " (pre-commit recomputes and `git add`s it)."),
+    ("> 'Measured numbers' in the prose are produced only here: to cite one, write"
+     " `[[key]]`; never copy the number by hand."),
+]
 
-REPO_REAL = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-LEDGER_NAME = os.environ.get("REFLECT_FACTS", "FACTS.json")
-OUT = repo(LEDGER_NAME)
-DOC = os.environ.get("REFLECT_DOC", "STATE.md")
+HIST_MARK = re.compile(
+    r"历史|退役|留档|曾经的|当年的|当时的|之前那份|此前|当时|收口前"
+    r"|已翻案|更正|是错的|误读|推翻|曾写|已作废|不再成立"
+    r"|superseded|retracted|deprecated")
+DATED_RECORD = re.compile(r"[A-Za-z0-9._-]*-\d{8}|`[0-9a-f]{7,64}`")
+CITE_RE = re.compile(r"\[\[([A-Za-z_][A-Za-z0-9_]*)\]\]")
+
+_COUNT_CMD = "python3 zreflect/facts.py --count"
+_AUTO_BLOCK = re.compile(r"^\s*<!--\s*(/?AUTO:[A-Z]+)\s*-->\s*$")
+_PROTECTED = ("value", "cmd", "calibrate", "calibrate_expect")
+_OWN_CODE_DIRS = ("src", "lib", "app", "pkg", "packages")
 
 
-# ══ 你的部分 ══════════════════════════════════════════════════════════════════
+class Unreadable(RuntimeError):
+    """Ledger exists on disk but could not be read or parsed."""
+
+
+def load(path):
+    """Load JSON ledger at `path`; raise `Unreadable` on I/O or decode failure."""
+    try:
+        with open(path, encoding="utf-8") as fh:
+            return json.load(fh)
+    except (OSError, UnicodeError, ValueError) as e:
+        raise Unreadable(path, e) from e
+
+
+def load_or_fatal(path):
+    """Load ledger at `path` or abort with `FATAL:` rc=2."""
+    try:
+        return load(path)
+    except Unreadable as e:
+        cause = e.args[1] if len(e.args) > 1 else e
+        fatal_exit(M("ledger.unreadable_gate", name=path, error=cause))
+
+
+def facts_of(ledger):
+    """Extract facts dict from either `{facts: ...}` wrapper or bare table."""
+    led = ledger or {}
+    return led.get("facts") if isinstance(led, dict) and "facts" in led else (led or {})
+
+
+def value_of(entry):
+    """Extract scalar value from either a dict entry or bare scalar."""
+    return entry.get("value") if isinstance(entry, dict) else entry
+
+
+def short_value(v, n=24):
+    """Format a scalar compactly (16 chars for 64-char hashes, `n` chars otherwise)."""
+    s = v if isinstance(v, str) else str(v)
+    if len(s) == 64:
+        return s[:16] + "..."
+    return s if len(s) <= n else s[:n] + "..."
+
+
+def dropped_keys(old_facts, new_facts):
+    """Sorted list of keys present in `old_facts` but missing from `new_facts`."""
+    return sorted(set(old_facts or {}) - set(new_facts or {}))
+
+
+def _first_diff(old_e, new_e):
+    for fld in _PROTECTED:
+        o = old_e.get(fld) if isinstance(old_e, dict) else (old_e if fld == "value" else None)
+        n = new_e.get(fld) if isinstance(new_e, dict) else (new_e if fld == "value" else None)
+        if o != n:
+            return (o, n) if fld == "value" else (f"{fld}:{o}", f"{fld}:{n}")
+    return None
+
+
+def changed_keys(old_facts, new_facts):
+    """List `(key, old, new)` for keys whose protected fields changed."""
+    olds = old_facts or {}
+    out = []
+    for k, nv in sorted((new_facts or {}).items()):
+        if k in olds:
+            diff = _first_diff(olds[k], nv)
+            if diff is not None:
+                out.append((k, diff[0], diff[1]))
+    return out
+
+
+def fact(value, cmd, source, note="", calibrate=None, calibrate_expect=None, kind="value"):
+    """Build a ledger fact dict enforcing paired `calibrate` / `calibrate_expect`."""
+    if (calibrate is None) != (calibrate_expect is None):
+        fatal_exit(M("ledger.shape_incomplete", name="calibrate"))
+    d = {"value": value, "cmd": cmd, "source": source,
+         "measured_at": time.strftime("%Y-%m-%dT%H:%M:%S%z"),
+         "first_seen": time.strftime("%Y-%m-%d")}
+    if note:
+        d["note"] = note
+    if calibrate is not None:
+        d["calibrate"] = calibrate
+        d["calibrate_expect"] = calibrate_expect
+    if kind != "value":
+        d["kind"] = kind
+    return d
+
+
+def age_days(entry):
+    """Return fractional age in days from `measured_at`, or `None` if absent/invalid."""
+    ts = entry.get("measured_at") if isinstance(entry, dict) else None
+    if not ts:
+        return None
+    try:
+        when = datetime.strptime(str(ts), "%Y-%m-%dT%H:%M:%S%z")
+    except ValueError:
+        return None
+    return (datetime.now(timezone.utc) - when).total_seconds() / 86400.0
+
+
+def section_is_living(heading, historical_secs=()):
+    """Return True if a `## ` section is living state (historical_secs and appendix exempt)."""
+    m = re.match(r"^##\s+([0-9]+)", heading)
+    if m:
+        return m.group(1) not in {str(s) for s in historical_secs}
+    return not heading.startswith("## " + chr(0x9644))
+
+
+def living_lines(text, historical_secs=()):
+    """Yield `(lineno, line, is_living)` tags across `text`."""
+    out, keep = [], True
+    for i, ln in enumerate(text.split("\n"), 1):
+        if re.match(r"^##\s+", ln):
+            keep = section_is_living(ln, historical_secs)
+        out.append((i, ln, keep))
+    return out
+
+
+def write_target_problems(path, ignored=None):
+    """Check whether ledger write target `path` is gitignored (`(fatal_msg, warn_msg)`)."""
+    if ignored is None:
+        try:
+            r = subprocess.run(["git", "-C", gate.GATE_REPO, "check-ignore", "-q", path],
+                               capture_output=True)
+            ig = True if r.returncode == 0 else (False if r.returncode == 1 else None)
+        except OSError:
+            ig = None
+    else:
+        ig = ignored
+    if ig is True:
+        return M("guard.write_target_gitignored", path=path), None
+    if ig is None:
+        return None, M("guard.write_target_no_git")
+    return None, None
+
+
+def accepted_keys(argv):
+    """Parse `--accept-changes[=k1,k2]` into `None` (all), `set`, or `False` (none)."""
+    for a in argv or []:
+        if a == "--accept-changes":
+            return None
+        if a.startswith("--accept-changes="):
+            return {k.strip() for k in a.split("=", 1)[1].split(",") if k.strip()}
+    return False
+
+
+def decide(old_facts, new_facts, accepted=False, allow_drop=False):
+    """Evaluate drop and change guards; return `('write'|'refuse', problems, notes)`."""
+    notes: dict[str, list[Message]] = {"err": [], "out": []}
+    dropped = dropped_keys(old_facts, new_facts)
+    if dropped and not allow_drop:
+        return "refuse", [M("guard.refuse_dropped", count=len(dropped), keys=", ".join(dropped)),
+                          M("guard.refuse_dropped_advice")], notes
+    if dropped:
+        notes["err"].append(M("guard.note_allow_drop", count=len(dropped),
+                              keys=", ".join(dropped)))
+    changed = changed_keys(old_facts, new_facts)
+    remaining = ([] if accepted is None else list(changed) if accepted is False
+                 else [c for c in changed if c[0] not in accepted])
+    if remaining:
+        probs = [M("guard.refuse_changed", count=len(remaining))] + [
+            M("guard.changed_row", key=k, before=short_value(o), after=short_value(n))
+            for k, o, n in remaining]
+        if accepted:
+            probs.append(M("guard.accepted_boundary", accepted=len(changed) - len(remaining),
+                           keys=", ".join(sorted(accepted))))
+        return "refuse", probs + [M("guard.refuse_changed_advice")], notes
+    if changed:
+        notes["out"].append(M("guard.note_accept_changes", count=len(changed)))
+        notes["out"] += [M("guard.changed_row", key=k, before=short_value(o),
+                           after=short_value(n)) for k, o, n in changed]
+    if not new_facts:
+        return "refuse", [M("guard.empty_ledger")], notes
+    return "write", [], notes
+
+
+def _fmt(v):
+    if isinstance(v, str) and len(v) == 64:
+        return "`%s...`" % v[:16]
+    return "**%s**" % (v if isinstance(v, str) else str(v))
+
+
+def render_block(ledger):
+    """PINNED: render fixed-language `AUTO:FACTS` Markdown block from `ledger`."""
+    f = facts_of(ledger)
+    lines = [BLOCK_BEGIN] + list(PREAMBLE) + [""]
+    if not f:
+        lines += ["**The ledger is empty** -- first check whether measure() is broken.", ""]
+    else:
+        lines += ["| key | value | measured at | replay cmd |", "|---|---|---|---|"]
+        for k in sorted(f):
+            e = f[k] if isinstance(f[k], dict) else {"value": f[k]}
+            lines.append("| `%s` | %s | %s | `%s` |"
+                         % (k, _fmt(e.get("value")), e.get("measured_at", "--"), e.get("cmd", "?")))
+        lines += ["", "%d facts." % len(f)]
+    lines.append(BLOCK_END)
+    return "\n".join(lines)
+
+
+def body_of(block):
+    """Return slice between `BLOCK_BEGIN` and `BLOCK_END`."""
+    return block.split(BLOCK_BEGIN, 1)[1].split(BLOCK_END, 1)[0] if BLOCK_BEGIN in block else ""
+
+
+def prose_of(doc_text):
+    """Strip all `<!-- AUTO:... -->...<!-- /AUTO:... -->` machine blocks from `doc_text`."""
+    out, i = [], 0
+    while True:
+        b = doc_text.find("<!-- AUTO:", i)
+        if b < 0:
+            out.append(doc_text[i:])
+            break
+        out.append(doc_text[i:b])
+        e = doc_text.find("-->", b + len("<!-- AUTO:"))
+        end = doc_text.find("<!-- /AUTO:", e) if e >= 0 else -1
+        if end < 0:
+            out.append(doc_text[b:])
+            break
+        close = doc_text.find("-->", end)
+        i = close + 3 if close >= 0 else len(doc_text)
+    return "".join(out)
+
+
+def _out():
+    return repo(knobs.get("REFLECT_FACTS"))
+
+
+def _doc():
+    import doc  # noqa: PLC0415
+    return doc.state_name()
+
+
+def count_files(root, suffix):
+    """Count files ending in `suffix` under `root` (skipping `.git`)."""
+    n = 0
+    for _dirpath, dirnames, filenames in os.walk(root):
+        dirnames[:] = sorted(d for d in dirnames if d != ".git")
+        n += sum(1 for f in filenames if f.endswith(suffix))
+    return n
+
+
+def count_lines(root, suffix):
+    """Total line count across files ending in `suffix` under `root`."""
+    total = 0
+    for dirpath, dirnames, filenames in os.walk(root):
+        dirnames[:] = sorted(d for d in dirnames if d != ".git")
+        for name in sorted(filenames):
+            if not name.endswith(suffix):
+                continue
+            try:
+                total += sum(1 for _ in open(os.path.join(dirpath, name),
+                                             encoding="utf-8", errors="replace"))
+            except OSError:
+                continue
+    return total
+
+
+def _count_file_lines(path):
+    total, in_block = 0, False
+    try:
+        with open(path, encoding="utf-8", errors="replace") as fh:
+            for line in fh:
+                m = _AUTO_BLOCK.match(line)
+                if m:
+                    in_block = not m.group(1).startswith("/")
+                    continue
+                if not in_block:
+                    total += 1
+    except OSError:
+        return 0
+    return total
+
+
+def count_md_lines(root):
+    """Total Markdown lines excluding `AUTO:*` machine blocks."""
+    total = 0
+    for dirpath, dirnames, filenames in os.walk(root):
+        dirnames[:] = sorted(d for d in dirnames if d != ".git")
+        total += sum(_count_file_lines(os.path.join(dirpath, name))
+                     for name in sorted(filenames) if name.endswith(".md"))
+    return total
+
+
 def measure_example():
-    """**占位实现 —— 换掉它。** 系统只提供机制，你的输入只有你知道怎么量。
-
-    这里量的东西和「事实」无关，只是为了让仓库开箱能跑。真要落地时，把每条
-    `fact(值, 复跑命令, 出处)` 换成你自己量出来的数；特别是那条复跑命令 ——
-    它必须**真的能跑**，否则这条事实就又变成了一句散文。
-    """
+    """Default placeholder collector (`py_files`, `md_files`, `py_lines`, `md_lines`)."""
     facts = {}
-    n_py = 0
-    n_md = 0
-    lines_py = 0
-    for root, _dirs, files in os.walk(GATE_REPO):
-        if "/.git" in root:
-            continue
-        for f in files:
-            if f.endswith(".py"):
-                n_py += 1
-                try:
-                    lines_py += sum(1 for _ in open(os.path.join(root, f), encoding="utf-8",
-                                                    errors="replace"))
-                except OSError:
-                    pass                      # 数不出来的文件不计数 —— 宁缺勿假
-            elif f.endswith(".md"):
-                n_md += 1
-    facts["py_files"] = fact(n_py, "find . -name '*.py' -not -path './.git/*' | wc -l",
-                             "repo", "示例事实：换掉 measure_example()")
-    facts["md_files"] = fact(n_md, "find . -name '*.md' -not -path './.git/*' | wc -l", "repo")
-    # 这条刻意大于 BARE_MIN（check_facts 的裸数字阈值 = 100），好在 STATE.md 里
-    # 演示「手抄这个数字会被闸门拦下」。太小的数字遍地都是，查了全是噪音 ⇒ 不查。
-    facts["py_lines"] = fact(lines_py, "find . -name '*.py' -not -path './.git/*' "
-                             "-exec cat {} + | wc -l", "repo",
-                             "刻意 ≥100，用来示范裸数字判据")
-    # ⑥ 块排除模式（issue #4 ⑥）：md_lines 数**块以外**的行 —— 机器块
-    # 就渲染在这些文档里，数进去 ⇒ 渲染一遍值就过期 ⇒ 复跑恒定失败
-    # （而 check_facts 比的是「块↔台账」，两边一起陈旧 ⇒ 全绿）。
-    # awk 的 FNR==1{b=0} 是必需的：find -exec {} + 会把多个文件喂给
-    # 同一个 awk 进程，漏了按文件重置，第一个带块的文件之后全被跳过，
-    # 而输出仍然「像个行数」。起始标记与 render.py 的输出逐字一致。
-    md_lines_cmd = ("find . -name '*.md' -not -path './.git/*'"
-                    " -exec awk 'FNR==1{b=0} /<!-- AUTO:FACTS -->/{b=1} !b' {} + | wc -l")
-    # cwd=GATE_REPO：计数（os.walk(GATE_REPO)）与复跑（闸门在仓库根
-    # 逐字执行 cmd）都锚定 GATE_REPO —— 不传 cwd 时，在夹具里量到的是
-    # 调用方仓库的行数，换名自证会红（跨仓库可配置性自证抓到的回归）。
-    facts["md_lines"] = fact(
-        int(subprocess.run(md_lines_cmd, shell=True, capture_output=True,
-                             text=True, check=True,
-                             cwd=GATE_REPO).stdout.strip()),
-        md_lines_cmd, "repo",
-        "不含机器块：块就渲染在文档里，数进去会让渲染一遍值就过期")
-
-    # 例：**量不到就不写**。把 UPSTREAM_VERSION 设上才有这条事实。
+    n_py = count_files(gate.GATE_REPO, ".py")
+    n_md = count_files(gate.GATE_REPO, ".md")
+    facts["py_files"] = fact(n_py, "%s -files .py" % _COUNT_CMD, "repo",
+                             M("facts.note.example_fact"))
+    facts["md_files"] = fact(n_md, "%s -files .md" % _COUNT_CMD, "repo")
+    facts["py_lines"] = fact(count_lines(gate.GATE_REPO, ".py"), "%s -lines .py" % _COUNT_CMD,
+                             "repo", M("facts.note.bare_number_demo"))
+    facts["md_lines"] = fact(count_md_lines(gate.GATE_REPO), "%s -md" % _COUNT_CMD, "repo",
+                             M("facts.note.excludes_machine_block"))
     v = os.environ.get("UPSTREAM_VERSION", "").strip()
     if v:
         facts["upstream_version"] = fact(v, "echo \"$UPSTREAM_VERSION\"", "env",
-                                         "量不到就不写 —— 宁缺勿假")
+                                         M("facts.note.measure_or_omit"))
     return facts
 
 
-# ══ 以下不用改 ════════════════════════════════════════════════════════════════
-def _machine_blocks(ledger):
-    """文档里要维护的两个机器块（Phase 3 起）：
-
-      · 事实块（AUTO:FACTS）—— 台账渲染，**数字的唯一产地**；
-      · 闸门名录块（AUTO:GATES）—— 发现式名录渲染，**闸门叙述的唯一产地**
-        （手写的「N 道闸门」清单漂过：ab/locks/pins 并入当天清单就少了
-        三道 —— 叙述从声明行派生，手写退役）。
-
-    返回 (blocks, 错误句)。名录对账不过（缺声明 / 孤儿 / 旗标错）⇒ 拒绝渲染
-    —— 判据只有一份产地：`registry.problems()`。
-    """
+def block_homes(ledger):
+    """Map documents to their owned `(begin, end, expected_text)` machine blocks."""
+    import doc  # noqa: PLC0415
     gs, missing = registry.gates()
     probs = registry.problems(gs, missing)
     if probs:
-        return None, "名录对账不过，拒绝渲染：\n  · " + "\n  · ".join(probs)
-    return ((BLOCK_BEGIN, BLOCK_END, render_block(ledger)),
-            (registry.GATES_BEGIN, registry.GATES_END,
-             registry.render_gates(gs))), None
+        return None, M("facts.registry_mismatch", entries="\n  · ".join(probs))
+    homes = [(doc.state_name(), [(BLOCK_BEGIN, BLOCK_END, render_block(ledger)),
+                                 (registry.GATES_BEGIN, registry.GATES_END,
+                                  registry.render_gates(gs))])]
+    if doc.accepts_principles():
+        homes.append((doc.PRINCIPLES, [(doc.RULES_BEGIN, doc.RULES_END, doc.render_rules())]))
+    return homes, None
 
 
-def write_doc(path_rel, ledger):
-    """把机器块写进文档（就地替换）。没有标记就报错，**不悄悄追加** ——
-    悄悄追加会让「块过期」变成「有两份块」，那是更难查的坏法。"""
-    p = path_rel if os.path.isabs(path_rel) else repo(path_rel)
-    if not os.path.exists(p):
-        print("FATAL: %s 不存在。先手工放一次机器块标记。" % p,
-              file=sys.stderr)
-        return 2
-    blocks, err = _machine_blocks(ledger)
-    if err:
-        print("FATAL: %s" % err, file=sys.stderr)
-        return 2
-    text = open(p, encoding="utf-8").read()
-    new = text
+def doc_block_problems(path_rel, text, blocks):
+    """Compare `(begin, end, expected)` blocks against document `text`."""
+    out = []
+    for begin, end, expected in blocks:
+        if begin not in text or end not in text:
+            out.append(M("facts.markers_missing_check", path=path_rel, begin=begin, end=end))
+        else:
+            actual = text.partition(begin)[2].partition(end)[0].strip()
+            want = expected.partition(begin)[2].partition(end)[0].strip()
+            if actual != want:
+                out.append(M("facts.block_stale", path=path_rel, begin=begin))
+    return out
+
+
+def _doc_names():
+    import doc  # noqa: PLC0415
+    return tuple([_doc()] + ([doc.PRINCIPLES] if doc.accepts_principles() else []))
+
+
+def _read_doc(p, path_rel):
+    try:
+        return open(p, encoding="utf-8").read(), 0
+    except (OSError, UnicodeError) as e:
+        return None, fatal(M("facts.doc_unreadable", path=path_rel, error=e))
+
+
+def _own_blocks(path_rel, ledger, homes=None):
+    if homes is None:
+        homes, err = block_homes(ledger)
+        if err:
+            return None, fatal(err)
+    mine = [b for name, blks in homes if name in (os.path.basename(path_rel), path_rel)
+            for b in blks]
+    if mine:
+        return mine, 0
+    return None, fatal(M("facts.doc_has_no_home", path=path_rel,
+                         known=", ".join(name for name, _ in homes)))
+
+
+def _splice_blocks(path_rel, new, blocks):
+    """Replace each block inside `new`, or return `(None, 2)` on marker corruption."""
     for begin, end, body in blocks:
         if begin not in new or end not in new:
-            print("FATAL: %s 缺 %s / %s 标记（第一次落地时要手工放一次）"
-                  % (path_rel, begin, end), file=sys.stderr)
-            return 2
+            return None, fatal(M("facts.markers_missing_render",
+                                 path=path_rel, begin=begin, end=end))
         pre, _, rest = new.partition(begin)
-        _, _, post = rest.partition(end)
-        new = pre + body + post
-    # 写盘前的完整性守卫：替换必须保得住**全部**块的标记。标记字面量若被
-    # 写进正文（哪怕在行内代码里），首现替换会把两块之间的内容整个吞掉、
-    # 让别的块消失 —— 实测踩过：bullet 里写了标记字面量，渲染一次丢掉整个
-    # 事实块。歧义 ⇒ 拒绝写盘，人先修文档（块内 cmd 引用 begin 字面量是
-    # 合法嵌套 —— md_lines 的 awk 判据 —— 故不做替换前的计数断言）。
-    for begin, end, _ in blocks:
-        if begin not in new or end not in new:
-            print("FATAL: %s 的标记字面量混进了正文（%s）—— 渲染会吞块，"
-                  "拒绝写盘；标记只许出现在机器块首尾"
-                  % (path_rel, begin), file=sys.stderr)
-            return 2
-    if new != text:
+        new = pre + body + rest.partition(end)[2]
+    if any(b not in new or e not in new for b, e, _ in blocks):
+        return None, fatal(M("facts.marker_swallowed_body",
+                             path=path_rel, begin=blocks[0][0]))
+    return new, 0
+
+
+def write_doc(path_rel, ledger, homes=None):
+    """Replace owned machine blocks inside `path_rel`; never silently append missing markers."""
+    p = gate.repo_path(path_rel)
+    if not os.path.exists(p):
+        return fatal(M("facts.doc_missing_render", path=p))
+    blocks, rc = _own_blocks(path_rel, ledger, homes)
+    if rc:
+        return rc
+    old, rc = _read_doc(p, path_rel)
+    if rc:
+        return rc
+    new, rc = _splice_blocks(path_rel, old, blocks)
+    if rc:
+        return rc
+    if new == old:
+        print(M("facts.render_unchanged", path=path_rel))
+        return 0
+    try:
         open(p, "w", encoding="utf-8").write(new)
-        print("已刷新 %s 的机器块" % path_rel)
-    else:
-        print("%s 的机器块无变化" % path_rel)
+    except OSError as e:
+        return fatal(M("facts.doc_unwritable", path=path_rel, error=e))
+    print(M("facts.render_written", path=path_rel))
     return 0
 
 
-def check_doc(path_rel, ledger):
-    p = path_rel if os.path.isabs(path_rel) else repo(path_rel)
+def check_doc(path_rel, ledger, homes=None):
+    """Verify machine blocks in `path_rel` match `ledger`."""
+    p = gate.repo_path(path_rel)
     if not os.path.exists(p):
-        print("FATAL: 文档 %s 不存在（--check 不能因为找不到文件就算通过）" % p, file=sys.stderr)
-        return 2
-    blocks, err = _machine_blocks(ledger)
-    if err:
-        print("FATAL: %s" % err, file=sys.stderr)
-        return 2
-    text = open(p, encoding="utf-8").read()
-    for begin, end, body in blocks:
-        if begin not in text or end not in text:
-            print("FATAL: %s 缺 %s / %s 标记" % (path_rel, begin, end),
-                  file=sys.stderr)
-            return 2
-        cur = text.split(begin, 1)[1].split(end, 1)[0]
-        fresh = body.split(begin, 1)[1].split(end, 1)[0]
-        if cur != fresh:
-            print("FATAL: %s 的 %s 块与现算不一致 ⇒ 跑 --render-doc"
-                  % (path_rel, begin), file=sys.stderr)
-            return 1
-    print("%s 的机器块与现算一致" % path_rel)
+        return fatal(M("facts.doc_missing_check", path=p))
+    blocks, rc = _own_blocks(path_rel, ledger, homes)
+    if rc:
+        return rc
+    text, rc = _read_doc(p, path_rel)
+    if rc:
+        return rc
+    probs = doc_block_problems(path_rel, text, blocks)
+    if probs:
+        if probs[0].code == "facts.markers_missing_check":
+            return fatal(probs[0])
+        for prob in probs:
+            print(prob, file=sys.stderr)
+        return 1
+    print(M("facts.block_consistent", path=path_rel))
     return 0
 
 
 def _age_human(entry):
-    """`measured_at` 的人话（issue #3 ②）：今天 / N 天前 / 未记录。"""
     d = age_days(entry)
     if d is None:
-        return "未记录测量时间"
-    if d < 1:
-        return "今天测的"
-    return "%d 天前测的" % int(d)
+        return M("facts.age.unrecorded")
+    return M("facts.age.today") if d < 1 else M("facts.age.days_ago", days=int(d))
 
 
 def _measure():
-    """采集入口（issue #15 A1/C3）：`REFLECT_MEASURE_MODULE` 旋钮分派。
-
-    · 旋钮未配 / 模块导入失败 / 夹具场景（GATE_REPO 不是本仓）⇒ 回落
-      `measure_example()`（占位），并**打印警告** —— 下游实测过：手动跑
-      facts.py 忘带旋钮 ⇒ 空表 + `--allow-drop` 诱惑（OM 仓「会掉 24 条」
-      的吓人 FATAL，真因只是旋钮没传）。回落必须可闻，不许静默。
-    · 旋钮已配且导入成功且 GATE_REPO 是真仓 ⇒ 用旋钮指定的 measure()。
-    """
-    mod_name = os.environ.get("REFLECT_MEASURE_MODULE", "").strip()
+    mod_name = (knobs.raw("REFLECT_MEASURE_MODULE") or "").strip()
     if mod_name:
+        rz = os.path.join(gate.GATE_REPO, "zreflect")
+        if os.path.isdir(rz) and rz not in sys.path:
+            sys.path.insert(0, rz)
         try:
             _m = __import__(mod_name)
-            fn = getattr(_m, "measure")   # noqa: B009 — 模块是变量，属性名固定是契约
-            if os.path.abspath(GATE_REPO) == os.path.abspath(REPO_REAL):
-                return fn()
+            fn = getattr(_m, "measure")   # noqa: B009
         except Exception as e:                            # noqa: BLE001
-            print("⚠ REFLECT_MEASURE_MODULE=%s 不可用（%r）⇒ 回落占位 measure_example()"
-                  % (mod_name, e), file=sys.stderr)
-    elif os.path.abspath(GATE_REPO) == os.path.abspath(REPO_REAL):
-        print("⚠ measure_example() used; set REFLECT_MEASURE_MODULE for real repo"
-              "（换仓只改 Einfacht.env 一行；回落占位时台账会空）",
-              file=sys.stderr)
+            fatal_exit(M("facts.measure_module_unusable", module=mod_name,
+                         error=repr(e), hint=M("facts.measure_module_where")))
+        return fn()
+    print("WARN: %s" % M("facts.measure_placeholder_used"), file=sys.stderr)
+    found = [d for d in _OWN_CODE_DIRS if os.path.isdir(os.path.join(gate.GATE_REPO, d))]
+    if found:
+        print("  %s" % M("facts.measure_own_code_hint", dirs=", ".join(found)), file=sys.stderr)
     return measure_example()
 
 
-def measure(argv):
-    """量一遍并写台账。**必须接 `argv`** —— 两道守卫都要读它。
-
-    ⚠️ 这里踩过：`measure()` 曾经没有 `argv` 参数，而守卫里写着 `not in argv`。
-    因为 `and` 短路，**只在真的掉条时**才走到那句 ⇒ 报的不是「掉了哪几条」而是一段
-    NameError traceback；`--allow-drop` 从未生效过。写盘被拦住只是**顺带**（异常早于写盘），
-    那不叫守卫，那叫故障。所以本文件把 argv 显式传进来；守卫的**决策**在
-    `zreflect/guard.py`（decide()，接线有自证），本函数只执行它。
-    """
-    facts = _measure()
-
-    old = facts_of(load(OUT)) if os.path.exists(OUT) else {}
-
-    verdict, problems, notes = guard.decide(old, facts,
-                                            accepted=guard.accepted_keys(argv),
-                                            allow_drop="--allow-drop" in argv)
-    for x in notes["err"]:
-        print(x, file=sys.stderr)
-    for x in notes["out"]:
-        print(x)
-    if verdict == "refuse":
-        for x in problems:
-            print("FATAL: %s" % x, file=sys.stderr)
-        return 2
-
-    # 仪器生命周期（issue #6 ①）：值没变的键沿用旧 first_seen
-    # （换值 / 新键的 first_seen 已由 ledger.fact() 盖今天）——
-    # 恒常检测（可插拔闸门 check_instruments.py）靠它。
-    for k, entry in facts.items():
-        o = old.get(k)
-        fs = o.get("first_seen") if isinstance(o, dict) else None
-        if fs and value_of(o) == value_of(entry):
-            entry["first_seen"] = fs
-
-    # 盲写守卫（issue #20 ②）：写盘前查目标 —— 被 gitignore 覆盖 ⇒ FATAL；
-    # 仓里有 Einfacht.env 而本次没设旋钮 ⇒ warn（两个产地此刻分叉）。
-    fatal_w, warn_w = guard.write_target_problems(
-        OUT, knob_set=bool(os.environ.get("REFLECT_FACTS", "").strip()))
-    if warn_w:
-        print("⚠ %s" % warn_w, file=sys.stderr)
-    if fatal_w:
-        print("FATAL: %s" % fatal_w, file=sys.stderr)
-        return 2
-    import json                                         # noqa: PLC0415
-    import time                                         # noqa: PLC0415
-    doc = {"schema": 1, "generated": time.strftime("%Y-%m-%dT%H:%M:%S%z"),
-           "_why": "事实台账：每条 = 一个**测出来**的值 + 复跑命令 + 出处。"
-                   "别手改，跑 zreflect/facts.py。",
-           "facts": facts}
-    with open(OUT, "w", encoding="utf-8") as fh:
-        json.dump(doc, fh, indent=1, ensure_ascii=False)
-        fh.write("\n")
-    print("已写出 %s（%d 条事实）" % (os.path.relpath(OUT, GATE_REPO), len(facts)))
-    for k, v in sorted(facts.items()):
-        print("  %-20s %s（%s）" % (k, v["value"], _age_human(v)))
+def _attach_core_seal(facts):
+    import seal  # noqa: PLC0415
+    if not seal.seal_exists():
+        return 0
+    probs = seal.verify_problems()
+    if probs:
+        return fatal(probs[0])
+    sha = seal.current_tree_sha(verified=True)
+    if sha:
+        facts["core_seal"] = fact(sha, "python3 zreflect/registry.py --verify-seal",
+                                  "seal", M("facts.note.core_seal"))
     return 0
 
 
-def get_value(ledger, key):
-    """按键取台账值 —— 跨语言消费方的**官方只读出口**（issue #4 ④）。
+def _write_ledger_doc(out, facts):
+    doc = {"schema": 1, "generated": time.strftime("%Y-%m-%dT%H:%M:%S%z"),
+           "_why": M("facts.ledger_why"), "facts": facts}
+    with open(out, "w", encoding="utf-8") as fh:
+        json.dump(doc, fh, indent=1, ensure_ascii=False)
+        fh.write("\n")
 
-    消费方（CI、其它语言的测试进程）一律走 `facts.py --get KEY`，
-    **不要自己解析 FACTS.json**：手写 parser 的经典坑是 substring 找
-    `"value"` 再取引号内 —— 同一文件里到处都是 `"value": …`，会取到
-    **别的键**上的值。这里把值取完整。
-    键不存在 ⇒ (False, 错误句)；存在 ⇒ (True, 值)。
-    """
-    f = facts_of(ledger)
+
+def _write_guarded(out, old, facts, argv, accept_all=False):
+    accepted = None if accept_all else accepted_keys(argv)
+    verdict, probs, notes = decide(old, facts, accepted=accepted, allow_drop="--allow-drop" in argv)
+    for x in notes["err"]:
+        print("WARN: %s" % x, file=sys.stderr)
+    for x in notes["out"]:
+        print(x)
+    if verdict == "refuse":
+        for x in probs:
+            fatal(x)
+        return 2
+    fatal_w, warn_w = write_target_problems(out)
+    if warn_w:
+        print("WARN: %s" % warn_w, file=sys.stderr)
+    if fatal_w:
+        return fatal(fatal_w)
+    _write_ledger_doc(out, facts)
+    return 0
+
+
+def measure(argv):
+    """Run measurement collector, check guards, preserve `first_seen`, and write ledger."""
+    facts = _measure()
+    if _attach_core_seal(facts):
+        return 2
+    bad = sorted(k for k, v in (facts or {}).items() if not (isinstance(v, dict) and "value" in v))
+    if bad:
+        return fatal(M("facts.measure_bad_shape", count=len(bad),
+                       keys=", ".join(bad[:6]), hint=M("facts.measure_shape_hint")))
+    out = _out()
+    old = facts_of(load_or_fatal(out)) if os.path.exists(out) else {}
+    for k, entry in facts.items():
+        prior = old.get(k)
+        fs = prior.get("first_seen") if isinstance(prior, dict) else None
+        if fs and value_of(prior) == value_of(entry):
+            entry["first_seen"] = fs
+    if _write_guarded(out, old, facts, argv):
+        return 2
+    print(M("facts.measure_written", path=os.path.relpath(out, gate.GATE_REPO), count=len(facts)))
+    for k, v in sorted(facts.items()):
+        print("  %-20s %s (%s)" % (k, v["value"], _age_human(v)))
+    return 0
+
+
+def _facts_with_principles(led):
+    import doc  # noqa: PLC0415
+    f = dict(facts_of(led))
+    if doc.accepts_principles():
+        f.update(doc.facts_of_rules())
+    return f
+
+
+def get_value(led, key):
+    """Return `(found?, value_or_error_message)` across ledger and active principles."""
+    f = _facts_with_principles(led)
     if key not in f:
-        return False, "台账里没有键 `%s`（现有：%s）" % (
-            key, ", ".join(sorted(f)) or "空")
+        return False, M("facts.unknown_key", key=key,
+                        existing=", ".join(sorted(f)) or M("facts.none"))
     return True, value_of(f[key])
 
 
 def _load_or_die():
-    """读台账；**没有就给出可操作的提示**而不是原始 traceback。
-    为什么单列：新仓库第一次用时台账还不存在，而这个脚本今天会直接抛
-    FileNotFoundError —— 那是"为本仓写死"的味道（我们那边永远有 FACTS.json）。
-    语义仍是 fail-loud（空台账照样拒绝渲染），只是**把下一步写在错误里**。"""
-    if not os.path.exists(OUT):
-        # issue #20 ② 补充 2：旧提示「先在仓库根跑一遍量测」正是写出野文件
-        # 的那个动作 —— 提示文本本身也是「默认值产地」的一部分，不许教人
-        # 踩坑。改说「先确认 REFLECT_FACTS 指向哪里」。
-        print("FATAL: 还没有台账 %s（路径 = REFLECT_FACTS，当前解析为 %s）\n"
-              "       先确认本仓的台账路径：检查 Einfacht.env / facts 壳脚本里"
-              " REFLECT_FACTS 设了什么，\n"
-              "       再带着同样的环境跑一遍量测：python3 zreflect/facts.py"
-              "（裸跑会用代码默认值 —— 目标可能与钩子语境不同）\n"
-              "       然后再 --render-doc 把机器块写进文档。"
-              % (os.path.basename(OUT), os.path.relpath(OUT, GATE_REPO)),
-              file=sys.stderr)
-        raise SystemExit(2)
-    return load(OUT)
+    out = _out()
+    if not os.path.exists(out):
+        fatal_exit(M("facts.no_ledger_yet", name=os.path.basename(out),
+                     path=os.path.relpath(out, gate.GATE_REPO)))
+    return load_or_fatal(out)
+
+
+def cmd_render(argv):
+    _ = argv
+    sys.stdout.write(render_block(_load_or_die()) + "\n")
+    return 0
+
+
+def cmd_render_doc(argv):
+    led = _load_or_die()
+    homes, err = block_homes(led)
+    if err:
+        return fatal(err)
+    targets = [argv[1]] if len(argv) > 1 else list(_doc_names())
+    rc = 0
+    for name in targets:
+        rc = write_doc(name, led, homes=homes) or rc
+    return rc
+
+
+def cmd_check(argv):
+    led = _load_or_die()
+    homes, err = block_homes(led)
+    if err:
+        return fatal(err)
+    targets = [argv[1]] if len(argv) > 1 else list(_doc_names())
+    rc = 0
+    for name in targets:
+        rc = check_doc(name, led, homes=homes) or rc
+    return rc
+
+
+def cmd_get(argv):
+    if len(argv) < 2:
+        return fatal(M("facts.get_needs_key"))
+    ok, v = get_value(_load_or_die(), argv[1])
+    if not ok:
+        return fatal(v)
+    print(v)
+    return 0
+
+
+def _init_skeleton(root, state):
+    import doc  # noqa: PLC0415
+    retract_name = knobs.get("REFLECT_RETRACTIONS")
+    history_name = knobs.get("REFLECT_HISTORY")
+    readme_name = (knobs.readme_names() or ["README.md"])[0]
+    return {
+        state: ("# " + state + "\n\n"
+                "> live state: cite ledger values with double brackets (keys from FACTS.json) "
+                "here in the intro blockquote.\n"
+                "> Everything below is rendered from `FACTS.json` by `facts.py --render-doc`.\n\n"
+                + BLOCK_BEGIN + "\n" + BLOCK_END + "\n\n"
+                + registry.GATES_BEGIN + "\n" + registry.GATES_END + "\n"),
+        doc.PRINCIPLES: ("# PRINCIPLES\n\n"
+                         "> design rules rendered by `facts.py --render-doc`.\n\n"
+                         + doc.RULES_BEGIN + "\n" + doc.RULES_END + "\n"),
+        history_name: ("# " + history_name + "\n\n"
+                       "> Append-only provenance narrative (kept off every scan surface).\n\n"
+                       "## Entries\n"),
+        retract_name: '{"schema": 1, "retractions": []}\n',
+        readme_name: ("# " + os.path.basename(root) + "\n\n"
+                      "> Project documentation.\n"),
+        "AGENTS.md": ("# AGENTS.md\n\nRouting only. Rules live in `PRINCIPLES.md`; "
+                      "measured state lives in `" + state + "`.\n\n```bash\n"
+                      "python3 zreflect/registry.py --run commit\npython3 zreflect/harness.py\n```\n"),
+    }
+
+
+def _create_missing(root, files):
+    created: list[str] = []
+    kept: list[str] = []
+    for name, body in files.items():
+        p = os.path.join(root, name)
+        (kept if os.path.exists(p) else created).append(name)
+        if not os.path.exists(p):
+            open(p, "w", encoding="utf-8").write(body)
+    return created, kept
+
+
+def _init_questions_dir(root):
+    qdir = knobs.questions_path(root)
+    if not os.path.isdir(qdir):
+        os.makedirs(qdir, exist_ok=True)
+        print(str(M("facts.init_created", name="questions/")))
+    if [n for n in os.listdir(qdir) if n.endswith(".md")]:
+        return
+    with open(os.path.join(qdir, "01-example.md"), "w", encoding="utf-8") as fh:
+        fh.write("# Example open question\n\n**Status:** resolved\n\n"
+                 "**Settling:** `python3 -c \"raise SystemExit(0)\"` "
+                 "-- rc=0 settles A; rc=1 settles B\n\n"
+                 "Template open question (replace or add new `NN-slug.md` files as needed).\n")
+
+
+def cmd_init(argv):
+    _ = argv
+    import doc  # noqa: PLC0415
+    root = gate.GATE_REPO
+    created, kept = _create_missing(root, _init_skeleton(root, doc.state_name()))
+    for name in created:
+        print(str(M("facts.init_created", name=name)))
+    for name in kept:
+        print(str(M("facts.init_kept", name=name)))
+    if not created:
+        return 0
+    if doc.accepts_principles() and write_doc(doc.PRINCIPLES, {"schema": 1, "facts": {}}) != 0:
+        return 2
+    _init_questions_dir(root)
+    print(str(M("facts.init_next")))
+    return 0
+
+
+def cmd_accept(argv):
+    if len(argv) < 5 or not argv[1] or not argv[3].strip():
+        return fatal(M("facts.accept_usage"))
+    raw_val = argv[2]
+    val = int(raw_val) if re.fullmatch(r"-?\d+", raw_val) else raw_val
+    out = _out()
+    led = load_or_fatal(out) if os.path.exists(out) else {"schema": 1, "facts": {}}
+    old = facts_of(led)
+    new = dict(old)
+    new[argv[1]] = fact(val, argv[3], argv[4])
+    rc = _write_guarded(out, old, new, argv, accept_all=True)
+    if rc == 0:
+        print(M("facts.measure_written", path=os.path.relpath(out, gate.GATE_REPO), count=len(new)))
+    return rc
+
+
+def cmd_show(argv):
+    f = _facts_with_principles(_load_or_die())
+    keys = [argv[1]] if len(argv) > 1 else sorted(f)
+    rc = 0
+    for k in keys:
+        if k not in f:
+            print(M("facts.show_unknown_key", key=k, existing=", ".join(sorted(f))), file=sys.stderr)
+            rc = 1
+            continue
+        e = f[k] if isinstance(f[k], dict) else {"value": f[k]}
+        print("%-20s %s" % (k, e.get("value")))
+        print(M("facts.show.source", value=e.get("source", "?")))
+        print(M("facts.show.cmd", value=e.get("cmd", "?")))
+        if e.get("note"):
+            print(M("facts.show.note", value=e["note"]))
+    return rc
+
+
+def cmd_count(argv):
+    rest = argv[1:]
+    if rest == ["-md"]:
+        print(count_md_lines(gate.GATE_REPO))
+        return 0
+    if len(rest) == 2 and rest[0] in ("-files", "-lines"):
+        print((count_files if rest[0] == "-files" else count_lines)(gate.GATE_REPO, rest[1]))
+        return 0
+    print(M("facts.count_usage"), file=sys.stderr)
+    return 2
+
+
+_COMMANDS = {
+    "--render": cmd_render, "--render-doc": cmd_render_doc, "--check": cmd_check,
+    "--get": cmd_get, "--init": cmd_init, "--accept": cmd_accept,
+    "show": cmd_show, "--count": cmd_count,
+}
 
 
 def main(argv):
-    if argv and argv[0] == "--render":
-        sys.stdout.write(render_block(_load_or_die()) + "\n")
+    """Dispatch `facts.py` CLI arguments (`measure` when empty or modifier-only)."""
+    if not argv or argv[0].startswith(("--allow-drop", "--accept-changes")):
+        return measure(argv)
+    if argv[0] in ("--help", "-h", "help"):
+        print(M("facts.usage"), file=sys.stderr)
         return 0
-    if argv and argv[0] == "--render-doc":
-        return write_doc(argv[1] if len(argv) > 1 else DOC, _load_or_die())
-    if argv and argv[0] == "--check":
-        return check_doc(argv[1] if len(argv) > 1 else DOC, _load_or_die())
-    if argv and argv[0] == "--get":
-        if len(argv) < 2:
-            print("FATAL: --get 需要一个键名：--get KEY", file=sys.stderr)
-            return 2
-        ok, v = get_value(_load_or_die(), argv[1])
-        if not ok:
-            print("FATAL: %s" % v, file=sys.stderr)
-            return 2
-        print(v)                       # 只打印值本身：不解释、不带前缀
-        return 0
-    if argv and argv[0] == "show":
-        led = _load_or_die()
-        f = facts_of(led)
-        keys = [argv[1]] if len(argv) > 1 else sorted(f)
-        rc = 0
-        for k in keys:
-            if k not in f:
-                print("没有这条事实：%s（现有：%s）" % (k, ", ".join(sorted(f))), file=sys.stderr)
-                rc = 1
-                continue
-            e = f[k] if isinstance(f[k], dict) else {"value": f[k]}
-            print("%-20s %s" % (k, e.get("value")))
-            print("    出处  %s" % e.get("source", "?"))
-            print("    复跑  %s" % e.get("cmd", "?"))
-            if e.get("note"):
-                print("    备注  %s" % e["note"])
-        return rc
-    return measure(argv)
+    if argv[0] in _COMMANDS:
+        return _COMMANDS[argv[0]](argv)
+    return fatal(M("facts.unknown_command", command=argv[0]))
 
 
-def _tmp_doc(content, name="doc.md"):
-    """自证用的临时文档（tempfile + atexit 清理 —— 此前写固定的 /tmp
-    路径，非 pid 唯一，并行跑两份自证会互相踩）。"""
-    import atexit                                        # noqa: PLC0415
-    import shutil                                        # noqa: PLC0415
-    import tempfile                                      # noqa: PLC0415
-    d = tempfile.mkdtemp()
-    atexit.register(shutil.rmtree, d, True)
-    p = os.path.join(d, name)
-    open(p, "w").write(content)
-    return p
+def fixture_env(extra=None):
+    """Clean subprocess env stripping inherited `REFLECT_*` and `GATE_REPO`."""
+    env = {k: v for k, v in os.environ.items()
+           if not k.startswith("REFLECT_") and k != "GATE_REPO"}
+    if extra:
+        env.update(extra)
+    return env
 
 
-CASES = [
-    # ③ 空输入必须报（守卫的决策接线在 zreflect/guard.py 的自证里；
-    #    掉条 / 改口的纯函数在 ledger.py 的自证里 —— 各归各）
-    ("★ 空文档（没有块标记）⇒ check_doc 必须报，不许算通过",
-     lambda: check_doc(_tmp_doc("空空如也\n"), {"facts": {"a": 1}}) == 2),
-    ("★ 文档文件不存在 ⇒ check_doc 必须报（不许因为找不到就算通过）",
-     lambda: check_doc(os.path.join(_tmp_doc("", "x.md"), "..",
-                                    "no_such_%d.md" % os.getpid()),
-                       {"facts": {"a": 1}}) == 2),
-    # ② 测龄人话（issue #3 ②）
-    ("年龄：缺失 measured_at ⇒ 明说未记录",
-     lambda: _age_human({"value": 1}) == "未记录测量时间"),
-    ("年龄：刚刚测的 ⇒ 今天",
-     lambda: _age_human({"measured_at": time.strftime("%Y-%m-%dT%H:%M:%S%z")}) == "今天测的"),
-    # ④ 官方只读出口（issue #4 ④）
-    ("--get：键存在（字典形状）⇒ (True, 裸值)",
-     lambda: get_value({"facts": {"n": {"value": 12, "cmd": "c"}}}, "n") == (True, 12)),
-    ("--get：键存在（裸值形状）⇒ (True, 值)",
-     lambda: get_value({"facts": {"n": 7}}, "n") == (True, 7)),
-    ("★ --get：键不存在 ⇒ (False, 错误句)（空输入不是通过）",
-     lambda: get_value({"facts": {"n": 1}}, "zzz")[0] is False),
-]
+def _with_temp_repo(fn):
+    import tempfile  # noqa: PLC0415
+    saved = gate.GATE_REPO
+    with tempfile.TemporaryDirectory() as d:
+        gate.GATE_REPO = d
+        try:
+            return fn(d)
+        finally:
+            gate.GATE_REPO = saved
 
 
-MODULE = module_meta("台账 CLI", "量一遍 / 渲染 / --get / 两道守卫", selftest=True)
+def _unwritable_doc_ok(state_path):
+    """Verify `write_doc` returns 2 on write OSError (via chmod, or guarded open as root)."""
+    if getattr(os, "geteuid", lambda: 1)() != 0:
+        os.chmod(state_path, 0o444)
+        try:
+            return write_doc("STATE.md", {"facts": {"a": 1}}) == 2
+        finally:
+            os.chmod(state_path, 0o644)
+    import builtins  # noqa: PLC0415
+    from unittest.mock import patch  # noqa: PLC0415
+    real_open = builtins.open
+    target = os.path.abspath(state_path)
 
+    def _ro_open(file, mode="r", *args, **kwargs):
+        if "w" in mode and os.path.abspath(str(file)) == target:
+            raise PermissionError(13, target)
+        return real_open(file, mode, *args, **kwargs)
+
+    with patch("builtins.open", _ro_open):
+        return write_doc("STATE.md", {"facts": {"a": 1}}) == 2
+
+
+def _inproc_bootstrap_ok(d):
+    import contextlib  # noqa: PLC0415
+    import io  # noqa: PLC0415
+    subprocess.run(["git", "init", "-q", d], check=True, capture_output=True)
+    with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
+        if cmd_init([]) != 0 or measure(["--accept-changes"]) != 0:
+            return False
+        if cmd_render_doc([]) != 0 or cmd_check([]) != 0:
+            return False
+        led = load_or_fatal(_out())
+        if cmd_accept(["--accept", "manual_n", "250", "echo 250", "cli"]) != 0:
+            return False
+        if load_or_fatal(_out())["facts"]["manual_n"]["value"] != 250:
+            return False
+        if cmd_render_doc([]) != 0:
+            return False
+        unwritable = _unwritable_doc_ok(os.path.join(d, "STATE.md"))
+        os.remove(os.path.join(d, "PRINCIPLES.md"))
+        os.environ["REFLECT_NO_PRINCIPLES"] = "1"
+        try:
+            opt_out = (cmd_check([]) == 0)
+        finally:
+            os.environ.pop("REFLECT_NO_PRINCIPLES", None)
+        open(os.path.join(d, "STATE.md"), "w", encoding="utf-8").write("plain text\n")
+        err_buf = io.StringIO()
+        with contextlib.redirect_stderr(err_buf):
+            mk_rc = check_doc("STATE.md", led)
+        no_markers = (mk_rc == 2 and ("facts.markers_missing_check" in err_buf.getvalue()
+                                      or "AUTO:FACTS" in err_buf.getvalue()))
+        open(os.path.join(d, "STATE.md"), "w", encoding="utf-8").write(
+            "<!-- AUTO:FACTS -->\nstale\n<!-- /AUTO:FACTS -->\n"
+            "<!-- AUTO:GATES -->\nstale\n<!-- /AUTO:GATES -->\n")
+        stale_buf = io.StringIO()
+        with contextlib.redirect_stderr(stale_buf):
+            stale_rc = check_doc("STATE.md", led)
+        stale_ok = (stale_rc == 1 and "FATAL:" not in stale_buf.getvalue())
+    return unwritable and no_markers and opt_out and stale_ok
+
+
+def _quiet(fn):
+    import contextlib  # noqa: PLC0415
+    import io  # noqa: PLC0415
+    with contextlib.redirect_stderr(io.StringIO()):
+        return fn()
+
+
+def _cases():
+    return [
+        ("★ ledger.dropped_refused_unless_allowed",
+         lambda: decide({"a": 1, "b": 2}, {"a": 1})[0] == "refuse"
+         and decide({"a": 1, "b": 2}, {"a": 1}, allow_drop=True)[0] == "write"),
+        ("★ ledger.changed_refused_unless_accepted",
+         lambda: decide({"a": {"value": 1, "cmd": "c"}}, {"a": {"value": 2, "cmd": "c"}})[0] == "refuse"
+         and decide({"a": {"value": 1, "cmd": "c"}}, {"a": {"value": 2, "cmd": "c"}},
+                    accepted={"a"})[0] == "write"),
+        ("★ ledger.empty_refused", lambda: decide({"a": 1}, {}, allow_drop=True)[0] == "refuse"),
+        ("★ ledger.calibrate_requires_pair",
+         lambda: gate.raises(lambda: fact(1, "c", "s", calibrate="echo 1"))),
+        ("★ ledger.gitignored_refused",
+         lambda: write_target_problems("x.json", ignored=True)[0] is not None),
+        ("★ facts.corrupt_load_is_fatal",
+         lambda: _quiet(lambda: _with_temp_repo(lambda d: (
+             open(os.path.join(d, "bad.json"), "w", encoding="utf-8").write("{bad"),
+             gate.raises(lambda: load_or_fatal(os.path.join(d, "bad.json"))))[1]))),
+        ("★ living.sections_and_appendix",
+         lambda: section_is_living("## 5 old", ("5",)) is False
+         and section_is_living("## 6 new", ("5",)) is True
+         and section_is_living("## " + chr(0x9644)) is False),
+        ("facts.render_and_prose_roundtrip",
+         lambda: BLOCK_BEGIN in render_block({"facts": {"n": {"value": 1, "cmd": "c"}}})
+         and prose_of("x<!-- AUTO:FACTS -->y<!-- /AUTO:FACTS -->").strip() == "x"),
+        ("facts.block_homes_present",
+         lambda: len(block_homes({"facts": {"a": {"value": 1, "cmd": "c"}}})[0] or ()) >= 1),
+        ("facts.get_and_age",
+         lambda: get_value({"facts": {"n": {"value": 12, "cmd": "c"}}}, "n") == (True, 12)
+         and not get_value({"facts": {"n": 1}}, "zzz")[0]
+         and _age_human({"value": 1}).code == "facts.age.unrecorded"
+         and _age_human({"measured_at": time.strftime("%Y-%m-%dT%H:%M:%S%z")}).code == "facts.age.today"),
+        ("★ facts.unknown_cmd_is_2_and_help_is_0",
+         lambda: _quiet(lambda: main(["--help"]) == 0 and main(["--bogus-cmd-xyz"]) == 2)),
+        ("★ facts.inproc_bootstrap_unwritable_markers_optout",
+         lambda: _with_temp_repo(_inproc_bootstrap_ok)),
+    ]
+
+
+MODULE = module_meta("Facts ledger CLI", "ledger, guards, renderer, living-state, CLI", selftest=True)
 
 if __name__ == "__main__":
-    sys.exit(main_selftest_or(sys.argv[1:], "facts.py（两道守卫 + 文档一致性）",
-                              CASES, main))
+    sys.exit(main_selftest_or(sys.argv[1:], M("gate.title.facts_cli"), _cases, main))

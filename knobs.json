@@ -1,0 +1,9 @@
+{
+  "REFLECT_FACTS": "FACTS.json",
+  "REFLECT_DOC": "STATE.md",
+  "REFLECT_DOCS": "STATE.md,README.md,README.en.md,CONTEXT.md",
+  "REFLECT_QUESTIONS": "questions",
+  "REFLECT_RETRACTIONS": "retractions.json",
+  "REFLECT_READMES": "README.md,README.en.md",
+  "REFLECT_MEASURE_MODULE": "measure_deploy"
+}

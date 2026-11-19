@@ -1,29 +1,28 @@
-"""isui.ren-heart（边缘部署仓）的事实采集层。
+"""Fact collector for isui.ren-heart (edge deployment repo).
 
-⚠️ 本仓的 special shape：**main 分支 = 源码，deploy 分支 = 构建产物**。
-Einfacht 只跟 main 跑（deploy 每次被孤儿重建，挂任何钩子都会在下次构建时消失）。
+⚠️ special shape: main branch = sources, deploy branch = build output.
+Einfacht follows main only (deploy is rebuilt as an orphan, so any hooks there vanish).
 
-本仓要量的是**部署链的形状**——那些「改了就必须两边对」的耦合点：
-  · 中间件的反代路由数（每条都是一个对外承诺）
-  · site-root 的静态根文件（每个都是 EdgeOne 直接吐的东西）
-  · Rust wasm crate 的源码规模
-  · 构建脚本与站点根的形态一致性
+measured: the deploy-chain shape - coupling points that must agree on both sides:
+  · middleware reverse-proxy route count (each is a public promise)
+  · site-root static files (each is served by EdgeOne directly)
+  · Rust wasm crate source size
+  · build script / site-root shape agreement
 """
 
 import os
 import re
-
 import sys as _sys
 
 _sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from gate import module_meta                               # noqa: E402
-from ledger import fact                                    # noqa: E402
+from facts import fact  # noqa: E402
+from gate import module_meta  # noqa: E402
 
 ROOT = os.getcwd()
 
 
 def _lines(rel):
-    """文件行数。读不到 -> -1。"""
+    """line count. unreadable -> -1."""
     try:
         with open(os.path.join(ROOT, rel), encoding="utf-8", errors="replace") as fh:
             return sum(1 for _ in fh)
@@ -45,22 +44,22 @@ def _count_dir(rel, suffix=None):
 def measure():
     facts = {}
 
-    # ── 中间件行数（本仓最核心的单文件：所有反代与缓存契约都在这）───────────
+    # middleware line count (core single file: all proxy/cache contracts)
     facts["middleware_lines"] = fact(
         _lines("site-root/middleware.js"),
         "wc -l < site-root/middleware.js",
         "site-root/middleware.js",
-        "边缘中间件行数（反代 / 缓存 / COOP-COEP 全部契约在这个文件里）",
+        "middleware.js line count (reverse proxy / cache / COOP-COEP contracts live here)",
     )
 
-    # ── 反代路由数：数 middleware 里的 url.pathname 分支 ──────────────────────
+    # reverse-proxy route count: url.pathname branches in middleware
     n_routes = -1
     try:
         with open(os.path.join(ROOT, "site-root/middleware.js"), encoding="utf-8") as fh:
             src = fh.read()
-        # 数**行**不是数出现次数：第 387 行有两个 ===（`/repo` 与 `/repo/`），
-        # 数出现次数会得 6 而 grep -c 数行得 5 —— measure 与 cmd 语义分叉，
-        # 复跑闸门当场抓住。行数才符合「路由分支」的直觉。
+        # Count LINES, not occurrences: one line can hold two === branches, so
+        # counting occurrences diverges from the grep -c replay command and the
+        # replay gate catches it. Lines match "route branch" intuition.
         n_routes = len([ln for ln in src.splitlines()
                         if re.search(r'url\.pathname\s*===?\s*"', ln)])
     except OSError:
@@ -69,18 +68,18 @@ def measure():
         n_routes,
         ("grep -cE 'url\\.pathname[[:space:]]*===?[[:space:]]*\"' site-root/middleware.js"),
         "site-root/middleware.js",
-        "按 pathname 精确匹配的路由分支数（每个都是对外承诺的一个端点）",
+        "pathname-exact route branches (each is one public endpoint)",
     )
 
-    # ── site-root 静态文件数（EdgeOne 直接吐的根级资产）──────────────────────
+    # site-root top-level files (served by EdgeOne directly)
     facts["site_root_files"] = fact(
         _count_dir("site-root"),
         "find site-root -maxdepth 1 -type f ! -name '.*' | wc -l",
         "site-root/",
-        "站点根级文件数（index/404/logo/edgeone.json 等，EdgeOne 直出）",
+        "site-root top-level files (index/404/logo/edgeone.json, served by EdgeOne)",
     )
 
-    # ── edge-functions 数 ──────────────────────────────────────────────────
+    # edge-functions count
     ef = os.path.join(ROOT, "site-root", "edge-functions")
     n_ef = -1
     if os.path.isdir(ef):
@@ -89,14 +88,14 @@ def measure():
         n_ef,
         "find site-root/edge-functions -name '*.js' 2>/dev/null | wc -l",
         "site-root/edge-functions/",
-        "边缘函数文件数（独立于 middleware 的函数端点）",
+        "edge function files (function endpoints separate from middleware)",
     )
 
-    # ── Rust wasm 源码文件数 ────────────────────────────────────────────────
+    # Rust wasm source count
     n_rs = 0
     ok = True
     try:
-        for root, dirs, files in os.walk(os.path.join(ROOT, "web-rust")):
+        for _root, dirs, files in os.walk(os.path.join(ROOT, "web-rust")):
             dirs[:] = [d for d in dirs if d not in ("target", ".git")]
             n_rs += sum(1 for f in files if f.endswith(".rs"))
     except OSError:
@@ -105,14 +104,14 @@ def measure():
         n_rs if ok else -1,
         "find web-rust -name '*.rs' -not -path '*/target/*' | wc -l",
         "web-rust/",
-        "Rust 源码文件数（wasm 动画引擎）",
+        "Rust source files (wasm animation engine)",
     )
 
     return facts
 
 
 MODULE = module_meta(
-    "本仓数据层",
-    "量边缘部署链形状：中间件行数/路由数/静态根文件/边缘函数/Rust 源码",
+    "this repo data layer",
+    "deploy chain shape: middleware lines/routes/site-root files/edge functions/Rust sources",
     selftest=False,
 )

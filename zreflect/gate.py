@@ -1,62 +1,78 @@
 #!/usr/bin/env python3
-"""闸门平台：rc 契约 + 零值守卫 + 三档自证。
+"""Gate platform: rc contract, zero-trust guards, spec helpers, verbatim command runner, phase executor."""
+from __future__ import annotations
 
-它解决的**不是**「没有检查」，而是**检查在输入消失时静默变绿**。真实踩过的三种：
-
-  · 三个站点同时缺 `VERSION` ⇒ 一致性闸门报「完全一致」；
-  · 声明的集合是空的 ⇒ 出厂核对报 `verdict: "ok"`；
-  · 自检脚本 `0/0` ⇒ 算「全部通过」。
-
-所以任何检查器都必须能回答两句话：**输入空了我报吗？**、**该报的我会报吗？**
-`require_nonempty()` 答第一句，`selftest()` 的三类用例答第二句。
-
-**rc 契约（本平台的 interface，2026-10-07 起全仓唯一产地）**：
-
-  · `off()`    ⇒ 0，未启用（可插拔闸门的 off 态必须**明说**，不许静默）；
-  · `fatal()`  ⇒ 2，配置 / 环境坏（旋钮指向缺失、坏 JSON、规格结构坏、
-    仪器本身坏了）—— 配置性失败 ≠ 检查失败，混进 1 会让「发现问题」
-    与「配置坏了」不可区分；
-  · `finish()` ⇒ 1（有 problems）/ 0（绿）。标题在先、问题行在后，
-    问题行统一 stderr —— 此前 13 道闸门各手抄一份、已漂出两派
-    （stdout/stderr 混用、标题先后不一），这里收敛成一份。
-
-自证期间纯函数保持安静（print 归 run()/顶层，issue #1 ③）。
-"""
 import json
 import os
+import re
+import shlex
+import shutil
+import subprocess
 import sys
+from typing import Any
 
-_AST_CACHE = {}
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import hashlib  # noqa: E402
 
-# 被检查的仓库根：默认是本包的上一级，可用 GATE_REPO 覆盖（测试夹具靠它）。
+import i18n  # noqa: E402
+import knobs  # noqa: E402
+
 GATE_REPO = os.environ.get("GATE_REPO") or os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+EXEC_PREFIXES = (
+    "python3", "python", "sh", "bash", "node", "deno", "ruby", "perl",
+    "echo", "printf", "cat", "test", "true", "false", "env", "make", "git",
+    "npm", "pnpm", "yarn", "cargo", "go", "gcc", "cc", "cmake", "docker",
+)
+_OUTCOME_SEP = re.compile(r"\s+(?:——|—|----|--)\s+")
+_PROSE_CHARS = re.compile(r"[\u4e00-\u9fff（）【】；：，。]")
+_QUOTED = re.compile(r'"([^"]*)"|(\S+)')
+_PY_CMD = re.compile(r"^\s*python3(?=\s)")
+_TOOL_REL = re.compile(r"(?<!\w)(zreflect/[A-Za-z_][A-Za-z0-9_]*\.py)")
+_NEEDS_QUOTING = re.compile(r"""[\s\\$`"'|&;<>()*?{}\[\]#~]""")
 
 
 def repo(*parts):
-    """拼一个指向被检查仓库的绝对路径。"""
+    """Join path segments onto `GATE_REPO`."""
     return os.path.join(GATE_REPO, *parts)
 
 
-def require_nonempty(name, seq, what="输入"):
-    """零值守卫：收集阶段什么都没收到 ⇒ 报错，**不许当「干净」**。
+def repo_path(path, root=None):
+    """Anchor relative `path` onto `root` (defaults to `GATE_REPO`); pass absolute paths through."""
+    base = GATE_REPO if root is None else root
+    return path if os.path.isabs(path) else os.path.join(base, path)
 
-    这是本包最重要的一行。绝大多数「闸门假装通过」的事故，根因都是这里没守：
-    遍历一个不存在的目录得到空集，然后「没有发现违规」——两句都是真的，结论是错的。
-    """
+
+def zdir():
+    """Return the tool's `zreflect/` directory."""
+    return os.path.dirname(os.path.abspath(__file__))
+
+
+def tool_repo():
+    """Return the parent directory of `zreflect/` (where bundled suite assets live)."""
+    return os.path.dirname(zdir())
+
+
+def sha256_file(path):
+    """Compute hex SHA-256 of `path` using 1 MiB streaming chunks."""
+    h = hashlib.sha256()
+    with open(path, "rb") as fh:
+        for chunk in iter(lambda: fh.read(1 << 20), b""):
+            h.update(chunk)
+    return h.hexdigest()
+
+
+def require_nonempty(name, seq, what=None):
+    """Raise `SystemExit(2)` with `FATAL:` message if `seq` is empty; return `list(seq)`."""
+    label = i18n.M("gate.input_label") if what is None else what
     items = list(seq)
     if not items:
-        raise SystemExit(
-            "FATAL: %s：%s 是空的。空输入不是「全部通过」—— 要么收集逻辑坏了，"
-            "要么路径给错了。先修输入，别关闸门。" % (name, what)
-        )
+        fatal_exit(i18n.M("gate.require_nonempty", name=name, what=str(label)))
     return items
 
 
-def guard_nonempty(name, seq, what="输入"):
-    """`require_nonempty` 的 rc 版：空 ⇒ 打印 FATAL、返回 2；非空 ⇒ None。
-
-    给「直接跑」的检查器用（它们要的是退出码，不是异常）。
-    """
+def guard_nonempty(name, seq, what=None):
+    """RC-returning form of `require_nonempty`: empty prints FATAL to stderr and returns 2."""
     try:
         require_nonempty(name, seq, what)
         return None
@@ -66,163 +82,307 @@ def guard_nonempty(name, seq, what="输入"):
 
 
 def off(notice):
-    """未启用：明说 + 退 0。
-
-    ⚠️ **off 与「真跑通过」必须可区分**（C2）：两者 rc 都是 0（off 不是失败，
-    hooks 的 `|| exit` 不该把它当红），但 off 在 stdout 打一行机器可读标记
-    `OFF: …` —— 执行面（`gate.run_phase`）据此把闸门分成 ran / off / failed
-    三档，而不是把「没跑」算进「绿」。此前 off 只打 stderr 的自由文本，
-    「全部闸门绿」实为「N 道通过 + M 道从未运行」不可见（本仓实测 8/13 道
-    off —— 与本仓立身要消灭的假绿同形）。
-    """
-    print("OFF: %s" % notice)
-    _maybe_hint()
+    """Emit `OFF:` marker on stdout and return rc=0."""
+    print(i18n.emit("off", notice))
     return 0
 
 
 def fatal(msg):
-    """配置 / 环境坏：FATAL + 退 2。"""
-    print("FATAL: %s" % msg, file=sys.stderr)
+    """Emit `FATAL:` marker on stderr and return rc=2."""
+    print(i18n.emit("fatal", msg), file=sys.stderr)
     return 2
 
 
-def load_spec(path):
-    """读 JSON 规格，返回 (spec, 错误句)。错误句非 None ⇒ 调用方 `fatal()`。
+def fatal_exit(msg):
+    """Abort with `FATAL:` SystemExit(2)."""
+    raise SystemExit(i18n.emit("fatal", msg))
 
-    返回错误而不是 raise：调用方要把旋钮名 / 路径放进自己的 FATAL 措辞。
-    """
+
+def declares_itself(path):
+    """Check whether `path` declares `GATE =` or `MODULE =`."""
+    try:
+        text = open(path, encoding="utf-8", errors="replace").read()
+    except OSError:
+        return False
+    return "GATE =" in text or "MODULE =" in text
+
+
+def suite_sources(sub="zreflect"):
+    """Collect `[(relpath, src)]` for undeclared/unskipped `.py` files in `zreflect/`."""
+    d = zdir()
+    out: list[tuple[str, str]] = []
+    if not os.path.isdir(d):
+        return out
+    for n in sorted(os.listdir(d)):
+        if n.endswith(".py") and n != "__init__.py" and not n.startswith("measure_"):
+            p = os.path.join(d, n)
+            if os.path.isfile(p) and declares_itself(p):
+                out.append((sub + "/" + n, open(p, encoding="utf-8", errors="replace").read()))
+    return out
+
+
+def scanned_sources(d, configured=False):
+    """Collect `[(relpath, src)]` from `d` (filtered by declaration only when unconfigured)."""
+    out: list[tuple[str, str]] = []
+    if not os.path.isdir(d):
+        return out
+    for dirpath, dirnames, filenames in os.walk(d):
+        dirnames[:] = sorted(x for x in dirnames if x not in ("__pycache__", ".git"))
+        for n in sorted(filenames):
+            if not n.endswith(".py") or n == "__init__.py":
+                continue
+            p = os.path.join(dirpath, n)
+            if configured or declares_itself(p):
+                rel = os.path.relpath(p, d).replace(os.sep, "/")
+                out.append((rel, open(p, encoding="utf-8", errors="replace").read()))
+    return out
+
+
+def py_sources(base):
+    """Collect `[(relpath, source)]` for all `.py` files under `base` with forward slashes."""
+    out: list[tuple[str, str]] = []
+    if not os.path.isdir(base):
+        return out
+    for dirpath, dirnames, filenames in os.walk(base):
+        dirnames[:] = sorted(d for d in dirnames if d not in ("__pycache__", ".git"))
+        for n in sorted(filenames):
+            if not n.endswith(".py"):
+                continue
+            p = os.path.join(dirpath, n)
+            rel = os.path.relpath(p, base).replace(os.sep, "/")
+            try:
+                out.append((rel, open(p, encoding="utf-8", errors="replace").read()))
+            except OSError:
+                continue
+    return out
+
+
+def resolve_spec(argv, knob, default):
+    """Resolve spec path (`--spec` > `knob` > `default`) and return `(path, was_explicit)`."""
+    for i, a in enumerate(argv):
+        if a == "--spec" and i + 1 < len(argv):
+            return argv[i + 1], True
+    k = (knob or "").strip()
+    if k:
+        return k, True
+    return default, False
+
+
+def load_spec(path):
+    """Load JSON spec at `path`; return `(data, error_msg_or_None)`."""
     try:
         with open(path, encoding="utf-8") as fh:
             return json.load(fh), None
     except (OSError, ValueError) as e:
-        return None, "%s 读不了 / 不是合法 JSON：%s" % (path, e)
+        return None, i18n.M("gate.spec_unreadable", path=path, error=e)
+
+
+def _resolve_gate_spec_name(argv, knob_name):
+    """Resolve `(spec_name, explicit)` with `--spec` > `knobs.raw` > `REGISTRY` default."""
+    spec_arg, arg_explicit = resolve_spec(argv, "", knobs.REGISTRY[knob_name][1])
+    if arg_explicit:
+        return spec_arg, True
+    raw_val = knobs.raw(knob_name)
+    if raw_val is not None:
+        s = raw_val.strip()
+        return (s, True) if s else ("", False)
+    return knobs.REGISTRY[knob_name][1], False
+
+
+def load_gate_spec(argv, knob_name, *, off_msg, missing_msg, broken_msg=None):
+    """Shared spec-gate bootstrap: resolve `--spec` > knob > registry default.
+
+    Returns `(spec, spec_name, None)` when ready, or `(None, spec_name, rc)` if handled.
+    """
+    spec_name, explicit = _resolve_gate_spec_name(argv, knob_name)
+    if not spec_name:
+        return None, "", off(off_msg(""))
+    path = repo_path(spec_name)
+    if not os.path.isfile(path):
+        rc = fatal(missing_msg(spec_name)) if explicit else off(off_msg(spec_name))
+        return None, spec_name, rc
+    spec, err = load_spec(path)
+    if err:
+        msg = broken_msg(spec_name, err) if broken_msg else err
+        return None, spec_name, fatal(msg)
+    return spec, spec_name, None
+
+
+def run_spec_gate(argv, knob_name, *, off_msg, missing_msg, broken_msg=None,
+                  title, judge, ok_msg):
+    """Run a standard spec gate end-to-end (load -> judge -> emit skips -> finish)."""
+    spec, _name, rc = load_gate_spec(
+        argv, knob_name, off_msg=off_msg, missing_msg=missing_msg, broken_msg=broken_msg,
+    )
+    if rc is not None:
+        return rc
+    problems, skips = judge(spec)
+    for x in skips:
+        print(i18n.emit("skip", str(x)), file=sys.stderr)
+    return finish(title, problems, ok_msg(spec))
 
 
 def finish(name, problems, ok):
-    """问题循环 + OK 行 —— rc 契约（1 = 发现问题 / 0 = 绿）的唯一产地。"""
+    """Report problems to stderr (`rc=1`) or `ok` to stdout (`rc=0`)."""
     if problems:
-        print("%s：%d 个问题" % (name, len(problems)), file=sys.stderr)
+        print(i18n.M("gate.problems_header", name=name, count=len(problems)), file=sys.stderr)
         for p in problems:
             print("  · " + p, file=sys.stderr)
-        _maybe_hint()
+            forged = getattr(p, "forged", ())
+            if forged:
+                print("  " + i18n.M("gate.forged_row_neutralised", count=len(forged)),
+                      file=sys.stderr)
         return 1
     print(ok)
-    _maybe_hint()
     return 0
 
 
-def _maybe_hint():
-    """把 env 提示打到 stderr（**绝不进 stdout** —— 那里有机器契约）。
-
-    `REFLECT_ENV_HINT=off` 可整体关闭（本仓「不喜欢提示的仓」的出口；
-    提示本身是**人性化**，不是判据）。
-    """
-    if os.environ.get("REFLECT_ENV_HINT", "").strip().lower() == "off":
-        return
-    h = env_hint()
-    if h:
-        print("ℹ %s" % h, file=sys.stderr)
-
-
-def env_carrier():
-    """仓里的 Einfacht.env 载体路径（钩子目录优先、仓库根次之），没有 ⇒ None。"""
-    name = (os.environ.get("REFLECT_ENV_FILE", "Einfacht.env").strip()
-            or "Einfacht.env")
-    for d in (repo("reflect-hooks"), repo()):
-        p = os.path.join(d, name)
-        if os.path.exists(p):
-            return p
-    return None
+def starts_with_interpreter(value, field_name="cmd"):
+    """Verify `value` starts with a command token and has no trailing unquoted CJK prose."""
+    s = str(value or "").strip()
+    if field_name == "Settling":
+        s = _OUTCOME_SEP.split(s, 1)[0].strip()
+    if s.startswith("`") and s.endswith("`") and len(s) >= 2:
+        s = s[1:-1].strip()
+    if not s:
+        return False
+    first = s.split(" ", 1)[0].strip("`\"'")
+    if not (first in EXEC_PREFIXES or first.startswith("/")):
+        return False
+    stripped = re.sub(r"'[^']*'", "", re.sub(r'"[^"]*"', "", s))
+    if _PROSE_CHARS.search(stripped):
+        return False
+    try:
+        return bool(shlex.split(s))
+    except ValueError:
+        return False
 
 
-def gate_knobs(module=None):
-    """调用方模块声明的 `GATE = meta(…, knobs=…)`（拿不到 ⇒ 空）。
-
-    让 `env_hint()` 不必每个入口手写旋钮名 —— 声明已经有一份（单一产地）。
-    """
-    import sys as _sys                                   # noqa: PLC0415
-    mod = module if module is not None else _sys.modules.get("__main__")
-    decl = getattr(mod, "GATE", None)
-    if isinstance(decl, dict):
-        return tuple(decl.get("knobs") or ())
-    return ()
+def prose_in_exec_problems(where, field_name, value):
+    """Report when a non-empty execution field contains prose instead of a runnable command."""
+    if not str(value or "").strip() or starts_with_interpreter(value, field_name):
+        return []
+    return [i18n.M("criteria.exec_position_is_prose",
+                   where=where, field=field_name, value=str(value)[:60])]
 
 
-def env_hint(consumed=(), module=None):
-    """**人性化提示**：喂了 env 的入口，在「带了 env 却没生效」时该怎么跑。
-
-    `consumed` = 这个入口实际读的旋钮名（如 `("REFLECT_FACTS",)`）。
-    返回一行提示字符串，或 None（无需提示）。
-
-    什么时候提示（三类，都只在对用户**有帮助**时出现）：
-
-      1. 仓里**有** Einfacht.env，但本轮进程**一个旋钮都没设**（`consumed`
-         全不在环境里）—— 典型的手工裸跑：`python3 zreflect/check_x.py`
-         ⇒ 判据全部回落默认名，结果可能与钩子语境不同，而且**没有任何东西
-         会告诉用户**（issue #20② / #15 都栽在这上面）。
-      2. 仓里**有** Einfacht.env 且当前设置与它**不一致**？—— 不查（要看值
-         才能判，而值依赖 shell 语义）；只查「有没有设」，保持判据廉价可靠。
-      3. 仓里**没有** Einfacht.env ⇒ **不提示**（这类仓裸跑是正常用法，提示
-         只会变成噪音 —— 本仓「会误报的闸门最终被整闸关掉」的教训）。
-
-    提示语集中在这里（一处措辞），各入口调它 —— 不再各写一份。
-    """
-    carrier = env_carrier()
-    if not carrier:
-        return None                      # 无载体的仓：裸跑是正常用法，不吵
-    if not consumed:
-        consumed = gate_knobs(module)     # 声明里的旋钮清单（零手写）
-    if not consumed:
-        return None
-    if any(os.environ.get(k, "").strip() for k in consumed):
-        return None                      # 至少设了一个旋钮 ⇒ 认为是有意配置
-    rel = os.path.relpath(carrier, GATE_REPO)
-    return ("检测到 %s，但本次进程一个旋钮都没设 —— 判据可能回落默认名，"
-            "结果与钩子语境不同。\n"
-            "       try running it with %s：\n"
-            "         set -a; . %s; set +a\n"
-            "       （或 `REFLECT_*=<值> python3 ...` 显式给旋钮）"
-            % (rel, rel, rel))
+EXEC_POSITIONS = {
+    "world.json": ("stamps", "cmd"),
+    "pins.json": ("pins", ("version_read", "stamp_read")),
+}
 
 
-def meta(name, desc, knobs=(), name_dependent=False, runs_at="commit"):
-    """闸门声明行（registry 的 ast 提取目标）：名字 + 一句话 + 消费的旋钮。
+def exec_position_problems(spec, name):
+    """Validate declared command fields in `world.json` or `pins.json`."""
+    entry_key, fields = EXEC_POSITIONS.get(name, (None, ()))
+    if entry_key is None or not isinstance(spec, dict):
+        return []
+    fields = (fields,) if isinstance(fields, str) else fields
+    raw = spec.get(entry_key) or {}
+    pairs = ([(str(i), e) for i, e in enumerate(raw)] if isinstance(raw, list)
+             else list(raw.items()) if isinstance(raw, dict) else [])
+    out = []
+    for key, entry in pairs:
+        if not isinstance(entry, dict):
+            continue
+        for field_name in fields:
+            out += prose_in_exec_problems(
+                "%s/%s" % (name, entry.get("name") or key), field_name, entry.get(field_name))
+    return out
 
-    声明即登记 —— 手写名录会漂，这里只许写事实。
 
-    · `name_dependent=True` 标给「默认输入被换名自证改名」的闸门
-      （gates-selftest 的跨仓库节里必须红的那批）：标了会被两头拦 ——
-      夹具要求它真红，registry.problems 要求它真消费改名的默认名。
-    · `runs_at`（C1）**正面声明频率**：`"commit"`（每次提交跑，进 hooks /
-      CI）或 `"start-of-work"`（开工前手动跑 —— doctor 那种「查会死的东西」，
-      挂 pre-commit 频率错）。此前频率只能靠「文件名不叫 check_」这种**否定式
-      命名意外**表达，且执行面 glob 与它无关 ⇒ 改个名就把 doctor 变成每次
-      提交探测活进程的闸门，无人拦。现在频率是声明里的一个字段，执行面
-      （gate.run_phase）按它过滤 —— 名字不再是承重的。
+def timeout_with_status():
+    """Return `(seconds, raw_bad_value_or_None)` from `REFLECT_REPLAY_TIMEOUT`."""
+    val = knobs.raw("REFLECT_REPLAY_TIMEOUT")
+    if val is None or not val.strip():
+        return 10.0, None
+    try:
+        return float(val), None
+    except ValueError:
+        return 10.0, val
 
-    registry 从这些声明派生：执行清单（按 runs_at 过滤）、叙述
-    （AUTO:GATES）、红名单、自证清单。名字只用于 `check_*.py` 的文件约定
-    （描述性），不再承载语义。
-    """
-    return {"name": name, "desc": desc, "knobs": tuple(knobs),
-            "name_dependent": bool(name_dependent),
-            "runs_at": str(runs_at)}
+
+def default_timeout():
+    """Return float replay timeout in seconds (defaults to 10.0)."""
+    return timeout_with_status()[0]
+
+
+def quote(s, n=60):
+    """Truncate and repr-quote command output for diagnostics."""
+    return repr(s if len(s) <= n else s[:n] + "...")
+
+
+def _quote_for_shell(path):
+    if not _NEEDS_QUOTING.search(path):
+        return path
+    if "'" not in path:
+        return "'%s'" % path
+    return '"%s"' % path.replace('"', '\\"')
+
+
+def _python_of(cmd):
+    interp = _quote_for_shell(sys.executable)
+    out = _PY_CMD.sub(lambda _m: interp, cmd, count=1)
+    return _TOOL_REL.sub(lambda m: _quote_for_shell(os.path.join(tool_repo(), m.group(1))),
+                          out, count=1)
+
+
+def _shell_argv(cmd):
+    bash = shutil.which("bash")
+    if bash:
+        return [bash, "-o", "pipefail", "-c", _python_of(cmd)], "bash"
+    if os.name != "nt" and os.path.exists("/bin/sh"):
+        return ["/bin/sh", "-c", _python_of(cmd)], "sh"
+    return None, "no-shell"
+
+
+def _windows_argv(cmd):
+    return [m.group(1) if m.group(1) is not None else m.group(2)
+            for m in _QUOTED.finditer(cmd)]
+
+
+def run_cmd(cmd, timeout=None):
+    """Execute `cmd` verbatim in `GATE_REPO`, returning `(returncode_or_None, output)`."""
+    t = default_timeout() if timeout is None else timeout
+    argv, shell_kind = _shell_argv(cmd)
+    if argv is None:
+        argv = _windows_argv(_python_of(cmd))
+    env = dict(os.environ)
+    try:
+        env["EINFACHT_REPLAY_DEPTH"] = str(int(env.get("EINFACHT_REPLAY_DEPTH", "0") or 0) + 1)
+    except ValueError:
+        env["EINFACHT_REPLAY_DEPTH"] = "1"
+    try:
+        p = subprocess.run(argv, cwd=GATE_REPO, capture_output=True, text=True,
+                           errors="replace", timeout=t, env=env, encoding="utf-8")
+    except subprocess.TimeoutExpired:
+        return None, ""
+    except OSError as e:
+        return 127, i18n.emit("fatal", "%s [shell=%s argv=%r]" % (e, shell_kind, argv[:2]))
+    if p.returncode != 0 and p.stderr:
+        return p.returncode, (p.stdout or "") + p.stderr
+    if p.stdout is None:
+        return p.returncode, i18n.emit("fatal", "stdout=None rc=%s" % p.returncode)
+    return p.returncode, p.stdout
+
+
+def meta(name, desc, knobs=(), name_dependent=False, runs_at="commit", off_reason=None):
+    """Gate declaration dict parsed by `registry.gates()`."""
+    return {
+        "name": name, "desc": desc, "knobs": tuple(knobs),
+        "name_dependent": bool(name_dependent),
+        "runs_at": str(runs_at),
+        "off_reason": (None if off_reason is None else str(off_reason)),
+    }
 
 
 def module_meta(name, desc, selftest=True):
-    """平台模块声明行（C5）：registry 的 ast 提取目标。
-
-    闸门用 `GATE = meta(…)` 声明；**平台模块**（gate / runner / knobs /
-    registry / guard / ledger / render / facts …）用 `MODULE = module_meta(…)`
-    声明自己的存在与「有没有自证义务」。此前「该有自证」只能靠**文本猜测**
-    （扫 `_cases` 字面量）——「一个模块该有自证却没写」无人问；现在它是声明里
-    的一个字段：`selftest=True` ⇒ registry 要求它真能 `--selftest` 且被实跑。
-    """
+    """Module declaration dict parsed by `registry.modules()`."""
     return {"name": name, "desc": desc, "selftest": bool(selftest)}
 
 
 def raises(fn):
-    """「该报错的必须报错」—— 反向断言用。返回 True 表示它确实报了 SystemExit。"""
+    """Return True if `fn()` raises `SystemExit`."""
     try:
         fn()
     except SystemExit:
@@ -230,205 +390,96 @@ def raises(fn):
     return False
 
 
-
-def _ast_for(fname):
-    """整文件 AST（按文件名缓存）。读不到 / 解析不了 ⇒ False（缓存负结果）。"""
-    import ast as _ast                                   # noqa: PLC0415
-    import linecache                                     # noqa: PLC0415
-    tree = _AST_CACHE.get((fname,))
-    if tree is not None:
-        return tree
-    try:
-        tree = _ast.parse("".join(linecache.getlines(fname)))
-    except (OSError, SyntaxError):
-        tree = False
-    _AST_CACHE[(fname,)] = tree
-    return tree
-
-
-def _lambda_nodes(tree, lineno):
-    """起始行 == lineno 的**全部** Lambda 节点（按 col_offset 升序）。
-
-    ⚠️ 为什么返回列表而不是单个：**同一行里可以有多条 lambda**（`return
-    [("a", lambda: …), ("b", lambda: …)]` 全在一行）—— 这时 code object 的
-    `co_firstlineno` 相同、`co_positions()` 也只给外层位置，**无法区分**是哪
-    一条。取 col_offset 最小的那条会让同行的其它断言全部按第一条判定
-    （实测踩到：`lambda: 1 == 2` 被同行的 `lambda: … or True` 带累判成恒真）。
-
-    因此返回同行全部候选；调用方对**每一条**都扫一遍，任一条恒真即报 ——
-    「同行内任一条断言恒真」本来就该被抓，多报不算误伤。
-    """
-    import ast as _ast                                   # noqa: PLC0415
-    nodes = [n for n in _ast.walk(tree)
-             if isinstance(n, _ast.Lambda) and n.lineno == lineno]
-    return sorted(nodes, key=lambda n: n.col_offset)
-
-
-def _const_truthy(node):
-    """这个常量节点恒为真吗（`or True` / `or 1` 的右操作数形状）。"""
-    import ast as _ast                                   # noqa: PLC0415
-    if not isinstance(node, _ast.Constant) or node.value is None:
-        return False
-    return node.value is not False and bool(node.value) is True
-
-
-def _const_falsy(node):
-    """这个常量节点恒为假吗（`and False` / `and 0` 的右操作数形状）。"""
-    import ast as _ast                                   # noqa: PLC0415
-    if not isinstance(node, _ast.Constant) or node.value is None:
-        return False
-    return node.value is False or node.value == 0
-
-
-def _short_circuit_reason(node):
-    """这个 AST 节点构成恒真短路吗 ⇒ 原因字符串；否则 None。"""
-    import ast as _ast                                   # noqa: PLC0415
-    if isinstance(node, _ast.BoolOp):
-        if isinstance(node.op, _ast.Or) and any(
-                _const_truthy(o) for o in node.values):
-            return "`or <真值常量>` —— 布尔或被常量短路，永远 PASS"
-        if isinstance(node.op, _ast.And) and any(
-                _const_falsy(o) for o in node.values):
-            return "`and <假值常量>` —— 布尔与被常量短路，永远 fail"
-    if isinstance(node, _ast.Compare) and len(node.comparators) == 1:
-        left, right = node.left, node.comparators[0]
-        # 排除裸函数调用两次的**合法**纯函数性检验
-        # （`render_gates(gs) == render_gates(gs)` 证明渲染确定性）。
-        if isinstance(left, _ast.Call) and isinstance(right, _ast.Call):
-            return None
-        if _ast.dump(left) == _ast.dump(right) and isinstance(
-                node.ops[0], (_ast.Eq, _ast.LtE, _ast.GtE)):
-            return "比较两侧是同一个表达式 —— 恒真（x == x）"
-    return None
-
-
-def never_falsifiable(fn):
-    """**恒真断言探测**（issue #23）：这条自证用例有证伪能力吗？
-
-    下游实测的事故：一条 `or True` 的断言在 `--selftest` 里永远是 PASS ——
-    `gates-selftest` 判的是「返回 0 + 打摘要行」，真断言与恒真断言在这个面上
-    完全同形。`AGENTS.md` 纪律 4 说「断言要能证伪」，但此前没有机器判据。
-
-    判据（AST，零执行、零副作用）：**整文件解析 + 按 co_firstlineno 定位**
-    lambda 节点（不用 inspect.getsourcelines —— 它对列表里的 lambda 只给首行，
-    重建脆弱，实测三次失明）。找到节点后扫恒真短路：
-
-      · `or <真值常量>` / `and <假值常量>` —— 布尔被常量短路，永远 PASS/fail；
-      · `x == x` 型自我比较（**排除**裸函数调用两次的合法纯函数性检验）。
-
-    返回原因字符串（不可证伪）或 None（看起来有牙）。
-
-    诚实边界：静态形状判据 —— 抓得到显式短路与自我比较，抓不到更隐蔽的恒真
-    （同一变量换写法）。更强的保证是变异测试（每条断言注入破坏器），代价过大；
-    见 issue #23 的讨论。本判据的价值：把已知的几种无意识写法从「人工复查才
-    发现」变成「自证当场红」。
-    """
-    import ast as _ast                                   # noqa: PLC0415
-    code = getattr(fn, "__code__", None)
-    if code is None:
-        return None                                      # 非 Python 函数 ⇒ 不猜
-    tree = _ast_for(code.co_filename)
-    if not tree:
-        return None                                      # 读不到 / 解析不了 ⇒ 不猜
-    nodes = _lambda_nodes(tree, code.co_firstlineno)
-    if not nodes:
-        return None                                      # 定位不到 ⇒ 不猜
-    if len(nodes) > 1:
-        # 同一行有多条 lambda：code object 无法告诉我们是哪一条（co_firstlineno
-        # 相同、co_positions 只给外层位置）。**不确定就不猜** —— 与「读不到就
-        # 明说」同一条纪律：这里宁可漏报也不误伤（本仓 99% 的断言都独占一行，
-        # 这个退化只影响把多条断言挤一行的写法）。
-        return None
-    for node in nodes:
-        for n in _ast.walk(node):
-            reason = _short_circuit_reason(n)
-            if reason:
-                return reason
-    return None
-
-
 def selftest(name, cases):
-    """跑三档用例。每个 case = (标签, callable) -> bool。
-
-    必须写齐三类：
-      ① 正常不报（阳性对照 —— 否则「总是报错」也能骗过自证）
-      ② 该报的必须报（反向断言 —— 否则这个检查器可能是装饰）
-      ③ 空输入必须报（零值守卫）
-    """
+    """Execute `(label, callable)` cases (with `SEAL.json` check) and print summary."""
     if not cases:
-        # 0/0 洞（本文件开头记载的第三种事故）：空用例清单的自证什么都没查，
-        # 却打印「0 PASS / 0 FAIL」绿着退场 —— runner 的 grep 照样认它。
-        # 空清单是写自证时的形状错误，当场响，不许绿。
-        raise SystemExit(
-            "FATAL: %s 的自证用例清单为空 —— 三档用例齐全是硬规矩"
-            "（0/0 不是通过，是「这个自证什么都没查」）" % name
-        )
+        fatal_exit(i18n.M("gate.selftest_empty_cases", name=name))
+    import seal  # noqa: PLC0415
+    if seal.seal_exists():
+        probs = seal.verify_problems()
+        if probs:
+            fatal_exit(probs[0])
     bad = 0
     for label, fn in cases:
-        # issue #23：恒真断言探测 —— 一条 `or True` 的断言与真断言
-        # 在「返回 0 + 打摘要行」这个面上同形，必须单独判。
-        why = never_falsifiable(fn)
-        if why:
-            print("fail | %s（断言不可证伪：%s）" % (label, why))
-            bad += 1
-            continue
         try:
-            ok = bool(fn())
+            passed, failure = bool(fn()), None
         except SystemExit as e:
-            ok, label = False, "%s（未预期的 SystemExit：%s）" % (label, e)
-        except Exception as e:                      # noqa: BLE001
-            ok, label = False, "%s（异常 %r）" % (label, e)
-        print("%s | %s" % ("PASS" if ok else "fail", label))
-        bad += 0 if ok else 1
-    print("=== %s 自证：%d PASS / %d fail ===" % (name, len(cases) - bad, bad))
-    # 机器摘要行（issue #3 ③）：与检查器名无关的固定格式，runner/CI 直接
-    # grep；gates-selftest.sh 会校验每个自证都有这一行（缺了 ⇒ 红）。
-    print("=== %d PASS / %d FAIL ===" % (len(cases) - bad, bad))
+            passed, failure = False, i18n.M("gate.case_unexpected_systemexit", label=label, error=e)
+        except Exception as e:                           # noqa: BLE001
+            passed, failure = False, i18n.M("gate.case_raised", label=label, error=e)
+        if failure is not None:
+            print(i18n.emit("fail", failure))
+            bad += 1
+        else:
+            print(i18n.emit("pass" if passed else "fail", label))
+            bad += 0 if passed else 1
+    print(i18n.emit_summary(len(cases) - bad, bad))
     return 1 if bad else 0
 
 
-def main_selftest_or(args, name, cases, run):
-    """`--selftest` 走自证，否则走 `run(args)`。每个检查器都用它收尾。
+def _force_utf8_streams():
+    for stream in (sys.stdout, sys.stderr):
+        reconfigure = getattr(stream, "reconfigure", None)
+        if reconfigure is not None:
+            try:
+                reconfigure(encoding="utf-8", errors="replace")
+            except (ValueError, OSError):
+                continue
 
-    `cases` 可以是清单，也可以是**工厂 callable**（需要搭临时夹具的
-    自证 —— ab/locks/pins 体例 —— 传函数，由这里调用）。
-    """
+
+def activate_or_fatal(lang=None):
+    """Configure UTF-8 stdio and activate language pack (rc=0 ok, rc=2 FATAL)."""
+    _force_utf8_streams()
+    try:
+        i18n.activate(lang)
+    except Exception as e:                               # noqa: BLE001
+        print(i18n.emit("fatal", i18n.M("gate.pack_assembly_failed", error=e)), file=sys.stderr)
+        return 2
+    return 0
+
+
+def main_selftest_or(args, name, cases, run):
+    """Standard gate entrypoint: activate language pack, dispatch `--selftest` or `run(args)`."""
+    rc = activate_or_fatal()
+    if rc:
+        return rc
     if "--selftest" in args:
         return selftest(name, cases() if callable(cases) else cases)
     return run([a for a in args if a != "--selftest"])
 
 
+def default_runner(f, repo_root=None):
+    """Execute gate file `f` in `repo_root or GATE_REPO`; return `(rc, merged_output)`."""
+    p = subprocess.run([sys.executable, f], capture_output=True, text=True,
+                       cwd=repo_root or GATE_REPO, encoding="utf-8", errors="replace")
+    return p.returncode, (p.stdout or "") + (p.stderr or "")
+
+
 def run_phase(phase, gates, runner=None, repo_root=None):
-    """按相位跑一组闸门并**聚合 ran / off / failed**（C1+C2 的执行面）。
-
-    这是 hooks / CI / runner 的**唯一执行入口** —— 取代此前散在 6 处的
-    `for g in zreflect/check_*.py` glob。`gates` = registry 派生的
-    (file, runs_at) 清单（调用方按 `phase` 过滤，或传全集由这里过滤）。
-
-    为什么聚合三档而不是只看 rc：off 与「跑过且通过」rc 都是 0，只看 rc
-    会把「没跑」算进「绿」（本仓实测 8/13 道 off）。这里读子进程 stdout 的
-    `OFF:` 机器标记把 off 单列，于是「全绿」永远附带「其中 N 道 off（没查）」。
-    `runner` 可注入（自证用假执行器）。
-
-    返回 {ran, off, failed, off_list, fail_list}。
-    """
-    import subprocess                                    # noqa: PLC0415
-
-    def _default(f):
-        p = subprocess.run([sys.executable, f], capture_output=True, text=True,
-                           cwd=repo_root or GATE_REPO)
-        return p.returncode, p.stdout
-    run = runner or _default
-    res = {"ran": 0, "off": 0, "failed": 0, "off_list": [], "fail_list": []}
+    """Run phase gates and aggregate `{ran, off, failed, fatal, error, *_list, fail_out}`."""
+    run = runner or (lambda f: default_runner(f, repo_root))
+    res: dict[str, Any] = {
+        "ran": 0, "off": 0, "failed": 0, "fatal": 0, "error": 0,
+        "off_list": [], "fail_list": [], "fatal_list": [], "error_list": [], "fail_out": {},
+    }
     for item in gates:
         f = item["file"] if isinstance(item, dict) else item
         if isinstance(item, dict) and item.get("runs_at") not in (None, phase):
             continue
         rc, out = run(f)
-        if rc != 0:
+        if rc == 2:
+            res["fatal"] += 1
+            res["fatal_list"].append(f)
+            res["fail_out"][f] = out or ""
+        elif rc < 0 or rc > 2:
+            res["error"] += 1
+            res["error_list"].append(f)
+            res["fail_out"][f] = out or ""
+        elif rc != 0:
             res["failed"] += 1
             res["fail_list"].append(f)
-        elif any(ln.startswith("OFF:") for ln in (out or "").splitlines()):
+            res["fail_out"][f] = out or ""
+        elif any(kind == "off" for _i, kind, _ln in i18n.scan(out)):
             res["off"] += 1
             res["off_list"].append(f)
         else:
@@ -436,10 +487,40 @@ def run_phase(phase, gates, runner=None, repo_root=None):
     return res
 
 
-MODULE = module_meta("闸门平台", "rc 契约 + 零值守卫 + 三档自证 + 相位执行器（提供 selftest，自己不消费）", selftest=False)
+def _cases():
+    return [
+        ("★ gate.empty_input_fatals", lambda: raises(lambda: require_nonempty("x", []))),
+        ("★ gate.phase_tracks_four_tiers",
+         lambda: (lambda ph: ph["fatal_list"] == ["d.py"]
+                  and "FATAL: cfg" in ph["fail_out"].get("d.py", ""))(
+             run_phase("commit", ["a.py", "b.py", "c.py", "d.py"],
+                       runner=lambda f: {"a.py": (0, ""), "b.py": (0, "OFF: x"),
+                                         "c.py": (1, "bad"), "d.py": (2, "FATAL: cfg")}[f]))),
+        ("★ gate.prose_in_exec_rejected",
+         lambda: [p.code for p in prose_in_exec_problems("w", "cmd", "not a command")]
+         == ["criteria.exec_position_is_prose"]),
+        ("gate.valid_exec_accepted",
+         lambda: exec_position_problems({"pins": [{"name": "a", "version_read": "python3 -V"}]},
+                                        "pins.json") == []),
+        ("gate.runner_echo_and_pipefail",
+         lambda: run_cmd("echo hello") == (0, "hello\n") and run_cmd("false | cat")[0] != 0),
+        ("★ gate.runner_timeout_is_none", lambda: run_cmd("sleep 2", timeout=0.2)[0] is None),
+        ("gate.quote_formats", lambda: quote("ok") == "'ok'" and quote("a" * 80).endswith("...'")),
+        ("gate.windows_argv_splits",
+         lambda: _windows_argv('"C:\\Py\\python.exe" a\\b') == ["C:\\Py\\python.exe", "a\\b"]),
+    ]
 
+
+MODULE = module_meta("gate platform", "rc contract, spec helpers, command runner, phase executor",
+                     selftest=True)
 
 if __name__ == "__main__":
-    print("闸门平台。被检查的仓库根：%s" % GATE_REPO)
-    print("用法：在你的检查器里 `from gate import selftest, require_nonempty`。")
+    if "--selftest" in sys.argv[1:]:
+        rc = activate_or_fatal()
+        sys.exit(rc or selftest(i18n.M("gate.platform_root", root=repo()), _cases()))
+    rc = activate_or_fatal()
+    if rc:
+        sys.exit(rc)
+    print(i18n.M("gate.platform_root", root=GATE_REPO))
+    print(i18n.M("gate.platform_usage"))
     sys.exit(0)
