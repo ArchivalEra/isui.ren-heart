@@ -1,12 +1,12 @@
 {
-	"generatedAt": "2026-11-19T21:47:55.297Z",
+	"generatedAt": "2026-11-20T09:09:26.964Z",
 	"acceleratedDirs": ["Octave", "S26-1_202609"],
 	"entries": [
 		{
 			"name": "Static-Contract",
 			"pages": "absent",
 			"accelerated": false,
-			"pushedAt": "2026-11-19T21:38:46Z",
+			"pushedAt": "2026-11-20T03:20:04Z",
 			"status": null,
 			"description": "apt-style contract for static distribution",
 			"language": "Python",
@@ -19,7 +19,7 @@
 			"name": "isui.ren-heart",
 			"pages": "ready",
 			"accelerated": false,
-			"pushedAt": "2026-11-19T13:22:07Z",
+			"pushedAt": "2026-11-19T21:48:43Z",
 			"status": "built",
 			"description": "isui.ren 的站点心脏：EdgeOne Pages 静态源、边缘中间件与跨仓部署链",
 			"language": "Python",
