@@ -2,7 +2,7 @@
   "symbols_bubbled": 15323,
   "symbols_uncovered": 0,
   "uncovered": [],
-  "symbols_missing_entries": 1264,
+  "symbols_missing_entries": 1263,
   "gaps": [
     {
       "label": "A",
@@ -6318,11 +6318,6 @@
       "label": "C_2",
       "count": 1,
       "pages": 1
-    },
-    {
-      "label": "2^{53}",
-      "count": 1,
-      "pages": 1
     }
   ],
   "pages": [
@@ -7564,20 +7559,6 @@
       "anchors": 0,
       "uncovered": 0,
       "gaps": 0
-    },
-    {
-      "page": "维护条例.md",
-      "html": "维护条例.html",
-      "anchors": 0,
-      "uncovered": 0,
-      "gaps": 0
-    },
-    {
-      "page": "维护细则.md",
-      "html": "维护细则.html",
-      "anchors": 0,
-      "uncovered": 0,
-      "gaps": 1
     },
     {
       "page": "站点/符号包/通用.md",
