@@ -1,148 +1,188 @@
 {
-  "symbols_bubbled": 15323,
+  "symbols_bubbled": 21085,
   "symbols_uncovered": 0,
   "uncovered": [],
-  "symbols_missing_entries": 1263,
+  "symbols_missing_entries": 1518,
   "gaps": [
     {
       "label": "A",
-      "count": 2263,
-      "pages": 71
+      "count": 2471,
+      "pages": 81
     },
     {
       "label": "B",
-      "count": 1384,
-      "pages": 56
+      "count": 1421,
+      "pages": 63
     },
     {
       "label": "C",
-      "count": 792,
-      "pages": 57
+      "count": 869,
+      "pages": 67
     },
     {
       "label": "n",
-      "count": 478,
-      "pages": 48
+      "count": 611,
+      "pages": 52
     },
     {
-      "label": "D",
-      "count": 334,
-      "pages": 21
-    },
-    {
-      "label": "k",
-      "count": 307,
+      "label": "R",
+      "count": 380,
       "pages": 26
     },
     {
       "label": "X",
-      "count": 302,
-      "pages": 31
+      "count": 367,
+      "pages": 40
     },
     {
-      "label": "\\boldsymbol{\\alpha}_1",
-      "count": 277,
-      "pages": 13
+      "label": "k",
+      "count": 338,
+      "pages": 29
     },
     {
-      "label": "E",
-      "count": 271,
-      "pages": 20
-    },
-    {
-      "label": "R",
-      "count": 262,
+      "label": "D",
+      "count": 330,
       "pages": 22
     },
     {
-      "label": "b",
-      "count": 260,
-      "pages": 37
-    },
-    {
-      "label": "Y",
-      "count": 253,
-      "pages": 24
-    },
-    {
-      "label": "x_1",
-      "count": 249,
-      "pages": 25
-    },
-    {
-      "label": "\\boldsymbol{\\alpha}_2",
-      "count": 247,
-      "pages": 13
-    },
-    {
-      "label": "x_2",
-      "count": 244,
-      "pages": 21
-    },
-    {
-      "label": "j",
-      "count": 195,
+      "label": "x",
+      "count": 302,
       "pages": 28
     },
     {
-      "label": "x",
-      "count": 193,
-      "pages": 23
+      "label": "x_1",
+      "count": 298,
+      "pages": 29
     },
     {
-      "label": "I_1",
-      "count": 192,
-      "pages": 23
+      "label": "x_2",
+      "count": 292,
+      "pages": 25
+    },
+    {
+      "label": "b",
+      "count": 290,
+      "pages": 43
+    },
+    {
+      "label": "E",
+      "count": 274,
+      "pages": 22
+    },
+    {
+      "label": "Y",
+      "count": 273,
+      "pages": 30
+    },
+    {
+      "label": "\\boldsymbol{\\alpha}_1",
+      "count": 269,
+      "pages": 13
+    },
+    {
+      "label": "\\boldsymbol{\\alpha}_2",
+      "count": 242,
+      "pages": 13
+    },
+    {
+      "label": "r",
+      "count": 226,
+      "pages": 20
+    },
+    {
+      "label": "x_3",
+      "count": 226,
+      "pages": 18
+    },
+    {
+      "label": "\\angle",
+      "count": 204,
+      "pages": 15
+    },
+    {
+      "label": "j",
+      "count": 198,
+      "pages": 29
     },
     {
       "label": "a",
+      "count": 198,
+      "pages": 29
+    },
+    {
+      "label": "T",
+      "count": 193,
+      "pages": 40
+    },
+    {
+      "label": "\\beta",
+      "count": 192,
+      "pages": 18
+    },
+    {
+      "label": "f",
       "count": 187,
+      "pages": 30
+    },
+    {
+      "label": "\\alpha",
+      "count": 182,
+      "pages": 17
+    },
+    {
+      "label": "I_1",
+      "count": 182,
+      "pages": 24
+    },
+    {
+      "label": "N_1",
+      "count": 176,
+      "pages": 17
+    },
+    {
+      "label": "i",
+      "count": 169,
+      "pages": 27
+    },
+    {
+      "label": "I_2",
+      "count": 162,
       "pages": 26
     },
     {
       "label": "Q_0",
-      "count": 178,
+      "count": 150,
       "pages": 6
     },
     {
-      "label": "\\beta",
-      "count": 176,
-      "pages": 15
+      "label": "\\Delta",
+      "count": 149,
+      "pages": 24
     },
     {
-      "label": "\\alpha",
-      "count": 171,
-      "pages": 14
+      "label": "k_1",
+      "count": 130,
+      "pages": 12
     },
     {
-      "label": "T",
-      "count": 168,
-      "pages": 35
+      "label": "d",
+      "count": 127,
+      "pages": 22
     },
     {
-      "label": "i",
-      "count": 166,
-      "pages": 26
+      "label": "x_4",
+      "count": 126,
+      "pages": 10
     },
     {
-      "label": "x_3",
-      "count": 164,
-      "pages": 14
-    },
-    {
-      "label": "I_2",
-      "count": 142,
-      "pages": 23
-    },
-    {
-      "label": "\\angle",
-      "count": 142,
-      "pages": 11
-    },
-    {
-      "label": "\\boldsymbol{\\alpha}_3",
-      "count": 121,
+      "label": "y",
+      "count": 124,
       "pages": 9
+    },
+    {
+      "label": "a_{11}",
+      "count": 121,
+      "pages": 22
     },
     {
       "label": "V",
@@ -150,49 +190,59 @@
       "pages": 14
     },
     {
-      "label": "a_{11}",
+      "label": "\\boldsymbol{\\alpha}_3",
       "count": 119,
-      "pages": 20
-    },
-    {
-      "label": "k_1",
-      "count": 118,
       "pages": 9
     },
     {
-      "label": "\\Delta",
-      "count": 117,
-      "pages": 18
-    },
-    {
-      "label": "d",
+      "label": "90^\\circ",
       "count": 116,
-      "pages": 21
-    },
-    {
-      "label": "r",
-      "count": 113,
       "pages": 15
     },
     {
-      "label": "Q_n",
-      "count": 107,
-      "pages": 7
+      "label": "\\pi",
+      "count": 115,
+      "pages": 25
     },
     {
-      "label": "f",
-      "count": 98,
-      "pages": 24
+      "label": "u_o",
+      "count": 113,
+      "pages": 9
     },
     {
       "label": "m",
-      "count": 97,
-      "pages": 29
+      "count": 112,
+      "pages": 30
+    },
+    {
+      "label": "\\varphi_2",
+      "count": 108,
+      "pages": 7
+    },
+    {
+      "label": "k_2",
+      "count": 104,
+      "pages": 8
+    },
+    {
+      "label": "N",
+      "count": 103,
+      "pages": 22
+    },
+    {
+      "label": "Q_n",
+      "count": 100,
+      "pages": 7
     },
     {
       "label": "a_{12}",
-      "count": 97,
-      "pages": 17
+      "count": 99,
+      "pages": 18
+    },
+    {
+      "label": "N_2",
+      "count": 98,
+      "pages": 16
     },
     {
       "label": "a_{22}",
@@ -200,19 +250,19 @@
       "pages": 16
     },
     {
-      "label": "k_2",
-      "count": 96,
-      "pages": 7
+      "label": "F",
+      "count": 94,
+      "pages": 12
     },
     {
-      "label": "Q_3",
-      "count": 90,
-      "pages": 2
+      "label": "r_{be}",
+      "count": 93,
+      "pages": 8
     },
     {
-      "label": "\\varphi_2",
-      "count": 90,
-      "pages": 5
+      "label": "U_1",
+      "count": 91,
+      "pages": 15
     },
     {
       "label": "a_{21}",
@@ -220,59 +270,74 @@
       "pages": 18
     },
     {
-      "label": "N_1",
-      "count": 87,
-      "pages": 14
-    },
-    {
-      "label": "R_{eq}",
-      "count": 82,
-      "pages": 10
-    },
-    {
       "label": "x_n",
-      "count": 79,
-      "pages": 10
-    },
-    {
-      "label": "\\pi",
-      "count": 78,
-      "pages": 19
-    },
-    {
-      "label": "y",
-      "count": 76,
-      "pages": 8
-    },
-    {
-      "label": "P_1",
-      "count": 72,
+      "count": 85,
       "pages": 11
     },
     {
-      "label": "N",
-      "count": 72,
-      "pages": 15
+      "label": "U_2",
+      "count": 84,
+      "pages": 16
+    },
+    {
+      "label": "R_{eq}",
+      "count": 80,
+      "pages": 10
+    },
+    {
+      "label": "Q_3",
+      "count": 79,
+      "pages": 2
+    },
+    {
+      "label": "v",
+      "count": 78,
+      "pages": 10
+    },
+    {
+      "label": "A_1",
+      "count": 78,
+      "pages": 7
+    },
+    {
+      "label": "P_1",
+      "count": 71,
+      "pages": 11
+    },
+    {
+      "label": "\\dot I_2",
+      "count": 71,
+      "pages": 13
+    },
+    {
+      "label": "\\dot I_1",
+      "count": 69,
+      "pages": 13
     },
     {
       "label": "D_1",
-      "count": 70,
+      "count": 68,
       "pages": 14
+    },
+    {
+      "label": "I_0",
+      "count": 68,
+      "pages": 7
     },
     {
       "label": "D_2",
-      "count": 67,
+      "count": 66,
       "pages": 14
     },
     {
-      "label": "x_4",
-      "count": 65,
-      "pages": 6
+      "label": "A_u",
+      "count": 66,
+      "pages": 9
     },
     {
-      "label": "U_2",
+      "label": "\\theta",
       "count": 65,
-      "pages": 14
+      "pages": 9
     },
     {
       "label": "D_j",
@@ -280,102 +345,122 @@
       "pages": 9
     },
     {
-      "label": "Q_{n+1}",
+      "label": "p_0",
       "count": 63,
       "pages": 7
     },
     {
-      "label": "\\boldsymbol{\\alpha}_4",
-      "count": 61,
-      "pages": 8
-    },
-    {
-      "label": "\\theta",
-      "count": 60,
-      "pages": 8
-    },
-    {
       "label": "\\dot U_1",
-      "count": 60,
+      "count": 62,
+      "pages": 10
+    },
+    {
+      "label": "180^\\circ",
+      "count": 61,
       "pages": 9
     },
     {
-      "label": "\\overline{S}_D",
-      "count": 59,
+      "label": "A_2",
+      "count": 60,
       "pages": 7
+    },
+    {
+      "label": "c",
+      "count": 59,
+      "pages": 15
     },
     {
       "label": "O",
       "count": 58,
-      "pages": 9
-    },
-    {
-      "label": "F",
-      "count": 57,
-      "pages": 7
-    },
-    {
-      "label": "90^\\circ",
-      "count": 57,
       "pages": 11
     },
     {
-      "label": "N_2",
+      "label": "t",
       "count": 57,
-      "pages": 14
+      "pages": 8
     },
     {
-      "label": "Y_1",
-      "count": 57,
-      "pages": 7
+      "label": "\\boldsymbol{\\alpha}_4",
+      "count": 56,
+      "pages": 8
     },
     {
-      "label": "\\overline{R}_D",
+      "label": "Q_{n+1}",
       "count": 56,
       "pages": 7
     },
     {
-      "label": "Y_3",
+      "label": "\\overline{S}_D",
+      "count": 56,
+      "pages": 7
+    },
+    {
+      "label": "k_3",
+      "count": 55,
+      "pages": 7
+    },
+    {
+      "label": "R_2",
+      "count": 55,
+      "pages": 13
+    },
+    {
+      "label": "p_{kN}",
+      "count": 55,
+      "pages": 5
+    },
+    {
+      "label": "R_1",
+      "count": 54,
+      "pages": 16
+    },
+    {
+      "label": "Y_1",
       "count": 54,
       "pages": 7
     },
     {
-      "label": "\\dot I_2",
+      "label": "R_F",
+      "count": 54,
+      "pages": 1
+    },
+    {
+      "label": "Z_k",
+      "count": 53,
+      "pages": 8
+    },
+    {
+      "label": "u_k",
       "count": 53,
       "pages": 9
     },
     {
       "label": "G",
-      "count": 53,
-      "pages": 9
-    },
-    {
-      "label": "\\dot U_2",
-      "count": 53,
-      "pages": 7
-    },
-    {
-      "label": "D_3",
       "count": 52,
-      "pages": 13
-    },
-    {
-      "label": "U_1",
-      "count": 52,
-      "pages": 14
-    },
-    {
-      "label": "180^\\circ",
-      "count": 51,
-      "pages": 6
-    },
-    {
-      "label": "R_2",
-      "count": 51,
       "pages": 11
     },
     {
-      "label": "I_3",
+      "label": "r_k",
+      "count": 52,
+      "pages": 9
+    },
+    {
+      "label": "a^2",
+      "count": 51,
+      "pages": 14
+    },
+    {
+      "label": "Y_3",
+      "count": 51,
+      "pages": 7
+    },
+    {
+      "label": "\\overline{R}_D",
+      "count": 51,
+      "pages": 7
+    },
+    {
+      "label": "Z_1",
       "count": 50,
       "pages": 9
     },
@@ -385,39 +470,19 @@
       "pages": 7
     },
     {
-      "label": "a^2",
+      "label": "x_m",
       "count": 49,
-      "pages": 12
+      "pages": 8
     },
     {
-      "label": "Y_2",
-      "count": 49,
+      "label": "D_3",
+      "count": 48,
+      "pages": 13
+    },
+    {
+      "label": "\\dot U_2",
+      "count": 48,
       "pages": 7
-    },
-    {
-      "label": "p_0",
-      "count": 49,
-      "pages": 6
-    },
-    {
-      "label": "t",
-      "count": 48,
-      "pages": 6
-    },
-    {
-      "label": "U_S",
-      "count": 48,
-      "pages": 12
-    },
-    {
-      "label": "R_1",
-      "count": 48,
-      "pages": 12
-    },
-    {
-      "label": "k_3",
-      "count": 47,
-      "pages": 6
     },
     {
       "label": "b_1",
@@ -430,19 +495,34 @@
       "pages": 10
     },
     {
-      "label": "Y_0",
-      "count": 46,
-      "pages": 2
-    },
-    {
-      "label": "c",
-      "count": 44,
+      "label": "U_S",
+      "count": 47,
       "pages": 12
     },
     {
-      "label": "V_2",
+      "label": "Y_2",
+      "count": 47,
+      "pages": 7
+    },
+    {
+      "label": "P_0",
+      "count": 45,
+      "pages": 7
+    },
+    {
+      "label": "I_3",
+      "count": 45,
+      "pages": 10
+    },
+    {
+      "label": "0^\\circ",
+      "count": 45,
+      "pages": 10
+    },
+    {
+      "label": "x^2",
       "count": 44,
-      "pages": 6
+      "pages": 10
     },
     {
       "label": "R_0",
@@ -450,54 +530,49 @@
       "pages": 6
     },
     {
+      "label": "Z_2",
+      "count": 44,
+      "pages": 8
+    },
+    {
+      "label": "Y_0",
+      "count": 44,
+      "pages": 2
+    },
+    {
+      "label": "x_k",
+      "count": 44,
+      "pages": 8
+    },
+    {
       "label": "b_2",
       "count": 43,
       "pages": 12
     },
     {
-      "label": "V_1",
+      "label": "V_2",
       "count": 42,
-      "pages": 9
+      "pages": 7
     },
     {
-      "label": "P_0",
+      "label": "V_1",
       "count": 41,
+      "pages": 10
+    },
+    {
+      "label": "I^2",
+      "count": 41,
+      "pages": 13
+    },
+    {
+      "label": "p",
+      "count": 40,
       "pages": 6
     },
     {
-      "label": "r_k",
-      "count": 41,
-      "pages": 7
-    },
-    {
-      "label": "\\boldsymbol{\\beta}_1",
+      "label": "i_B",
       "count": 40,
-      "pages": 7
-    },
-    {
-      "label": "\\boldsymbol{\\beta}_2",
-      "count": 40,
-      "pages": 7
-    },
-    {
-      "label": "x^2",
-      "count": 40,
-      "pages": 9
-    },
-    {
-      "label": "\\dot I_1",
-      "count": 40,
-      "pages": 8
-    },
-    {
-      "label": "x_k",
-      "count": 40,
-      "pages": 7
-    },
-    {
-      "label": "u_k",
-      "count": 40,
-      "pages": 7
+      "pages": 4
     },
     {
       "label": "U",
@@ -505,14 +580,24 @@
       "pages": 7
     },
     {
-      "label": "M",
-      "count": 39,
-      "pages": 5
-    },
-    {
       "label": "A^2",
       "count": 39,
       "pages": 4
+    },
+    {
+      "label": "a_{ij}",
+      "count": 39,
+      "pages": 12
+    },
+    {
+      "label": "\\boldsymbol{\\beta}_1",
+      "count": 39,
+      "pages": 7
+    },
+    {
+      "label": "\\boldsymbol{\\beta}_2",
+      "count": 39,
+      "pages": 7
     },
     {
       "label": "a_{2n}",
@@ -522,7 +607,7 @@
     {
       "label": "U_{OC}",
       "count": 39,
-      "pages": 3
+      "pages": 4
     },
     {
       "label": "B^{\\mathrm T}",
@@ -530,24 +615,44 @@
       "pages": 5
     },
     {
-      "label": "I_0",
+      "label": "s",
       "count": 38,
-      "pages": 5
+      "pages": 12
     },
     {
-      "label": "Z_k",
+      "label": "k^2",
       "count": 38,
+      "pages": 10
+    },
+    {
+      "label": "\\dot I_0",
+      "count": 38,
+      "pages": 9
+    },
+    {
+      "label": "U_{1N}",
+      "count": 38,
+      "pages": 8
+    },
+    {
+      "label": "R_i",
+      "count": 37,
+      "pages": 8
+    },
+    {
+      "label": "30^\\circ",
+      "count": 37,
       "pages": 6
     },
     {
-      "label": "p_{kN}",
+      "label": "Z_m",
       "count": 37,
-      "pages": 3
+      "pages": 7
     },
     {
-      "label": "a_{ij}",
-      "count": 36,
-      "pages": 11
+      "label": "\\beta^2",
+      "count": 37,
+      "pages": 6
     },
     {
       "label": "\\varphi_A",
@@ -555,13 +660,13 @@
       "pages": 4
     },
     {
-      "label": "0^\\circ",
+      "label": "r_i",
       "count": 36,
-      "pages": 8
+      "pages": 5
     },
     {
-      "label": "R_D",
-      "count": 36,
+      "label": "M",
+      "count": 35,
       "pages": 5
     },
     {
@@ -570,14 +675,24 @@
       "pages": 4
     },
     {
-      "label": "s",
-      "count": 34,
-      "pages": 10
+      "label": "\\xi",
+      "count": 35,
+      "pages": 5
+    },
+    {
+      "label": "Z",
+      "count": 35,
+      "pages": 5
     },
     {
       "label": "a_{nn}",
       "count": 34,
       "pages": 7
+    },
+    {
+      "label": "E_2",
+      "count": 34,
+      "pages": 9
     },
     {
       "label": "\\varphi_M",
@@ -590,14 +705,29 @@
       "pages": 9
     },
     {
-      "label": "k^2",
-      "count": 33,
-      "pages": 8
+      "label": "R_D",
+      "count": 34,
+      "pages": 4
     },
     {
-      "label": "Z_m",
+      "label": "\\boldsymbol\\xi_1",
       "count": 33,
-      "pages": 5
+      "pages": 2
+    },
+    {
+      "label": "H",
+      "count": 33,
+      "pages": 9
+    },
+    {
+      "label": "r_m",
+      "count": 33,
+      "pages": 9
+    },
+    {
+      "label": "a_{13}",
+      "count": 32,
+      "pages": 10
     },
     {
       "label": "a_{23}",
@@ -610,9 +740,9 @@
       "pages": 8
     },
     {
-      "label": "U_{1N}",
+      "label": "I_c",
       "count": 32,
-      "pages": 7
+      "pages": 2
     },
     {
       "label": "k_n",
@@ -620,54 +750,59 @@
       "pages": 3
     },
     {
+      "label": "T_1",
+      "count": 31,
+      "pages": 7
+    },
+    {
+      "label": "10^{-3}",
+      "count": 31,
+      "pages": 7
+    },
+    {
+      "label": "I_b",
+      "count": 31,
+      "pages": 3
+    },
+    {
+      "label": "E_1",
+      "count": 31,
+      "pages": 10
+    },
+    {
+      "label": "\\dot E_1",
+      "count": 31,
+      "pages": 4
+    },
+    {
       "label": "B^{-1}",
       "count": 30,
       "pages": 8
     },
     {
-      "label": "a_{13}",
+      "label": "R_o",
+      "count": 30,
+      "pages": 6
+    },
+    {
+      "label": "C_2",
+      "count": 30,
+      "pages": 5
+    },
+    {
+      "label": "U_{20}",
       "count": 30,
       "pages": 9
     },
     {
       "label": "T_5",
-      "count": 30,
-      "pages": 4
-    },
-    {
-      "label": "G_3",
-      "count": 30,
-      "pages": 4
-    },
-    {
-      "label": "I_c",
-      "count": 30,
-      "pages": 1
-    },
-    {
-      "label": "I_b",
-      "count": 30,
-      "pages": 2
-    },
-    {
-      "label": "T_1",
       "count": 29,
-      "pages": 6
+      "pages": 4
     },
     {
       "label": "U_{ab}",
       "count": 29,
       "pages": 5
-    },
-    {
-      "label": "U_{S1}",
-      "count": 29,
-      "pages": 6
-    },
-    {
-      "label": "U_{S2}",
-      "count": 29,
-      "pages": 4
     },
     {
       "label": "U_m",
@@ -680,19 +815,9 @@
       "pages": 2
     },
     {
-      "label": "G_4",
+      "label": "\\infty",
       "count": 29,
-      "pages": 4
-    },
-    {
-      "label": "R_{0(1)}",
-      "count": 29,
-      "pages": 3
-    },
-    {
-      "label": "R_{0(2)}",
-      "count": 29,
-      "pages": 3
+      "pages": 9
     },
     {
       "label": "\\mu_0",
@@ -715,19 +840,54 @@
       "pages": 10
     },
     {
+      "label": "\\boldsymbol\\xi_2",
+      "count": 28,
+      "pages": 2
+    },
+    {
+      "label": "U_C",
+      "count": 28,
+      "pages": 8
+    },
+    {
+      "label": "U_{S1}",
+      "count": 28,
+      "pages": 6
+    },
+    {
+      "label": "U_{S2}",
+      "count": 28,
+      "pages": 4
+    },
+    {
       "label": "G_2",
       "count": 28,
       "pages": 4
     },
     {
-      "label": "Y_7",
-      "count": 27,
+      "label": "i_C",
+      "count": 28,
+      "pages": 6
+    },
+    {
+      "label": "R_S",
+      "count": 28,
       "pages": 3
     },
     {
-      "label": "r_m",
+      "label": "b^2",
       "count": 27,
-      "pages": 7
+      "pages": 12
+    },
+    {
+      "label": "Z_L",
+      "count": 27,
+      "pages": 5
+    },
+    {
+      "label": "k_w",
+      "count": 27,
+      "pages": 4
     },
     {
       "label": "a_{n1}",
@@ -735,12 +895,22 @@
       "pages": 7
     },
     {
-      "label": "e",
+      "label": "u_1",
       "count": 26,
-      "pages": 5
+      "pages": 7
     },
     {
-      "label": "P_{kN}",
+      "label": "Y_7",
+      "count": 26,
+      "pages": 3
+    },
+    {
+      "label": "r_1",
+      "count": 26,
+      "pages": 7
+    },
+    {
+      "label": "r_2",
       "count": 26,
       "pages": 4
     },
@@ -750,19 +920,9 @@
       "pages": 4
     },
     {
-      "label": "b^2",
+      "label": "e",
       "count": 25,
-      "pages": 10
-    },
-    {
-      "label": "v",
-      "count": 25,
-      "pages": 8
-    },
-    {
-      "label": "V_3",
-      "count": 25,
-      "pages": 4
+      "pages": 5
     },
     {
       "label": "R_3",
@@ -770,17 +930,47 @@
       "pages": 6
     },
     {
-      "label": "\\dot I_0",
+      "label": "R_{0(1)}",
+      "count": 25,
+      "pages": 3
+    },
+    {
+      "label": "R_{0(2)}",
+      "count": 25,
+      "pages": 3
+    },
+    {
+      "label": "P_{kN}",
+      "count": 25,
+      "pages": 4
+    },
+    {
+      "label": "I_{1N}",
       "count": 25,
       "pages": 7
     },
     {
-      "label": "x_m",
-      "count": 25,
-      "pages": 6
+      "label": "A_{21}",
+      "count": 24,
+      "pages": 7
     },
     {
-      "label": "A_{21}",
+      "label": "x_5",
+      "count": 24,
+      "pages": 3
+    },
+    {
+      "label": "10^3",
+      "count": 24,
+      "pages": 8
+    },
+    {
+      "label": "360^\\circ",
+      "count": 24,
+      "pages": 8
+    },
+    {
+      "label": "I_C",
       "count": 24,
       "pages": 7
     },
@@ -790,7 +980,12 @@
       "pages": 9
     },
     {
-      "label": "\\infty",
+      "label": "\\uparrow",
+      "count": 24,
+      "pages": 6
+    },
+    {
+      "label": "V_3",
       "count": 24,
       "pages": 5
     },
@@ -800,14 +995,9 @@
       "pages": 4
     },
     {
-      "label": "\\beta^2",
+      "label": "G_3",
       "count": 24,
       "pages": 4
-    },
-    {
-      "label": "r_2",
-      "count": 24,
-      "pages": 3
     },
     {
       "label": "\\boldsymbol{\\xi}_1",
@@ -815,9 +1005,14 @@
       "pages": 2
     },
     {
-      "label": "u_1",
+      "label": "\\mu",
       "count": 23,
-      "pages": 5
+      "pages": 9
+    },
+    {
+      "label": "I_m",
+      "count": 23,
+      "pages": 7
     },
     {
       "label": "\\varphi_B",
@@ -825,14 +1020,9 @@
       "pages": 4
     },
     {
-      "label": "30^\\circ",
+      "label": "G_4",
       "count": 23,
-      "pages": 3
-    },
-    {
-      "label": "Y_6",
-      "count": 23,
-      "pages": 3
+      "pages": 4
     },
     {
       "label": "\\varphi",
@@ -840,9 +1030,14 @@
       "pages": 4
     },
     {
-      "label": "10^{-3}",
+      "label": "U_{2N}",
       "count": 23,
-      "pages": 4
+      "pages": 7
+    },
+    {
+      "label": "B_m",
+      "count": 23,
+      "pages": 8
     },
     {
       "label": "a_{32}",
@@ -855,29 +1050,14 @@
       "pages": 9
     },
     {
-      "label": "I_C",
-      "count": 22,
-      "pages": 6
-    },
-    {
-      "label": "V_C",
+      "label": "\\delta",
       "count": 22,
       "pages": 3
     },
     {
-      "label": "\\uparrow_2",
+      "label": "Y_6",
       "count": 22,
-      "pages": 2
-    },
-    {
-      "label": "U_{20}",
-      "count": 22,
-      "pages": 7
-    },
-    {
-      "label": "r_1",
-      "count": 22,
-      "pages": 5
+      "pages": 3
     },
     {
       "label": "B^2",
@@ -910,34 +1090,9 @@
       "pages": 5
     },
     {
-      "label": "I_4",
+      "label": "C_1",
       "count": 21,
       "pages": 5
-    },
-    {
-      "label": "T_P",
-      "count": 21,
-      "pages": 5
-    },
-    {
-      "label": "A_2",
-      "count": 21,
-      "pages": 4
-    },
-    {
-      "label": "\\uparrow_1",
-      "count": 21,
-      "pages": 2
-    },
-    {
-      "label": "I_{1N}",
-      "count": 21,
-      "pages": 6
-    },
-    {
-      "label": "U_{2N}",
-      "count": 21,
-      "pages": 6
     },
     {
       "label": "r_k^*",
@@ -945,14 +1100,19 @@
       "pages": 3
     },
     {
+      "label": "I_k",
+      "count": 21,
+      "pages": 6
+    },
+    {
       "label": "A_{ij}",
       "count": 20,
       "pages": 8
     },
     {
-      "label": "\\boldsymbol{\\beta}_3",
+      "label": "\\gamma",
       "count": 20,
-      "pages": 3
+      "pages": 4
     },
     {
       "label": "a_{n2}",
@@ -965,6 +1125,11 @@
       "pages": 5
     },
     {
+      "label": "z",
+      "count": 20,
+      "pages": 3
+    },
+    {
       "label": "\\Sigma",
       "count": 20,
       "pages": 4
@@ -975,9 +1140,9 @@
       "pages": 4
     },
     {
-      "label": "U_0",
+      "label": "\\downarrow",
       "count": 20,
-      "pages": 5
+      "pages": 6
     },
     {
       "label": "I_l",
@@ -985,22 +1150,27 @@
       "pages": 3
     },
     {
-      "label": "H",
+      "label": "V_C",
+      "count": 20,
+      "pages": 3
+    },
+    {
+      "label": "120^\\circ",
       "count": 20,
       "pages": 6
     },
     {
-      "label": "D_0",
+      "label": "u_{i2}",
+      "count": 20,
+      "pages": 2
+    },
+    {
+      "label": "T_P",
       "count": 20,
       "pages": 5
     },
     {
-      "label": "A_0",
-      "count": 20,
-      "pages": 4
-    },
-    {
-      "label": "\\uparrow_4",
+      "label": "\\uparrow_2",
       "count": 20,
       "pages": 2
     },
@@ -1010,14 +1180,14 @@
       "pages": 1
     },
     {
+      "label": "X_m",
+      "count": 20,
+      "pages": 2
+    },
+    {
       "label": "M_{ij}",
       "count": 19,
       "pages": 5
-    },
-    {
-      "label": "\\gamma",
-      "count": 19,
-      "pages": 3
     },
     {
       "label": "a_{m1}",
@@ -1025,14 +1195,34 @@
       "pages": 5
     },
     {
+      "label": "\\boldsymbol{\\beta}_3",
+      "count": 19,
+      "pages": 3
+    },
+    {
       "label": "P_m",
       "count": 19,
       "pages": 3
     },
     {
-      "label": "10^3",
+      "label": "d_{r+1}",
       "count": 19,
-      "pages": 7
+      "pages": 1
+    },
+    {
+      "label": "53.1^\\circ",
+      "count": 19,
+      "pages": 5
+    },
+    {
+      "label": "U_L",
+      "count": 19,
+      "pages": 4
+    },
+    {
+      "label": "I_4",
+      "count": 19,
+      "pages": 5
     },
     {
       "label": "2^N",
@@ -1040,9 +1230,19 @@
       "pages": 4
     },
     {
-      "label": "A_1",
+      "label": "\\uparrow_4",
       "count": 19,
-      "pages": 4
+      "pages": 2
+    },
+    {
+      "label": "\\uparrow_1",
+      "count": 19,
+      "pages": 2
+    },
+    {
+      "label": "C_F",
+      "count": 19,
+      "pages": 1
     },
     {
       "label": "S_1",
@@ -1050,14 +1250,14 @@
       "pages": 2
     },
     {
-      "label": "r_{be}",
+      "label": "\\mu_r",
       "count": 19,
-      "pages": 3
+      "pages": 6
     },
     {
-      "label": "\\boldsymbol{\\alpha}_{M+1}",
-      "count": 18,
-      "pages": 2
+      "label": "I_{2N}",
+      "count": 19,
+      "pages": 7
     },
     {
       "label": "A_{22}",
@@ -1110,22 +1310,37 @@
       "pages": 3
     },
     {
-      "label": "\\uparrow",
+      "label": "\\varphi_i",
       "count": 18,
-      "pages": 4
+      "pages": 6
     },
     {
-      "label": "I_5",
+      "label": "\\varphi_k",
       "count": 18,
-      "pages": 4
+      "pages": 3
     },
     {
-      "label": "Z_1",
+      "label": "D_0",
       "count": 18,
       "pages": 5
     },
     {
+      "label": "u_-",
+      "count": 18,
+      "pages": 3
+    },
+    {
+      "label": "A_0",
+      "count": 18,
+      "pages": 4
+    },
+    {
       "label": "\\uparrow_3",
+      "count": 18,
+      "pages": 2
+    },
+    {
+      "label": "R_{B1}",
       "count": 18,
       "pages": 2
     },
@@ -1138,6 +1353,11 @@
       "label": "u_{kx}",
       "count": 18,
       "pages": 2
+    },
+    {
+      "label": "p_k",
+      "count": 18,
+      "pages": 5
     },
     {
       "label": "\\dot A_0",
@@ -1160,59 +1380,54 @@
       "pages": 7
     },
     {
-      "label": "x_5",
-      "count": 17,
-      "pages": 2
-    },
-    {
-      "label": "I_A",
-      "count": 17,
-      "pages": 3
-    },
-    {
-      "label": "I_m",
-      "count": 17,
-      "pages": 5
-    },
-    {
-      "label": "Q_{0n}",
-      "count": 17,
-      "pages": 1
-    },
-    {
-      "label": "J_1",
-      "count": 17,
-      "pages": 2
-    },
-    {
-      "label": "K_1",
-      "count": 17,
-      "pages": 2
-    },
-    {
-      "label": "r_i",
-      "count": 17,
-      "pages": 2
-    },
-    {
-      "label": "r_o",
-      "count": 17,
-      "pages": 2
-    },
-    {
-      "label": "I_{2N}",
+      "label": "T_2",
       "count": 17,
       "pages": 6
     },
     {
-      "label": "\\dot E_1",
+      "label": "u_2",
       "count": 17,
-      "pages": 3
+      "pages": 5
     },
     {
-      "label": "\\mu",
+      "label": "U_0",
+      "count": 17,
+      "pages": 5
+    },
+    {
+      "label": "\\varphi_u",
+      "count": 17,
+      "pages": 6
+    },
+    {
+      "label": "10^{-6}",
+      "count": 17,
+      "pages": 8
+    },
+    {
+      "label": "Z_C",
+      "count": 17,
+      "pages": 2
+    },
+    {
+      "label": "u_{i1}",
+      "count": 17,
+      "pages": 2
+    },
+    {
+      "label": "R_{B2}",
+      "count": 17,
+      "pages": 2
+    },
+    {
+      "label": "\\boldsymbol{\\alpha}_{M+1}",
       "count": 16,
-      "pages": 7
+      "pages": 2
+    },
+    {
+      "label": "\\boldsymbol{\\eta}^*",
+      "count": 16,
+      "pages": 3
     },
     {
       "label": "P_s",
@@ -1220,34 +1435,19 @@
       "pages": 4
     },
     {
-      "label": "E_2",
-      "count": 16,
-      "pages": 7
-    },
-    {
-      "label": "u_2",
-      "count": 16,
-      "pages": 4
-    },
-    {
-      "label": "I^2",
-      "count": 16,
-      "pages": 8
-    },
-    {
       "label": "\\varphi_a",
       "count": 16,
       "pages": 3
     },
     {
-      "label": "Z_2",
-      "count": 16,
-      "pages": 4
-    },
-    {
       "label": "I_P",
       "count": 16,
       "pages": 2
+    },
+    {
+      "label": "u_+",
+      "count": 16,
+      "pages": 3
     },
     {
       "label": "S_{9(1)}",
@@ -1260,29 +1460,14 @@
       "pages": 2
     },
     {
-      "label": "K_2",
-      "count": 16,
-      "pages": 2
-    },
-    {
-      "label": "E_1",
-      "count": 16,
-      "pages": 6
-    },
-    {
       "label": "x_k^*",
       "count": 16,
       "pages": 4
     },
     {
-      "label": "Z",
-      "count": 16,
-      "pages": 3
-    },
-    {
-      "label": "z",
+      "label": "I_A",
       "count": 15,
-      "pages": 2
+      "pages": 3
     },
     {
       "label": "V_M",
@@ -1290,14 +1475,19 @@
       "pages": 4
     },
     {
-      "label": "i_2",
-      "count": 15,
-      "pages": 3
-    },
-    {
-      "label": "I_B",
+      "label": "I_5",
       "count": 15,
       "pages": 4
+    },
+    {
+      "label": "u_L",
+      "count": 15,
+      "pages": 5
+    },
+    {
+      "label": "60^\\circ",
+      "count": 15,
+      "pages": 6
     },
     {
       "label": "I_9",
@@ -1305,29 +1495,19 @@
       "pages": 2
     },
     {
-      "label": "S_D",
+      "label": "Z_R",
       "count": 15,
-      "pages": 4
+      "pages": 2
     },
     {
-      "label": "V_{CC}",
+      "label": "R_{L1}",
       "count": 15,
-      "pages": 6
+      "pages": 2
     },
     {
-      "label": "\\mu_r",
+      "label": "\\dot I_\\mu",
       "count": 15,
-      "pages": 4
-    },
-    {
-      "label": "I_k",
-      "count": 15,
-      "pages": 4
-    },
-    {
-      "label": "p_k",
-      "count": 15,
-      "pages": 4
+      "pages": 3
     },
     {
       "label": "\\dot A_1",
@@ -1345,11 +1525,6 @@
       "pages": 3
     },
     {
-      "label": "p",
-      "count": 14,
-      "pages": 1
-    },
-    {
       "label": "y^2",
       "count": 14,
       "pages": 3
@@ -1358,11 +1533,6 @@
       "label": "D_n",
       "count": 14,
       "pages": 4
-    },
-    {
-      "label": "T_2",
-      "count": 14,
-      "pages": 5
     },
     {
       "label": "\\varphi_T",
@@ -1380,14 +1550,29 @@
       "pages": 3
     },
     {
-      "label": "A_u",
+      "label": "I_B",
       "count": 14,
       "pages": 4
     },
     {
-      "label": "J_2",
+      "label": "Z_3",
+      "count": 14,
+      "pages": 1
+    },
+    {
+      "label": "V_{CC}",
+      "count": 14,
+      "pages": 6
+    },
+    {
+      "label": "r_o",
       "count": 14,
       "pages": 2
+    },
+    {
+      "label": "\\beta_2",
+      "count": 14,
+      "pages": 3
     },
     {
       "label": "I",
@@ -1400,34 +1585,24 @@
       "pages": 4
     },
     {
-      "label": "\\boldsymbol{\\eta}^*",
-      "count": 13,
-      "pages": 2
-    },
-    {
-      "label": "P",
-      "count": 13,
-      "pages": 5
-    },
-    {
       "label": "T_4",
       "count": 13,
       "pages": 4
     },
     {
-      "label": "360^\\circ",
-      "count": 13,
-      "pages": 5
-    },
-    {
-      "label": "53.1^\\circ",
+      "label": "\\dot I_3",
       "count": 13,
       "pages": 3
     },
     {
-      "label": "\\downarrow",
+      "label": "i_2",
       "count": 13,
-      "pages": 4
+      "pages": 3
+    },
+    {
+      "label": "\\varphi_z",
+      "count": 13,
+      "pages": 3
     },
     {
       "label": "\\oplus",
@@ -1435,19 +1610,14 @@
       "pages": 7
     },
     {
-      "label": "g",
+      "label": "u_{o1}",
       "count": 13,
-      "pages": 2
+      "pages": 3
     },
     {
-      "label": "J_0",
+      "label": "Q_{0n}",
       "count": 13,
-      "pages": 2
-    },
-    {
-      "label": "K_0",
-      "count": 13,
-      "pages": 2
+      "pages": 1
     },
     {
       "label": "I_d",
@@ -1455,9 +1625,24 @@
       "pages": 1
     },
     {
-      "label": "B_m",
+      "label": "R_{E2}",
       "count": 13,
-      "pages": 6
+      "pages": 1
+    },
+    {
+      "label": "A_{ud}",
+      "count": 13,
+      "pages": 2
+    },
+    {
+      "label": "A_{uc}",
+      "count": 13,
+      "pages": 2
+    },
+    {
+      "label": "H_C",
+      "count": 13,
+      "pages": 2
     },
     {
       "label": "L",
@@ -1480,9 +1665,9 @@
       "pages": 1
     },
     {
-      "label": "\\xi",
+      "label": "P",
       "count": 12,
-      "pages": 2
+      "pages": 4
     },
     {
       "label": "M_{34}",
@@ -1490,19 +1675,9 @@
       "pages": 3
     },
     {
-      "label": "F_1",
-      "count": 12,
-      "pages": 5
-    },
-    {
       "label": "U_{cd}",
       "count": 12,
       "pages": 1
-    },
-    {
-      "label": "R_4",
-      "count": 12,
-      "pages": 5
     },
     {
       "label": "P_{max}",
@@ -1510,14 +1685,19 @@
       "pages": 3
     },
     {
-      "label": "\\dot U_A",
+      "label": "\\dot U_C",
       "count": 12,
-      "pages": 2
+      "pages": 4
     },
     {
-      "label": "120^\\circ",
+      "label": "\\dot U_R",
       "count": 12,
       "pages": 3
+    },
+    {
+      "label": "83^\\circ",
+      "count": 12,
+      "pages": 1
     },
     {
       "label": "2^n",
@@ -1525,14 +1705,34 @@
       "pages": 5
     },
     {
+      "label": "S_D",
+      "count": 12,
+      "pages": 4
+    },
+    {
+      "label": "u_{ic}",
+      "count": 12,
+      "pages": 2
+    },
+    {
       "label": "m_i",
       "count": 12,
       "pages": 6
     },
     {
-      "label": "\\uparrow_5",
+      "label": "g",
       "count": 12,
-      "pages": 1
+      "pages": 2
+    },
+    {
+      "label": "J_1",
+      "count": 12,
+      "pages": 2
+    },
+    {
+      "label": "K_1",
+      "count": 12,
+      "pages": 2
     },
     {
       "label": "U_{DS}",
@@ -1540,9 +1740,29 @@
       "pages": 1
     },
     {
+      "label": "R_{C2}",
+      "count": 12,
+      "pages": 1
+    },
+    {
+      "label": "R_{i2}",
+      "count": 12,
+      "pages": 2
+    },
+    {
+      "label": "u_{id}",
+      "count": 12,
+      "pages": 2
+    },
+    {
       "label": "N^2",
       "count": 12,
       "pages": 5
+    },
+    {
+      "label": "p_h",
+      "count": 12,
+      "pages": 3
     },
     {
       "label": "X_L",
@@ -1565,19 +1785,19 @@
       "pages": 5
     },
     {
-      "label": "k_i",
-      "count": 11,
-      "pages": 5
-    },
-    {
       "label": "A_{m\\times n}",
       "count": 11,
       "pages": 4
     },
     {
-      "label": "\\boldsymbol{\\alpha}_M",
+      "label": "E_m",
       "count": 11,
-      "pages": 1
+      "pages": 7
+    },
+    {
+      "label": "F_1",
+      "count": 11,
+      "pages": 5
     },
     {
       "label": "f_N",
@@ -1595,19 +1815,34 @@
       "pages": 2
     },
     {
-      "label": "\\dot U_B",
+      "label": "u_s",
+      "count": 11,
+      "pages": 3
+    },
+    {
+      "label": "\\dot U_A",
       "count": 11,
       "pages": 2
     },
     {
-      "label": "I_x",
+      "label": "U_k",
       "count": 11,
-      "pages": 2
+      "pages": 5
     },
     {
-      "label": "\\dot U_3",
+      "label": "U_B",
       "count": 11,
-      "pages": 1
+      "pages": 4
+    },
+    {
+      "label": "10^5",
+      "count": 11,
+      "pages": 5
+    },
+    {
+      "label": "\\dot U_{OC}",
+      "count": 11,
+      "pages": 2
     },
     {
       "label": "\\odot",
@@ -1620,12 +1855,17 @@
       "pages": 1
     },
     {
-      "label": "Y_5",
+      "label": "K_2",
+      "count": 11,
+      "pages": 2
+    },
+    {
+      "label": "F_2",
       "count": 11,
       "pages": 3
     },
     {
-      "label": "F_2",
+      "label": "\\beta_1",
       "count": 11,
       "pages": 3
     },
@@ -1635,9 +1875,29 @@
       "pages": 6
     },
     {
+      "label": "U_{EE}",
+      "count": 11,
+      "pages": 3
+    },
+    {
       "label": "μ",
       "count": 11,
       "pages": 8
+    },
+    {
+      "label": "Z_k^*",
+      "count": 11,
+      "pages": 3
+    },
+    {
+      "label": "I_0^2",
+      "count": 11,
+      "pages": 5
+    },
+    {
+      "label": "Φ",
+      "count": 11,
+      "pages": 7
     },
     {
       "label": "\\psi",
@@ -1645,7 +1905,37 @@
       "pages": 2
     },
     {
+      "label": "x_i",
+      "count": 10,
+      "pages": 5
+    },
+    {
       "label": "E_r",
+      "count": 10,
+      "pages": 5
+    },
+    {
+      "label": "k_i",
+      "count": 10,
+      "pages": 5
+    },
+    {
+      "label": "l",
+      "count": 10,
+      "pages": 3
+    },
+    {
+      "label": "\\boxed",
+      "count": 10,
+      "pages": 4
+    },
+    {
+      "label": "\\eta",
+      "count": 10,
+      "pages": 3
+    },
+    {
+      "label": "10^{-16}",
       "count": 10,
       "pages": 5
     },
@@ -1660,19 +1950,14 @@
       "pages": 2
     },
     {
-      "label": "I_{S1}",
+      "label": "\\boldsymbol{\\alpha}_M",
       "count": 10,
-      "pages": 3
+      "pages": 1
     },
     {
-      "label": "Z_L",
+      "label": "Q_C",
       "count": 10,
       "pages": 3
-    },
-    {
-      "label": "10^{-6}",
-      "count": 10,
-      "pages": 5
     },
     {
       "label": "U_l",
@@ -1685,14 +1970,64 @@
       "pages": 2
     },
     {
-      "label": "i_C",
+      "label": "I_x",
+      "count": 10,
+      "pages": 2
+    },
+    {
+      "label": "e^{j\\varphi}",
+      "count": 10,
+      "pages": 2
+    },
+    {
+      "label": "Z_O",
+      "count": 10,
+      "pages": 2
+    },
+    {
+      "label": "\\uparrow_5",
+      "count": 10,
+      "pages": 1
+    },
+    {
+      "label": "C_E",
       "count": 10,
       "pages": 3
     },
     {
-      "label": "u_o",
+      "label": "J_0",
+      "count": 10,
+      "pages": 2
+    },
+    {
+      "label": "K_0",
+      "count": 10,
+      "pages": 2
+    },
+    {
+      "label": "J_2",
+      "count": 10,
+      "pages": 2
+    },
+    {
+      "label": "Y_5",
       "count": 10,
       "pages": 3
+    },
+    {
+      "label": "I_{C2}",
+      "count": 10,
+      "pages": 1
+    },
+    {
+      "label": "I_{C1}",
+      "count": 10,
+      "pages": 1
+    },
+    {
+      "label": "A_{uo}",
+      "count": 10,
+      "pages": 1
     },
     {
       "label": "H_g",
@@ -1700,24 +2035,9 @@
       "pages": 4
     },
     {
-      "label": "Φ",
-      "count": 10,
+      "label": "e_1",
+      "count": 9,
       "pages": 6
-    },
-    {
-      "label": "p_h",
-      "count": 10,
-      "pages": 2
-    },
-    {
-      "label": "x_i",
-      "count": 9,
-      "pages": 4
-    },
-    {
-      "label": "l",
-      "count": 9,
-      "pages": 2
     },
     {
       "label": "\\lambda_1",
@@ -1728,6 +2048,11 @@
       "label": "\\lambda_2",
       "count": 9,
       "pages": 1
+    },
+    {
+      "label": "d_1",
+      "count": 9,
+      "pages": 3
     },
     {
       "label": "\\longrightarrow",
@@ -1750,6 +2075,11 @@
       "pages": 3
     },
     {
+      "label": "\\boldsymbol\\eta^*",
+      "count": 9,
+      "pages": 1
+    },
+    {
       "label": "T_6",
       "count": 9,
       "pages": 3
@@ -1760,7 +2090,27 @@
       "pages": 3
     },
     {
+      "label": "Q_L",
+      "count": 9,
+      "pages": 3
+    },
+    {
+      "label": "I_{S1}",
+      "count": 9,
+      "pages": 2
+    },
+    {
       "label": "U_b",
+      "count": 9,
+      "pages": 2
+    },
+    {
+      "label": "R_4",
+      "count": 9,
+      "pages": 4
+    },
+    {
+      "label": "R_N",
       "count": 9,
       "pages": 2
     },
@@ -1775,9 +2125,9 @@
       "pages": 1
     },
     {
-      "label": "u_s",
+      "label": "U_R",
       "count": 9,
-      "pages": 2
+      "pages": 3
     },
     {
       "label": "L_1",
@@ -1795,7 +2145,7 @@
       "pages": 1
     },
     {
-      "label": "M_1",
+      "label": "\\dot U_B",
       "count": 9,
       "pages": 2
     },
@@ -1805,12 +2155,22 @@
       "pages": 1
     },
     {
+      "label": "u_{id1}",
+      "count": 9,
+      "pages": 2
+    },
+    {
       "label": "m_7",
       "count": 9,
       "pages": 5
     },
     {
-      "label": "Q_{2n}",
+      "label": "U_E",
+      "count": 9,
+      "pages": 3
+    },
+    {
+      "label": "R_{F1}",
       "count": 9,
       "pages": 1
     },
@@ -1825,11 +2185,6 @@
       "pages": 1
     },
     {
-      "label": "T_T",
-      "count": 9,
-      "pages": 1
-    },
-    {
       "label": "S_2",
       "count": 9,
       "pages": 1
@@ -1838,16 +2193,6 @@
       "label": "S_3",
       "count": 9,
       "pages": 1
-    },
-    {
-      "label": "\\beta_1",
-      "count": 9,
-      "pages": 2
-    },
-    {
-      "label": "\\beta_2",
-      "count": 9,
-      "pages": 2
     },
     {
       "label": "l_g",
@@ -1860,14 +2205,44 @@
       "pages": 3
     },
     {
+      "label": "\\varphi_0",
+      "count": 9,
+      "pages": 3
+    },
+    {
+      "label": "B_m^2",
+      "count": 9,
+      "pages": 4
+    },
+    {
+      "label": "p_e",
+      "count": 9,
+      "pages": 5
+    },
+    {
       "label": "x_{1\\sigma}",
       "count": 9,
       "pages": 3
     },
     {
+      "label": "k_d",
+      "count": 9,
+      "pages": 2
+    },
+    {
       "label": "i_b",
       "count": 9,
       "pages": 2
+    },
+    {
+      "label": "\\lvert",
+      "count": 8,
+      "pages": 4
+    },
+    {
+      "label": "\\rvert",
+      "count": 8,
+      "pages": 4
     },
     {
       "label": "\\boldsymbol{\\alpha}_5",
@@ -1880,7 +2255,7 @@
       "pages": 2
     },
     {
-      "label": "10^{-16}",
+      "label": "d_2",
       "count": 8,
       "pages": 3
     },
@@ -1895,14 +2270,19 @@
       "pages": 2
     },
     {
-      "label": "Q",
+      "label": "X_1",
       "count": 8,
-      "pages": 2
+      "pages": 3
     },
     {
       "label": "U_{oc}^2",
       "count": 8,
       "pages": 4
+    },
+    {
+      "label": "\\dot U_S",
+      "count": 8,
+      "pages": 3
     },
     {
       "label": "U_{bc}",
@@ -1920,7 +2300,12 @@
       "pages": 1
     },
     {
-      "label": "U_I",
+      "label": "Z_N",
+      "count": 8,
+      "pages": 3
+    },
+    {
+      "label": "M_1",
       "count": 8,
       "pages": 2
     },
@@ -1930,19 +2315,29 @@
       "pages": 3
     },
     {
-      "label": "e^{j\\varphi}",
+      "label": "\\dot U_3",
       "count": 8,
       "pages": 1
     },
     {
-      "label": "U_k",
+      "label": "\\dot U_L",
       "count": 8,
-      "pages": 3
+      "pages": 2
     },
     {
       "label": "I_{M1}",
       "count": 8,
       "pages": 1
+    },
+    {
+      "label": "Z_{R1}",
+      "count": 8,
+      "pages": 1
+    },
+    {
+      "label": "\\dot I_{l1}",
+      "count": 8,
+      "pages": 2
     },
     {
       "label": "\\overline{Q}_n",
@@ -1965,12 +2360,37 @@
       "pages": 2
     },
     {
-      "label": "Q_{2,n+1}",
+      "label": "S_9",
+      "count": 8,
+      "pages": 2
+    },
+    {
+      "label": "R_{F2}",
       "count": 8,
       "pages": 1
     },
     {
-      "label": "S_9",
+      "label": "T_T",
+      "count": 8,
+      "pages": 1
+    },
+    {
+      "label": "R_{E1}",
+      "count": 8,
+      "pages": 1
+    },
+    {
+      "label": "I_{B2}",
+      "count": 8,
+      "pages": 1
+    },
+    {
+      "label": "R_{C1}",
+      "count": 8,
+      "pages": 2
+    },
+    {
+      "label": "I_{CQ}",
       "count": 8,
       "pages": 2
     },
@@ -1981,6 +2401,11 @@
     },
     {
       "label": "U_{2\\Phi}",
+      "count": 8,
+      "pages": 3
+    },
+    {
+      "label": "\\Phi_1",
       "count": 8,
       "pages": 3
     },
@@ -2025,12 +2450,12 @@
       "pages": 2
     },
     {
-      "label": "d_1",
+      "label": "x_r",
       "count": 7,
-      "pages": 2
+      "pages": 4
     },
     {
-      "label": "d_2",
+      "label": "b_{ij}",
       "count": 7,
       "pages": 2
     },
@@ -2040,9 +2465,14 @@
       "pages": 3
     },
     {
-      "label": "E_m",
+      "label": "P^2",
       "count": 7,
-      "pages": 5
+      "pages": 4
+    },
+    {
+      "label": "K",
+      "count": 7,
+      "pages": 3
     },
     {
       "label": "\\varphi_b",
@@ -2053,6 +2483,11 @@
       "label": "2^2",
       "count": 7,
       "pages": 4
+    },
+    {
+      "label": "4^2",
+      "count": 7,
+      "pages": 6
     },
     {
       "label": "\\varphi_{n1}",
@@ -2080,19 +2515,14 @@
       "pages": 1
     },
     {
-      "label": "R_N",
+      "label": "126.9^\\circ",
       "count": 7,
-      "pages": 1
+      "pages": 2
     },
     {
-      "label": "\\varphi_u",
+      "label": "\\dot I_{l2}",
       "count": 7,
-      "pages": 3
-    },
-    {
-      "label": "u_L",
-      "count": 7,
-      "pages": 3
+      "pages": 2
     },
     {
       "label": "Y_d",
@@ -2115,17 +2545,32 @@
       "pages": 2
     },
     {
-      "label": "\\downarrow_1",
+      "label": "Q_{2,n+1}",
+      "count": 7,
+      "pages": 1
+    },
+    {
+      "label": "10^{3}",
+      "count": 7,
+      "pages": 3
+    },
+    {
+      "label": "i_E",
       "count": 7,
       "pages": 2
     },
     {
-      "label": "\\downarrow_4",
+      "label": "X_d",
       "count": 7,
       "pages": 2
     },
     {
-      "label": "\\overline{Q}_{2n}",
+      "label": "X_F",
+      "count": 7,
+      "pages": 2
+    },
+    {
+      "label": "Q_{2n}",
       "count": 7,
       "pages": 1
     },
@@ -2135,7 +2580,22 @@
       "pages": 1
     },
     {
-      "label": "i_B",
+      "label": "A_{u1}",
+      "count": 7,
+      "pages": 1
+    },
+    {
+      "label": "A_{u2}",
+      "count": 7,
+      "pages": 1
+    },
+    {
+      "label": "I_{E1}",
+      "count": 7,
+      "pages": 2
+    },
+    {
+      "label": "K_{CMRR}",
       "count": 7,
       "pages": 2
     },
@@ -2145,24 +2605,39 @@
       "pages": 2
     },
     {
-      "label": "p_e",
+      "label": "i_\\mu",
       "count": 7,
       "pages": 3
     },
     {
-      "label": "10^5",
+      "label": "E_\\Phi",
       "count": 7,
       "pages": 3
     },
     {
-      "label": "z_k^*",
+      "label": "\\rho",
+      "count": 7,
+      "pages": 3
+    },
+    {
+      "label": "f^2",
       "count": 7,
       "pages": 4
     },
     {
-      "label": "e_1",
-      "count": 6,
-      "pages": 5
+      "label": "i_0",
+      "count": 7,
+      "pages": 3
+    },
+    {
+      "label": "I_k^2",
+      "count": 7,
+      "pages": 3
+    },
+    {
+      "label": "Q",
+      "count": 7,
+      "pages": 1
     },
     {
       "label": "a_{1j}",
@@ -2176,11 +2651,6 @@
     },
     {
       "label": "y_2",
-      "count": 6,
-      "pages": 3
-    },
-    {
-      "label": "x_r",
       "count": 6,
       "pages": 3
     },
@@ -2230,16 +2700,6 @@
       "pages": 2
     },
     {
-      "label": "\\mathrm C_s^k",
-      "count": 6,
-      "pages": 3
-    },
-    {
-      "label": "\\mathrm C_n^k",
-      "count": 6,
-      "pages": 3
-    },
-    {
       "label": "Q_1",
       "count": 6,
       "pages": 2
@@ -2250,22 +2710,27 @@
       "pages": 2
     },
     {
-      "label": "k_M",
+      "label": "\\boldsymbol\\xi_3",
       "count": 6,
       "pages": 1
     },
     {
-      "label": "u_A",
+      "label": "U^2",
       "count": 6,
       "pages": 3
     },
     {
-      "label": "4^2",
+      "label": "f_1",
       "count": 6,
-      "pages": 5
+      "pages": 2
     },
     {
-      "label": "\\varphi_i",
+      "label": "Q^2",
+      "count": 6,
+      "pages": 3
+    },
+    {
+      "label": "u_A",
       "count": 6,
       "pages": 3
     },
@@ -2275,7 +2740,12 @@
       "pages": 2
     },
     {
-      "label": "\\dot U_C",
+      "label": "\\dot U_p",
+      "count": 6,
+      "pages": 2
+    },
+    {
+      "label": "u_R",
       "count": 6,
       "pages": 3
     },
@@ -2290,11 +2760,6 @@
       "pages": 2
     },
     {
-      "label": "\\dot I_3",
-      "count": 6,
-      "pages": 1
-    },
-    {
       "label": "\\dot U_4",
       "count": 6,
       "pages": 1
@@ -2303,11 +2768,6 @@
       "label": "G_6",
       "count": 6,
       "pages": 2
-    },
-    {
-      "label": "i_{SC}",
-      "count": 6,
-      "pages": 1
     },
     {
       "label": "'^2",
@@ -2321,6 +2781,16 @@
     },
     {
       "label": "U_{OC}^2",
+      "count": 6,
+      "pages": 2
+    },
+    {
+      "label": "36.9^\\circ",
+      "count": 6,
+      "pages": 1
+    },
+    {
+      "label": "\\dot U_{S1}",
       "count": 6,
       "pages": 2
     },
@@ -2350,14 +2820,59 @@
       "pages": 5
     },
     {
+      "label": "\\downarrow_1",
+      "count": 6,
+      "pages": 2
+    },
+    {
+      "label": "\\downarrow_4",
+      "count": 6,
+      "pages": 2
+    },
+    {
+      "label": "X_o",
+      "count": 6,
+      "pages": 2
+    },
+    {
+      "label": "\\overline{Q}_{2n}",
+      "count": 6,
+      "pages": 1
+    },
+    {
       "label": "M_0",
       "count": 6,
       "pages": 1
     },
     {
-      "label": "R_S",
+      "label": "A_{us}",
+      "count": 6,
+      "pages": 2
+    },
+    {
+      "label": "I_{CBO}",
+      "count": 6,
+      "pages": 3
+    },
+    {
+      "label": "r_{be1}",
       "count": 6,
       "pages": 1
+    },
+    {
+      "label": "U_{C1}",
+      "count": 6,
+      "pages": 1
+    },
+    {
+      "label": "I_{1N\\Phi}",
+      "count": 6,
+      "pages": 3
+    },
+    {
+      "label": "I_{2N\\Phi}",
+      "count": 6,
+      "pages": 3
     },
     {
       "label": "U_\\Phi",
@@ -2370,17 +2885,32 @@
       "pages": 3
     },
     {
+      "label": "I_{03}",
+      "count": 6,
+      "pages": 2
+    },
+    {
+      "label": "\\Phi_r",
+      "count": 6,
+      "pages": 1
+    },
+    {
+      "label": "u_{kR}",
+      "count": 6,
+      "pages": 1
+    },
+    {
+      "label": "u_{kX}",
+      "count": 6,
+      "pages": 1
+    },
+    {
       "label": "w_m",
       "count": 6,
       "pages": 2
     },
     {
       "label": "F_g",
-      "count": 6,
-      "pages": 2
-    },
-    {
-      "label": "\\Phi_1",
       "count": 6,
       "pages": 2
     },
@@ -2395,7 +2925,7 @@
       "pages": 2
     },
     {
-      "label": "I_0^2",
+      "label": "z_k^*",
       "count": 6,
       "pages": 3
     },
@@ -2405,12 +2935,12 @@
       "pages": 2
     },
     {
-      "label": "r_K",
+      "label": "x_{2\\sigma}",
       "count": 6,
       "pages": 1
     },
     {
-      "label": "x_{2\\sigma}",
+      "label": "k_p",
       "count": 6,
       "pages": 1
     },
@@ -2423,6 +2953,11 @@
       "label": "10^{-15}",
       "count": 5,
       "pages": 3
+    },
+    {
+      "label": "e_2",
+      "count": 5,
+      "pages": 4
     },
     {
       "label": "a_i",
@@ -2455,6 +2990,11 @@
       "pages": 3
     },
     {
+      "label": "y_i",
+      "count": 5,
+      "pages": 3
+    },
+    {
       "label": "t_n",
       "count": 5,
       "pages": 1
@@ -2463,6 +3003,11 @@
       "label": "\\boldsymbol{\\xi}_3",
       "count": 5,
       "pages": 1
+    },
+    {
+      "label": "10^6",
+      "count": 5,
+      "pages": 2
     },
     {
       "label": "k^n",
@@ -2485,19 +3030,39 @@
       "pages": 3
     },
     {
+      "label": "d^2",
+      "count": 5,
+      "pages": 3
+    },
+    {
+      "label": "\\mathrm C_s^k",
+      "count": 5,
+      "pages": 3
+    },
+    {
+      "label": "\\mathrm C_n^k",
+      "count": 5,
+      "pages": 3
+    },
+    {
       "label": "10^{16}",
       "count": 5,
       "pages": 4
     },
     {
-      "label": "b_{ij}",
+      "label": "\\mathrm C_4^3",
+      "count": 5,
+      "pages": 2
+    },
+    {
+      "label": "k_M",
       "count": 5,
       "pages": 1
     },
     {
-      "label": "\\mathrm C_4^3",
+      "label": "\\boldsymbol\\alpha_1",
       "count": 5,
-      "pages": 2
+      "pages": 1
     },
     {
       "label": "P_N",
@@ -2545,6 +3110,26 @@
       "pages": 1
     },
     {
+      "label": "U_I",
+      "count": 5,
+      "pages": 2
+    },
+    {
+      "label": "I_2^2",
+      "count": 5,
+      "pages": 4
+    },
+    {
+      "label": "R^2",
+      "count": 5,
+      "pages": 4
+    },
+    {
+      "label": "Z_{22}",
+      "count": 5,
+      "pages": 2
+    },
+    {
       "label": "\\dot U_{AB}",
       "count": 5,
       "pages": 2
@@ -2570,22 +3155,32 @@
       "pages": 2
     },
     {
-      "label": "126.9^\\circ",
-      "count": 5,
-      "pages": 1
-    },
-    {
-      "label": "150^\\circ",
-      "count": 5,
-      "pages": 1
-    },
-    {
       "label": "I_8",
       "count": 5,
       "pages": 2
     },
     {
       "label": "G_5",
+      "count": 5,
+      "pages": 2
+    },
+    {
+      "label": "i_{SC}",
+      "count": 5,
+      "pages": 1
+    },
+    {
+      "label": "e^{j\\omega t}",
+      "count": 5,
+      "pages": 1
+    },
+    {
+      "label": "\\dot I_R",
+      "count": 5,
+      "pages": 1
+    },
+    {
+      "label": "\\dot U_{S2}",
       "count": 5,
       "pages": 2
     },
@@ -2600,6 +3195,11 @@
       "pages": 4
     },
     {
+      "label": "U_{CES}",
+      "count": 5,
+      "pages": 1
+    },
+    {
       "label": "Y_4",
       "count": 5,
       "pages": 2
@@ -2610,9 +3210,44 @@
       "pages": 3
     },
     {
+      "label": "u_{CE}",
+      "count": 5,
+      "pages": 2
+    },
+    {
+      "label": "i_i",
+      "count": 5,
+      "pages": 4
+    },
+    {
       "label": "I_{CEO}",
       "count": 5,
       "pages": 1
+    },
+    {
+      "label": "g_m",
+      "count": 5,
+      "pages": 2
+    },
+    {
+      "label": "I_{E2}",
+      "count": 5,
+      "pages": 2
+    },
+    {
+      "label": "i_{e1}",
+      "count": 5,
+      "pages": 1
+    },
+    {
+      "label": "i_{e2}",
+      "count": 5,
+      "pages": 1
+    },
+    {
+      "label": "k_q",
+      "count": 5,
+      "pages": 3
     },
     {
       "label": "\\Phi_A",
@@ -2625,16 +3260,6 @@
       "pages": 1
     },
     {
-      "label": "I_{1N\\Phi}",
-      "count": 5,
-      "pages": 2
-    },
-    {
-      "label": "I_{2N\\Phi}",
-      "count": 5,
-      "pages": 2
-    },
-    {
       "label": "u_{kR}^*",
       "count": 5,
       "pages": 2
@@ -2643,6 +3268,11 @@
       "label": "u_{kX}^*",
       "count": 5,
       "pages": 2
+    },
+    {
+      "label": "\\beta_m",
+      "count": 5,
+      "pages": 3
     },
     {
       "label": "Ψ",
@@ -2663,11 +3293,6 @@
       "label": "\\tau^2",
       "count": 5,
       "pages": 3
-    },
-    {
-      "label": "B_m^2",
-      "count": 5,
-      "pages": 2
     },
     {
       "label": "'_g",
@@ -2710,12 +3335,22 @@
       "pages": 1
     },
     {
+      "label": "r_K",
+      "count": 5,
+      "pages": 1
+    },
+    {
       "label": "\\varphi_K",
       "count": 5,
       "pages": 1
     },
     {
       "label": "N^{2}",
+      "count": 5,
+      "pages": 1
+    },
+    {
+      "label": "\\Phi_v",
       "count": 5,
       "pages": 1
     },
@@ -2755,11 +3390,6 @@
       "pages": 3
     },
     {
-      "label": "y_i",
-      "count": 4,
-      "pages": 2
-    },
-    {
       "label": "A_1^*",
       "count": 4,
       "pages": 1
@@ -2770,9 +3400,19 @@
       "pages": 2
     },
     {
+      "label": "x_{r+1}",
+      "count": 4,
+      "pages": 2
+    },
+    {
       "label": "\\boldsymbol{\\alpha}_s",
       "count": 4,
       "pages": 1
+    },
+    {
+      "label": "c_{n-r}",
+      "count": 4,
+      "pages": 2
     },
     {
       "label": "a_{j1}",
@@ -2830,11 +3470,6 @@
       "pages": 2
     },
     {
-      "label": "P^2",
-      "count": 4,
-      "pages": 3
-    },
-    {
       "label": "b_{11}",
       "count": 4,
       "pages": 1
@@ -2875,9 +3510,29 @@
       "pages": 2
     },
     {
-      "label": "F_t",
+      "label": "\\boldsymbol\\eta_1",
       "count": 4,
       "pages": 1
+    },
+    {
+      "label": "\\boldsymbol\\eta_2",
+      "count": 4,
+      "pages": 1
+    },
+    {
+      "label": "10^{-5}",
+      "count": 4,
+      "pages": 2
+    },
+    {
+      "label": "w",
+      "count": 4,
+      "pages": 1
+    },
+    {
+      "label": "X_2",
+      "count": 4,
+      "pages": 2
     },
     {
       "label": "R_{kk}",
@@ -2900,6 +3555,11 @@
       "pages": 3
     },
     {
+      "label": "U_R^2",
+      "count": 4,
+      "pages": 2
+    },
+    {
       "label": "i_{ab}",
       "count": 4,
       "pages": 1
@@ -2908,6 +3568,11 @@
       "label": "U_{de}",
       "count": 4,
       "pages": 1
+    },
+    {
+      "label": "P_R",
+      "count": 4,
+      "pages": 2
     },
     {
       "label": "1^2",
@@ -2960,24 +3625,9 @@
       "pages": 1
     },
     {
-      "label": "U^2",
-      "count": 4,
-      "pages": 1
-    },
-    {
       "label": "\\dot U_{oc}",
       "count": 4,
       "pages": 1
-    },
-    {
-      "label": "I_2^2",
-      "count": 4,
-      "pages": 3
-    },
-    {
-      "label": "R^2",
-      "count": 4,
-      "pages": 3
     },
     {
       "label": "3^2",
@@ -2985,9 +3635,14 @@
       "pages": 3
     },
     {
-      "label": "Z_{22}",
+      "label": "30^2",
       "count": 4,
-      "pages": 1
+      "pages": 4
+    },
+    {
+      "label": "X^2",
+      "count": 4,
+      "pages": 4
     },
     {
       "label": "L_{ab}",
@@ -3005,34 +3660,64 @@
       "pages": 2
     },
     {
-      "label": "50^\\circ",
-      "count": 4,
-      "pages": 1
-    },
-    {
-      "label": "60^\\circ",
-      "count": 4,
-      "pages": 2
-    },
-    {
-      "label": "u_{AB}",
-      "count": 4,
-      "pages": 1
-    },
-    {
       "label": "\\dot I_4",
       "count": 4,
       "pages": 1
     },
     {
-      "label": "\\varphi_k",
+      "label": "e^{j(\\omega t+\\varphi)}",
       "count": 4,
-      "pages": 2
+      "pages": 1
     },
     {
-      "label": "U_B",
+      "label": "u_S",
       "count": 4,
-      "pages": 2
+      "pages": 1
+    },
+    {
+      "label": "\\dot{U}_S",
+      "count": 4,
+      "pages": 1
+    },
+    {
+      "label": "\\dot{I}_L",
+      "count": 4,
+      "pages": 1
+    },
+    {
+      "label": "53^\\circ",
+      "count": 4,
+      "pages": 1
+    },
+    {
+      "label": "173^\\circ",
+      "count": 4,
+      "pages": 1
+    },
+    {
+      "label": "7^\\circ",
+      "count": 4,
+      "pages": 1
+    },
+    {
+      "label": "Z_{R2}",
+      "count": 4,
+      "pages": 1
+    },
+    {
+      "label": "Z_p",
+      "count": 4,
+      "pages": 1
+    },
+    {
+      "label": "52.3^\\circ",
+      "count": 4,
+      "pages": 1
+    },
+    {
+      "label": "\\dot I_S",
+      "count": 4,
+      "pages": 1
     },
     {
       "label": "2^{N-1}",
@@ -3085,16 +3770,6 @@
       "pages": 1
     },
     {
-      "label": "\\overline{Q}_{0n}",
-      "count": 4,
-      "pages": 1
-    },
-    {
-      "label": "2^{24}",
-      "count": 4,
-      "pages": 1
-    },
-    {
       "label": "\\overline R_D",
       "count": 4,
       "pages": 1
@@ -3115,7 +3790,22 @@
       "pages": 1
     },
     {
-      "label": "I_{CBO}",
+      "label": "I_{B1}",
+      "count": 4,
+      "pages": 1
+    },
+    {
+      "label": "r_{be2}",
+      "count": 4,
+      "pages": 1
+    },
+    {
+      "label": "u_{id2}",
+      "count": 4,
+      "pages": 1
+    },
+    {
+      "label": "P_{DC}",
       "count": 4,
       "pages": 1
     },
@@ -3130,12 +3820,7 @@
       "pages": 2
     },
     {
-      "label": "H_C",
-      "count": 4,
-      "pages": 1
-    },
-    {
-      "label": "\\rho",
+      "label": "z_k",
       "count": 4,
       "pages": 2
     },
@@ -3151,11 +3836,6 @@
     },
     {
       "label": "k_e",
-      "count": 4,
-      "pages": 2
-    },
-    {
-      "label": "f^2",
       "count": 4,
       "pages": 2
     },
@@ -3180,16 +3860,6 @@
       "pages": 1
     },
     {
-      "label": "\\beta_m",
-      "count": 4,
-      "pages": 2
-    },
-    {
-      "label": "I_k^2",
-      "count": 4,
-      "pages": 2
-    },
-    {
       "label": "Z_k^2",
       "count": 4,
       "pages": 2
@@ -3210,14 +3880,29 @@
       "pages": 2
     },
     {
-      "label": "C^{\\mathrm T}",
-      "count": 3,
+      "label": "B_{av}",
+      "count": 4,
       "pages": 1
     },
     {
-      "label": "e_2",
+      "label": "E_{av}",
+      "count": 4,
+      "pages": 1
+    },
+    {
+      "label": "k_{d1}",
+      "count": 4,
+      "pages": 1
+    },
+    {
+      "label": "k_{wv}",
+      "count": 4,
+      "pages": 1
+    },
+    {
+      "label": "C^{\\mathrm T}",
       "count": 3,
-      "pages": 3
+      "pages": 1
     },
     {
       "label": "\\boldsymbol{\\beta}_5",
@@ -3240,14 +3925,24 @@
       "pages": 1
     },
     {
+      "label": "d_n",
+      "count": 3,
+      "pages": 2
+    },
+    {
       "label": "k_{n-r}",
       "count": 3,
       "pages": 1
     },
     {
-      "label": "c_{n-r}",
+      "label": "k_r",
       "count": 3,
-      "pages": 1
+      "pages": 2
+    },
+    {
+      "label": "\\alpha_i",
+      "count": 3,
+      "pages": 2
     },
     {
       "label": "A_{i1}",
@@ -3320,14 +4015,24 @@
       "pages": 1
     },
     {
-      "label": "c_{M+1}",
+      "label": "\\mathrm C_4^4",
       "count": 3,
       "pages": 1
     },
     {
-      "label": "\\mathrm C_4^4",
+      "label": "\\boldsymbol\\alpha_s",
       "count": 3,
       "pages": 1
+    },
+    {
+      "label": "\\varepsilon",
+      "count": 3,
+      "pages": 1
+    },
+    {
+      "label": "10^{-4}",
+      "count": 3,
+      "pages": 3
     },
     {
       "label": "F_{set}",
@@ -3335,19 +4040,14 @@
       "pages": 2
     },
     {
-      "label": "\\delta",
-      "count": 3,
-      "pages": 2
-    },
-    {
-      "label": "f_1",
+      "label": "F_t",
       "count": 3,
       "pages": 1
     },
     {
-      "label": "Q^2",
+      "label": "\\log_2",
       "count": 3,
-      "pages": 2
+      "pages": 1
     },
     {
       "label": "I_{sc}",
@@ -3385,6 +4085,11 @@
       "pages": 2
     },
     {
+      "label": "6^2",
+      "count": 3,
+      "pages": 3
+    },
+    {
       "label": "i_{AB}",
       "count": 3,
       "pages": 1
@@ -3405,24 +4110,14 @@
       "pages": 1
     },
     {
-      "label": "\\dot U_p",
-      "count": 3,
-      "pages": 1
-    },
-    {
-      "label": "U_R",
+      "label": "I_1^2",
       "count": 3,
       "pages": 2
     },
     {
-      "label": "30^2",
+      "label": "100^2",
       "count": 3,
-      "pages": 3
-    },
-    {
-      "label": "X^2",
-      "count": 3,
-      "pages": 3
+      "pages": 2
     },
     {
       "label": "P_3",
@@ -3450,19 +4145,19 @@
       "pages": 1
     },
     {
-      "label": "M_2",
-      "count": 3,
-      "pages": 1
-    },
-    {
       "label": "15^\\circ",
       "count": 3,
       "pages": 1
     },
     {
-      "label": "U_{S4}",
+      "label": "u_{AB}",
       "count": 3,
-      "pages": 2
+      "pages": 1
+    },
+    {
+      "label": "150^\\circ",
+      "count": 3,
+      "pages": 1
     },
     {
       "label": "I_{S\\,\\text{入}}",
@@ -3476,6 +4171,61 @@
     },
     {
       "label": "G_{kj}",
+      "count": 3,
+      "pages": 2
+    },
+    {
+      "label": "P_L",
+      "count": 3,
+      "pages": 2
+    },
+    {
+      "label": "j^2",
+      "count": 3,
+      "pages": 2
+    },
+    {
+      "label": "I_R^2",
+      "count": 3,
+      "pages": 1
+    },
+    {
+      "label": "\\dot I_L",
+      "count": 3,
+      "pages": 1
+    },
+    {
+      "label": "\\dot I_C",
+      "count": 3,
+      "pages": 1
+    },
+    {
+      "label": "20.0^\\circ",
+      "count": 3,
+      "pages": 1
+    },
+    {
+      "label": "Z_{ii}",
+      "count": 3,
+      "pages": 1
+    },
+    {
+      "label": "Z_X",
+      "count": 3,
+      "pages": 1
+    },
+    {
+      "label": "p_L",
+      "count": 3,
+      "pages": 1
+    },
+    {
+      "label": "p_C",
+      "count": 3,
+      "pages": 1
+    },
+    {
+      "label": "P_C",
       "count": 3,
       "pages": 2
     },
@@ -3535,17 +4285,27 @@
       "pages": 1
     },
     {
-      "label": "A_3",
+      "label": "10^{5}",
+      "count": 3,
+      "pages": 2
+    },
+    {
+      "label": "\\dot U_s",
       "count": 3,
       "pages": 1
     },
     {
-      "label": "Q_{1n}",
+      "label": "X_i",
+      "count": 3,
+      "pages": 2
+    },
+    {
+      "label": "\\overline{Q}_{0n}",
       "count": 3,
       "pages": 1
     },
     {
-      "label": "Q^{n+1}",
+      "label": "2^{24}",
       "count": 3,
       "pages": 1
     },
@@ -3560,19 +4320,9 @@
       "pages": 1
     },
     {
-      "label": "u_{CE}",
+      "label": "u_{BE}",
       "count": 3,
-      "pages": 1
-    },
-    {
-      "label": "A_{us}",
-      "count": 3,
-      "pages": 1
-    },
-    {
-      "label": "U_{BB}",
-      "count": 3,
-      "pages": 1
+      "pages": 2
     },
     {
       "label": "I_i",
@@ -3580,12 +4330,47 @@
       "pages": 1
     },
     {
-      "label": "U_C",
+      "label": "10^7",
+      "count": 3,
+      "pages": 2
+    },
+    {
+      "label": "U_Z",
+      "count": 3,
+      "pages": 2
+    },
+    {
+      "label": "R_{i1}",
       "count": 3,
       "pages": 1
     },
     {
-      "label": "g_m",
+      "label": "R_{L2}",
+      "count": 3,
+      "pages": 1
+    },
+    {
+      "label": "C_o",
+      "count": 3,
+      "pages": 1
+    },
+    {
+      "label": "I_{RC1}",
+      "count": 3,
+      "pages": 1
+    },
+    {
+      "label": "v_{c1}",
+      "count": 3,
+      "pages": 1
+    },
+    {
+      "label": "R_P",
+      "count": 3,
+      "pages": 2
+    },
+    {
+      "label": "P_o",
       "count": 3,
       "pages": 1
     },
@@ -3595,17 +4380,27 @@
       "pages": 2
     },
     {
+      "label": "k_y",
+      "count": 3,
+      "pages": 3
+    },
+    {
       "label": "B_0",
       "count": 3,
       "pages": 1
     },
     {
-      "label": "10^{3}",
+      "label": "α",
       "count": 3,
-      "pages": 2
+      "pages": 1
     },
     {
-      "label": "I_{03}",
+      "label": "\\mathrm e^{-t/T}",
+      "count": 3,
+      "pages": 1
+    },
+    {
+      "label": "L_m",
       "count": 3,
       "pages": 1
     },
@@ -3685,11 +4480,6 @@
       "pages": 1
     },
     {
-      "label": "Z_k^*",
-      "count": 3,
-      "pages": 1
-    },
-    {
       "label": "S_b",
       "count": 3,
       "pages": 2
@@ -3701,11 +4491,6 @@
     },
     {
       "label": "Z_0",
-      "count": 3,
-      "pages": 2
-    },
-    {
-      "label": "\\dot I_\\mu",
       "count": 3,
       "pages": 2
     },
@@ -3750,6 +4535,21 @@
       "pages": 1
     },
     {
+      "label": "k_{p1}",
+      "count": 3,
+      "pages": 1
+    },
+    {
+      "label": "B_{mv}",
+      "count": 3,
+      "pages": 1
+    },
+    {
+      "label": "E_v",
+      "count": 3,
+      "pages": 1
+    },
+    {
       "label": "i_c",
       "count": 3,
       "pages": 2
@@ -3775,12 +4575,7 @@
       "pages": 1
     },
     {
-      "label": "I_{CQ}",
-      "count": 3,
-      "pages": 1
-    },
-    {
-      "label": "\\boxed",
+      "label": "\\Leftrightarrow",
       "count": 2,
       "pages": 2
     },
@@ -3825,16 +4620,6 @@
       "pages": 1
     },
     {
-      "label": "d_n",
-      "count": 2,
-      "pages": 1
-    },
-    {
-      "label": "x_{r+1}",
-      "count": 2,
-      "pages": 1
-    },
-    {
       "label": "x_{r+2}",
       "count": 2,
       "pages": 1
@@ -3855,17 +4640,17 @@
       "pages": 2
     },
     {
+      "label": "d_r",
+      "count": 2,
+      "pages": 2
+    },
+    {
+      "label": "c_{r,r+1}",
+      "count": 2,
+      "pages": 2
+    },
+    {
       "label": "\\boldsymbol{\\xi}_r",
-      "count": 2,
-      "pages": 1
-    },
-    {
-      "label": "k_r",
-      "count": 2,
-      "pages": 1
-    },
-    {
-      "label": "\\eta",
       "count": 2,
       "pages": 1
     },
@@ -3876,21 +4661,6 @@
     },
     {
       "label": "\\boldsymbol{\\eta}_2",
-      "count": 2,
-      "pages": 1
-    },
-    {
-      "label": "\\lvert",
-      "count": 2,
-      "pages": 1
-    },
-    {
-      "label": "\\rvert",
-      "count": 2,
-      "pages": 1
-    },
-    {
-      "label": "\\alpha_i",
       "count": 2,
       "pages": 1
     },
@@ -3970,6 +4740,11 @@
       "pages": 1
     },
     {
+      "label": "c_{M+1}",
+      "count": 2,
+      "pages": 1
+    },
+    {
       "label": "\\mathbb R^3",
       "count": 2,
       "pages": 1
@@ -4005,7 +4780,52 @@
       "pages": 1
     },
     {
+      "label": "d_{r+2}",
+      "count": 2,
+      "pages": 1
+    },
+    {
+      "label": "\\boldsymbol b_1",
+      "count": 2,
+      "pages": 1
+    },
+    {
+      "label": "\\boldsymbol\\xi_{n-r}",
+      "count": 2,
+      "pages": 1
+    },
+    {
+      "label": "\\boldsymbol\\eta_2^*",
+      "count": 2,
+      "pages": 1
+    },
+    {
+      "label": "\\boldsymbol\\alpha_2",
+      "count": 2,
+      "pages": 1
+    },
+    {
+      "label": "\\boldsymbol\\alpha_3",
+      "count": 2,
+      "pages": 1
+    },
+    {
+      "label": "h",
+      "count": 2,
+      "pages": 1
+    },
+    {
       "label": "α_{M+1}",
+      "count": 2,
+      "pages": 1
+    },
+    {
+      "label": "\\zeta",
+      "count": 2,
+      "pages": 1
+    },
+    {
+      "label": "t_s",
       "count": 2,
       "pages": 1
     },
@@ -4020,9 +4840,9 @@
       "pages": 2
     },
     {
-      "label": "f_0",
+      "label": "|^2",
       "count": 2,
-      "pages": 1
+      "pages": 2
     },
     {
       "label": "R_{22}",
@@ -4041,11 +4861,6 @@
     },
     {
       "label": "\\varphi_y",
-      "count": 2,
-      "pages": 1
-    },
-    {
-      "label": "P_R",
       "count": 2,
       "pages": 1
     },
@@ -4080,11 +4895,6 @@
       "pages": 2
     },
     {
-      "label": "6^2",
-      "count": 2,
-      "pages": 2
-    },
-    {
       "label": "R_Y",
       "count": 2,
       "pages": 1
@@ -4100,27 +4910,17 @@
       "pages": 1
     },
     {
+      "label": "\\varphi_L",
+      "count": 2,
+      "pages": 2
+    },
+    {
       "label": "\\dot I^*",
       "count": 2,
       "pages": 1
     },
     {
-      "label": "I_1^2",
-      "count": 2,
-      "pages": 1
-    },
-    {
-      "label": "U_L",
-      "count": 2,
-      "pages": 1
-    },
-    {
       "label": "X_L^2",
-      "count": 2,
-      "pages": 1
-    },
-    {
-      "label": "100^2",
       "count": 2,
       "pages": 1
     },
@@ -4138,6 +4938,11 @@
       "label": "U_p",
       "count": 2,
       "pages": 1
+    },
+    {
+      "label": "15^2",
+      "count": 2,
+      "pages": 2
     },
     {
       "label": "20^2",
@@ -4175,11 +4980,6 @@
       "pages": 1
     },
     {
-      "label": "Z_N",
-      "count": 2,
-      "pages": 1
-    },
-    {
       "label": "u_c",
       "count": 2,
       "pages": 1
@@ -4195,6 +4995,16 @@
       "pages": 1
     },
     {
+      "label": "M_2",
+      "count": 2,
+      "pages": 1
+    },
+    {
+      "label": "50^\\circ",
+      "count": 2,
+      "pages": 1
+    },
+    {
       "label": "32.15^\\circ",
       "count": 2,
       "pages": 1
@@ -4205,14 +5015,9 @@
       "pages": 1
     },
     {
-      "label": "\\dot U_R",
+      "label": "\\dot U_k",
       "count": 2,
-      "pages": 1
-    },
-    {
-      "label": "40^\\circ",
-      "count": 2,
-      "pages": 1
+      "pages": 2
     },
     {
       "label": "\\dot U_m",
@@ -4225,7 +5030,7 @@
       "pages": 1
     },
     {
-      "label": "R_i",
+      "label": "U_{S4}",
       "count": 2,
       "pages": 1
     },
@@ -4236,11 +5041,6 @@
     },
     {
       "label": "U_{R2}",
-      "count": 2,
-      "pages": 1
-    },
-    {
-      "label": "U_A",
       "count": 2,
       "pages": 1
     },
@@ -4260,7 +5060,77 @@
       "pages": 2
     },
     {
+      "label": "U_A",
+      "count": 2,
+      "pages": 2
+    },
+    {
       "label": "U_{ac}",
+      "count": 2,
+      "pages": 1
+    },
+    {
+      "label": "\\dot{U}_1",
+      "count": 2,
+      "pages": 1
+    },
+    {
+      "label": "\\dot{U}_2",
+      "count": 2,
+      "pages": 1
+    },
+    {
+      "label": "Y_R",
+      "count": 2,
+      "pages": 1
+    },
+    {
+      "label": "Y_L",
+      "count": 2,
+      "pages": 1
+    },
+    {
+      "label": "Y_C",
+      "count": 2,
+      "pages": 1
+    },
+    {
+      "label": "A_3",
+      "count": 2,
+      "pages": 2
+    },
+    {
+      "label": "8^2",
+      "count": 2,
+      "pages": 1
+    },
+    {
+      "label": "70.0^\\circ",
+      "count": 2,
+      "pages": 1
+    },
+    {
+      "label": "Z_{11}",
+      "count": 2,
+      "pages": 1
+    },
+    {
+      "label": "Z_{12}",
+      "count": 2,
+      "pages": 1
+    },
+    {
+      "label": "Z_{21}",
+      "count": 2,
+      "pages": 1
+    },
+    {
+      "label": "Z_{tr}",
+      "count": 2,
+      "pages": 1
+    },
+    {
+      "label": "p_R",
       "count": 2,
       "pages": 1
     },
@@ -4268,6 +5138,16 @@
       "label": "\\Psi",
       "count": 2,
       "pages": 1
+    },
+    {
+      "label": "i_+",
+      "count": 2,
+      "pages": 2
+    },
+    {
+      "label": "i_-",
+      "count": 2,
+      "pages": 2
     },
     {
       "label": "m_8",
@@ -4295,7 +5175,17 @@
       "pages": 1
     },
     {
-      "label": "q_n",
+      "label": "I_{CS}",
+      "count": 2,
+      "pages": 1
+    },
+    {
+      "label": "\\dot U_o",
+      "count": 2,
+      "pages": 1
+    },
+    {
+      "label": "Q_{1n}",
       "count": 2,
       "pages": 1
     },
@@ -4315,7 +5205,7 @@
       "pages": 1
     },
     {
-      "label": "2^{30}",
+      "label": "Q^{n+1}",
       "count": 2,
       "pages": 1
     },
@@ -4325,12 +5215,7 @@
       "pages": 1
     },
     {
-      "label": "u_{BE}",
-      "count": 2,
-      "pages": 1
-    },
-    {
-      "label": "U_E",
+      "label": "U_{BB}",
       "count": 2,
       "pages": 1
     },
@@ -4350,7 +5235,37 @@
       "pages": 1
     },
     {
-      "label": "U_Z",
+      "label": "V_{B2}",
+      "count": 2,
+      "pages": 1
+    },
+    {
+      "label": "C_i",
+      "count": 2,
+      "pages": 1
+    },
+    {
+      "label": "v_{c2}",
+      "count": 2,
+      "pages": 1
+    },
+    {
+      "label": "v_{C1}",
+      "count": 2,
+      "pages": 1
+    },
+    {
+      "label": "10^9",
+      "count": 2,
+      "pages": 1
+    },
+    {
+      "label": "I_{om}",
+      "count": 2,
+      "pages": 1
+    },
+    {
+      "label": "I_{IB}",
       "count": 2,
       "pages": 1
     },
@@ -4358,11 +5273,6 @@
       "label": "U_\\phi",
       "count": 2,
       "pages": 1
-    },
-    {
-      "label": "i_\\mu",
-      "count": 2,
-      "pages": 2
     },
     {
       "label": "B_0^2",
@@ -4376,6 +5286,26 @@
     },
     {
       "label": "I_{2\\Phi}",
+      "count": 2,
+      "pages": 2
+    },
+    {
+      "label": "S_{\\text{回线}}",
+      "count": 2,
+      "pages": 1
+    },
+    {
+      "label": "\\eta_{\\max}",
+      "count": 2,
+      "pages": 2
+    },
+    {
+      "label": "Z_{2N}",
+      "count": 2,
+      "pages": 2
+    },
+    {
+      "label": "Z_{1N}",
       "count": 2,
       "pages": 2
     },
@@ -4480,11 +5410,6 @@
       "pages": 1
     },
     {
-      "label": "i_0",
-      "count": 2,
-      "pages": 1
-    },
-    {
       "label": "E_1^2",
       "count": 2,
       "pages": 1
@@ -4523,11 +5448,6 @@
       "label": "r_{2D}",
       "count": 2,
       "pages": 1
-    },
-    {
-      "label": "10^{-4}",
-      "count": 2,
-      "pages": 2
     },
     {
       "label": "\\Phi_{1\\sigma}",
@@ -4581,6 +5501,46 @@
     },
     {
       "label": "25^2",
+      "count": 2,
+      "pages": 1
+    },
+    {
+      "label": "k_N",
+      "count": 2,
+      "pages": 1
+    },
+    {
+      "label": "k_{w1}",
+      "count": 2,
+      "pages": 2
+    },
+    {
+      "label": "k_{p5}",
+      "count": 2,
+      "pages": 1
+    },
+    {
+      "label": "k_{p7}",
+      "count": 2,
+      "pages": 1
+    },
+    {
+      "label": "E_L",
+      "count": 2,
+      "pages": 1
+    },
+    {
+      "label": "k_{pv}",
+      "count": 2,
+      "pages": 1
+    },
+    {
+      "label": "v^2",
+      "count": 2,
+      "pages": 1
+    },
+    {
+      "label": "F_{\\Phi1}",
       "count": 2,
       "pages": 1
     },
@@ -4665,16 +5625,6 @@
       "pages": 1
     },
     {
-      "label": "d_r",
-      "count": 1,
-      "pages": 1
-    },
-    {
-      "label": "c_{r,r+1}",
-      "count": 1,
-      "pages": 1
-    },
-    {
       "label": "c_{r,n}",
       "count": 1,
       "pages": 1
@@ -4711,11 +5661,6 @@
     },
     {
       "label": "A^*",
-      "count": 1,
-      "pages": 1
-    },
-    {
-      "label": "10^6",
       "count": 1,
       "pages": 1
     },
@@ -4826,11 +5771,6 @@
     },
     {
       "label": "c^2",
-      "count": 1,
-      "pages": 1
-    },
-    {
-      "label": "d^2",
       "count": 1,
       "pages": 1
     },
@@ -5020,12 +5960,72 @@
       "pages": 1
     },
     {
+      "label": "c_{1,r+1}",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "c_{2,r+1}",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "d_m",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "E_{:,\\,1:4}",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "\\boldsymbol\\xi_r",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "\\boldsymbol b_2",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "10^{-1}",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "10^{-2}",
+      "count": 1,
+      "pages": 1
+    },
+    {
       "label": "α_1",
       "count": 1,
       "pages": 1
     },
     {
       "label": "α_M",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "\\xi_1",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "\\xi_2",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "W_L",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "L_{10}",
       "count": 1,
       "pages": 1
     },
@@ -5040,12 +6040,22 @@
       "pages": 1
     },
     {
+      "label": "f_0",
+      "count": 1,
+      "pages": 1
+    },
+    {
       "label": "\\delta_1",
       "count": 1,
       "pages": 1
     },
     {
       "label": "\\delta_N",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "Z_i",
       "count": 1,
       "pages": 1
     },
@@ -5135,11 +6145,6 @@
       "pages": 1
     },
     {
-      "label": "\\varphi_L",
-      "count": 1,
-      "pages": 1
-    },
-    {
       "label": "U_{S6}",
       "count": 1,
       "pages": 1
@@ -5185,11 +6190,6 @@
       "pages": 1
     },
     {
-      "label": "15^2",
-      "count": 1,
-      "pages": 1
-    },
-    {
       "label": "9^2",
       "count": 1,
       "pages": 1
@@ -5215,11 +6215,6 @@
       "pages": 1
     },
     {
-      "label": "u_R",
-      "count": 1,
-      "pages": 1
-    },
-    {
       "label": "50^2",
       "count": 1,
       "pages": 1
@@ -5231,11 +6226,6 @@
     },
     {
       "label": "250^2",
-      "count": 1,
-      "pages": 1
-    },
-    {
-      "label": "\\dot U_S",
       "count": 1,
       "pages": 1
     },
@@ -5256,11 +6246,6 @@
     },
     {
       "label": "I_C^2",
-      "count": 1,
-      "pages": 1
-    },
-    {
-      "label": "|^2",
       "count": 1,
       "pages": 1
     },
@@ -5355,17 +6340,17 @@
       "pages": 1
     },
     {
-      "label": "R_{NN}",
-      "count": 1,
-      "pages": 1
-    },
-    {
       "label": "I_D",
       "count": 1,
       "pages": 1
     },
     {
       "label": "I_M",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "R_{NN}",
       "count": 1,
       "pages": 1
     },
@@ -5390,17 +6375,12 @@
       "pages": 1
     },
     {
-      "label": "\\dot U_k",
-      "count": 1,
-      "pages": 1
-    },
-    {
       "label": "\\varphi_{AB}",
       "count": 1,
       "pages": 1
     },
     {
-      "label": "\\dot U_L",
+      "label": "40^\\circ",
       "count": 1,
       "pages": 1
     },
@@ -5480,17 +6460,147 @@
       "pages": 1
     },
     {
-      "label": "I_{S3}",
-      "count": 1,
-      "pages": 1
-    },
-    {
-      "label": "P_L",
-      "count": 1,
-      "pages": 1
-    },
-    {
       "label": "V_c",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "\\dot{U}_L",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "\\dot{U}_R",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "Z_{\\parallel}",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "R_{\\text{eq}}",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "X_{\\text{eq}}",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "X_N",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "e^{j\\theta}",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "\\dot{I}_m",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "\\dot{I}_1",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "\\dot{I}_2",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "40^2",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "132^2",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "80^2",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "85^2",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "65^2",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "Z_{\\text{另一支}}",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "72.3^\\circ",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "Y_{12}",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "Y_{21}",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "R_{ii}",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "R_{ij}",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "Z_{ij}",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "G_{ii}",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "G_{ij}",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "Y_{ii}",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "Y_{ij}",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "R_O",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "Q_R",
       "count": 1,
       "pages": 1
     },
@@ -5521,11 +6631,6 @@
     },
     {
       "label": "I_{\\max}",
-      "count": 1,
-      "pages": 1
-    },
-    {
-      "label": "P_C",
       "count": 1,
       "pages": 1
     },
@@ -5585,6 +6690,11 @@
       "pages": 1
     },
     {
+      "label": "\\dot U_i",
+      "count": 1,
+      "pages": 1
+    },
+    {
       "label": "U_i",
       "count": 1,
       "pages": 1
@@ -5640,6 +6750,11 @@
       "pages": 1
     },
     {
+      "label": "2^{30}",
+      "count": 1,
+      "pages": 1
+    },
+    {
       "label": "Q_0^{n+1}",
       "count": 1,
       "pages": 1
@@ -5685,11 +6800,6 @@
       "pages": 1
     },
     {
-      "label": "i_i",
-      "count": 1,
-      "pages": 1
-    },
-    {
       "label": "i_o",
       "count": 1,
       "pages": 1
@@ -5720,11 +6830,6 @@
       "pages": 1
     },
     {
-      "label": "10^7",
-      "count": 1,
-      "pages": 1
-    },
-    {
       "label": "10^{12}",
       "count": 1,
       "pages": 1
@@ -5746,6 +6851,146 @@
     },
     {
       "label": "P_{ZM}",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "r_{ce}",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "i_{R_B}",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "u_{gs}",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "U_{CE1}",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "U_{CE2}",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "T_{21}",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "T_{R2}",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "i_{b1}",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "i_{c1}",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "i_{b2}",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "i_{c2}",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "U_{id,\\text{漂移}}",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "U_o",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "U_{BE2}",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "U_{C2}",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "i_{E1}",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "i_{E2}",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "u_{o2}",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "u_e",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "I_{om}^2",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "U_{OPP}",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "U_{IO}",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "I_{IO}",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "U_{ICM}",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "P_{om}",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "P_T",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "X_D",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "X_B",
       "count": 1,
       "pages": 1
     },
@@ -5786,6 +7031,36 @@
     },
     {
       "label": "i_{C3}",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "\\alpha_{\\text{电}}",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "\\alpha_{\\text{机械}}",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "U_{kN}^*",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "p_{1/50}",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "B_m^{1.6}",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "L_k",
       "count": 1,
       "pages": 1
     },
@@ -6070,11 +7345,6 @@
       "pages": 1
     },
     {
-      "label": "\\eta_{\\max}",
-      "count": 1,
-      "pages": 1
-    },
-    {
       "label": "E_a",
       "count": 1,
       "pages": 1
@@ -6165,22 +7435,7 @@
       "pages": 1
     },
     {
-      "label": "z_k",
-      "count": 1,
-      "pages": 1
-    },
-    {
-      "label": "K",
-      "count": 1,
-      "pages": 1
-    },
-    {
       "label": "I^{2}",
-      "count": 1,
-      "pages": 1
-    },
-    {
-      "label": "10^{5}",
       "count": 1,
       "pages": 1
     },
@@ -6230,11 +7485,6 @@
       "pages": 1
     },
     {
-      "label": "Z_{2N}",
-      "count": 1,
-      "pages": 1
-    },
-    {
       "label": "0.6^2",
       "count": 1,
       "pages": 1
@@ -6245,22 +7495,62 @@
       "pages": 1
     },
     {
-      "label": "\\varphi_0",
-      "count": 1,
-      "pages": 1
-    },
-    {
-      "label": "Z_{1N}",
-      "count": 1,
-      "pages": 1
-    },
-    {
       "label": "73.54^\\circ",
       "count": 1,
       "pages": 1
     },
     {
       "label": "44.9^\\circ",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "k_{p3}",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "36^\\circ",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "25.71^\\circ",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "k_{d3}",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "k_{d5}",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "k_{d7}",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "B_{m1}",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "k_{dv}",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "F_{m3}",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "F_{mv}",
       "count": 1,
       "pages": 1
     },
@@ -6285,11 +7575,6 @@
       "pages": 1
     },
     {
-      "label": "j^2",
-      "count": 1,
-      "pages": 1
-    },
-    {
       "label": "e^{j240^\\circ}",
       "count": 1,
       "pages": 1
@@ -6306,16 +7591,6 @@
     },
     {
       "label": "720^\\circ",
-      "count": 1,
-      "pages": 1
-    },
-    {
-      "label": "C_1",
-      "count": 1,
-      "pages": 1
-    },
-    {
-      "label": "C_2",
       "count": 1,
       "pages": 1
     }
@@ -6347,7 +7622,7 @@
       "html": "课程总览/工程数学/Walkthrough.html",
       "anchors": 33,
       "uncovered": 0,
-      "gaps": 28
+      "gaps": 31
     },
     {
       "page": "课程总览/工程数学/技法库.md",
@@ -6436,7 +7711,7 @@
     {
       "page": "课程总览/工程数学/作业/作业4.md",
       "html": "课程总览/工程数学/作业/作业4.html",
-      "anchors": 155,
+      "anchors": 151,
       "uncovered": 0,
       "gaps": 29
     },
@@ -6460,6 +7735,13 @@
       "anchors": 62,
       "uncovered": 0,
       "gaps": 35
+    },
+    {
+      "page": "课程总览/工程数学/作业/作业5.md",
+      "html": "课程总览/工程数学/作业/作业5.html",
+      "anchors": 113,
+      "uncovered": 0,
+      "gaps": 25
     },
     {
       "page": "课程总览/工程数学/教材解析/index.md",
@@ -6562,14 +7844,14 @@
     {
       "page": "课程总览/工程数学/课堂笔记/index.md",
       "html": "课程总览/工程数学/课堂笔记/index.html",
-      "anchors": 0,
+      "anchors": 2,
       "uncovered": 0,
-      "gaps": 1
+      "gaps": 4
     },
     {
       "page": "课程总览/工程数学/课堂笔记/10-29-向量相关性与秩.md",
       "html": "课程总览/工程数学/课堂笔记/10-29-向量相关性与秩.html",
-      "anchors": 32,
+      "anchors": 31,
       "uncovered": 0,
       "gaps": 49
     },
@@ -6583,16 +7865,16 @@
     {
       "page": "课程总览/工程数学/课堂笔记/10-15-初等变换与矩阵的秩.md",
       "html": "课程总览/工程数学/课堂笔记/10-15-初等变换与矩阵的秩.html",
-      "anchors": 32,
+      "anchors": 20,
       "uncovered": 0,
-      "gaps": 36
+      "gaps": 34
     },
     {
       "page": "课程总览/工程数学/课堂笔记/10-08-矩阵与逆.md",
       "html": "课程总览/工程数学/课堂笔记/10-08-矩阵与逆.html",
       "anchors": 0,
       "uncovered": 0,
-      "gaps": 2
+      "gaps": 0
     },
     {
       "page": "课程总览/工程数学/课堂笔记/10-22-矩阵的秩与向量.md",
@@ -6623,11 +7905,25 @@
       "gaps": 35
     },
     {
+      "page": "课程总览/工程数学/课堂笔记/11-12-线性方程组解的结构.md",
+      "html": "课程总览/工程数学/课堂笔记/11-12-线性方程组解的结构.html",
+      "anchors": 45,
+      "uncovered": 0,
+      "gaps": 41
+    },
+    {
+      "page": "课程总览/工程数学/课堂笔记/11-19-非齐次组与向量空间.md",
+      "html": "课程总览/工程数学/课堂笔记/11-19-非齐次组与向量空间.html",
+      "anchors": 15,
+      "uncovered": 0,
+      "gaps": 61
+    },
+    {
       "page": "课程总览/工程数学/原始资料/index.md",
       "html": "课程总览/工程数学/原始资料/index.html",
-      "anchors": 3,
+      "anchors": 5,
       "uncovered": 0,
-      "gaps": 17
+      "gaps": 25
     },
     {
       "page": "课程总览/电力大数据与人工智能/index.md",
@@ -6639,16 +7935,16 @@
     {
       "page": "课程总览/电力大数据与人工智能/Walkthrough.md",
       "html": "课程总览/电力大数据与人工智能/Walkthrough.html",
-      "anchors": 1,
+      "anchors": 2,
       "uncovered": 0,
-      "gaps": 5
+      "gaps": 8
     },
     {
       "page": "课程总览/电力大数据与人工智能/备考.md",
       "html": "课程总览/电力大数据与人工智能/备考.html",
-      "anchors": 5,
+      "anchors": 6,
       "uncovered": 0,
-      "gaps": 14
+      "gaps": 15
     },
     {
       "page": "课程总览/电力大数据与人工智能/作业/index.md",
@@ -6681,9 +7977,16 @@
     {
       "page": "课程总览/电力大数据与人工智能/课堂笔记/11-03-一次调频性能评价.md",
       "html": "课程总览/电力大数据与人工智能/课堂笔记/11-03-一次调频性能评价.html",
-      "anchors": 18,
+      "anchors": 17,
       "uncovered": 0,
       "gaps": 19
+    },
+    {
+      "page": "课程总览/电力大数据与人工智能/课堂笔记/11-10-二次调频与无功电压.md",
+      "html": "课程总览/电力大数据与人工智能/课堂笔记/11-10-二次调频与无功电压.html",
+      "anchors": 8,
+      "uncovered": 0,
+      "gaps": 7
     },
     {
       "page": "课程总览/电力大数据与人工智能/课堂笔记/09-29-大数据与AI算法.md",
@@ -6723,16 +8026,23 @@
     {
       "page": "课程总览/电力大数据与人工智能/课堂笔记/10-27-密度初筛与调频.md",
       "html": "课程总览/电力大数据与人工智能/课堂笔记/10-27-密度初筛与调频.html",
-      "anchors": 26,
+      "anchors": 24,
       "uncovered": 0,
       "gaps": 19
     },
     {
+      "page": "课程总览/电力大数据与人工智能/课堂笔记/11-17-特征选择与信息熵.md",
+      "html": "课程总览/电力大数据与人工智能/课堂笔记/11-17-特征选择与信息熵.html",
+      "anchors": 10,
+      "uncovered": 0,
+      "gaps": 18
+    },
+    {
       "page": "课程总览/电力大数据与人工智能/原始资料/index.md",
       "html": "课程总览/电力大数据与人工智能/原始资料/index.html",
-      "anchors": 0,
+      "anchors": 2,
       "uncovered": 0,
-      "gaps": 0
+      "gaps": 1
     },
     {
       "page": "课程总览/形势与政策/index.md",
@@ -6814,9 +8124,9 @@
     {
       "page": "课程总览/电路原理/Walkthrough.md",
       "html": "课程总览/电路原理/Walkthrough.html",
-      "anchors": 78,
+      "anchors": 121,
       "uncovered": 0,
-      "gaps": 29
+      "gaps": 42
     },
     {
       "page": "课程总览/电路原理/作业/index.md",
@@ -6898,63 +8208,63 @@
     {
       "page": "课程总览/电路原理/课堂笔记/index.md",
       "html": "课程总览/电路原理/课堂笔记/index.html",
-      "anchors": 1,
+      "anchors": 3,
       "uncovered": 0,
       "gaps": 2
     },
     {
       "page": "课程总览/电路原理/课堂笔记/11-02-习题册第三章讲评.md",
       "html": "课程总览/电路原理/课堂笔记/11-02-习题册第三章讲评.html",
-      "anchors": 261,
+      "anchors": 226,
       "uncovered": 0,
-      "gaps": 37
+      "gaps": 36
     },
     {
       "page": "课程总览/电路原理/课堂笔记/11-04-正弦量与相量.md",
       "html": "课程总览/电路原理/课堂笔记/11-04-正弦量与相量.html",
-      "anchors": 102,
+      "anchors": 100,
       "uncovered": 0,
       "gaps": 37
     },
     {
       "page": "课程总览/电路原理/课堂笔记/11-09-相量运算与向量图.md",
       "html": "课程总览/电路原理/课堂笔记/11-09-相量运算与向量图.html",
-      "anchors": 587,
+      "anchors": 559,
       "uncovered": 0,
       "gaps": 63
     },
     {
       "page": "课程总览/电路原理/课堂笔记/10-14-电源等效变换.md",
       "html": "课程总览/电路原理/课堂笔记/10-14-电源等效变换.html",
-      "anchors": 142,
+      "anchors": 131,
       "uncovered": 0,
       "gaps": 11
     },
     {
       "page": "课程总览/电路原理/课堂笔记/10-19-第二章讲评与支路法.md",
       "html": "课程总览/电路原理/课堂笔记/10-19-第二章讲评与支路法.html",
-      "anchors": 209,
+      "anchors": 186,
       "uncovered": 0,
       "gaps": 23
     },
     {
       "page": "课程总览/电路原理/课堂笔记/10-21-网孔电流法.md",
       "html": "课程总览/电路原理/课堂笔记/10-21-网孔电流法.html",
-      "anchors": 195,
+      "anchors": 187,
       "uncovered": 0,
       "gaps": 31
     },
     {
       "page": "课程总览/电路原理/课堂笔记/10-26-节点电压法.md",
       "html": "课程总览/电路原理/课堂笔记/10-26-节点电压法.html",
-      "anchors": 125,
+      "anchors": 109,
       "uncovered": 0,
-      "gaps": 45
+      "gaps": 41
     },
     {
       "page": "课程总览/电路原理/课堂笔记/10-26-补课叠加戴维南.md",
       "html": "课程总览/电路原理/课堂笔记/10-26-补课叠加戴维南.html",
-      "anchors": 111,
+      "anchors": 104,
       "uncovered": 0,
       "gaps": 11
     },
@@ -6968,16 +8278,16 @@
     {
       "page": "课程总览/电路原理/课堂笔记/10-12-习题册与等效变换.md",
       "html": "课程总览/电路原理/课堂笔记/10-12-习题册与等效变换.html",
-      "anchors": 39,
+      "anchors": 38,
       "uncovered": 0,
       "gaps": 4
     },
     {
       "page": "课程总览/电路原理/课堂笔记/10-10-受控源与例题.md",
       "html": "课程总览/电路原理/课堂笔记/10-10-受控源与例题.html",
-      "anchors": 4,
+      "anchors": 0,
       "uncovered": 0,
-      "gaps": 1
+      "gaps": 0
     },
     {
       "page": "课程总览/电路原理/课堂笔记/09-30-电容电感与独立电源.md",
@@ -6989,9 +8299,9 @@
     {
       "page": "课程总览/电路原理/课堂笔记/09-28-KCL与KVL.md",
       "html": "课程总览/电路原理/课堂笔记/09-28-KCL与KVL.html",
-      "anchors": 3,
+      "anchors": 0,
       "uncovered": 0,
-      "gaps": 2
+      "gaps": 0
     },
     {
       "page": "课程总览/电路原理/课堂笔记/09-21-开课与基本概念.md",
@@ -7003,16 +8313,37 @@
     {
       "page": "课程总览/电路原理/课堂笔记/09-23-电压电位与电路名词.md",
       "html": "课程总览/电路原理/课堂笔记/09-23-电压电位与电路名词.html",
-      "anchors": 44,
+      "anchors": 43,
       "uncovered": 0,
       "gaps": 7
     },
     {
+      "page": "课程总览/电路原理/课堂笔记/11-11-相量复习与复阻抗.md",
+      "html": "课程总览/电路原理/课堂笔记/11-11-相量复习与复阻抗.html",
+      "anchors": 497,
+      "uncovered": 0,
+      "gaps": 63
+    },
+    {
+      "page": "课程总览/电路原理/课堂笔记/11-16-相量法解题与串并联.md",
+      "html": "课程总览/电路原理/课堂笔记/11-16-相量法解题与串并联.html",
+      "anchors": 527,
+      "uncovered": 0,
+      "gaps": 78
+    },
+    {
+      "page": "课程总览/电路原理/课堂笔记/11-18-交流功率与功率因数.md",
+      "html": "课程总览/电路原理/课堂笔记/11-18-交流功率与功率因数.html",
+      "anchors": 599,
+      "uncovered": 0,
+      "gaps": 61
+    },
+    {
       "page": "课程总览/电路原理/原始资料/index.md",
       "html": "课程总览/电路原理/原始资料/index.html",
-      "anchors": 62,
+      "anchors": 100,
       "uncovered": 0,
-      "gaps": 28
+      "gaps": 38
     },
     {
       "page": "课程总览/电子技术/index.md",
@@ -7024,16 +8355,16 @@
     {
       "page": "课程总览/电子技术/Walkthrough.md",
       "html": "课程总览/电子技术/Walkthrough.html",
-      "anchors": 96,
+      "anchors": 148,
       "uncovered": 0,
-      "gaps": 25
+      "gaps": 38
     },
     {
       "page": "课程总览/电子技术/作业/index.md",
       "html": "课程总览/电子技术/作业/index.html",
-      "anchors": 0,
+      "anchors": 8,
       "uncovered": 0,
-      "gaps": 2
+      "gaps": 4
     },
     {
       "page": "课程总览/电子技术/作业/2026-9-23作业.md",
@@ -7059,7 +8390,7 @@
     {
       "page": "课程总览/电子技术/作业/2026-10-09作业.md",
       "html": "课程总览/电子技术/作业/2026-10-09作业.html",
-      "anchors": 122,
+      "anchors": 117,
       "uncovered": 0,
       "gaps": 6
     },
@@ -7073,7 +8404,7 @@
     {
       "page": "课程总览/电子技术/作业/2026-10-12作业.md",
       "html": "课程总览/电子技术/作业/2026-10-12作业.html",
-      "anchors": 24,
+      "anchors": 23,
       "uncovered": 0,
       "gaps": 11
     },
@@ -7101,23 +8432,44 @@
     {
       "page": "课程总览/电子技术/作业/2026-10-26作业.md",
       "html": "课程总览/电子技术/作业/2026-10-26作业.html",
-      "anchors": 146,
+      "anchors": 143,
       "uncovered": 0,
       "gaps": 15
     },
     {
       "page": "课程总览/电子技术/作业/2026-10-28作业.md",
       "html": "课程总览/电子技术/作业/2026-10-28作业.html",
-      "anchors": 321,
+      "anchors": 293,
       "uncovered": 0,
       "gaps": 25
     },
     {
       "page": "课程总览/电子技术/作业/2026-11-02作业.md",
       "html": "课程总览/电子技术/作业/2026-11-02作业.html",
-      "anchors": 340,
+      "anchors": 310,
       "uncovered": 0,
       "gaps": 24
+    },
+    {
+      "page": "课程总览/电子技术/作业/2026-11-04作业.md",
+      "html": "课程总览/电子技术/作业/2026-11-04作业.html",
+      "anchors": 233,
+      "uncovered": 0,
+      "gaps": 18
+    },
+    {
+      "page": "课程总览/电子技术/作业/2026-11-09作业.md",
+      "html": "课程总览/电子技术/作业/2026-11-09作业.html",
+      "anchors": 414,
+      "uncovered": 0,
+      "gaps": 17
+    },
+    {
+      "page": "课程总览/电子技术/作业/2026-11-18作业.md",
+      "html": "课程总览/电子技术/作业/2026-11-18作业.html",
+      "anchors": 170,
+      "uncovered": 0,
+      "gaps": 18
     },
     {
       "page": "课程总览/电子技术/技法库.md",
@@ -7143,21 +8495,21 @@
     {
       "page": "课程总览/电子技术/课堂笔记/index.md",
       "html": "课程总览/电子技术/课堂笔记/index.html",
-      "anchors": 3,
+      "anchors": 4,
       "uncovered": 0,
       "gaps": 2
     },
     {
       "page": "课程总览/电子技术/课堂笔记/10-26-显示译码器与RS触发器.md",
       "html": "课程总览/电子技术/课堂笔记/10-26-显示译码器与RS触发器.html",
-      "anchors": 395,
+      "anchors": 315,
       "uncovered": 0,
-      "gaps": 24
+      "gaps": 22
     },
     {
       "page": "课程总览/电子技术/课堂笔记/10-28-触发器与时序逻辑电路.md",
       "html": "课程总览/电子技术/课堂笔记/10-28-触发器与时序逻辑电路.html",
-      "anchors": 282,
+      "anchors": 255,
       "uncovered": 0,
       "gaps": 32
     },
@@ -7171,28 +8523,28 @@
     {
       "page": "课程总览/电子技术/课堂笔记/11-02-时序分析与设计.md",
       "html": "课程总览/电子技术/课堂笔记/11-02-时序分析与设计.html",
-      "anchors": 326,
+      "anchors": 264,
       "uncovered": 0,
       "gaps": 23
     },
     {
       "page": "课程总览/电子技术/课堂笔记/11-04-集成计数器与数码显示.md",
       "html": "课程总览/电子技术/课堂笔记/11-04-集成计数器与数码显示.html",
-      "anchors": 455,
+      "anchors": 416,
       "uncovered": 0,
       "gaps": 38
     },
     {
       "page": "课程总览/电子技术/课堂笔记/11-09-555定时器与共射放大.md",
       "html": "课程总览/电子技术/课堂笔记/11-09-555定时器与共射放大.html",
-      "anchors": 292,
+      "anchors": 282,
       "uncovered": 0,
       "gaps": 29
     },
     {
       "page": "课程总览/电子技术/课堂笔记/10-14-门电路与TTL集成电路.md",
       "html": "课程总览/电子技术/课堂笔记/10-14-门电路与TTL集成电路.html",
-      "anchors": 44,
+      "anchors": 36,
       "uncovered": 0,
       "gaps": 29
     },
@@ -7253,11 +8605,32 @@
       "gaps": 13
     },
     {
+      "page": "课程总览/电子技术/课堂笔记/11-11-共射放大电路与耦合.md",
+      "html": "课程总览/电子技术/课堂笔记/11-11-共射放大电路与耦合.html",
+      "anchors": 496,
+      "uncovered": 0,
+      "gaps": 30
+    },
+    {
+      "page": "课程总览/电子技术/课堂笔记/11-16-多级放大与差分电路.md",
+      "html": "课程总览/电子技术/课堂笔记/11-16-多级放大与差分电路.html",
+      "anchors": 486,
+      "uncovered": 0,
+      "gaps": 69
+    },
+    {
+      "page": "课程总览/电子技术/课堂笔记/11-18-差分与功率放大电路.md",
+      "html": "课程总览/电子技术/课堂笔记/11-18-差分与功率放大电路.html",
+      "anchors": 280,
+      "uncovered": 0,
+      "gaps": 69
+    },
+    {
       "page": "课程总览/电子技术/原始资料/index.md",
       "html": "课程总览/电子技术/原始资料/index.html",
-      "anchors": 8,
+      "anchors": 21,
       "uncovered": 0,
-      "gaps": 14
+      "gaps": 20
     },
     {
       "page": "课程总览/电机学/index.md",
@@ -7269,9 +8642,9 @@
     {
       "page": "课程总览/电机学/Walkthrough.md",
       "html": "课程总览/电机学/Walkthrough.html",
-      "anchors": 191,
+      "anchors": 209,
       "uncovered": 0,
-      "gaps": 48
+      "gaps": 53
     },
     {
       "page": "课程总览/电机学/作业/index.md",
@@ -7307,6 +8680,27 @@
       "anchors": 98,
       "uncovered": 0,
       "gaps": 12
+    },
+    {
+      "page": "课程总览/电机学/作业/3.1.1旋转电机及交流绕组.md",
+      "html": "课程总览/电机学/作业/3.1.1旋转电机及交流绕组.html",
+      "anchors": 125,
+      "uncovered": 0,
+      "gaps": 14
+    },
+    {
+      "page": "课程总览/电机学/作业/期中考卷解析.md",
+      "html": "课程总览/电机学/作业/期中考卷解析.html",
+      "anchors": 804,
+      "uncovered": 0,
+      "gaps": 78
+    },
+    {
+      "page": "课程总览/电机学/作业/变压器训练用56题.md",
+      "html": "课程总览/电机学/作业/变压器训练用56题.html",
+      "anchors": 663,
+      "uncovered": 0,
+      "gaps": 59
     },
     {
       "page": "课程总览/电机学/教材解析/index.md",
@@ -7367,23 +8761,23 @@
     {
       "page": "课程总览/电机学/课堂笔记/index.md",
       "html": "课程总览/电机学/课堂笔记/index.html",
-      "anchors": 42,
+      "anchors": 44,
       "uncovered": 0,
       "gaps": 19
     },
     {
       "page": "课程总览/电机学/课堂笔记/10-29-三相变压器与三次谐波.md",
       "html": "课程总览/电机学/课堂笔记/10-29-三相变压器与三次谐波.html",
-      "anchors": 211,
+      "anchors": 205,
       "uncovered": 0,
       "gaps": 24
     },
     {
       "page": "课程总览/电机学/课堂笔记/11-05-并联运行与瞬态过程.md",
       "html": "课程总览/电机学/课堂笔记/11-05-并联运行与瞬态过程.html",
-      "anchors": 205,
+      "anchors": 197,
       "uncovered": 0,
-      "gaps": 49
+      "gaps": 48
     },
     {
       "page": "课程总览/电机学/课堂笔记/10-08-磁路例题与变压器概述.md",
@@ -7414,11 +8808,25 @@
       "gaps": 74
     },
     {
+      "page": "课程总览/电机学/课堂笔记/11-12-旋转电机与交流绕组.md",
+      "html": "课程总览/电机学/课堂笔记/11-12-旋转电机与交流绕组.html",
+      "anchors": 151,
+      "uncovered": 0,
+      "gaps": 22
+    },
+    {
+      "page": "课程总览/电机学/课堂笔记/11-19-交流绕组电动势与谐波.md",
+      "html": "课程总览/电机学/课堂笔记/11-19-交流绕组电动势与谐波.html",
+      "anchors": 401,
+      "uncovered": 0,
+      "gaps": 53
+    },
+    {
       "page": "课程总览/电机学/原始资料/index.md",
       "html": "课程总览/电机学/原始资料/index.html",
-      "anchors": 97,
+      "anchors": 103,
       "uncovered": 0,
-      "gaps": 36
+      "gaps": 38
     },
     {
       "page": "课程总览/劳动教育/index.md",
@@ -7549,6 +8957,13 @@
     {
       "page": "课程总览/电气前沿/课堂笔记/11-09-新质生产力与就业前景.md",
       "html": "课程总览/电气前沿/课堂笔记/11-09-新质生产力与就业前景.html",
+      "anchors": 0,
+      "uncovered": 0,
+      "gaps": 0
+    },
+    {
+      "page": "课程总览/电气前沿/课堂笔记/11-16-科技创新与双碳转型.md",
+      "html": "课程总览/电气前沿/课堂笔记/11-16-科技创新与双碳转型.html",
       "anchors": 0,
       "uncovered": 0,
       "gaps": 0
