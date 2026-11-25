@@ -11,6 +11,7 @@ var isActive = function isActive(node, target, htmlSpace) {
 };
 var isExpanded = function isExpanded(node, target, htmlSpace) {
   if (!node) return false;
+  if (node.depth === 0 && node.label === '课程总览') return true;
   if (isActive(node, target, htmlSpace)) return true;
   if (node.children) return node.children.some((c) => isExpanded(c, target, htmlSpace));
   return false;

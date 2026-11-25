@@ -1,1 +1,1 @@
-{"url":"index.html","title":"S26-1 课程知识库","section":"许可","body":"## 许可\n\n- 自研代码（`站点/`）与原创文字：AGPL-3.0，署名 ArchivalEra\n- 教材题目与章节结构：归原书作者与出版社；本仓解析仅作学习用途引用\n- 站点主题 Shirone M3 Reader（MIT）；KaTeX、marked 等依其自身许可分发"}
+{"url":"index.html","title":"S26-1 课程知识库","section":"许可","body":"## 许可\n\n- 自研代码（`站点/`）与原创文字：AGPL-3.0-only，署名 ArchivalEra；完整成分与许可链接见 [`licenses.json`](https://isui.ren/repo/S26-1_202609/licenses.json)（仓内 `./站点/licenses.json`）\n- 教材题目与章节结构：归原书作者与出版社；本仓解析仅作学习用途引用\n- 站点主题 Shirone M3 Reader（MIT）；KaTeX、MathLive、marked、js-yaml 等第三方库依其自身许可证分发"}
