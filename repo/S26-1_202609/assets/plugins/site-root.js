@@ -159,13 +159,16 @@ function rewriteLinks(root) {
       if (actual && actual !== '/' && rel.startsWith(actual)) rel = rel.slice(actual.length);
       rel = rel.replace(/^\/+/, '');
       a.setAttribute('href', root + rel);
-    } catch (e) { /* 坏 href 跳过 */ }
+    } catch (_e) { /* 坏 href 跳过 */ }
   }
 }
 
-// 全局暴露（写盘为普通 <script>，非 module；构建期与测试都可调用）
+// 全局暴露（写盘为 <script defer>，非 module；构建期、首屏延迟执行与测试都可调用）
 if (typeof window !== 'undefined') {
   window.__siteRoot = { detectSiteRoot: detectSiteRoot, siteRoot: siteRoot, fixSiteRoot: fixSiteRoot };
   window.fixSiteRoot = fixSiteRoot;
   window.siteRoot = siteRoot;
+  if (typeof document !== 'undefined' && document.body) {
+    try { fixSiteRoot(); } catch (_e) { /* 探测失败保持构建期相对路径 */ }
+  }
 }

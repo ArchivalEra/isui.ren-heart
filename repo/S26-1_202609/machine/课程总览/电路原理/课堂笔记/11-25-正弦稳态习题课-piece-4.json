@@ -1,0 +1,1 @@
+{"url":"课程总览/电路原理/课堂笔记/11-25-正弦稳态习题课.html","title":"11-25 正弦稳态习题课","section":"","body":"误识） | 填空第 9 题 |\n| $\\dot{U} = \\omega L \\dot{I}$ | 口播漏读虚数单位 $j$，应为 $\\dot{U} = j\\omega L\\dot{I}$ | 填空第 20 题 |\n| 串联谐振时阻抗最大 | 整理提示：口播疑误，RLC 串联谐振阻抗最小为 $R$（并联谐振最大） | 选择第 25 题 |\n\n## 完成边界\n\n- [issue #46](https://github.com/ArchivalEra/S26-1_202609/issues/46)\n"}

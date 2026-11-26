@@ -1,6 +1,6 @@
 (function () {
-  var SYMBOL_SELECTOR = "a.sym-gloss, .ML__latex [data-term], .katex [data-term]";
   "use strict";
+  var SYMBOL_SELECTOR = "a.sym-gloss, .katex [data-term]";
   var SVG_NS = "http://www.w3.org/2000/svg";
 
   function clearSelection(fig) {

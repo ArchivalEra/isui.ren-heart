@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-depth="3" data-root="../../../" data-canonical-root="/repo/S26-1_202609/" data-nav-path="assets/nav-structure.json?v=22cf62809d" data-pages-path="assets/site-pages.json?v=ea48017e38">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>11-23 新型电力系统建设 | S26-1 课程知识库</title>
+  <script>
+  /* 首帧前应用已保存的主题色与明暗，避免先用默认色渲染再变色（闪光弹 + 二次全量重绘） */
+  (function () {
+    try {
+      var root = document.documentElement;
+      var m = localStorage.getItem("theme") ||
+        (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      root.setAttribute("data-theme", m === "dark" ? "dark" : "light");
+      var hue = localStorage.getItem("theme-hue");
+      if (hue !== null && /^\d+$/.test(hue)) {
+        root.style.setProperty("--hue", hue);
+        root.style.setProperty("--primary-h", hue);
+      }
+      // 字号也必须在**首帧**恢复，否则会先按 16px 排一次版、脚本跑完再跳一下
+      // （主题闪光弹的同款问题，2026-10-13 已为明暗修过，字号同理）。
+      var fs = localStorage.getItem("site-font-size");
+      if (fs !== null && /^\d+$/.test(fs)) {
+        root.style.fontSize = fs + "px";
+        root.style.setProperty("--base-font-size", fs + "px");
+      }
+    } catch (e) { /* 隐私模式下 localStorage 可能抛错，忽略 */ }
+  })();
+  </script>
+  <!-- 按页条件加载数学/图元样式，基础页零额外 CSS 阻塞。 -->
+  <link rel="stylesheet" href="../../../assets/katex/katex.min.css?v=383e7b8d45" data-opt-asset="katex-css">
+  <link rel="stylesheet" href="../../../assets/theme/shirone-reader.css?v=bdb9385f23">
+  <!-- 站点图标统一使用轻量静态 WebP（较 GIF 体积减重 >90%） -->
+  <link rel="icon" type="image/webp" href="../../../assets/favicon/favicon.webp">
+  <link rel="apple-touch-icon" href="../../../assets/favicon/apple-touch-icon.webp">
+</head>
+<body data-site-path="课程总览/电气前沿/课堂笔记/11-23-新型电力系统建设.html">
+  <div class="drawer-backdrop" id="drawer-backdrop"></div>
+
+  <div class="site-shell">
+    <!-- Left Column: Full-Height Sidebar (整列导航栏) -->
+    <aside class="m3-drawer" id="m3-drawer">
+      <div class="drawer-header-brand">
+        <a href="../../../" class="sidebar-brand">
+          <img class="site-title-icon" src="../../../assets/favicon/brand.webp" alt="" width="48" height="48" aria-hidden="true">
+          <span class="sidebar-brand-text">S26-1 课程知识库</span>
+        </a>
+        <button class="m3-icon-btn drawer-collapse-btn" id="drawer-collapse-btn" aria-label="收起侧边栏" title="收起侧边栏">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M15 18l-6-6 6-6"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="drawer-header-toolbar">
+        <span class="drawer-section-title">课程导航目录</span>
+        <button class="drawer-action-btn" id="toggle-all-groups-btn" title="一键收起或展开所有课程分类">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M7 15l5 5 5-5M7 9l5-5 5 5"/>
+          </svg>
+          <span id="toggle-all-text">全部收起</span>
+        </button>
+      </div>
+
+      <div class="drawer-nav-scroll-area">
+        <ul class="drawer-nav-list"><li class="drawer-nav-group  expanded" data-node-id="课程总览/">
+          <div class="nav-group-header ">
+            <a href="../../../课程总览/" data-path="课程总览/" class="drawer-nav-link"><span>课程总览</span></a>
+            <button class="nav-collapse-btn" aria-label="折叠或展开 课程总览" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-group  collapsed" data-node-id="课程总览/工程数学/" data-nav-lazy="1">
+          <div class="nav-group-header ">
+            <a href="../../../课程总览/工程数学/" data-path="课程总览/工程数学/" class="drawer-nav-link"><span>工程数学</span></a>
+            <button class="nav-collapse-btn" aria-label="折叠或展开 工程数学" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              
+            </div>
+          </div>
+        </li><li class="drawer-nav-group  collapsed" data-node-id="课程总览/电力大数据与人工智能/" data-nav-lazy="1">
+          <div class="nav-group-header ">
+            <a href="../../../课程总览/电力大数据与人工智能/" data-path="课程总览/电力大数据与人工智能/" class="drawer-nav-link"><span>电力大数据与人工智能</span></a>
+            <button class="nav-collapse-btn" aria-label="折叠或展开 电力大数据与人工智能" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              
+            </div>
+          </div>
+        </li><li class="drawer-nav-group  collapsed" data-node-id="课程总览/形势与政策/" data-nav-lazy="1">
+          <div class="nav-group-header ">
+            <a href="../../../课程总览/形势与政策/" data-path="课程总览/形势与政策/" class="drawer-nav-link"><span>形势与政策</span></a>
+            <button class="nav-collapse-btn" aria-label="折叠或展开 形势与政策" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              
+            </div>
+          </div>
+        </li><li class="drawer-nav-group  collapsed" data-node-id="课程总览/电路原理/" data-nav-lazy="1">
+          <div class="nav-group-header ">
+            <a href="../../../课程总览/电路原理/" data-path="课程总览/电路原理/" class="drawer-nav-link"><span>电路原理</span></a>
+            <button class="nav-collapse-btn" aria-label="折叠或展开 电路原理" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              
+            </div>
+          </div>
+        </li><li class="drawer-nav-group  collapsed" data-node-id="课程总览/电子技术/" data-nav-lazy="1">
+          <div class="nav-group-header ">
+            <a href="../../../课程总览/电子技术/" data-path="课程总览/电子技术/" class="drawer-nav-link"><span>电子技术</span></a>
+            <button class="nav-collapse-btn" aria-label="折叠或展开 电子技术" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              
+            </div>
+          </div>
+        </li><li class="drawer-nav-group  collapsed" data-node-id="课程总览/电机学/" data-nav-lazy="1">
+          <div class="nav-group-header ">
+            <a href="../../../课程总览/电机学/" data-path="课程总览/电机学/" class="drawer-nav-link"><span>电机学</span></a>
+            <button class="nav-collapse-btn" aria-label="折叠或展开 电机学" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              
+            </div>
+          </div>
+        </li><li class="drawer-nav-group  collapsed" data-node-id="课程总览/劳动教育/" data-nav-lazy="1">
+          <div class="nav-group-header ">
+            <a href="../../../课程总览/劳动教育/" data-path="课程总览/劳动教育/" class="drawer-nav-link"><span>劳动教育</span></a>
+            <button class="nav-collapse-btn" aria-label="折叠或展开 劳动教育" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              
+            </div>
+          </div>
+        </li><li class="drawer-nav-group  collapsed" data-node-id="课程总览/通用电气/" data-nav-lazy="1">
+          <div class="nav-group-header ">
+            <a href="../../../课程总览/通用电气/" data-path="课程总览/通用电气/" class="drawer-nav-link"><span>通用电气</span></a>
+            <button class="nav-collapse-btn" aria-label="折叠或展开 通用电气" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              
+            </div>
+          </div>
+        </li><li class="drawer-nav-group  expanded" data-node-id="课程总览/电气前沿/">
+          <div class="nav-group-header ">
+            <a href="../../../课程总览/电气前沿/" data-path="课程总览/电气前沿/" class="drawer-nav-link"><span>电气前沿</span></a>
+            <button class="nav-collapse-btn" aria-label="折叠或展开 电气前沿" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item " data-node-id="课程总览/电气前沿/作业/">
+            <a href="../../../课程总览/电气前沿/作业/" data-path="课程总览/电气前沿/作业/" class="drawer-nav-link">
+              <span>作业</span>
+            </a>
+          </li><li class="drawer-nav-group  expanded" data-node-id="课程总览/电气前沿/课堂笔记/">
+          <div class="nav-group-header ">
+            <a href="../../../课程总览/电气前沿/课堂笔记/" data-path="课程总览/电气前沿/课堂笔记/" class="drawer-nav-link"><span>课堂笔记</span></a>
+            <button class="nav-collapse-btn" aria-label="折叠或展开 课堂笔记" title="折叠/展开">
+              <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="nav-nested-wrapper">
+            <div class="nav-nested">
+              <ul class="drawer-nav-list"><li class="drawer-nav-item " data-node-id="课程总览/电气前沿/课堂笔记/11-09-新质生产力与就业前景.html">
+            <a href="../../../课程总览/电气前沿/课堂笔记/11-09-新质生产力与就业前景.html" data-path="课程总览/电气前沿/课堂笔记/11-09-新质生产力与就业前景.html" class="drawer-nav-link">
+              <span>11-09-新质生产力与就业前景</span>
+            </a>
+          </li><li class="drawer-nav-item " data-node-id="课程总览/电气前沿/课堂笔记/11-16-科技创新与双碳转型.html">
+            <a href="../../../课程总览/电气前沿/课堂笔记/11-16-科技创新与双碳转型.html" data-path="课程总览/电气前沿/课堂笔记/11-16-科技创新与双碳转型.html" class="drawer-nav-link">
+              <span>11-16-科技创新与双碳转型</span>
+            </a>
+          </li><li class="drawer-nav-item active" data-node-id="课程总览/电气前沿/课堂笔记/11-23-新型电力系统建设.html">
+            <a href="../../../课程总览/电气前沿/课堂笔记/11-23-新型电力系统建设.html" data-path="课程总览/电气前沿/课堂笔记/11-23-新型电力系统建设.html" class="drawer-nav-link">
+              <span>11-23-新型电力系统建设</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li><li class="drawer-nav-item " data-node-id="课程总览/电气前沿/原始资料/">
+            <a href="../../../课程总览/电气前沿/原始资料/" data-path="课程总览/电气前沿/原始资料/" class="drawer-nav-link">
+              <span>原始资料</span>
+            </a>
+          </li></ul>
+            </div>
+          </div>
+        </li></ul>
+            </div>
+          </div>
+        </li></ul>
+      </div>
+
+      <div class="sidebar-resizer" id="sidebar-resizer" title="按住拖拽调整侧边栏宽度，双击恢复默认宽度"></div>
+    </aside>
+
+    <!-- Right Column: Main Content Column (主内容列) -->
+    <div class="main-column">
+      <!-- Top App Bar -->
+      <header class="m3-top-app-bar">
+        <div class="top-bar-left">
+          <button class="m3-icon-btn" id="drawer-toggle" aria-label="展开/收起侧边栏" title="展开/收起侧边栏">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+          </button>
+          <a href="../../../" class="top-bar-mobile-title">
+            <span>S26-1 课程知识库</span>
+          </a>
+          <nav class="top-bar-breadcrumbs" aria-label="当前路径">
+            <a href="../../../课程总览/" data-path="课程总览/">课程总览</a><span class="m3-breadcrumb-sep">/</span><a href="../../../课程总览/电气前沿/" data-path="课程总览/电气前沿/">电气前沿</a><span class="m3-breadcrumb-sep">/</span><a href="../../../课程总览/电气前沿/课堂笔记/" data-path="课程总览/电气前沿/课堂笔记/">课堂笔记</a><span class="m3-breadcrumb-sep">/</span><span class="current-crumb">11-23-新型电力系统建设</span>
+          </nav>
+        </div>
+
+        <div class="top-bar-right">
+          <button class="m3-icon-btn" id="palette-toggle" aria-label="调色盘" title="主题与调色盘" aria-expanded="false">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/>
+              <circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/>
+              <circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/>
+              <circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/>
+              <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/>
+            </svg>
+          </button>
+
+          <!-- Palette Popover -->
+          <div class="palette-popover" id="palette-popover">
+            <div class="palette-header">
+              <span class="palette-title">主题强调色调色盘</span>
+              <button class="palette-reset-btn" id="palette-reset-btn" title="重置为默认色">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+              </button>
+            </div>
+            <div class="palette-current-row">
+              <span class="palette-hue-badge" id="palette-hue-badge">Hue 248°</span>
+              <div class="palette-color-dot" id="palette-color-dot"></div>
+            </div>
+            <div class="palette-mode-row">
+              <span class="palette-mode-label">明暗</span>
+              <div class="palette-mode-switch" role="group" aria-label="明暗主题">
+                <button class="palette-mode-btn" data-theme-set="light" title="浅色">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+                  <span>浅色</span>
+                </button>
+                <button class="palette-mode-btn" data-theme-set="dark" title="深色">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a6.6 6.6 0 0 0 9.8 9.8z"/></svg>
+                  <span>深色</span>
+                </button>
+              </div>
+            </div>
+            <div class="palette-slider-container">
+              <span class="palette-slider-label">色相微调 (0° - 360°)</span>
+              <input type="range" min="0" max="360" value="248" class="palette-slider" id="hue-slider">
+            </div>
+            <!-- 字号（2026-10-29 站长定案）：全站缩放。站内所有尺寸都用 rem，
+                 所以改 html 的 font-size 一处即全站生效——正文、侧栏、代码块、
+                 连同公式字号一起缩放。范围与默认值参照 Octave-UI 的
+                 ThemeManager（12–20px，默认 16）。 -->
+            <div class="palette-slider-container">
+              <span class="palette-slider-label">
+                字号 <span class="palette-font-sample" id="font-sample">Aa</span>
+                <span class="palette-font-value" id="font-size-value">16px</span>
+              </span>
+              <input type="range" min="12" max="20" step="1" value="16" class="palette-slider" id="font-size-slider">
+            </div>
+            <div>
+              <div class="palette-swatches-title">预设配色</div>
+              <div class="palette-swatches-grid">
+                <button class="palette-swatch-item" data-hue="315" title="经典粉紫">
+                  <span class="palette-swatch-dot" style="background: hsl(315, 75%, 45%);"></span>
+                  <span class="palette-swatch-name">粉紫</span>
+                </button>
+                <button class="palette-swatch-item" data-hue="280" title="紫罗兰">
+                  <span class="palette-swatch-dot" style="background: hsl(280, 75%, 45%);"></span>
+                  <span class="palette-swatch-name">紫罗兰</span>
+                </button>
+                <button class="palette-swatch-item active" data-hue="248" title="学术深蓝">
+                  <span class="palette-swatch-dot" style="background: hsl(248, 75%, 45%);"></span>
+                  <span class="palette-swatch-name">深蓝</span>
+                </button>
+                <button class="palette-swatch-item" data-hue="205" title="天青蓝">
+                  <span class="palette-swatch-dot" style="background: hsl(205, 75%, 45%);"></span>
+                  <span class="palette-swatch-name">天青</span>
+                </button>
+                <button class="palette-swatch-item" data-hue="150" title="翡翠绿">
+                  <span class="palette-swatch-dot" style="background: hsl(150, 75%, 40%);"></span>
+                  <span class="palette-swatch-name">翡翠</span>
+                </button>
+                <button class="palette-swatch-item" data-hue="75" title="琥珀黄">
+                  <span class="palette-swatch-dot" style="background: hsl(75, 75%, 40%);"></span>
+                  <span class="palette-swatch-name">琥珀</span>
+                </button>
+                <button class="palette-swatch-item" data-hue="30" title="晚霞橙">
+                  <span class="palette-swatch-dot" style="background: hsl(30, 80%, 48%);"></span>
+                  <span class="palette-swatch-name">晚霞</span>
+                </button>
+                <button class="palette-swatch-item" data-hue="355" title="绯红">
+                  <span class="palette-swatch-dot" style="background: hsl(355, 75%, 45%);"></span>
+                  <span class="palette-swatch-name">绯红</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <button class="m3-icon-btn" id="search-toggle" aria-label="全站搜索" title="全站搜索">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+          </button>
+
+        </div>
+      </header>
+
+      <!-- 全站搜索面板（点击顶栏放大镜展开；ESC 或点外部关闭） -->
+      <div class="search-panel" id="search-panel" hidden>
+        <div class="search-panel-inner" role="dialog" aria-modal="true" aria-label="全站搜索">
+          <div class="search-panel-head">
+            <svg class="search-panel-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+            <input type="search" id="search-input" class="search-panel-input" placeholder="搜索知识点、例题、习题…" autocomplete="off" spellcheck="false">
+            <button class="m3-icon-btn" id="search-close" aria-label="关闭搜索" title="关闭（ESC）">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
+          </div>
+          <div class="search-panel-body" id="search-results">
+            <p class="search-hint">输入关键词开始搜索。中文按字面子串匹配——搜「沙路法则」只出真正连着出现这四个字的地方；结果按相关度排序，回车打开第一条。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="layout-container">
+        <!-- Content Area -->
+        <main class="content-wrapper">
+          <article class="article-container">
+            
+            <div class="meta-chip-bar"><span class="meta-chip primary">📚 电气前沿</span><span class="meta-chip">🏷️ 课堂笔记</span><span class="meta-chip">⚡ 状态: 开课</span><span class="meta-chip">📅 更新: 2026-11-26</span><span class="meta-chip">📖 来源: 课堂转写 11-23</span></div>
+
+            <div class="article-content">
+              <h1 id="11-23-新型电力系统建设">11-23-新型电力系统建设</h1><h2 id="这节课在干什么">这节课在干什么</h2><p>「电气前沿」第三次课，承接讲座一「新质生产力推动能源电力绿色低碳转型的新型电力系统建设」，
+全课转向<strong>新型电力系统的全景构成、战略脉络与关键技术问题</strong>。录音全长 <code>00:00–1:35:53</code>，
+有效讲授区间 <code>10:26–1:35:53</code>（<code>00:00–10:26</code> 为课前静默，<code>50:16–55:24</code> 为课间空档）。
+前半场拆解「发—输—变—配—储—用」六环节、电压等级与一次/二次系统，并引入二十字方针、
+电力现货负电价与氢氨/CCUS 闭环；后半场对比传统与新型电力系统的八大维度的演进，
+展开前两个关键技术问题（新能源不确定性预测协调、弱惯量下的稳定理论与 VSG）。
+<strong>本课为讲座型，无编号习题与数值算题。</strong></p>
+<h2 id="题号条目">题号条目</h2><p>本次课为讲座型，教师未报任何题号，无数值例题或课后算题，故无题号条目。</p>
+<h2 id="没编号但讲了的知识点">没编号但讲了的知识点</h2><h3 id="1-课程主线与政策认知口径">1. 课程主线与政策认知口径</h3><ul>
+<li>讲座口径直接取自国家发改委、能源局政策文件，与「双碳」战略绑定。</li>
+<li>政策引导产业强制转型：即便单一技术早期被质疑（如早期新能源汽车），政策持续十余年推进后，
+新车渗透率已跃居主力（教师预计未来新车中新能源占比将超 60%；转写「60 公斤」为同音误识）。</li>
+<li>研读新型电力系统框架图须解决三个问题：系统如何构成、对应哪些就业岗位、上岗需学什么技能。</li>
+</ul>
+<h3 id="2-新型电力系统六环节-发-输-变-配-储-用">2. 新型电力系统六环节：「发—输—变—配—储—用」</h3><p>传统电力系统称「发输配用」，新型电力系统补入「储能」并打破单向流动边界：</p>
+<div class="table-scroll-container t-cards" role="region" aria-label="2. 新型电力系统六环节：「发—输—变—配—储—用」" tabindex="0">
+<table>
+<thead><tr><th align="left">环节</th><th align="left">传统构成与特征</th><th align="left">新型系统新增变化</th><th align="left">对应行业与去向</th></tr></thead>
+<tr><td data-label="环节">电源侧</td><td data-label="传统构成与特征">水电、火电、核电为主力</td><td data-label="新型系统新增变化">风电、光伏装机已超半壁江山；加抽水蓄能</td><td data-label="对应行业与去向">发电厂（升压站之前）</td></tr>
+<tr><td data-label="环节">变电与换流</td><td data-label="传统构成与特征">交流升压变电站</td><td data-label="新型系统新增变化">新能源直流经逆变器并网，或经换流站走直流特高压</td><td data-label="对应行业与去向">主网与送变电</td></tr>
+<tr><td data-label="环节">输电侧</td><td data-label="传统构成与特征">500 kV 超高压为主</td><td data-label="新型系统新增变化">1000 kV 交流特高压、±800 kV 以上直流特高压</td><td data-label="对应行业与去向">国家电网（占 70%+）、南网、蒙西</td></tr>
+<tr><td data-label="环节">配电侧</td><td data-label="传统构成与特征">10/35 kV 以下单向配电</td><td data-label="新型系统新增变化">110 kV 以下皆属配网；接入海量分布式电源与储能</td><td data-label="对应行业与去向">县级供电公司、农电工、工程运维</td></tr>
+<tr><td data-label="环节">储能侧</td><td data-label="传统构成与特征">原系统基本无储能</td><td data-label="新型系统新增变化">110 kV 以下大量配建集装箱式锂电等新型储能</td><td data-label="对应行业与去向">储能集成、微网与工商业配置</td></tr>
+<tr><td data-label="环节">用电侧</td><td data-label="传统构成与特征">纯耗能终端负荷</td><td data-label="新型系统新增变化">叠加需求响应（灵活性负荷）、屋顶光伏、V2G 反向放电</td><td data-label="对应行业与去向">工厂电工、商业楼宇节能、综合能源</td></tr>
+</table>
+</div>
+<ul>
+<li><strong>电源并网与电压匹配</strong>：装机容量越大，并网电压越高（常规火水核多升至 500 kV 或 1000 kV）。
+光伏组件发直流电，须经逆变器转为交流再升压，或直接升压走直流输电；直流侧节点称<strong>换流站</strong>
+（分送端与受端），交流侧称<strong>变电站</strong>。</li>
+<li><strong>抽水蓄能与基层就业</strong>：浙江近三年处于抽蓄建设高峰期，单座抽蓄约需 40–50 人（通常提前一年校招），
+工作压力、环境与薪酬俱佳（提及丽水松阳抽蓄）。农电工并非仅在偏远地区（如杭州西湖区、拱墅区亦设岗），
+属县公司以下配网运维主力。</li>
+<li><strong>重工业大用户进线</strong>：钢铁（如宝钢）、大型化工、重型机械等耗电大户多由 110 kV 或 220 kV 直接进线，
+厂区内部再逐级降压至 6 kV、3 kV 或 220 V 供不同设备使用。</li>
+<li><strong>分布式光伏并网等级界线</strong>：总装机 400 kW 以下直接并入 380 V 低压配电网；400 kW 至 6 MW
+（6000 kW）并入 10 kV 配电网；更大容量归集中式，直接并入 110 kV 或 220 kV。当前新能源设计、
+施工、运维岗位大量集中于分布式电站。</li>
+<li><strong>双回供电可靠性</strong>：重要负荷（如高校）采用 10 kV 双回供电，两回线路必须取自两座不同的 110 kV
+变电站（或一路上级变电站＋一路邻近企业联络线），防止单站故障引发全停。</li>
+<li><strong>用电侧细分与需求响应</strong>：居民小区分级加压供水（水泵＋变频器＋PLC）、燃气加压（空压机变频）
+及照明动力消防用电；湖州居民阶梯电价约 0.5–0.8 元/度，商业电价起步超 1 元/度。商业楼宇中央空调、
+LED 景观照明可通过调高/调低设定温度（如冬季设 24–26 ℃）、压缩机错开 14:00 尖峰或适度降压
+参与<strong>需求响应</strong>。</li>
+<li><strong>二八准则让利示例</strong>：原高峰耗电 100 度×1 元 = 100 元；若响应削减 20% 负荷仅用 80 度，
+电网按八折电价（0.8 元/度）结算，实付电费 64 元，实现用户省钱与电网削峰双赢。</li>
+<li><strong>V2G（车网互动）</strong>：电动汽车经家用双向充电桩与双向逆变器，空闲时可作为分布式储能反向向电网放电。</li>
+</ul>
+<h3 id="3-一次-二次系统-电能替代与功率外送">3. 一次/二次系统、电能替代与功率外送</h3><ul>
+<li><strong>能源转换与终端负载</strong>：发电环节将一次能源转为二次能源（火电锅炉燃煤、核电反应堆生热→汽轮机；
+水库→水轮机；风电与光伏）。终端负荷涵盖电动机、电热电炉、整流电焊机、照明家电与充电桩。</li>
+<li><strong>网源协同与跨区外送</strong>：有电网无电源无电可送，有大电源无就地消纳亦须跨区通道。雅鲁藏布江下游水电
+规划装机达三峡三倍，本地人口稀少，必须外送至三大负荷中心：<strong>江浙沪、京津冀、珠三角</strong>。
+湖州特高压廊道当前设计容量利用率尚不足 60%。</li>
+<li><strong>电能替代政策</strong>：终端用能凡能用电者尽量以电代煤、代气、代油。典型场景包括商业综合体全电厨房
+（禁止天然气明火）、电炉炼钢、新能源汽车替代燃油车、电气化铁路替代内燃机车，外加 AI 数据中心
+与算力高耗电负荷增长。目前我国终端能源消费中电能占比仅约 <strong>30%</strong>，电能替代第一阶段目标
+<strong>70%</strong>，第二阶段目标 <strong>90%</strong>；年内广州 5–6 月全天实时电价曾突破 1 元/度（对比标杆电价约
+0.31 元/度），印证用电需求仍高速膨胀。</li>
+<li><strong>一次系统与二次系统</strong>：发、输、变、配、用主设备构成<strong>一次系统</strong>；对一次设备执行检测、监视、
+控制与保护的自动化装置构成<strong>二次系统</strong>。</li>
+</ul>
+<h3 id="4-电能质量-电压等级与二十字方针">4. 电能质量、电压等级与二十字方针</h3><ul>
+<li><strong>电能质量基础指标</strong>：简单口径下，电压偏移不超过 <strong>±5%</strong>，频率偏移不超过 <strong>±0.2 Hz</strong>
+（电压等级越高，频率偏差容忍度越严）；系统同时要求安全可靠持续供电、环保与经济性。</li>
+<li><strong>我国常用电压等级</strong>：<ul>
+<li>交流：1000 kV、750 kV（仅西北电网）、500 kV、330 kV（仅西北电网）、220 kV、110 kV、
+66 kV（历史源于东北伪满电网遗留，现因海上风电送出保留并定为标配）、35 kV、10 kV、6 kV、
+3 kV、0.38 kV（国标称 0.4 kV / 400 V）。</li>
+<li>直流：±1100 kV、±1000 kV、±800 kV（当前主流）、±750 kV、±500 kV、±400 kV。</li>
+</ul>
+</li>
+<li><strong>二十字方针（2023 年 7 月提出）</strong>：<strong>清洁低碳、安全充裕、经济高效、供需协同、灵活智能</strong>。
+其中<strong>安全是底线，清洁低碳是总纲领</strong>。</li>
+<li><strong>安全充裕与利用小时数</strong>：1 万千瓦负荷至少需 3 万千瓦可调资源方称充裕（对比 2000 年前长期缺电）。
+装机规模大增但仍须协同调度，源于各类电源年利用小时数差异：全年 8760 小时中，火电约
+<strong>5000–6000 小时</strong>，风光仅约 <strong>1800 小时</strong>，水电约 <strong>2200–2400 小时</strong>（且仍在压缩）；
+光伏主要集中在白天 6–10 小时出力。</li>
+<li><strong>电力现货市场与负电价</strong>：告别计划分配指标后，电厂竞价上网。当年上半年山东、浙江、四川均出现
+<strong>负电价</strong>（例：中长期协议电价 0.30 元/度，现货贴补 0.06 元/度后实收 0.24 元/度），以此逼退高成本
+机组，反映行业竞争白热化。</li>
+<li><strong>两大核心特征</strong>：① 构成高比例可再生能源供给消纳体系，政策原则上要求全额消纳、不弃风弃光
+（光伏补贴历经「630」「1230」节点退坡，现已全面平价无补贴）；② 形成广域大电网与局域高比例
+可再生能源小电网共存形态（主网＋配网＋微网并行，集中式与分布式并举）。</li>
+</ul>
+<h3 id="5-煤电兜底-ccus-与绿氢化工闭环-新安全技术路线">5. 煤电兜底、CCUS 与绿氢化工闭环（「新安全技术路线」）</h3><ul>
+<li><strong>煤电不可立即清零</strong>：全风光体系无法解决夜间与无风时段供电，但燃煤发电历年经历除尘（静电除尘）、
+脱硫、脱硝、减碳四轮收紧，亟须低碳转型出路。</li>
+<li><strong>CCUS（二氧化碳捕集、利用与封存）</strong>：将火电排放的 <span class="katex" role="math" aria-label="CO2" data-math-plain="CO2" data-math-tex="\text{CO}_2"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord text"><span class="mord">CO</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 分离收集后，路径一为高压压入山洞或
+密闭容器<strong>封存</strong>；路径二为以 <span class="katex" role="math" aria-label="CO2" data-math-plain="CO2" data-math-tex="\text{CO}_2"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord text"><span class="mord">CO</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 气体推动涡轮机<strong>发电</strong>；路径三为高价值<strong>化工合成</strong>。</li>
+<li><strong>绿电制氢＋合成甲烷/甲醇</strong>：利用三北地区富裕风光及海上风电（淡化海水）就地电解水制氢。
+氢气除用于高速免费氢能重卡、燃气/热电厂<strong>掺氢燃烧</strong>（掺氢比约 15%）外，可与火电捕集的
+<span class="katex" role="math" aria-label="CO2" data-math-plain="CO2" data-math-tex="\text{CO}_2"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord text"><span class="mord">CO</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 合成甲醇或甲烷（即<strong>合成天然气</strong>），直接缓解我国「富煤、贫油、少气」的能源储备短板
+（规避类似俄乌冲突断气风险）。五大发电集团之一已在新疆启动 800 亿元此类项目。</li>
+</ul>
+<h3 id="6-近十年战略脉络与新型电力系统八维变革">6. 近十年战略脉络与新型电力系统八维变革</h3><ul>
+<li><strong>十年政策时间轴</strong>：2014 年「四个革命、一个合作」（能源消费、供给、技术、体制革命＋国际合作）
+→ 2021 年提出构建新型电力系统 → 2022 年推进智能电网/智能微电网（教师提及「智能电网」一词源自
+嘉兴供电局上报并获采纳，核心是源荷双向边界消融、智能协调）→ 2023 年 7 月定型二十字方针。</li>
+<li><strong>三态共存电网图景</strong>：<ol>
+<li><strong>大电网</strong>：特高压/超高压主干，承接我国 80% 资源在西部、80% 负荷在东部的跨区输送。</li>
+<li><strong>主动配电网</strong>：由传统单向受电改为允许潮流双向调节；海量分布式电源倒送电导致配网电压长期越上限，
+后续将获巨资升级改造。</li>
+<li><strong>微电网</strong>：园区、小区、海岛自给自足、就地平衡，融合冷热电综合能源系统与能量路由器。</li>
+</ol>
+</li>
+<li><strong>八大特征对比（传统 vs 新型）</strong>：</li>
+</ul>
+<div class="table-scroll-container t-cards" role="region" aria-label="6. 近十年战略脉络与新型电力系统八维变革" tabindex="0">
+<table>
+<thead><tr><th align="left">对比维度</th><th align="left">传统电力系统</th><th align="left">新型电力系统</th></tr></thead>
+<tr><td data-label="对比维度">动态时间尺度</td><td data-label="传统电力系统">秒至分钟级，机械惯量大，运行平稳</td><td data-label="新型电力系统">电力电子弱惯量，微秒至毫秒级，波动剧烈</td></tr>
+<tr><td data-label="对比维度">稳定理论与范式</td><td data-label="传统电力系统">基于机电转动惯量与确定性物理数学模型</td><td data-label="新型电力系统">节点激增至数千万级，难以建模，转向数据图谱与 AI 驱动</td></tr>
+<tr><td data-label="对比维度">单体规模与数量</td><td data-label="传统电力系统">集中式单体大（100 MW 级已算小）、数量少</td><td data-label="新型电力系统">分布式单体小、数量极多（千家万户）</td></tr>
+<tr><td data-label="对比维度">形态与生态</td><td data-label="传统电力系统">功能界限分明，源网荷割裂、信息孤立</td><td data-label="新型电力系统">源网荷储融合互动，能量流与信息流深度交互</td></tr>
+<tr><td data-label="对比维度">负荷侧角色</td><td data-label="传统电力系统">纯被动电能消费者</td><td data-label="新型电力系统">产消者（自发自用可发电）＋ 灵活性调节资源</td></tr>
+<tr><td data-label="对比维度">系统安全</td><td data-label="传统电力系统">扰动源相对可控，边界清晰</td><td data-label="新型电力系统">源荷双侧强不确定，安全边界严峻</td></tr>
+<tr><td data-label="对比维度">电网架构</td><td data-label="传统电力系统">垂直分层单向输配体系</td><td data-label="新型电力系统">大电网 ＋ 主动配电网 ＋ 微电网协同共存</td></tr>
+<tr><td data-label="对比维度">感知与运行底座</td><td data-label="传统电力系统">偏现场人工及常规开关操作</td><td data-label="新型电力系统">透明电力系统（智能变电站无人值守），高度依赖通信可靠</td></tr>
+</table>
+</div>
+<ul>
+<li><strong>透明电力系统与专业能力定位</strong>：南方电网李立浧院士（ASR「李一成」）提出「透明电力系统」，
+要求全网源荷状态实时透明可测。对比「智能电网信息工程」（新工科、偏通信信息）与「电气工程及其自动化」
+（传统工科、强电物理规律扎实、企业接受度与就业能级高），教师提示：AI 时代更须夯实专业核心逻辑框架，
+警惕大模型幻觉；切忌丢掉电力主干方向去盲目拼专科级 PLC 运维或非科班嵌入式赛道。</li>
+</ul>
+<h3 id="7-新型电力系统关键技术问题-前两项">7. 新型电力系统关键技术问题（前两项）</h3><ul>
+<li><strong>关键技术一：新能源波动性、间歇性与高精度功率预测协调</strong><ul>
+<li>电力系统须保证发用电瞬时绝对平衡（发少用多→电压/频率跌落；发多用少→电压/频率飙升甚至崩溃）。</li>
+<li>传统仅需稳住满发电源并预测负荷；新型需靠<strong>高精度新能源发电功率预测</strong>把风光「随机不确定性」
+转化为「可预知的确定性变化规律」。</li>
+<li>配合三类调节手段：<strong>火电灵活性改造</strong>（从带基荷转为随新能源曲线升降出力）、<strong>储能</strong>、
+<strong>需求侧灵活性资源</strong>；工程交易上通过三北<strong>火风打捆</strong>（规避现货隔日申报偏差罚款）与黄河上游
+<strong>水光互补</strong>（白天光伏、无光水电补位）输出稳定电力曲线。</li>
+</ul>
+</li>
+<li><strong>关键技术二：弱惯量下的稳定理论与虚拟同步机（VSG）</strong><ul>
+<li><strong>物理惯量差异</strong>：传统机组飞轮矩 <span class="katex" role="math" aria-label="GD2" data-math-plain="GD2" data-math-tex="GD^2"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord mathnormal">G</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span></span> 决定转动惯量（需大惯量做短粗如飞轮储能，需快响应做细长
+如伺服电机），可提供秒级支撑；全电力电子并网的风光几乎无物理惯量，抗扰窗口缩至毫秒/微秒级。</li>
+<li><strong>两层应对思路</strong>：① 计算系统在保有一定旋转惯量时可接纳的最大新能源渗透率；② 采用 <strong>VSG
+（虚拟同步机）</strong> 控制算法为逆变器人为构造等效转动惯量。</li>
+<li><strong>调频与解耦理论变迁</strong>：传统系统面对百万千瓦机组解列或大负荷突投，经机械惯量缓冲及<strong>一次调频→
+二次调频（备用投入）</strong>，约 <strong>3 分钟</strong>内恢复稳定；其控制基于<strong>有功—频率平衡</strong>、<strong>无功—电压平衡</strong>
+及<strong>发电机功角稳定（<span class="katex" role="math" aria-label="0∘∼90∘" data-math-plain="0∘∼90∘" data-math-tex="0^\circ\sim 90^\circ"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6741em;"></span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6741em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">∘</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∼</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6741em;"></span><span class="mord">9</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6741em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">∘</span></span></span></span></span></span></span></span></span></span></span></span> 同步区间）</strong>。全电力电子化系统无机械功角概念，
+动作压缩至微秒/纳秒级，原有功/无功解耦模型失效，须重建以<strong>电压平衡与功率平衡</strong>为核心的新稳定理论。</li>
+</ul>
+</li>
+</ul>
+<h2 id="本篇没讲的">本篇没讲的</h2><ul>
+<li><strong>课前静默与课间空档</strong>：<code>00:00–10:26</code> 无语音记录；<code>50:16–55:24</code> 为课间休息空档，期间内容不明。</li>
+<li><strong>第三个关键技术问题</strong>：<code>1:35:48</code> 下课铃后教师提及「好像还有三（第三个）」，因下课中断未展开。</li>
+<li><strong>碳核算与碳市场技术细则</strong>：课程明确将在后续专题讲座展开，本讲仅简略点及现货交易与 CCUS 减排逻辑。</li>
+<li><strong>认知实习具体安排</strong>：仅提及本专业有认知实习并点名 500 kV 变电站，未公布具体时间、地点或考核细则。</li>
+<li><strong>未投屏公众号科普文章与PPT原图</strong>：口头引用当日手机充电器电能溯源文章及电力系统结构图、曲线图，
+无课件原图附带。</li>
+</ul>
+<h2 id="转写与术语">转写与术语</h2><p>本次语音转写存在大量谐音与口语偏差，记录如下（不篡改原口述矛盾点）：</p>
+<ul>
+<li><strong>主题与政策热词</strong>：「新芯片系统」→ <strong>新型电力系统</strong>；「双跨/双方/双大目标」→ <strong>双碳目标</strong>；
+「二十字方针」口述偶误为「20 次方/信息练习」→ <strong>清洁低碳、安全充裕、经济高效、供需协同、灵活智能</strong>。</li>
+<li><strong>设备与电网专名</strong>：<ul>
+<li>「福州寒山变」（500 kV 变电站，18:18）→ 结合上下文「湖州特高压最密集」「湖州廊道」，疑为<strong>湖州含山变</strong>，
+此处不强行改名，作存疑标记。</li>
+<li>「发端/售端变电站」（17:04）→ <strong>送端/受端</strong>；「变频器」（16:31 语境）→ <strong>逆变器</strong>；
+「威士忌」「微风机」（29:44）→ <strong>V2G（车网互动）</strong>。</li>
+<li>「礼仪组织」（23:47）→ <strong>锂离子电池</strong>；「透频」（55:45）→ <strong>透平（涡轮机）</strong>；
+「浓度的减小」（49:45 烟气治理序列）→ <strong>脱硝</strong>。</li>
+<li>「vst / 虚拟公共机 / 虚拟服务器」（1:08:26、1:32:20）→ <strong>VSG（虚拟同步机）</strong>。</li>
+<li>「一分填补/削分填」「剥分/削分」（1:25:46、1:18:44）→ <strong>削峰填谷</strong>；「火分打孔」（1:28:47）→ <strong>火风打捆</strong>。</li>
+<li>「四部电机」（1:06:51）→ <strong>伺服电机</strong>；「李一成院士」（1:19:18）→ 疑为南方电网首席专家<strong>李立浧院士</strong>。</li>
+<li>「60 公斤能源汽车」（11:37）→ 疑为「60% 新能源汽车」；「60 个摄像头」（41:19）→ <strong>66 kV 海上风电电压等级</strong>。</li>
+</ul>
+</li>
+<li><strong>口述数量级与存疑数字留痕</strong>（仅供课堂口径对照，不作一手工程数据）：<ul>
+<li>15:52「多少兆瓦除以 10 得多少万千瓦」：按单位换算 1 万 kW = 10 MW，口述「除上一个 0」即除以 10，逻辑相符，
+但同段「50 万 / 100 万」实指习惯称呼中的 500 kV / 1000 kV 电压等级。</li>
+<li>32:20 农电工收入「2 3」：ASR 断续，疑为「三分之二」或「两三成」，语义不明不予断言。</li>
+<li>1:09:31 秒级与微秒级「差的是六倍，它的六层」：实为相差 <strong>6 个数量级（<span class="katex" role="math" aria-label="106" data-math-plain="106" data-math-tex="10^6"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">6</span></span></span></span></span></span></span></span></span></span></span></span> 倍）</strong>，转写按口语误作「六倍/六层」。</li>
+</ul>
+</li>
+</ul>
+
+            </div>
+
+            
+
+            <footer class="site-footer">
+              <p class="site-footer__legal">
+                © 2026 ArchivalEra · 本站自研代码与解析文字以
+                <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank" rel="license noopener">AGPL-3.0</a>
+                许可发布 · <a href="https://isui.ren/repo/S26-1_202609/licenses.json" target="_blank" rel="noopener">许可清单</a> · <a href="https://github.com/ArchivalEra/S26-1_202609" target="_blank" rel="noopener">仓库源码</a>
+              </p>
+              <p class="site-footer__disclaimer">
+                本站涉及的教材题目原文与章节结构，版权归各原书作者与出版社所有，本站解析为个人学习笔记；
+                页面主题样式来自 Shirone Material 3 Reader（MIT）；KaTeX、marked 等第三方库依其自身许可证分发。
+              </p>
+            </footer>
+          </article>
+        </main>
+
+        <!-- Table of Contents -->
+        <aside class="m3-toc">
+      <div class="toc-title">目录</div>
+      <ul class="toc-list">
+        <li class="toc-item level-2"><a href="#这节课在干什么">这节课在干什么</a></li><li class="toc-item level-2"><a href="#题号条目">题号条目</a></li><li class="toc-item level-2"><a href="#没编号但讲了的知识点">没编号但讲了的知识点</a></li><li class="toc-item level-3"><a href="#1-课程主线与政策认知口径">1. 课程主线与政策认知口径</a></li><li class="toc-item level-3"><a href="#2-新型电力系统六环节-发-输-变-配-储-用">2. 新型电力系统六环节：「发—输—变—配—储—用」</a></li><li class="toc-item level-3"><a href="#3-一次-二次系统-电能替代与功率外送">3. 一次/二次系统、电能替代与功率外送</a></li><li class="toc-item level-3"><a href="#4-电能质量-电压等级与二十字方针">4. 电能质量、电压等级与二十字方针</a></li><li class="toc-item level-3"><a href="#5-煤电兜底-ccus-与绿氢化工闭环-新安全技术路线">5. 煤电兜底、CCUS 与绿氢化工闭环（「新安全技术路线」）</a></li><li class="toc-item level-3"><a href="#6-近十年战略脉络与新型电力系统八维变革">6. 近十年战略脉络与新型电力系统八维变革</a></li><li class="toc-item level-3"><a href="#7-新型电力系统关键技术问题-前两项">7. 新型电力系统关键技术问题（前两项）</a></li><li class="toc-item level-2"><a href="#本篇没讲的">本篇没讲的</a></li><li class="toc-item level-2"><a href="#转写与术语">转写与术语</a></li>
+      </ul>
+    </aside>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../../assets/theme/shirone-reader.js?v=91f58863eb" defer></script>
+  <script src="../../../assets/plugins/disclosure-anchor.js?v=c242987556" defer></script>
+  <script src="../../../assets/plugins/site-root.js?v=3c0c147d88" defer></script>
+  <script src="../../../assets/plugins/nav-structure.js?v=1a5c4c403c" defer></script>
+  <script src="../../../assets/plugins/drawer-sync.js?v=7adce844e9" defer></script>
+  <script src="../../../assets/plugins/sw-kill.js?v=af296685f6" defer></script>
+  <script>(function(){
+    var CFG={sc:"assets/plugins/site-search.css?v=45716eda6c",sj:"assets/plugins/site-search.js?v=e4afa47fd0",sp:"assets/plugins/spa-router.js?v=32f4075a78",hp:"assets/plugins/site-helpers.js?v=cdc131182a"};
+    var loaded={};
+    function urlOf(rel){var r=document.documentElement.getAttribute("data-root")||"./";return new URL(r+rel,location.href).href;}
+    function addCss(rel,key){if(loaded[key])return;loaded[key]=1;var l=document.createElement("link");l.rel="stylesheet";l.href=urlOf(rel);document.head.appendChild(l);}
+    function addJs(rel){if(loaded[rel])return loaded[rel];loaded[rel]=new Promise(function(res){var s=document.createElement("script");s.defer=true;s.src=urlOf(rel);s.onload=res;s.onerror=res;document.body.appendChild(s);});return loaded[rel];}
+    function bootSearch(open){
+      if(window.__siteSearchLoaded){if(open&&window.__siteSearch&&window.__siteSearch.open)window.__siteSearch.open();return;}
+      window.__siteSearchWantOpen=window.__siteSearchWantOpen||!!open;
+      addCss(CFG.sc,"sc");addJs(CFG.sj);
+    }
+    var st=document.getElementById("search-toggle"),si=document.getElementById("search-input");
+    if(st)st.addEventListener("click",function(){if(!window.__siteSearchLoaded)bootSearch(true);});
+    if(si)si.addEventListener("focus",function(){if(!window.__siteSearchLoaded)bootSearch(false);});
+    document.addEventListener("keydown",function(e){
+      if(window.__siteSearchLoaded)return;
+      var ae=document.activeElement,typing=/^(INPUT|TEXTAREA|SELECT)$/.test((ae&&ae.tagName)||"");
+      if((e.key==="/"&&!typing)||((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k")){e.preventDefault();bootSearch(true);}
+    });
+    function bootSpa(){if(!window.__spaRouter)addJs(CFG.sp);}
+    var onHover=function(e){if(e.target&&e.target.closest&&e.target.closest("a")){document.removeEventListener("pointerover",onHover);document.removeEventListener("touchstart",onHover);bootSpa();}};
+    document.addEventListener("pointerover",onHover,{passive:true});
+    document.addEventListener("touchstart",onHover,{passive:true});
+    if(typeof requestIdleCallback==="function")requestIdleCallback(bootSpa,{timeout:2000});
+    else setTimeout(bootSpa,1500);
+    if((location.search||"").indexOf("helpers=1")>=0){try{if(new URLSearchParams(location.search).get("helpers")==="1")addJs(CFG.hp);}catch(_e){}}
+  })();</script>
+</body>
+</html>

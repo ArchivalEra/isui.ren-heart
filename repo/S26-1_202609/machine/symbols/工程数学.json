@@ -1,0 +1,134 @@
+{
+  "pack": "工程数学",
+  "okfId": "okf.course.engineering_math.textbook.notation",
+  "course": "工程数学",
+  "sourcePage": "课程总览/工程数学/教材解析/符号入门.md",
+  "entries": [
+    {
+      "key": "工程数学:sym-det",
+      "id": "sym-det",
+      "title": "行列式的名字",
+      "text": "$D$ 是它的常用代号；$\\det A$ 与 $\\lvert A\\rvert$ 都读「A 的行列式」，名字不同同一个东西。竖线与方括号要分清：竖线里是一个数，方括号里只是一张数表（矩阵），还没有值。",
+      "tex": [
+        "\\det"
+      ]
+    },
+    {
+      "key": "工程数学:sym-index",
+      "id": "sym-index",
+      "title": "下标：门牌号",
+      "text": "下标是坐标，规则只有一句：前行后列——$a_{23}$ 就是第 2 行第 3 列上的数。门牌号从 1 数起，$a_{11}$ 读「a 一一」不是「a 十一」。"
+    },
+    {
+      "key": "工程数学:sym-power",
+      "id": "sym-power",
+      "title": "上标：乘方",
+      "text": "右上角是乘方。上标位置可以放一整段式子，如 $(-1)^{i+j}$——它只管正负号：$i+j$ 是偶数取 $+$，奇数取 $-$。",
+      "tex": [
+        "/\\(-1\\)\\^\\{?[A-Za-z0-9 +\\\\{}]*\\}?/"
+      ]
+    },
+    {
+      "key": "工程数学:sym-rowcol",
+      "id": "sym-rowcol",
+      "title": "行与列：r、c",
+      "text": "$r_1$ 是第 1 行（row），$c_2$ 是第 2 列（column）。$r_2-3r_1$ 读作「第 2 行换成：第 2 行 − 第 1 行的 3 倍」——写在前面的被改，式子里没出现的行不动。",
+      "tex": [
+        "/([rc])_\\{?[A-Za-z0-9]+\\}?/"
+      ]
+    },
+    {
+      "key": "工程数学:sym-matrix",
+      "id": "sym-matrix",
+      "title": "矩阵的新符号",
+      "text": "$E$ 是单位矩阵（乘法里的「1」）；$A^{\\mathrm T}$ 转置（行列互换，$(AB)^{\\mathrm T}=B^{\\mathrm T}A^{\\mathrm T}$ 要反序）；$A^{-1}$ 是逆——$AA^{-1}=E$，「撤销 $A$」，不是 $1/A$；$A^*$ 伴随（代数余子式下标转置排列）；$R(A)$ 秩（非零子式最高阶数）。"
+    },
+    {
+      "key": "工程数学:sym-misc",
+      "id": "sym-misc",
+      "title": "Σ 与 ⟺",
+      "text": "$\\Sigma$（西格玛）是求和打包：下标轮流取 $1,2,\\dots,n$ 全加起来。$\\iff$ 读「当且仅当」，两边同真同假；$\\to$ 上方写字是变换记号，见 r/c 一族。"
+    },
+    {
+      "key": "工程数学:sym-lambda",
+      "id": "sym-lambda",
+      "title": "$\\lambda$：特征值",
+      "text": "让 $|A-\\lambda E|=0$ 成立的那些数（特征方程的解）；用在对角线减 $\\lambda$ 上求行列式——$|A-\\lambda E|=0$ 就是 $\\det$ 那一族里最常见的用法。",
+      "tex": [
+        "\\lambda"
+      ]
+    },
+    {
+      "key": "工程数学:sym-rank",
+      "id": "sym-rank",
+      "title": "$R(A)$：矩阵的秩",
+      "text": "矩阵里**非零子式的最高阶数**；初等行变换不改变它，所以化行阶梯形后数**非零行数**就是秩。$R(A)=r$ 是「独立信息只有 r 条」的意思。",
+      "tex": [
+        "R(A)"
+      ]
+    },
+    {
+      "key": "工程数学:sym-adj",
+      "id": "sym-adj",
+      "title": "$A^*$：伴随矩阵",
+      "text": "由**代数余子式**拼成、下标转置排列的那个矩阵（$A^*=(A_{ji})$）；核心恒等式 $AA^*=A^*A=|A|E$，求逆公式 $A^{-1}=\\frac{1}{|A|}A^*$ 就是由它来的（要求 $|A|\\neq0$）。",
+      "tex": [
+        "A^*"
+      ]
+    },
+    {
+      "key": "工程数学:sym-inv",
+      "id": "sym-inv",
+      "title": "$A^{-1}$：逆矩阵",
+      "text": "「撤销 $A$」的那个矩阵：$AA^{-1}=E$。**不是 $1/A$**——矩阵没有除法，只有乘逆。存在条件是 $|A|\\neq0$。",
+      "tex": [
+        "A^{-1}"
+      ]
+    },
+    {
+      "key": "工程数学:sym-transpose",
+      "id": "sym-transpose",
+      "title": "$A^{\\mathrm T}$：转置",
+      "text": "行列互换（第 i 行变第 i 列）。乘积转置要**反序**：$(AB)^{\\mathrm T}=B^{\\mathrm T}A^{\\mathrm T}$。对称矩阵即 $A^{\\mathrm T}=A$。",
+      "tex": [
+        "A^{\\mathrm T}"
+      ]
+    },
+    {
+      "key": "工程数学:sym-unitmat",
+      "id": "sym-unitmat",
+      "title": "$E$：单位矩阵",
+      "text": "乘法里的「1」：主对角线全 1、其余全 0；$AE=A$、$EA=A$。带下标 $E_n$ 表示 n 阶的（$E_mA_{m\\times n}=A_{m\\times n}$）。",
+      "tex": [
+        "E_n"
+      ]
+    },
+    {
+      "key": "工程数学:sym-scalar",
+      "id": "sym-scalar",
+      "title": "$k$、$\\lambda$、$\\mu$：数",
+      "text": "数乘里的普通常数（不是矩阵）：$kA$ 是每个元素都乘 $k$；$|kA|=k^n|A|$ 里的 $k^n$ 常被漏掉——n 阶行列式每行都提出一个 $k$。"
+    },
+    {
+      "key": "工程数学:sym-vec",
+      "id": "sym-vec",
+      "title": "$\\boldsymbol{\\alpha}$：向量",
+      "text": "黑体（粗体）小写希腊字母表示**向量**——n 维向量空间里的元素，与标量 $\\alpha$ 区分。加法与数乘都逐分量做：$(\\boldsymbol{\\alpha}+\\boldsymbol{\\beta})_i=\\alpha_i+\\beta_i$，$k\\boldsymbol{\\alpha}$ 的第 $i$ 个分量是 $k\\alpha_i$。"
+    },
+    {
+      "key": "工程数学:sym-iff",
+      "id": "sym-iff",
+      "title": "$\\iff$：当且仅当",
+      "text": "两边**同真同假**（充分必要）；与只单向的 $\\Rightarrow$（推出）要分清。「齐次方程组有非零解 $\\iff D=0$」两边等价，可以反着用。",
+      "tex": [
+        "\\iff"
+      ]
+    },
+    {
+      "key": "工程数学:sym-sigma",
+      "id": "sym-sigma",
+      "title": "$\\Sigma$：求和号",
+      "text": "把一族项打包相加：$\\sum_{k=1}^{n}a_{ik}A_{ik}$ 读作「k 从 1 取到 n，对应的项全部加起来」。下标 k 是**哑标**——换成别的字母结果不变。"
+    }
+  ]
+}

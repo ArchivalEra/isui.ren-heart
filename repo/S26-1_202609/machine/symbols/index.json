@@ -1,0 +1,53 @@
+{
+  "note": "全站符号系统机器目录：课程通过 courseEnv 解析包链（+ 表示叠加，后者覆盖前者）；页面 frontmatter 的 pins/exclusions 见单页 JSON 的 symbols 字段。",
+  "courseEnv": {
+    "电机学": "通用+电机学",
+    "工程数学": "工程数学",
+    "电路原理": "通用+电路原理",
+    "电子技术": "通用+电子技术",
+    "电力大数据与人工智能": "通用"
+  },
+  "buildPhases": [],
+  "packs": {
+    "通用": {
+      "okfId": "okf.site.symbol_pack.common",
+      "course": "通用",
+      "sourcePage": "站点/符号包/通用.md",
+      "entriesCount": 34,
+      "file": "通用.json",
+      "url": "https://isui.ren/repo/S26-1_202609/machine/symbols/%E9%80%9A%E7%94%A8.json"
+    },
+    "电机学": {
+      "okfId": "okf.course.electric_machinery.textbook.symbols",
+      "course": "电机学",
+      "sourcePage": "课程总览/电机学/教材解析/符号入门.md",
+      "entriesCount": 123,
+      "file": "电机学.json",
+      "url": "https://isui.ren/repo/S26-1_202609/machine/symbols/%E7%94%B5%E6%9C%BA%E5%AD%A6.json"
+    },
+    "工程数学": {
+      "okfId": "okf.course.engineering_math.textbook.notation",
+      "course": "工程数学",
+      "sourcePage": "课程总览/工程数学/教材解析/符号入门.md",
+      "entriesCount": 16,
+      "file": "工程数学.json",
+      "url": "https://isui.ren/repo/S26-1_202609/machine/symbols/%E5%B7%A5%E7%A8%8B%E6%95%B0%E5%AD%A6.json"
+    },
+    "电路原理": {
+      "okfId": "okf.course.circuit_theory.textbook.symbols",
+      "course": "电路原理",
+      "sourcePage": "课程总览/电路原理/教材解析/符号入门.md",
+      "entriesCount": 21,
+      "file": "电路原理.json",
+      "url": "https://isui.ren/repo/S26-1_202609/machine/symbols/%E7%94%B5%E8%B7%AF%E5%8E%9F%E7%90%86.json"
+    },
+    "电子技术": {
+      "okfId": "okf.course.electronics.textbook.symbols",
+      "course": "电子技术",
+      "sourcePage": "课程总览/电子技术/教材解析/符号入门.md",
+      "entriesCount": 47,
+      "file": "电子技术.json",
+      "url": "https://isui.ren/repo/S26-1_202609/machine/symbols/%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF.json"
+    }
+  }
+}

@@ -18,6 +18,31 @@ function isPageLink(a) {
   return true;
 }
 
+function syncOptAssets(doc, baseUrl) {
+  var links = doc.querySelectorAll('link[rel="stylesheet"][data-opt-asset]');
+  for (var li = 0; li < links.length; li++) {
+    var key = links[li].getAttribute("data-opt-asset");
+    var href = links[li].getAttribute("href");
+    if (!key || !href || document.querySelector('link[data-opt-asset="' + key + '"]')) continue;
+    var linkEl = document.createElement("link");
+    linkEl.rel = "stylesheet";
+    linkEl.setAttribute("data-opt-asset", key);
+    linkEl.href = new URL(href, baseUrl).href;
+    document.head.appendChild(linkEl);
+  }
+  var scripts = doc.querySelectorAll("script[data-opt-asset]");
+  for (var si = 0; si < scripts.length; si++) {
+    var skey = scripts[si].getAttribute("data-opt-asset");
+    var ssrc = scripts[si].getAttribute("src");
+    if (!skey || !ssrc || document.querySelector('script[data-opt-asset="' + skey + '"]')) continue;
+    var scEl = document.createElement("script");
+    scEl.defer = true;
+    scEl.setAttribute("data-opt-asset", skey);
+    scEl.src = new URL(ssrc, baseUrl).href;
+    document.body.appendChild(scEl);
+  }
+}
+
 // 换页：fetch → 解析 → 替换三块 → reset 钩子
 var inflight = null;
 function navigate(rawUrl, hash, push, opts4) {
@@ -100,8 +125,8 @@ function navigate(rawUrl, hash, push, opts4) {
     //     （如 电路原理:sym-Tperiod）查不到词条，点了弹不出气泡。
     //   figure-index-json：图元索引（图内符号与交互读它）。
     // 整块 script 元素替换。必须逐块换——漏一块就是一类功能在新页静默失效。
-    // 排序要求：必须排在 __glossaryReset / __packCellsReset / __readerRescan
-    // 之前，那些钩子会立刻重新读这些块。
+    // 排序要求：必须排在 __glossaryReset / __readerRescan 之前，
+    // 那些钩子会立刻重新读这些块。
     var PER_PAGE_JSON_IDS = ["sym-glossary-json", "figure-index-json"];
     for (var pi = 0; pi < PER_PAGE_JSON_IDS.length; pi += 1) {
       var pid = PER_PAGE_JSON_IDS[pi];
@@ -111,6 +136,9 @@ function navigate(rawUrl, hash, push, opts4) {
       else if (nextJson && !curJson) document.body.appendChild(nextJson);
       else if (curJson && !nextJson) curJson.remove();
     }
+
+    // ③f 按页按需资产同步（从零公式/零图元首页跳入含公式/图元/符号页时动态补齐样式与脚本）
+    syncOptAssets(doc, u.href);
 
     // ④ 侧栏 active 态（drawer 里当前页高亮由 theme 脚本管；这里触发它的重扫）
     // （shirone-reader 的 active 类基于 URL data 属性——换页后由 __readerRescan 处理）
@@ -132,14 +160,10 @@ function navigate(rawUrl, hash, push, opts4) {
     try { if (window.__drawerSync) window.__drawerSync.onNavigate(); } catch (e) {}
 
     // reset 钩子（全部可选存在）
-    // 2026-10-19：聊天面板不销毁，只做位置复位（历史保留）
-    try { if (window.__chatSync) window.__chatSync(); } catch (e) {}
     try { if (window.__glossaryReset) window.__glossaryReset(); } catch (e) {}
+    try { if (window.__figuresReset) window.__figuresReset(); } catch (e) {}
     try { if (window.__readerRescan) window.__readerRescan(); } catch (e) {}
     try { if (window.__disclosureOpen) window.__disclosureOpen(hash); } catch (e) {}
-    // 能力包的公式单元格（2026-10-31）：换页后正文是全新的 DOM，要重新挂单元格；
-    // 旧的那些节点已随 .article-content 一起消失，必须先在换页前 detach（防泄漏）。
-    try { if (window.__packCellsReset) window.__packCellsReset(); } catch (e) {}
   }).catch(function (err) {
     inflight = null;
     if (err?.name === "AbortError") return;
