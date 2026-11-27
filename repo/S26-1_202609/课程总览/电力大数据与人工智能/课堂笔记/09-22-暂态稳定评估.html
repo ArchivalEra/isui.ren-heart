@@ -29,7 +29,7 @@
   </script>
   <!-- 按页条件加载数学/图元样式，基础页零额外 CSS 阻塞。 -->
   <link rel="stylesheet" href="../../../assets/katex/katex.min.css?v=383e7b8d45" data-opt-asset="katex-css">
-  <link rel="stylesheet" href="../../../assets/theme/shirone-reader.css?v=51d4fddde8">
+  <link rel="stylesheet" href="../../../assets/theme/shirone-reader.css?v=e937906a3a">
   <!-- 站点图标统一使用轻量静态 WebP（较 GIF 体积减重 >90%） -->
   <link rel="icon" type="image/webp" href="../../../assets/favicon/favicon.webp">
   <link rel="apple-touch-icon" href="../../../assets/favicon/apple-touch-icon.webp">
@@ -371,6 +371,22 @@
                   <span class="palette-swatch-dot" style="background: hsl(355, 75%, 45%);"></span>
                   <span class="palette-swatch-name">绯红</span>
                 </button>
+                <button class="palette-swatch-item" data-hue="182" title="青碧">
+                  <span class="palette-swatch-dot" style="background: hsl(182, 75%, 42%);"></span>
+                  <span class="palette-swatch-name">青碧</span>
+                </button>
+                <button class="palette-swatch-item" data-hue="335" title="玫瑰红">
+                  <span class="palette-swatch-dot" style="background: hsl(335, 75%, 48%);"></span>
+                  <span class="palette-swatch-name">玫瑰</span>
+                </button>
+                <button class="palette-swatch-item" data-hue="225" title="靛蓝">
+                  <span class="palette-swatch-dot" style="background: hsl(225, 75%, 48%);"></span>
+                  <span class="palette-swatch-name">靛蓝</span>
+                </button>
+                <button class="palette-swatch-item" id="palette-random-btn" title="随机配色">
+                  <span class="palette-swatch-dot palette-swatch-mosaic"></span>
+                  <span class="palette-swatch-name">随机</span>
+                </button>
               </div>
             </div>
           </div>
@@ -576,7 +592,7 @@
     </div>
   </div>
 
-  <script src="../../../assets/theme/shirone-reader.js?v=f1eb4dba64" defer></script>
+  <script src="../../../assets/theme/shirone-reader.js?v=4d819fd852" defer></script>
   <script src="../../../assets/plugins/disclosure-anchor.js?v=c242987556" defer></script>
   <script type="application/json" id="sym-glossary-json">{"env":"通用","ctx":"电力大数据与人工智能","terms":{"通用:sym-L":{"pack":"通用","id":"sym-L","title":"<span class=\"katex\" role=\"math\" aria-label=\"L\" data-math-plain=\"L\" data-math-tex=\"L\"><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.6833em;\"><\/span><span class=\"mord mathnormal\">L<\/span><\/span><\/span><\/span>：电感","titleText":"L：电感","text":"储能元件，单位亨（H）；<span class=\"katex\" role=\"math\" aria-label=\"u=Ldi/dt\" data-math-plain=\"u=Ldi/dt\" data-math-tex=\"u=L\\frac{\\mathrm di}{\\mathrm dt}\"><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.4306em;\"><\/span><span class=\"mord mathnormal\">u<\/span><span class=\"mspace\" style=\"margin-right:0.2778em;\"><\/span><span class=\"mrel\">=<\/span><span class=\"mspace\" style=\"margin-right:0.2778em;\"><\/span><\/span><span class=\"base\"><span class=\"strut\" style=\"height:1.2251em;vertical-align:-0.345em;\"><\/span><span class=\"mord mathnormal\">L<\/span><span class=\"mord\"><span class=\"mopen nulldelimiter\"><\/span><span class=\"mfrac\"><span class=\"vlist-t vlist-t2\"><span class=\"vlist-r\"><span class=\"vlist\" style=\"height:0.8801em;\"><span style=\"top:-2.655em;\"><span class=\"pstrut\" style=\"height:3em;\"><\/span><span class=\"sizing reset-size6 size3 mtight\"><span class=\"mord mtight\"><span class=\"mord mtight\"><span class=\"mord mathrm mtight\">d<\/span><span class=\"mord mathnormal mtight\">t<\/span><\/span><\/span><\/span><\/span><span style=\"top:-3.23em;\"><span class=\"pstrut\" style=\"height:3em;\"><\/span><span class=\"frac-line\" style=\"border-bottom-width:0.04em;\"><\/span><\/span><span style=\"top:-3.394em;\"><span class=\"pstrut\" style=\"height:3em;\"><\/span><span class=\"sizing reset-size6 size3 mtight\"><span class=\"mord mtight\"><span class=\"mord mtight\"><span class=\"mord mathrm mtight\">d<\/span><span class=\"mord mathnormal mtight\">i<\/span><\/span><\/span><\/span><\/span><\/span><span class=\"vlist-s\">​<\/span><\/span><span class=\"vlist-r\"><span class=\"vlist\" style=\"height:0.345em;\"><span><\/span><\/span><\/span><\/span><\/span><span class=\"mclose nulldelimiter\"><\/span><\/span><\/span><\/span><\/span>，<strong>电感电流不突变<\/strong>（换路定则），直流稳态相当于短路。","plainText":"储能元件，单位亨（H）；u=Lfracmathrm dimathrm dt，**电感电流不突变**（换路定则），直流稳态相当于短路。","href":"../../../%E7%AB%99%E7%82%B9/%E7%AC%A6%E5%8F%B7%E5%8C%85/%E9%80%9A%E7%94%A8.html#sym-L"},"通用:sym-i":{"pack":"通用","id":"sym-i","title":"<span class=\"katex\" role=\"math\" aria-label=\"i\" data-math-plain=\"i\" data-math-tex=\"i\"><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.6595em;\"><\/span><span class=\"mord mathnormal\">i<\/span><\/span><\/span><\/span>：电流瞬时值","titleText":"i：电流瞬时值","text":"随时间变化的电流；直流也用小写 <span class=\"katex\" role=\"math\" aria-label=\"i\" data-math-plain=\"i\" data-math-tex=\"i\"><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.6595em;\"><\/span><span class=\"mord mathnormal\">i<\/span><\/span><\/span><\/span> 记恒定值，有效值用大写 <span class=\"katex\" role=\"math\" aria-label=\"I\" data-math-plain=\"I\" data-math-tex=\"I\"><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.6833em;\"><\/span><span class=\"mord mathnormal\" style=\"margin-right:0.07847em;\">I<\/span><\/span><\/span><\/span>。","plainText":"随时间变化的电流；直流也用小写 i 记恒定值，有效值用大写 I。","href":"../../../%E7%AB%99%E7%82%B9/%E7%AC%A6%E5%8F%B7%E5%8C%85/%E9%80%9A%E7%94%A8.html#sym-i"},"通用:sym-u":{"pack":"通用","id":"sym-u","title":"<span class=\"katex\" role=\"math\" aria-label=\"u\" data-math-plain=\"u\" data-math-tex=\"u\"><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.4306em;\"><\/span><span class=\"mord mathnormal\">u<\/span><\/span><\/span><\/span>：电压瞬时值","titleText":"u：电压瞬时值","text":"随时间变化的电压（瞬时小写、有效值大写是通用约定）；直流也用小写 <span class=\"katex\" role=\"math\" aria-label=\"u\" data-math-plain=\"u\" data-math-tex=\"u\"><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.4306em;\"><\/span><span class=\"mord mathnormal\">u<\/span><\/span><\/span><\/span> 记恒定值。","plainText":"随时间变化的电压（瞬时小写、有效值大写是通用约定）；直流也用小写 u 记恒定值。","href":"../../../%E7%AB%99%E7%82%B9/%E7%AC%A6%E5%8F%B7%E5%8C%85/%E9%80%9A%E7%94%A8.html#sym-u"}}}</script>
   <script src="../../../assets/plugins/symbols-bubble.js?v=47529ce104" data-opt-asset="symbols-bubble" defer></script>

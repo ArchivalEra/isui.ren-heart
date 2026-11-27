@@ -29,7 +29,7 @@
   </script>
   <!-- 按页条件加载数学/图元样式，基础页零额外 CSS 阻塞。 -->
   <link rel="stylesheet" href="../../../assets/katex/katex.min.css?v=383e7b8d45" data-opt-asset="katex-css">
-  <link rel="stylesheet" href="../../../assets/theme/shirone-reader.css?v=51d4fddde8">
+  <link rel="stylesheet" href="../../../assets/theme/shirone-reader.css?v=e937906a3a">
   <!-- 站点图标统一使用轻量静态 WebP（较 GIF 体积减重 >90%） -->
   <link rel="icon" type="image/webp" href="../../../assets/favicon/favicon.webp">
   <link rel="apple-touch-icon" href="../../../assets/favicon/apple-touch-icon.webp">
@@ -399,6 +399,22 @@
                   <span class="palette-swatch-dot" style="background: hsl(355, 75%, 45%);"></span>
                   <span class="palette-swatch-name">绯红</span>
                 </button>
+                <button class="palette-swatch-item" data-hue="182" title="青碧">
+                  <span class="palette-swatch-dot" style="background: hsl(182, 75%, 42%);"></span>
+                  <span class="palette-swatch-name">青碧</span>
+                </button>
+                <button class="palette-swatch-item" data-hue="335" title="玫瑰红">
+                  <span class="palette-swatch-dot" style="background: hsl(335, 75%, 48%);"></span>
+                  <span class="palette-swatch-name">玫瑰</span>
+                </button>
+                <button class="palette-swatch-item" data-hue="225" title="靛蓝">
+                  <span class="palette-swatch-dot" style="background: hsl(225, 75%, 48%);"></span>
+                  <span class="palette-swatch-name">靛蓝</span>
+                </button>
+                <button class="palette-swatch-item" id="palette-random-btn" title="随机配色">
+                  <span class="palette-swatch-dot palette-swatch-mosaic"></span>
+                  <span class="palette-swatch-name">随机</span>
+                </button>
               </div>
             </div>
           </div>
@@ -504,7 +520,7 @@ frontmatter 的 sources（≤30 字，显示为页面顶部芯片）与 <code>�
     </div>
   </div>
 
-  <script src="../../../assets/theme/shirone-reader.js?v=f1eb4dba64" defer></script>
+  <script src="../../../assets/theme/shirone-reader.js?v=4d819fd852" defer></script>
   <script src="../../../assets/plugins/disclosure-anchor.js?v=c242987556" defer></script>
   <script type="application/json" id="sym-glossary-json">{"env":"通用+电机学","ctx":"电机学","terms":{"电机学:sym-k":{"pack":"电机学","id":"sym-k","title":"<span class=\"katex\" role=\"math\" aria-label=\"k\" data-math-plain=\"k\" data-math-tex=\"k\"><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.6944em;\"><\/span><span class=\"mord mathnormal\" style=\"margin-right:0.03148em;\">k<\/span><\/span><\/span><\/span>：电压变比","titleText":"k：电压变比","text":"变压器一次、二次电压之比。","plainText":"变压器一次、二次电压之比。","href":"../%E6%95%99%E6%9D%90%E8%A7%A3%E6%9E%90/%E7%AC%A6%E5%8F%B7%E5%85%A5%E9%97%A8.html#sym-k"},"电机学:sym-C":{"pack":"电机学","id":"sym-C","title":"<span class=\"katex\" role=\"math\" aria-label=\"C\" data-math-plain=\"C\" data-math-tex=\"C\"><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.6833em;\"><\/span><span class=\"mord mathnormal\" style=\"margin-right:0.07153em;\">C<\/span><\/span><\/span><\/span>：C 相；并联支路数；电容；比热","titleText":"C：C 相；并联支路数；电容；比热","text":"按上下文取一个：C 相（小写 <span class=\"katex\" role=\"math\" aria-label=\"c\" data-math-plain=\"c\" data-math-tex=\"c\"><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.4306em;\"><\/span><span class=\"mord mathnormal\">c<\/span><\/span><\/span><\/span>）、绕组并联支路数、电容、比热。","plainText":"按上下文取一个：C 相（小写 c）、绕组并联支路数、电容、比热。","href":"../%E6%95%99%E6%9D%90%E8%A7%A3%E6%9E%90/%E7%AC%A6%E5%8F%B7%E5%85%A5%E9%97%A8.html#sym-C"},"电机学:sym-D":{"pack":"电机学","id":"sym-D","title":"<span class=\"katex\" role=\"math\" aria-label=\"D\" data-math-plain=\"D\" data-math-tex=\"D\"><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.6833em;\"><\/span><span class=\"mord mathnormal\" style=\"margin-right:0.02778em;\">D<\/span><\/span><\/span><\/span>：定子内径","titleText":"D：定子内径","text":"定子内圆的直径，算极距、槽距角时用。","plainText":"定子内圆的直径，算极距、槽距角时用。","href":"../%E6%95%99%E6%9D%90%E8%A7%A3%E6%9E%90/%E7%AC%A6%E5%8F%B7%E5%85%A5%E9%97%A8.html#sym-D"},"电机学:sym-B":{"pack":"电机学","id":"sym-B","title":"<span class=\"katex\" role=\"math\" aria-label=\"B\" data-math-plain=\"B\" data-math-tex=\"B\"><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.6833em;\"><\/span><span class=\"mord mathnormal\" style=\"margin-right:0.05017em;\">B<\/span><\/span><\/span><\/span>：磁通密度（磁感应强度）","titleText":"B：磁通密度（磁感应强度）","text":"描述磁场强弱的矢量，单位 T（特斯拉）。穿过垂直于它的单位面积的磁感应线根数就是它的大小，所以又叫磁通密度。<span class=\"katex\" role=\"math\" aria-label=\"B=μH\" data-math-plain=\"B=μH\" data-math-tex=\"B=\\mu H\"><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.6833em;\"><\/span><span class=\"mord mathnormal\" style=\"margin-right:0.05017em;\">B<\/span><span class=\"mspace\" style=\"margin-right:0.2778em;\"><\/span><span class=\"mrel\">=<\/span><span class=\"mspace\" style=\"margin-right:0.2778em;\"><\/span><\/span><span class=\"base\"><span class=\"strut\" style=\"height:0.8778em;vertical-align:-0.1944em;\"><\/span><span class=\"mord mathnormal\">μ<\/span><span class=\"mord mathnormal\" style=\"margin-right:0.08125em;\">H<\/span><\/span><\/span><\/span>——与介质有关：同一个电流在铁心里的 <span class=\"katex\" role=\"math\" aria-label=\"B\" data-math-plain=\"B\" data-math-tex=\"B\"><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.6833em;\"><\/span><span class=\"mord mathnormal\" style=\"margin-right:0.05017em;\">B<\/span><\/span><\/span><\/span> 比空气里大几千倍。","plainText":"描述磁场强弱的矢量，单位 T（特斯拉）。穿过垂直于它的单位面积的磁感应线根数就是它的大小，所以又叫磁通密度。B=mu H——与介质有关：同一个电流在铁心里的 B 比空气里大几千倍。","href":"../%E6%95%99%E6%9D%90%E8%A7%A3%E6%9E%90/%E7%AC%A6%E5%8F%B7%E5%85%A5%E9%97%A8.html#sym-B"},"电机学:sym-A":{"pack":"电机学","id":"sym-A","title":"<span class=\"katex\" role=\"math\" aria-label=\"A\" data-math-plain=\"A\" data-math-tex=\"A\"><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.6833em;\"><\/span><span class=\"mord mathnormal\">A<\/span><\/span><\/span><\/span>：A 相；线负荷","titleText":"A：A 相；线负荷","text":"三相里的 A 相（小写 <span class=\"katex\" role=\"math\" aria-label=\"a\" data-math-plain=\"a\" data-math-tex=\"a\"><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.4306em;\"><\/span><span class=\"mord mathnormal\">a<\/span><\/span><\/span><\/span> 是 a 相）；也用作线负荷——沿圆周单位长度上的安匝数。","plainText":"三相里的 A 相（小写 a 是 a 相）；也用作线负荷——沿圆周单位长度上的安匝数。","href":"../%E6%95%99%E6%9D%90%E8%A7%A3%E6%9E%90/%E7%AC%A6%E5%8F%B7%E5%85%A5%E9%97%A8.html#sym-A"}}}</script>
   <script src="../../../assets/plugins/symbols-bubble.js?v=47529ce104" data-opt-asset="symbols-bubble" defer></script>
