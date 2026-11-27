@@ -29,7 +29,7 @@
   </script>
   <!-- 按页条件加载数学/图元样式，基础页零额外 CSS 阻塞。 -->
   <link rel="stylesheet" href="../../../assets/katex/katex.min.css?v=383e7b8d45" data-opt-asset="katex-css">
-  <link rel="stylesheet" href="../../../assets/theme/shirone-reader.css?v=bdb9385f23">
+  <link rel="stylesheet" href="../../../assets/theme/shirone-reader.css?v=51d4fddde8">
   <!-- 站点图标统一使用轻量静态 WebP（较 GIF 体积减重 >90%） -->
   <link rel="icon" type="image/webp" href="../../../assets/favicon/favicon.webp">
   <link rel="apple-touch-icon" href="../../../assets/favicon/apple-touch-icon.webp">
@@ -378,7 +378,7 @@
                 字号 <span class="palette-font-sample" id="font-sample">Aa</span>
                 <span class="palette-font-value" id="font-size-value">16px</span>
               </span>
-              <input type="range" min="12" max="20" step="1" value="16" class="palette-slider" id="font-size-slider">
+              <input type="range" min="14" max="25" step="1" value="16" class="palette-slider" id="font-size-slider">
             </div>
             <div>
               <div class="palette-swatches-title">预设配色</div>
@@ -605,6 +605,7 @@
 
         <!-- Table of Contents -->
         <aside class="m3-toc">
+      <div class="toc-resizer" id="toc-resizer" title="按住拖拽调整目录宽度，双击恢复默认宽度"></div>
       <div class="toc-title">目录</div>
       <ul class="toc-list">
         <li class="toc-item level-2"><a href="#题号条目">题号条目</a></li><li class="toc-item level-3"><a href="#例-三变量-四个-1-两两圈出三组">例：三变量「四个 1」——两两圈出三组</a></li><li class="toc-item level-3"><a href="#例-判错一-多余的圈-第二个圈没有新-1">例：判错一——多余的圈（第二个圈没有新 1）</a></li><li class="toc-item level-3"><a href="#例-判错二-圈得不够大">例：判错二——圈得不够大</a></li><li class="toc-item level-3"><a href="#例-两图都对-最简结果不唯一">例：两图都对——最简结果不唯一</a></li><li class="toc-item level-3"><a href="#思考题-给状态表用卡诺图化简">思考题：给状态表用卡诺图化简</a></li><li class="toc-item level-2"><a href="#没编号但讲了的知识点">没编号但讲了的知识点</a></li><li class="toc-item level-3"><a href="#为什么卡诺图能化简-相邻就是只差一个变量">为什么卡诺图能化简：相邻就是只差一个变量</a></li><li class="toc-item level-3"><a href="#排列规则-不能按二进制递增列">排列规则：不能按二进制递增列</a></li><li class="toc-item level-3"><a href="#相邻关系-三种看着不相邻的相邻">相邻关系：三种看着不相邻的相邻</a></li><li class="toc-item level-3"><a href="#最小项与编号">最小项与编号</a></li><li class="toc-item level-3"><a href="#两种填入法">两种填入法</a></li><li class="toc-item level-3"><a href="#画圈四条原则-判对错的完整判据">画圈四条原则（判对错的完整判据）</a></li><li class="toc-item level-3"><a href="#从圈读出最简与或式">从圈读出最简与或式</a></li><li class="toc-item level-3"><a href="#无关项-约束项与任意项">无关项：约束项与任意项</a></li><li class="toc-item level-3"><a href="#逻辑函数的四种表示-本讲凑齐">逻辑函数的四种表示（本讲凑齐）</a></li><li class="toc-item level-2"><a href="#课件补充">课件补充</a></li><li class="toc-item level-3"><a href="#最小项的正式定义与三条性质-课件-7-3-3">最小项的正式定义与三条性质（课件 §7.3.3）</a></li><li class="toc-item level-3"><a href="#几何相邻的正式表述">几何相邻的正式表述</a></li><li class="toc-item level-3"><a href="#课件例题对照-与课上例题同一套考点">课件例题对照（与课上例题同一套考点）</a></li><li class="toc-item level-2"><a href="#本篇没讲的">本篇没讲的</a></li><li class="toc-item level-2"><a href="#转写与术语">转写与术语</a></li>
@@ -614,14 +615,14 @@
     </div>
   </div>
 
-  <script src="../../../assets/theme/shirone-reader.js?v=91f58863eb" defer></script>
+  <script src="../../../assets/theme/shirone-reader.js?v=f1eb4dba64" defer></script>
   <script src="../../../assets/plugins/disclosure-anchor.js?v=c242987556" defer></script>
-  <script src="../../../assets/plugins/site-root.js?v=3c0c147d88" defer></script>
+  <script src="../../../assets/plugins/site-root.js?v=3182667f82" defer></script>
   <script src="../../../assets/plugins/nav-structure.js?v=1a5c4c403c" defer></script>
   <script src="../../../assets/plugins/drawer-sync.js?v=7adce844e9" defer></script>
   <script src="../../../assets/plugins/sw-kill.js?v=af296685f6" defer></script>
   <script>(function(){
-    var CFG={sc:"assets/plugins/site-search.css?v=45716eda6c",sj:"assets/plugins/site-search.js?v=e4afa47fd0",sp:"assets/plugins/spa-router.js?v=32f4075a78",hp:"assets/plugins/site-helpers.js?v=cdc131182a"};
+    var CFG={sc:"assets/plugins/site-search.css?v=45716eda6c",sj:"assets/plugins/site-search.js?v=d16805295f",sp:"assets/plugins/spa-router.js?v=32f4075a78",hp:"assets/plugins/site-helpers.js?v=da87264c44"};
     var loaded={};
     function urlOf(rel){var r=document.documentElement.getAttribute("data-root")||"./";return new URL(r+rel,location.href).href;}
     function addCss(rel,key){if(loaded[key])return;loaded[key]=1;var l=document.createElement("link");l.rel="stylesheet";l.href=urlOf(rel);document.head.appendChild(l);}

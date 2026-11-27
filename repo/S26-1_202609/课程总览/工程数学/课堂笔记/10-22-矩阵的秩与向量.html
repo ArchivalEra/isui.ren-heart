@@ -29,7 +29,7 @@
   </script>
   <!-- 按页条件加载数学/图元样式，基础页零额外 CSS 阻塞。 -->
   <link rel="stylesheet" href="../../../assets/katex/katex.min.css?v=383e7b8d45" data-opt-asset="katex-css">
-  <link rel="stylesheet" href="../../../assets/theme/shirone-reader.css?v=bdb9385f23">
+  <link rel="stylesheet" href="../../../assets/theme/shirone-reader.css?v=51d4fddde8">
   <!-- 站点图标统一使用轻量静态 WebP（较 GIF 体积减重 >90%） -->
   <link rel="icon" type="image/webp" href="../../../assets/favicon/favicon.webp">
   <link rel="apple-touch-icon" href="../../../assets/favicon/apple-touch-icon.webp">
@@ -342,7 +342,7 @@
                 字号 <span class="palette-font-sample" id="font-sample">Aa</span>
                 <span class="palette-font-value" id="font-size-value">16px</span>
               </span>
-              <input type="range" min="12" max="20" step="1" value="16" class="palette-slider" id="font-size-slider">
+              <input type="range" min="14" max="25" step="1" value="16" class="palette-slider" id="font-size-slider">
             </div>
             <div>
               <div class="palette-swatches-title">预设配色</div>
@@ -847,6 +847,7 @@ l0,-1944c-2,-159.3,-10,-310.7,-24,-454c-53.3,-528,-210,-949.7,
 
         <!-- Table of Contents -->
         <aside class="m3-toc">
+      <div class="toc-resizer" id="toc-resizer" title="按住拖拽调整目录宽度，双击恢复默认宽度"></div>
       <div class="toc-title">目录</div>
       <ul class="toc-list">
         <li class="toc-item level-2"><a href="#行政与考核">行政与考核</a></li><li class="toc-item level-2"><a href="#题号条目">题号条目</a></li><li class="toc-item level-3"><a href="#定理-2-6-两个同型矩阵等价-它们的秩相等">定理 2.6（两个同型矩阵等价 ⟺ 它们的秩相等）</a></li><li class="toc-item level-3"><a href="#例-2-14-求-并求-的一个最高阶非零子式">例 2.14（求 ，并求 的一个最高阶非零子式）</a></li><li class="toc-item level-3"><a href="#例-2-15-设-为-阶可逆方阵-为-矩阵-证明">例 2.15（设 为 阶可逆方阵， 为 矩阵，证明 ）</a></li><li class="toc-item level-3"><a href="#例-2-25-matlab-的-inline_code_0">例 2.25（MATLAB 的 rank）</a></li><li class="toc-item level-2"><a href="#没编号但讲了的知识点">没编号但讲了的知识点</a></li><li class="toc-item level-3"><a href="#秩的两条用法-定义法从-最高阶-往下试">秩的两条用法：定义法从&quot;最高阶&quot;往下试</a></li><li class="toc-item level-3"><a href="#初等变换为什么不改变秩-定理-2-6-证明的支点">初等变换为什么不改变秩（定理 2.6 证明的支点）</a></li><li class="toc-item level-3"><a href="#满秩与降秩-教材上没写-老师要求记下的定义">满秩与降秩（教材上没写、老师要求记下的定义）</a></li><li class="toc-item level-3"><a href="#3-1-维向量-以及它和行矩阵-列矩阵的区别">3.1： 维向量，以及它和行矩阵、列矩阵的区别</a></li><li class="toc-item level-3"><a href="#3-1-为什么要讲-维向量-书本之外的一段">3.1：为什么要讲 维向量（书本之外的一段）</a></li><li class="toc-item level-3"><a href="#3-1-向量的运算-以及-线性运算-这个名字的来历">3.1：向量的运算，以及&quot;线性运算&quot;这个名字的来历</a></li><li class="toc-item level-3"><a href="#3-1-向量组">3.1：向量组</a></li><li class="toc-item level-3"><a href="#3-1-矩阵与向量组的互相表示-老师标了-很重要">3.1：矩阵与向量组的互相表示（老师标了&quot;很重要&quot;）</a></li><li class="toc-item level-3"><a href="#3-2-线性方程组的向量形式-书上没写的那半段">3.2：线性方程组的向量形式（书上没写的那半段）</a></li><li class="toc-item level-3"><a href="#3-2-定义-3-5-线性表示-方程组有解-的翻译">3.2：定义 3.5 线性表示——&quot;方程组有解&quot;的翻译</a></li><li class="toc-item level-3"><a href="#线性的几何意义-课末-未讲完">线性的几何意义（课末，未讲完）</a></li><li class="toc-item level-2"><a href="#本篇没讲的">本篇没讲的</a></li><li class="toc-item level-2"><a href="#转写与术语">转写与术语</a></li>
@@ -856,16 +857,16 @@ l0,-1944c-2,-159.3,-10,-310.7,-24,-454c-53.3,-528,-210,-949.7,
     </div>
   </div>
 
-  <script src="../../../assets/theme/shirone-reader.js?v=91f58863eb" defer></script>
+  <script src="../../../assets/theme/shirone-reader.js?v=f1eb4dba64" defer></script>
   <script src="../../../assets/plugins/disclosure-anchor.js?v=c242987556" defer></script>
   <script type="application/json" id="sym-glossary-json">{"env":"工程数学","ctx":"工程数学","terms":{"工程数学:sym-rank":{"pack":"工程数学","id":"sym-rank","title":"<span class=\"katex\" role=\"math\" aria-label=\"R(A)\" data-math-plain=\"R(A)\" data-math-tex=\"R(A)\"><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:1em;vertical-align:-0.25em;\"><\/span><span class=\"mord mathnormal\" style=\"margin-right:0.00773em;\">R<\/span><span class=\"mopen\">(<\/span><span class=\"mord mathnormal\">A<\/span><span class=\"mclose\">)<\/span><\/span><\/span><\/span>：矩阵的秩","titleText":"R(A)：矩阵的秩","text":"矩阵里<strong>非零子式的最高阶数<\/strong>；初等行变换不改变它，所以化行阶梯形后数<strong>非零行数<\/strong>就是秩。<span class=\"katex\" role=\"math\" aria-label=\"R(A)=r\" data-math-plain=\"R(A)=r\" data-math-tex=\"R(A)=r\"><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:1em;vertical-align:-0.25em;\"><\/span><span class=\"mord mathnormal\" style=\"margin-right:0.00773em;\">R<\/span><span class=\"mopen\">(<\/span><span class=\"mord mathnormal\">A<\/span><span class=\"mclose\">)<\/span><span class=\"mspace\" style=\"margin-right:0.2778em;\"><\/span><span class=\"mrel\">=<\/span><span class=\"mspace\" style=\"margin-right:0.2778em;\"><\/span><\/span><span class=\"base\"><span class=\"strut\" style=\"height:0.4306em;\"><\/span><span class=\"mord mathnormal\" style=\"margin-right:0.02778em;\">r<\/span><\/span><\/span><\/span> 是「独立信息只有 r 条」的意思。","plainText":"矩阵里**非零子式的最高阶数**；初等行变换不改变它，所以化行阶梯形后数**非零行数**就是秩。R(A)=r 是「独立信息只有 r 条」的意思。","href":"../%E6%95%99%E6%9D%90%E8%A7%A3%E6%9E%90/%E7%AC%A6%E5%8F%B7%E5%85%A5%E9%97%A8.html#sym-rank"}}}</script>
-  <script src="../../../assets/plugins/symbols-bubble.js?v=a19ff4ab9d" data-opt-asset="symbols-bubble" defer></script>
-  <script src="../../../assets/plugins/site-root.js?v=3c0c147d88" defer></script>
+  <script src="../../../assets/plugins/symbols-bubble.js?v=47529ce104" data-opt-asset="symbols-bubble" defer></script>
+  <script src="../../../assets/plugins/site-root.js?v=3182667f82" defer></script>
   <script src="../../../assets/plugins/nav-structure.js?v=1a5c4c403c" defer></script>
   <script src="../../../assets/plugins/drawer-sync.js?v=7adce844e9" defer></script>
   <script src="../../../assets/plugins/sw-kill.js?v=af296685f6" defer></script>
   <script>(function(){
-    var CFG={sc:"assets/plugins/site-search.css?v=45716eda6c",sj:"assets/plugins/site-search.js?v=e4afa47fd0",sp:"assets/plugins/spa-router.js?v=32f4075a78",hp:"assets/plugins/site-helpers.js?v=cdc131182a"};
+    var CFG={sc:"assets/plugins/site-search.css?v=45716eda6c",sj:"assets/plugins/site-search.js?v=d16805295f",sp:"assets/plugins/spa-router.js?v=32f4075a78",hp:"assets/plugins/site-helpers.js?v=da87264c44"};
     var loaded={};
     function urlOf(rel){var r=document.documentElement.getAttribute("data-root")||"./";return new URL(r+rel,location.href).href;}
     function addCss(rel,key){if(loaded[key])return;loaded[key]=1;var l=document.createElement("link");l.rel="stylesheet";l.href=urlOf(rel);document.head.appendChild(l);}

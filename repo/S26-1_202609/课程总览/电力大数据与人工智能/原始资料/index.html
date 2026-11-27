@@ -29,7 +29,7 @@
   </script>
   <!-- 按页条件加载数学/图元样式，基础页零额外 CSS 阻塞。 -->
   <link rel="stylesheet" href="../../../assets/katex/katex.min.css?v=383e7b8d45" data-opt-asset="katex-css">
-  <link rel="stylesheet" href="../../../assets/theme/shirone-reader.css?v=bdb9385f23">
+  <link rel="stylesheet" href="../../../assets/theme/shirone-reader.css?v=51d4fddde8">
   <!-- 站点图标统一使用轻量静态 WebP（较 GIF 体积减重 >90%） -->
   <link rel="icon" type="image/webp" href="../../../assets/favicon/favicon.webp">
   <link rel="apple-touch-icon" href="../../../assets/favicon/apple-touch-icon.webp">
@@ -294,7 +294,7 @@
                 字号 <span class="palette-font-sample" id="font-sample">Aa</span>
                 <span class="palette-font-value" id="font-size-value">16px</span>
               </span>
-              <input type="range" min="12" max="20" step="1" value="16" class="palette-slider" id="font-size-slider">
+              <input type="range" min="14" max="25" step="1" value="16" class="palette-slider" id="font-size-slider">
             </div>
             <div>
               <div class="palette-swatches-title">预设配色</div>
@@ -419,6 +419,7 @@
 
         <!-- Table of Contents -->
         <aside class="m3-toc">
+      <div class="toc-resizer" id="toc-resizer" title="按住拖拽调整目录宽度，双击恢复默认宽度"></div>
       <div class="toc-title">目录</div>
       <ul class="toc-list">
         <li class="toc-item level-2"><a href="#一-课堂原始转写">一、课堂原始转写</a></li><li class="toc-item level-2"><a href="#二-课件与照片">二、课件与照片</a></li>
@@ -428,16 +429,16 @@
     </div>
   </div>
 
-  <script src="../../../assets/theme/shirone-reader.js?v=91f58863eb" defer></script>
+  <script src="../../../assets/theme/shirone-reader.js?v=f1eb4dba64" defer></script>
   <script src="../../../assets/plugins/disclosure-anchor.js?v=c242987556" defer></script>
   <script type="application/json" id="sym-glossary-json">{"env":"通用","ctx":"电力大数据与人工智能","terms":{"通用:sym-R":{"pack":"通用","id":"sym-R","title":"<span class=\"katex\" role=\"math\" aria-label=\"R\" data-math-plain=\"R\" data-math-tex=\"R\"><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.6833em;\"><\/span><span class=\"mord mathnormal\" style=\"margin-right:0.00773em;\">R<\/span><\/span><\/span><\/span>：电阻","titleText":"R：电阻","text":"耗能元件，单位欧（Ω）；<span class=\"katex\" role=\"math\" aria-label=\"u=Ri\" data-math-plain=\"u=Ri\" data-math-tex=\"u=Ri\"><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.4306em;\"><\/span><span class=\"mord mathnormal\">u<\/span><span class=\"mspace\" style=\"margin-right:0.2778em;\"><\/span><span class=\"mrel\">=<\/span><span class=\"mspace\" style=\"margin-right:0.2778em;\"><\/span><\/span><span class=\"base\"><span class=\"strut\" style=\"height:0.6833em;\"><\/span><span class=\"mord mathnormal\" style=\"margin-right:0.00773em;\">R<\/span><span class=\"mord mathnormal\">i<\/span><\/span><\/span><\/span> 对直流与瞬时值都成立，交流下是阻抗的实部 <span class=\"katex\" role=\"math\" aria-label=\"Z=R+jX\" data-math-plain=\"Z=R+jX\" data-math-tex=\"Z=R+jX\"><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.6833em;\"><\/span><span class=\"mord mathnormal\" style=\"margin-right:0.07153em;\">Z<\/span><span class=\"mspace\" style=\"margin-right:0.2778em;\"><\/span><span class=\"mrel\">=<\/span><span class=\"mspace\" style=\"margin-right:0.2778em;\"><\/span><\/span><span class=\"base\"><span class=\"strut\" style=\"height:0.7667em;vertical-align:-0.0833em;\"><\/span><span class=\"mord mathnormal\" style=\"margin-right:0.00773em;\">R<\/span><span class=\"mspace\" style=\"margin-right:0.2222em;\"><\/span><span class=\"mbin\">+<\/span><span class=\"mspace\" style=\"margin-right:0.2222em;\"><\/span><\/span><span class=\"base\"><span class=\"strut\" style=\"height:0.8778em;vertical-align:-0.1944em;\"><\/span><span class=\"mord mathnormal\" style=\"margin-right:0.05724em;\">j<\/span><span class=\"mord mathnormal\" style=\"margin-right:0.07847em;\">X<\/span><\/span><\/span><\/span>。","plainText":"耗能元件，单位欧（Ω）；u=Ri 对直流与瞬时值都成立，交流下是阻抗的实部 Z=R+jX。","href":"../../../%E7%AB%99%E7%82%B9/%E7%AC%A6%E5%8F%B7%E5%8C%85/%E9%80%9A%E7%94%A8.html#sym-R"},"通用:sym-i":{"pack":"通用","id":"sym-i","title":"<span class=\"katex\" role=\"math\" aria-label=\"i\" data-math-plain=\"i\" data-math-tex=\"i\"><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.6595em;\"><\/span><span class=\"mord mathnormal\">i<\/span><\/span><\/span><\/span>：电流瞬时值","titleText":"i：电流瞬时值","text":"随时间变化的电流；直流也用小写 <span class=\"katex\" role=\"math\" aria-label=\"i\" data-math-plain=\"i\" data-math-tex=\"i\"><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.6595em;\"><\/span><span class=\"mord mathnormal\">i<\/span><\/span><\/span><\/span> 记恒定值，有效值用大写 <span class=\"katex\" role=\"math\" aria-label=\"I\" data-math-plain=\"I\" data-math-tex=\"I\"><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.6833em;\"><\/span><span class=\"mord mathnormal\" style=\"margin-right:0.07847em;\">I<\/span><\/span><\/span><\/span>。","plainText":"随时间变化的电流；直流也用小写 i 记恒定值，有效值用大写 I。","href":"../../../%E7%AB%99%E7%82%B9/%E7%AC%A6%E5%8F%B7%E5%8C%85/%E9%80%9A%E7%94%A8.html#sym-i"}}}</script>
-  <script src="../../../assets/plugins/symbols-bubble.js?v=a19ff4ab9d" data-opt-asset="symbols-bubble" defer></script>
-  <script src="../../../assets/plugins/site-root.js?v=3c0c147d88" defer></script>
+  <script src="../../../assets/plugins/symbols-bubble.js?v=47529ce104" data-opt-asset="symbols-bubble" defer></script>
+  <script src="../../../assets/plugins/site-root.js?v=3182667f82" defer></script>
   <script src="../../../assets/plugins/nav-structure.js?v=1a5c4c403c" defer></script>
   <script src="../../../assets/plugins/drawer-sync.js?v=7adce844e9" defer></script>
   <script src="../../../assets/plugins/sw-kill.js?v=af296685f6" defer></script>
   <script>(function(){
-    var CFG={sc:"assets/plugins/site-search.css?v=45716eda6c",sj:"assets/plugins/site-search.js?v=e4afa47fd0",sp:"assets/plugins/spa-router.js?v=32f4075a78",hp:"assets/plugins/site-helpers.js?v=cdc131182a"};
+    var CFG={sc:"assets/plugins/site-search.css?v=45716eda6c",sj:"assets/plugins/site-search.js?v=d16805295f",sp:"assets/plugins/spa-router.js?v=32f4075a78",hp:"assets/plugins/site-helpers.js?v=da87264c44"};
     var loaded={};
     function urlOf(rel){var r=document.documentElement.getAttribute("data-root")||"./";return new URL(r+rel,location.href).href;}
     function addCss(rel,key){if(loaded[key])return;loaded[key]=1;var l=document.createElement("link");l.rel="stylesheet";l.href=urlOf(rel);document.head.appendChild(l);}

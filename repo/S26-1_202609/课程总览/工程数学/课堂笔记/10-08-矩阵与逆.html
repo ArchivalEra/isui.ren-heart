@@ -28,7 +28,7 @@
   })();
   </script>
   <!-- 按页条件加载数学/图元样式，基础页零额外 CSS 阻塞。 -->
-  <link rel="stylesheet" href="../../../assets/theme/shirone-reader.css?v=bdb9385f23">
+  <link rel="stylesheet" href="../../../assets/theme/shirone-reader.css?v=51d4fddde8">
   <!-- 站点图标统一使用轻量静态 WebP（较 GIF 体积减重 >90%） -->
   <link rel="icon" type="image/webp" href="../../../assets/favicon/favicon.webp">
   <link rel="apple-touch-icon" href="../../../assets/favicon/apple-touch-icon.webp">
@@ -341,7 +341,7 @@
                 字号 <span class="palette-font-sample" id="font-sample">Aa</span>
                 <span class="palette-font-value" id="font-size-value">16px</span>
               </span>
-              <input type="range" min="12" max="20" step="1" value="16" class="palette-slider" id="font-size-slider">
+              <input type="range" min="14" max="25" step="1" value="16" class="palette-slider" id="font-size-slider">
             </div>
             <div>
               <div class="palette-swatches-title">预设配色</div>
@@ -714,6 +714,7 @@ X = A⁻¹B              （单位矩阵乘任何矩阵等于它本身）</code>
 
         <!-- Table of Contents -->
         <aside class="m3-toc">
+      <div class="toc-resizer" id="toc-resizer" title="按住拖拽调整目录宽度，双击恢复默认宽度"></div>
       <div class="toc-title">目录</div>
       <ul class="toc-list">
         <li class="toc-item level-2"><a href="#题号条目">题号条目</a></li><li class="toc-item level-3"><a href="#例2-3-矩阵加法-9-月-10-月产量相加">例2.3（矩阵加法：9 月、10 月产量相加）</a></li><li class="toc-item level-3"><a href="#例2-2-矩阵乘法-2-3-乘-3-2-以及反过来乘">例2.2（矩阵乘法：2×3 乘 3×2，以及反过来乘）</a></li><li class="toc-item level-3"><a href="#例-设-a-1-且-aa-e-证明-a-e-0">例（设 |A| = −1 且 AAᵀ = E，证明 |A + E| = 0）</a></li><li class="toc-item level-3"><a href="#例2-4-a-反对称-b-对称-证明-ab-ba-是反对称矩阵">例2.4（A 反对称、B 对称，证明 AB + BA 是反对称矩阵）</a></li><li class="toc-item level-3"><a href="#案例2-2-超市的当日销售额与利润">案例2.2（超市的当日销售额与利润）</a></li><li class="toc-item level-3"><a href="#定义2-9-伴随矩阵">定义2.9（伴随矩阵）</a></li><li class="toc-item level-3"><a href="#逆矩阵引例-书-33-34-页-两工厂两种产品-已知总收入求单价">逆矩阵引例（书 33–34 页：两工厂两种产品，已知总收入求单价）</a></li><li class="toc-item level-2"><a href="#没编号但讲了的知识点">没编号但讲了的知识点</a></li><li class="toc-item level-3"><a href="#矩阵与方阵-行列式只对方阵有意义">矩阵与方阵；行列式只对方阵有意义</a></li><li class="toc-item level-3"><a href="#行矩阵与列矩阵-矩阵不是数">行矩阵与列矩阵；矩阵不是数</a></li><li class="toc-item level-3"><a href="#同型矩阵">同型矩阵</a></li><li class="toc-item level-3"><a href="#零矩阵">零矩阵</a></li><li class="toc-item level-3"><a href="#主对角线">主对角线</a></li><li class="toc-item level-3"><a href="#四种常见方阵">四种常见方阵</a></li><li class="toc-item level-3"><a href="#矩阵相等">矩阵相等</a></li><li class="toc-item level-3"><a href="#矩阵加法-负矩阵与减法">矩阵加法、负矩阵与减法</a></li><li class="toc-item level-3"><a href="#加法的运算律">加法的运算律</a></li><li class="toc-item level-3"><a href="#数乘及其运算律">数乘及其运算律</a></li><li class="toc-item level-3"><a href="#矩阵乘法-本节难点">矩阵乘法（本节难点）</a></li><li class="toc-item level-3"><a href="#乘法不满足交换律-不满足消去律">乘法不满足交换律、不满足消去律</a></li><li class="toc-item level-3"><a href="#乘法的运算律与单位矩阵的作用">乘法的运算律与单位矩阵的作用</a></li><li class="toc-item level-3"><a href="#转置及其四条性质">转置及其四条性质</a></li><li class="toc-item level-3"><a href="#对称矩阵与反对称矩阵">对称矩阵与反对称矩阵</a></li><li class="toc-item level-3"><a href="#行列式的三条性质-本节用到的">行列式的三条性质（本节用到的）</a></li><li class="toc-item level-3"><a href="#两个-千万不要搞混-的地方">两个&quot;千万不要搞混&quot;的地方</a></li><li class="toc-item level-3"><a href="#逆矩阵的定义与唯一性">逆矩阵的定义与唯一性</a></li><li class="toc-item level-3"><a href="#用-matlab-算矩阵">用 MATLAB 算矩阵</a></li><li class="toc-item level-2"><a href="#本篇没讲的">本篇没讲的</a></li><li class="toc-item level-2"><a href="#转写与术语">转写与术语</a></li>
@@ -723,14 +724,14 @@ X = A⁻¹B              （单位矩阵乘任何矩阵等于它本身）</code>
     </div>
   </div>
 
-  <script src="../../../assets/theme/shirone-reader.js?v=91f58863eb" defer></script>
+  <script src="../../../assets/theme/shirone-reader.js?v=f1eb4dba64" defer></script>
   <script src="../../../assets/plugins/disclosure-anchor.js?v=c242987556" defer></script>
-  <script src="../../../assets/plugins/site-root.js?v=3c0c147d88" defer></script>
+  <script src="../../../assets/plugins/site-root.js?v=3182667f82" defer></script>
   <script src="../../../assets/plugins/nav-structure.js?v=1a5c4c403c" defer></script>
   <script src="../../../assets/plugins/drawer-sync.js?v=7adce844e9" defer></script>
   <script src="../../../assets/plugins/sw-kill.js?v=af296685f6" defer></script>
   <script>(function(){
-    var CFG={sc:"assets/plugins/site-search.css?v=45716eda6c",sj:"assets/plugins/site-search.js?v=e4afa47fd0",sp:"assets/plugins/spa-router.js?v=32f4075a78",hp:"assets/plugins/site-helpers.js?v=cdc131182a"};
+    var CFG={sc:"assets/plugins/site-search.css?v=45716eda6c",sj:"assets/plugins/site-search.js?v=d16805295f",sp:"assets/plugins/spa-router.js?v=32f4075a78",hp:"assets/plugins/site-helpers.js?v=da87264c44"};
     var loaded={};
     function urlOf(rel){var r=document.documentElement.getAttribute("data-root")||"./";return new URL(r+rel,location.href).href;}
     function addCss(rel,key){if(loaded[key])return;loaded[key]=1;var l=document.createElement("link");l.rel="stylesheet";l.href=urlOf(rel);document.head.appendChild(l);}

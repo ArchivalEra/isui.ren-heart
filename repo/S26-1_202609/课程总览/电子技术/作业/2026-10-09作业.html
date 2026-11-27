@@ -29,7 +29,7 @@
   </script>
   <!-- 按页条件加载数学/图元样式，基础页零额外 CSS 阻塞。 -->
   <link rel="stylesheet" href="../../../assets/katex/katex.min.css?v=383e7b8d45" data-opt-asset="katex-css">
-  <link rel="stylesheet" href="../../../assets/theme/shirone-reader.css?v=bdb9385f23">
+  <link rel="stylesheet" href="../../../assets/theme/shirone-reader.css?v=51d4fddde8">
   <!-- 站点图标统一使用轻量静态 WebP（较 GIF 体积减重 >90%） -->
   <link rel="icon" type="image/webp" href="../../../assets/favicon/favicon.webp">
   <link rel="apple-touch-icon" href="../../../assets/favicon/apple-touch-icon.webp">
@@ -366,7 +366,7 @@
                 字号 <span class="palette-font-sample" id="font-sample">Aa</span>
                 <span class="palette-font-value" id="font-size-value">16px</span>
               </span>
-              <input type="range" min="12" max="20" step="1" value="16" class="palette-slider" id="font-size-slider">
+              <input type="range" min="14" max="25" step="1" value="16" class="palette-slider" id="font-size-slider">
             </div>
             <div>
               <div class="palette-swatches-title">预设配色</div>
@@ -600,6 +600,7 @@
 
         <!-- Table of Contents -->
         <aside class="m3-toc">
+      <div class="toc-resizer" id="toc-resizer" title="按住拖拽调整目录宽度，双击恢复默认宽度"></div>
       <div class="toc-title">目录</div>
       <ul class="toc-list">
         <li class="toc-item level-2"><a href="#1-依赖">1. 依赖</a></li><li class="toc-item level-2"><a href="#一-习题-7-8-1-提公因子-消去法">一、习题 7.8(1)（提公因子 + 消去法）</a></li><li class="toc-item level-2"><a href="#二-习题-7-8-2-展开消零-两次消去法">二、习题 7.8(2)（展开消零 + 两次消去法）</a></li><li class="toc-item level-2"><a href="#三-习题-7-8-3-互补律-四个最小项合起来等于-1">三、习题 7.8(3)（互补律：四个最小项合起来等于 1）</a></li><li class="toc-item level-2"><a href="#四-习题-7-8-4-两边都化到最小项再比">四、习题 7.8(4)（两边都化到最小项再比）</a></li><li class="toc-item level-2"><a href="#小结-这份作业要带走的东西">小结：这份作业要带走的东西</a></li>
@@ -609,16 +610,16 @@
     </div>
   </div>
 
-  <script src="../../../assets/theme/shirone-reader.js?v=91f58863eb" defer></script>
+  <script src="../../../assets/theme/shirone-reader.js?v=f1eb4dba64" defer></script>
   <script src="../../../assets/plugins/disclosure-anchor.js?v=c242987556" defer></script>
   <script type="application/json" id="sym-glossary-json">{"env":"通用+电子技术","ctx":"电子技术","terms":{"电子技术:sym-D":{"pack":"电子技术","id":"sym-D","title":"<span class=\"katex\" role=\"math\" aria-label=\"D\" data-math-plain=\"D\" data-math-tex=\"D\"><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.6833em;\"><\/span><span class=\"mord mathnormal\" style=\"margin-right:0.02778em;\">D<\/span><\/span><\/span><\/span>：D 触发器输入","titleText":"D：D 触发器输入","text":"D 触发器的数据输入；CP <strong>上升沿<\/strong>把 <span class=\"katex\" role=\"math\" aria-label=\"D\" data-math-plain=\"D\" data-math-tex=\"D\"><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.6833em;\"><\/span><span class=\"mord mathnormal\" style=\"margin-right:0.02778em;\">D<\/span><\/span><\/span><\/span> 送到 <span class=\"katex\" role=\"math\" aria-label=\"Q\" data-math-plain=\"Q\" data-math-tex=\"Q\"><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.8778em;vertical-align:-0.1944em;\"><\/span><span class=\"mord mathnormal\">Q<\/span><\/span><\/span><\/span>（<span class=\"katex\" role=\"math\" aria-label=\"Qn+1=D\" data-math-plain=\"Qn+1=D\" data-math-tex=\"Q_{n+1}=D\"><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.8917em;vertical-align:-0.2083em;\"><\/span><span class=\"mord\"><span class=\"mord mathnormal\">Q<\/span><span class=\"msupsub\"><span class=\"vlist-t vlist-t2\"><span class=\"vlist-r\"><span class=\"vlist\" style=\"height:0.3011em;\"><span style=\"top:-2.55em;margin-left:0em;margin-right:0.05em;\"><span class=\"pstrut\" style=\"height:2.7em;\"><\/span><span class=\"sizing reset-size6 size3 mtight\"><span class=\"mord mtight\"><span class=\"mord mtight\"><span class=\"mord mathnormal mtight\">n<\/span><span class=\"mbin mtight\">+<\/span><span class=\"mord mtight\">1<\/span><\/span><\/span><\/span><\/span><\/span><span class=\"vlist-s\">​<\/span><\/span><span class=\"vlist-r\"><span class=\"vlist\" style=\"height:0.2083em;\"><span><\/span><\/span><\/span><\/span><\/span><\/span><span class=\"mspace\" style=\"margin-right:0.2778em;\"><\/span><span class=\"mrel\">=<\/span><span class=\"mspace\" style=\"margin-right:0.2778em;\"><\/span><\/span><span class=\"base\"><span class=\"strut\" style=\"height:0.6833em;\"><\/span><span class=\"mord mathnormal\" style=\"margin-right:0.02778em;\">D<\/span><\/span><\/span><\/span>），沿外 <span class=\"katex\" role=\"math\" aria-label=\"D\" data-math-plain=\"D\" data-math-tex=\"D\"><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.6833em;\"><\/span><span class=\"mord mathnormal\" style=\"margin-right:0.02778em;\">D<\/span><\/span><\/span><\/span> 怎么变输出都不动。","plainText":"D 触发器的数据输入；CP **上升沿**把 D 送到 Q（Q_n+1=D），沿外 D 怎么变输出都不动。","href":"../%E6%95%99%E6%9D%90%E8%A7%A3%E6%9E%90/%E7%AC%A6%E5%8F%B7%E5%85%A5%E9%97%A8.html#sym-D"}}}</script>
-  <script src="../../../assets/plugins/symbols-bubble.js?v=a19ff4ab9d" data-opt-asset="symbols-bubble" defer></script>
-  <script src="../../../assets/plugins/site-root.js?v=3c0c147d88" defer></script>
+  <script src="../../../assets/plugins/symbols-bubble.js?v=47529ce104" data-opt-asset="symbols-bubble" defer></script>
+  <script src="../../../assets/plugins/site-root.js?v=3182667f82" defer></script>
   <script src="../../../assets/plugins/nav-structure.js?v=1a5c4c403c" defer></script>
   <script src="../../../assets/plugins/drawer-sync.js?v=7adce844e9" defer></script>
   <script src="../../../assets/plugins/sw-kill.js?v=af296685f6" defer></script>
   <script>(function(){
-    var CFG={sc:"assets/plugins/site-search.css?v=45716eda6c",sj:"assets/plugins/site-search.js?v=e4afa47fd0",sp:"assets/plugins/spa-router.js?v=32f4075a78",hp:"assets/plugins/site-helpers.js?v=cdc131182a"};
+    var CFG={sc:"assets/plugins/site-search.css?v=45716eda6c",sj:"assets/plugins/site-search.js?v=d16805295f",sp:"assets/plugins/spa-router.js?v=32f4075a78",hp:"assets/plugins/site-helpers.js?v=da87264c44"};
     var loaded={};
     function urlOf(rel){var r=document.documentElement.getAttribute("data-root")||"./";return new URL(r+rel,location.href).href;}
     function addCss(rel,key){if(loaded[key])return;loaded[key]=1;var l=document.createElement("link");l.rel="stylesheet";l.href=urlOf(rel);document.head.appendChild(l);}

@@ -28,7 +28,7 @@
   })();
   </script>
   <!-- 按页条件加载数学/图元样式，基础页零额外 CSS 阻塞。 -->
-  <link rel="stylesheet" href="../../../assets/theme/shirone-reader.css?v=bdb9385f23">
+  <link rel="stylesheet" href="../../../assets/theme/shirone-reader.css?v=51d4fddde8">
   <!-- 站点图标统一使用轻量静态 WebP（较 GIF 体积减重 >90%） -->
   <link rel="icon" type="image/webp" href="../../../assets/favicon/favicon.webp">
   <link rel="apple-touch-icon" href="../../../assets/favicon/apple-touch-icon.webp">
@@ -377,7 +377,7 @@
                 字号 <span class="palette-font-sample" id="font-sample">Aa</span>
                 <span class="palette-font-value" id="font-size-value">16px</span>
               </span>
-              <input type="range" min="12" max="20" step="1" value="16" class="palette-slider" id="font-size-slider">
+              <input type="range" min="14" max="25" step="1" value="16" class="palette-slider" id="font-size-slider">
             </div>
             <div>
               <div class="palette-swatches-title">预设配色</div>
@@ -576,6 +576,7 @@
 
         <!-- Table of Contents -->
         <aside class="m3-toc">
+      <div class="toc-resizer" id="toc-resizer" title="按住拖拽调整目录宽度，双击恢复默认宽度"></div>
       <div class="toc-title">目录</div>
       <ul class="toc-list">
         <li class="toc-item level-2"><a href="#题号条目">题号条目</a></li><li class="toc-item level-3"><a href="#例题-求受控电压源的功率-电流源-1-a-受控电压源-3u">例题：求受控电压源的功率（电流源 1 A、受控电压源 3U₁）</a></li><li class="toc-item level-3"><a href="#例题-求受控电流源发出的功率-2-a-6-v-0-5-倍">例题：求受控电流源发出的功率（2 A→6 V，0.5 倍）</a></li><li class="toc-item level-3"><a href="#例题-求电流-i-与-u_ab-受控电流源-0-5i">例题：求电流 I₁ 与 U_AB（受控电流源 0.5I₁）</a></li><li class="toc-item level-3"><a href="#例题-求受控电流源发出的功率-受控电流源-2-a-与-2-v-电压源并联">例题：求受控电流源发出的功率（受控电流源 2 A，与 2 V 电压源并联）</a></li><li class="toc-item level-3"><a href="#例题-开关-s-打开与闭合时-i-i-的比较">例题：开关 S 打开与闭合时 I₁、I₂ 的比较</a></li><li class="toc-item level-2"><a href="#没编号但讲了的知识点">没编号但讲了的知识点</a></li><li class="toc-item level-3"><a href="#上节复习">上节复习</a></li><li class="toc-item level-3"><a href="#受控源的定义与地位">受控源的定义与地位</a></li><li class="toc-item level-3"><a href="#受控源的四种类型与控制系数">受控源的四种类型与控制系数</a></li><li class="toc-item level-3"><a href="#受控源与理想源的对照">受控源与理想源的对照</a></li><li class="toc-item level-3"><a href="#受控源的功率">受控源的功率</a></li><li class="toc-item level-3"><a href="#受控源与独立源的比较">受控源与独立源的比较</a></li><li class="toc-item level-3"><a href="#列-kvl-时如何选回路">列 KVL 时如何选回路</a></li><li class="toc-item level-3"><a href="#开路电压的理解-复习">开路电压的理解（复习）</a></li><li class="toc-item level-2"><a href="#本篇没讲的">本篇没讲的</a></li><li class="toc-item level-2"><a href="#转写与术语">转写与术语</a></li>
@@ -585,14 +586,14 @@
     </div>
   </div>
 
-  <script src="../../../assets/theme/shirone-reader.js?v=91f58863eb" defer></script>
+  <script src="../../../assets/theme/shirone-reader.js?v=f1eb4dba64" defer></script>
   <script src="../../../assets/plugins/disclosure-anchor.js?v=c242987556" defer></script>
-  <script src="../../../assets/plugins/site-root.js?v=3c0c147d88" defer></script>
+  <script src="../../../assets/plugins/site-root.js?v=3182667f82" defer></script>
   <script src="../../../assets/plugins/nav-structure.js?v=1a5c4c403c" defer></script>
   <script src="../../../assets/plugins/drawer-sync.js?v=7adce844e9" defer></script>
   <script src="../../../assets/plugins/sw-kill.js?v=af296685f6" defer></script>
   <script>(function(){
-    var CFG={sc:"assets/plugins/site-search.css?v=45716eda6c",sj:"assets/plugins/site-search.js?v=e4afa47fd0",sp:"assets/plugins/spa-router.js?v=32f4075a78",hp:"assets/plugins/site-helpers.js?v=cdc131182a"};
+    var CFG={sc:"assets/plugins/site-search.css?v=45716eda6c",sj:"assets/plugins/site-search.js?v=d16805295f",sp:"assets/plugins/spa-router.js?v=32f4075a78",hp:"assets/plugins/site-helpers.js?v=da87264c44"};
     var loaded={};
     function urlOf(rel){var r=document.documentElement.getAttribute("data-root")||"./";return new URL(r+rel,location.href).href;}
     function addCss(rel,key){if(loaded[key])return;loaded[key]=1;var l=document.createElement("link");l.rel="stylesheet";l.href=urlOf(rel);document.head.appendChild(l);}

@@ -29,7 +29,7 @@
   </script>
   <!-- 按页条件加载数学/图元样式，基础页零额外 CSS 阻塞。 -->
   <link rel="stylesheet" href="../../../../../assets/katex/katex.min.css?v=383e7b8d45" data-opt-asset="katex-css">
-  <link rel="stylesheet" href="../../../../../assets/theme/shirone-reader.css?v=bdb9385f23">
+  <link rel="stylesheet" href="../../../../../assets/theme/shirone-reader.css?v=51d4fddde8">
   <!-- 站点图标统一使用轻量静态 WebP（较 GIF 体积减重 >90%） -->
   <link rel="icon" type="image/webp" href="../../../../../assets/favicon/favicon.webp">
   <link rel="apple-touch-icon" href="../../../../../assets/favicon/apple-touch-icon.webp">
@@ -390,7 +390,7 @@
                 字号 <span class="palette-font-sample" id="font-sample">Aa</span>
                 <span class="palette-font-value" id="font-size-value">16px</span>
               </span>
-              <input type="range" min="12" max="20" step="1" value="16" class="palette-slider" id="font-size-slider">
+              <input type="range" min="14" max="25" step="1" value="16" class="palette-slider" id="font-size-slider">
             </div>
             <div>
               <div class="palette-swatches-title">预设配色</div>
@@ -1041,6 +1041,7 @@ l0,-144c-2,-159.3,-10,-310.7,-24,-454c-53.3,-528,-210,-949.7,
 
         <!-- Table of Contents -->
         <aside class="m3-toc">
+      <div class="toc-resizer" id="toc-resizer" title="按住拖拽调整目录宽度，双击恢复默认宽度"></div>
       <div class="toc-title">目录</div>
       <ul class="toc-list">
         <li class="toc-item level-2"><a href="#2-5-1-矩阵的直接输入-原书-p46">2.5.1 矩阵的直接输入（原书 p46）</a></li><li class="toc-item level-3"><a href="#原书抄录">原书抄录</a></li><li class="toc-item level-3"><a href="#2-5-2-矩阵的函数生成法">2.5.2 矩阵的函数生成法</a></li><li class="toc-item level-3"><a href="#2-5-3-矩阵的加减运算">2.5.3 矩阵的加减运算</a></li><li class="toc-item level-3"><a href="#2-5-4-矩阵的乘法运算">2.5.4 矩阵的乘法运算</a></li><li class="toc-item level-3"><a href="#2-5-5-矩阵的除法运算">2.5.5 矩阵的除法运算</a></li><li class="toc-item level-3"><a href="#2-5-6-矩阵的逆">2.5.6 矩阵的逆</a></li><li class="toc-item level-3"><a href="#2-5-7-矩阵的秩">2.5.7 矩阵的秩</a></li><li class="toc-item level-3"><a href="#解析">解析</a></li><li class="toc-item level-2"><a href="#本机复现-gnu-octave-11-3-0">本机复现（GNU Octave 11.3.0）</a></li>
@@ -1050,16 +1051,16 @@ l0,-144c-2,-159.3,-10,-310.7,-24,-454c-53.3,-528,-210,-949.7,
     </div>
   </div>
 
-  <script src="../../../../../assets/theme/shirone-reader.js?v=91f58863eb" defer></script>
+  <script src="../../../../../assets/theme/shirone-reader.js?v=f1eb4dba64" defer></script>
   <script src="../../../../../assets/plugins/disclosure-anchor.js?v=c242987556" defer></script>
   <script type="application/json" id="sym-glossary-json">{"env":"工程数学","ctx":"工程数学","terms":{"工程数学:sym-inv":{"pack":"工程数学","id":"sym-inv","title":"<span class=\"katex\" role=\"math\" aria-label=\"A-1\" data-math-plain=\"A-1\" data-math-tex=\"A^{-1}\"><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.8141em;\"><\/span><span class=\"mord\"><span class=\"mord mathnormal\">A<\/span><span class=\"msupsub\"><span class=\"vlist-t\"><span class=\"vlist-r\"><span class=\"vlist\" style=\"height:0.8141em;\"><span style=\"top:-3.063em;margin-right:0.05em;\"><span class=\"pstrut\" style=\"height:2.7em;\"><\/span><span class=\"sizing reset-size6 size3 mtight\"><span class=\"mord mtight\"><span class=\"mord mtight\"><span class=\"mord mtight\">−<\/span><span class=\"mord mtight\">1<\/span><\/span><\/span><\/span><\/span><\/span><\/span><\/span><\/span><\/span><\/span><\/span><\/span>：逆矩阵","titleText":"A^-1：逆矩阵","text":"「撤销 <span class=\"katex\" role=\"math\" aria-label=\"A\" data-math-plain=\"A\" data-math-tex=\"A\"><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.6833em;\"><\/span><span class=\"mord mathnormal\">A<\/span><\/span><\/span><\/span>」的那个矩阵：<span class=\"katex\" role=\"math\" aria-label=\"AA-1=E\" data-math-plain=\"AA-1=E\" data-math-tex=\"AA^{-1}=E\"><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.8141em;\"><\/span><span class=\"mord mathnormal\">A<\/span><span class=\"mord\"><span class=\"mord mathnormal\">A<\/span><span class=\"msupsub\"><span class=\"vlist-t\"><span class=\"vlist-r\"><span class=\"vlist\" style=\"height:0.8141em;\"><span style=\"top:-3.063em;margin-right:0.05em;\"><span class=\"pstrut\" style=\"height:2.7em;\"><\/span><span class=\"sizing reset-size6 size3 mtight\"><span class=\"mord mtight\"><span class=\"mord mtight\"><span class=\"mord mtight\">−<\/span><span class=\"mord mtight\">1<\/span><\/span><\/span><\/span><\/span><\/span><\/span><\/span><\/span><\/span><span class=\"mspace\" style=\"margin-right:0.2778em;\"><\/span><span class=\"mrel\">=<\/span><span class=\"mspace\" style=\"margin-right:0.2778em;\"><\/span><\/span><span class=\"base\"><span class=\"strut\" style=\"height:0.6833em;\"><\/span><span class=\"mord mathnormal\" style=\"margin-right:0.05764em;\">E<\/span><\/span><\/span><\/span>。<strong>不是 <span class=\"katex\" role=\"math\" aria-label=\"1/A\" data-math-plain=\"1/A\" data-math-tex=\"1/A\"><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:1em;vertical-align:-0.25em;\"><\/span><span class=\"mord\">1/<\/span><span class=\"mord mathnormal\">A<\/span><\/span><\/span><\/span><\/strong>——矩阵没有除法，只有乘逆。存在条件是 <span class=\"katex\" role=\"math\" aria-label=\"|A|≠0\" data-math-plain=\"|A|≠0\" data-math-tex=\"|A|\\neq0\"><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:1em;vertical-align:-0.25em;\"><\/span><span class=\"mord\">∣<\/span><span class=\"mord mathnormal\">A<\/span><span class=\"mord\">∣<\/span><span class=\"mspace\" style=\"margin-right:0.2778em;\"><\/span><span class=\"mrel\"><span class=\"mrel\"><span class=\"mord vbox\"><span class=\"thinbox\"><span class=\"rlap\"><span class=\"strut\" style=\"height:0.8889em;vertical-align:-0.1944em;\"><\/span><span class=\"inner\"><span class=\"mord\"><span class=\"mrel\"><\/span><\/span><\/span><span class=\"fix\"><\/span><\/span><\/span><\/span><\/span><span class=\"mrel\">=<\/span><\/span><span class=\"mspace\" style=\"margin-right:0.2778em;\"><\/span><\/span><span class=\"base\"><span class=\"strut\" style=\"height:0.6444em;\"><\/span><span class=\"mord\">0<\/span><\/span><\/span><\/span>。","plainText":"「撤销 A」的那个矩阵：AA^-1=E。**不是 1/A**——矩阵没有除法，只有乘逆。存在条件是 |A|neq0。","href":"../../%E7%AC%A6%E5%8F%B7%E5%85%A5%E9%97%A8.html#sym-inv"}}}</script>
-  <script src="../../../../../assets/plugins/symbols-bubble.js?v=a19ff4ab9d" data-opt-asset="symbols-bubble" defer></script>
-  <script src="../../../../../assets/plugins/site-root.js?v=3c0c147d88" defer></script>
+  <script src="../../../../../assets/plugins/symbols-bubble.js?v=47529ce104" data-opt-asset="symbols-bubble" defer></script>
+  <script src="../../../../../assets/plugins/site-root.js?v=3182667f82" defer></script>
   <script src="../../../../../assets/plugins/nav-structure.js?v=1a5c4c403c" defer></script>
   <script src="../../../../../assets/plugins/drawer-sync.js?v=7adce844e9" defer></script>
   <script src="../../../../../assets/plugins/sw-kill.js?v=af296685f6" defer></script>
   <script>(function(){
-    var CFG={sc:"assets/plugins/site-search.css?v=45716eda6c",sj:"assets/plugins/site-search.js?v=e4afa47fd0",sp:"assets/plugins/spa-router.js?v=32f4075a78",hp:"assets/plugins/site-helpers.js?v=cdc131182a"};
+    var CFG={sc:"assets/plugins/site-search.css?v=45716eda6c",sj:"assets/plugins/site-search.js?v=d16805295f",sp:"assets/plugins/spa-router.js?v=32f4075a78",hp:"assets/plugins/site-helpers.js?v=da87264c44"};
     var loaded={};
     function urlOf(rel){var r=document.documentElement.getAttribute("data-root")||"./";return new URL(r+rel,location.href).href;}
     function addCss(rel,key){if(loaded[key])return;loaded[key]=1;var l=document.createElement("link");l.rel="stylesheet";l.href=urlOf(rel);document.head.appendChild(l);}

@@ -29,7 +29,7 @@
   </script>
   <!-- 按页条件加载数学/图元样式，基础页零额外 CSS 阻塞。 -->
   <link rel="stylesheet" href="../../../assets/katex/katex.min.css?v=383e7b8d45" data-opt-asset="katex-css">
-  <link rel="stylesheet" href="../../../assets/theme/shirone-reader.css?v=bdb9385f23">
+  <link rel="stylesheet" href="../../../assets/theme/shirone-reader.css?v=51d4fddde8">
   <!-- 站点图标统一使用轻量静态 WebP（较 GIF 体积减重 >90%） -->
   <link rel="icon" type="image/webp" href="../../../assets/favicon/favicon.webp">
   <link rel="apple-touch-icon" href="../../../assets/favicon/apple-touch-icon.webp">
@@ -334,7 +334,7 @@
                 字号 <span class="palette-font-sample" id="font-sample">Aa</span>
                 <span class="palette-font-value" id="font-size-value">16px</span>
               </span>
-              <input type="range" min="12" max="20" step="1" value="16" class="palette-slider" id="font-size-slider">
+              <input type="range" min="14" max="25" step="1" value="16" class="palette-slider" id="font-size-slider">
             </div>
             <div>
               <div class="palette-swatches-title">预设配色</div>
@@ -566,6 +566,7 @@
 
         <!-- Table of Contents -->
         <aside class="m3-toc">
+      <div class="toc-resizer" id="toc-resizer" title="按住拖拽调整目录宽度，双击恢复默认宽度"></div>
       <div class="toc-title">目录</div>
       <ul class="toc-list">
         <li class="toc-item level-2"><a href="#没编号但讲了的知识点">没编号但讲了的知识点</a></li><li class="toc-item level-3"><a href="#安全域-静态与动态">安全域：静态与动态</a></li><li class="toc-item level-3"><a href="#物理参数与状态参数">物理参数与状态参数</a></li><li class="toc-item level-3"><a href="#潮流与雅可比矩阵">潮流与雅可比矩阵</a></li><li class="toc-item level-3"><a href="#时域仿真法-第一类经典方法-讲得最细">时域仿真法（第一类经典方法，讲得最细）</a></li><li class="toc-item level-3"><a href="#直接法-能量函数-李雅普诺夫方法">直接法（能量函数 / 李雅普诺夫方法）</a></li><li class="toc-item level-3"><a href="#第三类-基于故障后系统响应的方法">第三类：基于故障后系统响应的方法</a></li><li class="toc-item level-3"><a href="#第四类-数据挖掘与机器学习-大数据-人工智能">第四类：数据挖掘与机器学习（大数据、人工智能）</a></li><li class="toc-item level-3"><a href="#紧急控制决策方法-评估的目的是用于控制">紧急控制决策方法（评估的目的是用于控制）</a></li><li class="toc-item level-2"><a href="#本篇没讲的">本篇没讲的</a></li><li class="toc-item level-2"><a href="#转写与术语">转写与术语</a></li>
@@ -575,16 +576,16 @@
     </div>
   </div>
 
-  <script src="../../../assets/theme/shirone-reader.js?v=91f58863eb" defer></script>
+  <script src="../../../assets/theme/shirone-reader.js?v=f1eb4dba64" defer></script>
   <script src="../../../assets/plugins/disclosure-anchor.js?v=c242987556" defer></script>
   <script type="application/json" id="sym-glossary-json">{"env":"通用","ctx":"电力大数据与人工智能","terms":{"通用:sym-L":{"pack":"通用","id":"sym-L","title":"<span class=\"katex\" role=\"math\" aria-label=\"L\" data-math-plain=\"L\" data-math-tex=\"L\"><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.6833em;\"><\/span><span class=\"mord mathnormal\">L<\/span><\/span><\/span><\/span>：电感","titleText":"L：电感","text":"储能元件，单位亨（H）；<span class=\"katex\" role=\"math\" aria-label=\"u=Ldi/dt\" data-math-plain=\"u=Ldi/dt\" data-math-tex=\"u=L\\frac{\\mathrm di}{\\mathrm dt}\"><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.4306em;\"><\/span><span class=\"mord mathnormal\">u<\/span><span class=\"mspace\" style=\"margin-right:0.2778em;\"><\/span><span class=\"mrel\">=<\/span><span class=\"mspace\" style=\"margin-right:0.2778em;\"><\/span><\/span><span class=\"base\"><span class=\"strut\" style=\"height:1.2251em;vertical-align:-0.345em;\"><\/span><span class=\"mord mathnormal\">L<\/span><span class=\"mord\"><span class=\"mopen nulldelimiter\"><\/span><span class=\"mfrac\"><span class=\"vlist-t vlist-t2\"><span class=\"vlist-r\"><span class=\"vlist\" style=\"height:0.8801em;\"><span style=\"top:-2.655em;\"><span class=\"pstrut\" style=\"height:3em;\"><\/span><span class=\"sizing reset-size6 size3 mtight\"><span class=\"mord mtight\"><span class=\"mord mtight\"><span class=\"mord mathrm mtight\">d<\/span><span class=\"mord mathnormal mtight\">t<\/span><\/span><\/span><\/span><\/span><span style=\"top:-3.23em;\"><span class=\"pstrut\" style=\"height:3em;\"><\/span><span class=\"frac-line\" style=\"border-bottom-width:0.04em;\"><\/span><\/span><span style=\"top:-3.394em;\"><span class=\"pstrut\" style=\"height:3em;\"><\/span><span class=\"sizing reset-size6 size3 mtight\"><span class=\"mord mtight\"><span class=\"mord mtight\"><span class=\"mord mathrm mtight\">d<\/span><span class=\"mord mathnormal mtight\">i<\/span><\/span><\/span><\/span><\/span><\/span><span class=\"vlist-s\">​<\/span><\/span><span class=\"vlist-r\"><span class=\"vlist\" style=\"height:0.345em;\"><span><\/span><\/span><\/span><\/span><\/span><span class=\"mclose nulldelimiter\"><\/span><\/span><\/span><\/span><\/span>，<strong>电感电流不突变<\/strong>（换路定则），直流稳态相当于短路。","plainText":"储能元件，单位亨（H）；u=Lfracmathrm dimathrm dt，**电感电流不突变**（换路定则），直流稳态相当于短路。","href":"../../../%E7%AB%99%E7%82%B9/%E7%AC%A6%E5%8F%B7%E5%8C%85/%E9%80%9A%E7%94%A8.html#sym-L"},"通用:sym-i":{"pack":"通用","id":"sym-i","title":"<span class=\"katex\" role=\"math\" aria-label=\"i\" data-math-plain=\"i\" data-math-tex=\"i\"><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.6595em;\"><\/span><span class=\"mord mathnormal\">i<\/span><\/span><\/span><\/span>：电流瞬时值","titleText":"i：电流瞬时值","text":"随时间变化的电流；直流也用小写 <span class=\"katex\" role=\"math\" aria-label=\"i\" data-math-plain=\"i\" data-math-tex=\"i\"><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.6595em;\"><\/span><span class=\"mord mathnormal\">i<\/span><\/span><\/span><\/span> 记恒定值，有效值用大写 <span class=\"katex\" role=\"math\" aria-label=\"I\" data-math-plain=\"I\" data-math-tex=\"I\"><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.6833em;\"><\/span><span class=\"mord mathnormal\" style=\"margin-right:0.07847em;\">I<\/span><\/span><\/span><\/span>。","plainText":"随时间变化的电流；直流也用小写 i 记恒定值，有效值用大写 I。","href":"../../../%E7%AB%99%E7%82%B9/%E7%AC%A6%E5%8F%B7%E5%8C%85/%E9%80%9A%E7%94%A8.html#sym-i"},"通用:sym-u":{"pack":"通用","id":"sym-u","title":"<span class=\"katex\" role=\"math\" aria-label=\"u\" data-math-plain=\"u\" data-math-tex=\"u\"><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.4306em;\"><\/span><span class=\"mord mathnormal\">u<\/span><\/span><\/span><\/span>：电压瞬时值","titleText":"u：电压瞬时值","text":"随时间变化的电压（瞬时小写、有效值大写是通用约定）；直流也用小写 <span class=\"katex\" role=\"math\" aria-label=\"u\" data-math-plain=\"u\" data-math-tex=\"u\"><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.4306em;\"><\/span><span class=\"mord mathnormal\">u<\/span><\/span><\/span><\/span> 记恒定值。","plainText":"随时间变化的电压（瞬时小写、有效值大写是通用约定）；直流也用小写 u 记恒定值。","href":"../../../%E7%AB%99%E7%82%B9/%E7%AC%A6%E5%8F%B7%E5%8C%85/%E9%80%9A%E7%94%A8.html#sym-u"}}}</script>
-  <script src="../../../assets/plugins/symbols-bubble.js?v=a19ff4ab9d" data-opt-asset="symbols-bubble" defer></script>
-  <script src="../../../assets/plugins/site-root.js?v=3c0c147d88" defer></script>
+  <script src="../../../assets/plugins/symbols-bubble.js?v=47529ce104" data-opt-asset="symbols-bubble" defer></script>
+  <script src="../../../assets/plugins/site-root.js?v=3182667f82" defer></script>
   <script src="../../../assets/plugins/nav-structure.js?v=1a5c4c403c" defer></script>
   <script src="../../../assets/plugins/drawer-sync.js?v=7adce844e9" defer></script>
   <script src="../../../assets/plugins/sw-kill.js?v=af296685f6" defer></script>
   <script>(function(){
-    var CFG={sc:"assets/plugins/site-search.css?v=45716eda6c",sj:"assets/plugins/site-search.js?v=e4afa47fd0",sp:"assets/plugins/spa-router.js?v=32f4075a78",hp:"assets/plugins/site-helpers.js?v=cdc131182a"};
+    var CFG={sc:"assets/plugins/site-search.css?v=45716eda6c",sj:"assets/plugins/site-search.js?v=d16805295f",sp:"assets/plugins/spa-router.js?v=32f4075a78",hp:"assets/plugins/site-helpers.js?v=da87264c44"};
     var loaded={};
     function urlOf(rel){var r=document.documentElement.getAttribute("data-root")||"./";return new URL(r+rel,location.href).href;}
     function addCss(rel,key){if(loaded[key])return;loaded[key]=1;var l=document.createElement("link");l.rel="stylesheet";l.href=urlOf(rel);document.head.appendChild(l);}

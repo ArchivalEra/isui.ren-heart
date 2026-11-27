@@ -43,23 +43,29 @@ const hashGram = function hashGram(gram) {
   return h >>> 0;
 };
 const verifyPhrase = function verifyPhrase(postingsList) {
+  const findShortestPosting = () => {
+    let anchor = 0;
+    for (let k = 1; k < postingsList.length; k++) {
+      if (!postingsList[k]?.length) return -1;
+      if (postingsList[k].length < postingsList[anchor].length) anchor = k;
+    }
+    return postingsList[anchor].length ? anchor : -1;
+  };
+  const phraseMatchesAt = (sets, anchor, base) => {
+    if (base < 0) return false;
+    for (let k = 0; k < sets.length; k++) {
+      if (k !== anchor && !sets[k].has(base + k)) return false;
+    }
+    return true;
+  };
   if (!postingsList || !postingsList.length) return [];
-  let anchor = 0;
-  for (let k = 1; k < postingsList.length; k++) {
-    if (!postingsList[k]?.length) return [];
-    if (postingsList[k].length < postingsList[anchor].length) anchor = k;
-  }
-  if (!postingsList[anchor].length) return [];
+  const anchor = findShortestPosting();
+  if (anchor < 0) return [];
   const sets = postingsList.map((list) => new Set(list));
   const found = [];
   for (const p of postingsList[anchor]) {
     const base = p - anchor;
-    if (base < 0) continue;
-    let ok = true;
-    for (let k = 0; k < postingsList.length; k++) {
-      if (k !== anchor && !sets[k].has(base + k)) { ok = false; break; }
-    }
-    if (ok) found.push(base);
+    if (phraseMatchesAt(sets, anchor, base)) found.push(base);
   }
   found.sort((a, b) => a - b);
   return found;
@@ -85,6 +91,19 @@ const countOccurrences = function countOccurrences(text, needle) {
   }
 };
 const makeSnippet = function makeSnippet(text, needle, options) {
+  const highlightSegment = (segment, maxMarks) => {
+    let html = '';
+    let cursor = 0;
+    let marks = 0;
+    for (;;) {
+      const hit = segment.indexOf(needle, cursor);
+      if (hit < 0 || marks >= maxMarks) break;
+      html += escapeHtmlText(segment.slice(cursor, hit)) + '<mark>' + escapeHtmlText(needle) + '</mark>';
+      cursor = hit + needle.length;
+      marks += 1;
+    }
+    return html + escapeHtmlText(segment.slice(cursor));
+  };
   const opts = options || {};
   const radius = opts.radius || 42;
   const maxMarks = opts.maxMarks || 6;
@@ -93,19 +112,7 @@ const makeSnippet = function makeSnippet(text, needle, options) {
   if (at < 0) return { html: '', total: 0 };
   const start = Math.max(0, at - radius);
   const end = Math.min(text.length, at + needle.length + radius);
-  const segment = text.slice(start, end);
-  let html = '';
-  let cursor = 0;
-  let marks = 0;
-  for (;;) {
-    const hit = segment.indexOf(needle, cursor);
-    if (hit < 0 || marks >= maxMarks) break;
-    html += escapeHtmlText(segment.slice(cursor, hit)) + '<mark>' + escapeHtmlText(needle) + '</mark>';
-    cursor = hit + needle.length;
-    marks += 1;
-  }
-  html += escapeHtmlText(segment.slice(cursor));
-  html = html.replace(/\n/g, ' ');
+  const html = highlightSegment(text.slice(start, end), maxMarks).replace(/\n/g, ' ');
   return { html: (start > 0 ? '…' : '') + html + (end < text.length ? '…' : ''), total };
 };
 const scoreSearchHit = function scoreSearchHit(entry) {

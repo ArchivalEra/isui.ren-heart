@@ -28,7 +28,7 @@
   })();
   </script>
   <!-- 按页条件加载数学/图元样式，基础页零额外 CSS 阻塞。 -->
-  <link rel="stylesheet" href="../../../assets/theme/shirone-reader.css?v=bdb9385f23">
+  <link rel="stylesheet" href="../../../assets/theme/shirone-reader.css?v=51d4fddde8">
   <!-- 站点图标统一使用轻量静态 WebP（较 GIF 体积减重 >90%） -->
   <link rel="icon" type="image/webp" href="../../../assets/favicon/favicon.webp">
   <link rel="apple-touch-icon" href="../../../assets/favicon/apple-touch-icon.webp">
@@ -377,7 +377,7 @@
                 字号 <span class="palette-font-sample" id="font-sample">Aa</span>
                 <span class="palette-font-value" id="font-size-value">16px</span>
               </span>
-              <input type="range" min="12" max="20" step="1" value="16" class="palette-slider" id="font-size-slider">
+              <input type="range" min="14" max="25" step="1" value="16" class="palette-slider" id="font-size-slider">
             </div>
             <div>
               <div class="palette-swatches-title">预设配色</div>
@@ -584,6 +584,7 @@
 
         <!-- Table of Contents -->
         <aside class="m3-toc">
+      <div class="toc-resizer" id="toc-resizer" title="按住拖拽调整目录宽度，双击恢复默认宽度"></div>
       <div class="toc-title">目录</div>
       <ul class="toc-list">
         <li class="toc-item level-2"><a href="#题号条目">题号条目</a></li><li class="toc-item level-3"><a href="#例题-电流源被短路求电流-i-含-2-v-电源支路">例题：电流源被短路求电流 I（含 2 V 电源支路）</a></li><li class="toc-item level-3"><a href="#例题-求电流源电压及各电源发出功率">例题：求电流源电压及各电源发出功率</a></li><li class="toc-item level-3"><a href="#例题-电压源与电流源并联-求-i-和各元件功率">例题：电压源与电流源并联，求 I 和各元件功率</a></li><li class="toc-item level-3"><a href="#例题-广义节点求-u_ab">例题：广义节点求 U_AB</a></li><li class="toc-item level-3"><a href="#例题-kvl-求电流-i-含-6-v-14-v-5-等元件">例题：KVL 求电流 I（含 6 V、14 V、5 等元件）</a></li><li class="toc-item level-3"><a href="#例题-求电流源两端电压-电流源与-5-并联">例题：求电流源两端电压（电流源与 5 Ω 并联）</a></li><li class="toc-item level-3"><a href="#教材例题-1-5-1-1-5-2-1-5-3-p22">教材例题 1.5.1、1.5.2、1.5.3（P22）</a></li><li class="toc-item level-3"><a href="#练习册纠错-第三页第四题">练习册纠错：第三页第四题</a></li><li class="toc-item level-2"><a href="#没编号但讲了的知识点">没编号但讲了的知识点</a></li><li class="toc-item level-3"><a href="#上节复习-kcl-kvl-电阻元件">上节复习：KCL、KVL、电阻元件</a></li><li class="toc-item level-3"><a href="#电容元件">电容元件</a></li><li class="toc-item level-3"><a href="#电感元件">电感元件</a></li><li class="toc-item level-3"><a href="#有源元件与独立电源">有源元件与独立电源</a></li><li class="toc-item level-2"><a href="#本篇没讲的">本篇没讲的</a></li><li class="toc-item level-2"><a href="#转写与术语">转写与术语</a></li>
@@ -593,14 +594,14 @@
     </div>
   </div>
 
-  <script src="../../../assets/theme/shirone-reader.js?v=91f58863eb" defer></script>
+  <script src="../../../assets/theme/shirone-reader.js?v=f1eb4dba64" defer></script>
   <script src="../../../assets/plugins/disclosure-anchor.js?v=c242987556" defer></script>
-  <script src="../../../assets/plugins/site-root.js?v=3c0c147d88" defer></script>
+  <script src="../../../assets/plugins/site-root.js?v=3182667f82" defer></script>
   <script src="../../../assets/plugins/nav-structure.js?v=1a5c4c403c" defer></script>
   <script src="../../../assets/plugins/drawer-sync.js?v=7adce844e9" defer></script>
   <script src="../../../assets/plugins/sw-kill.js?v=af296685f6" defer></script>
   <script>(function(){
-    var CFG={sc:"assets/plugins/site-search.css?v=45716eda6c",sj:"assets/plugins/site-search.js?v=e4afa47fd0",sp:"assets/plugins/spa-router.js?v=32f4075a78",hp:"assets/plugins/site-helpers.js?v=cdc131182a"};
+    var CFG={sc:"assets/plugins/site-search.css?v=45716eda6c",sj:"assets/plugins/site-search.js?v=d16805295f",sp:"assets/plugins/spa-router.js?v=32f4075a78",hp:"assets/plugins/site-helpers.js?v=da87264c44"};
     var loaded={};
     function urlOf(rel){var r=document.documentElement.getAttribute("data-root")||"./";return new URL(r+rel,location.href).href;}
     function addCss(rel,key){if(loaded[key])return;loaded[key]=1;var l=document.createElement("link");l.rel="stylesheet";l.href=urlOf(rel);document.head.appendChild(l);}
