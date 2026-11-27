@@ -1,12 +1,12 @@
 {
-	"generatedAt": "2026-11-27T10:07:28.193Z",
+	"generatedAt": "2026-11-27T13:57:38.671Z",
 	"acceleratedDirs": ["Octave", "S26-1_202609"],
 	"entries": [
 		{
 			"name": "isui.ren-heart",
 			"pages": "ready",
 			"accelerated": false,
-			"pushedAt": "2026-11-27T10:02:50Z",
+			"pushedAt": "2026-11-27T12:53:15Z",
 			"status": "built",
 			"description": "isui.ren 的站点心脏：EdgeOne Pages 静态源、边缘中间件与跨仓部署链",
 			"language": "Python",
@@ -19,13 +19,26 @@
 			"name": "S26-1_202609",
 			"pages": "absent",
 			"accelerated": true,
-			"pushedAt": "2026-11-27T10:01:42Z",
+			"pushedAt": "2026-11-27T12:51:57Z",
 			"status": null,
 			"description": "一种很便宜的，OKF0.2格式的知识库，人类或机器都能看懂",
 			"language": "JavaScript",
 			"url": "https://github.com/ArchivalEra/S26-1_202609",
 			"icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMTIgN2MtMS40LTEuMi0zLjQtMS45LTUuNi0xLjktLjcgMC0xLjQuMDYtMiAuMTlWMTguM2MuNi0uMTIgMS4zLS4xOSAyLS4xOSAyLjIgMCA0LjIuNyA1LjYgMS45IDEuNC0xLjIgMy40LTEuOSA1LjYtMS45LjcgMCAxLjQuMDcgMiAuMTlWNS4yOWMtLjYtLjEzLTEuMy0uMTktMi0uMTktMi4yIDAtNC4yLjctNS42IDEuOVoiLz48cGF0aCBkPSJNMTIgN3YxMyIvPjwvc3ZnPg==",
 			"siteIcon": "data:image/webp;base64,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",
+			"category": "app"
+		},
+		{
+			"name": "Static-Contract",
+			"pages": "absent",
+			"accelerated": false,
+			"pushedAt": "2026-11-27T10:55:46Z",
+			"status": null,
+			"description": "apt-style contract for static distribution",
+			"language": "Python",
+			"url": "https://github.com/ArchivalEra/Static-Contract",
+			"icon": "",
+			"siteIcon": "",
 			"category": "app"
 		},
 		{
@@ -64,19 +77,6 @@
 			"language": "Python",
 			"url": "https://github.com/ArchivalEra/Einfacht",
 			"icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cmVjdCB4PSI2LjUiIHk9IjQuNSIgd2lkdGg9IjExIiBoZWlnaHQ9IjE1LjUiIHJ4PSIyLjIiLz48cGF0aCBkPSJNOS41IDMuNWg1djIuMmgtNXoiLz48cGF0aCBkPSJNOS4zIDEyLjhsMS45IDEuOSAzLjYtNCIvPjwvc3ZnPg==",
-			"siteIcon": "",
-			"category": "app"
-		},
-		{
-			"name": "Static-Contract",
-			"pages": "absent",
-			"accelerated": false,
-			"pushedAt": "2026-11-27T02:13:12Z",
-			"status": null,
-			"description": "apt-style contract for static distribution",
-			"language": "Python",
-			"url": "https://github.com/ArchivalEra/Static-Contract",
-			"icon": "",
 			"siteIcon": "",
 			"category": "app"
 		},
