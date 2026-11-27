@@ -8,12 +8,55 @@
     "电力大数据与人工智能": "通用",
     "通用电气": "通用+通用电气"
   },
-  "buildPhases": [],
+  "buildPhases": [
+    {
+      "label": "符号-通用",
+      "env": "通用",
+      "pages": [
+        "符号总览/通用.md"
+      ]
+    },
+    {
+      "label": "符号-工程数学",
+      "env": "工程数学",
+      "pages": [
+        "符号总览/工程数学.md"
+      ]
+    },
+    {
+      "label": "符号-电机学",
+      "env": "电机学",
+      "pages": [
+        "符号总览/电机学.md"
+      ]
+    },
+    {
+      "label": "符号-电路原理",
+      "env": "电路原理",
+      "pages": [
+        "符号总览/电路原理.md"
+      ]
+    },
+    {
+      "label": "符号-电子技术",
+      "env": "电子技术",
+      "pages": [
+        "符号总览/电子技术.md"
+      ]
+    },
+    {
+      "label": "符号-通用电气",
+      "env": "通用电气",
+      "pages": [
+        "符号总览/通用电气.md"
+      ]
+    }
+  ],
   "packs": {
     "通用": {
       "okfId": "okf.site.symbol_pack.common",
       "course": "通用",
-      "sourcePage": "站点/符号包/通用.md",
+      "sourcePage": "符号总览/通用.md",
       "entriesCount": 34,
       "file": "通用.json",
       "url": "https://isui.ren/repo/S26-1_202609/machine/symbols/%E9%80%9A%E7%94%A8.json"
@@ -21,7 +64,7 @@
     "通用电气": {
       "okfId": "okf.course.general_electric.textbook.symbols",
       "course": "通用电气",
-      "sourcePage": "课程总览/通用电气/教材解析/符号入门.md",
+      "sourcePage": "符号总览/通用电气.md",
       "entriesCount": 57,
       "file": "通用电气.json",
       "url": "https://isui.ren/repo/S26-1_202609/machine/symbols/%E9%80%9A%E7%94%A8%E7%94%B5%E6%B0%94.json"
@@ -29,7 +72,7 @@
     "电机学": {
       "okfId": "okf.course.electric_machinery.textbook.symbols",
       "course": "电机学",
-      "sourcePage": "课程总览/电机学/教材解析/符号入门.md",
+      "sourcePage": "符号总览/电机学.md",
       "entriesCount": 123,
       "file": "电机学.json",
       "url": "https://isui.ren/repo/S26-1_202609/machine/symbols/%E7%94%B5%E6%9C%BA%E5%AD%A6.json"
@@ -37,7 +80,7 @@
     "工程数学": {
       "okfId": "okf.course.engineering_math.textbook.notation",
       "course": "工程数学",
-      "sourcePage": "课程总览/工程数学/教材解析/符号入门.md",
+      "sourcePage": "符号总览/工程数学.md",
       "entriesCount": 16,
       "file": "工程数学.json",
       "url": "https://isui.ren/repo/S26-1_202609/machine/symbols/%E5%B7%A5%E7%A8%8B%E6%95%B0%E5%AD%A6.json"
@@ -45,7 +88,7 @@
     "电路原理": {
       "okfId": "okf.course.circuit_theory.textbook.symbols",
       "course": "电路原理",
-      "sourcePage": "课程总览/电路原理/教材解析/符号入门.md",
+      "sourcePage": "符号总览/电路原理.md",
       "entriesCount": 21,
       "file": "电路原理.json",
       "url": "https://isui.ren/repo/S26-1_202609/machine/symbols/%E7%94%B5%E8%B7%AF%E5%8E%9F%E7%90%86.json"
@@ -53,7 +96,7 @@
     "电子技术": {
       "okfId": "okf.course.electronics.textbook.symbols",
       "course": "电子技术",
-      "sourcePage": "课程总览/电子技术/教材解析/符号入门.md",
+      "sourcePage": "符号总览/电子技术.md",
       "entriesCount": 47,
       "file": "电子技术.json",
       "url": "https://isui.ren/repo/S26-1_202609/machine/symbols/%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF.json"

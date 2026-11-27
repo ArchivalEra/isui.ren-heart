@@ -1,8 +1,8 @@
 {
-  "symbols_bubbled": 27514,
+  "symbols_bubbled": 27477,
   "symbols_uncovered": 0,
   "uncovered": [],
-  "symbols_missing_entries": 1785,
+  "symbols_missing_entries": 1784,
   "gaps": [
     {
       "label": "A",
@@ -35,14 +35,14 @@
       "pages": 39
     },
     {
+      "label": "R",
+      "count": 382,
+      "pages": 27
+    },
+    {
       "label": "x",
       "count": 374,
       "pages": 36
-    },
-    {
-      "label": "R",
-      "count": 361,
-      "pages": 25
     },
     {
       "label": "D",
@@ -165,14 +165,14 @@
       "pages": 27
     },
     {
-      "label": "i",
-      "count": 167,
-      "pages": 25
-    },
-    {
       "label": "N_2",
       "count": 166,
       "pages": 22
+    },
+    {
+      "label": "i",
+      "count": 165,
+      "pages": 27
     },
     {
       "label": "N",
@@ -575,6 +575,11 @@
       "pages": 7
     },
     {
+      "label": "I",
+      "count": 46,
+      "pages": 5
+    },
+    {
       "label": "x_k",
       "count": 46,
       "pages": 11
@@ -675,6 +680,11 @@
       "pages": 8
     },
     {
+      "label": "Z",
+      "count": 41,
+      "pages": 5
+    },
+    {
       "label": "I_{1N}",
       "count": 41,
       "pages": 12
@@ -735,6 +745,11 @@
       "pages": 8
     },
     {
+      "label": "M",
+      "count": 38,
+      "pages": 7
+    },
+    {
       "label": "B^{\\mathrm T}",
       "count": 38,
       "pages": 5
@@ -758,11 +773,6 @@
       "label": "R_{B2}",
       "count": 38,
       "pages": 5
-    },
-    {
-      "label": "M",
-      "count": 37,
-      "pages": 6
     },
     {
       "label": "U_{OC}",
@@ -855,6 +865,11 @@
       "pages": 5
     },
     {
+      "label": "U",
+      "count": 33,
+      "pages": 6
+    },
+    {
       "label": "U_{20}",
       "count": 33,
       "pages": 10
@@ -873,6 +888,11 @@
       "label": "A_{11}",
       "count": 32,
       "pages": 8
+    },
+    {
+      "label": "t",
+      "count": 32,
+      "pages": 6
     },
     {
       "label": "I_B",
@@ -965,9 +985,9 @@
       "pages": 6
     },
     {
-      "label": "t",
+      "label": "S",
       "count": 29,
-      "pages": 5
+      "pages": 4
     },
     {
       "label": "U^2",
@@ -1155,11 +1175,6 @@
       "pages": 4
     },
     {
-      "label": "Z",
-      "count": 24,
-      "pages": 3
-    },
-    {
       "label": "P_k",
       "count": 23,
       "pages": 8
@@ -1173,6 +1188,11 @@
       "label": "\\boldsymbol{\\xi}_1",
       "count": 23,
       "pages": 2
+    },
+    {
+      "label": "P",
+      "count": 23,
+      "pages": 7
     },
     {
       "label": "I_S",
@@ -1615,11 +1635,6 @@
       "pages": 4
     },
     {
-      "label": "I",
-      "count": 18,
-      "pages": 2
-    },
-    {
       "label": "A_{13}",
       "count": 17,
       "pages": 6
@@ -1658,6 +1673,11 @@
       "label": "u_L",
       "count": 17,
       "pages": 6
+    },
+    {
+      "label": "\\omega",
+      "count": 17,
+      "pages": 3
     },
     {
       "label": "\\varphi_k",
@@ -1781,11 +1801,6 @@
     },
     {
       "label": "\\eta",
-      "count": 15,
-      "pages": 5
-    },
-    {
-      "label": "P",
       "count": 15,
       "pages": 5
     },
@@ -2380,11 +2395,6 @@
       "pages": 2
     },
     {
-      "label": "u",
-      "count": 10,
-      "pages": 2
-    },
-    {
       "label": "\\boldsymbol{\\alpha}_M",
       "count": 10,
       "pages": 1
@@ -2703,11 +2713,6 @@
       "label": "p_{Cu2}",
       "count": 9,
       "pages": 1
-    },
-    {
-      "label": "U",
-      "count": 9,
-      "pages": 3
     },
     {
       "label": "\\Phi_1",
@@ -3035,6 +3040,11 @@
       "pages": 2
     },
     {
+      "label": "R_L",
+      "count": 7,
+      "pages": 2
+    },
+    {
       "label": "126.9^\\circ",
       "count": 7,
       "pages": 2
@@ -3300,6 +3310,11 @@
       "pages": 2
     },
     {
+      "label": "\\tau",
+      "count": 6,
+      "pages": 2
+    },
+    {
       "label": "\\dot U_4",
       "count": 6,
       "pages": 1
@@ -3475,11 +3490,6 @@
       "pages": 1
     },
     {
-      "label": "\\omega",
-      "count": 6,
-      "pages": 1
-    },
-    {
       "label": "a_i",
       "count": 5,
       "pages": 3
@@ -3536,6 +3546,11 @@
     },
     {
       "label": "D^{\\mathrm T}",
+      "count": 5,
+      "pages": 2
+    },
+    {
+      "label": "u",
       "count": 5,
       "pages": 2
     },
@@ -3655,6 +3670,16 @@
       "pages": 2
     },
     {
+      "label": "\\varphi",
+      "count": 5,
+      "pages": 3
+    },
+    {
+      "label": "L",
+      "count": 5,
+      "pages": 3
+    },
+    {
       "label": "I_8",
       "count": 5,
       "pages": 2
@@ -3748,11 +3773,6 @@
       "label": "i_i",
       "count": 5,
       "pages": 4
-    },
-    {
-      "label": "\\varphi",
-      "count": 5,
-      "pages": 2
     },
     {
       "label": "I_{CEO}",
@@ -4028,11 +4048,6 @@
       "label": "A_{jn}",
       "count": 4,
       "pages": 1
-    },
-    {
-      "label": "S",
-      "count": 4,
-      "pages": 2
     },
     {
       "label": "A_{n1}",
@@ -5240,11 +5255,6 @@
       "pages": 2
     },
     {
-      "label": "L",
-      "count": 3,
-      "pages": 2
-    },
-    {
       "label": "\\mathbf{G}_{\\text{全}}",
       "count": 3,
       "pages": 2
@@ -5316,11 +5326,6 @@
     },
     {
       "label": "\\text{CO}_2",
-      "count": 3,
-      "pages": 1
-    },
-    {
-      "label": "R_L",
       "count": 3,
       "pages": 1
     },
@@ -6515,16 +6520,6 @@
       "pages": 1
     },
     {
-      "label": "Q",
-      "count": 2,
-      "pages": 1
-    },
-    {
-      "label": "\\tau",
-      "count": 2,
-      "pages": 1
-    },
-    {
       "label": "J",
       "count": 2,
       "pages": 1
@@ -7246,6 +7241,16 @@
     },
     {
       "label": "10^{-8}",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "\\lambda",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "Q",
       "count": 1,
       "pages": 1
     },
@@ -8915,16 +8920,6 @@
       "pages": 1
     },
     {
-      "label": "\\sigma",
-      "count": 1,
-      "pages": 1
-    },
-    {
-      "label": "\\lambda",
-      "count": 1,
-      "pages": 1
-    },
-    {
       "label": "\\mathrm s^{-1}",
       "count": 1,
       "pages": 1
@@ -8934,6 +8929,13 @@
     {
       "page": "README.md",
       "html": "index.html",
+      "anchors": 0,
+      "uncovered": 0,
+      "gaps": 0
+    },
+    {
+      "page": "符号总览/index.md",
+      "html": "符号总览/index.html",
       "anchors": 0,
       "uncovered": 0,
       "gaps": 0
@@ -9086,8 +9088,8 @@
       "gaps": 8
     },
     {
-      "page": "课程总览/工程数学/教材解析/符号入门.md",
-      "html": "课程总览/工程数学/教材解析/符号入门.html",
+      "page": "符号总览/工程数学.md",
+      "html": "符号总览/工程数学.html",
       "anchors": 36,
       "uncovered": 0,
       "gaps": 50
@@ -9541,11 +9543,11 @@
       "gaps": 0
     },
     {
-      "page": "课程总览/电路原理/教材解析/符号入门.md",
-      "html": "课程总览/电路原理/教材解析/符号入门.html",
-      "anchors": 19,
+      "page": "符号总览/电路原理.md",
+      "html": "符号总览/电路原理.html",
+      "anchors": 6,
       "uncovered": 0,
-      "gaps": 32
+      "gaps": 49
     },
     {
       "page": "课程总览/电路原理/课堂笔记/index.md",
@@ -9849,11 +9851,11 @@
       "gaps": 6
     },
     {
-      "page": "课程总览/电子技术/教材解析/符号入门.md",
-      "html": "课程总览/电子技术/教材解析/符号入门.html",
-      "anchors": 21,
+      "page": "符号总览/电子技术.md",
+      "html": "符号总览/电子技术.html",
+      "anchors": 13,
       "uncovered": 0,
-      "gaps": 23
+      "gaps": 28
     },
     {
       "page": "课程总览/电子技术/课堂笔记/index.md",
@@ -10143,11 +10145,11 @@
       "gaps": 8
     },
     {
-      "page": "课程总览/电机学/教材解析/符号入门.md",
-      "html": "课程总览/电机学/教材解析/符号入门.html",
-      "anchors": 94,
+      "page": "符号总览/电机学.md",
+      "html": "符号总览/电机学.html",
+      "anchors": 87,
       "uncovered": 0,
-      "gaps": 55
+      "gaps": 61
     },
     {
       "page": "课程总览/电机学/教材解析/第01章-概述/1.1-电机的分类.md",
@@ -10332,11 +10334,11 @@
       "gaps": 11
     },
     {
-      "page": "课程总览/通用电气/教材解析/符号入门.md",
-      "html": "课程总览/通用电气/教材解析/符号入门.html",
-      "anchors": 62,
+      "page": "符号总览/通用电气.md",
+      "html": "符号总览/通用电气.html",
+      "anchors": 49,
       "uncovered": 0,
-      "gaps": 130
+      "gaps": 143
     },
     {
       "page": "课程总览/通用电气/交叉内容/index.md",
@@ -10521,11 +10523,11 @@
       "gaps": 0
     },
     {
-      "page": "站点/符号包/通用.md",
-      "html": "站点/符号包/通用.html",
-      "anchors": 0,
+      "page": "符号总览/通用.md",
+      "html": "符号总览/通用.html",
+      "anchors": 4,
       "uncovered": 0,
-      "gaps": 43
+      "gaps": 25
     }
   ]
 }
