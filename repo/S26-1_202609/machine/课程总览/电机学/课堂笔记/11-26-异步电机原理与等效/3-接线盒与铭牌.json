@@ -1,0 +1,1 @@
+{"url":"课程总览/电机学/课堂笔记/11-26-异步电机原理与等效.html","title":"11-26-异步电机原理与等效","section":"3. 接线盒与铭牌","body":"### 3. 接线盒与铭牌\n\n- 接线盒上下交错排列（Y 接横连 / $\\Delta$ 接竖连）。\n- 铭牌型号 `Y100L1-4` 解读与额定电流例题（$75\\text{ kW}$、$380\\text{ V}$、$\\Delta$ 接、$\\cos\\varphi_N=0.89$、$\\eta_N=0.92 \\implies I_N \\approx 139.2\\text{ A}, I_{\\Phi N} \\approx 80.4\\text{ A}$）。"}

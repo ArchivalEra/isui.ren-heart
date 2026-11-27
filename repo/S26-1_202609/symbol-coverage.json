@@ -1,18 +1,18 @@
 {
-  "symbols_bubbled": 27477,
+  "symbols_bubbled": 27613,
   "symbols_uncovered": 0,
   "uncovered": [],
-  "symbols_missing_entries": 1784,
+  "symbols_missing_entries": 1797,
   "gaps": [
     {
       "label": "A",
-      "count": 2591,
-      "pages": 97
+      "count": 2590,
+      "pages": 96
     },
     {
       "label": "B",
-      "count": 1418,
-      "pages": 79
+      "count": 1417,
+      "pages": 78
     },
     {
       "label": "C",
@@ -21,28 +21,28 @@
     },
     {
       "label": "n",
-      "count": 690,
-      "pages": 63
+      "count": 689,
+      "pages": 62
     },
     {
       "label": "X",
-      "count": 395,
-      "pages": 48
+      "count": 394,
+      "pages": 47
     },
     {
       "label": "k",
-      "count": 389,
+      "count": 391,
       "pages": 39
     },
     {
       "label": "R",
-      "count": 382,
-      "pages": 27
+      "count": 381,
+      "pages": 26
     },
     {
       "label": "x",
-      "count": 374,
-      "pages": 36
+      "count": 378,
+      "pages": 37
     },
     {
       "label": "D",
@@ -75,19 +75,19 @@
       "pages": 30
     },
     {
+      "label": "Y",
+      "count": 283,
+      "pages": 40
+    },
+    {
       "label": "N_1",
       "count": 283,
       "pages": 23
     },
     {
-      "label": "Y",
-      "count": 279,
-      "pages": 38
-    },
-    {
       "label": "f",
-      "count": 270,
-      "pages": 45
+      "count": 272,
+      "pages": 47
     },
     {
       "label": "\\angle",
@@ -101,13 +101,13 @@
     },
     {
       "label": "r",
-      "count": 261,
-      "pages": 24
+      "count": 262,
+      "pages": 25
     },
     {
       "label": "\\beta",
-      "count": 260,
-      "pages": 25
+      "count": 259,
+      "pages": 24
     },
     {
       "label": "x_3",
@@ -116,8 +116,8 @@
     },
     {
       "label": "I_2",
-      "count": 235,
-      "pages": 37
+      "count": 236,
+      "pages": 38
     },
     {
       "label": "\\boldsymbol{\\alpha}_2",
@@ -131,7 +131,7 @@
     },
     {
       "label": "T",
-      "count": 209,
+      "count": 210,
       "pages": 46
     },
     {
@@ -146,13 +146,13 @@
     },
     {
       "label": "\\Delta",
-      "count": 187,
-      "pages": 35
+      "count": 189,
+      "pages": 36
     },
     {
       "label": "F",
-      "count": 184,
-      "pages": 27
+      "count": 183,
+      "pages": 26
     },
     {
       "label": "\\alpha",
@@ -200,19 +200,24 @@
       "pages": 6
     },
     {
+      "label": "y",
+      "count": 137,
+      "pages": 12
+    },
+    {
       "label": "u_o",
       "count": 134,
       "pages": 12
     },
     {
-      "label": "y",
-      "count": 133,
-      "pages": 11
-    },
-    {
       "label": "k_1",
       "count": 131,
       "pages": 13
+    },
+    {
+      "label": "I_0",
+      "count": 129,
+      "pages": 18
     },
     {
       "label": "m",
@@ -223,11 +228,6 @@
       "label": "V",
       "count": 125,
       "pages": 20
-    },
-    {
-      "label": "I_0",
-      "count": 125,
-      "pages": 15
     },
     {
       "label": "a_{11}",
@@ -360,6 +360,11 @@
       "pages": 16
     },
     {
+      "label": "R_F",
+      "count": 75,
+      "pages": 4
+    },
+    {
       "label": "Z_k",
       "count": 74,
       "pages": 13
@@ -385,14 +390,14 @@
       "pages": 10
     },
     {
+      "label": "R_2",
+      "count": 70,
+      "pages": 18
+    },
+    {
       "label": "Z_1",
       "count": 70,
       "pages": 16
-    },
-    {
-      "label": "R_F",
-      "count": 70,
-      "pages": 3
     },
     {
       "label": "E_2",
@@ -430,19 +435,19 @@
       "pages": 14
     },
     {
-      "label": "O",
-      "count": 59,
-      "pages": 12
+      "label": "k^2",
+      "count": 60,
+      "pages": 19
     },
     {
-      "label": "k^2",
-      "count": 59,
+      "label": "R_1",
+      "count": 60,
       "pages": 18
     },
     {
-      "label": "R_2",
-      "count": 58,
-      "pages": 14
+      "label": "O",
+      "count": 59,
+      "pages": 12
     },
     {
       "label": "D_1",
@@ -453,11 +458,6 @@
       "label": "\\theta",
       "count": 56,
       "pages": 9
-    },
-    {
-      "label": "R_1",
-      "count": 56,
-      "pages": 17
     },
     {
       "label": "U_{1N}",
@@ -525,6 +525,11 @@
       "pages": 12
     },
     {
+      "label": "s",
+      "count": 49,
+      "pages": 15
+    },
+    {
       "label": "P_0",
       "count": 49,
       "pages": 8
@@ -538,6 +543,11 @@
       "label": "\\overline{R}_D",
       "count": 49,
       "pages": 7
+    },
+    {
+      "label": "x^2",
+      "count": 48,
+      "pages": 11
     },
     {
       "label": "Y_2",
@@ -605,11 +615,6 @@
       "pages": 13
     },
     {
-      "label": "x^2",
-      "count": 44,
-      "pages": 10
-    },
-    {
       "label": "H",
       "count": 44,
       "pages": 14
@@ -653,11 +658,6 @@
       "label": "i_B",
       "count": 43,
       "pages": 6
-    },
-    {
-      "label": "s",
-      "count": 42,
-      "pages": 13
     },
     {
       "label": "I_C",
@@ -705,6 +705,11 @@
       "pages": 2
     },
     {
+      "label": "k_w",
+      "count": 40,
+      "pages": 7
+    },
+    {
       "label": "A^2",
       "count": 39,
       "pages": 5
@@ -731,11 +736,6 @@
     },
     {
       "label": "\\dot U_2",
-      "count": 39,
-      "pages": 6
-    },
-    {
-      "label": "k_w",
       "count": 39,
       "pages": 6
     },
@@ -778,6 +778,11 @@
       "label": "U_{OC}",
       "count": 37,
       "pages": 4
+    },
+    {
+      "label": "f_1",
+      "count": 36,
+      "pages": 7
     },
     {
       "label": "360^\\circ",
@@ -850,29 +855,19 @@
       "pages": 12
     },
     {
-      "label": "\\Phi",
-      "count": 34,
-      "pages": 8
-    },
-    {
       "label": "\\boldsymbol\\xi_1",
       "count": 33,
       "pages": 2
     },
     {
-      "label": "f_1",
-      "count": 33,
-      "pages": 5
-    },
-    {
-      "label": "U",
-      "count": 33,
-      "pages": 6
-    },
-    {
       "label": "U_{20}",
       "count": 33,
       "pages": 10
+    },
+    {
+      "label": "\\Phi",
+      "count": 33,
+      "pages": 7
     },
     {
       "label": "a_{13}",
@@ -893,6 +888,11 @@
       "label": "t",
       "count": 32,
       "pages": 6
+    },
+    {
+      "label": "U",
+      "count": 32,
+      "pages": 5
     },
     {
       "label": "I_B",
@@ -1125,6 +1125,11 @@
       "pages": 9
     },
     {
+      "label": "\\dot{U}_1",
+      "count": 25,
+      "pages": 8
+    },
+    {
       "label": "R_{0(1)}",
       "count": 25,
       "pages": 3
@@ -1175,6 +1180,11 @@
       "pages": 4
     },
     {
+      "label": "\\dot{I}_1",
+      "count": 24,
+      "pages": 8
+    },
+    {
       "label": "P_k",
       "count": 23,
       "pages": 8
@@ -1218,11 +1228,6 @@
       "label": "Z_C",
       "count": 23,
       "pages": 5
-    },
-    {
-      "label": "\\dot{U}_1",
-      "count": 23,
-      "pages": 6
     },
     {
       "label": "u_{i1}",
@@ -1300,9 +1305,9 @@
       "pages": 4
     },
     {
-      "label": "\\dot{I}_1",
+      "label": "u_-",
       "count": 22,
-      "pages": 6
+      "pages": 5
     },
     {
       "label": "Y_7",
@@ -1420,9 +1425,9 @@
       "pages": 3
     },
     {
-      "label": "u_-",
+      "label": "u_+",
       "count": 20,
-      "pages": 4
+      "pages": 5
     },
     {
       "label": "\\uparrow_2",
@@ -1570,6 +1575,11 @@
       "pages": 1
     },
     {
+      "label": "y^2",
+      "count": 18,
+      "pages": 4
+    },
+    {
       "label": "P_2",
       "count": 18,
       "pages": 5
@@ -1598,11 +1608,6 @@
       "label": "D_0",
       "count": 18,
       "pages": 5
-    },
-    {
-      "label": "u_+",
-      "count": 18,
-      "pages": 4
     },
     {
       "label": "\\uparrow_3",
@@ -1795,6 +1800,16 @@
       "pages": 2
     },
     {
+      "label": "E_\\Phi",
+      "count": 16,
+      "pages": 8
+    },
+    {
+      "label": "f_2",
+      "count": 16,
+      "pages": 3
+    },
+    {
       "label": "k_i",
       "count": 15,
       "pages": 7
@@ -1840,11 +1855,6 @@
       "pages": 3
     },
     {
-      "label": "E_\\Phi",
-      "count": 15,
-      "pages": 7
-    },
-    {
       "label": "i_0",
       "count": 15,
       "pages": 4
@@ -1861,11 +1871,6 @@
     },
     {
       "label": "\\boldsymbol{\\alpha}_m",
-      "count": 14,
-      "pages": 3
-    },
-    {
-      "label": "y^2",
       "count": 14,
       "pages": 3
     },
@@ -1963,11 +1968,6 @@
       "label": "p_h",
       "count": 14,
       "pages": 4
-    },
-    {
-      "label": "f_2",
-      "count": 14,
-      "pages": 1
     },
     {
       "label": "K_i",
@@ -2195,6 +2195,11 @@
       "pages": 1
     },
     {
+      "label": "n_1",
+      "count": 12,
+      "pages": 5
+    },
+    {
       "label": "D_i",
       "count": 11,
       "pages": 3
@@ -2348,11 +2353,6 @@
       "label": "U_T",
       "count": 11,
       "pages": 3
-    },
-    {
-      "label": "n_1",
-      "count": 11,
-      "pages": 4
     },
     {
       "label": "r_3",
@@ -3095,6 +3095,11 @@
       "pages": 1
     },
     {
+      "label": "U_i",
+      "count": 7,
+      "pages": 3
+    },
+    {
       "label": "Y_5",
       "count": 7,
       "pages": 3
@@ -3310,6 +3315,11 @@
       "pages": 2
     },
     {
+      "label": "L",
+      "count": 6,
+      "pages": 4
+    },
+    {
       "label": "\\tau",
       "count": 6,
       "pages": 2
@@ -3373,11 +3383,6 @@
       "label": "X_{bc}",
       "count": 6,
       "pages": 1
-    },
-    {
-      "label": "U_i",
-      "count": 6,
-      "pages": 2
     },
     {
       "label": "M_0",
@@ -3590,6 +3595,11 @@
       "pages": 1
     },
     {
+      "label": "P_N",
+      "count": 5,
+      "pages": 3
+    },
+    {
       "label": "U_{S\\uparrow}",
       "count": 5,
       "pages": 3
@@ -3671,11 +3681,6 @@
     },
     {
       "label": "\\varphi",
-      "count": 5,
-      "pages": 3
-    },
-    {
-      "label": "L",
       "count": 5,
       "pages": 3
     },
@@ -3788,6 +3793,11 @@
       "label": "P_T",
       "count": 5,
       "pages": 2
+    },
+    {
+      "label": "A_{uf}",
+      "count": 5,
+      "pages": 1
     },
     {
       "label": "H_{Fe}",
@@ -4130,11 +4140,6 @@
       "pages": 2
     },
     {
-      "label": "P_N",
-      "count": 4,
-      "pages": 2
-    },
-    {
       "label": "f_0",
       "count": 4,
       "pages": 2
@@ -4345,6 +4350,16 @@
       "pages": 2
     },
     {
+      "label": "i_+",
+      "count": 4,
+      "pages": 4
+    },
+    {
+      "label": "i_-",
+      "count": 4,
+      "pages": 4
+    },
+    {
       "label": "2^{5}",
       "count": 4,
       "pages": 1
@@ -4535,6 +4550,11 @@
       "pages": 1
     },
     {
+      "label": "c_1",
+      "count": 4,
+      "pages": 3
+    },
+    {
       "label": "A_{um}",
       "count": 4,
       "pages": 2
@@ -4688,6 +4708,11 @@
       "label": "\\varepsilon",
       "count": 3,
       "pages": 1
+    },
+    {
+      "label": "x_0",
+      "count": 3,
+      "pages": 2
     },
     {
       "label": "F_{set}",
@@ -4925,16 +4950,6 @@
       "pages": 2
     },
     {
-      "label": "i_+",
-      "count": 3,
-      "pages": 3
-    },
-    {
-      "label": "i_-",
-      "count": 3,
-      "pages": 3
-    },
-    {
       "label": "2^7",
       "count": 3,
       "pages": 1
@@ -5131,6 +5146,11 @@
     },
     {
       "label": "n_\\nu",
+      "count": 3,
+      "pages": 1
+    },
+    {
+      "label": "s_N",
       "count": 3,
       "pages": 1
     },
@@ -5556,6 +5576,11 @@
     },
     {
       "label": "h",
+      "count": 2,
+      "pages": 1
+    },
+    {
+      "label": "y_0",
       "count": 2,
       "pages": 1
     },
@@ -6090,6 +6115,21 @@
       "pages": 1
     },
     {
+      "label": "n_N",
+      "count": 2,
+      "pages": 1
+    },
+    {
+      "label": "\\eta_N",
+      "count": 2,
+      "pages": 2
+    },
+    {
+      "label": "\\varphi_N",
+      "count": 2,
+      "pages": 2
+    },
+    {
       "label": "K_i^2",
       "count": 2,
       "pages": 1
@@ -6360,6 +6400,11 @@
       "pages": 2
     },
     {
+      "label": "I_{\\Phi N}",
+      "count": 2,
+      "pages": 2
+    },
+    {
       "label": "e^{j120°}",
       "count": 2,
       "pages": 1
@@ -6373,11 +6418,6 @@
       "label": "a^3",
       "count": 2,
       "pages": 2
-    },
-    {
-      "label": "c_1",
-      "count": 2,
-      "pages": 1
     },
     {
       "label": "E_{n-r}",
@@ -6946,6 +6986,26 @@
     },
     {
       "label": "10^{-2}",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "\\lim_{(x,y)\\to(0,0)}",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "f_x",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "f_y",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "z^2",
       "count": 1,
       "pages": 1
     },
@@ -7845,6 +7905,11 @@
       "pages": 1
     },
     {
+      "label": "I_{\\max}",
+      "count": 1,
+      "pages": 1
+    },
+    {
       "label": "R_A",
       "count": 1,
       "pages": 1
@@ -7971,6 +8036,11 @@
     },
     {
       "label": "F_{\\Phi\\nu}",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "I_{\\varphi N}",
       "count": 1,
       "pages": 1
     },
@@ -8211,11 +8281,6 @@
     },
     {
       "label": "r_0",
-      "count": 1,
-      "pages": 1
-    },
-    {
-      "label": "x_0",
       "count": 1,
       "pages": 1
     },
@@ -8805,11 +8870,6 @@
       "pages": 1
     },
     {
-      "label": "I_{\\Phi N}",
-      "count": 1,
-      "pages": 1
-    },
-    {
       "label": "U_{lN}^2",
       "count": 1,
       "pages": 1
@@ -8911,6 +8971,11 @@
     },
     {
       "label": "480^\\circ",
+      "count": 1,
+      "pages": 1
+    },
+    {
+      "label": "P_\\text{mec}",
       "count": 1,
       "pages": 1
     },
@@ -9254,6 +9319,13 @@
       "anchors": 15,
       "uncovered": 0,
       "gaps": 61
+    },
+    {
+      "page": "课程总览/工程数学/课堂笔记/11-26-多元函数极限与偏导数.md",
+      "html": "课程总览/工程数学/课堂笔记/11-26-多元函数极限与偏导数.html",
+      "anchors": 0,
+      "uncovered": 0,
+      "gaps": 13
     },
     {
       "page": "课程总览/工程数学/原始资料/index.md",
@@ -9998,6 +10070,13 @@
       "gaps": 49
     },
     {
+      "page": "课程总览/电子技术/课堂笔记/11-25-集成运放线性应用.md",
+      "html": "课程总览/电子技术/课堂笔记/11-25-集成运放线性应用.html",
+      "anchors": 27,
+      "uncovered": 0,
+      "gaps": 10
+    },
+    {
       "page": "课程总览/电子技术/原始资料/index.md",
       "html": "课程总览/电子技术/原始资料/index.html",
       "anchors": 23,
@@ -10117,6 +10196,13 @@
       "gaps": 17
     },
     {
+      "page": "课程总览/电机学/作业/3.1.4异步电机基本结构.md",
+      "html": "课程总览/电机学/作业/3.1.4异步电机基本结构.html",
+      "anchors": 65,
+      "uncovered": 0,
+      "gaps": 9
+    },
+    {
       "page": "课程总览/电机学/作业/3.2.1异步电动机运行分析.md",
       "html": "课程总览/电机学/作业/3.2.1异步电动机运行分析.html",
       "anchors": 652,
@@ -10196,7 +10282,7 @@
     {
       "page": "课程总览/电机学/课堂笔记/index.md",
       "html": "课程总览/电机学/课堂笔记/index.html",
-      "anchors": 44,
+      "anchors": 45,
       "uncovered": 0,
       "gaps": 19
     },
@@ -10255,6 +10341,13 @@
       "anchors": 401,
       "uncovered": 0,
       "gaps": 53
+    },
+    {
+      "page": "课程总览/电机学/课堂笔记/11-26-异步电机原理与等效.md",
+      "html": "课程总览/电机学/课堂笔记/11-26-异步电机原理与等效.html",
+      "anchors": 35,
+      "uncovered": 0,
+      "gaps": 16
     },
     {
       "page": "课程总览/电机学/原始资料/index.md",
@@ -10327,13 +10420,6 @@
       "gaps": 82
     },
     {
-      "page": "课程总览/通用电气/教材解析/index.md",
-      "html": "课程总览/通用电气/教材解析/index.html",
-      "anchors": 6,
-      "uncovered": 0,
-      "gaps": 11
-    },
-    {
       "page": "符号总览/通用电气.md",
       "html": "符号总览/通用电气.html",
       "anchors": 49,
@@ -10343,9 +10429,9 @@
     {
       "page": "课程总览/通用电气/交叉内容/index.md",
       "html": "课程总览/通用电气/交叉内容/index.html",
-      "anchors": 36,
+      "anchors": 38,
       "uncovered": 0,
-      "gaps": 35
+      "gaps": 38
     },
     {
       "page": "课程总览/通用电气/交叉内容/01-电路矩阵与消元判解.md",
@@ -10479,6 +10565,13 @@
       "anchors": 83,
       "uncovered": 0,
       "gaps": 26
+    },
+    {
+      "page": "课程总览/通用电气/交叉内容/20-异步电机等效与无功.md",
+      "html": "课程总览/通用电气/交叉内容/20-异步电机等效与无功.html",
+      "anchors": 12,
+      "uncovered": 0,
+      "gaps": 11
     },
     {
       "page": "课程总览/电气前沿/作业/index.md",
